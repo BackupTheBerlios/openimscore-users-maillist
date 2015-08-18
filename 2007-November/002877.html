@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] TLS in OpenIMSCore
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20TLS%20in%20OpenIMSCore&In-Reply-To=%3C20071106094302.23820110A47%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002871.html">
+   <LINK REL="Next"  HREF="002865.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] TLS in OpenIMSCore</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20TLS%20in%20OpenIMSCore&In-Reply-To=%3C20071106094302.23820110A47%40mail.berlios.de%3E"
+       TITLE="[OpenIMSCore-Users] TLS in OpenIMSCore">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Tue Nov  6 10:40:19 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002871.html">[OpenIMSCore-Users] TLS in OpenIMSCore
+</A></li>
+        <LI>Next message: <A HREF="002865.html">[OpenIMSCore-Users] How to get Open IMS Playground @ FOKUS XDMS	source code?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2877">[ date ]</a>
+              <a href="thread.html#2877">[ thread ]</a>
+              <a href="subject.html#2877">[ subject ]</a>
+              <a href="author.html#2877">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yup, I recently read that &quot;integrity-protected&quot; requires AKA, thus &quot;tls-yes&quot;
+would assumes AKA-authentication and so, in my opinion, PSK-TLS would make
+sense. Well, maybe I need to have a closer look at PSK-TLS spec...
+Anyway, thanks for your quick answer, br, Klemens
+
+&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;<i> Sent: Montag, 05. November 2007 16:53
+</I>&gt;<i> To: Klemens Schragel
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] TLS in OpenIMSCore
+</I>&gt;<i> 
+</I>&gt;<i> Hi Klemens,
+</I>&gt;<i> 
+</I>&gt;<i> the TS 24.229 - I think it was a overlooked by the guy implementing it.
+</I>&gt;<i> Probably it won't be a big change, but the S-CSCF implications have to
+</I>&gt;<i> be considered and also patched.
+</I>&gt;<i> 
+</I>&gt;<i> About the 2nd point, I don't know... never looked that deep into it. One
+</I>&gt;<i> thing though is that unless integrated with AKA, TLS can not be used as
+</I>&gt;<i> an authentication method, like AKA-IPSec is, but just purely for
+</I>&gt;<i> encryption. So the P-CSCF does not care about any credentials that the
+</I>&gt;<i> UE might present as part of TLS set-up, but just about the SIP
+</I>&gt;<i> authentication procedure. Only after that authentication goes right, the
+</I>&gt;<i> TLS connection is considered to offer &quot;integrity-protected&quot;. Anyway, the
+</I>&gt;<i> authentication happens between the UE and the HSS and the HSS
+</I>&gt;<i> information can/should not be relayed to the P-CSCF, except for the AKA
+</I>&gt;<i> Cypher/Integrity keys if AKA is employed.
+</I>&gt;<i> 
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> Klemens Schragel wrote:
+</I>&gt;<i> &gt; Hi All,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; because of TLS support for signalling protection, according to TS 24.229
+</I>&gt;<i> &gt; clause 7.2A.2.2 the Authorization header should contain the param
+</I>&gt;<i> &gt; integrity-protected=&quot;tls-yes&quot; but in the source files I can only find
+</I>&gt;<i> the
+</I>&gt;<i> &gt; decision between &quot;yes&quot; and &quot;no&quot;/else... is the detection of a tls-
+</I>&gt;<i> session
+</I>&gt;<i> &gt; not yet supported or have I overseen something?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Another point (more for my interest), does anyone know why there is only
+</I>&gt;<i> TLS
+</I>&gt;<i> &gt; with certificates supported and not Pre-Shared-Key TLS (RFC 4279)? Or is
+</I>&gt;<i> &gt; assumed that a UE capable of AKA is also capable of IPSec?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks and br, Klemens
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002871.html">[OpenIMSCore-Users] TLS in OpenIMSCore
+</A></li>
+	<LI>Next message: <A HREF="002865.html">[OpenIMSCore-Users] How to get Open IMS Playground @ FOKUS XDMS	source code?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2877">[ date ]</a>
+              <a href="thread.html#2877">[ thread ]</a>
+              <a href="subject.html#2877">[ subject ]</a>
+              <a href="author.html#2877">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

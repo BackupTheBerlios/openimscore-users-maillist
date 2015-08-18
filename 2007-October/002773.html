@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Authentication Scheme name - PacketCable and	ETSI support
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Authentication%20Scheme%20name%20-%20PacketCable%20and%0A%09ETSI%20support&In-Reply-To=%3C908830.81465.qm%40web56110.mail.re3.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002763.html">
+   <LINK REL="Next"  HREF="002774.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Authentication Scheme name - PacketCable and	ETSI support</H1>
+    <B>Sudhakar Patil</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Authentication%20Scheme%20name%20-%20PacketCable%20and%0A%09ETSI%20support&In-Reply-To=%3C908830.81465.qm%40web56110.mail.re3.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] Authentication Scheme name - PacketCable and	ETSI support">spatil4572 at yahoo.com
+       </A><BR>
+    <I>Thu Oct 18 17:58:14 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002763.html">[OpenIMSCore-Users] R&#233;f. : Re:  Application server
+</A></li>
+        <LI>Next message: <A HREF="002774.html">[OpenIMSCore-Users] need help on IMS Core install
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2773">[ date ]</a>
+              <a href="thread.html#2773">[ thread ]</a>
+              <a href="subject.html#2773">[ subject ]</a>
+              <a href="author.html#2773">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi, 
+The latest version of PacketCable has modified the SIP-Authentication-Scheme AVP that is placed in the MAR to take one of the following values:
+
+Digest-AKAv1-MD5 
+unknown,
+Digest
+
+Currently in scscf.cfg we can set registration_default_algorithm to &quot;AKAv1-MD5&quot; or &quot;CableLabs-Digest&quot; respectively to send &quot;Digest-AKAv1-MD5&quot; and &quot;Digest&quot; in the SIP-Authentication-Scheme AVP of MAR. 
+
+However, if we set registration_default_algorithm to HSS-Selected, it will send &quot;Unknown&quot; with upper case &quot;U&quot;. However, since both ETSI and TISPAN now require it to be &quot;unknown&quot; with lower case &quot;u&quot;, I suggest changing the ser_ims/modules/registration.c 
+
+str algorithm_types[] = {
+        {&quot;Unknown&quot;,7},
+        {&quot;AKAv1-MD5&quot;,9},
+        {&quot;AKAv2-MD5&quot;,9},
+        {&quot;Early-IMS&quot;,9},
+        {&quot;MD5&quot;,3},
+        {&quot;CableLabs-Digest&quot;,16},
+        {&quot;TISPAN-HTTP_DIGEST_MD5&quot;,22},
+        {&quot;NASS-Bundled&quot;,12},
+        {0,0}
+};
+str auth_scheme_types[] = {
+        {&quot;Unknown&quot;,7},
+        {&quot;Digest-AKAv1-MD5&quot;,16},
+        {&quot;Digest-AKAv2-MD5&quot;,16},
+        {&quot;Early-IMS-Security&quot;,18},
+        {&quot;Digest-MD5&quot;,10},
+        {&quot;Digest&quot;,6},
+        {&quot;HTTP_DIGEST_MD5&quot;,15},
+        {&quot;NASS-Bundled&quot;,12},
+        {0,0}
+};
+
+to 
+
+str algorithm_types[] = {
+        {&quot;unknown&quot;,7},
+        {&quot;AKAv1-MD5&quot;,9},
+        {&quot;AKAv2-MD5&quot;,9},
+        {&quot;Early-IMS&quot;,9},
+        {&quot;MD5&quot;,3},
+        {&quot;CableLabs-Digest&quot;,16},
+        {&quot;TISPAN-HTTP_DIGEST_MD5&quot;,22},
+        {&quot;NASS-Bundled&quot;,12},
+        {0,0}
+};
+str auth_scheme_types[] = {
+        {&quot;unknown&quot;,7},
+        {&quot;Digest-AKAv1-MD5&quot;,16},
+        {&quot;Digest-AKAv2-MD5&quot;,16},
+        {&quot;Early-IMS-Security&quot;,18},
+        {&quot;Digest-MD5&quot;,10},
+        {&quot;Digest&quot;,6},
+        {&quot;HTTP_DIGEST_MD5&quot;,15},
+        {&quot;NASS-Bundled&quot;,12},
+        {0,0}
+};
+
+
+OR may be a new algorithm_type, auth_scheme_type and registration_default_algorithm can be added for &quot;unknown&quot;.
+
+Regards,
+Sudhakar.
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002763.html">[OpenIMSCore-Users] R&#233;f. : Re:  Application server
+</A></li>
+	<LI>Next message: <A HREF="002774.html">[OpenIMSCore-Users] need help on IMS Core install
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2773">[ date ]</a>
+              <a href="thread.html#2773">[ thread ]</a>
+              <a href="subject.html#2773">[ subject ]</a>
+              <a href="author.html#2773">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

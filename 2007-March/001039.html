@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] SIP2IMS and instant messaging
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SIP2IMS%20and%20instant%20messaging&In-Reply-To=%3CBAY108-F15B6E59657884B3CE9A227F9840%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001013.html">
+   <LINK REL="Next"  HREF="001047.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] SIP2IMS and instant messaging</H1>
+    <B>Arnold Schwarz</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SIP2IMS%20and%20instant%20messaging&In-Reply-To=%3CBAY108-F15B6E59657884B3CE9A227F9840%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] SIP2IMS and instant messaging">scharn333 at hotmail.com
+       </A><BR>
+    <I>Mon Mar  5 10:40:06 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001013.html">[OpenIMSCore-Users] SIP2IMS and instant messaging
+</A></li>
+        <LI>Next message: <A HREF="001047.html">[OpenIMSCore-Users] SIP2IMS and instant messaging
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1039">[ date ]</a>
+              <a href="thread.html#1039">[ thread ]</a>
+              <a href="subject.html#1039">[ subject ]</a>
+              <a href="author.html#1039">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok. If I take the SIP2IMS GW away, do I have to modify the configuration of 
+the P-CSCF in some way? For instance the parameter &quot;sip2ims_via&quot;, should it 
+stay there, or should I remove it?
+
+
+&gt;<i>From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>To: Arnold Schwarz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">scharn333 at hotmail.com</A>&gt;
+</I>&gt;<i>CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>Subject: Re: [OpenIMSCore-Users] SIP2IMS and instant messaging
+</I>&gt;<i>Date: Fri, 02 Mar 2007 21:30:29 +0100
+</I>&gt;<i>
+</I>&gt;<i>Hi Arnold,
+</I>&gt;<i>
+</I>&gt;<i>I suggest that you drop the SIP2IMS gw out of your path. Anyway, we are
+</I>&gt;<i>going to drop it soon from the project as it is both buggy and also
+</I>&gt;<i>covered by the fact that the core can do now MD5 authentication.
+</I>&gt;<i>
+</I>&gt;<i>-Dragos
+</I>&gt;<i>
+</I>&gt;<i>Arnold Schwarz wrote:
+</I>&gt;<i> &gt; Hi!
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Does anyone have any experience with OSIMS and IM between two clients? 
+</I>&gt;<i>Since
+</I>&gt;<i> &gt; I seem to have a problem: When one client sends and IM to another, the
+</I>&gt;<i> &gt; routing pattern goes like this:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; UE1 -&gt; SIP2IMS -&gt; PCSCF -&gt; SCSCF -&gt; SCSCF -&gt; PCSCF -&gt; SIP2IMS -&gt; PCSCF 
+</I>&gt;<i>-&gt;
+</I>&gt;<i> &gt; SCSCF -&gt; UE2
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; so the originating path is ok, but on the terminating one the SIP2IMS GW
+</I>&gt;<i> &gt; somehow bounces the message back to the core. I tried to corerct the 
+</I>&gt;<i>routing
+</I>&gt;<i> &gt; by modifiying the sip2ims.cfg line 123 into
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     if 
+</I>&gt;<i>(method==&quot;ACK&quot;||method==&quot;BYE&quot;||method==&quot;NOTIFY&quot;||method=&quot;MESSAGE&quot;){
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; now the routing goes
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; UE1 -&gt; SIP2IMS -&gt; SCSCF -&gt; SCSCF -&gt; PCSCF -&gt; SIP2IMS -&gt; UE2
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; so the terminating path is ok, but the originating path is complitely 
+</I>&gt;<i>wrong.
+</I>&gt;<i> &gt; Could someone help me how to change the .cfg -file so, that it would do 
+</I>&gt;<i>the
+</I>&gt;<i> &gt; both paths correctly?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _________________________________________________________________
+</I>&gt;<i> &gt; Refi Now: Rates near 39yr lows!  $430,000 Mortgage for $1,399/mo - 
+</I>&gt;<i>Calculate
+</I>&gt;<i> &gt; new payment
+</I>&gt;<i> &gt; 
+</I>&gt;<i><A HREF="http://www.lowermybills.com/lre/index.jsp?sourceid=lmb-9632-17727&amp;moid=7581">http://www.lowermybills.com/lre/index.jsp?sourceid=lmb-9632-17727&amp;moid=7581</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>--
+</I>&gt;<i>-----------------------------------------
+</I>&gt;<i>Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>FOKUS/NGNI
+</I>&gt;<i>Kaiserin-Augusta-Allee 31
+</I>&gt;<i>10589 Berlin,Germany
+</I>&gt;<i>Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>Web www.fokus.fraunhofer.de
+</I>&gt;<i>We could change the world if God would give us the source code...
+</I>&gt;<i>-----------------------------------------------------------------
+</I>&gt;<i>
+</I>
+_________________________________________________________________
+Mortgage rates as low as 4.625% - Refinance $150,000 loan for $579 a month. 
+Intro*Terms  
+<A HREF="https://www2.nextag.com/goto.jsp?product=100000035&amp;url=%2fst.jsp&amp;tm=y&amp;search=mortgage_text_links_88_h27f6&amp;disc=y&amp;vers=743&amp;s=4056&amp;p=5117">https://www2.nextag.com/goto.jsp?product=100000035&amp;url=%2fst.jsp&amp;tm=y&amp;search=mortgage_text_links_88_h27f6&amp;disc=y&amp;vers=743&amp;s=4056&amp;p=5117</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001013.html">[OpenIMSCore-Users] SIP2IMS and instant messaging
+</A></li>
+	<LI>Next message: <A HREF="001047.html">[OpenIMSCore-Users] SIP2IMS and instant messaging
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1039">[ date ]</a>
+              <a href="thread.html#1039">[ thread ]</a>
+              <a href="subject.html#1039">[ subject ]</a>
+              <a href="author.html#1039">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem with sip2ims : bad fowarding
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20sip2ims%20%3A%20bad%20fowarding&In-Reply-To=%3C458ABA4C.4090506%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000367.html">
+   <LINK REL="Next"  HREF="000371.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem with sip2ims : bad fowarding</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20sip2ims%20%3A%20bad%20fowarding&In-Reply-To=%3C458ABA4C.4090506%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Problem with sip2ims : bad fowarding">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Dec 21 17:46:04 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000367.html">[OpenIMSCore-Users] Problem with sip2ims : bad fowarding
+</A></li>
+        <LI>Next message: <A HREF="000371.html">[OpenIMSCore-Users] Problem with sip2ims : bad fowarding
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#370">[ date ]</a>
+              <a href="thread.html#370">[ thread ]</a>
+              <a href="subject.html#370">[ subject ]</a>
+              <a href="author.html#370">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Hubert,
+
+Could you also please provide a network dump and the configuration files?
+
+-Dragos
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">hedecart at student.fundp.ac.be</A> wrote:
+&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i> I have got a problem with the sip2ims. In fact, I make a register and everything
+</I>&gt;<i> is ok. After, I want to do an Invite but it's impossible. The Sip2IMS doesn't
+</I>&gt;<i> transfer the invite to the P-cscf but directly to the I-cscf. It's strange and I
+</I>&gt;<i> have the following error : 483 too many hops. It's because it's goes from I-cscf
+</I>&gt;<i> to S-cscf to P-cscf to I-cscf ... It makes a loop.
+</I>&gt;<i>
+</I>&gt;<i> I don't understand why. Can you help me ?
+</I>&gt;<i>
+</I>&gt;<i> Thanks in advance,
+</I>&gt;<i>
+</I>&gt;<i> hubert
+</I>&gt;<i>
+</I>&gt;<i> ==================================================================================
+</I>&gt;<i> XML file for the register (field0 and field1 reffer to a csv file)
+</I>&gt;<i>
+</I>&gt;<i> &lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot; ?&gt;
+</I>&gt;<i> &lt;scenario name=&quot;Basic Sipstone UAC&quot;&gt;
+</I>&gt;<i>
+</I>&gt;<i> &lt;send&gt;
+</I>&gt;<i>     &lt;![CDATA[
+</I>&gt;<i>
+</I>&gt;<i>       REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i>       Via: SIP/2.0/[transport] open-ims.test:[local_port];branch=[branch]
+</I>&gt;<i>       From: &quot;[field0]&quot; &lt;sip:[field0]@open-ims.test&gt;;tag=[call_number]
+</I>&gt;<i>       To: &quot;[field0]&quot; &lt;sip:[field0]@open-ims.test&gt;
+</I>&gt;<i>       Call-ID: [call_id]
+</I>&gt;<i>       CSeq: 1 REGISTER
+</I>&gt;<i>       Contact: &lt;sip:[field0]@open-ims.test&gt;;expires=3600
+</I>&gt;<i>       Content-Length: 0
+</I>&gt;<i>       Expires: 3600
+</I>&gt;<i>       Authorization: Digest username=&quot;[field0]@open-ims.test&quot;, realm=&quot;open-ims.test&quot;
+</I>&gt;<i>     ]]&gt;
+</I>&gt;<i>   &lt;/send&gt;
+</I>&gt;<i>
+</I>&gt;<i>   &lt;recv response=&quot;401&quot; auth=&quot;true&quot;&gt;
+</I>&gt;<i>  &lt;/recv&gt;
+</I>&gt;<i> &lt;send&gt;
+</I>&gt;<i>     &lt;![CDATA[
+</I>&gt;<i>
+</I>&gt;<i>       REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i>       Via: SIP/2.0/[transport] open-ims.test:[local_port];branch=[branch]
+</I>&gt;<i>       From: &quot;[field0]&quot; &lt;sip:[field0]@open-ims.test&gt;;tag=[call_number]
+</I>&gt;<i>       To: &quot;[field0]&quot; &lt;sip:[field0]@open-ims.test&gt;
+</I>&gt;<i>       Call-ID: [call_id]
+</I>&gt;<i>       CSeq: 2 REGISTER
+</I>&gt;<i>       Contact: &lt;sip:[field0]@open-ims.test&gt;;expires=3600
+</I>&gt;<i>       [field1]
+</I>&gt;<i>       Content-Length: 0
+</I>&gt;<i>       Expires: 3600
+</I>&gt;<i>     ]]&gt;
+</I>&gt;<i>   &lt;/send&gt;
+</I>&gt;<i>   &lt;recv response=&quot;200&quot;&gt;
+</I>&gt;<i>   &lt;/recv&gt;
+</I>&gt;<i>
+</I>&gt;<i> &lt;/scenario&gt;
+</I>&gt;<i>
+</I>&gt;<i> ================================================================================
+</I>&gt;<i>
+</I>&gt;<i> XML file for the invite :
+</I>&gt;<i>
+</I>&gt;<i> &lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot; ?&gt;
+</I>&gt;<i> &lt;scenario name=&quot;Basic Sipstone UAC&quot;&gt;
+</I>&gt;<i>   &lt;send&gt;
+</I>&gt;<i>     &lt;![CDATA[
+</I>&gt;<i>
+</I>&gt;<i>       INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> SIP/2.0
+</I>&gt;<i>       Via: SIP/2.0/[transport] open-ims.test:[local_port];branch=[branch]
+</I>&gt;<i>       From: &quot;alice&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=[call_number]
+</I>&gt;<i>       To: &quot;bob&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i>       Call-ID: [call_id]
+</I>&gt;<i>       CSeq: 1 INVITE
+</I>&gt;<i>       Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;expires=3600
+</I>&gt;<i>       Max-Forwards: 70
+</I>&gt;<i>       Subject: Performance Test
+</I>&gt;<i>       Content-Type: application/sdp
+</I>&gt;<i>       Content-Length: [len]
+</I>&gt;<i>
+</I>&gt;<i>       v=0
+</I>&gt;<i>       o=alice 53655765 2353687637 IN IP[local_ip_type] [local_ip]
+</I>&gt;<i>       s=-
+</I>&gt;<i>       c=IN IP[media_ip_type] [media_ip]
+</I>&gt;<i>       t=0 0
+</I>&gt;<i>       m=audio [media_port] RTP/AVP 0
+</I>&gt;<i>       a=rtpmap:0 PCMU/8000
+</I>&gt;<i>
+</I>&gt;<i>     ]]&gt;
+</I>&gt;<i>   &lt;/send&gt;
+</I>&gt;<i>
+</I>&gt;<i>   &lt;recv response=&quot;100&quot;&gt;
+</I>&gt;<i>   &lt;/recv&gt;
+</I>&gt;<i>
+</I>&gt;<i>   &lt;recv response=&quot;200&quot;&gt;
+</I>&gt;<i>   &lt;/recv&gt;
+</I>&gt;<i>   &lt;recv response=&quot;180&quot; optional=&quot;true&quot;&gt;
+</I>&gt;<i>   &lt;/recv&gt;
+</I>&gt;<i> &lt;/scenario&gt;
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000367.html">[OpenIMSCore-Users] Problem with sip2ims : bad fowarding
+</A></li>
+	<LI>Next message: <A HREF="000371.html">[OpenIMSCore-Users] Problem with sip2ims : bad fowarding
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#370">[ date ]</a>
+              <a href="thread.html#370">[ thread ]</a>
+              <a href="subject.html#370">[ subject ]</a>
+              <a href="author.html#370">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

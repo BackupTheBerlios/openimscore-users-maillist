@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AKA%20authentication%20fails%20-%20Keep%20getting%20401&In-Reply-To=%3C420141.11432.qm%40web56104.mail.re3.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000765.html">
+   <LINK REL="Next"  HREF="000770.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] AKA authentication fails - Keep getting 401</H1>
+    <B>Sudhakar Patil</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AKA%20authentication%20fails%20-%20Keep%20getting%20401&In-Reply-To=%3C420141.11432.qm%40web56104.mail.re3.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] AKA authentication fails - Keep getting 401">spatil4572 at yahoo.com
+       </A><BR>
+    <I>Mon Feb 12 18:11:30 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000765.html">[OpenIMSCore-Users] Error 600: Busy everywhere - Forwarding to	S-CSCF failed
+</A></li>
+        <LI>Next message: <A HREF="000770.html">[OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#769">[ date ]</a>
+              <a href="thread.html#769">[ thread ]</a>
+              <a href="subject.html#769">[ subject ]</a>
+              <a href="author.html#769">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi, 
+I was having problems with sip2ims during
+registration. As suggested by Babu and David, I by
+passed sip2ims and accessed pcscf directly. I had
+changed authentication scheme and algorithm
+accordingly. I was able to successfully register and
+make calls.
+
+I would like to re-investigate why sip2ims is unable
+to authenticate &quot;alice&quot; or &quot;bob&quot; using Digest-MD5
+where as S-CSCF is able to. Also, I forced a
+successful authentication betwen sip2ims and SIP
+client to initiate AKA authentication at S-CSCF.
+However this fails too. Here is the output at sip2ims
+after the first REGISTER is sent to sip2ims from SIP
+client. S-CSCF output follows sip2ims. SQL dumps of
+hssdb (impi) and sip2ims (credentials) is at the
+bottom. sip2ims (gm.c) is dated as $Id: gm.c 2
+2006-11-14 22:37:20Z vingarzan $. Any ideas on how to
+debig/solve this problem? Has this issue been
+addressed in a later version of sip2ims?
+
+===== sip2ims ==========================
+ 2(1688) Got 401...
+ 2(1688) DBG:SIP2IMS:Gw_AKA_to_MD5: 401
+ 2(1688) INF:SIP2IMS:sip2ims_get_public_identity:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+ 2(1688) INF:SIP2IMS:Gw_AKA_to_MD5:
++++
+Digest realm=&quot;open-ims.test&quot;,
+nonce=&quot;RY3/lW7oiLGQlKUEpFYyUZHTIc5xIQAAc9HibZec8oM=&quot;,
+algorithm=AKAv1-MD5
+---
+WWW-Authenticate: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,
+realm=&quot;open-ims.test&quot;,
+opaque=&quot;AKAv1-MD5RY3/lW7oiLGQlKUEpFYyUZHTIc5xIQAAc9HibZec8oM=&quot;,
+nonce=&quot;45d09f1fb1df7b3452d4abfc74609a451a2aa0a6&quot;,
+algorithm=MD5
++++
+ 2(1688) INF:SIP2IMS:translate_authorization:
+
+ AUTHORIZED
+
+
+ 2(1688) INF:SIP2IMS:sip2ims_get_public_identity:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+ 2(1688) INF:SIP2IMS:Gw_MD5_to_AKA:
+===
+Digest
+username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;45d09f1fb1df7b3452d4abfc74609a451a2aa0a6&quot;,uri=&quot;sip:open-ims.test&quot;,response=&quot;1f842d881e1343a1ec9e2f61f785ab8d&quot;,algorithm=&quot;MD5&quot;,opaque=&quot;AKAv1-MD5RY3/lW7oiLGQlKUEpFYyUZHTIc5xIQAAc9HibZec8oM=&quot;
+---
+Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,
+realm=&quot;open-ims.test&quot;,
+nonce=&quot;RY3/lW7oiLGQlKUEpFYyUZHTIc5xIQAAc9HibZec8oM=&quot;,
+uri=&quot;sip:open-ims.test&quot;,
+response=&quot;67ba31f56a6fb81a42860010c9d0a78e&quot;,
+algorithm=&quot;AKAv1-MD5&quot;,
+===
+ 2(1688) INFO: t_fwd.c:700: sent to
+192.168.123.250:4060 (1)
+ 2(1688) INFO: t_funcs.c:307: SER: new transaction
+fwd'ed
+ 4(1690) Got 401...
+ 4(1690) DBG:SIP2IMS:Gw_AKA_to_MD5: 401
+ 4(1690) INF:SIP2IMS:sip2ims_get_public_identity:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+ 4(1690) INF:SIP2IMS:Gw_AKA_to_MD5:
++++
+Digest realm=&quot;open-ims.test&quot;,
+nonce=&quot;gvaloZHQrIS8hLHXs6DcHtvICbbXQgAArQ5Hx8j8yMQ=&quot;,
+algorithm=AKAv1-MD5
+---
+WWW-Authenticate: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,
+realm=&quot;open-ims.test&quot;,
+opaque=&quot;AKAv1-MD5gvaloZHQrIS8hLHXs6DcHtvICbbXQgAArQ5Hx8j8yMQ=&quot;,
+nonce=&quot;45d09f1fb1df7b3452d4abfc74609a451a2aa0a6&quot;,
+algorithm=MD5
++++
+
+================ scscf =======================
+12(2198) DBG:sm_process(): Peer hss.open-ims.test   
+State R_Open    Event R_Rcv_Message
+ 1(2187) DBG:S-CSCF:S_is_authorized: UE said:
+60e77be18dab27a1d65edc71101822ce and we  expect
+bac42061012715567ebfa1e85168e5bf ha1
+37399e00cd38b2220e1b95e745d488af
+ 1(2187) DBG:S-CSCF:S_is_authorized: UE said:
+60e77be18dab27a1d65edc71101822ce, but we have
+bac42061012715567ebfa1e85168e5bf and expect
+37399e00cd38b2220e1b95e745d488af
+12(2198) DBG:sm_process(): Peer hss.open-ims.test   
+State R_Open    Event R_Rcv_Message
+11(2197) --- Peer List: ---
+11(2197)  S[R_Open] hss.open-ims.test:3868 D[ ]
+11(2197) ------------------
+11(2197) --- Peer List: ---
+11(2197)  S[R_Open] hss.open-ims.test:3868 D[ ]
+
+
+============== hssdb - impi table ===============
+mysql&gt; select * from impi where imsu_id=2;
++-------------------+---------+---------+-----------------------+------------------------------+----------------------------------+------------------+------+-----------+----------------------------------+--------------+---------+----------+-------------+
+|<i> impi_string       | imsu_id | impi_id | imsi        
+</I>         | scscf_name                   | s_key       
+                    | auth_scheme      | amf  |
+algorithm | operator_id                      | sqn    
+     | chrg_id | uiccType | keyLifeTime |
++-------------------+---------+---------+-----------------------+------------------------------+----------------------------------+------------------+------+-----------+----------------------------------+--------------+---------+----------+-------------+
+|<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> |       2 |       2 |
+</I>bob_ISDN_User_part_ID | sip:scscf.open-ims.test:6060 |
+626f6200000000000000000000000000 | Digest-AKAv1-MD5 |
+0000 | AKAv1     | 00000000000000000000000000000000 |
+000000000e51 |       1 |        0 |        3600 |
++-------------------+---------+---------+-----------------------+------------------------------+----------------------------------+------------------+------+-----------+----------------------------------+--------------+---------+----------+-------------+
+1 row in set (0.01 sec)
+
+==================== sip2ims credentials table ====
+mysql&gt; select * from credentials where uid=2;
++---------------+-------+---------------+----------+-------+----------------------------------+----------------------------------+-----+
+|<i> auth_username | did   | realm         | password |
+</I>flags | ha1                              | ha1b       
+                     | uid |
++---------------+-------+---------------+----------+-------+----------------------------------+----------------------------------+-----+
+|<i> bob           | _none | open-ims.test | bob      |  
+</I>  1 | d7404d478d7ea2d230739464f0314fbb |
+b0342795e048d7e9f4e2432285776dd3 | 2   |
++---------------+-------+---------------+----------+-------+----------------------------------+----------------------------------+-----+
+1 row in set (0.00 sec)
+
+
+Regards,
+Sudhakar.
+
+
+
+ 
+____________________________________________________________________________________
+Need Mail bonding?
+Go to the Yahoo! Mail Q&amp;A for great tips from Yahoo! Answers users.
+<A HREF="http://answers.yahoo.com/dir/?link=list&amp;sid=396546091">http://answers.yahoo.com/dir/?link=list&amp;sid=396546091</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000765.html">[OpenIMSCore-Users] Error 600: Busy everywhere - Forwarding to	S-CSCF failed
+</A></li>
+	<LI>Next message: <A HREF="000770.html">[OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#769">[ date ]</a>
+              <a href="thread.html#769">[ thread ]</a>
+              <a href="subject.html#769">[ subject ]</a>
+              <a href="author.html#769">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

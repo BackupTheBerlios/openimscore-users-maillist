@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Fwd:  Setting up a second domain
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Fwd%3A%20%20Setting%20up%20a%20second%20domain&In-Reply-To=%3C47445630.4040300%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002982.html">
+   <LINK REL="Next"  HREF="002985.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Fwd:  Setting up a second domain</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Fwd%3A%20%20Setting%20up%20a%20second%20domain&In-Reply-To=%3C47445630.4040300%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Fwd:  Setting up a second domain">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Nov 21 17:00:48 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002982.html">[OpenIMSCore-Users] Fwd:  Setting up a second domain
+</A></li>
+        <LI>Next message: <A HREF="002985.html">[OpenIMSCore-Users] [OpenIMSCore]compile error for ser_ims
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2983">[ date ]</a>
+              <a href="thread.html#2983">[ thread ]</a>
+              <a href="subject.html#2983">[ subject ]</a>
+              <a href="author.html#2983">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Best way to debug this is to just capture a network trace. Then look at
+where the actual requests are going. I also have IPv6 enable in my
+kernel and the JavaDiameterPeer code has only been developed for IPv4 so
+far... yet I don't have any issues with it...
+
+-Dragos
+
+Rafael Mor&#243;n Abad wrote:
+&gt;<i> Dear Dragos, all,
+</I>&gt;<i>
+</I>&gt;<i> Thanks for your suggestion, but DNS configuration and server are working
+</I>&gt;<i> properly (I checked it with host).
+</I>&gt;<i>
+</I>&gt;<i> I think that the line:
+</I>&gt;<i> tcp6       0      0 ::ffff:10.95.47.32:3868 :::*
+</I>&gt;<i> LISTEN 20661/java
+</I>&gt;<i>
+</I>&gt;<i> could be the key (since I am not using IPv6 with the IMS Core), but I
+</I>&gt;<i> don't know how to solve that. I cannot disable IPv6 because I need it
+</I>&gt;<i> for other issues.
+</I>&gt;<i>
+</I>&gt;<i> Kind regards,
+</I>&gt;<i> 	Rafael	
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;<i> Date: Nov 21, 2007 2:58 PM
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Setting up a second domain
+</I>&gt;&gt;<i> To: Rafael Mor&#243;n Abad &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">rma352 at tid.es</A>&gt;
+</I>&gt;&gt;<i> Cc: openimscore-users &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What about DNS?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Rafael Mor&#243;n Abad wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Dear all,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I am trying to set up a new domain with Open IMS Core. Since I have one
+</I>&gt;&gt;&gt;<i> called &quot;open-ims.test&quot;, I have named it &quot;operator.daidalos&quot;. I've used
+</I>&gt;&gt;&gt;<i> configurator.sh to change the files in ser_ims, and the *-cscf seem to work.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I have replaced the string &quot;open-ims.test&quot; with &quot;operator.daidalos&quot; in
+</I>&gt;&gt;&gt;<i> userdata.sql and hss_db.sql before creating the database again.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The problem is that the FHoSS is giving these errors:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> 2007-11-21 14:03:07,753 ERROR
+</I>&gt;&gt;&gt;<i> de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - I_Snd_Conn_Req
+</I>&gt;&gt;&gt;<i> StateMachine: Peer icscf.operator.daidalos not responding to connection
+</I>&gt;&gt;&gt;<i> attempt
+</I>&gt;&gt;&gt;<i> ERROR de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - I_Snd_Conn_Req
+</I>&gt;&gt;&gt;<i> StateMachine: Peer scscf.operator.daidalos not responding to connection
+</I>&gt;&gt;&gt;<i> attempt
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> FHoSS seems to be using IPv6 despite I didn't use any IPv6 and the names are
+</I>&gt;&gt;&gt;<i> resolved to IPv4 addresses:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> netstat -anp|grep 3868
+</I>&gt;&gt;&gt;<i> tcp6       0      0 ::ffff:10.95.47.32:3868 :::*                    LISTEN
+</I>&gt;&gt;&gt;<i> 20661/java
+</I>&gt;&gt;&gt;<i> # netstat -anp|grep 3869
+</I>&gt;&gt;&gt;<i> # netstat -anp|grep 3870
+</I>&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Could somebody tell me what could be wrong?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The configuration files are bellow
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thanks in advance,
+</I>&gt;&gt;&gt;<i>     Rafael
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> hss.properties
+</I>&gt;&gt;&gt;<i> ***********************************************************************************
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # FOKUS HSS Properties file
+</I>&gt;&gt;&gt;<i> #------------------------------------------------------------------------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # host &amp; port : specify the IP address and the port where Tomcat is
+</I>&gt;&gt;&gt;<i> listening, e.g. host=127.0.0.1; port=8080;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> host=&quot;10.95.47.32&quot;
+</I>&gt;&gt;&gt;<i> port=8080
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # Authentication properties
+</I>&gt;&gt;&gt;<i> #------------------------------------------------------------------------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # default operator and amf values
+</I>&gt;&gt;&gt;<i> #------------------------------------------------------------------------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i> # operator_id, as hex bytes, required length 32 byte,
+</I>&gt;&gt;&gt;<i> # e.g. 00000000000000000000000000000000
+</I>&gt;&gt;&gt;<i> operatorId=00000000000000000000000000000000
+</I>&gt;&gt;&gt;<i> # amf_id: Default amf id as hex bytes, required length 4 byte, e.g. 0000
+</I>&gt;&gt;&gt;<i> amfId=0000
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # configuration parameters relating to Milenage algorithm
+</I>&gt;&gt;&gt;<i> #------------------------------------------------------------------------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # Enable or disable the use of AK in the Milenage algorithm; if this flag is
+</I>&gt;&gt;&gt;<i> enabled,
+</I>&gt;&gt;&gt;<i> #then is mandatory to be enabled also on the client side
+</I>&gt;&gt;&gt;<i> USE_AK=true
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # IND_LEN property - contains the number of bits assigned for the Index; it
+</I>&gt;&gt;&gt;<i> is used in the generation process of new SQN values
+</I>&gt;&gt;&gt;<i> # We are using SQN values which are not time based, as is specified here
+</I>&gt;&gt;&gt;<i> C.1.1.2, C.1.2, C.2, C3.2 and C.3.4 of TS 33.102
+</I>&gt;&gt;&gt;<i> # (SQN = SEQ || IND)
+</I>&gt;&gt;&gt;<i> IND_LEN=5
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # delta value, assuring the protection against wrap around counter in the
+</I>&gt;&gt;&gt;<i> USIM
+</I>&gt;&gt;&gt;<i> delta=268435456
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # L - limit on the difference between SEQ_MS (Mobile Station) and SEQ_HE
+</I>&gt;&gt;&gt;<i> (HSS)
+</I>&gt;&gt;&gt;<i> L=32
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # Sh-Settings
+</I>&gt;&gt;&gt;<i> #-----------------------------------------------------------------------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # Enable or disable IFC Notification mechanism. If you need this feature
+</I>&gt;&gt;&gt;<i> please enable it. However, be aware that this feature imply
+</I>&gt;&gt;&gt;<i> #important time for processing as more validation is required every time
+</I>&gt;&gt;&gt;<i> after an update (for entities as: IFC, TP, SPT, AS, SP_IFC),
+</I>&gt;&gt;&gt;<i> # and could affect the web console interface response-ness.
+</I>&gt;&gt;&gt;<i> iFC_NOTIF_ENABLED=false
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> ***********************************************************************************
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> DiameterPeerHSS.xml
+</I>&gt;&gt;&gt;<i> ***********************************************************************************
+</I>&gt;&gt;&gt;<i> &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+</I>&gt;&gt;&gt;<i> &lt;!-- HSS Server config --&gt;
+</I>&gt;&gt;&gt;<i> &lt;DiameterPeer
+</I>&gt;&gt;&gt;<i>         FQDN=&quot;hss.operator.daidalos&quot;
+</I>&gt;&gt;&gt;<i>         Realm=&quot;operator.daidalos&quot;
+</I>&gt;&gt;&gt;<i>         Vendor_Id=&quot;10415&quot;
+</I>&gt;&gt;&gt;<i>         Product_Name=&quot;JavaDiameterPeer&quot;
+</I>&gt;&gt;&gt;<i>         AcceptUnknownPeers=&quot;1&quot;
+</I>&gt;&gt;&gt;<i>         DropUnknownOnDisconnect=&quot;1&quot;
+</I>&gt;&gt;&gt;<i>         Tc=&quot;30&quot;
+</I>&gt;&gt;&gt;<i>         Workers=&quot;4&quot;
+</I>&gt;&gt;&gt;<i>         QueueLength=&quot;32&quot;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>         &lt;Peer FQDN=&quot;icscf.operator.daidalos&quot; Realm=&quot;operator.daidalos&quot;
+</I>&gt;&gt;&gt;<i> port=&quot;3869&quot; /&gt;
+</I>&gt;&gt;&gt;<i>         &lt;Peer FQDN=&quot;scscf.operator.daidalos&quot; Realm=&quot;operator.daidalos&quot;
+</I>&gt;&gt;&gt;<i> port=&quot;3870&quot; /&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>         &lt;Acceptor port=&quot;3868&quot; bind=&quot;10.95.47.32&quot; /&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>         &lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;
+</I>&gt;&gt;&gt;<i>         &lt;Auth id=&quot;16777217&quot; vendor=&quot;10415&quot;/&gt;
+</I>&gt;&gt;&gt;<i>         &lt;Auth id=&quot;16777221&quot; vendor=&quot;10415&quot;/&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> &lt;/DiameterPeer&gt;
+</I>&gt;&gt;&gt;<i> ***********************************************************************************
+</I>&gt;&gt;&gt;<i> ***********************************************************************************
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002982.html">[OpenIMSCore-Users] Fwd:  Setting up a second domain
+</A></li>
+	<LI>Next message: <A HREF="002985.html">[OpenIMSCore-Users] [OpenIMSCore]compile error for ser_ims
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2983">[ date ]</a>
+              <a href="thread.html#2983">[ thread ]</a>
+              <a href="subject.html#2983">[ subject ]</a>
+              <a href="author.html#2983">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

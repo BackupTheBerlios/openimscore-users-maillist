@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Error 403 Forbiddent Hss unable to comply
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20403%20Forbiddent%20Hss%20unable%20to%20comply&In-Reply-To=%3C475009D6.6010800%40netlab.nec.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003036.html">
+   <LINK REL="Next"  HREF="003037.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Error 403 Forbiddent Hss unable to comply</H1>
+    <B>Sebastian Felis</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20403%20Forbiddent%20Hss%20unable%20to%20comply&In-Reply-To=%3C475009D6.6010800%40netlab.nec.de%3E"
+       TITLE="[OpenIMSCore-Users] Error 403 Forbiddent Hss unable to comply">felis at netlab.nec.de
+       </A><BR>
+    <I>Fri Nov 30 14:02:14 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003036.html">[OpenIMSCore-Users] Error 403 Forbiddent Hss unable to comply
+</A></li>
+        <LI>Next message: <A HREF="003037.html">[OpenIMSCore-Users] Video Streaming over IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3043">[ date ]</a>
+              <a href="thread.html#3043">[ thread ]</a>
+              <a href="subject.html#3043">[ subject ]</a>
+              <a href="author.html#3043">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Nuno,
+
+Maybe this might help. We have also this (or a similar) error and it
+occurs, when the internal user registration state becomes wrong, e.g.
+the unregistered user has the state /registered/. Our HSS log shows
+following error:
+
+2007-11-14 13:29:02,510 DEBUG de.fhg.fokus.hss.main.Task - execute Processing UAR!
+2007-11-14 13:29:02,535 DEBUG de.fhg.fokus.hss.main.Task - execute Processing MAR!
+de.fhg.fokus.hss.cx.CxFinalResultException: Diameter_Unable_To_Comply
+        at de.fhg.fokus.hss.cx.op.MAR.processRequest(MAR.java:242)
+        at de.fhg.fokus.hss.main.Task.execute(Task.java:127)
+        at de.fhg.fokus.hss.main.Worker.run(Worker.java:66)
+
+We can fix this error by resetting the user's state within the database,
+where the /id/ is the internal database id of the user in the table /impu/.
+
+mysql&gt; UPDATE impu SET user_state=0 WHERE id=5; 
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+While this solution doesn't touch the originating problem of the wrong
+registration state, this fix could help for the meanwhile.
+
+BR
+
+Sebastian Felis
+
+Nuno Ribeiro wrote:
+&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i> I'm having the following problem trying to registering an IMS user agent in my testbed: 403 Forbiddent Hss unable to comply.
+</I>&gt;<i> I will try to explain briefly what the structure of the testbed (core ims) and what is happening: 
+</I>&gt;<i> - P-CSCF is installed in one machine (10.14.1.2)
+</I>&gt;<i> - I-CSCF, S-CSCF and HSS installed in same machine (10.12.1.5); 
+</I>&gt;<i> - The listenning ports that are the one defined in the initial configuration files; 
+</I>&gt;<i> - An IMS user agent installed in another machine (10.16.100.6);
+</I>&gt;<i> - The version of the HSS is last one provided in the SVN;
+</I>&gt;<i> - DNS and reverse DNS lookup is correctly working (open-ims.test domain);
+</I>&gt;<i>
+</I>&gt;<i> I started all components and tried to register the following user <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Bob at open-ims.test</A>; The  Register message sent by the user agent reaches P-CSCF that forwards it to the I-CSCF. The I-CSCF sends a UAR to HSS that Replies with a UAA (that contains an result code= DIAMETER_UNABLE_TO_COMPLY). So the the I-CSCF sends as response to the Register SIP message an 403 Forbiddent Hss unable to comply; 
+</I>&gt;<i> We have looked to HSS code and it seems that HSS only answers this way when in the diameter request (UAR) does not provide the  Visited_Network_Identifier avp, but as we can see in the ethereal capture this avp is provided. 
+</I>&gt;<i> In attachment are the logs that I have (HSS, I-CSCF and ethereal capture). Can anyone help me solving this issue?
+</I>&gt;<i>
+</I>&gt;<i> Thanks in advance.
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+Sebastian Felis
+Research Scientist
+NEC Europe Ltd.
+Kurf&#252;rsten-Anlage 36		
+69115 Heidelberg
+Germany
+		
+Phone:  +49 6221 4342 166
+Fax:    +49 6221 4342 155
+E-Mail: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sebastian.felis at nw.neclab.eu</A>
+
+NEC Europe Limited | Registered Office: NEC House, 1 Victoria Road, London W3 6BL | Registered in England 2832014 
+
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: smime.p7s
+Type: application/x-pkcs7-signature
+Size: 2394 bytes
+Desc: S/MIME Cryptographic Signature
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071130/08cec47d/attachment.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071130/08cec47d/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003036.html">[OpenIMSCore-Users] Error 403 Forbiddent Hss unable to comply
+</A></li>
+	<LI>Next message: <A HREF="003037.html">[OpenIMSCore-Users] Video Streaming over IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3043">[ date ]</a>
+              <a href="thread.html#3043">[ thread ]</a>
+              <a href="subject.html#3043">[ subject ]</a>
+              <a href="author.html#3043">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

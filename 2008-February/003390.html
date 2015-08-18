@@ -1,0 +1,341 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] PSI on terminating side - will it work in the	OpenIMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSI%20on%20terminating%20side%20-%20will%20it%20work%20in%20the%0A%09OpenIMS&In-Reply-To=%3C5fd52d7a0802150307u65a2948ct3a1d5982d00ae26%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003388.html">
+   <LINK REL="Next"  HREF="003391.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] PSI on terminating side - will it work in the	OpenIMS</H1>
+    <B>Tomasz Zieleniewski</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSI%20on%20terminating%20side%20-%20will%20it%20work%20in%20the%0A%09OpenIMS&In-Reply-To=%3C5fd52d7a0802150307u65a2948ct3a1d5982d00ae26%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] PSI on terminating side - will it work in the	OpenIMS">tzieleniewski at gmail.com
+       </A><BR>
+    <I>Fri Feb 15 12:07:45 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003388.html">[OpenIMSCore-Users] Problem in Registration using IMS	Communicator
+</A></li>
+        <LI>Next message: <A HREF="003391.html">[OpenIMSCore-Users] PSI on terminating side - will it work in	the OpenIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3390">[ date ]</a>
+              <a href="thread.html#3390">[ thread ]</a>
+              <a href="subject.html#3390">[ subject ]</a>
+              <a href="author.html#3390">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I would like to realize the scenario when PSI is on the terminating side.
+I have the PSI IMPU defined with the service profile with initial filter
+criteria pointing my AS with PSI pointed application
+The flow is as follows:
+UE-&gt;PCSCF-&gt;SCSCF-&gt;ICSCF-&gt;SCSCF
+When message is received by the scscf acting as terminating scscf (last in
+the above chain)
+the scscf dump a core and brakes down
+below is the debug output.
+
+Please point is it something is missed or this configuration is impossible
+in OpenIMS
+
+Kind regards
+tomasz
+
+12(2883) DBG:peer_timer(): Peer hss.ims.rd.touk.pl     State 0
+12(2883) DBG:sm_process(): Peer hss.ims.rd.touk.pl     State Closed
+Event Start
+12(2883) DBG:I_Snd_Conn_Req(): Peer hss.ims.rd.touk.pl
+12(2883) INFO:peer_connect(): Trying to connect to 192.168.129.38 port 3868
+12(2883) INFO:peer_connect(): Peer hss.ims.rd.touk.pl:3868 connected
+18(2890) INFO:S-CSCF:mod_child_init: Initialization of module in child
+[3868]
+12(2883) INFO:peer_connect(): Receiver process forked [2890]
+12(2883) DBG:sm_process(): Peer hss.ims.rd.touk.pl     State Wait_Conn_Ack
+    Event I_Rcv_Conn_Ack
+12(2883) --- Peer List: ---
+12(2883)  S[Wait_I_CEA] hss.ims.rd.touk.pl:3868 D[ ]
+12(2883) ------------------
+18(2890) INFO:ISC: - child init [3868]
+18(2890) INFO:receiver_process(): [17] Receiver process starting up...
+18(2890) DBG:sm_process(): Peer hss.ims.rd.touk.pl     State Wait_I_CEA
+Event I_Rcv_CEA
+18(2890) --- Peer List: ---
+18(2890)  S[I_Open] hss.ims.rd.touk.pl:3868 D[ ]
+18(2890)      [16777216,10415]
+18(2890)      [16777217,10415]
+18(2890)      [16777221,10415]
+18(2890) ------------------
+ 4(2875) get_r_public (Trying wildcard PSI) found no match
+18(2890) DBG:sm_process(): Peer hss.ims.rd.touk.pl     State I_Open
+Event I_Rcv_Message
+17(2888) ERROR: receive_fd: EOF on 9
+ 0(2871) child process 2875 exited by a signal 11
+ 0(2871) core was generated
+ 0(2871) INFO: terminating due to SIGCHLD
+12(2883)  6(2877) INFO: signal 15 received
+18(2890) INFO: signal 15 received
+ 6(2877) qm_sums (0x725d80): PKG[timer]
+ 6(2877) summarizing all alloc'ed. fragments:
+ 6(2877)  count=     3 size=        24 bytes from proxy.c: hostent_cpy(133)
+ 6(2877)  count=     3 size=        48 bytes from proxy.c: hostent_cpy(122)
+ 6(2877)  count=     3 size=        24 bytes from proxy.c: hostent_cpy(99)
+ 6(2877)  count=     3 size=        72 bytes from proxy.c: hostent_cpy(88)
+ 6(2877) 18(2890)  count=     2 size=        16 bytes from route.c:
+fix_actions(510)
+qm_sums (0x725d80): PKG[receiver I]
+18(2890) 15(2886) INFO: signal 15 received
+ 8(2879) INFO: signal 15 received
+15(2886) qm_sums (0x725d80): PKG[tcp receiver child=2]
+INFO: signal 15 received
+ 6(2877)  count=     1 size=        48 bytes from textops.c:
+sel_hf_value_name(1711)
+ 6(2877)  count=     6 size=       384 bytes from sr_module.c:
+fix_param(660)
+ 6(2877) 12(2883)  count=     1 size=        64 bytes from mod.c:
+build_record_service_route(436)
+qm_sums (0x725d80): PKG[cdp_timer]
+12(2883) summarizing all alloc'ed. fragments:
+11(2882) INFO: signal 15 received
+11(2882) qm_sums (0x725d80): PKG[cdp worker child=3]
+11(2882) summarizing all alloc'ed. fragments:
+12(2883)  count=     3 size=        24 bytes from proxy.c: hostent_cpy(133)
+11(2882)  count=     3 size=        24 bytes from proxy.c: hostent_cpy(133)
+summarizing all alloc'ed. fragments:
+18(2890)  count=     3 size=        24 bytes from proxy.c: hostent_cpy(133)
+11(2882)  count=     3 size=        48 bytes from proxy.c: hostent_cpy(122)
+11(2882)  count=     3 size=        24 bytes from proxy.c: hostent_cpy(99)
+11(2882)  count=     3 size=        72 bytes from proxy.c: hostent_cpy(88)
+11(2882)  count=     2 size=        16 bytes from route.c: fix_actions(510)
+11(2882) 18(2890)  count=     3 size=        48 bytes from proxy.c:
+hostent_cpy(122)
+18(2890)  count=     3 size=        24 bytes from proxy.c: hostent_cpy(99)
+18(2890)  count=     3 size=        72 bytes from proxy.c: hostent_cpy(88)
+ 7(2878) INFO: signal 15 received
+ 8(2879) 15(2886) qm_sums (0x725d80): PKG[cdp worker child=0]
+ 6(2877)  count=     1 size=        64 bytes from mod.c:
+build_record_service_route(430)
+ 6(2877)  count=     1 size=        32 bytes from mod.c:
+build_record_service_route(424)
+ 6(2877)  count=     1 size=        32 bytes from mod.c:
+build_record_service_route(418)
+ 6(2877)  count=     1 size=        64 bytes from mod.c:
+build_record_service_route(412)
+ 6(2877)  count=     3 size=        48 bytes from select.c:
+register_select_table(348)
+ 6(2877)  count=     3 size=        96 bytes from script_cb.c:
+add_callback(60)
+ 6(2877)  count=     3 size=       304 bytes from proxy.c: mk_proxy(208)
+ 6(2877)  count=     3 size=       256 bytes from route.c:
+route_new_list(202)
+ 6(2877)  count=     1 size=       832 bytes from cfg.y: yyparse(1476)
+ 6(2877)  count=    62 size=      3512 bytes from sr_module.c:
+fix_param(626)
+ 6(2877)  count=     8 size=       704 bytes from route.c: fix_expr(312)
+ 6(2877)  count=     4 size=       128 bytes from name_alias.h:
+add_alias(99)
+ 6(2877)  count=    37 size=      1776 bytes from route_struct.c: mk_exp(58)
+ 6(2877)  count=    82 size=      3936 bytes from route_struct.c:
+mk_elem(74)
+ 6(2877)  count=   321 size=     35952 bytes from route_struct.c:
+mk_action(94)
+ 6(2877)  count=    10 size=       320 bytes from sr_module.c:
+register_module(146)
+ 6(2877)  count=   426 size=     54528 bytes from cfg.lex: addstr(744)
+ 6(2877)  count=     1 size=        24 bytes from name_alias.h:
+add_alias(101)
+ 6(2877)  count=     1 size=        32 bytes from name_alias.h:
+add_alias(99)
+ 6(2877)  count=     1 size=        24 bytes from cfg.y: yyparse(1362)
+ 6(2877)  count=     1 size=        24 bytes from cfg.y: yyparse(474)
+ 6(2877)  count=     5 size=       184 bytes from modparam.c:
+set_mod_param_regex(114)
+ 6(2877)  count=     2 size=        32 bytes from socket_info.c:
+new_sock_info(117)
+ 6(2877)  count=     2 size=       288 bytes from socket_info.c:
+new_sock_info(112)
+ 6(2877)  count=     2 size=       152 bytes from cfg.y: mk_listen_id(1937)
+ 6(2877)  count=     1 size=        16 bytes from cfg.y: yyparse(455)
+ 6(2877)  count=     1 size=        24 bytes from cfg.y: yyparse(926)
+ 6(2877)  count=     1 size=        24 bytes from nonsip_hooks.c:
+init_nonsip_hooks(50)
+ 6(2877)  count=     2 size=        24 bytes from route.c: init_rlist(150)
+ 6(2877)  count=     2 size=        32 bytes from socket_info.c:
+fix_socket_list(565)
+ 6(2877)  count=     2 size=        32 bytes from socket_info.c:
+fix_socket_list(607)
+ 6(2877)  count=    30 size=      1456 bytes from route.c: route_add(129)
+ 6(2877)  count=     5 size=       640 bytes from str_hash.h:
+str_hash_alloc(69)
+ 6(2877)  count=     4 size=        56 bytes from name_alias.h:
+add_alias(101)
+ 6(2877)  count=  1052 size=    106328 bytes in total
+ 6(2877) -----------------------------
+12(2883)  count=     3 size=        48 bytes from proxy.c: hostent_cpy(122)
+12(2883)  count=     3 size=        24 bytes from proxy.c: hostent_cpy(99)
+12(2883)  count=     3 size=        72 bytes from proxy.c: hostent_cpy(88)
+12(2883)  count=     2 size=        16 bytes from route.c: fix_actions(510)
+12(2883)  count=     1 size=        48 bytes from textops.c:
+sel_hf_value_name(1711)
+12(2883)  count=     6 size=       384 bytes from sr_module.c:
+fix_param(660)
+12(2883)  count=     1 size=        64 bytes from mod.c:
+build_record_service_route(436)
+12(2883)  count=     1 size=        64 bytes from mod.c:
+build_record_service_route(430)
+12(2883)  count=     1 size=        32 bytes from mod.c:
+build_record_service_route(424)
+12(2883)  count=     1 size=        32 bytes from mod.c:
+build_record_service_route(418)
+12(2883)  count=     1 size=        64 bytes from mod.c:
+build_record_service_route(412)
+12(2883)  count=     3 size=        48 bytes from select.c:
+register_select_table(348)
+12(2883)  count=     3 size=        96 bytes from script_cb.c:
+add_callback(60)
+12(2883)  count=     3 size=       304 bytes from proxy.c: mk_proxy(208)
+12(2883)  count=     3 size=       256 bytes from route.c:
+route_new_list(202)
+12(2883)  count=     1 size=       832 bytes from cfg.y: yyparse(1476)
+12(2883)  count=    62 size=      3512 bytes from sr_module.c:
+fix_param(626)
+12(2883)  count=     8 size=       704 bytes from route.c: fix_expr(312)
+12(2883)  count=     4 size=       128 bytes from name_alias.h:
+add_alias(99)
+12(2883)  count=    37 size=      1776 bytes from route_struct.c: mk_exp(58)
+12(2883)  count=    82 size=      3936 bytes from route_struct.c:
+mk_elem(74)
+12(2883)  count=   321 size=     35952 bytes from route_struct.c:
+mk_action(94)
+12(2883)  count=    10 size=       320 bytes from sr_module.c:
+register_module(146)
+12(2883)  count=   426 size=     54528 bytes from cfg.lex: addstr(744)
+12(2883)  count=     1 size=        24 bytes from name_alias.h:
+add_alias(101)
+12(2883)  count=     1 size=        32 bytes from name_alias.h:
+add_alias(99)
+12(2883)  count=     1 size=        24 bytes from cfg.y: yyparse(1362)
+12(2883)  count=     1 size=        24 bytes from cfg.y: yyparse(474)
+12(2883)  count=     5 size=       184 bytes from modparam.c:
+set_mod_param_regex(114)
+12(2883)  count=     2 size=        32 bytes from socket_info.c:
+new_sock_info(117)
+12(2883)  count=     2 size=       288 bytes from socket_info.c:
+new_sock_info(112)
+12(2883)  count=     2 size=       152 bytes from cfg.y: mk_listen_id(1937)
+12(2883)  count=     1 size=        16 bytes from cfg.y: yyparse(455)
+12(2883)  count=     1 size=        24 bytes from cfg.y: yyparse(926)
+12(2883) summarizing all alloc'ed. fragments:
+15(2886)  count=     1 size=     25320 bytes from io_wait.c:
+init_io_wait(573)
+15(2886)  count=     1 size=     33760 bytes from io_wait.c:
+init_io_wait(522)
+15(2886)  count=     1 size=        80 bytes from tcp_main.c:
+tcp_init_children(1996)
+15(2886)  count=     3 size=        24 bytes from proxy.c: hostent_cpy(133)
+15(2886)  count=     3 size=        48 bytes from proxy.c: hostent_cpy(122)
+15(2886)  count=     3 size=        24 bytes from proxy.c: hostent_cpy(99)
+15(2886)  count=     3 size=        72 bytes from proxy.c: hostent_cpy(88)
+15(2886)  count=     2 size=        16 bytes from route.c: fix_actions(510)
+15(2886)  count=     1 size=        48 bytes from textops.c:
+sel_hf_value_name(1711)
+15(2886)  count=     6 size=       384 bytes from sr_module.c:
+fix_param(660)
+15(2886)  count=     1 size=        64 bytes from mod.c:
+build_record_service_route(436)
+15(2886)  count=     1 size=        64 bytes from mod.c:
+build_record_service_route(430)
+15(2886)  count=     1 size=        32 bytes from mod.c:
+build_record_service_route(424)
+15(2886)  count=     1 size=        32 bytes from mod.c:
+build_record_service_route(418)
+15(2886)  count=     1 size=        64 bytes from mod.c:
+build_record_service_route(412)
+15(2886)  count=     3 size=        48 bytes from select.c:
+register_select_table(348)
+15(2886)  count=     3 size=        96 bytes from script_cb.c:
+add_callback(60)
+15(2886)  count=     3 size=       304 bytes from proxy.c: mk_proxy(208)
+15(2886)  count=     3 size=       256 bytes from route.c:
+route_new_list(202)
+15(2886)  count=     1 size=       832 bytes from cfg.y: yyparse(1476)
+15(2886)  count=    62 size=      3512 bytes from sr_module.c:
+fix_param(626)
+15(2886)  count=     8 size=       704 bytes from route.c: fix_expr(312)
+15(2886)  count=     4 size=       128 bytes from name_alias.h:
+add_alias(99)
+15(2886)  count=    37 size=      1776 bytes from route_struct.c: mk_exp(58)
+15(2886)  count=    82 size=      3936 bytes from route_struct.c:
+mk_elem(74)
+15(2886)  count=   321 size=     35952 bytes from route_struct.c:
+mk_action(94)
+15(2886)  count=    10 size=       320 bytes from sr_module.c:
+register_module(146)
+15(2886)  count=   426 size=     54528 bytes from cfg.lex: addstr(744)
+15(2886)  count=     1 size=        24 bytes from name_alias.h:
+add_alias(101)
+15(2886)  count=     1 size=        32 bytes from name_alias.h:
+add_alias(99)
+15(2886)  count=     1 size=        24 bytes from cfg.y: yyparse(1362)
+15(2886)  count=     1 size=        24 bytes from cfg.y: yyparse(474)
+15(2886)  count=     5 size=       184 bytes from modparam.c:
+set_mod_param_regex(114)
+15(2886)  count=     2 size=        32 bytes from socket_info.c:
+new_sock_info(117)
+15(2886)  count=     2 size=       288 bytes from socket_info.c:
+new_sock_info(112)
+15(2886)  count=     2 size=       152 bytes from cfg.y: mk_listen_id(1937)
+15(2886)  count=     1 size=        16 bytes from cfg.y: yyparse(455)
+15(2886)  count=     1 size=        24 bytes from cfg.y: yyparse(926)
+15(2886)  count=     1 size=        24 bytes from nonsip_hooks.c:
+init_nonsip_hooks(50)
+15(2886)  count=     2 size=        24 bytes from route.c: init_rlist(150)
+15(2886)  count=     2 size=        32 bytes from socket_info.c:
+fix_socket_list(565)
+15(2886)  count=     2 size=        32 bytes from socket_info.c:
+fix_socket_list(607)
+15(2886)  count=    30 size=      1456 bytes from route.c: route_add(129)
+15(2886)  count=     5 size=       640 bytes from str_hash.h:
+str_hash_alloc(69)
+15(2886)  count=     4 size=        56 bytes from name_alias.h:
+add_alias(101)
+15(2886)  count=  1055 size=    165488 bytes in total
+15(2886) -----------------------------
+17(2888) INFO: signal 15 received
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080215/59c2a7c3/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080215/59c2a7c3/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003388.html">[OpenIMSCore-Users] Problem in Registration using IMS	Communicator
+</A></li>
+	<LI>Next message: <A HREF="003391.html">[OpenIMSCore-Users] PSI on terminating side - will it work in	the OpenIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3390">[ date ]</a>
+              <a href="thread.html#3390">[ thread ]</a>
+              <a href="subject.html#3390">[ subject ]</a>
+              <a href="author.html#3390">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

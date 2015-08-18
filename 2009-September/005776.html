@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registration over IPSec in TCP Fails
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20over%20IPSec%20in%20TCP%20Fails&In-Reply-To=%3C1253687014.2566.114.camel%40localhost.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005775.html">
+   <LINK REL="Next"  HREF="005781.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registration over IPSec in TCP Fails</H1>
+    <B>sunil</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20over%20IPSec%20in%20TCP%20Fails&In-Reply-To=%3C1253687014.2566.114.camel%40localhost.localdomain%3E"
+       TITLE="[OpenIMSCore-Users] Registration over IPSec in TCP Fails">sunil.p at globaledgesoft.com
+       </A><BR>
+    <I>Wed Sep 23 08:23:34 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005775.html">[OpenIMSCore-Users] Create user
+</A></li>
+        <LI>Next message: <A HREF="005781.html">[OpenIMSCore-Users] Registration over IPSec in TCP Fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5776">[ date ]</a>
+              <a href="thread.html#5776">[ thread ]</a>
+              <a href="subject.html#5776">[ subject ]</a>
+              <a href="author.html#5776">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi All,
+            
+            We are unable to register user using TCP in IPSec.We are
+using OpenIMSCore Revision 680.
+            Below is the call flow for Registration using TCP
+
+               Registration in TCP call flow :
+                            Register(unprotected)
+                    -------------------------------&gt;  
+
+                                401(Unprotected)                
+                    &lt;--------------------------------
+        
+                              syn in esp(for establishing tcp connection
+using protected ports i.e uc and ps port)
+                    ----------------------------------&gt;
+
+                                syn,ack in esp
+                    &lt;----------------------------------        
+
+                                ack in esp
+                    ------------------------------------&gt;
+
+                                Register  in esp
+                    --------------------------------------&gt;    
+
+                                    200 OK in esp
+                   &lt;---------------------------------------     
+
+
+The problem we are facing is when p-cscf sends 401 response it is
+creating only single SA(i.e for receiving packets from Uc pport to Ps
+port) instead of Creating two new pairs of SAs in the local security
+association database.Because of this reason it is sending the syn,ack
+packets (for establishing TCP connection) in unprotected mode(using
+src_port = Ps and dest_port =Uc).And Since we have already created two
+new pairs of SAs on our side after receiving 401 response we are
+rejecting this packet as Unprotected messages should not be received  on
+Protected Ports.
+
+As per our analysis we found out that P-CSCF  is creating only single
+SA(i.e for receiving packets from Uc pport to Ps port) before sending
+401.
+It is creating the remaining SAs only after we send another register
+message in esp for 401 response received.
+
+Also NOTE  that we were able to successfully register in UDP using
+IPSec.
+
+
+Thanks and Regards,
+Sunil 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090923/e9626c6d/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090923/e9626c6d/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005775.html">[OpenIMSCore-Users] Create user
+</A></li>
+	<LI>Next message: <A HREF="005781.html">[OpenIMSCore-Users] Registration over IPSec in TCP Fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5776">[ date ]</a>
+              <a href="thread.html#5776">[ thread ]</a>
+              <a href="subject.html#5776">[ subject ]</a>
+              <a href="author.html#5776">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

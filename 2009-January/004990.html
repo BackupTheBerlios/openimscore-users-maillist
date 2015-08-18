@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Regarding Dialog not found on S-CSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Regarding%20Dialog%20not%20found%20on%20S-CSCF&In-Reply-To=%3C496C948A.8080408%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004979.html">
+   <LINK REL="Next"  HREF="004983.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Regarding Dialog not found on S-CSCF</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Regarding%20Dialog%20not%20found%20on%20S-CSCF&In-Reply-To=%3C496C948A.8080408%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Regarding Dialog not found on S-CSCF">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Jan 13 14:18:02 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004979.html">[OpenIMSCore-Users] Regarding Dialog not found on S-CSCF
+</A></li>
+        <LI>Next message: <A HREF="004983.html">[OpenIMSCore-Users] Sh Interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4990">[ date ]</a>
+              <a href="thread.html#4990">[ thread ]</a>
+              <a href="subject.html#4990">[ subject ]</a>
+              <a href="author.html#4990">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Suresh,
+
+from the incomplete trace I see the S-CSCF triggering towards your AS: 
+172.18.3.52:5065. Then I see that your AS does some kind of weird B2B 
+(same call-id, different CSeq) back. However, your Request-URI is wrong 
+as there is no user sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 172.18.2.187</A>:6060 in your network. The user 
+was probably sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test...</A>
+
+So, the error message is right - &quot;or terminating user not suitable for 
+unregistered services&quot; - obviously as there is no user profile for that 
+user with a unregistered state IFC. Please keep in mind that the S-CSCF 
+can only process requests for originating or terminating users that it 
+knows.
+
+Cheers,
+-Dragos
+
+
+Suresh jaiswal wrote:
+&gt;<i> Hi
+</I>&gt;<i> when i ran b2bua_simple.py like
+</I>&gt;<i> python b2bua_simple.py -f -l 172.18.3.52 -p 5065 -n 172.18.2.187
+</I>&gt;<i>
+</I>&gt;<i> b2bua_simple.py  is running 172.18.3.52 and port for this is 5065 and
+</I>&gt;<i> scscf is also running 172.18.2.187:6060
+</I>&gt;<i> complete flow is like this
+</I>&gt;<i>
+</I>&gt;<i> scscf---------invite----b2bua
+</I>&gt;<i> b2bua-----100 Trying---scscf
+</I>&gt;<i> b2bua---- invite--------scscf
+</I>&gt;<i> scscf------403 Forbidden-Dialog not found on scscf or Terminating user
+</I>&gt;<i> not suitable for unregister
+</I>&gt;<i>
+</I>&gt;<i> i also attached wireshark trace along this mail
+</I>&gt;<i> can any one help me regarding estblish sucessfull call or what we need to do
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ~Suresh
+</I>&gt;<i>   
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004979.html">[OpenIMSCore-Users] Regarding Dialog not found on S-CSCF
+</A></li>
+	<LI>Next message: <A HREF="004983.html">[OpenIMSCore-Users] Sh Interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4990">[ date ]</a>
+              <a href="thread.html#4990">[ thread ]</a>
+              <a href="subject.html#4990">[ subject ]</a>
+              <a href="author.html#4990">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

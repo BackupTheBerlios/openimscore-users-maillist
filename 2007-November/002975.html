@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Error on starting HSS : Peer icscf is not	responding to connection attempt
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20on%20starting%20HSS%20%3A%20Peer%20icscf%20is%20not%0A%09responding%20to%20connection%20attempt&In-Reply-To=%3C610D79580B4615469AB5700401BC65900262DD4F%40BLR-EC-MBX05.wipro.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002972.html">
+   <LINK REL="Next"  HREF="002984.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Error on starting HSS : Peer icscf is not	responding to connection attempt</H1>
+    <B>geethanjali.csg at wipro.com</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20on%20starting%20HSS%20%3A%20Peer%20icscf%20is%20not%0A%09responding%20to%20connection%20attempt&In-Reply-To=%3C610D79580B4615469AB5700401BC65900262DD4F%40BLR-EC-MBX05.wipro.com%3E"
+       TITLE="[OpenIMSCore-Users] Error on starting HSS : Peer icscf is not	responding to connection attempt">geethanjali.csg at wipro.com
+       </A><BR>
+    <I>Wed Nov 21 13:23:55 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002972.html">[OpenIMSCore-Users] Is there any training on OPEN IMS CORE
+</A></li>
+        <LI>Next message: <A HREF="002984.html">[OpenIMSCore-Users] Error on starting HSS : Peer icscf is	not	responding to connection attempt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2975">[ date ]</a>
+              <a href="thread.html#2975">[ thread ]</a>
+              <a href="subject.html#2975">[ subject ]</a>
+              <a href="author.html#2975">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi all,
+
+I am trying to set up openims. All the installations were successful &amp; I
+was able to start all the cscf's successfully.
+
+But when I start the HSS I am getting the following error:
+
+2007-11-21 17:47:32,058 INFO  de.fhg.fokus.hss.main.TomcatServer -
+startTomcat Tomcat-Server is started.
+2007-11-21 17:47:32,915 WARN
+org.apache.catalina.connector.MapperListener - registerEngine Unknown
+default host: 127.0.0.1
+2007-11-21 17:47:33,773 INFO
+de.fhg.fokus.hss.web.servlet.ResponseFilter - init Response Filter
+Initialisation!
+2007-11-21 17:47:34,541 INFO  de.fhg.fokus.hss.main.TomcatServer -
+startTomcat WebConsole of FHoSS was started !
+2007-11-21 17:47:37,036 WARN
+org.hibernate.impl.SessionFactoryObjectFactory - addInstance
+InitialContext did not implement EventContext
+2007-11-21 17:47:37,098 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; FQDN:
+hss.e164.arpa
+2007-11-21 17:47:37,099 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Realm:
+e164.arpa
+2007-11-21 17:47:37,099 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Vendor_ID :
+10415
+2007-11-21 17:47:37,099 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Product Name:
+JavaDiameterPeer
+2007-11-21 17:47:37,100 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+AcceptUnknwonPeers: true
+2007-11-21 17:47:37,102 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+DropUnknownOnDisconnect: true
+2007-11-21 17:47:37,118 INFO  de.fhg.fokus.hss.main.HSSContainer -
+waitForExit
+Type &quot;exit&quot; to stop FHoSS!
+2007-11-21 17:47:37,124 ERROR
+de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - I_Snd_Conn_Req
+StateMachine: Peer icscf.e164.arpa not responding to connection attempt
+
+
+Here is my DiameterPeer.xml file.
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!-- HSS Server config --&gt;
+&lt;DiameterPeer
+        FQDN=&quot;hss.e164.arpa&quot;
+        Realm=&quot;e164.arpa&quot;
+        Vendor_Id=&quot;10415&quot;
+        Product_Name=&quot;JavaDiameterPeer&quot;
+        AcceptUnknownPeers=&quot;1&quot;
+        DropUnknownOnDisconnect=&quot;1&quot;
+        Tc=&quot;30&quot;
+        Workers=&quot;4&quot;
+        QueueLength=&quot;32&quot;
+&gt;<i>
+</I>        &lt;Peer FQDN=&quot;icscf.e164.arpa&quot; Realm=&quot;e164.arpa&quot; port=&quot;3869&quot; /&gt;
+        &lt;Peer FQDN=&quot;scscf.e164.arpa&quot; Realm=&quot;e164.arpa&quot; port=&quot;3870&quot; /&gt;
+
+        &lt;Acceptor port=&quot;3868&quot; bind=&quot;10.200.220.200&quot; /&gt;
+
+        &lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;
+        &lt;Auth id=&quot;16777217&quot; vendor=&quot;10415&quot;/&gt;
+        &lt;Auth id=&quot;16777221&quot; vendor=&quot;10415&quot;/&gt;
+
+&lt;/DiameterPeer&gt;
+
+Here is my icscf.xml
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;DiameterPeer
+        FQDN=&quot;icscf.e164.arpa&quot;
+        Realm=&quot;e164.arpa&quot;
+        Vendor_Id=&quot;10415&quot;
+        Product_Name=&quot;CDiameterPeer&quot;
+        AcceptUnknownPeers=&quot;1&quot;
+        DropUnknownOnDisconnect=&quot;1&quot;
+        Tc=&quot;30&quot;
+        Workers=&quot;4&quot;
+        QueueLength=&quot;8&quot;
+&gt;<i>
+</I>        &lt;Peer FQDN=&quot;hss.e164.arpa&quot; Realm=&quot;e164.arpa&quot; port=&quot;3868&quot;/&gt;
+
+        &lt;Acceptor port=&quot;3869&quot; bind=&quot;10.200.220.200&quot;/&gt;
+
+        &lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;
+
+        &lt;DefaultRoute FQDN=&quot;hss.e164.arpa&quot; metric=&quot;10&quot;/&gt;
+&lt;/DiameterPeer&gt;
+
+Can someone tell me where have I gone wrong in the configuration.
+
+Regards,
+Geethanjali C S
+Wipro Technologies
+
+
+The information contained in this electronic message and any attachments to this message are intended for the exclusive use of the addressee(s) and may contain proprietary, confidential or privileged information. If you are not the intended recipient, you should not disseminate, distribute or copy this e-mail. Please notify the sender immediately and destroy all copies of this message and any attachments. 
+
+WARNING: Computer viruses can be transmitted via email. The recipient should check this email and any attachments for the presence of viruses. The company accepts no liability for any damage caused by any virus transmitted by this email.
+ 
+www.wipro.com
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002972.html">[OpenIMSCore-Users] Is there any training on OPEN IMS CORE
+</A></li>
+	<LI>Next message: <A HREF="002984.html">[OpenIMSCore-Users] Error on starting HSS : Peer icscf is	not	responding to connection attempt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2975">[ date ]</a>
+              <a href="thread.html#2975">[ thread ]</a>
+              <a href="subject.html#2975">[ subject ]</a>
+              <a href="author.html#2975">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

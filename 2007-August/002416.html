@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] R&#233;f. : Re:  Trigger Point problem.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%3D%3Fiso-8859-1%3Fq%3FR%3DE9f%3D2E_%3D3A_Re%3D3A__Trigger_Po%3F%3D%0A%20%3D%3Fiso-8859-1%3Fq%3Fint_problem%3D2E%3F%3D&In-Reply-To=%3COF62C69045.F6BFEDF8-ONC125733E.0032768B-C125733E.0032888C%40sagem.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002459.html">
+   <LINK REL="Next"  HREF="002419.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] R&#233;f. : Re:  Trigger Point problem.</H1>
+    <B>Daniel VIRASSAMY</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%3D%3Fiso-8859-1%3Fq%3FR%3DE9f%3D2E_%3D3A_Re%3D3A__Trigger_Po%3F%3D%0A%20%3D%3Fiso-8859-1%3Fq%3Fint_problem%3D2E%3F%3D&In-Reply-To=%3COF62C69045.F6BFEDF8-ONC125733E.0032768B-C125733E.0032888C%40sagem.com%3E"
+       TITLE="[OpenIMSCore-Users] R&#233;f. : Re:  Trigger Point problem.">daniel.virassamy at sagem.com
+       </A><BR>
+    <I>Tue Aug 21 11:11:56 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002459.html">[OpenIMSCore-Users] TLS Support
+</A></li>
+        <LI>Next message: <A HREF="002419.html">[OpenIMSCore-Users] R&#233;f. : Re: Trigger Point problem.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2416">[ date ]</a>
+              <a href="thread.html#2416">[ thread ]</a>
+              <a href="subject.html#2416">[ subject ]</a>
+              <a href="author.html#2416">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>P-Access-Network-Info: IMS provides layer2/layer3 IP connectivity through different access 
+networks. Populating some access-specific information can allow an 
+optimized redirection towards some access-oriented services. Moreover 
+certain services need lower layer access-specific information to be able 
+to process. E.g. an emergency-call service for mobile networks requires 
+the type of radio technology and the cell identity parameters to be able 
+to locate the caller. In this optics, P-Access-Network-Info header was 
+defined to provide a way for an UE to give this information to its home 
+serving network. The header value is only appended by the UE if the latter 
+considers being in a trusted network. The header is afterwards inspected 
+by the S-CSCF and used if needed to select access-oriented services. The 
+latter then discards the header before forwarding the requests outside of 
+the home domain. One must understand that the information carried by this 
+header can be of sensitive nature and that it should not in any case be 
+forwarded outside of a trusted network. 
+Concerning the security issue, an UE trusts its P-CSCF because of the 
+security agreement mechanism undergone during the Registration stage. 
+Moreover, each IMS core components trust each other as they are part of an 
+operator's or group of trusted operators' networks.  [See RFC 3325 for Spec(t) definition of a trusted network]
+IANA's registered access network values are:
+v       IEEE-802.11a
+v       IEEE-802.11b
+v       3GPP-GERAN
+v       3GPP-UTRAN-FDD
+v       3GPP-UTRAN-TDD
+v       3GPP-CDMA2000 
+v       ?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Hi again,
+
+Ok so I have traced the problem down to a particular point.
+My pani (P-Access-Network-Info) seems to be null?
+
+Therefore in 'ser_ims/modules/isc/sip.c' at function 
+'cscf_get_access_network_info' 
+it searches through the message but cannot find 'P-Access-Network-Info'?
+
+Can anyone tell me what this value should be or is it possible to continue 
+without
+it? My client (Xlite) doesn't seem to produce one or is there a problem 
+with a cscf? 
+
+Please help,
+
+Rob
+
+
+
+
+
+
+
+On 8/20/07, campo &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">robcampo at gmail.com</A>&gt; wrote: 
+Hi all,
+
+I seem to be having problems creating third party registers. 
+The trigger point is setup to redirect REGISTER's and INVITE's. 
+However when a register comes to the S-CSCF I get this error logged: 
+
+ERR:ISC:isc_third_party_reg: Error creating new third party registration
+
+Any ideas?
+
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+
+
+
+
+&quot; Ce courriel et les documents qui y sont attaches peuvent contenir des informations confidentielles. Si vous n'etes  pas le destinataire escompte, merci d'en informer l'expediteur immediatement et de detruire ce courriel  ainsi que tous les documents attaches de votre systeme informatique. Toute divulgation, distribution ou copie du present courriel et des documents attaches sans autorisation prealable de son emetteur est interdite.&quot; 
+
+&quot; This e-mail and any attached documents may contain confidential or proprietary information. If you are not the intended recipient, please advise the sender immediately and delete this e-mail and all attached documents from your computer system. Any unauthorised disclosure, distribution or copying hereof is prohibited.&quot;
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070821/74ffa710/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070821/74ffa710/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002459.html">[OpenIMSCore-Users] TLS Support
+</A></li>
+	<LI>Next message: <A HREF="002419.html">[OpenIMSCore-Users] R&#233;f. : Re: Trigger Point problem.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2416">[ date ]</a>
+              <a href="thread.html#2416">[ thread ]</a>
+              <a href="subject.html#2416">[ subject ]</a>
+              <a href="author.html#2416">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] OpenIMS on Loopback - Service Route problem	in making basic call
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMS%20on%20Loopback%20-%20Service%20Route%20problem%0A%09in%20making%20basic%20call&In-Reply-To=%3C194.113.59.80.1228124355.wm%40webmail.inode.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004884.html">
+   <LINK REL="Next"  HREF="004889.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] OpenIMS on Loopback - Service Route problem	in making basic call</H1>
+    <B>franz.edler at inode.at</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMS%20on%20Loopback%20-%20Service%20Route%20problem%0A%09in%20making%20basic%20call&In-Reply-To=%3C194.113.59.80.1228124355.wm%40webmail.inode.at%3E"
+       TITLE="[OpenIMSCore-Users] OpenIMS on Loopback - Service Route problem	in making basic call">franz.edler at inode.at
+       </A><BR>
+    <I>Mon Dec  1 10:39:15 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004884.html">[OpenIMSCore-Users] OpenIMS on Loopback - Service Route problem in	making basic call
+</A></li>
+        <LI>Next message: <A HREF="004889.html">[OpenIMSCore-Users] OpenIMS on Loopback - Service Route problem	in making basic call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4885">[ date ]</a>
+              <a href="thread.html#4885">[ thread ]</a>
+              <a href="subject.html#4885">[ subject ]</a>
+              <a href="author.html#4885">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Raghu,
+
+&gt;<i> Has anyone encountered this before? Do you have a reason for this?
+</I>
+I guess that you have not disabled the check for the Service-Route header
+field.
+You have to enable Variant 2 in pcscf.cfg:
+
+        if (!P_follows_service_routes()){
+                #Variant 1 - deny access to the network
+                sl_send_reply(&quot;400&quot;,&quot;Bad Request - Not following indicated
+service routes&quot;);
+                break;
+                #Variant 2 - enforce routes and let the dialog continue
+                #P_enforce_service_routes();
+        }
+
+regards
+Franz
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004884.html">[OpenIMSCore-Users] OpenIMS on Loopback - Service Route problem in	making basic call
+</A></li>
+	<LI>Next message: <A HREF="004889.html">[OpenIMSCore-Users] OpenIMS on Loopback - Service Route problem	in making basic call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4885">[ date ]</a>
+              <a href="thread.html#4885">[ thread ]</a>
+              <a href="subject.html#4885">[ subject ]</a>
+              <a href="author.html#4885">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

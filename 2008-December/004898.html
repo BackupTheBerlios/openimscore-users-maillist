@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] S-CSCF crashed after 14975 registrations
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20crashed%20after%2014975%20registrations&In-Reply-To=%3C49360595.7020102%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004897.html">
+   <LINK REL="Next"  HREF="004899.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] S-CSCF crashed after 14975 registrations</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20crashed%20after%2014975%20registrations&In-Reply-To=%3C49360595.7020102%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] S-CSCF crashed after 14975 registrations">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Dec  3 05:05:41 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004897.html">[OpenIMSCore-Users] LIR and LIA after registration
+</A></li>
+        <LI>Next message: <A HREF="004899.html">[OpenIMSCore-Users] Registration problem with internet tablet client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4898">[ date ]</a>
+              <a href="thread.html#4898">[ thread ]</a>
+              <a href="subject.html#4898">[ subject ]</a>
+              <a href="author.html#4898">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Bin,
+
+no, this would be a bug then, not a limit. I tested with millions and it 
+was OK, so you clearly hit something that I didn't.
+
+What revision are you using?
+
+Then I see that  &quot;Nov 16 21:42:34 : core was generated&quot;. Could you 
+please locate the core file (look in /core or /opt/OpenIMSCore/core) and 
+please run &quot;gdb ser_ims/ser &lt;core_file&gt;&quot;. Inside issue a &quot;bt&quot; command 
+and please send back the results.
+
+Thanx,
+-Dragos
+
+Bin Zhou wrote:
+&gt;<i>
+</I>&gt;<i> Hello
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I ran at a test with 1 registration per second at debug mode with 
+</I>&gt;<i> stderr turned on. There were 14975 successful registrations. HSS 
+</I>&gt;<i> received 15439 MARs and 14976 SARs until S-CSCF was crashed. So, I 
+</I>&gt;<i> tried again with stderr off. There were 15012 successful 
+</I>&gt;<i> registrations. It seems that there is a limit of the number of 
+</I>&gt;<i> successful registration at debug mode. Right?
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> According to the log, scscf is killed by signall 11.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 17:31:00 : INFO:S-CSCF:mod_child_init: Initialization of module 
+</I>&gt;<i> in child [0] 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 17:31:00 : DEBUG: init_mod_child (0): isc
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 17:31:00 : INFO:ISC: - child init [0]
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 17:31:00 : DEBUG: init_mod_child (0): cdp
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 17:31:00 : INFO:cdp:cdp_child_init(): CDiameterPeer starting ...
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 17:31:00 : INFO:cdp:cdp_child_init(): ... CDiameterPeer started
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : child process 25559 exited by a signal 11
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : core was generated
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO: terminating due to SIGCHLD
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : Process Table:
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 :  0. (25554) &gt; attendant 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 :  1. (25556) &gt; receiver child=0 sock=100.250.0.11:6060 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 :  2. (25557) &gt; receiver child=1 sock=100.250.0.11:6060 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 :  3. (25558) &gt; receiver child=2 sock=100.250.0.11:6060 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 :  4. (25559) &gt; receiver child=3 sock=100.250.0.11:6060 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 :  5. (25560) &gt; slow timer 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 :  6. (25561) &gt; timer 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 :  7. (25562) &gt; cdp_acceptor 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 :  8. (25563) &gt; cdp worker child=0 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 :  9. (25564) &gt; cdp worker child=1 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : 10. (25565) &gt; cdp worker child=2 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : 11. (25566) &gt; cdp worker child=3 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : 12. (25567) &gt; cdp_timer 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : 13. (25568) &gt; tcp receiver child=0 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : 14. (25569) &gt; tcp receiver child=1 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : 15. (25570) &gt; tcp receiver child=2 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : 16. (25571) &gt; tcp receiver child=3 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : 17. (25572) &gt; tcp main process 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : 18. (25573) &gt; receiver I 
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:cdp:cdp_exit(): CDiameterPeer stoping ...
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Terminating all childs...
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child 
+</I>&gt;<i> [25573] to terminate...
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child 
+</I>&gt;<i> [25567] to terminate...
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child 
+</I>&gt;<i> [25566] to terminate...
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child 
+</I>&gt;<i> [25565] to terminate...
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child 
+</I>&gt;<i> [25564] to terminate...
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child 
+</I>&gt;<i> [25563] to terminate...
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child 
+</I>&gt;<i> [25562] to terminate...
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:destroy_diameter_peer(): All processes 
+</I>&gt;<i> terminated. Cleaning up.
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : DBG:peer_manager_init(): ...Peer Manager destroyed
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Bye Bye from C 
+</I>&gt;<i> Diameter Peer test
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:cdp:cdp_exit(): ... CDiameterPeer stoped
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:ISC: - child exit
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:42:34 : INFO:S-CSCF:mod_destroy: child exit
+</I>&gt;<i>
+</I>&gt;<i> Nov 16 21:43:34 : BUG: shutdown timeout triggered, dying...
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004897.html">[OpenIMSCore-Users] LIR and LIA after registration
+</A></li>
+	<LI>Next message: <A HREF="004899.html">[OpenIMSCore-Users] Registration problem with internet tablet client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4898">[ date ]</a>
+              <a href="thread.html#4898">[ thread ]</a>
+              <a href="subject.html#4898">[ subject ]</a>
+              <a href="author.html#4898">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

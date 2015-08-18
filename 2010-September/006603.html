@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem with integrating OpenIMSCore with	Mobicents sip presence server
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20integrating%20OpenIMSCore%20with%0A%09Mobicents%20sip%20presence%20server&In-Reply-To=%3CAANLkTimDSozWUpYJ6qSt_7iFXYQndVDvCSas9vqSRCQ-%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006602.html">
+   <LINK REL="Next"  HREF="006604.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem with integrating OpenIMSCore with	Mobicents sip presence server</H1>
+    <B>mamun rashid</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20integrating%20OpenIMSCore%20with%0A%09Mobicents%20sip%20presence%20server&In-Reply-To=%3CAANLkTimDSozWUpYJ6qSt_7iFXYQndVDvCSas9vqSRCQ-%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Problem with integrating OpenIMSCore with	Mobicents sip presence server">mamungm at gmail.com
+       </A><BR>
+    <I>Mon Sep 27 10:44:12 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006602.html">[OpenIMSCore-Users] Constant problem with registering
+</A></li>
+        <LI>Next message: <A HREF="006604.html">[OpenIMSCore-Users] Problem with integrating OpenIMSCore	with	Mobicents sip presence server
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6603">[ date ]</a>
+              <a href="thread.html#6603">[ thread ]</a>
+              <a href="subject.html#6603">[ subject ]</a>
+              <a href="author.html#6603">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I am trying to use Mobicents sip presence service
+(mobicents-sip-presence-integrated-1.0.0.BETA5) with OpenIMSCore as
+application server. Firstly I found a &quot;SIP/2.0 403 Forbidden - You must
+register first with a S-CSCF&quot; message for my SIP SUBSCRIBE messages for
+events presence and presence.winfo. Then by configuring Trigger Points from
+FHoSS web module, I found Success for those SUBSCRIBE messages. But I am
+still getting a  &quot;SIP/2.0 403 Forbidden - You must register first with a
+S-CSCF&quot; for my PUBLISH message.
+
+SIP/2.0 403 Forbidden - You must register first with a S-CSCF
+Via: SIP/2.0/UDP 192.168.0.111:4837;rport=4837;branch=z9hG4bK1285568134281
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=32439
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=e7a9deb7c5ce89f3ed453d98e28e4c80-2426
+Call-ID: M-11ae7c724989b68cccdfa798c4b9c6af
+CSeq: 701 PUBLISH
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+Content-Length: 0
+Warning: 392 192.168.0.110:4060 &quot;Noisy feedback tells:  pid=17738
+req_src_ip=192.168.0.111 req_src_port=4837
+in_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.testout_uri</A>=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.testvia_cnt</A>==1&quot;
+
+Is there any more configuration need to be changed? I am using Mercuro IMS
+client.
+
+Another problem I am facing is that, when I am trying to add a contact with
+my Mercuro IMS client, it is updated in my list. But no notification is sent
+to the peer. I find the following log in mobicents console window:
+
+2010-09-27 12:51:59,953 ERROR
+[org.mobicents.slee.sipevent.server.subscription.SubscriptionControlSbb]
+failed to notify subscriber
+javax.sip.TransactionUnavailableException: Could not resolve next hop or
+listening point unavailable!
+    at
+gov.nist.javax.sip.SipProviderImpl.getNewClientTransaction(SipProviderImpl.java:422)
+    at
+org.mobicents.slee.resource.sip11.SleeSipProviderImpl.getNewClientTransaction(SleeSipProviderImpl.java:268)
+    at
+org.mobicents.slee.resource.sip11.SleeSipProviderImpl.getNewClientTransaction(SleeSipProviderImpl.java:299)
+    at
+org.mobicents.slee.sipevent.server.subscription.sip.SipSubscriberNotificationHandler.notifySipSubscriber(SipSubscriberNotificationHandler.java:73)
+    at
+org.mobicents.slee.sipevent.server.subscription.SubscriptionControlSbb.notifySubscriber(SubscriptionControlSbb.java:592)
+    at
+org.mobicents.slee.sipevent.server.subscription.SubscriptionControlSbb.notifyEventListSubscriber(SubscriptionControlSbb.java:797)
+    at sun.reflect.GeneratedMethodAccessor147.invoke(Unknown Source)
+    at
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    at java.lang.reflect.Method.invoke(Method.java:597)
+    at
+org.mobicents.slee.container.deployment.interceptors.SbbLocalObjectInterceptor.invokeAndReturnObject(SbbLocalObjectInterceptor.java:72)
+    at
+org.mobicents.slee.container.deployment.interceptors.SbbLocalObjectInterceptor.invokeAndReturnvoid(SbbLocalObjectInterceptor.java:113)
+    at
+org.mobicents.slee.sipevent.server.subscription.SubscriptionControlSbbLocalObjectImpl.notifyEventListSubscriber(SubscriptionControlSbbLocalObjectImpl.java)
+    at
+org.mobicents.slee.sipevent.server.subscription.eventlist.EventListSubscriptionControlSbb.notifyEventListSubscriber(EventListSubscriptionControlSbb.java:426)
+    at sun.reflect.GeneratedMethodAccessor146.invoke(Unknown Source)
+    at
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    at java.lang.reflect.Method.invoke(Method.java:597)
+    at
+org.mobicents.slee.container.deployment.interceptors.SbbLocalObjectInterceptor.invokeAndReturnObject(SbbLocalObjectInterceptor.java:72)
+    at
+org.mobicents.slee.container.deployment.interceptors.SbbLocalObjectInterceptor.invokeAndReturnvoid(SbbLocalObjectInterceptor.java:113)
+    at
+org.mobicents.slee.sipevent.server.subscription.EventListSubscriptionControlSbbLocalObjectImpl.notifyEventListSubscriber(EventListSubscriptionControlSbbLocalObjectImpl.java)
+    at
+org.mobicents.slee.sipevent.server.subscription.eventlist.EventListSubscriberSbb.notifyEvent(EventListSubscriberSbb.java:244)
+    at sun.reflect.GeneratedMethodAccessor142.invoke(Unknown Source)
+    at
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    at java.lang.reflect.Method.invoke(Method.java:597)
+    at
+org.mobicents.slee.container.deployment.interceptors.SbbLocalObjectInterceptor.invokeAndReturnObject(SbbLocalObjectInterceptor.java:72)
+    at
+org.mobicents.slee.container.deployment.interceptors.SbbLocalObjectInterceptor.invokeAndReturnvoid(SbbLocalObjectInterceptor.java:113)
+    at
+org.mobicents.slee.sipevent.server.subscription.EventListSubscriberSbbLocalObjectImpl.notifyEvent(EventListSubscriberSbbLocalObjectImpl.java)
+    at
+org.mobicents.slee.sipevent.server.subscription.SubscriptionControlSbb.onInternalNotifyEvent(SubscriptionControlSbb.java:456)
+    at sun.reflect.GeneratedMethodAccessor135.invoke(Unknown Source)
+    at
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    at java.lang.reflect.Method.invoke(Method.java:597)
+    at
+org.mobicents.slee.runtime.sbbentity.SbbEntity.invokeEventHandler(SbbEntity.java:759)
+    at
+org.mobicents.slee.runtime.EventRouterImpl.routeQueuedEvent(EventRouterImpl.java:933)
+    at
+org.mobicents.slee.runtime.EventRouterImpl.access$100(EventRouterImpl.java:64)
+    at
+org.mobicents.slee.runtime.EventRouterImpl$EventExecutor.run(EventRouterImpl.java:121)
+    at
+java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+    at
+java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+    at java.lang.Thread.run(Thread.java:619)
+Caused by: java.net.UnknownHostException: scscf.open-ims.test
+    at java.net.InetAddress.getAllByName0(InetAddress.java:1158)
+    at java.net.InetAddress.getAllByName(InetAddress.java:1084)
+    at java.net.InetAddress.getAllByName(InetAddress.java:1020)
+    at java.net.InetAddress.getByName(InetAddress.java:970)
+    at gov.nist.core.Host.getInetAddress(Host.java:271)
+    at gov.nist.core.HostPort.getInetAddress(HostPort.java:146)
+    at
+gov.nist.javax.sip.stack.UDPMessageProcessor.createMessageChannel(UDPMessageProcessor.java:315)
+    at
+gov.nist.javax.sip.stack.SIPTransactionStack.createMessageChannel(SIPTransactionStack.java:1189)
+    at
+gov.nist.javax.sip.SipProviderImpl.getNewClientTransaction(SipProviderImpl.java:389)
+    ... 36 more
+
+Any suggestion will be very helpful.
+
+Thanks in advance.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100927/bff491f9/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100927/bff491f9/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006602.html">[OpenIMSCore-Users] Constant problem with registering
+</A></li>
+	<LI>Next message: <A HREF="006604.html">[OpenIMSCore-Users] Problem with integrating OpenIMSCore	with	Mobicents sip presence server
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6603">[ date ]</a>
+              <a href="thread.html#6603">[ thread ]</a>
+              <a href="subject.html#6603">[ subject ]</a>
+              <a href="author.html#6603">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

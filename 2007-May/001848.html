@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] REGISTER nonce value
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20REGISTER%20nonce%20value&In-Reply-To=%3C200705251435.05187.christoph.egger%40tuwien.ac.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001807.html">
+   <LINK REL="Next"  HREF="001869.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] REGISTER nonce value</H1>
+    <B>Christoph Egger</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20REGISTER%20nonce%20value&In-Reply-To=%3C200705251435.05187.christoph.egger%40tuwien.ac.at%3E"
+       TITLE="[OpenIMSCore-Users] REGISTER nonce value">christoph.egger at tuwien.ac.at
+       </A><BR>
+    <I>Fri May 25 14:35:05 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001807.html">[OpenIMSCore-Users] REGISTER nonce value
+</A></li>
+        <LI>Next message: <A HREF="001869.html">[OpenIMSCore-Users] REGISTER nonce value
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1848">[ date ]</a>
+              <a href="thread.html#1848">[ thread ]</a>
+              <a href="subject.html#1848">[ subject ]</a>
+              <a href="author.html#1848">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+We had a similar problem with a Nokia N71 not able to register.
+
+The solution was to remove the space AFTER the algorithm=MD5.
+
+We have done this in registration.c:
+
+algorithm=%.*s \r\n&quot; --&gt; algorithm=%.*s\r\n&quot;
+
+
+A good parser should imho ignore this issue, but is this &quot;space&quot; at the end 
+legal?
+
+Christoph
+
+
+On Thursday 17 May 2007 23:22, Dragos Vingarzan wrote:
+&gt;<i> I looked at the SIP RFC and the space is legal there because the
+</I>&gt;<i> challenge is defined as:
+</I>&gt;<i>
+</I>&gt;<i> challenge           =  (&quot;Digest&quot; LWS digest-cln *(COMMA digest-cln))
+</I>&gt;<i>                        / other-challenge
+</I>&gt;<i> other-challenge     =  auth-scheme LWS auth-param
+</I>&gt;<i>                        *(COMMA auth-param)
+</I>&gt;<i> digest-cln          =  realm / domain / nonce
+</I>&gt;<i>                         / opaque / stale / algorithm
+</I>&gt;<i>                         / qop-options / auth-param
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> So there is that COMMA between different auth-param.
+</I>&gt;<i>
+</I>&gt;<i> and COMMA is not actually just &quot;,&quot; as it might seem at the first look, but
+</I>&gt;<i> it is defined as:
+</I>&gt;<i>
+</I>&gt;<i> COMMA   =  SWS &quot;,&quot; SWS ; comma
+</I>&gt;<i>
+</I>&gt;<i> And SWS (separator white space?) is:
+</I>&gt;<i>
+</I>&gt;<i> LWS  =  [*WSP CRLF] 1*WSP ; linear whitespace
+</I>&gt;<i> SWS  =  [LWS] ; sep whitespace
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ... so maybe the Huawei guys would be interested in fixing their stack then
+</I>&gt;<i> as a LOT of other implementations do not have an issue with this.
+</I>&gt;<i>
+</I>-- 
+Dipl.-Ing. Christoph Egger
+Institut f&#252;r Breitbandkommunikation
+Technische Universit&#228;t Wien
+Favoritenstrasse 9-11/388
+1040 Wien
+
+Tel:    +43 1 58801-38817
+Fax:    +43 1 58801-38898
+mail: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">christoph.egger at tuwien.ac.at</A>
+&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Tran Minh Phuong Anh wrote:
+</I>&gt;<i> &gt; Hello Dragos,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I found the cause of the problem (why E61 didn't send 2nd REGISTER).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; It is nothing to do with base16 or base64, both are accepted by E61.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; In modules/scscf/registration.c, I removed the space before nonce and
+</I>&gt;<i> &gt; algorithm and it works. I haven't searched whether which one is the
+</I>&gt;<i> &gt; standard, though.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; By the way, thank you for your help, I suspected the encoding problem
+</I>&gt;<i> &gt; and didn't move on.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Phuong Anh
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On 5/17/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt; Then the MD5 should be encrypted in base16 by specs. If you can't really
+</I>&gt;<i> &gt;&gt; convince the authors of that client to change it, you could modify the
+</I>&gt;<i> &gt;&gt; code to use base64. You have base64 code in
+</I>&gt;<i> &gt;&gt; ser_ims/modules/scscf/conversion.c.
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001807.html">[OpenIMSCore-Users] REGISTER nonce value
+</A></li>
+	<LI>Next message: <A HREF="001869.html">[OpenIMSCore-Users] REGISTER nonce value
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1848">[ date ]</a>
+              <a href="thread.html#1848">[ thread ]</a>
+              <a href="subject.html#1848">[ subject ]</a>
+              <a href="author.html#1848">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

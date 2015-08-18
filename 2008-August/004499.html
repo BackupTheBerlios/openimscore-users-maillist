@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] CSCF's on different systems...
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20CSCF%27s%20on%20different%20systems...&In-Reply-To=%3C7AB74994DADD459D930084DFF13DC1BD%40notebook%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004495.html">
+   <LINK REL="Next"  HREF="004496.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] CSCF's on different systems...</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20CSCF%27s%20on%20different%20systems...&In-Reply-To=%3C7AB74994DADD459D930084DFF13DC1BD%40notebook%3E"
+       TITLE="[OpenIMSCore-Users] CSCF's on different systems...">franz.edler at inode.at
+       </A><BR>
+    <I>Wed Aug 20 17:03:47 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004495.html">[OpenIMSCore-Users] CSCF's on different systems...
+</A></li>
+        <LI>Next message: <A HREF="004496.html">[OpenIMSCore-Users] TCP- IPSec issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4499">[ date ]</a>
+              <a href="thread.html#4499">[ thread ]</a>
+              <a href="subject.html#4499">[ subject ]</a>
+              <a href="author.html#4499">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Naveen,
+ 
+&gt;<i> I was just wondering if its possible to run the CSCF's (I-CSCF, PCSCF,
+</I>&gt;<i> SCSCF) and HSS, each on a different system.
+</I>
+Yes. But this causes additional issues at testing (merging and syncronising
+of trace-files in case of diagnostic data required). SO I suggest you should
+think again if it is really necessary. This depends of course on the purpose
+of the platform in your environment.
+
+&gt;<i> If yes, then what configuration files need to be modified?
+</I>
+Just a rough list of the modifications necessary:
+- The IMS terminals clients) must use the new P-CSCF address:port.
+- The RRs for SIP in DNS (NAPRT, SRV) must point to the address:port of the
+I-CSCF
+- The address-RR of S-CSCF must be modified accordingly
+- For the diameter connection between I-CSCF - HSS and S-CSCF - HSS you have
+to modify the parameter-files (icscf-xml, scscf.xml, DiameterPeerHSS.xml).
+- Modify host address of HSS in hss.properties
+
+To be systematic (not to forget anything) the best way is to check in the
+end all configuration-files which are usually touched by configurator.sh for
+explicit (numeric) IP addresses. Modify the addresses if necessary.
+
+These are candidate-files for the check (most of them can be left untouched
+I assume):
+icscf.cfg icscf_pg.sql icscf.sql icscf.thig.cfg icscf.xml pcscf.cfg
+pcscf.xml persist_my.sql persist_pg.sql scscf.cfg scscf.xml
+c3p0.properties DiameterPeerHSS.xml hibernate.properties hss.properties
+log4j.properties
+hss_db.sql userdata.sql
+
+If database files are involved (I do not think so) you have to recreate the
+database also.
+
+-franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004495.html">[OpenIMSCore-Users] CSCF's on different systems...
+</A></li>
+	<LI>Next message: <A HREF="004496.html">[OpenIMSCore-Users] TCP- IPSec issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4499">[ date ]</a>
+              <a href="thread.html#4499">[ thread ]</a>
+              <a href="subject.html#4499">[ subject ]</a>
+              <a href="author.html#4499">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

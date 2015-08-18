@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] S-CSCF sends the INVITE request to the AS	instead of the MRF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20sends%20the%20INVITE%20request%20to%20the%20AS%0A%09instead%20of%20the%20MRF&In-Reply-To=%3CA77C33C36276434691B38D7E44AB3709814D7D%40JTSXWCE006.austria.local%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003608.html">
+   <LINK REL="Next"  HREF="003610.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] S-CSCF sends the INVITE request to the AS	instead of the MRF</H1>
+    <B>Schaffer Robin</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20sends%20the%20INVITE%20request%20to%20the%20AS%0A%09instead%20of%20the%20MRF&In-Reply-To=%3CA77C33C36276434691B38D7E44AB3709814D7D%40JTSXWCE006.austria.local%3E"
+       TITLE="[OpenIMSCore-Users] S-CSCF sends the INVITE request to the AS	instead of the MRF">Robin.Schaffer at telekom.at
+       </A><BR>
+    <I>Thu Mar 13 16:32:28 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003608.html">[OpenIMSCore-Users] UCTPDF vs PoCCA
+</A></li>
+        <LI>Next message: <A HREF="003610.html">[OpenIMSCore-Users] S-CSCF sends the INVITE request to the AS	instead of the MRF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3609">[ date ]</a>
+              <a href="thread.html#3609">[ thread ]</a>
+              <a href="subject.html#3609">[ subject ]</a>
+              <a href="author.html#3609">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello, 
+I would appreciate some help regarding the problem &gt; S-CSCF sends the
+INVITE request to the AS instead of the MRF
+
+1. S-CSCF to AS
+The S-CSCF forwards the INVITE request to the AS because we have defined
+the iFC &quot;findme&quot; &gt; sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">findme at as.home.talab.at</A> (trigger point)
+
+Session Initiation Protocol
+    Request-Line: INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">findme at as.home.talab.at</A> SIP/2.0
+    Message Header
+        Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.home.talab.at</A>:6060;lr&gt;
+        Route: &lt;sip:10.238.105.40:5060;lr&gt;,
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.home.talab.at</A>:6060;lr;s=2;h=1;d=0;a=7369703a616c69636
+540686f6d652e74616c61622e6174&gt;
+        Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.home.talab.at</A>:4060;lr&gt;
+        Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d0ce7120a184f836ad631bc14705e447 at 10.238.2.64</A>
+        CSeq: 1 INVITE
+        From: &quot;alice&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at home.talab.at</A>&gt;;tag=1045
+        To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">findme at as.home.talab.at</A>&gt;
+        Via: SIP/2.0/UDP 10.238.105.35:6060;branch=z9hG4bKa206.702c11c.0
+        Via: SIP/2.0/UDP
+10.238.105.37:4060;branch=z9hG4bKa206.b96194b3.0
+        Via: SIP/2.0/UDP
+10.238.2.64:5060;rport=5060;branch=z9hG4bK92edab6ecb1202cbd0891238400689
+2d
+        Max-Forwards: 15
+        Content-Type: application/sdp
+        Contact: &quot;alice&quot; &lt;sip:10.238.2.64:5060&gt;
+        Privacy: none
+        User-Agent: Fraunhofer FOKUS/NGNI Java IMS UserEndpoint FoJIE
+0.1 (jdk1.3)
+        P-Access-Network-Info: 3GPP-UTRAN-TDD;
+utran-cell-id-3gpp=00000000
+        Allow: INVITE,ACK,CANCEL,BYE,MESSAGE,NOTIFY
+        Content-Length: 117
+        P-Asserted-Identity: &quot;alice&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at home.talab.at</A>&gt;
+        P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd47d913ff000010a9&quot;;icid-generated-at=10.238.105.37;
+orig-ioi=&quot;pcscf.home.talab.at&quot;
+    Message Body
+        Session Description Protocol
+            Session Description Protocol Version (v): 0
+            Owner/Creator, Session Id (o): user 0 0 IN IP4 10.238.2.64
+            Session Name (s): The funky IMS stream
+            Connection Information (c): IN IP4 10.238.2.64
+            Time Description, active time (t): 0 0
+            Media Description, name and address (m): audio 8000 RTP/AVP
+0 3 8
+
+2. AS to S-CSCF
+The AS forwards a new INVITE with the address of the MRF to the S-CSCF
+
+Session Initiation Protocol
+    Request-Line: INVITE
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">annc at mrf.home.talab.at</A>;play=<A HREF="http://test1.wav;early=no;transport=tcp">http://test1.wav;early=no;transport=tcp</A>
+SIP/2.0
+    Message Header
+        P-Asserted-Service: urn:ansage1.version1
+        To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">findme at as.home.talab.at</A>
+        Content-Type: application/sdp
+        Via: SIP/2.0/TCP 10.238.105.40:5060;branch=z9hG4bKet3hlo
+        Via: SIP/2.0/TCP 10.238.105.40:5060;branch=z9hG4bKvekdlb
+        Via: SIP/2.0/UDP 10.238.105.35:6060;branch=z9hG4bKa206.702c11c.0
+        Via: SIP/2.0/UDP
+10.238.105.37:4060;branch=z9hG4bKa206.b96194b3.0
+        Via: SIP/2.0/UDP
+10.238.2.64:5060;rport=5060;branch=z9hG4bK92edab6ecb1202cbd0891238400689
+2d
+        Allow: INVITE, ACK, CANCEL, BYE, MESSAGE, NOTIFY
+        Record-Route: &lt;sip:10.238.105.40:5060;transport=tcp;lr&gt;
+        Record-Route: &lt;sip:10.238.105.40:5060;transport=udp;lr&gt;
+        Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.home.talab.at</A>:6060;lr&gt;
+        Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.home.talab.at</A>:4060;lr&gt;
+        Privacy: none
+        Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d0ce7120a184f836ad631bc14705e447 at 10.238.2.64</A>
+        User-Agent: Fraunhofer FOKUS/NGNI Java IMS UserEndpoint FoJIE
+0.1 (jdk1.3)
+        From: alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at home.talab.at</A>&gt;;tag=1045
+        Max-Forwards: 13
+        Contact: alice &lt;sip:10.238.2.64:5060&gt;
+        P-Access-Network-Info: 3GPP-UTRAN-TDD;
+utran-cell-id-3gpp=00000000
+        x-SIPMethod:
+-6545420;id=SMAS[acc98cc32362df037a1e1c5d6239b429];s=1;a=/findme;m=false
+;i=2
+        P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd47d913ff000010a9&quot;;icid-generated-at=10.238.105.37;
+orig-ioi=&quot;pcscf.home.talab.at&quot;
+        CSeq: 1 INVITE
+        Route:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.home.talab.at</A>:6060;lr;s=2;h=1;d=0;a=7369703a616c69636
+540686f6d652e74616c61622e6174;transport=tcp&gt;
+        Content-Length: 117
+        P-Asserted-Identity: alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at home.talab.at</A>&gt;
+    Message Body
+        Session Description Protocol
+            Session Description Protocol Version (v): 0
+            Owner/Creator, Session Id (o): user 0 0 IN IP4 10.238.2.64
+            Session Name (s): The funky IMS stream
+            Connection Information (c): IN IP4 10.238.2.64
+            Time Description, active time (t): 0 0
+            Media Description, name and address (m): audio 8000 RTP/AVP
+0 3 8
+
+3. S-CSCF to AS 
+Now the S-CSCF forwards the INVITE to the AS instead of the MRF, but we
+have defined a second iFC &quot;mrf&quot; &gt;
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">annc at mrf.home.talab.at</A>;play=<A HREF="http://mrf.home.talab.at/test1.wav;early">http://mrf.home.talab.at/test1.wav;early</A>
+=no (trigger point)
+
+Session Initiation Protocol
+    Request-Line: INVITE
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">annc at mrf.home.talab.at</A>;play=<A HREF="http://test1.wav;early=no;transport=tcp">http://test1.wav;early=no;transport=tcp</A>
+SIP/2.0
+    Message Header
+        Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.home.talab.at</A>:6060;lr&gt;
+        P-Asserted-Service: urn:ansage1.version1
+        To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">findme at as.home.talab.at</A>
+        Content-Type: application/sdp
+        Via: SIP/2.0/TCP
+10.238.105.35:6060;branch=z9hG4bKa206.802c11c.0;i=86
+        Via: SIP/2.0/TCP 10.238.105.40:5060;branch=z9hG4bKet3hlo
+        Via: SIP/2.0/TCP 10.238.105.40:5060;branch=z9hG4bKvekdlb
+        Via: SIP/2.0/UDP 10.238.105.35:6060;branch=z9hG4bKa206.702c11c.0
+        Via: SIP/2.0/UDP
+10.238.105.37:4060;branch=z9hG4bKa206.b96194b3.0
+        Via: SIP/2.0/UDP
+10.238.2.64:5060;rport=5060;branch=z9hG4bK92edab6ecb1202cbd0891238400689
+2d
+        Allow: INVITE, ACK, CANCEL, BYE, MESSAGE, NOTIFY
+        Record-Route: &lt;sip:10.238.105.40:5060;transport=tcp;lr&gt;
+        Record-Route: &lt;sip:10.238.105.40:5060;transport=udp;lr&gt;
+        Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.home.talab.at</A>:6060;lr&gt;
+        Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.home.talab.at</A>:4060;lr&gt;
+        Privacy: none
+        Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d0ce7120a184f836ad631bc14705e447 at 10.238.2.64</A>
+        User-Agent: Fraunhofer FOKUS/NGNI Java IMS UserEndpoint FoJIE
+0.1 (jdk1.3)
+        From: alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at home.talab.at</A>&gt;;tag=1045
+        Max-Forwards: 12
+        Contact: alice &lt;sip:10.238.2.64:5060&gt;
+        P-Access-Network-Info: 3GPP-UTRAN-TDD;
+utran-cell-id-3gpp=00000000
+        x-SIPMethod:
+-6545420;id=SMAS[acc98cc32362df037a1e1c5d6239b429];s=1;a=/findme;m=false
+;i=2
+
+
+Now i would like to know why forwards the S-CSCF the INVITE request to
+the AS instead of the MRF while the Request-Line contains the MRF
+address and in the HSS the iFC is set.
+
+Best regards 
+Robin
+
+
+
+
+
+
+
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080313/3ed06bee/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080313/3ed06bee/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003608.html">[OpenIMSCore-Users] UCTPDF vs PoCCA
+</A></li>
+	<LI>Next message: <A HREF="003610.html">[OpenIMSCore-Users] S-CSCF sends the INVITE request to the AS	instead of the MRF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3609">[ date ]</a>
+              <a href="thread.html#3609">[ thread ]</a>
+              <a href="subject.html#3609">[ subject ]</a>
+              <a href="author.html#3609">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

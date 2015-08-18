@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] IFC: content of header field is not recognized
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IFC%3A%20content%20of%20header%20field%20is%20not%20recognized&In-Reply-To=%3C440B08C5E6E04036BF0E894B30CB0F2D%40FranzEdlerPC%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006431.html">
+   <LINK REL="Next"  HREF="006433.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] IFC: content of header field is not recognized</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IFC%3A%20content%20of%20header%20field%20is%20not%20recognized&In-Reply-To=%3C440B08C5E6E04036BF0E894B30CB0F2D%40FranzEdlerPC%3E"
+       TITLE="[OpenIMSCore-Users] IFC: content of header field is not recognized">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Sat Aug 14 18:02:13 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006431.html">[OpenIMSCore-Users] Log Messages in a file
+</A></li>
+        <LI>Next message: <A HREF="006433.html">[OpenIMSCore-Users] Parse error at REGISTER request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6432">[ date ]</a>
+              <a href="thread.html#6432">[ thread ]</a>
+              <a href="subject.html#6432">[ subject ]</a>
+              <a href="author.html#6432">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I have provisioned the following trigger point 
+	(Method == SUBSCRIBE and header field Event == presence) 
+But S-CSCF seems to ignore the content of the header field as it triggers
+also at a message-summary event.
+
+I have attached a core trace showing the IFC in packet 39 (SAA command).
+The SUBSCRIBE where the trigger matches is in packet 48 and forwarded to the
+AS in packet 51.
+
+The debug-log of S-CSCF at the IFC analysis shows:
+
+ 2(16030) isc_checker_find(): got a r_public for the user
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at net1.test</A>
+ 2(16030) DEBUG:ISC:ifc_checker_trigger: Starting expression check: 
+ 2(16030) DEBUG:ISC:ifc_check_spt:             SPT type 4 -&gt; Session Case
+== 1 ?
+ 2(16030) DEBUG:ISC:ifc_check_spt:               Found session_case 1 
+ 2(16030) DEBUG:ISC:ifc_check_spt:             SPT type 2 -&gt; Method ==
+SUBSCRIBE ?
+ 2(16030) DEBUG:ISC:ifc_check_spt:               Found method SUBSCRIBE 
+ 2(16030) DEBUG:ISC:ifc_check_spt:             SPT type 3 -&gt; Header[Event]
+%= presence ?
+ 2(16030) parse_headers: flags=ffffffffffffffff
+ 2(16030) DEBUG:ISC:isc_check_headers: Looking for Header[Event(21)]
+presence 
+ 2(16030) DEBUG:ISC:isc_check_headers: Found Header[Event(21)]
+message-summary 
+ 2(16030) DEBUG:ISC:isc_check_headers: Found Header[Allow-Events(38)] refer,
+presence, presence.winfo, xcap-diff, conference 
+ 2(16030) DEBUG:ISC:ifc_checker_trigger: Check finished =&gt; 1
+ 2(16030) INFO:ISC:isc_checker_find: MATCH -&gt; sip:192.168.1.105:5065 ()
+handling 0 
+ 2(16030) DEBUG:ISC:isc_forward(): marking for AS &lt;sip:192.168.1.105:5065&gt;
+
+Is there perhaps something missing in the code?
+I looked into the code of &quot;isc_checker_find()&quot; but I have to admit its too
+hard for me.
+
+Any help or comment appreciated.
+
+Franz
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: osi98003.pcap
+Type: application/octet-stream
+Size: 45048 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100814/eff6eb39/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100814/eff6eb39/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006431.html">[OpenIMSCore-Users] Log Messages in a file
+</A></li>
+	<LI>Next message: <A HREF="006433.html">[OpenIMSCore-Users] Parse error at REGISTER request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6432">[ date ]</a>
+              <a href="thread.html#6432">[ thread ]</a>
+              <a href="subject.html#6432">[ subject ]</a>
+              <a href="author.html#6432">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] PSTN To IMS calls
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSTN%20To%20IMS%20calls&In-Reply-To=%3CCOL120-W217763AEFF2A344C7AC0A1FD8B0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="005225.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] PSTN To IMS calls</H1>
+    <B>kavitha N K</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSTN%20To%20IMS%20calls&In-Reply-To=%3CCOL120-W217763AEFF2A344C7AC0A1FD8B0%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] PSTN To IMS calls">kavitha_nk at hotmail.com
+       </A><BR>
+    <I>Wed Apr  1 12:29:37 CEST 2009</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="005225.html">[OpenIMSCore-Users] PSTN To IMS calls
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5221">[ date ]</a>
+              <a href="thread.html#5221">[ thread ]</a>
+              <a href="subject.html#5221">[ subject ]</a>
+              <a href="author.html#5221">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi Franz / Dragos,
+
+ 
+
+I saw the discussion on IMS-PSTN calls. 
+
+ 
+
+Can you please suggest any open source PSTN gateway compatible with OpenIMSCore  to make IMS-PSTN calls?
+
+ 
+
+We thought of using OpenIMSCore with Asterisk. 
+
+But lot of users seem to have faced inter operability issues between openIMSCore and Asterisk.   Any suggestion on how to make Asterisk work with OpenIMSCore.
+
+ 
+
+ 
+
+ 
+
+Regards
+
+kavitha
+
+ 
+
+ 
+
+Dragos Vingarzan Dragos.Vingarzan at fokus.fraunhofer.de 
+Wed Oct 1 12:45:50 CEST 2008 
+
+
+
+Previous message: [OpenIMSCore-Users] HSS functionality request - ordered HSS queries 
+Next message: [OpenIMSCore-Users] PSTN To IMS calls 
+Messages sorted by: [ date ] [ thread ] [ subject ] [ author ] 
+
+Hi Mark,
+
+Well, we actually have it working and I can't think of any worth
+mentioning changes to the configuration files. In the past we had some
+Cisco Gateways and now we mainly use Cantata and Teles MGWs. Sometimes
+you'll want to add something like a SER MRFC in-between, if the MGW does
+not behave properly.
+
+For simple PSTN-to-IMS termination, you should route everything to the
+I-CSCF. Routing to S-CSCF is always bad, as maybe you have multiple ones
+and you don't know which one to choose.
+
+Then, a nice trick is to do PSTN &quot;origination&quot;. So if you'd want to have
+IMS services also applied for the originating PSTN users, you can
+trigger this by adding a Route: &lt;sip:orig at originating.users.domain&gt;.
+Then just route this normally to the right I-CSCF, which will find a
+suitable originating S-CSCF and apply services there. Just be careful
+that the PSTN user will not be registered in the IMS sense, but
+unregistered. Also, obviously there's no P-CSCF involved in the
+originating part, so be carefull about security.
+
+As extra information, MSF actually standardized a TRC(F) function. The
+TRansit Controller would use ENUM to determine whether and where the
+originating and terminating users are to be serviced. I have changed the
+enum module in ser_ims to allow also for ENUM queries on the originating
+users (with the limitation that it does not fork the requests now if
+there are multiple options on the originating side, only takes the first
+one) - <A HREF="http://svn.berlios.de/viewcvs/openimscore?view=rev&amp;rev=579">http://svn.berlios.de/viewcvs/openimscore?view=rev&amp;rev=579</A> .
+
+I am attaching an example trcf.cfg. If anyone finds it useful and
+actually working, then I will add this to the project's cscf.cfg examples.
+
+Cheers,
+-Dragos
+
+
+ 
+
+
+
+ 
+&gt;<i> We have an IMS Telephone Application Server operating with the open core,
+</I>&gt;<i> is it possible to configure the core such that an IMS originating call can
+</I>&gt;<i> terminate on the PSTN - if the terminating user is not configured on the
+</I>&gt;<i> HSS can the call be routed to a default server (BGCF) which would then
+</I>&gt;<i> select the required MGCF.
+</I>
+Yes, of course.
+
+Franz
+
+
+_________________________________________________________________
+How fun is this? IMing with Windows Live Messenger just got better.
+<A HREF="http://www.microsoft.com/india/windows/windowslive/messenger.aspx">http://www.microsoft.com/india/windows/windowslive/messenger.aspx</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090401/4524f440/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090401/4524f440/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="005225.html">[OpenIMSCore-Users] PSTN To IMS calls
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5221">[ date ]</a>
+              <a href="thread.html#5221">[ thread ]</a>
+              <a href="subject.html#5221">[ subject ]</a>
+              <a href="author.html#5221">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

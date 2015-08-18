@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] (no subject)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%28no%20subject%29&In-Reply-To=%3C007001c8c0cf%2497c8c660%24c75a5320%24%40haber%40uia.no%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004027.html">
+   <LINK REL="Next"  HREF="004026.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] (no subject)</H1>
+    <B>Andreas H&#228;ber</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%28no%20subject%29&In-Reply-To=%3C007001c8c0cf%2497c8c660%24c75a5320%24%40haber%40uia.no%3E"
+       TITLE="[OpenIMSCore-Users] (no subject)">andreas.haber at uia.no
+       </A><BR>
+    <I>Wed May 28 16:31:56 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004027.html">[OpenIMSCore-Users] (no subject)
+</A></li>
+        <LI>Next message: <A HREF="004026.html">[OpenIMSCore-Users] Mobility of the session
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4029">[ date ]</a>
+              <a href="thread.html#4029">[ thread ]</a>
+              <a href="subject.html#4029">[ subject ]</a>
+              <a href="author.html#4029">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I don't understand what you mean by &quot;total integration&quot;. If you make that
+part clear it might be easier to help you here.
+
+I'm also confused about what you mean by &quot;Neither C2D or CallSetup examples
+receive any info on registered users&quot;. Do you mean that you would like to
+receive REGISTER-requests from S-CSCF for users? If &quot;something else&quot; then
+please elaborate. Otherwise, to make a service receive such information it
+must be configured correctly first, also notice that &quot;REGISTER is a little
+special. See 3GPP TS 23.218 section 6.3 for the details. It will point you
+to section 5.2 which gives further insight into this.
+
+If you've configured triggers etc. to receive REGISTER-requests check logs &amp;
+traces to see where the problem is... perhaps the SCSCF is trying to forward
+the REGISTER-request without success?
+
+Best regards,
+Andreas
+
+
+
+&gt;<i> -----Original Message-----
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:openimscore-
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">users-bounces at lists.berlios.de</A>] On Behalf Of Juha Ilves
+</I>&gt;<i> Sent: 28. mai 2008 09:00
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] (no subject)
+</I>&gt;<i> 
+</I>&gt;<i> Hello,
+</I>&gt;<i> I'm afraid I don't get it... I'm looking to achieve total integration
+</I>&gt;<i> of Sailfin as an AS for OpenIMSCore, as a part of my internship. So far
+</I>&gt;<i> I've got nothing of the sort. Sailfin seems to totally ignore all
+</I>&gt;<i> traffic sent to it. Neither C2D or CallSetup examples recieve any info
+</I>&gt;<i> on registered users, no matter what triggers I'm using or not using...
+</I>&gt;<i> I have to admit that this stuff is way over my league. All help is
+</I>&gt;<i> appreciated...
+</I>&gt;<i> 
+</I>&gt;<i> &gt;&gt;&gt; Andreas H&#228;ber &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">andreas.haber at uia.no</A>&gt; 27.05.08 13:37 &gt;&gt;&gt;
+</I>&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> We've implemented Click-2-Dial (C2D) with OpenIMS + Sailfin without any
+</I>&gt;<i> triggers.
+</I>&gt;<i> 
+</I>&gt;<i> The flow goes something like this (see RFC3725 section 4.1 for more
+</I>&gt;<i> details.
+</I>&gt;<i> Notice that this flow is not optimal in all scenarios (ref: section
+</I>&gt;<i> 5)):
+</I>&gt;<i> 
+</I>&gt;<i> 1. User (Alice) goes to the website and &quot;clicks to dial to Bob&quot;.
+</I>&gt;<i> 
+</I>&gt;<i> 2. C2D http servlet creates an INVITE request that is sent to Alice.
+</I>&gt;<i> 
+</I>&gt;<i> 3. Alice receives INVITE request and accepts it.
+</I>&gt;<i> 
+</I>&gt;<i> 4. C2D sip servlet receives accept from Alice. Creates a new INVITE
+</I>&gt;<i> request
+</I>&gt;<i> that is sent to Bob.
+</I>&gt;<i> 
+</I>&gt;<i> 5. Bob receives INVITE request and replies with OK (to C2D).
+</I>&gt;<i> 
+</I>&gt;<i> 6. C2D now sends ACK back to Bob.
+</I>&gt;<i> 
+</I>&gt;<i> 7. C2D sends ACK back to Alice, including Bob's answer.
+</I>&gt;<i> 
+</I>&gt;<i> As you see, there are no triggers necessary here (from IMS) as &quot;plain
+</I>&gt;<i> SIP&quot;
+</I>&gt;<i> takes care of the routing.
+</I>&gt;<i> 
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Andreas
+</I>&gt;<i> 
+</I>&gt;<i> &gt; -----Original Message-----
+</I>&gt;<i> &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:openimscore-
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">users-bounces at lists.berlios.de</A>] On Behalf Of Juha Ilves
+</I>&gt;<i> &gt; Sent: 27. mai 2008 11:37
+</I>&gt;<i> &gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; Subject: [OpenIMSCore-Users] (no subject)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hello
+</I>&gt;<i> &gt; I'm not sure as to what wireshark traces would do in this case... I'm
+</I>&gt;<i> &gt; trying to get the ClickToDial example to work, but I'm baffled as to
+</I>&gt;<i> &gt; what trigger points to use and how could the sailfin AS recieve the
+</I>&gt;<i> &gt; registration info of Bob and Alice along with the OpenIMSCore...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt;&gt;&gt; Enrique de Meer &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">enrique.demeer at inycom.es</A>&gt; 23.05.08 10:11 &gt;&gt;&gt;
+</I>&gt;<i> &gt; Hi Juha,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; i'm using sailfin as an AS with OpenIMScore since several months...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Could you please send wireshark traces and explin better your issue,
+</I>&gt;<i> as
+</I>&gt;<i> &gt; Dragos says?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks, regards
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Enrique
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; El jue, 22-05-2008 a las 17:45 +0200, Dragos Vingarzan escribi&#243;:
+</I>&gt;<i> &gt; &gt; Hi Juha,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; First please send us some network traces so that we could see what
+</I>&gt;<i> is
+</I>&gt;<i> &gt; &gt; happening. Also please try to explain better what is happening and
+</I>&gt;<i> &gt; what
+</I>&gt;<i> &gt; &gt; you expected.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Cheers,
+</I>&gt;<i> &gt; &gt; -Dragos
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Juha Ilves wrote:
+</I>&gt;<i> &gt; &gt; &gt; Hello,
+</I>&gt;<i> &gt; &gt; &gt; I'm attempting to use Sailfin ( <A HREF="https://sailfin.dev.java.net/">https://sailfin.dev.java.net/</A> )
+</I>&gt;<i> as
+</I>&gt;<i> &gt; an application server. The trigger points redirect the messages to
+</I>&gt;<i> the
+</I>&gt;<i> &gt; AS ok, but it seems that it does not see them. Also I get &quot;Forbidden
+</I>&gt;<i> -
+</I>&gt;<i> &gt; Dialog not foud on S-CSCF or Terminating user not suitable for
+</I>&gt;<i> &gt; unregistered services (for PRACK). I'm new to the field and would
+</I>&gt;<i> &gt; appreciate the help, since Sailfin forums are no use...
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; Juha Ilves
+</I>&gt;<i> &gt; &gt; &gt; c5859
+</I>&gt;<i> &gt; &gt; &gt; HTI5S1
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &quot;I reject your reality and substitute my own&quot;
+</I>&gt;<i> &gt; &gt; &gt; -Adam Savage-
+</I>&gt;<i> &gt; &gt; &gt; _______________________________________________
+</I>&gt;<i> &gt; &gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; --
+</I>&gt;<i> &gt; &gt; -----------------------------------------
+</I>&gt;<i> &gt; &gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt; &gt; Fraunhofer FOKUS/NGNI
+</I>&gt;<i> &gt; &gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt; &gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt; &gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt; &gt; Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i> &gt; &gt; Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> &gt; &gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt; &gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; _______________________________________________
+</I>&gt;<i> &gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; AVISO LEGAL
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Este mensaje y los archivos que en su caso lleve adjuntos son
+</I>&gt;<i> privados
+</I>&gt;<i> &gt; y confidenciales y se dirigen exclusivamente a su destinatario. Por
+</I>&gt;<i> &gt; ello, se informa a quien lo reciba por error que la informaci&#243;n
+</I>&gt;<i> &gt; contenida en el mismo es reservada y su utilizaci&#243;n, copia o
+</I>&gt;<i> &gt; distribuci&#243;n est&#225; prohibida, por lo que en tal caso le rogamos que
+</I>&gt;<i> nos
+</I>&gt;<i> &gt; lo comunique por esta misma v&#237;a o por tel&#233;fono (+34976013300) y
+</I>&gt;<i> proceda
+</I>&gt;<i> &gt; a borrarlo de inmediato.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004027.html">[OpenIMSCore-Users] (no subject)
+</A></li>
+	<LI>Next message: <A HREF="004026.html">[OpenIMSCore-Users] Mobility of the session
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4029">[ date ]</a>
+              <a href="thread.html#4029">[ thread ]</a>
+              <a href="subject.html#4029">[ subject ]</a>
+              <a href="author.html#4029">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

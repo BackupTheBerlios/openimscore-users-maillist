@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] (no subject)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%28no%20subject%29&In-Reply-To=%3C23D52CF27A66BF4E9352313D60E46F3E01ABDCEC%40EXCLUSTER.kcc.local%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001738.html">
+   <LINK REL="Next"  HREF="001739.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] (no subject)</H1>
+    <B>Mikhanov Sergey</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%28no%20subject%29&In-Reply-To=%3C23D52CF27A66BF4E9352313D60E46F3E01ABDCEC%40EXCLUSTER.kcc.local%3E"
+       TITLE="[OpenIMSCore-Users] (no subject)">sergey.mikhanov at kapsch.net
+       </A><BR>
+    <I>Wed May  9 16:34:11 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001738.html">[OpenIMSCore-Users] R&#233;f. :  R&#233;f. : Re:  ipsec and charging question
+</A></li>
+        <LI>Next message: <A HREF="001739.html">[OpenIMSCore-Users] Ekiga INVITE requests are rejected by OpenIMS	P-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1736">[ date ]</a>
+              <a href="thread.html#1736">[ thread ]</a>
+              <a href="subject.html#1736">[ subject ]</a>
+              <a href="author.html#1736">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>   Hello,
+
+ 
+
+i am testing the functionality of Fraunhofer Fokus OpenIMS core network
+with different SIP phones and found out strange behavior with Ekiga
+(www.ekiga.org), which could be considered as a possible bug either in
+phone, or in OpenIMS, or both (don't know if it's OK to send
+phone-specific issues here; similar message to Ekiga list is submitted
+as well).
+
+ 
+
+Ekiga registers and then tries to establish a call.
+
+ 
+
+REGISTER request is the following:
+
+ 
+
+REGISTER sip:open-ims.test SIP/2.0
+
+CSeq: 16 REGISTER
+
+Via: SIP/2.0/UDP
+193.80.90.168:5080;branch=z9hG4bK0e6ff04b-80fc-db11-8ff4-000c297175a0;rp
+ort
+
+User-Agent: Ekiga/2.0.9
+
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=1059f04b-80fc-db11-8ff4-000c297175a0
+
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">b427404c-7cfc-db11-8ff4-000c297175a0 at oims-vm1</A>
+
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 193.80.90.168</A>:5080;transport=udp&gt;
+
+Allow: INVITE,ACK,OPTIONS,BYE,CANCEL,NOTIFY,REFER,MESSAGE
+
+Expires: 600
+
+Content-Length: 0
+
+Max-Forwards: 70
+
+ 
+
+This will result in creation of association in OpenIMS HSS between PUI
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> and PrUI sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 193.80.90.168</A>:5080;transport=udp
+(latter is specified in Contact).
+
+ 
+
+INVITE sent by Ekiga is the following:
+
+ 
+
+INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> SIP/2.0
+
+Route: &lt;sip:oims-vm2:5060;lr&gt;
+
+Date: Wed, 09 May 2007 09:50:51 GMT
+
+CSeq: 1 INVITE
+
+Via: SIP/2.0/UDP
+193.80.90.168:5081;branch=z9hG4bK50a4e570-80fc-db11-8ff4-000c297175a0;rp
+ort
+
+User-Agent: Ekiga/2.0.9
+
+From: &quot;Bob Bob&quot;
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=9086e170-80fc-db11-8ff4-000c297175a0
+
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">4473e170-80fc-db11-8ff4-000c297175a0 at oims-vm1</A>
+
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 193.80.90.168</A>:5081;transport=udp&gt;
+
+Allow: INVITE,ACK,OPTIONS,BYE,CANCEL,NOTIFY,REFER,MESSAGE
+
+Content-Type: application/sdp
+
+Content-Length: 370
+
+Max-Forwards: 70
+
+ 
+
+OpenIMS creates the PrUI on the base of Via header. This record consists
+of protocol, host and port and used for fetching the associated PUI.
+
+In our example PrUI constructed like this will be
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 193.80.90.168</A>:5081;transport=udp (note the difference in port
+number). Of course, no PUI is found and 403 Forbidden response is being
+sent (please find full trace attached for your information).
+
+ 
+
+I am not fully understand, why Via is used by OpenIMS for constructing
+the PrUI (as far as I understand this should be done with Contact
+header, though in Ekiga case this won't help) as RFC 3261 describes
+Contact header in REGISTER as ultimate destination for requests targeted
+to registered address-of-record, and Via header as ultimate destination
+for subsequent responses inside the dialog.
+
+ 
+
+It would be nice if OpenIMS developers could pay some attention to this
+issue.
+
+ 
+
+Regards,
+
+Sergey Mikhanov.
+
+ 
+
+
+
+The information contained in this e-mail message is privileged and
+confidential and is for the exclusive use of the addressee. The person
+who receives this message and who is not the addressee, one of his
+employees or an agent entitled to hand it over to the addressee, is
+informed that he may not use, disclose or reproduce the contents thereof.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070509/9e0075cc/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070509/9e0075cc/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: ekiga-incorrect.via.and.contact.cap
+Type: application/octet-stream
+Size: 5382 bytes
+Desc: ekiga-incorrect.via.and.contact.cap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070509/9e0075cc/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070509/9e0075cc/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001738.html">[OpenIMSCore-Users] R&#233;f. :  R&#233;f. : Re:  ipsec and charging question
+</A></li>
+	<LI>Next message: <A HREF="001739.html">[OpenIMSCore-Users] Ekiga INVITE requests are rejected by OpenIMS	P-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1736">[ date ]</a>
+              <a href="thread.html#1736">[ thread ]</a>
+              <a href="subject.html#1736">[ subject ]</a>
+              <a href="author.html#1736">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

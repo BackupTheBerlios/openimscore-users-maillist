@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] PSTN and IMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSTN%20and%20IMS&In-Reply-To=%3Ccfcc4bba0803060241i5430d536m88074a8cbad9dc84%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003580.html">
+   <LINK REL="Next"  HREF="003584.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] PSTN and IMS</H1>
+    <B>JYU IMS Group</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSTN%20and%20IMS&In-Reply-To=%3Ccfcc4bba0803060241i5430d536m88074a8cbad9dc84%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] PSTN and IMS">jyuims at gmail.com
+       </A><BR>
+    <I>Thu Mar  6 11:41:36 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003580.html">[OpenIMSCore-Users] How to get notifications upon particular user	registration?
+</A></li>
+        <LI>Next message: <A HREF="003584.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3583">[ date ]</a>
+              <a href="thread.html#3583">[ thread ]</a>
+              <a href="subject.html#3583">[ subject ]</a>
+              <a href="author.html#3583">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+Thanks for the tip, Christian!
+
+We can call outside to PSTN network. We have problem with incoming calls.
+
+We don't understand how to configure Cisco router and its FXO-port (or
+IMS-system to handle Cisco's messages). Should it register to IMS-system
+(and to some CSCF there) or not (like in FXO &lt;-&gt; Asterisk system)?
+
+We have configured to Cisco 3600:
+- &quot;connection plar 'spesific user in openims database'&quot; (for voice port)
+(INVITE sip:'spesific user'@sip-server)
+- &quot;session target sip-server&quot; (to dial-peer voice x voip) and
+- &quot;registrar&quot; and &quot;sip-server&quot; as a P-CSCF or S-CSCF and authentication for
+&quot;router user&quot; (to sip-ua)
+
+Doesn't work and we have no idea why. Is it possible to send INVITE from
+router to some spesific user (who use this pstn phone number) to system
+without registering router to system as user?
+
+Has anyone any experience with configuring Cisco FXO to IMS system?
+
+Thank you for any help!
+
+Regards,
+
+JYU IMS group
+
+
+2008/3/5, Christian Esteve &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">chesteve at gmail.com</A>&gt;:
+&gt;<i>
+</I>&gt;<i> You should point to the S-CSCF, consider the PSTN gateway acting as a
+</I>&gt;<i> Border and Media Gateway Control Function (BGCF and MGCF as per ETSI
+</I>&gt;<i> TISPAN) at the originating domain and your S-CSCF + P-CSCF the
+</I>&gt;<i> terminating domain.
+</I>&gt;<i>
+</I>&gt;<i> If you consider the PSTN to be in your own domain you will need to
+</I>&gt;<i> &quot;register&quot; your PSTN GW acting as an &quot;Access Border Gateway Function&quot;.
+</I>&gt;<i>
+</I>&gt;<i> Hope it helps, had no practical experience with PSTN interconnection.
+</I>&gt;<i>
+</I>&gt;<i> BR,
+</I>&gt;<i> Christian
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Wed, Mar 5, 2008 at 6:22 AM, JYU IMS Group &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">jyuims at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  Previously added to scscf.cfg:
+</I>&gt;<i> &gt;  route[PSTN]
+</I>&gt;<i> &gt;  - added IP and port of out PSTN gateway
+</I>&gt;<i> &gt;  - something else needed?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  But for example, if we call from outside to this pstn-number (connected
+</I>&gt;<i> to
+</I>&gt;<i> &gt; 3600's FXO-port), where the router should send INVITE first, to P-CSCF
+</I>&gt;<i> or
+</I>&gt;<i> &gt; S-CSCF? Now, in router configurations there is &quot;session-target&quot; and
+</I>&gt;<i> &gt; &quot;sip-server&quot; poiting to P-CSCF's address, is that right or shoud they
+</I>&gt;<i> point
+</I>&gt;<i> &gt; to S-CSCF?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  If call is made from outside to pstn-number Cisco sends invite to
+</I>&gt;<i> P-CSCF
+</I>&gt;<i> &gt; then it returns message &quot;Status: 403 Forbidden - Not registered! You
+</I>&gt;<i> must
+</I>&gt;<i> &gt; first register with S-CSCF.&quot;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  What is wrong with our setup?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  Regards,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; JYU IMS group
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 2008/3/5, Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&gt;:
+</I>&gt;<i> &gt; &gt; &gt; Need help to connect PSTN to IMS system. What configuration is
+</I>&gt;<i> needed
+</I>&gt;<i> &gt; and
+</I>&gt;<i> &gt; &gt; &gt; where?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Look into scscf.cfg for routing to PSTN.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Franz
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt;  OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i>
+</I>&gt;<i> Christian
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080306/68266d7c/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080306/68266d7c/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003580.html">[OpenIMSCore-Users] How to get notifications upon particular user	registration?
+</A></li>
+	<LI>Next message: <A HREF="003584.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3583">[ date ]</a>
+              <a href="thread.html#3583">[ thread ]</a>
+              <a href="subject.html#3583">[ subject ]</a>
+              <a href="author.html#3583">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

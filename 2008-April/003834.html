@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] callee cpapbilities : A registered IMS	clientwith two devices
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20callee%20cpapbilities%20%3A%20A%20registered%20IMS%0A%09clientwith%20two%20devices&In-Reply-To=%3C000a01c8a7e4%2435801e30%240200a8c0%40notebook%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003832.html">
+   <LINK REL="Next"  HREF="003833.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] callee cpapbilities : A registered IMS	clientwith two devices</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20callee%20cpapbilities%20%3A%20A%20registered%20IMS%0A%09clientwith%20two%20devices&In-Reply-To=%3C000a01c8a7e4%2435801e30%240200a8c0%40notebook%3E"
+       TITLE="[OpenIMSCore-Users] callee cpapbilities : A registered IMS	clientwith two devices">franz.edler at inode.at
+       </A><BR>
+    <I>Sat Apr 26 23:26:36 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003832.html">[OpenIMSCore-Users] callee cpapbilities : A registered IMS client	with two devices
+</A></li>
+        <LI>Next message: <A HREF="003833.html">[OpenIMSCore-Users] Hss diameter traffic problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3834">[ date ]</a>
+              <a href="thread.html#3834">[ thread ]</a>
+              <a href="subject.html#3834">[ subject ]</a>
+              <a href="author.html#3834">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Arnaud,
+
+&gt;<i> The point is that the P-CSCF doesn't forward it to the client and sends
+</I>&gt;<i> back to S-CSCF a 403 forbidden SIP message: &quot;Not registered, you may first
+</I>&gt;<i> register to a S-CSCF&quot;
+</I>
+I have re-tested the same scenario and came to the same problem.
+
+The reason for the rejection of CANCEL by the P-CSCF is the missing Route
+header field (Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.net1.test</A>:4060;lr&gt;) in the CANCEL
+request. Without this Route header field the P-CSCF tries to process the
+request as an originating request. 
+
+The logic for the CANCEL processing in case of canceling a pending request
+because of forking in the S-CSCF is missing in pcscf.cfg. I will try to
+think about an adaptation of pcscf.cfg for this case. Maybe Dragos has
+another proposal. But I think that's the reason.
+
+regards
+Franz
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003832.html">[OpenIMSCore-Users] callee cpapbilities : A registered IMS client	with two devices
+</A></li>
+	<LI>Next message: <A HREF="003833.html">[OpenIMSCore-Users] Hss diameter traffic problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3834">[ date ]</a>
+              <a href="thread.html#3834">[ thread ]</a>
+              <a href="subject.html#3834">[ subject ]</a>
+              <a href="author.html#3834">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

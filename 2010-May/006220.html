@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] AS Trouble - Part II
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AS%20Trouble%20-%20Part%20II&In-Reply-To=%3C1273248212.12605.11.camel%40fuermannj-desktop%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006219.html">
+   <LINK REL="Next"  HREF="006221.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] AS Trouble - Part II</H1>
+    <B>Johannes F&#252;rmann</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AS%20Trouble%20-%20Part%20II&In-Reply-To=%3C1273248212.12605.11.camel%40fuermannj-desktop%3E"
+       TITLE="[OpenIMSCore-Users] AS Trouble - Part II">waaaaargh at quantentunnel.de
+       </A><BR>
+    <I>Fri May  7 18:03:32 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006219.html">[OpenIMSCore-Users] e-cscf setup installation
+</A></li>
+        <LI>Next message: <A HREF="006221.html">[OpenIMSCore-Users] AS Trouble - Part II
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6220">[ date ]</a>
+              <a href="thread.html#6220">[ thread ]</a>
+              <a href="subject.html#6220">[ subject ]</a>
+              <a href="author.html#6220">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello *,
+
+Yes, I know, this is probably not the best mailing list to ask this, but
+I am having serious trouble with the cooperation of Sailfin and
+OpenIMSCore here.
+
+My configuration looks like the following:
+
+* There is Machine running OpenIMSCore quite happily, it even works with
+Grandstream Hardphones
+* There is a Sailfin Application Server running Sailfin and listening on
+port 5060.
+* The DNS stuff is handled by a windows 2003 Server that already was
+present in the environment.
+
+The status quo is:
+* Whenever Alice or Bob register to OpenIMSCore, OpenIMSCore wants to
+register with Sailfin
+* Sailfin keeps responding &quot;483 - too many hops&quot;. (see attached tshark
+trace for details)
+
+Here is a short summary that tshark captured with its default settings -
+I have attached a file that goes further into detail:
+
+0.000000 10.100.1.202 -&gt; 10.100.1.203 SIP Request: REGISTER
+sip:as.ims01.internal.cdtm.de:5060
+0.010982 10.100.1.203 -&gt; 10.100.1.202 SIP Status: 483 Too Many Hops
+(0 bindings)
+
+
+I hope someone can help me with this
+
+regards,
+
+Johannes F&#252;rmann
+-------------- next part --------------
+Frame 1 (706 bytes on wire, 706 bytes captured)
+    Arrival Time: May  7, 2010 18:10:02.243299000
+    [Time delta from previous captured frame: 0.000000000 seconds]
+    [Time delta from previous displayed frame: 0.000000000 seconds]
+    [Time since reference or first frame: 0.000000000 seconds]
+    Frame Number: 1
+    Frame Length: 706 bytes
+    Capture Length: 706 bytes
+    [Frame is marked: False]
+    [Protocols in frame: eth:ip:udp:sip]
+Ethernet II, Src: Vmware_70:89:2e (00:0c:29:70:89:2e), Dst: Vmware_58:d6:e2 (00:0c:29:58:d6:e2)
+    Destination: Vmware_58:d6:e2 (00:0c:29:58:d6:e2)
+        Address: Vmware_58:d6:e2 (00:0c:29:58:d6:e2)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+    Source: Vmware_70:89:2e (00:0c:29:70:89:2e)
+        Address: Vmware_70:89:2e (00:0c:29:70:89:2e)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+    Type: IP (0x0800)
+Internet Protocol, Src: 10.100.1.202 (10.100.1.202), Dst: 10.100.1.203 (10.100.1.203)
+    Version: 4
+    Header length: 20 bytes
+    Differentiated Services Field: 0x10 (DSCP 0x04: Unknown DSCP; ECN: 0x00)
+        0001 00.. = Differentiated Services Codepoint: Unknown (0x04)
+        .... ..0. = ECN-Capable Transport (ECT): 0
+        .... ...0 = ECN-CE: 0
+    Total Length: 692
+    Identification: 0x0000 (0)
+    Flags: 0x04 (Don't Fragment)
+        0... = Reserved bit: Not set
+        .1.. = Don't fragment: Set
+        ..0. = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: UDP (0x11)
+    Header checksum: 0x1fcd [correct]
+        [Good: True]
+        [Bad : False]
+    Source: 10.100.1.202 (10.100.1.202)
+    Destination: 10.100.1.203 (10.100.1.203)
+User Datagram Protocol, Src Port: x11 (6060), Dst Port: sip (5060)
+    Source port: x11 (6060)
+    Destination port: sip (5060)
+    Length: 672
+    Checksum: 0xaee1 [validation disabled]
+        [Good Checksum: False]
+        [Bad Checksum: False]
+Session Initiation Protocol
+    Request-Line: REGISTER sip:as.ims01.internal.cdtm.de:5060 SIP/2.0
+        Method: REGISTER
+        Request-URI: sip:as.ims01.internal.cdtm.de:5060
+            Request-URI Host Part: as.ims01.internal.cdtm.de
+            Request-URI Host Port: 5060
+        [Resent Packet: False]
+    Message Header
+        Via: SIP/2.0/UDP 10.100.1.202:6060;branch=z9hG4bK99d6.beb6872.0
+            Transport: UDP
+            Sent-by Address: 10.100.1.202
+            Sent-by port: 6060
+            Branch: z9hG4bK99d6.beb6872.0
+        To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at ims01.internal.cdtm.de</A>
+            SIP to address: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at ims01.internal.cdtm.de</A>
+                SIP to address User Part: bob
+                SIP to address Host Part: ims01.internal.cdtm.de
+        From: sip:scscf.ims01.internal.cdtm.de:6060;tag=41662b936812dbee7576c7c4094495e7-dd0f
+            SIP from address: sip:scscf.ims01.internal.cdtm.de:6060
+                SIP from address Host Part: scscf.ims01.internal.cdtm.de
+                SIP from address Host Port: 6060
+            SIP tag: 41662b936812dbee7576c7c4094495e7-dd0f
+        CSeq: 10 REGISTER
+            Sequence Number: 10
+            Method: REGISTER
+        Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">7fffaf03-7763 at 10.100.1.202</A>
+        Content-Length: 0
+        User-Agent: Sip EXpress router(2.1.0-dev1 OpenIMSCore (i386/linux))
+        Event: registration
+        Max-Forwards: 10
+        Expires: 600120
+        Contact: &lt;sip:scscf.ims01.internal.cdtm.de:6060&gt;
+            Contact Binding: &lt;sip:scscf.ims01.internal.cdtm.de:6060&gt;
+                URI: &lt;sip:scscf.ims01.internal.cdtm.de:6060&gt;
+                    SIP contact address: sip:scscf.ims01.internal.cdtm.de:6060
+        P-Visited-Network-ID: ims01.internal.cdtm.de
+        P-Charging-Vector: icid-value=&quot;P-CSCFabcd4be43a4f0000007c&quot;;icid-generated-at=10.100.1.202;orig-ioi=&quot;ims01.internal.cdtm.de&quot;
+
+Frame 2 (380 bytes on wire, 380 bytes captured)
+    Arrival Time: May  7, 2010 18:10:02.257444000
+    [Time delta from previous captured frame: 0.014145000 seconds]
+    [Time delta from previous displayed frame: 0.014145000 seconds]
+    [Time since reference or first frame: 0.014145000 seconds]
+    Frame Number: 2
+    Frame Length: 380 bytes
+    Capture Length: 380 bytes
+    [Frame is marked: False]
+    [Protocols in frame: eth:ip:udp:sip]
+Ethernet II, Src: Vmware_58:d6:e2 (00:0c:29:58:d6:e2), Dst: Vmware_70:89:2e (00:0c:29:70:89:2e)
+    Destination: Vmware_70:89:2e (00:0c:29:70:89:2e)
+        Address: Vmware_70:89:2e (00:0c:29:70:89:2e)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+    Source: Vmware_58:d6:e2 (00:0c:29:58:d6:e2)
+        Address: Vmware_58:d6:e2 (00:0c:29:58:d6:e2)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+    Type: IP (0x0800)
+Internet Protocol, Src: 10.100.1.203 (10.100.1.203), Dst: 10.100.1.202 (10.100.1.202)
+    Version: 4
+    Header length: 20 bytes
+    Differentiated Services Field: 0x00 (DSCP 0x00: Default; ECN: 0x00)
+        0000 00.. = Differentiated Services Codepoint: Default (0x00)
+        .... ..0. = ECN-Capable Transport (ECT): 0
+        .... ...0 = ECN-CE: 0
+    Total Length: 366
+    Identification: 0x7356 (29526)
+    Flags: 0x04 (Don't Fragment)
+        0... = Reserved bit: Not set
+        .1.. = Don't fragment: Set
+        ..0. = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: UDP (0x11)
+    Header checksum: 0xadcc [correct]
+        [Good: True]
+        [Bad : False]
+    Source: 10.100.1.203 (10.100.1.203)
+    Destination: 10.100.1.202 (10.100.1.202)
+User Datagram Protocol, Src Port: sip (5060), Dst Port: x11 (6060)
+    Source port: sip (5060)
+    Destination port: x11 (6060)
+    Length: 346
+    Checksum: 0x4051 [validation disabled]
+        [Good Checksum: False]
+        [Bad Checksum: False]
+Session Initiation Protocol
+    Status-Line: SIP/2.0 483 Too Many Hops
+        Status-Code: 483
+        [Resent Packet: False]
+        [Request Frame: 1]
+        [Response Time (ms): 14]
+    Message Header
+        Content-Length: 0
+        To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at ims01.internal.cdtm.de</A>&gt;;tag=g8x7cd59-9
+            SIP to address: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at ims01.internal.cdtm.de</A>
+                SIP to address User Part: bob
+                SIP to address Host Part: ims01.internal.cdtm.de
+            SIP tag: g8x7cd59-9
+        Cseq: 10 REGISTER
+            Sequence Number: 10
+            Method: REGISTER
+        Via: SIP/2.0/UDP 10.100.1.202:6060;branch=z9hG4bK99d6.beb6872.0
+            Transport: UDP
+            Sent-by Address: 10.100.1.202
+            Sent-by port: 6060
+            Branch: z9hG4bK99d6.beb6872.0
+        From: sip:scscf.ims01.internal.cdtm.de:6060;tag=41662b936812dbee7576c7c4094495e7-dd0f
+            SIP from address: sip:scscf.ims01.internal.cdtm.de:6060
+                SIP from address Host Part: scscf.ims01.internal.cdtm.de
+                SIP from address Host Port: 6060
+            SIP tag: 41662b936812dbee7576c7c4094495e7-dd0f
+        Call-Id: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">7fffaf03-7763 at 10.100.1.202</A>
+        Server: Glassfish_SIP_2.0.0
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006219.html">[OpenIMSCore-Users] e-cscf setup installation
+</A></li>
+	<LI>Next message: <A HREF="006221.html">[OpenIMSCore-Users] AS Trouble - Part II
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6220">[ date ]</a>
+              <a href="thread.html#6220">[ thread ]</a>
+              <a href="subject.html#6220">[ subject ]</a>
+              <a href="author.html#6220">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

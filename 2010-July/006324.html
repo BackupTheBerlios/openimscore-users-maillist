@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to set TCP (Diameter) connexion' source	address?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20set%20TCP%20%28Diameter%29%20connexion%27%20source%0A%09address%3F&In-Reply-To=%3CE0636EFC2C7FAF4684D1C97656704E1A4D41A12C8D%40astsm.astellia.loc%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006330.html">
+   <LINK REL="Next"  HREF="006329.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to set TCP (Diameter) connexion' source	address?</H1>
+    <B>Jeanne Cl&#233;ment</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20set%20TCP%20%28Diameter%29%20connexion%27%20source%0A%09address%3F&In-Reply-To=%3CE0636EFC2C7FAF4684D1C97656704E1A4D41A12C8D%40astsm.astellia.loc%3E"
+       TITLE="[OpenIMSCore-Users] How to set TCP (Diameter) connexion' source	address?">c.jeanne at astellia.com
+       </A><BR>
+    <I>Thu Jul  8 12:23:10 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006330.html">[OpenIMSCore-Users] Problem with tel URI routing in P-CSCF
+</A></li>
+        <LI>Next message: <A HREF="006329.html">[OpenIMSCore-Users] Compilation errors of ser_ims on Solaris 10
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6324">[ date ]</a>
+              <a href="thread.html#6324">[ thread ]</a>
+              <a href="subject.html#6324">[ subject ]</a>
+              <a href="author.html#6324">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have successfully installed OpenIMS on a Linux system as describe in the installation guide on Openims' website. Everything is working perfect (REGISTER, INVITE, etc) but for trace concern I want every process (FHoss, CSCFs) to bind on different IP address.
+I've setup my system to get aliases (eth0:1, eth0:2, etc) with different IP address and then changed openims configuration accordingly.
+For UDP (SIP) connexion, everything works great: I can see the messages being relayed from PCSCF to ICSCF then SCSCF, etc with different IP addresses.
+But for TCP (Diameter) connexion, this doesn't work. At start up HSS initiate TCP connexions to ICSCF and SCSCF but I don't have control on both source address and source port. The source port is randomly selected and the source IP is selected from available IPs in the system (here exactly the same as the dest IP).
+
+For example on the same system I do want:
+Eht0:1 10.0.0.1 PCSCF
+Eth0:2 10.0.0.2 ICSCF
+Eht0:3 10.0.0.3 SCSCF
+Eth0:4 10.0.0.4 FHoSS
+
+But FHoSS's TCP Diameter connexion to ICSCF uses Src:10.0.0.2 Dst:10.0.0.2 and for SCSCF Src:10.0.0.3 Dst:10.0.0.3.
+What I want is Src:10.0.0.4 dst:10.0.0.2 but it does not happen.
+
+&lt;Acceptor port=&quot;3868&quot; bind=&quot;10.0.0.4&quot;/&gt; in DiameterPeerHSS.xml just open a socket but nothing else.
+
+So, is there a way in the HSS configuration to force HSS the use of a specific interface when establishing the TCP Diameter connexion?
+
+
+
+Regards
+
+Cl&#233;ment JEANNE.
+Stagiaire R&amp;D.
+
+Astellia
+Tel.: +33 (0)2 99 04 80 60
+Visit our web site: www.astellia.com&lt;<A HREF="file:///C:\Documents%20and%20Settings\c.jeanne\Application%20Data\Microsoft\Signatures\www.astellia.com">file:///C:\Documents%20and%20Settings\c.jeanne\Application%20Data\Microsoft\Signatures\www.astellia.com</A>&gt;
+
+
+________________________________
+Astellia celebrates its 10th anniversary in 2010
+10 years of innovation and client proximity
+
+________________________________
+Ce message et tout document joint sont confidentiels et &#224; l'intention exclusive des destinataires.
+S'ils vous ont &#233;t&#233; adress&#233;s par erreur, merci d'en informer imm&#233;diatement l'exp&#233;diteur et de les d&#233;truire.
+Toute copie, diffusion ou utilisation non autoris&#233;e est interdite. Tout message &#233;lectronique est susceptible d'alt&#233;ration : Astellia d&#233;cline toute responsabilit&#233; si le message ou les documents joints ont subi une quelconque modification.
+
+This message and any attachment are confidential and intended solely to its addressees.
+If you are not the intended recipient please cancel it and inform immediately the sender.
+Any unauthorised copy or dissemination is prohibited. Electronic messages may be altered: Astellia shall not be liable for those circumstances.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100708/e01dd50a/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100708/e01dd50a/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006330.html">[OpenIMSCore-Users] Problem with tel URI routing in P-CSCF
+</A></li>
+	<LI>Next message: <A HREF="006329.html">[OpenIMSCore-Users] Compilation errors of ser_ims on Solaris 10
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6324">[ date ]</a>
+              <a href="thread.html#6324">[ thread ]</a>
+              <a href="subject.html#6324">[ subject ]</a>
+              <a href="author.html#6324">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

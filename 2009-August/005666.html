@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] S-CSCF doesn't include P-CHARGING-VECTOR in	NOTIFY
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20doesn%27t%20include%20P-CHARGING-VECTOR%0A%20in%09NOTIFY&In-Reply-To=%3C4A79576A.7020301%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005669.html">
+   <LINK REL="Next"  HREF="005667.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] S-CSCF doesn't include P-CHARGING-VECTOR in	NOTIFY</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20doesn%27t%20include%20P-CHARGING-VECTOR%0A%20in%09NOTIFY&In-Reply-To=%3C4A79576A.7020301%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] S-CSCF doesn't include P-CHARGING-VECTOR in	NOTIFY">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Aug  5 11:56:58 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005669.html">[OpenIMSCore-Users] I-CSCF rejecting REGISTER	with	600	Busy	everywhere
+</A></li>
+        <LI>Next message: <A HREF="005667.html">[OpenIMSCore-Users] SCSCF crash with presence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5666">[ date ]</a>
+              <a href="thread.html#5666">[ thread ]</a>
+              <a href="subject.html#5666">[ subject ]</a>
+              <a href="author.html#5666">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Then the P/S_add_p_charging_vector() would need to be modified/extended, 
+to look if the sent corresponding transactional request contained such a 
+header. If yes, then it should copy it to the response, if not already 
+there.
+
+Also the configuration files would need some extensions to also add this 
+header on the subsequent requests/responses, but this would be the easy 
+part.
+
+Cheers,
+-Dragos
+
+Dushyant Dhalia wrote:
+&gt;<i> See doc 3GPP TS 32.260 version 7.3.0 Release 7, page 13 -
+</I>&gt;<i>
+</I>&gt;<i> At each SIP session unrelated method, *both initial and subsequent* 
+</I>&gt;<i> (e.g., REGISTER, NOTIFY, MESSAGE etc.), a new, session unrelated ICID 
+</I>&gt;<i> is generated at the first IMS network element that processes the 
+</I>&gt;<i> method. This ICID value is contained in the SIP request and response 
+</I>&gt;<i> of that SIP transaction and must be valid for the duration of the 
+</I>&gt;<i> transaction.
+</I>&gt;<i>
+</I>&gt;<i> Dushyant P S Dhalia
+</I>&gt;<i>
+</I>&gt;<i> Dragos Vingarzan wrote:
+</I>&gt;&gt;<i> Hmm... AFAIR, the charging vectors are generated only on initial 
+</I>&gt;&gt;<i> requests and not on subsequent ones. Is there a spec that says it 
+</I>&gt;&gt;<i> should also be in there?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In case it is, some new functions should be developed to save this 
+</I>&gt;&gt;<i> info on the dialog probably and retrieve it on subsequent requests. 
+</I>&gt;&gt;<i> the *_add_p_charging_vector() functions now only generate new values 
+</I>&gt;&gt;<i> and fill them in, without saving or retrieving.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So it's not configurable. Contributions are of course welcome.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Dushyant Dhalia wrote:
+</I>&gt;&gt;&gt;<i> There seems to be a bug in openims s-cscf, it doesn't include 
+</I>&gt;&gt;&gt;<i> P-CHARGING-VECTOR header in NOTIFY as a result Rancore P-CSCF is 
+</I>&gt;&gt;&gt;<i> rejecting the NOTIFY. Is it configurable?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Dushyant P S Dhalia
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005669.html">[OpenIMSCore-Users] I-CSCF rejecting REGISTER	with	600	Busy	everywhere
+</A></li>
+	<LI>Next message: <A HREF="005667.html">[OpenIMSCore-Users] SCSCF crash with presence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5666">[ date ]</a>
+              <a href="thread.html#5666">[ thread ]</a>
+              <a href="subject.html#5666">[ subject ]</a>
+              <a href="author.html#5666">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

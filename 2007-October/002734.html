@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] TEL URI
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20TEL%20URI&In-Reply-To=%3C470DFD98.6060403%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002732.html">
+   <LINK REL="Next"  HREF="002736.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] TEL URI</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20TEL%20URI&In-Reply-To=%3C470DFD98.6060403%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] TEL URI">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Oct 11 12:40:24 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002732.html">[OpenIMSCore-Users] TEL URI
+</A></li>
+        <LI>Next message: <A HREF="002736.html">[OpenIMSCore-Users] TEL URI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2734">[ date ]</a>
+              <a href="thread.html#2734">[ thread ]</a>
+              <a href="subject.html#2734">[ subject ]</a>
+              <a href="author.html#2734">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yes, you are right... we have a bug when the Req-URI is a TEL uri...
+
+I checked the iptel.org SER CVS and it seems that their version was
+without this. I have committed this, so please retry and tell me if the
+problem persists...
+
+I still have to check where this code came from...
+
+-Dragos
+
+Guhan P wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> Please find the attached zip file which contains Pcscf,Scscf log files
+</I>&gt;<i> along with network capture.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Guhan
+</I>&gt;<i>
+</I>&gt;<i> ----- Original Message ----- From: &quot;Guhan P&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">guhan.p at globaledgesoft.com</A>&gt;
+</I>&gt;<i> To: &quot;Dragos Vingarzan&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> Cc: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;<i> Sent: Tuesday, October 09, 2007 6:33 PM
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] TEL URI
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi Dragos,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Please find the attached capture.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Capture contains following messages.
+</I>&gt;&gt;<i> 1. Registration from bob.tel:+1-234-567-890 got implicitly registered.
+</I>&gt;&gt;<i> 2. Registration from alice.
+</I>&gt;&gt;<i> 3. Made a call from sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> to tel:+1-234-567-890
+</I>&gt;&gt;<i>    Got 478 and 500 response.
+</I>&gt;&gt;<i> 4. Made a call from sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> to
+</I>&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+1-234-567-890 at open-ims.test</A>;user=phone&gt;
+</I>&gt;&gt;<i>    Got 404 response.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i> Guhan
+</I>&gt;&gt;<i> ----- Original Message ----- From: &quot;Dragos Vingarzan&quot;
+</I>&gt;&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;<i> To: &quot;Guhan P&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">guhan.p at globaledgesoft.com</A>&gt;
+</I>&gt;&gt;<i> Cc: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;&gt;<i> Sent: Tuesday, October 09, 2007 4:41 PM
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] TEL URI
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Could you please capture and send a network trace? It seems that the
+</I>&gt;&gt;&gt;<i> wrong message got to the P-CSCF. The Request-URI should be an IP
+</I>&gt;&gt;&gt;<i> address, but it is not.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Guhan P wrote:
+</I>&gt;&gt;&gt;&gt;<i> Hi All,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I am implementing TEL URI support.
+</I>&gt;&gt;&gt;&gt;<i> I created the public uri *&quot;tel:+1-234-567-890&quot; * and mapped to private
+</I>&gt;&gt;&gt;&gt;<i> uri <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; in OpenIMS Server.
+</I>&gt;&gt;&gt;&gt;<i> Tel Uri ie.*&quot;tel:+1-234-567-890&quot;* got registered implicitly when I
+</I>&gt;&gt;&gt;&gt;<i> registered for *sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>*.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> When I made a call from *sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>* to
+</I>&gt;&gt;&gt;&gt;<i> *tel:+1-234-567-789,* I got *478* &quot;Unresolvable destination&quot; and *500*
+</I>&gt;&gt;&gt;&gt;<i> &quot;Error forwarding originating initial request&quot; responses from PCSCF.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Invite Message
+</I>&gt;&gt;&gt;&gt;<i> -----------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> INVITE *tel:+1-234-568-890* SIP/2.0
+</I>&gt;&gt;&gt;&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;tag:1234
+</I>&gt;&gt;&gt;&gt;<i> To: *&lt;tel:+1-234-567-890&gt;*
+</I>&gt;&gt;&gt;&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;&gt;&gt;&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 172.16.7.208</A>:5060&gt;
+</I>&gt;&gt;&gt;&gt;<i> .........
+</I>&gt;&gt;&gt;&gt;<i> ----------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I found the following printfs in PCSCF.
+</I>&gt;&gt;&gt;&gt;<i> ---------------------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> P-CSCF:cscf_get_originating_contact: *1://172.16.7.208:5060*
+</I>&gt;&gt;&gt;&gt;<i> P-CSCF:cscf_get_terminating_contact: *0//:0*
+</I>&gt;&gt;&gt;&gt;<i> **
+</I>&gt;&gt;&gt;&gt;<i> ERROR: sip_hostport2su: could not resolve hostname: &quot;&quot;
+</I>&gt;&gt;&gt;&gt;<i> ERROR: uri2dst: failed to resolve &quot;&quot;
+</I>&gt;&gt;&gt;&gt;<i> ERROR: t_forward_nonack:failure to add branches
+</I>&gt;&gt;&gt;&gt;<i> ---------------------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Please help me to solve this issue?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;&gt;<i> Guhan
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> This e-mail contains PRIVILEGED AND CONFIDENTIAL INFORMATION intended
+</I>&gt;&gt;&gt;&gt;<i> solely for the use of the addressee(s). If you are not the intended
+</I>&gt;&gt;&gt;&gt;<i> recipient, please notify the sender by e-mail and delete the original
+</I>&gt;&gt;&gt;&gt;<i> message.Global Edge Software Ltd has taken every reasonable
+</I>&gt;&gt;&gt;&gt;<i> precaution to
+</I>&gt;&gt;&gt;&gt;<i> minimize this risk, but is not liable for any damage you may
+</I>&gt;&gt;&gt;&gt;<i> sustain as a
+</I>&gt;&gt;&gt;&gt;<i> result of any virus in this e-mail. You should carry out your own
+</I>&gt;&gt;&gt;&gt;<i> virus
+</I>&gt;&gt;&gt;&gt;<i> checks before opening the e-mail or attachment. Global Edge
+</I>&gt;&gt;&gt;&gt;<i> Software Ltd
+</I>&gt;&gt;&gt;&gt;<i> reserves the right to monitor and review the content of all
+</I>&gt;&gt;&gt;&gt;<i> messages sent
+</I>&gt;&gt;&gt;&gt;<i> to or from this e-mail address
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -- 
+</I>&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002732.html">[OpenIMSCore-Users] TEL URI
+</A></li>
+	<LI>Next message: <A HREF="002736.html">[OpenIMSCore-Users] TEL URI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2734">[ date ]</a>
+              <a href="thread.html#2734">[ thread ]</a>
+              <a href="subject.html#2734">[ subject ]</a>
+              <a href="author.html#2734">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

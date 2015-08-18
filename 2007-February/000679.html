@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] 401 - Unauthorized
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20401%20-%20Unauthorized&In-Reply-To=%3C890721.83344.qm%40web56106.mail.re3.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000623.html">
+   <LINK REL="Next"  HREF="000613.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] 401 - Unauthorized</H1>
+    <B>Sudhakar Patil</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20401%20-%20Unauthorized&In-Reply-To=%3C890721.83344.qm%40web56106.mail.re3.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] 401 - Unauthorized">spatil4572 at yahoo.com
+       </A><BR>
+    <I>Tue Feb  6 20:25:10 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000623.html">[OpenIMSCore-Users] 401 - Unauthorized
+</A></li>
+        <LI>Next message: <A HREF="000613.html">[OpenIMSCore-Users] [01_persistency] New branch created
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#679">[ date ]</a>
+              <a href="thread.html#679">[ thread ]</a>
+              <a href="subject.html#679">[ subject ]</a>
+              <a href="author.html#679">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos, 
+I did not have success in using SIP2IMS GW with X-Lite
+client. I had success in configuring X-Lite to
+directly to talk to P-CSCF and ensuing S-CSCF and HSS
+support Digest authentication as suggested by Babu and
+David. 
+
+I am still wondering on why the Digest MD5
+authentication is successful with S-CSCF/HSS and not
+with SIP2IMS GW even though the password and
+configuration is the same. Looks like SIP2IMS GW may
+need to be debugged a bit. Will explore more on that. 
+
+Regards,
+Sudhakar.
+
+--- Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+wrote:
+
+&gt;<i> Could you please provide me with a FAQ like entry
+</I>&gt;<i> for configuring X-Lite
+</I>&gt;<i> then? This question comes too often on the mailing
+</I>&gt;<i> list, so let's fix it.
+</I>&gt;<i> 
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> Sudhakar Patil wrote:
+</I>&gt;<i> &gt; David/Babu,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; It worked. Thanks a lot for the help.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Regards,
+</I>&gt;<i> &gt; Sudhakar.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; --- &quot;Verbeiren, David&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">david.verbeiren at intel.com</A>&gt;
+</I>&gt;<i> &gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; Sudhakar,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Babu's suggestion is exactly what I'm currently
+</I>&gt;<i> &gt;&gt; using, and it works fine
+</I>&gt;<i> &gt;&gt; with various clients (not all of them though),
+</I>&gt;<i> &gt;&gt; including X-Lite on
+</I>&gt;<i> &gt;&gt; Windows. This is possible because recent svn
+</I>&gt;<i> &gt;&gt; snapshots support MD5 both
+</I>&gt;<i> &gt;&gt; in the CSCFs and in the HSS. Also, even if you
+</I>&gt;<i> can't
+</I>&gt;<i> &gt;&gt; select the
+</I>&gt;<i> &gt;&gt; algorithm in X-Lite, it does support MD5 when
+</I>&gt;<i> &gt;&gt; responding to an
+</I>&gt;<i> &gt;&gt; authorization challenge.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Here is what I think needs to be modified:
+</I>&gt;<i> &gt;&gt; * In the HSS (e.g. using the web i/f), change the
+</I>&gt;<i> &gt;&gt; Authorization method
+</I>&gt;<i> &gt;&gt; and algo to Digest-MD5 and MD5 in the Private
+</I>&gt;<i> &gt;&gt; Identity profile of the
+</I>&gt;<i> &gt;&gt; user.
+</I>&gt;<i> &gt;&gt; * In scscf.cfg, change the
+</I>&gt;<i> &gt;&gt; registration_default_algorithm parameter to
+</I>&gt;<i> &gt;&gt; MD5. This is required because otherwise the
+</I>&gt;<i> S-CSCF
+</I>&gt;<i> &gt;&gt; and HSS would produce
+</I>&gt;<i> &gt;&gt; an AKAv1-MD5 challenge to which the X-Lite
+</I>&gt;<i> wouldn't
+</I>&gt;<i> &gt;&gt; know how to respond
+</I>&gt;<i> &gt;&gt; and would &quot;therefore&quot; not respond at all. Other
+</I>&gt;<i> &gt;&gt; clients show different
+</I>&gt;<i> &gt;&gt; behaviors: some would provide an MD5 response but
+</I>&gt;<i> &gt;&gt; without changing the
+</I>&gt;<i> &gt;&gt; algorithm field, therefore causing authorization
+</I>&gt;<i> &gt;&gt; failure; some would do
+</I>&gt;<i> &gt;&gt; the same but change the algorithm field and these
+</I>&gt;<i> &gt;&gt; would register fine
+</I>&gt;<i> &gt;&gt; without the change of default algo.
+</I>&gt;<i> &gt;&gt; * In X-Lite, use something similar to the
+</I>&gt;<i> following:
+</I>&gt;<i> &gt;&gt; 	outbound proxy = pcscf.open-ims.test:4060
+</I>&gt;<i> &gt;&gt; 	username = alice
+</I>&gt;<i> &gt;&gt; 	domain = open-ims.test
+</I>&gt;<i> &gt;&gt; 	authorization username = <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Hope this helps,
+</I>&gt;<i> &gt;&gt; -David
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -----Original Message-----
+</I>&gt;<i> &gt;&gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>]
+</I>&gt;<i> &gt;&gt; On Behalf Of Babu
+</I>&gt;<i> &gt;&gt; George
+</I>&gt;<i> &gt;&gt; Sent: 01 February 2007 03:26
+</I>&gt;<i> &gt;&gt; To: openimscore-users; spatil4572
+</I>&gt;<i> &gt;&gt; Subject: Re: [OpenIMSCore-Users] 401 -
+</I>&gt;<i> Unauthorized
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Sudhakar,
+</I>&gt;<i> &gt;&gt;  Have a suggestion.Set the authentication
+</I>&gt;<i> algorithm
+</I>&gt;<i> &gt;&gt; as MD5 at HSS and
+</I>&gt;<i> &gt;&gt; xlite, by pass sip2ims gw and try registration.It
+</I>&gt;<i> it
+</I>&gt;<i> &gt;&gt; still fails, please
+</I>&gt;<i> &gt;&gt; attach the ethereal trace
+</I>&gt;<i> &gt;&gt; Thanks
+</I>&gt;<i> &gt;&gt; Babu
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -----Original Message-----
+</I>&gt;<i> &gt;&gt; From: Sudhakar Patil
+</I>&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">spatil4572 at yahoo.com</A>] 
+</I>&gt;<i> &gt;&gt; Sent: Thursday, February 01, 2007 7:05 AM
+</I>&gt;<i> &gt;&gt; To: openimscore-users
+</I>&gt;<i> &gt;&gt; Subject: Re: [OpenIMSCore-Users] 401 -
+</I>&gt;<i> Unauthorized
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; BTW,
+</I>&gt;<i> &gt;&gt; The following are the contents of &quot;credentials&quot;
+</I>&gt;<i> &gt;&gt; table
+</I>&gt;<i> &gt;&gt; in sip2ims db of mysql.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; mysql&gt; select * from credentials;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>+---------------+-------+---------------+----------+-------+------------
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; --------
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>--------------+----------------------------------+-----+
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; | auth_username | did   | realm         |
+</I>&gt;<i> password |
+</I>&gt;<i> &gt;&gt; flags | ha1
+</I>&gt;<i> &gt;&gt;               | ha1b                            
+</I>&gt;<i> |
+</I>&gt;<i> &gt;&gt; uid
+</I>&gt;<i> &gt;&gt; |
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>+---------------+-------+---------------+----------+-------+------------
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; --------
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>--------------+----------------------------------+-----+
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; | alice         | _none | open-ims.test | alice  
+</I>&gt;<i>  |
+</I>&gt;<i> &gt;&gt;  
+</I>&gt;<i> &gt;&gt;   1 | 012d7aeb444b8c77be2
+</I>&gt;<i> &gt;&gt; 756591f90accb | a3da98c9b36dde1f17e3f713225dc4d1
+</I>&gt;<i> | 1
+</I>&gt;<i> &gt;&gt;  
+</I>&gt;<i> &gt;&gt; |
+</I>&gt;<i> &gt;&gt; | bob           | _none | open-ims.test | bob    
+</I>&gt;<i>  |
+</I>&gt;<i> &gt;&gt;  
+</I>&gt;<i> &gt;&gt;   1 | d7404d478d7ea2d2307
+</I>&gt;<i> &gt;&gt; 39464f0314fbb | b0342795e048d7e9f4e2432285776dd3
+</I>&gt;<i> | 2
+</I>&gt;<i> &gt;&gt;  
+</I>&gt;<i> &gt;&gt; |
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>+---------------+-------+---------------+----------+-------+------------
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; --------
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>--------------+----------------------------------+-----+
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; 2 rows in set (0.00 sec)
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; --- Sudhakar Patil &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">spatil4572 at yahoo.com</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; Hi Babu, 
+</I>&gt;<i> &gt;&gt;&gt; I run into other problems if I change the user
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; name
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; to
+</I>&gt;<i> &gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> as X-Lite will send the
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; REGISTER
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; as 
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Via: SIP/2.0/UDP
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>10.166.124.3:54780;branch=z9hG4bK-d87543-7d79cd14e630f453-1--d87543-;rpo
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; rt
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; Max-Forwards: 70
+</I>&gt;<i> &gt;&gt;&gt; Contact:
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&lt;sip:alice%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">40open-ims.test at 10.166.124.3</A>:54780;rinstance=59ccd90ffce9a278
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt;&gt; To:
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &quot;&quot;alice&quot;&quot;&lt;sip:alice%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">40open-ims.test at open-ims.test</A>&gt;
+</I>&gt;<i> &gt;&gt;&gt; From:
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&quot;&quot;alice&quot;&quot;&lt;sip:alice%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">40open-ims.test at open-ims.test</A>&gt;;tag=7c4fc82d
+&gt;<i> 
+</I>=== message truncated ===
+
+
+
+ 
+____________________________________________________________________________________
+8:00? 8:25? 8:40? Find a flick in no time 
+with the Yahoo! Search movie showtime shortcut.
+<A HREF="http://tools.search.yahoo.com/shortcuts/#news">http://tools.search.yahoo.com/shortcuts/#news</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000623.html">[OpenIMSCore-Users] 401 - Unauthorized
+</A></li>
+	<LI>Next message: <A HREF="000613.html">[OpenIMSCore-Users] [01_persistency] New branch created
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#679">[ date ]</a>
+              <a href="thread.html#679">[ thread ]</a>
+              <a href="subject.html#679">[ subject ]</a>
+              <a href="author.html#679">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

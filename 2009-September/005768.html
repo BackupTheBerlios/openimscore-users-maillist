@@ -1,0 +1,367 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [Fwd: Re:SEMS-OpenIMSCore]
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BFwd%3A%20Re%3ASEMS-OpenIMSCore%5D&In-Reply-To=%3C2bb4c8ca0909150624x300d905aw5c28cd6bde696a5e%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005753.html">
+   <LINK REL="Next"  HREF="005770.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [Fwd: Re:SEMS-OpenIMSCore]</H1>
+    <B>Jawad hussain</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BFwd%3A%20Re%3ASEMS-OpenIMSCore%5D&In-Reply-To=%3C2bb4c8ca0909150624x300d905aw5c28cd6bde696a5e%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] [Fwd: Re:SEMS-OpenIMSCore]">jawad.ssuet at gmail.com
+       </A><BR>
+    <I>Tue Sep 15 15:24:27 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005753.html">[OpenIMSCore-Users] [Fwd: Re:SEMS-OpenIMSCore]
+</A></li>
+        <LI>Next message: <A HREF="005770.html">[OpenIMSCore-Users] [Fwd: Re:SEMS-OpenIMSCore]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5768">[ date ]</a>
+              <a href="thread.html#5768">[ thread ]</a>
+              <a href="subject.html#5768">[ subject ]</a>
+              <a href="author.html#5768">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks Alot Franz,
+
+I have now done this and below are the cfg's which I have used and are of
+yours. I have make one service profile with required tiggered filter
+matching INVITE and have applied this profile alice and bob. So with Monster
+UA how to invoke this announcement application ?, what should be the URI
+when calling this app?.
+
+Waiting for your reply.
+
+	   if (method==&quot;INVITE&quot;){
+
+		# redirect the call to the 'announcement' plug-in
+		   if(!t_write_unix(&quot;/tmp/sems_sock&quot;,&quot;announcement&quot;)) {
+		      t_reply(&quot;500&quot;,&quot;error contacting sems&quot;);
+		   };
+		   break;
+
+
+Configurations:
+----------------------------
+
+SEMS AS
+----------------
+
+#
+# $Id: as.cfg F.Edler $
+#
+# Dummy Application-Server configuration script
+#
+
+# ----------- global configuration parameters ------------------------
+
+debug=3
+log_stderror=yes
+memlog=4
+sip_warning=yes
+
+fork=no
+children=4
+
+
+listen=127.0.0.1
+port=5065
+alias=open-ims.test
+
+unix_sock=&quot;/tmp/ser_sock&quot;	# unix socket server to communicate e.g. with SEMS
+
+check_via=no	# (cmd. line: -v)
+dns=no			# (cmd. line: -r)
+rev_dns=no		# (cmd. line: -R)
+
+# ------------------ module loading ----------------------------------
+
+loadmodule &quot;/usr/local/lib/ser/modules/sl.so&quot;
+loadmodule &quot;/usr/local/lib/ser/modules/tm.so&quot;
+loadmodule &quot;/usr/local/lib/ser/modules/rr.so&quot;
+loadmodule &quot;/usr/local/lib/ser/modules/maxfwd.so&quot;
+loadmodule &quot;/usr/local/lib/ser/modules/textops.so&quot;
+loadmodule &quot;/usr/local/lib/ser/modules/xlog.so&quot;
+
+modparam(&quot;rr&quot;, &quot;enable_full_lr&quot;, 1)
+
+# -- tm params --
+modparam(&quot;tm&quot;, &quot;pass_provisional_replies&quot;, 1)	
+
+route {
+
+	xlog(&quot;L_INFO&quot;,&quot;%Crx %cs %rm %ru%Cxx from %si:%sp\n\t   From: %fu\n\t
+ To: %tu\n\t   Route: %{Route}\n&quot;);
+
+	# ------------------------------------------------------------------------
+	# Sanity Check Section
+	# ------------------------------------------------------------------------
+	if (!mf_process_maxfwd_header(&quot;10&quot;)) {
+		sl_send_reply(&quot;483&quot;, &quot;Too Many Hops&quot;);
+		break;
+	};
+
+	if (msg:len &gt; max_len) {
+		sl_send_reply(&quot;513&quot;, &quot;Message Overflow&quot;);
+		break;
+	};
+
+      # select messages to redirect to SEMS:
+      if ( method==&quot;ACK&quot; || method==&quot;INVITE&quot; || method==&quot;BYE&quot; ||
+method==&quot;CANCEL&quot; ){
+
+	   # switch to stateful mode:
+	   if (!t_newtran()){
+		sl_send_reply(&quot;500&quot;,&quot;could not create transaction&quot;);
+		break;
+	   };
+
+	   # prevent timeout on the other side:
+	   t_reply(&quot;100&quot;,&quot;Trying - just wait a minute !&quot;);
+	
+	   if (method==&quot;INVITE&quot;){
+
+		# redirect the call to the 'announcement' plug-in
+		   if(!t_write_unix(&quot;/tmp/sems_sock&quot;,&quot;announcement&quot;)) {
+		      t_reply(&quot;500&quot;,&quot;error contacting sems&quot;);
+		   };
+		   break;
+	   }
+	   else if (method==&quot;BYE&quot; || method==&quot;CANCEL&quot;) {
+
+		# Sems should already know which plug-in is handling that call.
+		# &quot;bye&quot; is no plug-in name. It is a reserved name which tells Sems
+to terminate the call.
+
+		if(!t_write_unix(&quot;/tmp/sems_sock&quot;,&quot;bye&quot;)) {
+		    t_reply(&quot;500&quot;,&quot;error contacting sems&quot;);
+		};
+	   }
+	   else if (method==&quot;ACK&quot;) {
+		# absorb ACKs
+		t_relay();
+	   }
+
+      };
+}
+
+
+SEMS Conf
+--------------------
+
+# $Id: sems.conf.sample 265 2007-03-07 21:31:54Z sayer $
+#
+# sems.conf.sample
+#
+# Sip Express Media Server (sems)
+#
+# sample configuration file
+#
+#
+# whitespaces (spaces and tabs) are ignored
+# comments start with a &quot;#&quot; and may be used inline
+#
+# example: option=value # i like this option
+#
+
+# parameter: plugin_config_path=&lt;path&gt;
+#
+# - in this path configuration files of the applications
+#   (e.g. announcement.conf) are searched
+plugin_config_path=/usr/local/etc/sems/etc/
+
+# optional parameter: fork={yes|no}
+#
+# - specifies if sems should run in daemon mode (background)
+#   (fork=no is the same as -E)
+fork=no
+
+# optional parameter: stderr={yes|no}
+#
+# - debug mode: do not fork and log to stderr
+#   (stderr=yes is the same as -E)
+stderr=yes
+
+# optional parameter: loglevel={0|1|2|3}
+#
+# - sets log level (error=0, warning=1, info=2, debug=3)
+#   (same as -D)
+loglevel=2
+
+# optional parameter: socket_name=&lt;filename&gt;
+#
+# - path and file name of our unix socket
+#   (where ser writes messages to)
+socket_name=/tmp/sems_sock
+
+# optional parameter: reply_socket_name=&lt;filename&gt;
+#
+# - path and file name of the unix socket where we
+#   get replies from ser
+reply_socket_name=/tmp/sems_rsp_sock
+
+# optional parameter: ser_socket_name=&lt;filename&gt;
+#
+# - path and file name of Ser's unix socket
+#   (where we write messages to)
+ser_socket_name=/tmp/ser_sock
+
+# optional parameter: plugin_path=&lt;path&gt;
+#
+# - sets the path to the plug-ins
+# - may be absolute or relative to CWD
+plugin_path=/usr/local/lib/sems/plug-in
+
+# optional parameter: load_plugins=&lt;modules list&gt;
+#
+# semicolon-separated list of modules to load
+# If empty, all modules in plugin_path are loaded.
+#
+# example for announcement with g711 and ilbc codecs only
+# load_plugins=wav;ilbc;announcement
+
+# optional parameter: smtp_server=&lt;hostname&gt;
+#
+# - sets address of smtp server
+smtp_server=mail
+
+# optional parameter: smtp_port=&lt;port&gt;
+#
+# - sets port of smtp server
+smtp_port=25
+
+# optional parameter: rtp_low_port=&lt;port&gt;
+#
+# - sets port of rtp lowest server
+rtp_low_port=10000
+
+# optional parameter: rtp_high_port=&lt;port&gt;
+#
+# - sets port of rtp highest server
+rtp_high_port=60000
+
+# optional parameter: media_processor_threads=&lt;num_value&gt;
+#
+# - controls how many threads should be created that
+#   process media - on single-processor systems set this
+#   parameter to 1 (default), on MP systems to a higher
+#   value
+media_processor_threads=1
+
+# optional parameter: listen=&lt;ip_address&gt;|&lt;device&gt;
+#
+# - this informs SEMS about the interface where its SER is
+#   bound to. SEMS needs this information to correctly set
+#   the contact header in outgoing calls and registrations.
+#   Should be set to equal the 'listen' configuration option
+#   in ser_sems.cfg.
+#   If not set, this defaults to the interface SEMS binds to.
+# Examples:
+#  listen=10.0.0.34
+#  listen=eth0
+listen=127.0.0.1
+
+# optional parameter: sip_port=&lt;port_number&gt;
+#
+# - this informs SEMS about the port where its SER is
+#   bound to. SEMS needs this information to correctly set
+#   the contact header in outgoing calls and registrations.
+#   Should be set to equal the 'port' configuration option
+#   in ser_sems.cfg.
+#   This does not need to be set if outgoing calls and
+#   registrations from SEMS are not used.
+#
+#   default: 5060
+#
+#sip_port=5060
+sip_port=5065
+
+# optional parameter: use_default_signature={yes|no}
+#
+# - use a Server/User-Agent header with the SEMS server
+#   signature and version.
+#   Set server_signature=0 in ser_sems.cfg if you use it.
+#
+#   default=no
+#
+# use_default_signature=no
+
+# optional parameter: signature=&lt;signature string&gt;
+#
+# - use a Server/User-Agent header with a custom user agent
+#   signature.
+#   Overridden by default signature if
+#   use_default_signature is set.
+#   Set server_signature=0 in ser_sems.cfg if you use it.
+#
+#
+# signature=&quot;SEMS media server 1.0&quot;
+
+
+Regards,
+Jawad Hussain
+
+
+On Mon, Sep 14, 2009 at 8:25 PM, Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz-edler at aon.at</A>&gt; wrote:
+
+&gt;<i> Hello Jawad,
+</I>&gt;<i>
+</I>&gt;<i> &gt; As I have mentioned earlier that I am trying to integrate OpenIMScore
+</I>&gt;<i> with
+</I>&gt;<i> &gt; SER and SEMS. IMSCORE, all components along with SER and SEMS are running
+</I>&gt;<i> &gt; on 127.0.0.1. SER proxy is running on (5065) redirecting messages to SER
+</I>&gt;<i> &gt; instance for SEM (5070) where as actual SEMS is running on (5071) with
+</I>&gt;<i> &gt; &lt;announcement application&gt;.
+</I>&gt;<i>
+</I>&gt;<i> You do not need SER at all, you can connect SEMS directly as an application
+</I>&gt;<i> server to IMS. This reduces the possible sources of errors.
+</I>&gt;<i>
+</I>&gt;<i> In case of issues provide a core trace-protocol.
+</I>&gt;<i>
+</I>&gt;<i> FRanz
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090915/4a43825a/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090915/4a43825a/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005753.html">[OpenIMSCore-Users] [Fwd: Re:SEMS-OpenIMSCore]
+</A></li>
+	<LI>Next message: <A HREF="005770.html">[OpenIMSCore-Users] [Fwd: Re:SEMS-OpenIMSCore]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5768">[ date ]</a>
+              <a href="thread.html#5768">[ thread ]</a>
+              <a href="subject.html#5768">[ subject ]</a>
+              <a href="author.html#5768">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

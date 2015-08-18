@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] IPv6 and DNS for Ubuntu (Debian too?) users
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IPv6%20and%20DNS%20for%20Ubuntu%20%28Debian%20too%3F%29%20users&In-Reply-To=%3C49B532DC.6050509%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005169.html">
+   <LINK REL="Next"  HREF="005172.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] IPv6 and DNS for Ubuntu (Debian too?) users</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IPv6%20and%20DNS%20for%20Ubuntu%20%28Debian%20too%3F%29%20users&In-Reply-To=%3C49B532DC.6050509%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] IPv6 and DNS for Ubuntu (Debian too?) users">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Mar  9 16:16:44 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005169.html">[OpenIMSCore-Users] Diameter conformance
+</A></li>
+        <LI>Next message: <A HREF="005172.html">[OpenIMSCore-Users] presence problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5171">[ date ]</a>
+              <a href="thread.html#5171">[ thread ]</a>
+              <a href="subject.html#5171">[ subject ]</a>
+              <a href="author.html#5171">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+after wasting a lot of time, I found out that the glibc6 in 
+Ubuntu/Debian have a special desktop-user oriented patch for libnss-dns. 
+So what happens is that there is no DNS query for AAAA (IPv6 resolve) 
+sent from any components, in case you don't have any IPv6 address 
+assigned, better than link-local, so the auto-detection mechanisms from 
+the Open IMS Core do not work and an IPv6 setup on local-loopback only 
+is not functional.
+
+So if you have correct AAAA entries in your DNS but it still doesn't 
+work and you only see type A DNS queries, make sure you provision an 
+IPv6 address on your system. Also check the /etc/nsswitch.conf.
+
+The name of the patch, in case you want to google for it, is 
+local-ipv6-sanity.diff . This is not standard behavior, but it hides an 
+issue on the transition to IPv6, recognized also in RFCs, with different 
+DNS servers.
+
+Cheers,
+-Dragos
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005169.html">[OpenIMSCore-Users] Diameter conformance
+</A></li>
+	<LI>Next message: <A HREF="005172.html">[OpenIMSCore-Users] presence problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5171">[ date ]</a>
+              <a href="thread.html#5171">[ thread ]</a>
+              <a href="subject.html#5171">[ subject ]</a>
+              <a href="author.html#5171">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

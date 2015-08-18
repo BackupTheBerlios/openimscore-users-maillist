@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] HSS Roaming not allowed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20HSS%20Roaming%20not%20allowed&In-Reply-To=%3C1174298476.3651.16.camel%40i3-dhcp114.lab.i3micro.se%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001248.html">
+   <LINK REL="Next"  HREF="001237.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] HSS Roaming not allowed</H1>
+    <B>Niklas Fondberg</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20HSS%20Roaming%20not%20allowed&In-Reply-To=%3C1174298476.3651.16.camel%40i3-dhcp114.lab.i3micro.se%3E"
+       TITLE="[OpenIMSCore-Users] HSS Roaming not allowed">niklas.fondberg at tilgin.com
+       </A><BR>
+    <I>Mon Mar 19 11:01:16 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001248.html">[OpenIMSCore-Users] 483 Too Many Hops
+</A></li>
+        <LI>Next message: <A HREF="001237.html">[OpenIMSCore-Users] HSS Roaming not allowed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1234">[ date ]</a>
+              <a href="thread.html#1234">[ thread ]</a>
+              <a href="subject.html#1234">[ subject ]</a>
+              <a href="author.html#1234">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+I would appreciate some help regarding a problem I've encountered that I can't get around.
+I installed openimscore according to <A HREF="http://www.openimscore.org/docs/install.html">http://www.openimscore.org/docs/install.html</A> with code checked out on Friday 16th of March.
+Everything went smooth until I tried with my client that I'm making IMS compatible.
+I've looked at the mailing list for similar problems but with now result (btw is there a searchable web interface for the posts?).
+
+I'm getting roaming not allowed error in a 403 response to a REGISTER.
+I have set up the dns server as descibed in the installation notes all the software is installed in /opt/OpenIMSCore
+
+Below are 
+1) dig output to prove dns is correctly set up. (can the reverse lookup be the problem? i.e. 127.0.0.1 -&gt; localhost)
+2) hss.*.log files 
+3) the SIP stransactions
+
+### (1)
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at i3-dhcp114</A> OpenIMSCore]# dig pcscf.open-ims.test
+; &lt;&lt;&gt;&gt; DiG 9.3.4 &lt;&lt;&gt;&gt; pcscf.open-ims.test
+;; global options:  printcmd
+;; Got answer:
+;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 42321
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 1
+
+;; QUESTION SECTION:
+;pcscf.open-ims.test.           IN      A
+
+;; ANSWER SECTION:
+pcscf.open-ims.test.    86400   IN      A       127.0.0.1
+
+;; AUTHORITY SECTION:
+open-ims.test.          86400   IN      NS      ns.open-ims.test.
+
+;; ADDITIONAL SECTION:
+ns.open-ims.test.       86400   IN      A       127.0.0.1
+
+;; Query time: 1 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: Mon Mar 19 10:50:04 2007
+;; MSG SIZE  rcvd: 86
+
+### (2)
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at i3-dhcp114</A> OpenIMSCore]# cat ./FHoSS/deploy/hss.server.log
+2007-03-19 10:51:01,510 [main] WARN  org.apache.catalina.connector.MapperListener  - Unknown default host: localhost
+2007-03-19 10:51:05,292 [main] WARN  org.hibernate.impl.SessionFactoryObjectFactory  - InitialContext did not implement EventContext
+...
+2007-03-19 10:51:50,564 [Thread-6] WARN  de.fhg.fokus.hss.diam.cx.UARCommandListener  - <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">de.fhg.fokus.hss.diam.cx.UARCommandListener at 173eca6</A>
+de.fhg.fokus.cx.exceptions.ims.RoamingNotAllowed
+        at de.fhg.fokus.hss.server.cx.op.QueryCxOperation.execute(QueryCxOperation.java:122)
+        at de.fhg.fokus.hss.server.cx.HSScxOperationsImpl.cxQuery(HSScxOperationsImpl.java:92)
+        at de.fhg.fokus.hss.diam.cx.UARCommandListener.recvMessage(UARCommandListener.java:131)
+        at de.fhg.fokus.diameter.DiameterPeer.DiameterWorker.run(DiameterWorker.java:100)
+2007-03-19 10:52:02,017 [Thread-13] DEBUG de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine  - Diameter: Code=280 AppID=0 HbHID=590258236 E2EID=1617443536
+        AVP: Code=268 M Len=4 Data=0x000007d1 INT_Data=2001 Char_Data=&quot;....&quot;
+        AVP: Code=264 M Len=17 Data=0x6873732e6f70656e2d696d732e74657374 INT_Data=1752396590 Char_Data=&quot;hss.open-ims.test&quot;
+        AVP: Code=296 M Len=13 Data=0x6f70656e2d696d732e74657374 INT_Data=1869636974 Char_Data=&quot;open-ims.test&quot;
+
+2007-03-19 10:52:20,650 [Thread-12] DEBUG de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine  - Diameter: Code=280 AppID=0 HbHID=607035452 E2EID=1634220752
+        AVP: Code=268 M Len=4 Data=0x000007d1 INT_Data=2001 Char_Data=&quot;....&quot;
+        AVP: Code=264 M Len=17 Data=0x6873732e6f70656e2d696d732e74657374 INT_Data=1752396590 Char_Data=&quot;hss.open-ims.test&quot;
+        AVP: Code=296 M Len=13 Data=0x6f70656e2d696d732e74657374 INT_Data=1869636974 Char_Data=&quot;open-ims.test&quot;
+
+2007-03-19 10:52:32,058 [Thread-13] DEBUG de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine  - Diameter: Code=280 AppID=0 HbHID=607035452 E2EID=1634220752
+        AVP: Code=268 M Len=4 Data=0x000007d1 INT_Data=2001 Char_Data=&quot;....&quot;
+        AVP: Code=264 M Len=17 Data=0x6873732e6f70656e2d696d732e74657374 INT_Data=1752396590 Char_Data=&quot;hss.open-ims.test&quot;
+        AVP: Code=296 M Len=13 Data=0x6f70656e2d696d732e74657374 INT_Data=1869636974 Char_Data=&quot;open-ims.test&quot;
+
+2007-03-19 10:52:50,682 [Thread-12] DEBUG de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine  - Diameter: Code=280 AppID=0 HbHID=623812668 E2EID=1650997968
+        AVP: Code=268 M Len=4 Data=0x000007d1 INT_Data=2001 Char_Data=&quot;....&quot;
+        AVP: Code=264 M Len=17 Data=0x6873732e6f70656e2d696d732e74657374 INT_Data=1752396590 Char_Data=&quot;hss.open-ims.test&quot;
+        AVP: Code=296 M Len=13 Data=0x6f70656e2d696d732e74657374 INT_Data=1869636974 Char_Data=&quot;open-ims.test&quot;
+
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at i3-dhcp114</A> OpenIMSCore]# cat ./FHoSS/deploy/hss.activities.log
+...
+de.fhg.fokus.cx.exceptions.ims.RoamingNotAllowed
+        at de.fhg.fokus.hss.server.cx.op.QueryCxOperation.execute(QueryCxOperation.java:122)
+        at de.fhg.fokus.hss.server.cx.HSScxOperationsImpl.cxQuery(HSScxOperationsImpl.java:92)
+        at de.fhg.fokus.hss.diam.cx.UARCommandListener.recvMessage(UARCommandListener.java:131)
+        at de.fhg.fokus.diameter.DiameterPeer.DiameterWorker.run(DiameterWorker.java:100)
+
+### (2)
+The SIP messages look like this:
+---------------------------------------------------------------------
+070319 10:03:15.002827 SIP_Transport SIP message sent to  127.0.0.1:5060
+---------------------------------------------------------------------
+REGISTER sip:open-ims.test;transport=udp SIP/2.0
+Via: SIP/2.0/UDP 127.0.0.1:5061;branch=z9hG4bK-1174294994505274002
+Max-Forwards: 70
+To: Alice test account &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>;transport=udp&gt;
+From: Alice test account &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>;transport=udp&gt;;tag=1174294994505252000
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">RA-1174294994505258001 at 127.0.0.1</A>
+CSeq: 1 REGISTER
+Contact: alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 127.0.0.1</A>:5061;transport=udp&gt;;q=1.000
+Expires: 900
+Supported: replaces, 100rel, timer
+X-NAT: nothing
+X-Serialnumber: Mood-123456789
+P-Visited-Network-ID: &quot;open-ims.test&quot;
+Content-Length: 0
+
+
+---------------------------------------------------------------------
+070319 10:03:15.002870 SIP_Transport: DIAG callh/SIP_Transport.cxx:873 Calling UDP send data, length = 613
+
+
+---------------------------------------------------------------------
+070319 10:03:15.512644 SIP_Transport SIP Message received from  127.0.0.1:5060
+---------------------------------------------------------------------
+SIP/2.0 403 Forbidden - HSS Roaming not allowed
+Via: SIP/2.0/UDP 127.0.0.1:5061;branch=z9hG4bK-1174294994505274002
+To: Alice test account &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>;transport=udp&gt;;tag=a6a1c5f60faecf035a1ae5b6e96e979a-8380
+From: Alice test account &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>;transport=udp&gt;;tag=1174294994505252000
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">RA-1174294994505258001 at 127.0.0.1</A>
+CSeq: 1 REGISTER
+Server: Sip EXpress router (2.1.0-dev1-OpenIMSCore-evision: 195  (i386/linux))
+Content-Length: 0
+Warning: 392 127.0.0.1:5060 &quot;Noisy feedback tells:  pid=5115 req_src_ip=127.0.0.1 req_src_port=5061 in_uri=sip:open-ims.test;transport=udp out_uri=sip:open-ims.test;transport=udp via_cnt==1&quot;
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001248.html">[OpenIMSCore-Users] 483 Too Many Hops
+</A></li>
+	<LI>Next message: <A HREF="001237.html">[OpenIMSCore-Users] HSS Roaming not allowed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1234">[ date ]</a>
+              <a href="thread.html#1234">[ thread ]</a>
+              <a href="subject.html#1234">[ subject ]</a>
+              <a href="author.html#1234">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

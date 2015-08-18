@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] PacketCable support -	Bug	in	modules/scscf/registration.c
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PacketCable%20support%20-%0A%09Bug%09in%09modules/scscf/registration.c&In-Reply-To=%3C4729CBDF.4000005%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002848.html">
+   <LINK REL="Next"  HREF="002850.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] PacketCable support -	Bug	in	modules/scscf/registration.c</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PacketCable%20support%20-%0A%09Bug%09in%09modules/scscf/registration.c&In-Reply-To=%3C4729CBDF.4000005%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] PacketCable support -	Bug	in	modules/scscf/registration.c">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Nov  1 13:51:43 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002848.html">[OpenIMSCore-Users] Is any  Media server available ???
+</A></li>
+        <LI>Next message: <A HREF="002850.html">[OpenIMSCore-Users] PacketCable support - Bug in	modules/scscf/registration.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2849">[ date ]</a>
+              <a href="thread.html#2849">[ thread ]</a>
+              <a href="subject.html#2849">[ subject ]</a>
+              <a href="author.html#2849">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>So, it looks like there was still one bug left there - fixed in r470 -
+FHoSS was still sending the HA1 as binary instead of hex string.
+
+-Dragos
+
+Dragos Vingarzan wrote:
+&gt;<i> Hello Sudhakar,
+</I>&gt;<i>
+</I>&gt;<i> Super, the patch applied cleanly and it looks good (haven't tested it
+</I>&gt;<i> yet thoroughly, pls tell me if it works).
+</I>&gt;<i>
+</I>&gt;<i> The S-CSCF is patched since r465. Also, the HSS is patched since r466.
+</I>&gt;<i>
+</I>&gt;<i> Thanx for the patch!
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Sudhakar Patil wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi Dragos, 
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Attached text file is the SVN diff for bug fixes related to PacketCable functionality. 
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Descriptions: 
+</I>&gt;&gt;<i> -------------------
+</I>&gt;&gt;<i> modules/scscf/registration.c:
+</I>&gt;&gt;<i> - Digest-HA1 that is returned in MAA from HSS according to PacketCable specifications is of type OctetString and hence bintobase16 conversion should not be done. 
+</I>&gt;&gt;<i> - Latest PacketCable specifications seem to align with ETSI TISPAN in the usage of &quot;unknown&quot; as SIP-Authentication-Scheme in the case where CSCF is expecting HSS to select the appropriate authentication scheme. In the currnet implementation this was set to &quot;Unknown&quot;. 
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> modules/scscf/cx_avp.c:
+</I>&gt;&gt;<i> - According to PacketCable specifications Digest-HA1 AVP is an AVP grouped inside of SIP-Digest-Authenticate and is NOT present directly under SIP-Auth-Data-Item. Hence the current code to retrieve Digest-HA1 fails and has been changed to be similar to what is done for ETSI Digest-HA1. 
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i> Sudhakar.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ----- Original Message ----
+</I>&gt;&gt;<i> From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;<i> To: Sudhakar Patil &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">spatil4572 at yahoo.com</A>&gt;
+</I>&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Sent: Tuesday, October 23, 2007 10:45:01 AM
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] PacketCable support - Bug in modules/scscf/registration.c
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hello Sudhakar,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> You have nothing to worry about. It's simple to contribute and I am here
+</I>&gt;&gt;<i> to help. It seems that you already did some changes, so it would be
+</I>&gt;&gt;<i> better to get the whole thing in one patch. This would save me time
+</I>&gt;&gt;<i> because I won't have to check all the standards and spend time
+</I>&gt;&gt;<i> re-implementing the fix that you already did; also it is easier for you
+</I>&gt;&gt;<i> as I will get all your changes at once. And, of course, it's way better
+</I>&gt;&gt;<i> for both if you are more independent and you can fix yourself the issues
+</I>&gt;&gt;<i> that you observe.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So if you did the changes in your local svn copy, you just need to do a
+</I>&gt;&gt;<i> &quot;svn diff&quot; in the ser_ims directory and send me the output. This will
+</I>&gt;&gt;<i> give you all the differences, including non-changes - like you just
+</I>&gt;&gt;<i> added some new lines or spaces, so it's also good way of checking what
+</I>&gt;&gt;<i> you changed.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &quot;svn status&quot; will give you an overview of the changed files. And &quot;svn
+</I>&gt;&gt;<i> commit&quot; would send the changes directly to the svn, but you do not have
+</I>&gt;&gt;<i> write access on the trunk.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I encourage you to use svn from the command line - it's not that hard to
+</I>&gt;&gt;<i> learn - because that way you will understand it better. But if you use
+</I>&gt;&gt;<i> an IDE, like Eclipse, you can from there see all the changes, do
+</I>&gt;&gt;<i> commits, updates and even create a patch to send me.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If you would like to work on a feature that takes longer time and you
+</I>&gt;&gt;<i> also want to share the code before you are done, so that others could
+</I>&gt;&gt;<i> comment/help before you are finished, we would open a branch for you
+</I>&gt;&gt;<i> where you and any other developer could commit. This is at start
+</I>&gt;&gt;<i> basically a copy of the main trunk of the project. As this branch will
+</I>&gt;&gt;<i> only be used by users who know what they are doing, here you could be a
+</I>&gt;&gt;<i> little relaxed in regard to bugs, completeness and so on. When you
+</I>&gt;&gt;<i> consider that you are done, we will merge all the changes in the branch
+</I>&gt;&gt;<i> with the trunk such that your changes would be a standard feature of the
+</I>&gt;&gt;<i> project.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> For example, the NASS-Bundled authentication is finished and it would be
+</I>&gt;&gt;<i> soon integrated. This is now still in a branch and could be tested by
+</I>&gt;&gt;<i> anyone if they would like to.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> At the beginning a maintainer will supervise all the changes that you
+</I>&gt;&gt;<i> will push into the trunk to make sure that there are no conflicts and
+</I>&gt;&gt;<i> that the features work well. After you send several good patches, we
+</I>&gt;&gt;<i> usually give full access. We would like to enable a kind of &quot;wiki&quot; mode
+</I>&gt;&gt;<i> for writing code, yet we have to be a little careful at the beginning
+</I>&gt;&gt;<i> with new developers, as it happens that although they have good
+</I>&gt;&gt;<i> intentions, the changes do more wrong than good. On the branches, the
+</I>&gt;&gt;<i> change permission is free for anyone wanting to contribute (all you need
+</I>&gt;&gt;<i> is to open a berlios account and to write us briefly about your plans).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Sudhakar Patil wrote:
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hello Dragos, 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> For the issues related to PacketCable, the changes are fairly small and fall into bug fixes nature than enhancements. I would be gald to submit a patch. But I am not sure how to do that. Can you please provide me some guidance? 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;<i> Sudhakar.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> ----- Original Message ----
+</I>&gt;&gt;&gt;<i> From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;&gt;<i> To: Sudhakar Patil &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">spatil4572 at yahoo.com</A>&gt;
+</I>&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> Sent: Tuesday, October 23, 2007 8:42:39 AM
+</I>&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] PacketCable support - Bug in modules/scscf/registration.c
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hello Sudhakar,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> It might have been that our implementation was based on a different
+</I>&gt;&gt;&gt;<i> version of the standards as there are so many differences. Anyway, great
+</I>&gt;&gt;&gt;<i> that somebody can provide us with some inter-op feedback as this feature
+</I>&gt;&gt;&gt;<i> is quite new and untested.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> It looks like you already did a lot of changes. Would be great if you
+</I>&gt;&gt;&gt;<i> could send me a patch with these. Could you also indicate the standards
+</I>&gt;&gt;&gt;<i> version that you work on?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Cheers,
+</I>&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Sudhakar Patil wrote:
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Hello Dragos et al, 
+</I>&gt;&gt;&gt;&gt;<i> Can you please provide your thoughts on this? 
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;&gt;<i> Sudhakar.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> ----- Original Message ----
+</I>&gt;&gt;&gt;&gt;<i> From: Sudhakar Patil &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">spatil4572 at yahoo.com</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> Sent: Wednesday, October 17, 2007 4:40:31 PM
+</I>&gt;&gt;&gt;&gt;<i> Subject: [OpenIMSCore-Users] PacketCable support - Bug in modules/scscf/registration.c
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;&gt;<i> According to PacketCable specifications HA1 in Digest-HA1 AVP is sent as OctectString. 
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> In new_auth_vector function, for the case of AUTH_DIGEST, HA1 is being converted to base 16 in the code below:
+</I>&gt;&gt;&gt;&gt;<i>  x-&gt;authorization.len = authorization.len*2;
+</I>&gt;&gt;&gt;&gt;<i>  x-&gt;authorization.s = shm_malloc(x-&gt;authorization.len);
+</I>&gt;&gt;&gt;&gt;<i>  if (!x-&gt;authorization.s){
+</I>&gt;&gt;&gt;&gt;<i>    LOG(L_ERR,&quot;ERR:&quot;M_NAME&quot;:new_auth_vector: error allocating mem\n&quot;);
+</I>&gt;&gt;&gt;&gt;<i>    x-&gt;authorization.len=0;
+</I>&gt;&gt;&gt;&gt;<i>    goto done;
+</I>&gt;&gt;&gt;&gt;<i>  }  
+</I>&gt;&gt;&gt;&gt;<i>  x-&gt;authorization.len = bin_to_base16(authorization.s,authorization.len,x-&gt;authorization.s);        
+</I>&gt;&gt;&gt;&gt;<i>  break; 
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Since HA1 according to PacketCable specs is already in OctectString format, bin to base 16 conversion is not needed. Hence the code can be changed to 
+</I>&gt;&gt;&gt;&gt;<i>  x-&gt;authorization.len = authorization.len*2;
+</I>&gt;&gt;&gt;&gt;<i>  x-&gt;authorization.s = shm_malloc(x-&gt;authorization.len);
+</I>&gt;&gt;&gt;&gt;<i>  if (!x-&gt;authorization.s){
+</I>&gt;&gt;&gt;&gt;<i>    LOG(L_ERR,&quot;ERR:&quot;M_NAME&quot;:new_auth_vector: error allocating mem\n&quot;);
+</I>&gt;&gt;&gt;&gt;<i>    x-&gt;authorization.len=0;
+</I>&gt;&gt;&gt;&gt;<i>    goto done;
+</I>&gt;&gt;&gt;&gt;<i>  }  
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  memcpy(x-&gt;authorization.s,authorization.s,authorization.len);        
+</I>&gt;&gt;&gt;&gt;<i>  x-&gt;authorization.len = authorization.len;
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  break; 
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;&gt;<i> Sudhakar.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> __________________________________________________
+</I>&gt;&gt;&gt;&gt;<i> Do You Yahoo!?
+</I>&gt;&gt;&gt;&gt;<i> Tired of spam?  Yahoo! Mail has the best spam protection around 
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+</I>&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> __________________________________________________
+</I>&gt;&gt;&gt;&gt;<i> Do You Yahoo!?
+</I>&gt;&gt;&gt;&gt;<i> Tired of spam?  Yahoo! Mail has the best spam protection around 
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+</I>&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>    
+</I>&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002848.html">[OpenIMSCore-Users] Is any  Media server available ???
+</A></li>
+	<LI>Next message: <A HREF="002850.html">[OpenIMSCore-Users] PacketCable support - Bug in	modules/scscf/registration.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2849">[ date ]</a>
+              <a href="thread.html#2849">[ thread ]</a>
+              <a href="subject.html#2849">[ subject ]</a>
+              <a href="author.html#2849">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Issue with Open-IMS call
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Issue%20with%20Open-IMS%20call&In-Reply-To=%3Ci2pbb7bd4ed1004122307pbae94527n7c2dc1d33163ff50%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006195.html">
+   <LINK REL="Next"  HREF="006199.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Issue with Open-IMS call</H1>
+    <B>Naarumanchi Kaushik</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Issue%20with%20Open-IMS%20call&In-Reply-To=%3Ci2pbb7bd4ed1004122307pbae94527n7c2dc1d33163ff50%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Issue with Open-IMS call">shankarkaushik at gmail.com
+       </A><BR>
+    <I>Tue Apr 13 08:07:12 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006195.html">[OpenIMSCore-Users] Error; Destination unreachable !
+</A></li>
+        <LI>Next message: <A HREF="006199.html">[OpenIMSCore-Users] Issue with Open-IMS call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6194">[ date ]</a>
+              <a href="thread.html#6194">[ thread ]</a>
+              <a href="subject.html#6194">[ subject ]</a>
+              <a href="author.html#6194">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All,
+
+We are testing the functionality of an application server which acts as a
+Proxy in between the Endpoints and the Open-IMS server.
+
+Our set-up looks like this:
+There are two IMPUs - <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">krish at open-ims.test</A> and <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kaushik at open-ims.test</A>
+There is one Extension <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">26013189 at 10.232.37.233</A> which is associated with the
+IMPU <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">krish at open-ims.test</A>
+
+When the Extension <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">26013189 at 10.232.37.233</A> registers with the application
+server, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">krish at open-ims.test</A> will be registered with the Open-IMS server.
+
+When the Extension <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">26013189 at 10.232.37.233</A> makes a call to
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kaushik at open-ims.test</A>, the application server changes the From-header to
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">krish at open-ims.test</A> and sends the INVITE to open-IMS server. And when
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kaushik at open-ims.test</A> sends the responses, the application server changes
+the From-header to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">26013189 at 10.232.37.233</A> and sends it to the extension. The
+application server takes care of adding Record-Route headers to ensure that
+the requests/responses go through it.
+
+In this scenario we observed that the ACK sent by the Extension
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">26013189 at 10.232.37.233</A> is getting dropped at the Open-IMS server. We also
+observed that the Route headers are populated properly based on the
+Record-Route hdrs. But we are unable to understand why the Open-IMS server
+is dropping this ACK.
+
+Any inputs on  this issue would be helpful.
+
+I have attached the ethereal traces of this scenario for your reference. I
+have also attached the ethereal traces of Successful call scenario between
+the endpoints directly registered with the Open-IMS server without our
+application server.
+
+Thanks in advance.
+
+For your reference:
+Open-IMS server is on 10.232.15.41:4060
+Application server is running on 10.232.37.233:6060
+The Endpoints are on 10.232.37.233
+
+Regards,
+N.V.S.Kaushik
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100413/074f9248/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100413/074f9248/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: SuccessCall_OpenIMS.pcap
+Type: application/octet-stream
+Size: 60259 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100413/074f9248/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100413/074f9248/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: Calls_Thru_AppServer.pcap
+Type: application/octet-stream
+Size: 179379 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100413/074f9248/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100413/074f9248/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006195.html">[OpenIMSCore-Users] Error; Destination unreachable !
+</A></li>
+	<LI>Next message: <A HREF="006199.html">[OpenIMSCore-Users] Issue with Open-IMS call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6194">[ date ]</a>
+              <a href="thread.html#6194">[ thread ]</a>
+              <a href="subject.html#6194">[ subject ]</a>
+              <a href="author.html#6194">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

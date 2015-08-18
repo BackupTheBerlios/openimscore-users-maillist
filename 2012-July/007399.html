@@ -1,0 +1,570 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Re-authenticate%20based%20on%20SQN%0A%20%28resynchronization%29%20in%20Open%20IMScore%20during%20REGISTRATION&In-Reply-To=%3CCALPgL%3Dg2ikjRica6NiuT%2BaT-EwJjvUvk5yGXqYcjH8KhY0KwDQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007398.html">
+   <LINK REL="Next"  HREF="007389.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION</H1>
+    <B>Paul Carter-Brown</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Re-authenticate%20based%20on%20SQN%0A%20%28resynchronization%29%20in%20Open%20IMScore%20during%20REGISTRATION&In-Reply-To=%3CCALPgL%3Dg2ikjRica6NiuT%2BaT-EwJjvUvk5yGXqYcjH8KhY0KwDQ%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION">paul.carter-brown at smilecoms.com
+       </A><BR>
+    <I>Wed Jul  4 19:00:09 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007398.html">[OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION
+</A></li>
+        <LI>Next message: <A HREF="007389.html">[OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7399">[ date ]</a>
+              <a href="thread.html#7399">[ thread ]</a>
+              <a href="subject.html#7399">[ subject ]</a>
+              <a href="author.html#7399">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Great. Well done
+
+On 4 July 2012 18:45, Badri Ranganathan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">badri at arcatech.com</A>&gt; wrote:
+
+&gt;<i> Hi Paul,****
+</I>&gt;<i>
+</I>&gt;<i> ** **
+</I>&gt;<i>
+</I>&gt;<i> I found the problem.****
+</I>&gt;<i>
+</I>&gt;<i> As I thought, I was not calculating the resynchronization parameters
+</I>&gt;<i> correctly. But thanks for pointing to the FHoSS traces. I could now see it
+</I>&gt;<i> crossing the previous error logs. I can see the S-CSCF challenging my
+</I>&gt;<i> REGISTER requests.****
+</I>&gt;<i>
+</I>&gt;<i> ** **
+</I>&gt;<i>
+</I>&gt;<i> In Step 4 I should have done this -****
+</I>&gt;<i>
+</I>&gt;<i> I should call function f1star( )****
+</I>&gt;<i>
+</I>&gt;<i> f1star(aka, rand, sqn, amf, aka_macs, aka_op)****
+</I>&gt;<i>
+</I>&gt;<i> Input &#8211; aka, rand, sqn_NEW, amf, aka_op****
+</I>&gt;<i>
+</I>&gt;<i> Output &#8211; aka_macs (or its also called aka_mac_a in some textbooks )****
+</I>&gt;<i>
+</I>&gt;<i> ** **
+</I>&gt;<i>
+</I>&gt;<i> I should have also called f5star with ****
+</I>&gt;<i>
+</I>&gt;<i> Input &#8211; aka_k, rand,aka_op****
+</I>&gt;<i>
+</I>&gt;<i> Output would have been &#8211; new_aka_ak****
+</I>&gt;<i>
+</I>&gt;<i> Now I should xor new_aka_ak with new_sqn chosen by the ISIM and this xor&#8217;d
+</I>&gt;<i> value should be sent to the CSCF.****
+</I>&gt;<i>
+</I>&gt;<i> ** **
+</I>&gt;<i>
+</I>&gt;<i> Thanks,****
+</I>&gt;<i>
+</I>&gt;<i> Badri.****
+</I>&gt;<i>
+</I>&gt;<i> ** **
+</I>&gt;<i>
+</I>&gt;<i> ** **
+</I>&gt;<i>
+</I>&gt;<i> *From:* Paul Carter-Brown [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">paul.carter-brown at smilecoms.com</A>]
+</I>&gt;<i> *Sent:* 04 July 2012 17:02
+</I>&gt;<i>
+</I>&gt;<i> *To:* Badri Ranganathan
+</I>&gt;<i> *Cc:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> *Subject:* Re: [OpenIMSCore-Users] Re-authenticate based on SQN
+</I>&gt;<i> (resynchronization) in Open IMScore during REGISTRATION****
+</I>&gt;<i>
+</I>&gt;<i> ** **
+</I>&gt;<i>
+</I>&gt;<i> Or send me your input parameters and I can tell you what the algorithm
+</I>&gt;<i> results are****
+</I>&gt;<i>
+</I>&gt;<i> On 4 July 2012 17:56, Paul Carter-Brown &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">paul.carter-brown at smilecoms.com</A>&gt;
+</I>&gt;<i> wrote:****
+</I>&gt;<i>
+</I>&gt;<i> Get the 2G + 3G Authentication tool from <A HREF="http://www.ruimtools.com/">http://www.ruimtools.com/</A>
+</I>&gt;<i>
+</I>&gt;<i> Then you can verify your algorithms****
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ****
+</I>&gt;<i>
+</I>&gt;<i> On 4 July 2012 17:45, Badri Ranganathan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">badri at arcatech.com</A>&gt; wrote:****
+</I>&gt;<i>
+</I>&gt;<i> Thanks a lot for the reply paul !****
+</I>&gt;<i>
+</I>&gt;<i> I tried changing it in MAR.java and tested it. But still the same result.
+</I>&gt;<i> XMAC and MAC are different !****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> But then again, I checked the FHoSS and saw that the AMF was indeed set to
+</I>&gt;<i> 0000. So it&#8217;s not this problem either. It&#8217;s something else.****
+</I>&gt;<i>
+</I>&gt;<i> Are there any posts in the internet that describes how a ISIM should
+</I>&gt;<i> perform re-authentication ? Maybe I missed some details somewhere.. Tried
+</I>&gt;<i> searching for AKA , but can get docs on authentication, but not on
+</I>&gt;<i> re-authentication.****
+</I>&gt;<i>
+</I>&gt;<i> Thanks again !****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Cheers,****
+</I>&gt;<i>
+</I>&gt;<i> Badri.****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> *From:* Paul Carter-Brown [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">paul.carter-brown at smilecoms.com</A>]
+</I>&gt;<i> *Sent:* 04 July 2012 15:55****
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> *To:* Badri Ranganathan
+</I>&gt;<i> *Cc:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> *Subject:* Re: [OpenIMSCore-Users] Re-authenticate based on SQN
+</I>&gt;<i> (resynchronization) in Open IMScore during REGISTRATION****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Your nice detailed post reminded me of a bug in the FHoSS. In MAR.java,
+</I>&gt;<i> they use the AMF as configured in the HSS to generate XMAC, whereas as per
+</I>&gt;<i> From TS 33.102: The AMF used to calculate MAC-S assumes a dummy value of
+</I>&gt;<i> all zeros so that it does not need to be transmitted in the clear in the
+</I>&gt;<i> re-synch message.
+</I>&gt;<i>
+</I>&gt;<i> Change line 437 in MAR.java from:
+</I>&gt;<i>
+</I>&gt;<i> byte xmac_s[] = Milenage.f1star(secretKey, rand, opC, sqnMs, amf);
+</I>&gt;<i>
+</I>&gt;<i> To:
+</I>&gt;<i>
+</I>&gt;<i> byte xmac_s[] = Milenage.f1star(secretKey, rand, opC, sqnMs, new
+</I>&gt;<i> byte[]{0,0});
+</I>&gt;<i>
+</I>&gt;<i> If your AMF is not 0000 then this could be your problem****
+</I>&gt;<i>
+</I>&gt;<i> On 4 July 2012 16:04, Badri Ranganathan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">badri at arcatech.com</A>&gt; wrote:****
+</I>&gt;<i>
+</I>&gt;<i> Hi all,****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Further to my last email I will explain the procedure I have followed in
+</I>&gt;<i> the ISIM for AKA re-authentication. If someone who has done
+</I>&gt;<i> re-authentication in the past can help, it will be very useful for me and
+</I>&gt;<i> very much appreciated.****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> I have used algorithm functions from milenage.c and rinjdael.c****
+</I>&gt;<i>
+</I>&gt;<i> Step 1****
+</I>&gt;<i>
+</I>&gt;<i> I call function f2345( ) ****
+</I>&gt;<i>
+</I>&gt;<i> Input &#8211; aka_k, rand, aka_op****
+</I>&gt;<i>
+</I>&gt;<i> Output &#8211; aka_res, aka_ck, aka_ik, aka_ak****
+</I>&gt;<i>
+</I>&gt;<i> f2345 (aka_k, rand, aka_res, aka_ck, aka_ik, aka_ak, aka_op)****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Step 2****
+</I>&gt;<i>
+</I>&gt;<i> I compute sqn ( using the formula ) which is the sequence number using
+</I>&gt;<i> aka_ak we got as an output from f2345****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Step 3. ****
+</I>&gt;<i>
+</I>&gt;<i> I call function f1( )****
+</I>&gt;<i>
+</I>&gt;<i> Input &#8211; aka_k, rand, sqn, aka_amf, aka_op.****
+</I>&gt;<i>
+</I>&gt;<i> Output &#8211; xmac****
+</I>&gt;<i>
+</I>&gt;<i> f1(aka_k, rand, sqn, amf, xmac, aka_op)****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Till step 3, if I computed and sent it back to the OpenIMS Core, the ISIM
+</I>&gt;<i> would be registered fine with AKAv1 or v2.****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Now, If I wanted to force resynchronize the ISIM with a new sqn and NOT
+</I>&gt;<i> TAKING THE SQN from the HSS, I have one more step.****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Step 4.****
+</I>&gt;<i>
+</I>&gt;<i> I call function f1star( )****
+</I>&gt;<i>
+</I>&gt;<i> Input &#8211; aka, rand, sqn, amf, aka_op****
+</I>&gt;<i>
+</I>&gt;<i> Output &#8211; aka_macs (or its also called aka_mac_a in some textbooks )****
+</I>&gt;<i>
+</I>&gt;<i> f1star(aka, rand, sqn, amf, aka_macs, aka_op)****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> I take the aka_macs that is computed and send it back to the OpenIMS Core
+</I>&gt;<i> alongwith a aka_conc_sqn ( new proposed value of SQN to be used for
+</I>&gt;<i> synchronization. Hoping that the CSCF&#8217;s will update their sqn values and
+</I>&gt;<i> challenge the ISIM again).****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> But however the HSS keeps complaining that &#8220;synchronize XMAC and MAC are
+</I>&gt;<i> different ! User not authorized in performing synchronization!&#8221;****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Is there something wrong with my step 4 Used in resynchronization ? Is my
+</I>&gt;<i> procedure incorrect ?****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Thanks,****
+</I>&gt;<i>
+</I>&gt;<i> Badri.****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> *From:* Badri Ranganathan
+</I>&gt;<i> *Sent:* 04 July 2012 12:00
+</I>&gt;<i> *To:* 'Paul Carter-Brown'
+</I>&gt;<i> *Cc:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> *Subject:* RE: [OpenIMSCore-Users] Re-authenticate based on SQN
+</I>&gt;<i> (resynchronization) in Open IMScore during REGISTRATION****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Hi paul,****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Thanks for the immediate  reply. ****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> The SCSF logs are &#8211;****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> 18(4846) ^[[1m^[[32mDBG:sm_process(): Peer hss.open-ims.test    State
+</I>&gt;<i> R_Open    Event R_Rcv_DWA^M^[[0m****
+</I>&gt;<i>
+</I>&gt;<i> 18(4846) ^[[1m^[[32mDBG:sm_process(): Peer hss.open-ims.test    State
+</I>&gt;<i> R_Open    Event R_Rcv_Message^M^[[0m****
+</I>&gt;<i>
+</I>&gt;<i> 3(4831) ^[[1m^[[32mDBG:S-CSCF:S_is_authorized: uri=sip:open-ims.test
+</I>&gt;<i> nonce=pQkueaEPq4XV2Qm5G0c7tC1961FiXAAATsqcXfRg8Bw=
+</I>&gt;<i> response=536c1523e5ace429c9d4b90df522266c qop=auth nc=00000001
+</I>&gt;<i> cnonce=7C166D46 hbody=^M^[[0m****
+</I>&gt;<i>
+</I>&gt;<i> 3(4831) ^[[1m^[[32mDBG:S-CSCF:S_is_authorized: UE said:
+</I>&gt;<i> 536c1523e5ace429c9d4b90df522266c and we  expect
+</I>&gt;<i> 7b1c4014ea99be6cd8f2a5d5691777c5 ha1 0fafe59420826c9c08a61a3c1dde2de2^M^[[0m
+</I>&gt;<i> ****
+</I>&gt;<i>
+</I>&gt;<i> 18(4846) ^[[1m^[[32mDBG:sm_process(): Peer hss.open-ims.test    State
+</I>&gt;<i> R_Open    Event R_Rcv_Message^M^[[0m****
+</I>&gt;<i>
+</I>&gt;<i> 18(4846) ^[[1m^[[32mDBG:sm_process(): Peer hss.open-ims.test    State
+</I>&gt;<i> R_Open    Event R_Rcv_Message^M^[[0m****
+</I>&gt;<i>
+</I>&gt;<i> 3(4831) ^[[1m^[[33mERROR: _reply_light: can't generate 403 reply when a
+</I>&gt;<i> final 403 was sent out^M^[[0m****
+</I>&gt;<i>
+</I>&gt;<i> 3(4831) ^[[1m^[[33mERR:S-CSCF:S_challenge: Error retrieving an auth
+</I>&gt;<i> vector^M^[[0m****
+</I>&gt;<i>
+</I>&gt;<i> 12(4840) ^[[1m^[[32m--- Peer List: ---^M^[[0m****
+</I>&gt;<i>
+</I>&gt;<i> 12(4840) ^[[1m^[[32m S[^[[33mR_Open^[[32m]
+</I>&gt;<i> ^[[34mhss.open-ims.test:3868^[[32m D[^[[31m ^[[32m]^M^[[0m****
+</I>&gt;<i>
+</I>&gt;<i> 12(4840) ^[[1m^[[32m^[[33m      [16777216,10415]^M^[[0m****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> The HSS logs &#8211;****
+</I>&gt;<i>
+</I>&gt;<i> Synchronize Handling synchronization between Mobile station and Home
+</I>&gt;<i> environment !****
+</I>&gt;<i>
+</I>&gt;<i> Synchronize USE_AK is enabled and will be used in Milenage algorithm !****
+</I>&gt;<i>
+</I>&gt;<i> Synchronize XMAC and MAC are different ! User not authorized in performing
+</I>&gt;<i> synchronization !****
+</I>&gt;<i>
+</I>&gt;<i> Diameter unable to comply****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> My problem is that I do not exactly know what is required for
+</I>&gt;<i> re-synchronization from the UE.  So I have tried the  following &#8211;****
+</I>&gt;<i>
+</I>&gt;<i> 1.       Computed xmac from incoming data from S-CSCF and copied it over
+</I>&gt;<i> to the mac-s value. But still the HSS complains that synchronize xmac and
+</I>&gt;<i> MAC are different !****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Cheers,****
+</I>&gt;<i>
+</I>&gt;<i> Badri.****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> *From:* Paul Carter-Brown [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">paul.carter-brown at smilecoms.com</A>] ****
+</I>&gt;<i>
+</I>&gt;<i> *Sent:* 04 July 2012 10:26
+</I>&gt;<i> *To:* Badri Ranganathan****
+</I>&gt;<i>
+</I>&gt;<i> *Cc:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>****
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> *Subject:* Re: [OpenIMSCore-Users] Re-authenticate based on SQN
+</I>&gt;<i> (resynchronization) in Open IMScore during REGISTRATION****
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i> Look in the HSS logs and see why its failing to process the re-sync. The
+</I>&gt;<i> &quot;Unable to Comply&quot; would be from some exception being generated in the HSS.
+</I>&gt;<i> ****
+</I>&gt;<i>
+</I>&gt;<i> On 4 July 2012 11:05, Badri Ranganathan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">badri at arcatech.com</A>&gt; wrote:****
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I am doing AKA authentications on my IMS SIP UE. When I send a
+</I>&gt;<i> re-authenticate based on new values of sqn( i.e., re-synchronization)
+</I>&gt;<i> during REGISTRATION , I see that the OpenIMS Core returns a &quot;403 Forbidden
+</I>&gt;<i> - HSS unable to comply&quot;.
+</I>&gt;<i> Is this a setting that I can change in scscf.cfg or in the HSS ?
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Badri.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-request at lists.berlios.de</A>
+</I>&gt;<i> Sent: 30 June 2012 11:00
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: OpenIMSCore-Users Digest, Vol 68, Issue 11
+</I>&gt;<i>
+</I>&gt;<i> Send OpenIMSCore-Users mailing list submissions to
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>
+</I>&gt;<i> To subscribe or unsubscribe via the World Wide Web, visit
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> or, via email, send a message with subject or body 'help' to
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-request at lists.berlios.de</A>
+</I>&gt;<i>
+</I>&gt;<i> You can reach the person managing the list at
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-owner at lists.berlios.de</A>
+</I>&gt;<i>
+</I>&gt;<i> When replying, please edit your Subject line so it is more specific than
+</I>&gt;<i> &quot;Re: Contents of OpenIMSCore-Users digest...&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Today's Topics:
+</I>&gt;<i>
+</I>&gt;<i>    1. Re: Assistance required (Vivek Gupta)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ----------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Message: 1
+</I>&gt;<i> Date: Fri, 29 Jun 2012 23:05:08 +0530
+</I>&gt;<i> From: Vivek Gupta &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vivek.gupta at globallogic.com</A>&gt;
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] Assistance required
+</I>&gt;<i> Message-ID:
+</I>&gt;<i>         &lt;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">CAK13ABdZBKZCOt-p833SWJEHOKrhtYzOSFEK6McFJ_c56PcmuA at mail.gmail.com</A>&gt;
+</I>&gt;<i> Content-Type: text/plain; charset=&quot;iso-8859-1&quot;
+</I>&gt;<i>
+</I>&gt;<i> Vivek Gupta | Sr. Consultant Engineering GlobalLogic Inc. | Innovation by
+</I>&gt;<i> Design ARGENTINA | CHILE | CHINA | INDIA | ISRAEL | UKRAINE | UK | USA
+</I>&gt;<i> Office: +91.120.406.2000 x 2953 | Mobile: +91.987.390.4358 | Fax:
+</I>&gt;<i> +91.120.406.2788
+</I>&gt;<i> www.globallogic.com
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://www.globallogic.com/email_disclaimer.txt">http://www.globallogic.com/email_disclaimer.txt</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Fri, Jun 29, 2012 at 3:16 AM, Franz Edler
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; &gt; Can someone share the link from where I can download bdgcf components?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; What`s this (&quot;bdgcf&quot;)?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; BR
+</I>&gt;<i> &gt; Franz
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> -------------- next part --------------
+</I>&gt;<i> An HTML attachment was scrubbed...
+</I>&gt;<i> URL: &lt;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120629/67e5269d/attachment-0001.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120629/67e5269d/attachment-0001.html</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i> End of OpenIMSCore-Users Digest, Vol 68, Issue 11
+</I>&gt;<i> *************************************************
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users****">https://lists.berlios.de/mailman/listinfo/openimscore-users****</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Paul Carter-Brown
+</I>&gt;<i> Group CIO
+</I>&gt;<i> Smile Communications
+</I>&gt;<i> Johannesburg, South Africa
+</I>&gt;<i> Phone: +27 83 442 7179****
+</I>&gt;<i>
+</I>&gt;<i> This email is subject to the disclaimer of Smile Communications (PTY) Ltd. at <A HREF="http://www.smilecoms.com/disclaimer****">http://www.smilecoms.com/disclaimer****</A>
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Paul Carter-Brown
+</I>&gt;<i> Group CIO
+</I>&gt;<i> Smile Communications
+</I>&gt;<i> Johannesburg, South Africa
+</I>&gt;<i> Phone: +27 83 442 7179****
+</I>&gt;<i>
+</I>&gt;<i> This email is subject to the disclaimer of Smile Communications (PTY) Ltd. at <A HREF="http://www.smilecoms.com/disclaimer****">http://www.smilecoms.com/disclaimer****</A>
+</I>&gt;<i>
+</I>&gt;<i>  ****
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Paul Carter-Brown
+</I>&gt;<i> Group CIO
+</I>&gt;<i> Smile Communications
+</I>&gt;<i> Johannesburg, South Africa
+</I>&gt;<i> Phone: +27 83 442 7179****
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Paul Carter-Brown
+</I>&gt;<i> Group CIO
+</I>&gt;<i> Smile Communications
+</I>&gt;<i> Johannesburg, South Africa
+</I>&gt;<i> Phone: +27 83 442 7179****
+</I>&gt;<i>
+</I>&gt;<i> This email is subject to the disclaimer of Smile Communications (PTY) Ltd. at <A HREF="http://www.smilecoms.com/disclaimer****">http://www.smilecoms.com/disclaimer****</A>
+</I>&gt;<i>
+</I>&gt;<i> ** **
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+Paul Carter-Brown
+Group CIO
+Smile Communications
+Johannesburg, South Africa
+Phone: +27 83 442 7179
+
+This email is subject to the disclaimer of Smile Communications (PTY) Ltd. at <A HREF="http://www.smilecoms.com/disclaimer">http://www.smilecoms.com/disclaimer</A>
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120704/b43fc96b/attachment-0001.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120704/b43fc96b/attachment-0001.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007398.html">[OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION
+</A></li>
+	<LI>Next message: <A HREF="007389.html">[OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7399">[ date ]</a>
+              <a href="thread.html#7399">[ thread ]</a>
+              <a href="subject.html#7399">[ subject ]</a>
+              <a href="author.html#7399">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

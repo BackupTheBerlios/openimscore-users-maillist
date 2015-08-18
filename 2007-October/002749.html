@@ -1,0 +1,252 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] need help on IMS Core install
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20need%20help%20on%20IMS%20Core%20install&In-Reply-To=%3C001301c80eff%24f6b9f310%242408a8c0%40enea.se%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002748.html">
+   <LINK REL="Next"  HREF="002732.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] need help on IMS Core install</H1>
+    <B>Mikael Rudholm</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20need%20help%20on%20IMS%20Core%20install&In-Reply-To=%3C001301c80eff%24f6b9f310%242408a8c0%40enea.se%3E"
+       TITLE="[OpenIMSCore-Users] need help on IMS Core install">rudholm at kth.se
+       </A><BR>
+    <I>Mon Oct 15 09:49:49 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002748.html">[OpenIMSCore-Users] need help on IMS Core install
+</A></li>
+        <LI>Next message: <A HREF="002732.html">[OpenIMSCore-Users] TEL URI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2749">[ date ]</a>
+              <a href="thread.html#2749">[ thread ]</a>
+              <a href="subject.html#2749">[ subject ]</a>
+              <a href="author.html#2749">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Jingyi,
+
+ 
+
+The errors below tell that icscf.open-ims.test and scscf.open-ims.test can
+not be reached on the port specified to use Diameter.
+
+2007-10-12 09:36:24,032 ERROR
+de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - I_Snd_Conn_Req
+StateMachine: Peer icscf.open-ims.test not responding to connection attempt
+
+2007-10-12 09:36:24,339 ERROR
+de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - I_Snd_Conn_Req
+StateMachine: Peer scscf.open-ims.test not responding to connection attempt
+
+ 
+
+The HSS (FHoSS) contains the user database and speaks the Diameter protocol
+to talk to the I-CSCF and S-CSCF. The CSCF's use the Diameter protocol to
+ask the HSS for user credentials.
+
+ 
+
+When the HSS and the CSCF's start they immediately try to contact each other
+and if not all of them are started they will not be able to talk. The error
+above are most likely because you have only started the HSS and not the
+icscf or the scscf.
+
+ 
+
+The configuration files for Diameter for the FHoSS is normaly located at
+
+/opt/OpenIMSCore/FHoSS/deploy/DiameterPeerHSS.xml
+
+ 
+
+And for the CSCF's:
+
+/opt/OpenIMSCore/icscf.xml
+
+/opt/OpenIMSCore/scscf.xml
+
+ 
+
+These files contain information about what IP address and port number to
+listen on and what address and port the peers have.
+
+ 
+
+You  don't need to have httpd running. The FHoSS containts Tomcat and its
+own web server.
+
+ 
+
+Are you using httpd on port 8080?
+
+ 
+
+Hope it helps!
+
+ 
+
+/Mikael
+
+ 
+
+ 
+
+  _____  
+
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Jingyi Hu
+Sent: den 12 oktober 2007 18:54
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: [OpenIMSCore-Users] need help on IMS Core install
+
+ 
+
+
+
+Hi All,
+ 
+I have installed IMS Core from ground up. I have installed Fedora 7, java
+1.5.0_13 and DNS server. I start the CSCFs, it seems fine. Then I start
+FHoSS, I got thoese error messages:
+ 
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at VoIPIMS</A> deploy]# ./startup.sh
+
+Building Classpath
+
+Classpath is
+lib/xml-apis.jar:lib/xercesImpl.jar:lib/xerces-2.4.0.jar:lib/xalan-2.4.0.jar
+:<i>lib/tomcat-util.jar:lib/tomcat-http.jar:lib/tomcat-coyote.jar:lib/struts.ja
+</I>r:lib/servlets-default.jar:lib/servlet-api.jar:lib/naming-resources.jar:lib/
+naming-factory.jar:lib/mysql-connector-java-3.1.12-bin.jar:lib/mx4j-3.0.1.ja
+r:lib/log4j.jar:lib/junit.jar:lib/junitee.jar:lib/jta.jar:lib/jsp-api.jar:li
+b/jmx.jar:lib/jdp.jar:lib/jasper-runtime.jar:lib/jasper-compiler-jdt.jar:lib
+/jasper-compiler.jar:lib/hibernate3.jar:lib/FHoSS.jar:lib/ehcache-1.1.jar:li
+b/dom4j-1.6.1.jar:lib/commons-validator.jar:lib/commons-modeler.jar:lib/comm
+ons-logging.jar:lib/commons-logging-1.0.4.jar:lib/commons-lang.jar:lib/commo
+ns-fileupload.jar:lib/commons-el.jar:lib/commons-digester.jar:lib/commons-co
+llections-3.1.jar:lib/commons-beanutils.jar:lib/cglib-2.1.3.jar:lib/catalina
+-optional.jar:lib/catalina.jar:lib/c3p0-0.9.1.jar:lib/base64.jar:lib/asm.jar
+:<i>lib/asm-attrs.jar:lib/antlr-2.7.6.jar::log4j.properties:..
+</I>
+2007-10-12 09:36:19,450 INFO  de.fhg.fokus.hss.main.TomcatServer -
+startTomcat Tomcat-Server is started.
+
+2007-10-12 09:36:20,136 WARN  org.apache.catalina.connector.MapperListener -
+registerEngine Unknown default host: 127.0.0.1
+
+2007-10-12 09:36:20,947 INFO  de.fhg.fokus.hss.web.servlet.ResponseFilter -
+init Response Filter Initialisation!
+
+2007-10-12 09:36:21,437 INFO  de.fhg.fokus.hss.main.TomcatServer -
+startTomcat WebConsole of FHoSS was started !
+
+2007-10-12 09:36:23,797 WARN  org.hibernate.impl.SessionFactoryObjectFactory
+- addInstance InitialContext did not implement EventContext
+
+2007-10-12 09:36:23,836 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; FQDN:
+hss.open-ims.test
+
+2007-10-12 09:36:23,836 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Realm:
+open-ims.test
+
+2007-10-12 09:36:23,837 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Vendor_ID : 10415
+
+2007-10-12 09:36:23,837 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Product Name:
+JavaDiameterPeer
+
+2007-10-12 09:36:23,837 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; AcceptUnknwonPeers:
+true
+
+2007-10-12 09:36:23,838 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+DropUnknownOnDisconnect: true
+
+2007-10-12 09:36:23,851 INFO  de.fhg.fokus.hss.main.HSSContainer -
+waitForExit
+
+Type &quot;exit&quot; to stop FHoSS!
+
+2007-10-12 09:36:24,032 ERROR
+de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - I_Snd_Conn_Req
+StateMachine: Peer icscf.open-ims.test not responding to connection attempt
+
+2007-10-12 09:36:24,339 ERROR
+de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - I_Snd_Conn_Req
+StateMachine: Peer scscf.open-ims.test not responding to connection attempt
+
+2007-10-12 09:36:54,428 ERROR
+de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - I_Snd_Conn_Req
+StateMachine: Peer icscf.open-ims.test not responding to connection attempt
+
+ 
+
+Do you know what I doing wrong? Also When I try to use
+<A HREF="http://localhost:8080/">http://localhost:8080/</A> nothing happen. I have httpd running.
+
+ 
+
+Thank you for the help.
+
+ 
+
+Best regards,
+
+ 
+
+Jingyi Hu
+
+ 
+
+ 
+
+ 
+
+  _____  
+
+Peek-a-boo FREE Tricks &amp; Treats for You! Get
+&lt;<A HREF="http://www.reallivemoms.com?ocid=TXT_TAGHM&amp;loc=us">http://www.reallivemoms.com?ocid=TXT_TAGHM&amp;loc=us</A>&gt;  'em!
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071015/8c5b0228/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071015/8c5b0228/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002748.html">[OpenIMSCore-Users] need help on IMS Core install
+</A></li>
+	<LI>Next message: <A HREF="002732.html">[OpenIMSCore-Users] TEL URI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2749">[ date ]</a>
+              <a href="thread.html#2749">[ thread ]</a>
+              <a href="subject.html#2749">[ subject ]</a>
+              <a href="author.html#2749">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

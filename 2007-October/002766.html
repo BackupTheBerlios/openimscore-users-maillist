@@ -1,0 +1,296 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] TEL URI
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20TEL%20URI&In-Reply-To=%3C47174B8E.7090606%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002757.html">
+   <LINK REL="Next"  HREF="002767.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] TEL URI</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20TEL%20URI&In-Reply-To=%3C47174B8E.7090606%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] TEL URI">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Oct 18 14:03:26 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002757.html">[OpenIMSCore-Users] TEL URI
+</A></li>
+        <LI>Next message: <A HREF="002767.html">[OpenIMSCore-Users] TEL URI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2766">[ date ]</a>
+              <a href="thread.html#2766">[ thread ]</a>
+              <a href="subject.html#2766">[ subject ]</a>
+              <a href="author.html#2766">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well, in the last months I am more and more convinced that to be IETF
+aligned the client should put a Route: pcscf. So this would be the good
+fix. However, I would also consider a rr fix such that we don't break
+other clients that do not use this.
+
+ Sorry about removing your fix - I did not realized that it was a fix
+and by looking at iptel's rr I thought that they fixed it like this -
+should've figured it when I was digging through the CVS revision looking
+for the fix log there and couldn't find any, but stupidly enough, I
+didn't...
+
+-Dragos
+
+JF wrote:
+&gt;<i> Hi Guhan,
+</I>&gt;<i>
+</I>&gt;<i> I was able to understand why it was working for my use case and not yours.
+</I>&gt;<i>
+</I>&gt;<i> In my case, it was an AS sending an initial INVITE (to I-CSCF) with
+</I>&gt;<i> TEL Req-URI, and setting Route:
+</I>&gt;<i> &lt;sip:icscf.ptinovacao.pt:5060;lr;orig&gt;. So rr module's loose_route
+</I>&gt;<i> function finds the own URI in the first Route URI and behaves normally
+</I>&gt;<i> for loose routing.
+</I>&gt;<i>
+</I>&gt;<i> In 24.930-700 the INVITE from the UE contains the P-CSCF URI as first route:
+</I>&gt;<i> &quot;Route: &lt;sip:pcscf1.visited1.net:7531;lr;comp=sigcomp&gt;,
+</I>&gt;<i> &lt;sip:scscf1.home1.net;lr&gt;&quot;
+</I>&gt;<i>
+</I>&gt;<i> But your client is sending only the S-CSCF... which is correct because
+</I>&gt;<i> the Service-Route in the 200 OK to REGISTER indicates this.
+</I>&gt;<i>
+</I>&gt;<i> I guess if the P-CSCF URI would be included by the UE this problem
+</I>&gt;<i> would not occur. Anyway, the P-CSCF should be able to handle this in a
+</I>&gt;<i> better way, by changing the loose_route behaviour to cope with this
+</I>&gt;<i> case...
+</I>&gt;<i>
+</I>&gt;<i> One thing you could try right away is to add in the P-CSCF script
+</I>&gt;<i> &quot;alias=scscf.open-ims.test&quot;, so that loose_route considers the first
+</I>&gt;<i> Route as &quot;myself&quot;, but this is an ugly hack.
+</I>&gt;<i>
+</I>&gt;<i> Dragos, what's your opinion on this?  The fix I had previously
+</I>&gt;<i> commited and was recently removed only handles the TEL Req-URI with
+</I>&gt;<i> first Route URI that is_myself... We should add some additional logic
+</I>&gt;<i> (script, pcscf module or loose_route code) that handles this, if
+</I>&gt;<i> possible independently of whether the first Route &quot;is_myself&quot; or not.
+</I>&gt;<i>
+</I>&gt;<i> JF
+</I>&gt;<i>
+</I>&gt;<i> On 10/11/07, Guhan P &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">guhan.p at globaledgesoft.com</A>&gt; wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi JF,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I am using revision 448.
+</I>&gt;&gt;<i> Please find the attached zip file which contains Pcscf,Scscf log files and
+</I>&gt;&gt;<i> network capture.
+</I>&gt;&gt;<i> Thanks.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i> Guhan
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ----- Original Message -----
+</I>&gt;&gt;<i> From: &quot;JF&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">jfkavaka at gmail.com</A>&gt;
+</I>&gt;&gt;<i> To: &quot;Dragos Vingarzan&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;<i> Cc: &quot;Guhan P&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">guhan.p at globaledgesoft.com</A>&gt;;
+</I>&gt;&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;&gt;<i> Sent: Thursday, October 11, 2007 5:07 PM
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] TEL URI
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi Guhan P,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I wasn't able to track the problem along with the capture, because of
+</I>&gt;&gt;&gt;<i> the debug level on the logs you sent. Could you send a more verbose
+</I>&gt;&gt;&gt;<i> version (debug=9)?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I have used TEL URIs successfully for some time, and the loose route
+</I>&gt;&gt;&gt;<i> fix didn't cause problems, so we need to find the root cause.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Also, which revision are you using?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thanks,
+</I>&gt;&gt;&gt;<i> JF
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On 10/11/07, JF &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">jfkavaka at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> It came from here:
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="http://lists.berlios.de/pipermail/openimscore-cscf/2007-June/001235.html">http://lists.berlios.de/pipermail/openimscore-cscf/2007-June/001235.html</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> IIRC, this fix was related to the case when an AS starts a session
+</I>&gt;&gt;&gt;&gt;<i> with a pre-loaded TEL URI. I guess now it won't work anymore.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> There was a loong discussion on this in serusers mailing list, that
+</I>&gt;&gt;&gt;&gt;<i> came down to nothing:
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="http://lists.iptel.org/pipermail/serusers/2007-June/033459.html">http://lists.iptel.org/pipermail/serusers/2007-June/033459.html</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I'll have a look at your traces and try to see if there is an
+</I>&gt;&gt;&gt;&gt;<i> alternative fix that fits both purposes...
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> JF
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> On 10/11/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i> wrote:
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> Yes, you are right... we have a bug when the Req-URI is a TEL uri...
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> I checked the iptel.org SER CVS and it seems that their version was
+</I>&gt;&gt;&gt;&gt;&gt;<i> without this. I have committed this, so please retry and tell me if the
+</I>&gt;&gt;&gt;&gt;&gt;<i> problem persists...
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> I still have to check where this code came from...
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Guhan P wrote:
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi Dragos,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Please find the attached zip file which contains Pcscf,Scscf log
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> files
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> along with network capture.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Guhan
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> ----- Original Message ----- From: &quot;Guhan P&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">guhan.p at globaledgesoft.com</A>&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> To: &quot;Dragos Vingarzan&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Cc: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Sent: Tuesday, October 09, 2007 6:33 PM
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] TEL URI
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi Dragos,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Please find the attached capture.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Capture contains following messages.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 1. Registration from bob.tel:+1-234-567-890 got implicitly
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> registered.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 2. Registration from alice.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 3. Made a call from sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> to tel:+1-234-567-890
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>    Got 478 and 500 response.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 4. Made a call from sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> to
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+1-234-567-890 at open-ims.test</A>;user=phone&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>    Got 404 response.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Guhan
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ----- Original Message ----- From: &quot;Dragos Vingarzan&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> To: &quot;Guhan P&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">guhan.p at globaledgesoft.com</A>&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Cc: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Sent: Tuesday, October 09, 2007 4:41 PM
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] TEL URI
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Could you please capture and send a network trace? It seems that
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> the
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> wrong message got to the P-CSCF. The Request-URI should be an IP
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> address, but it is not.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Guhan P wrote:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi All,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> I am implementing TEL URI support.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> I created the public uri *&quot;tel:+1-234-567-890&quot; * and mapped to
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> private
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> uri <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; in OpenIMS
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Server.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Tel Uri ie.*&quot;tel:+1-234-567-890&quot;* got registered implicitly when I
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> registered for *sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>*.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> When I made a call from *sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>* to
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> *tel:+1-234-567-789,* I got *478* &quot;Unresolvable destination&quot; and
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> *500*
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &quot;Error forwarding originating initial request&quot; responses from
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> PCSCF.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Invite Message
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> -----------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> INVITE *tel:+1-234-568-890* SIP/2.0
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;tag:1234
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> To: *&lt;tel:+1-234-567-890&gt;*
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 172.16.7.208</A>:5060&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> .........
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ----------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> I found the following printfs in PCSCF.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ---------------------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> P-CSCF:cscf_get_originating_contact: *1://172.16.7.208:5060*
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> P-CSCF:cscf_get_terminating_contact: *0//:0*
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> **
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ERROR: sip_hostport2su: could not resolve hostname: &quot;&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ERROR: uri2dst: failed to resolve &quot;&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ERROR: t_forward_nonack:failure to add branches
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ---------------------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Please help me to solve this issue?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Guhan
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                   
+</I>&gt;&gt;<i> This e-mail contains PRIVILEGED AND CONFIDENTIAL INFORMATION intended solely for the use of the addressee(s). If you are not the intended recipient, please notify the sender by e-mail and delete the original message.Global Edge Software Ltd has taken every reasonable precaution to minimize this risk, but is not liable for any damage you may sustain as a result of any virus in this e-mail. You should carry out your own virus checks before opening the e-mail or attachment. Global Edge Software Ltd reserves the right to monitor and review the content of all messages sent to or from this e-mail address
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002757.html">[OpenIMSCore-Users] TEL URI
+</A></li>
+	<LI>Next message: <A HREF="002767.html">[OpenIMSCore-Users] TEL URI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2766">[ date ]</a>
+              <a href="thread.html#2766">[ thread ]</a>
+              <a href="subject.html#2766">[ subject ]</a>
+              <a href="author.html#2766">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Tel URI
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Tel%20URI&In-Reply-To=%3C10d080960704120256q5813f1eey328457605627ff65%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001475.html">
+   <LINK REL="Next"  HREF="001464.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Tel URI</H1>
+    <B>ketzal devims</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Tel%20URI&In-Reply-To=%3C10d080960704120256q5813f1eey328457605627ff65%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Tel URI">ketzaldevims at gmail.com
+       </A><BR>
+    <I>Thu Apr 12 11:56:54 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001475.html">[OpenIMSCore-Users]  Tel URI
+</A></li>
+        <LI>Next message: <A HREF="001464.html">[OpenIMSCore-Users] OPEN IMS posilbe bug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1463">[ date ]</a>
+              <a href="thread.html#1463">[ thread ]</a>
+              <a href="subject.html#1463">[ subject ]</a>
+              <a href="author.html#1463">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've loaded the ENUM module in my scscf.
+
+loadmodule &quot;/opt/OpenIMSCore/ser_ims/modules/enum/enum.so&quot;
+modparam(&quot;enum&quot;, &quot;domain_suffix&quot;, &quot;e1234.arpa.&quot;)
+modparam(&quot;enum&quot;, &quot;tel_uri_params&quot;, &quot;;npdi&quot;)
+
+and I've modified my route for Tel URI :
+
+route[TELURI]
+{
+        log(1,&quot;&gt;&gt;       Tel URI INVITE\n&quot;);
+#               if (!enum_query(&quot;e164.arpa&quot;)) # if parameter empty, it
+defaults to &quot;e2u+sip&quot;
+#                  enum_query(&quot;&quot;); # E2U+sip
+                   enum_query(&quot;e164.arpa.&quot;); # E2U+sip
+        exit;
+}
+
+but it doesn't work...
+There is an NAPTR request to my DNS server, but the response was that the
+name is unknown...
+
+There is another problem :
+When I try to do an INVITE with Tel URI, there is an error in the scscf. It
+said that the dialog is already opened...
+I can give a trace soon
+
+Ketzal
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070412/ae6f146a/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070412/ae6f146a/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001475.html">[OpenIMSCore-Users]  Tel URI
+</A></li>
+	<LI>Next message: <A HREF="001464.html">[OpenIMSCore-Users] OPEN IMS posilbe bug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1463">[ date ]</a>
+              <a href="thread.html#1463">[ thread ]</a>
+              <a href="subject.html#1463">[ subject ]</a>
+              <a href="author.html#1463">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

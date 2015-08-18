@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20no%20answer%20from%20DNS%20server%20for%20query%0A%20SRV_sip._udp&In-Reply-To=%3C20100625110904.151350%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006281.html">
+   <LINK REL="Next"  HREF="006283.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp</H1>
+    <B>Werner.Jager at gmx.net</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20no%20answer%20from%20DNS%20server%20for%20query%0A%20SRV_sip._udp&In-Reply-To=%3C20100625110904.151350%40gmx.net%3E"
+       TITLE="[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp">Werner.Jager at gmx.net
+       </A><BR>
+    <I>Fri Jun 25 13:09:04 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006281.html">[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+</A></li>
+        <LI>Next message: <A HREF="006283.html">[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6282">[ date ]</a>
+              <a href="thread.html#6282">[ thread ]</a>
+              <a href="subject.html#6282">[ subject ]</a>
+              <a href="author.html#6282">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi Sebastian,
+
+I tried the DNS lookup &quot;dig -t SRV _sip._udp.icscf&quot; and I got the following result:
+
+; &lt;&lt;&gt;&gt; DiG 9.3.2 &lt;&lt;&gt;&gt; -t SRV _sip._udp.icscf
+;; global options:  printcmd
+;; Got answer:
+;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: SERVFAIL, id: 9887
+;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;_sip._udp.icscf.               IN      SRV
+
+;; Query time: 1224 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: Fri Jun 25 04:50:49 2010
+;; MSG SIZE  rcvd: 33
+
+The query failed but probably this is not a problem because the P-CSCF generated a different query.
+
+The P-CSCF tried to find the I-CSCF via DNS query. 
+Right now I am wondering if the P-CSCF generated the right query.
+How should the DNS query look like?
+
+This is the DNS query from P-CSCF I traced with wireshark:
+
+Domain Name System (query)
+    Transaction ID: 0x7bc6
+    Flags: 0x0100 (Standard query)
+        0... .... .... .... = Response: Message is a query
+        .000 0... .... .... = Opcode: Standard query (0)
+        .... ..0. .... .... = Truncated: Message is not truncated
+        .... ...1 .... .... = Recursion desired: Do query recursively
+        .... .... .0.. .... = Z: reserved (0)
+        .... .... ...0 .... = Non-authenticated data OK: Non-authenticated data is unacceptable
+    Questions: 1
+    Answer RRs: 0
+    Authority RRs: 0
+    Additional RRs: 0
+    Queries
+        _sip._udp: type SRV, class IN
+            Name: _sip._udp
+            Type: SRV (Service location)
+            Class: IN (0x0001)
+
+Regards,
+Werner
+
+-------- Original-Nachricht --------
+&gt;<i> Datum: Fri, 25 Jun 2010 11:08:25 +0200
+</I>&gt;<i> Von: Schumann Sebastian &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Sebastian.Schumann at t-com.sk</A>&gt;
+</I>&gt;<i> An: &quot;\'<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Werner.Jager at gmx.net</A>\'&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Werner.Jager at gmx.net</A>&gt;, &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at kabsi.at</A>&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at kabsi.at</A>&gt;, &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;<i> Betreff: RE: [OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+</I>
+&gt;<i> Hi Werner
+</I>&gt;<i> 
+</I>&gt;<i> Try to dig for e.g., _sip._udp.icscf
+</I>&gt;<i> 
+</I>&gt;<i> Sebastian
+</I>&gt;<i> 
+</I>&gt;<i> &gt; -----Original Message-----
+</I>&gt;<i> &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i> [mailto:openimscore-users-
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bounces at lists.berlios.de</A>] On Behalf Of <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Werner.Jager at gmx.net</A>
+</I>&gt;<i> &gt; Sent: Friday, 25. June 2010 10:59
+</I>&gt;<i> &gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at kabsi.at</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; Subject: Re: [OpenIMSCore-Users] no answer from DNS server for query
+</I>&gt;<i> &gt; SRV_sip._udp
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Hello Franz,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I followed the instructions in Annex A - DNS HOWTO from OpenIMSCore
+</I>&gt;<i> &gt; Installation Guide. The difference is that I have no upstream DNS Server
+</I>&gt;<i> in my Lab
+</I>&gt;<i> &gt; config. But I don&#180;t belief that this is a problem.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; In /etc/resolv.conf I have the settings:
+</I>&gt;<i> &gt; nameserver 127.0.0.1
+</I>&gt;<i> &gt; search open-ims.test
+</I>&gt;<i> &gt; domain open-ims.test
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; For the lookup of hostnames pcscf, icscf, scscf and hss I use now the
+</I>&gt;<i> option
+</I>&gt;<i> &gt; &quot;+search&quot;. With this option dig can resolve the hostnames. Now the
+</I>&gt;<i> following
+</I>&gt;<i> &gt; lookup are ok.
+</I>&gt;<i> &gt; dig +search pcscf
+</I>&gt;<i> &gt; dig +search icscf
+</I>&gt;<i> &gt; dig +search scscf
+</I>&gt;<i> &gt; dig +search hss
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; But when I try this lookup I still get error from DNS server.
+</I>&gt;<i> &gt; dig +search -t SRV _sip._udp
+</I>&gt;<i> &gt; Maybe this is because there is a dot between _sip and _udp so dig does
+</I>&gt;<i> not
+</I>&gt;<i> &gt; recognize &quot;_sip._udp&quot; as a hostname.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; For tests I use SIPp 2.0 with the scripts for this link:
+</I>&gt;<i> &gt;
+</I>&gt;<i> <A HREF="http://sipp.sourceforge.net/wiki/index.php/Howto_test_on_Open_Source_IMS_platf">http://sipp.sourceforge.net/wiki/index.php/Howto_test_on_Open_Source_IMS_platf</A>
+</I>&gt;<i> &gt; orm_using_SIPp
+</I>&gt;<i> &gt; I run the scenario register bob and alice and the scenario
+</I>&gt;<i> register-invite.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; For the IMS to PSTN invite I tried scenario bob invites alice (client
+</I>&gt;<i> side) and
+</I>&gt;<i> &gt; replaced <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> with &lt;tel:+43-664-2043311&gt;. When I run this
+</I>&gt;<i> scrip I
+</I>&gt;<i> &gt; get the following logs:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 3(16567) str2ip: ERROR: too few dots in []
+</I>&gt;<i> &gt; 3(16567) str2ip6: ERROR: too few colons in []
+</I>&gt;<i> &gt; 3(16567) dns_hash_find(_sip._udp.(10), 33), h=956
+</I>&gt;<i> &gt; 3(16567) get_record: lookup(_sip._udp., 33) failed
+</I>&gt;<i> &gt; 3(16567) dns_cache_mk_bad_entry(_sip._udp., 33, 60, 1)
+</I>&gt;<i> &gt; 3(16567) dns_cache_add: adding _sip._udp.(10) 33 (flags=1) at 956
+</I>&gt;<i> &gt; 3(16567) str2ip: ERROR: too few dots in []
+</I>&gt;<i> &gt; 3(16567) dns_hash_find((0), 1), h=0
+</I>&gt;<i> &gt; 3(16567) str2ip: ERROR: too few dots in []
+</I>&gt;<i> &gt; 3(16567) get_record: lookup(, 1) failed
+</I>&gt;<i> &gt; 3(16567) dns_cache_mk_bad_entry(, 1, 60, 1)
+</I>&gt;<i> &gt; 3(16567) dns_cache_add: adding (0) 1 (flags=1) at 0
+</I>&gt;<i> &gt; 3(16567) ERROR: sip_hostport2su: could not resolve hostname: &quot;&quot;
+</I>&gt;<i> &gt; 3(16567) ERROR: uri2dst: failed to resolve &quot;&quot;
+</I>&gt;<i> &gt; 3(16567) ERROR: t_forward_nonack: failure to add branches
+</I>&gt;<i> &gt; 3(16567) ERROR:tm:t_relay_to:  t_forward_nonack returned error
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Is it possible that my P-CSCF generates a wrong DNS query?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Regards,
+</I>&gt;<i> &gt; Werner
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; -------- Original-Nachricht --------
+</I>&gt;<i> &gt; &gt; Datum: Fri, 25 Jun 2010 05:25:06 +0200
+</I>&gt;<i> &gt; &gt; Von: &quot;Franz Edler&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+</I>&gt;<i> &gt; &gt; An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Werner.Jager at gmx.net</A>, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; Betreff: AW: [OpenIMSCore-Users] no answer from DNS server for query
+</I>&gt;<i> &gt; SRV_sip._udp
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &gt; Hello Werner,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; Does anybody know what might be missing or wrong in my
+</I>&gt;<i> configuration?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Did you already follow
+</I>&gt;<i> &gt; &gt; <A HREF="http://www.openimscore.org/installation_guide#annexa?">http://www.openimscore.org/installation_guide#annexa?</A>
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; -franz
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt; GRATIS f&#252;r alle GMX-Mitglieder: Die maxdome Movie-FLAT!
+</I>&gt;<i> &gt; Jetzt freischalten unter <A HREF="http://portal.gmx.net/de/go/maxdome01">http://portal.gmx.net/de/go/maxdome01</A>
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+-- 
+GMX DSL: Internet-, Telefon- und Handy-Flat ab 19,99 EUR/mtl.  
+Bis zu 150 EUR Startguthaben inklusive! <A HREF="http://portal.gmx.net/de/go/dsl">http://portal.gmx.net/de/go/dsl</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006281.html">[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+</A></li>
+	<LI>Next message: <A HREF="006283.html">[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6282">[ date ]</a>
+              <a href="thread.html#6282">[ thread ]</a>
+              <a href="subject.html#6282">[ subject ]</a>
+              <a href="author.html#6282">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

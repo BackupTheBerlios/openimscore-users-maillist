@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Existing Application Servers?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Existing%20Application%20Servers%3F&In-Reply-To=%3Cab5f5bda0702180042k59cd2e02qc010153fe7f77f13%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000838.html">
+   <LINK REL="Next"  HREF="000865.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Existing Application Servers?</H1>
+    <B>Andrey Kuprianov</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Existing%20Application%20Servers%3F&In-Reply-To=%3Cab5f5bda0702180042k59cd2e02qc010153fe7f77f13%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Existing Application Servers?">andrey.kouprianov at gmail.com
+       </A><BR>
+    <I>Sun Feb 18 09:42:32 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000838.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+        <LI>Next message: <A HREF="000865.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#846">[ date ]</a>
+              <a href="thread.html#846">[ thread ]</a>
+              <a href="subject.html#846">[ subject ]</a>
+              <a href="author.html#846">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dear all,
+
+Thank you for your comments! Today's Sun, so noone's at work, however,
+on Mon or Tue my teammates and I will have a meeting and I'll
+definitely get back to you on the same thread for more questions :-)
+
+  Andrey.
+
+On 2/16/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Thanx for the chip-in, especially as I failed to indicate SEMS, although
+</I>&gt;<i> it's a better candidate than SER.
+</I>&gt;<i>
+</I>&gt;<i> As Greger says, you can easily get an AS from SER and/or SEMS by just
+</I>&gt;<i> playing with the config files. But once you need advanced state you will
+</I>&gt;<i> need to consider writing your own modules. So the adaptation curve is
+</I>&gt;<i> very nice at the beginning but then for complex application you will hit
+</I>&gt;<i> a bump that will force you to dig into it's core. Anyway, this bump
+</I>&gt;<i> continues to get smaller every day as new things get contributed.
+</I>&gt;<i>
+</I>&gt;<i> Also, this project might be interesting for you: <A HREF="http://www.wesip.com/">http://www.wesip.com/</A> .
+</I>&gt;<i> But I have to say that the architecture is kind of awkward - let's not
+</I>&gt;<i> forget that SIP servlets are defined already and why not build the SIP
+</I>&gt;<i> stack in the App Server? (personally I hate complex solutions).
+</I>&gt;<i>
+</I>&gt;<i> And in the most cases, taking a SIP stack and building a little around
+</I>&gt;<i> it will get you there quite fast. You only have to choose one that has
+</I>&gt;<i> as many bells and whistles as you require, while still making sense out
+</I>&gt;<i> of them - have you considered <A HREF="http://www.pjsip.org/">http://www.pjsip.org/</A> ?
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Greger V. Teigre wrote:
+</I>&gt;<i> &gt; I just want to chip in some comments here:
+</I>&gt;<i> &gt;  * A great thing as well as a challenge with SER is indeed it's
+</I>&gt;<i> &gt; flexibility. You can indeed implement B2BUAish functionality in SER.
+</I>&gt;<i> &gt; The basic stance is that if you can do it in a module, you are welcome
+</I>&gt;<i> &gt; to that. However, SER's core value proposition is based on its
+</I>&gt;<i> &gt; performance and flexibility, not its abilities as a B2BUA. Thus, the
+</I>&gt;<i> &gt; core of SER is &quot;defended&quot; against any  movement towards B2BUA, AS
+</I>&gt;<i> &gt; functionality. The belief is that this will endanger SER's core value
+</I>&gt;<i> &gt; proposition without necessary making a good B2BUA or AS
+</I>&gt;<i> &gt;  * SER does have its cousin SEMS, which is by now a full B2BUA. I have
+</I>&gt;<i> &gt; difficulty seeing why it shouldn't be called an AS (it also uses SER's
+</I>&gt;<i> &gt; SIP stack as a front-end). SEMS can either stay in the SIP dialog path
+</I>&gt;<i> &gt; or both in SIP and media.
+</I>&gt;<i> &gt;  * A rule of thumb (as of today) is that anything that requires full
+</I>&gt;<i> &gt; dialog state should not be done in SER. SER's configuration logic does
+</I>&gt;<i> &gt; not lend itself easily to handle dialogs and it is easier to do using SEMS
+</I>&gt;<i> &gt;  * There are grey areas, presence is one.  There will always be grey
+</I>&gt;<i> &gt; areas and my guess is that we will see SER covering more of them as
+</I>&gt;<i> &gt; time goes.  Maybe even a new ser-dialog.cfg that can handle dialogs on
+</I>&gt;<i> &gt; a dialog, not transaction level (this is not an authoritative
+</I>&gt;<i> &gt; statement, just my personal feeling)
+</I>&gt;<i> &gt;  * I also hope that we can see SER as a front-end (just like SEMS is
+</I>&gt;<i> &gt; using SER) for more AS-type solutions. I know that a company has
+</I>&gt;<i> &gt; created a (commercial) JSLEEish SER module. Personally, I believe
+</I>&gt;<i> &gt; extending SER application interface is important. The upcoming SER
+</I>&gt;<i> &gt; user group meeting in Prague will probably see a presentation of work
+</I>&gt;<i> &gt; in progress on this
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; g-)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Dragos Vingarzan wrote:
+</I>&gt;<i> &gt;&gt; Hi Andrey,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; First, let me make some things clear. The best way to integrate an AS
+</I>&gt;<i> &gt;&gt; into Open IMS Core (or any other IMS network) is to make use of the ISC
+</I>&gt;<i> &gt;&gt; interface and not by changing the scscf.cfg. You can define in the
+</I>&gt;<i> &gt;&gt; user's service profile on the HSS different filters and on match, the
+</I>&gt;<i> &gt;&gt; initial request will be forwarded to the indicated application servers.
+</I>&gt;<i> &gt;&gt; The scscf.cfg should not be changed except for operator specific
+</I>&gt;<i> &gt;&gt; settings (some things are optional, customizable, etc). We did modify it
+</I>&gt;<i> &gt;&gt; slightly for example to route to PSTN as this something usually common
+</I>&gt;<i> &gt;&gt; for all users, but Shared IFC is on the roadmap and will be there to do
+</I>&gt;<i> &gt;&gt; just that.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; I am saying the things above, just to rule out misunderstandings. I
+</I>&gt;<i> &gt;&gt; guess that you did not mean that, but I just want to be sure
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Then, regarding the use of SER as an application server (or SER+cdp
+</I>&gt;<i> &gt;&gt; module, if you'd like to call it OpenIMS). Recently I have questioned
+</I>&gt;<i> &gt;&gt; the targeted usage of SER on the development list there. One relevant
+</I>&gt;<i> &gt;&gt; conclusion stands out: SER is a SIP proxy and should no be abused as an
+</I>&gt;<i> &gt;&gt; AS. Now I know that this is contradictory with what happens actually in
+</I>&gt;<i> &gt;&gt; SER, as there are application server modules in the main tree  (e.g.
+</I>&gt;<i> &gt;&gt; presence application server), but this is the position of the core
+</I>&gt;<i> &gt;&gt; developers there. So considered yourself warned ;-) and prepare yourself
+</I>&gt;<i> &gt;&gt; to be disappointed if you want to do barring with a B2BUA by using SER.
+</I>&gt;<i> &gt;&gt; If you have lots of programming resources, you can do it, no pb.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; However, SER does have great performance and flexibility, so a simple AS
+</I>&gt;<i> &gt;&gt; would be very easy to hack in. The CDP module offers you support for
+</I>&gt;<i> &gt;&gt; Diameter but you still need a module/functionality for the Sh interface
+</I>&gt;<i> &gt;&gt; with the HSS if you want that. I was thinking about it, but so far
+</I>&gt;<i> &gt;&gt; nobody was interested. If we get some more interest here, we could put
+</I>&gt;<i> &gt;&gt; it on the road-map.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; I am not sure that I was clear enough, but I am very interested in
+</I>&gt;<i> &gt;&gt; continuing this thread.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Andrey Kuprianov wrote:
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Hi,
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Has anyone tried to implement or implemented AS's of any kind on OpenIMS?
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; For instance, Call Barring AS. As I understand (and, please, correct
+</I>&gt;<i> &gt;&gt;&gt; me if im wrong), many other AS's are already available on OpenIMS:
+</I>&gt;<i> &gt;&gt;&gt; like presence or IM. These servers can be implemented by playing with
+</I>&gt;<i> &gt;&gt;&gt; ser.cfg. However, some cannot be. Therefore, I am interested in the
+</I>&gt;<i> &gt;&gt;&gt; most *efficient* (quick) way to implement AS's on OpenIMS. Would it be
+</I>&gt;<i> &gt;&gt;&gt; trying accomplish this with my ser.cfg or would it be adding an extra
+</I>&gt;<i> &gt;&gt;&gt; module to SER or both?
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; If im not clear (i am actually confused myself), please, let me know.
+</I>&gt;<i> &gt;&gt;&gt; I would be happy to clarify my problem.
+</I>&gt;<i> &gt;&gt;&gt; _______________________________________________
+</I>&gt;<i> &gt;&gt;&gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000838.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+	<LI>Next message: <A HREF="000865.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#846">[ date ]</a>
+              <a href="thread.html#846">[ thread ]</a>
+              <a href="subject.html#846">[ subject ]</a>
+              <a href="author.html#846">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

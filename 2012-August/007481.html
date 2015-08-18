@@ -1,0 +1,257 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Error while ser_ims installation - While	building ecscf modules
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20while%20ser_ims%20installation%20-%20While%0A%09building%20ecscf%20modules&In-Reply-To=%3CCAHrzbs44PsSmS%2BR-Ei0ugq1yhDVQwzMgJzn9P_0D_SzZb_kvFg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007480.html">
+   <LINK REL="Next"  HREF="007482.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Error while ser_ims installation - While	building ecscf modules</H1>
+    <B>ananth padmanaban</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20while%20ser_ims%20installation%20-%20While%0A%09building%20ecscf%20modules&In-Reply-To=%3CCAHrzbs44PsSmS%2BR-Ei0ugq1yhDVQwzMgJzn9P_0D_SzZb_kvFg%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Error while ser_ims installation - While	building ecscf modules">ananth.vit at gmail.com
+       </A><BR>
+    <I>Thu Aug 23 11:23:35 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007480.html">[OpenIMSCore-Users] Issue in using AKAv1-MD5 authentication when using P-CSCF with PCRF
+</A></li>
+        <LI>Next message: <A HREF="007482.html">[OpenIMSCore-Users] openIMS and PSTN termination.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7481">[ date ]</a>
+              <a href="thread.html#7481">[ thread ]</a>
+              <a href="subject.html#7481">[ subject ]</a>
+              <a href="author.html#7481">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I have followed the instructions mentioned for setting up OpenIMSCore but
+facing issues while ecscf components are built. Please find below the steps
+followed below.
+
+
+1. Pr-requisite check.
+
+Software requirements
+~100 MBytes of disk space to be on the safe side
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">imscore at 01HW449192B</A> ser_ims]$ df -h
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/mapper/vg_01hw449192b-lv_root
+                       50G   14G   34G  30% /
+tmpfs                 5.7G   76K  5.7G   1% /dev/shm
+/dev/sda1             485M   35M  425M   8% /boot
+/dev/mapper/vg_01hw449192b-lv_home
+                      184G  8.5G  166G   5% /home
+
+GCC3/4, make, JDK1.5, ant
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">imscore at 01HW449192B</A> ser_ims]$ rpm -qa gcc
+gcc-4.4.6-3.el6.x86_64
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">imscore at 01HW449192B</A> ser_ims]$ rpm -qa make
+make-3.81-19.el6.x86_64
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">imscore at 01HW449192B</A> ser_ims]$ rpm -qa ant
+ant-1.7.1-13.el6.x86_64
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">imscore at 01HW449192B</A> ser_ims]$ java -version
+java version &quot;1.6.0_24&quot;
+OpenJDK Runtime Environment (IcedTea6 1.11.3)
+(rhel-1.48.1.11.3.el6_2-x86_64)
+OpenJDK 64-Bit Server VM (build 20.0-b12, mixed mode)
+
+MySQL installed and started (or other DBMS if you can deal with it)
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">imscore at 01HW449192B</A> ser_ims]$ service mysqld start
+Starting mysqld:                                           [  OK  ]
+
+bison, flex, libxml2 (&gt; 2.6) with Devel
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">imscore at 01HW449192B</A> ser_ims]$ rpm -qa flex
+flex-2.5.35-8.el6.x86_64
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">imscore at 01HW449192B</A> ser_ims]$ rpm -qa bison
+bison-2.4.1-5.el6.x86_64
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">imscore at 01HW449192B</A> ser_ims]$ rpm -qa libxml2
+libxml2-2.7.6-4.el6_2.4.x86_64
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">imscore at 01HW449192B</A> ser_ims]$ rpm -qa curl
+curl-7.19.7-26.el6_2.4.x86_64
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">imscore at 01HW449192B</A> ser_ims]$ rpm -qa libxml2-devel
+libxml2-devel-2.7.6-4.el6_2.4.x86_64
+
+Linux kernel 2.6 and ipsec-tools (setkey) if you want to use IPSec security
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at 01HW449192B</A> opt]# uname -a
+Linux 01HW449192B 2.6.32-71.el6.x86_64 #1 SMP Fri May 20 03:51:51 BST 2011
+x86_64 x86_64 x86_64 GNU/Linux
+IPSec security is not required
+
+curl and libcurl4-gnutls-dev for the LoST interface of the E-CSCF Optional:
+openssl if you would like to enable the TLS security
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at 01HW449192B</A> opt]# rpm -qa curl
+curl-7.19.7-26.el6_2.4.x86_64
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at 01HW449192B</A> opt]# rpm -qa libcurl4
+libcurl4-7.23.0-1.i386
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at 01HW449192B</A> Installables]# rpm -qa libcurl4-devel
+libcurl4-devel-7.23.0-1.i386
+
+I have also tried installing libcurl4-7.19.7-1.i386.rpm and its devel
+bind installed and running (or other name server if you can deal with it)
+
+While installing libcurl4 and its devel I had to use rpm -Uvh option to
+forcefully install them else it was not installing. Also the exact package
+mentioned in the requirement libcurl4-gnutls-dev is not available for RHEL
+or CentOS.
+
+Also libmysql - both with development, am not able to find using yum. Tried
+yum search too but was not lucky.
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at 01HW449192B</A> Installables]# yum search libmysql
+Loaded plugins: fastestmirror, refresh-packagekit
+Loading mirror speeds from cached hostfile
+ * base: centos.01link.hk
+ * extras: centos.01link.hk
+ * updates: centos.ustc.edu.cn
+Warning: No matches found for: libmysql
+No Matches found
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at 01HW449192B</A> Installables]# yum search libcurl4-gnutls-dev
+Loaded plugins: fastestmirror, refresh-packagekit
+Loading mirror speeds from cached hostfile
+ * base: centos.01link.hk
+ * extras: centos.01link.hk
+ * updates: centos.ustc.edu.cn
+Warning: No matches found for: libcurl4-gnutls-dev
+No Matches found
+
+Browser on the box or that can connect to the box (for user provisioning)
+Available
+
+So in short I do not have the following packages. Searched a lot but
+couldn't find the right one for RHEL / CentOS.
+libcurl4-gnutls-dev
+libmysql
+libmysql-devel
+
+If some one can point out or share these rpms It would be of great help.
+
+***************
+I even tried to build ser_ims with the assumption that libcurl4-7.23.0-1.i386
+and devel package would suffice for libcurl4-gnutls-dev and the mysql
+server which I installed using the below commands
+
+yum install mysql
+yum install mysql-server
+yum install mysql-devel
+
+would suffice for libmysql and libmysql-devel packages.
+
+The following is the error I received.
+
+make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/ecscf'
+make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/ecscf'
+make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/ecscf'
+gcc -fPIC -DPIC -g -O9 -funroll-loops -Wcast-align -minline-all-stringops
+-falign-loops -ftree-vectorize -mtune=opteron -Wall     -DNAME='&quot;ser&quot;'
+-DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;x86_64&quot;' -DOS='linux_'
+-DOS_QUOTED='&quot;linux&quot;' -DCOMPILER='&quot;gcc 4.4.6&quot;' -D__CPU_x86_64 -D__OS_linux
+-DSER_VER=2001000 -DCFG_DIR='&quot;/usr/local/etc/ser/&quot;' -DPKG_MALLOC -DSHM_MEM
+-DSHM_MMAP -DDNS_IP_HACK -DUSE_IPV6 -DUSE_MCAST -DUSE_TCP -DDISABLE_NAGLE
+-DHAVE_RESOLV_RES -DDBG_QM_MALLOC -DUSE_DNS_CACHE -DUSE_DNS_FAILOVER
+-DUSE_DST_BLACKLIST -ggdb  -DUSE_TLS -DTLS_HOOKS -DFAST_LOCK
+-DADAPTIVE_WAIT -DADAPTIVE_WAIT_LOOPS=1024  -DCC_GCC_LIKE_ASM
+-DHAVE_GETHOSTBYNAME2 -DHAVE_UNION_SEMUN -DHAVE_SCHED_YIELD
+-DHAVE_MSG_NOSIGNAL -DHAVE_MSGHDR_MSG_CONTROL -DHAVE_ALLOCA_H -DHAVE_TIMEGM
+-DHAVE_EPOLL -DHAVE_SIGIO_RT -DSIGINFO64_WORKARROUND -DHAVE_SELECT
+-I/usr/include/libxml2 -I../../lib -DSER -I../.. -DCDP_FOR_SER
+-I/usr/include/libxml2  -c add_body.c -o add_body.o
+In file included from add_body.c:10:
+multipart_parse.h:1: error: expected &#226;=&#226;, &#226;,&#226;, &#226;;&#226;, &#226;asm&#226; or
+&#226;__attribute__&#226; before &#226;.&#226; token
+add_body.c:13: warning: data definition has no type or storage class
+add_body.c:13: warning: type defaults to &#226;int&#226; in declaration of
+&#226;cont_type_e&#226;
+add_body.c:26: error: expected declaration specifiers or &#226;...&#226; before
+&#226;cont_type_e&#226;
+add_body.c: In function &#226;parse_multipart_body&#226;:
+add_body.c:40: error: &#226;cnt_type&#226; undeclared (first use in this function)
+add_body.c:40: error: (Each undeclared identifier is reported only once
+add_body.c:40: error: for each function it appears in.)
+add_body.c:40: error: &#226;NO_CONT&#226; undeclared (first use in this function)
+add_body.c:50: error: &#226;SINGLE_CONT&#226; undeclared (first use in this function)
+add_body.c:57: error: &#226;MULTI_CONT&#226; undeclared (first use in this function)
+add_body.c: In function &#226;add_body_part&#226;:
+add_body.c:76: warning: statement with no effect
+add_body.c:76: error: expected &#226;;&#226; before &#226;cnt_type&#226;
+add_body.c:90: error: &#226;cnt_type&#226; undeclared (first use in this function)
+add_body.c:90: error: too many arguments to function &#226;parse_multipart_body&#226;
+add_body.c:94: error: &#226;MULTI_CONT&#226; undeclared (first use in this function)
+add_body.c:96: error: &#226;NO_CONT&#226; undeclared (first use in this function)
+add_body.c:98: error: &#226;SINGLE_CONT&#226; undeclared (first use in this function)
+add_body.c: In function &#226;add_body_multi_content&#226;:
+add_body.c:129: warning: implicit declaration of function
+&#226;cscf_replace_string&#226;
+add_body.c:150: warning: implicit declaration of function
+&#226;cscf_del_nonshm_lumps&#226;
+add_body.c: In function &#226;add_body_no_content&#226;:
+add_body.c:229: warning: implicit declaration of function &#226;cscf_add_header&#226;
+add_body.c: In function &#226;get_headers_single_body_part&#226;:
+add_body.c:316: warning: implicit declaration of function
+&#226;cscf_get_content_type&#226;
+add_body.c:316: error: incompatible types when assigning to type &#226;str&#226; from
+type &#226;int&#226;
+make[1]: *** [add_body.o] Error 1
+make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/ecscf'
+make: *** [modules] Error 1
+
+As mentioned in this link
+<A HREF="http://www.openimscore.org/emergency_installation_guide,">http://www.openimscore.org/emergency_installation_guide,</A> I followed the
+steps to check out
+
+svn checkout
+<A HREF="http://svn.berlios.de/svnroot/repos/openimscore/ser_ims/branches/12_em_servicesser_ims">http://svn.berlios.de/svnroot/repos/openimscore/ser_ims/branches/12_em_servicesser_ims</A>
+
+and move the cfg files to /opt/OpenIMSCore location. Still Iam facing the
+same error.
+
+If its because of the missing packages can some body share the same.
+
+*Linux Hostnamexyz 2.6.32-71.el6.x86_64 #1 SMP Fri May 20 03:51:51 BST 2011
+x86_64 x86_64 x86_64 GNU/Linux*
+
+Thanks
+Ananth
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120823/9065e14c/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120823/9065e14c/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007480.html">[OpenIMSCore-Users] Issue in using AKAv1-MD5 authentication when using P-CSCF with PCRF
+</A></li>
+	<LI>Next message: <A HREF="007482.html">[OpenIMSCore-Users] openIMS and PSTN termination.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7481">[ date ]</a>
+              <a href="thread.html#7481">[ thread ]</a>
+              <a href="subject.html#7481">[ subject ]</a>
+              <a href="author.html#7481">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Re : OpenIMSCore with AS as B2BUA : header size	pb
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Re%20%3A%20OpenIMSCore%20with%20AS%20as%20B2BUA%20%3A%20header%0A%20size%09pb&In-Reply-To=%3C45CAE9B0.10700%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000727.html">
+   <LINK REL="Next"  HREF="000729.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Re : OpenIMSCore with AS as B2BUA : header size	pb</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Re%20%3A%20OpenIMSCore%20with%20AS%20as%20B2BUA%20%3A%20header%0A%20size%09pb&In-Reply-To=%3C45CAE9B0.10700%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Re : OpenIMSCore with AS as B2BUA : header size	pb">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Feb  8 10:13:20 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000727.html">[OpenIMSCore-Users] Re : OpenIMSCore with AS as B2BUA : header size	pb
+</A></li>
+        <LI>Next message: <A HREF="000729.html">[OpenIMSCore-Users] Multiple triggers definition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#730">[ date ]</a>
+              <a href="thread.html#730">[ thread ]</a>
+              <a href="subject.html#730">[ subject ]</a>
+              <a href="author.html#730">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Don't worry about what the Open IMS Core uses internally. It decides
+automatically based on the message size. So if it is small enough, it
+uses UDP as UDP is faster.
+
+The Record-Route and Via headers are not internal to the IMS network.
+There would be too much overhead to store the Via headers in each node
+for each transaction. Record-Routes (and also Via headers) should be
+saved in the P-CSCF (only) for enforcing correct traffic. However, they
+should never be removed.
+
+-Dragos
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cplusou-s at yahoo.fr</A> wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> When we try to use TCP, it seems that OPen IMSCore want to use UDP !
+</I>&gt;<i> Is there a specific configuration to force using tcp ?
+</I>&gt;<i>
+</I>&gt;<i> It is strange that scscf via and record-route are send to the UA
+</I>&gt;<i> whereas they are internal to the IMS network. Is there a way to strip
+</I>&gt;<i> via header and record-route in PCsCF ?
+</I>&gt;<i>
+</I>&gt;<i> Thanks
+</I>&gt;<i>
+</I>&gt;<i> Fred
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ----- Message d'origine ----
+</I>&gt;<i> De : Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &#192; : <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cplusou-s at yahoo.fr</A>
+</I>&gt;<i> Cc : <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Envoy&#233; le : Mercredi, 7 F&#233;vrier 2007, 19h23mn 41s
+</I>&gt;<i> Objet : Re: [OpenIMSCore-Users] Re : OpenIMSCore with AS as B2BUA :
+</I>&gt;<i> header size pb
+</I>&gt;<i>
+</I>&gt;<i> Hi Fred,
+</I>&gt;<i>
+</I>&gt;<i> Not it's not possible to split a SIP message over several UDP datagrams.
+</I>&gt;<i> If you have too big messages, you can always use TCP.
+</I>&gt;<i>
+</I>&gt;<i> Also, it is not possible to limit the involved proxies as each has a
+</I>&gt;<i> specific role.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cplusou-s at yahoo.fr</A> wrote:
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; How is it possible to limit the proxy involved ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Or another solution : is it possible in OpenIMSCore to split sip
+</I>&gt;<i> &gt; message over several udp packets ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks in advance
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Fred
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ----- Message d'origine ----
+</I>&gt;<i> &gt; De : Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt; &#192; : <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cplusou-s at yahoo.fr</A>
+</I>&gt;<i> &gt; Cc : <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; Envoy&#233; le : Mercredi, 7 F&#233;vrier 2007, 19h06mn 28s
+</I>&gt;<i> &gt; Objet : Re: [OpenIMSCore-Users] OpenIMSCore with AS as B2BUA : header
+</I>&gt;<i> &gt; size pb
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; it doesn't look too big to me. I mean, you only have 1 AS involved there
+</I>&gt;<i> &gt; :-)... so you can make this smaller only by limiting the number of
+</I>&gt;<i> &gt; proxies involved... So no, not really... Although there is one strange
+</I>&gt;<i> &gt; RRoute that is doubled in your list..
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; -Dragos
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cplusou-s at yahoo.fr</A> wrote:
+</I>&gt;<i> &gt; &gt; Hi,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; When we used OpenIMSCore with an AS as B2B2UA, we have a very big
+</I>&gt;<i> &gt; &gt; header with all via header and record-route send to the callee that
+</I>&gt;<i> &gt; &gt; some SIPphone can't process because it is to big :
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; example :
+</I>&gt;<i> &gt; &gt; No.     Time        Source                Destination          
+</I>&gt;<i> &gt; &gt; Protocol Info
+</I>&gt;<i> &gt; &gt;     Message Header
+</I>&gt;<i> &gt; &gt;         Record-Route: &lt;sip:10.1.0.201:3060;ftag=4edddcab;lr=on&gt;
+</I>&gt;<i> &gt; &gt;         Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> &gt; &gt;         Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> &gt; &gt;         Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> &gt; &gt;         Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> &gt; &gt;         Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> &gt; &gt;         Record-Route: &lt;sip:10.1.0.201:3060;ftag=4edddcab;lr=on&gt;
+</I>&gt;<i> &gt; &gt; ...
+</I>&gt;<i> &gt; &gt;         Via: SIP/2.0/UDP 10.1.0.201:3060;branch=z9hG4bK4395.cbd00863.0
+</I>&gt;<i> &gt; &gt;         Via: SIP/2.0/UDP 10.1.0.201:4060;branch=z9hG4bK4395.7ac402f7.0
+</I>&gt;<i> &gt; &gt;         Via: SIP/2.0/UDP
+</I>&gt;<i> &gt; &gt; 10.1.0.201:6060;rport=6060;branch=z9hG4bK4395.e0a81242.0
+</I>&gt;<i> &gt; &gt;         Via: SIP/2.0/UDP
+</I>&gt;<i> &gt; 10.1.0.201:6060;branch=z9hG4bK4395.d0a81242.0;i=1
+</I>&gt;<i> &gt; &gt;         Via: SIP/2.0/TCP
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> 10.1.0.222:5060;wlsscid=37783d98603f4da;branch=z9hG4bK88216caf07143f4e3cf219e0217ca65f
+</I>&gt;<i> &gt; &gt;         Via: SIP/2.0/UDP 10.1.0.201:6060;branch=z9hG4bK4395.c0a81242.0
+</I>&gt;<i> &gt; &gt;         Via: SIP/2.0/UDP 10.1.0.201:4060;branch=z9hG4bK4395.6ac402f7.0
+</I>&gt;<i> &gt; &gt;         Via: SIP/2.0/UDP
+</I>&gt;<i> &gt; &gt; 10.1.0.201:3060;rport=3060;branch=z9hG4bK4395.bbd00863.0
+</I>&gt;<i> &gt; &gt;         Via: SIP/2.0/UDP
+</I>&gt;<i> &gt; &gt; 10.1.0.111:5060;branch=z9hG4bKb6de3eac0564615ab4fa7a7;rport=5060
+</I>&gt;<i> &gt; &gt; ...
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Is there a way to limit Via and Record-Route header ?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Thanks in advance
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Fred
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt; D&#233;couvrez une nouvelle fa&#231;on d'obtenir des r&#233;ponses &#224; toutes vos
+</I>&gt;<i> &gt; &gt; questions ! Profitez des connaissances, des opinions et des
+</I>&gt;<i> &gt; &gt; exp&#233;riences des internautes sur Yahoo! Questions/R&#233;ponses
+</I>&gt;<i> &gt; &gt; &lt;<A HREF="http://fr.rd.yahoo.com/evt=42054/*http://fr.answers.yahoo.com">http://fr.rd.yahoo.com/evt=42054/*http://fr.answers.yahoo.com</A>&gt;.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; _______________________________________________
+</I>&gt;<i> &gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt; &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt; -----------------------------------------
+</I>&gt;<i> &gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt; FOKUS/NGNI
+</I>&gt;<i> &gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt; eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt; Web www.fokus.fraunhofer.de &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt; D&#233;couvrez une nouvelle fa&#231;on d'obtenir des r&#233;ponses &#224; toutes vos
+</I>&gt;<i> &gt; questions ! Profitez des connaissances, des opinions et des
+</I>&gt;<i> &gt; exp&#233;riences des internautes sur Yahoo! Questions/R&#233;ponses
+</I>&gt;<i> &gt; &lt;<A HREF="http://fr.rd.yahoo.com/evt=42054/*http://fr.answers.yahoo.com">http://fr.rd.yahoo.com/evt=42054/*http://fr.answers.yahoo.com</A>&gt;.
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;  
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> D&#233;couvrez une nouvelle fa&#231;on d'obtenir des r&#233;ponses &#224; toutes vos
+</I>&gt;<i> questions ! Profitez des connaissances, des opinions et des
+</I>&gt;<i> exp&#233;riences des internautes sur Yahoo! Questions/R&#233;ponses
+</I>&gt;<i> &lt;<A HREF="http://fr.rd.yahoo.com/evt=42054/*http://fr.answers.yahoo.com">http://fr.rd.yahoo.com/evt=42054/*http://fr.answers.yahoo.com</A>&gt;.
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000727.html">[OpenIMSCore-Users] Re : OpenIMSCore with AS as B2BUA : header size	pb
+</A></li>
+	<LI>Next message: <A HREF="000729.html">[OpenIMSCore-Users] Multiple triggers definition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#730">[ date ]</a>
+              <a href="thread.html#730">[ thread ]</a>
+              <a href="subject.html#730">[ subject ]</a>
+              <a href="author.html#730">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

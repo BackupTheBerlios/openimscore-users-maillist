@@ -1,0 +1,1367 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [SR-Users] OpenIMSCore and Kamalio	Integration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BSR-Users%5D%20OpenIMSCore%20and%20Kamalio%0A%09Integration&In-Reply-To=%3CAANLkTint7WSc78sjw9K367VNmhwsAJ1NpXmcj_QQAqgf%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006833.html">
+   <LINK REL="Next"  HREF="006835.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [SR-Users] OpenIMSCore and Kamalio	Integration</H1>
+    <B>Carsten Bock</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BSR-Users%5D%20OpenIMSCore%20and%20Kamalio%0A%09Integration&In-Reply-To=%3CAANLkTint7WSc78sjw9K367VNmhwsAJ1NpXmcj_QQAqgf%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] [SR-Users] OpenIMSCore and Kamalio	Integration">lists at bock.info
+       </A><BR>
+    <I>Thu Jan 13 10:14:00 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006833.html">[OpenIMSCore-Users] Safety procedure to change de ip in	openimscore
+</A></li>
+        <LI>Next message: <A HREF="006835.html">[OpenIMSCore-Users] [SR-Users] OpenIMSCore and Kamalio	Integration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6834">[ date ]</a>
+              <a href="thread.html#6834">[ thread ]</a>
+              <a href="subject.html#6834">[ subject ]</a>
+              <a href="author.html#6834">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Andr&#233;s,
+
+I have updated our repository. The packages are now signed, so you may
+want to install the Key:
+
+wget <A HREF="http://repository.ng-voice.com/ngvoice-debian-gpg.key">http://repository.ng-voice.com/ngvoice-debian-gpg.key</A>
+apt-key add ngvoice-debian-gpg.key
+
+Then add our repository to your &#8220;/etc/apt/sources.list&#8221;:
+
+deb <A HREF="http://repository.ng-voice.com/ims">http://repository.ng-voice.com/ims</A>  lenny main contrib non-free
+deb-src <A HREF="http://repository.ng-voice.com/ims">http://repository.ng-voice.com/ims</A>  lenny main contrib non-free
+(they are for Debian Lenny only right now)
+
+Then you may simply install the Kamailio IMS Modules:
+
+apt-get install kamailio kamailio-ims-modules
+(in order to update the packages, you need to remove kamailio (apt-get
+remove kamailio), clean your local deb-cache (apt-get clean) and
+reinstall the packages)
+
+The repository also contains other packages, such as:
+- the RTP-Proxy (for the P-CSCF, package rtpproxy. latest stable version)
+- the Fokus FHoSS HSS-Server (package openimscore-fhoss)
+(all debian lenny only right now)
+
+I've made some installation notes here:
+<A HREF="http://www.ng-voice.com/our-solution/installation/">http://www.ng-voice.com/our-solution/installation/</A>
+
+The previous repository, i gave you in private mail (on our build
+server) is no longer available, unless building packages or updating
+our systems, the system is turned off.
+
+Kind regards,
+Carsten
+
+2011/1/10 &quot;Andr&#233;s S. Garc&#237;a Ruiz&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">asgarcia at um.es</A>&gt;:
+&gt;<i>
+</I>&gt;<i> Hi Carsten,
+</I>&gt;<i>
+</I>&gt;<i> There are very good news!! I will be expecting the repository to be
+</I>&gt;<i> accessible in order to test it!
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> &#160;Andr&#233;s.
+</I>&gt;<i>
+</I>&gt;<i> El 07/01/11 11:49, Carsten Bock escribi&#243;:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> the current status is following:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> =&gt; &#160;OpenIMS-Core:
+</I>&gt;&gt;<i> - all OpenIMS module compile using Kamailio
+</I>&gt;&gt;<i> - &quot;make deb&quot; (i have added &quot;deb-lenny&quot; and &quot;deb-squeeze&quot; targets as
+</I>&gt;&gt;<i> well) will build the standard kamailio packages and a new
+</I>&gt;&gt;<i> &quot;kamailio-ims-modules&quot; package
+</I>&gt;&gt;<i> - You need to adapt the configuration of the OpenIMS-P-CSCF a little,
+</I>&gt;&gt;<i> to make it work (basically change some paths); i will add a working
+</I>&gt;&gt;<i> config next week
+</I>&gt;&gt;<i> - so far, i did only test the P-CSCF-setup with Kamailio, tests of the
+</I>&gt;&gt;<i> I-/S-CSCF-modules should will follow in the next days (+ i will add
+</I>&gt;&gt;<i> configurations for those components to the branch)
+</I>&gt;&gt;<i> - we have a testsetup in place, consisting of the &quot;original&quot; OpenIMS
+</I>&gt;&gt;<i> P-/I- and S-CSCF, the Kamailio replacements, a presence/XCAP-server
+</I>&gt;&gt;<i> (to make the setup more interesting, thanks to Daniel for his great
+</I>&gt;&gt;<i> howto on asipto.com) and the FHoSS. All systems run on dedicated
+</I>&gt;&gt;<i> (virtual) machines.
+</I>&gt;&gt;<i> - as soon as there is more progress, i can make our repository for
+</I>&gt;&gt;<i> debian lenny accessible from the outside world (it currently just has
+</I>&gt;&gt;<i> a private IP)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> =&gt; &#160;OpenHSS.org (as a FHoSS-Replacement):
+</I>&gt;&gt;<i> - a year ago, i started to develop a replacement for Java FHoSS:
+</I>&gt;&gt;<i> openhss.org (which would be a direct port from the FHoSS to C with
+</I>&gt;&gt;<i> CDP)
+</I>&gt;&gt;<i> - due to personal changes (new job, 5 days a week a new city), i
+</I>&gt;&gt;<i> &quot;paused&quot; the development
+</I>&gt;&gt;<i> - But now, there is good news: I found someone, who will finish the
+</I>&gt;&gt;<i> development: Brian &quot;edge&quot; Edginton
+</I>&gt;&gt;<i> (<A HREF="http://www.ng-voice.com/our-team/brian/">http://www.ng-voice.com/our-team/brian/</A>)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The full roadmap can be found here:
+</I>&gt;&gt;<i> <A HREF="http://www.ng-voice.com/our-solution/roadmap/">http://www.ng-voice.com/our-solution/roadmap/</A>
+</I>&gt;&gt;<i> (it contains such &quot;ugly&quot; points as add documentation ;-) )
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The goal of the project is to create a stable, fast, open-source,
+</I>&gt;&gt;<i> feature-rich IMS implementation based on Kamailio and the
+</I>&gt;&gt;<i> OpenIMS-Core.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> For latest updates on our development, please visit our blog:
+</I>&gt;&gt;<i> <A HREF="http://www.ng-voice.com/">http://www.ng-voice.com/</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Kind regards,
+</I>&gt;&gt;<i> Carsten
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 2011/1/7 Daniel-Constantin Mierla&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">miconda at gmail.com</A>&gt;:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Btw, fyi, Carsten Bock is working on Git branch 'cartenbock/ims' for
+</I>&gt;&gt;&gt;<i> making
+</I>&gt;&gt;&gt;<i> straightforward usage of openimscore modules with latest kamailio. If you
+</I>&gt;&gt;&gt;<i> are interested in this kind of platform, maybe you should fetch that
+</I>&gt;&gt;&gt;<i> branch,
+</I>&gt;&gt;&gt;<i> help testing and integration work.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Cheers,
+</I>&gt;&gt;&gt;<i> Daniel
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On 12/3/10 10:56 AM, &quot;Andr&#233;s S. Garc&#237;a Ruiz&quot; wrote:
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> It works now! Thanks a lot!
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;&gt;<i> &#160;Andr&#233;s.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> El 30/11/10 21:56, Daniel-Constantin Mierla escribi&#243;:
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> the comments at the beginning of the configuration files tells you more
+</I>&gt;&gt;&gt;&gt;&gt;<i> about how some features are enabled/disabled. I assume you read them as
+</I>&gt;&gt;&gt;&gt;&gt;<i> you
+</I>&gt;&gt;&gt;&gt;&gt;<i> enabled authenitcation (by default is disabled) -- you have #!define
+</I>&gt;&gt;&gt;&gt;&gt;<i> WITH_AUTH.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Maybe in your particular case the best solution is to enable IP
+</I>&gt;&gt;&gt;&gt;&gt;<i> authentication and add the IP address of OpenIMSCore in address table
+</I>&gt;&gt;&gt;&gt;&gt;<i> with
+</I>&gt;&gt;&gt;&gt;&gt;<i> group id 1.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Cheers,
+</I>&gt;&gt;&gt;&gt;&gt;<i> Daniel
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> On 11/29/10 3:27 PM, &quot;Andr&#233;s S. Garc&#237;a Ruiz&quot; wrote:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Thanks for your comment,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> This is my configuration, could you please tell me how to disable
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> authentication?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!KAMAILIO
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Kamailio (OpenSER) SIP Server v3.1 - default configuration script
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - web: <A HREF="http://www.kamailio.org">http://www.kamailio.org</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - git: <A HREF="http://sip-router.org">http://sip-router.org</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Direct your questions about this file to:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sr-users at lists.sip-router.org</A>&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Refer to the Core CookBook at
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="http://www.kamailio.org/dokuwiki/doku.php">http://www.kamailio.org/dokuwiki/doku.php</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # for an explanation of possible statements, functions and parameters.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Several features can be enabled using '#!define WITH_FEATURE'
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> directives:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To run in debug mode:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_DEBUG
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To enable mysql:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_MYSQL
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To enable authentication execute:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - enable mysql
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_AUTH
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - add users using 'kamctl'
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To enable IP authentication execute:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - enable mysql
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - enable authentication
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_IPAUTH
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - add IP addresses with group id '1' to 'address' table
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To enable persistent user location execute:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - enable mysql
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_USRLOCDB
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To enable presence server execute:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - enable mysql
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_PRESENCE
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To enable nat traversal execute:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_NAT
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - install RTPProxy: <A HREF="http://www.rtpproxy.org">http://www.rtpproxy.org</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - start RTPProxy:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; &#160; &#160;rtpproxy -l _your_public_ip_ -s udp:localhost:7722
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To enable PSTN gateway routing execute:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_PSTN
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - set the value of pstn.gw_ip
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - check route[PSTN] for regexp routing condition
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To enable database aliases lookup execute:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - enable mysql
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_ALIASDB
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To enable multi-domain support execute:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - enable mysql
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_MULTIDOMAIN
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To enable TLS support execute:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - adjust CFGDIR/tls.cfg as needed
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_TLS
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To enable XMLRPC support execute:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_XMLRPC
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - adjust route[XMLRPC] for access policy
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To enable anti-flood detection execute:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - adjust pike and htable=&gt;ipban settings as needed (default is
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; &#160; block if more than 16 requests in 2 seconds and ban for 300
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> seconds)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_ANTIFLOOD
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** To enhance accounting execute:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - enable mysql
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - define WITH_ACCDB
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; - add following columns to database
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef ACCDB_COMMENT
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;ALTER TABLE acc ADD COLUMN src_user VARCHAR(64) NOT NULL DEFAULT '';
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;ALTER TABLE acc ADD COLUMN src_domain VARCHAR(128) NOT NULL DEFAULT
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> '';
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;ALTER TABLE acc ADD COLUMN dst_ouser VARCHAR(64) NOT NULL DEFAULT '';
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;ALTER TABLE acc ADD COLUMN dst_user VARCHAR(64) NOT NULL DEFAULT '';
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;ALTER TABLE acc ADD COLUMN dst_domain VARCHAR(128) NOT NULL DEFAULT
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> '';
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;ALTER TABLE missed_calls ADD COLUMN src_user VARCHAR(64) NOT NULL
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> DEFAULT '';
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;ALTER TABLE missed_calls ADD COLUMN src_domain VARCHAR(128) NOT NULL
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> DEFAULT '';
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;ALTER TABLE missed_calls ADD COLUMN dst_ouser VARCHAR(64) NOT NULL
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> DEFAULT '';
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;ALTER TABLE missed_calls ADD COLUMN dst_user VARCHAR(64) NOT NULL
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> DEFAULT '';
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;ALTER TABLE missed_calls ADD COLUMN dst_domain VARCHAR(128) NOT NULL
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> DEFAULT '';
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> ####### Defined Values #########
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!define WITH_DEBUG
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!define WITH_AUTH
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!define WITH_MYSQL
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!define WITH_USRLOCDB
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # *** Value defines - IDs used later in config
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_MYSQL
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # - database URL - used to connect to database server by modules such
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160; &#160; as: auth_db, acc, usrloc, a.s.o.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!define DBURL &quot;<A HREF="mysql://openser:openserrw@localhost/openser">mysql://openser:openserrw@localhost/openser</A>&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_MULTIDOMAIN
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # - the value for 'use_domain' parameters
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!define MULTIDOMAIN 1
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!else
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!define MULTIDOMAIN 0
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # - flags
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; FLT_ - per transaction (message) flags
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # &#160; &#160;FLB_ - per branch flags
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!define FLT_ACC 1
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!define FLT_ACCMISSED 2
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!define FLT_ACCFAILED 3
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!define FLT_NATS 5
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!define FLB_NATB 6
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!define FLB_NATSIPPING 7
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> ####### Global Parameters #########
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_DEBUG
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> debug=4
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> log_stderror=yes
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!else
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> debug=2
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> log_stderror=no
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> memdbg=5
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> memlog=5
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> log_facility=LOG_LOCAL0
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> fork=yes
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> children=4
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> /* uncomment the next line to disable TCP (default on) */
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #disable_tcp=yes
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> /* uncomment the next line to disable the auto discovery of local
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> aliases
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; based on reverse DNS on IPs (default on) */
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #auto_aliases=no
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> /* add local domain aliases */
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> alias=&quot;open-ims.test&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> /* uncomment and configure the following line if you want Kamailio to
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; bind on a specific interface/port/proto (default bind on all
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> available) */
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #listen=udp:10.0.0.10:5060
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> /* port to listen to
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;* - can be specified more than once if needed to listen on many ports
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> */
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> port=5060
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_TLS
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> enable_tls=yes
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> ####### Custom Parameters #########
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # These parameters can be modified runtime via RPC interface
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # - see the documentation of 'cfg_rpc' module.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Format: group.id = value 'desc' description
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Access: $sel(cfg_get.group.id) or @cfg_get.group.id
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_PSTN
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # PSTN GW Routing
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # - pstn.gw_ip: valid IP or hostname as string value, example:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # pstn.gw_ip = &quot;10.0.0.101&quot; desc &quot;My PSTN GW Address&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # - by default is empty to avoid misrouting
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> pstn.gw_ip = &quot;&quot; desc &quot;PSTN GW Address&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> ####### Modules Section ########
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # set paths to location of modules
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef LOCAL_TEST_RUN
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> mpath=&quot;modules_k:modules&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!else
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> mpath=&quot;/usr/local/lib/kamailio/modules_k/:/usr/local/lib/kamailio/modules/&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_MYSQL
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;db_mysql.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;mi_fifo.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;kex.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;tm.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;tmx.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;sl.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;rr.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;pv.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;maxfwd.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;usrloc.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;registrar.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;textops.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;siputils.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;xlog.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;sanity.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;ctl.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;mi_rpc.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;acc.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_AUTH
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;auth.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;auth_db.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_IPAUTH
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;permissions.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_ALIASDB
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;alias_db.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_MULTIDOMAIN
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;domain.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_PRESENCE
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;presence.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;presence_xml.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_NAT
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;nathelper.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;rtpproxy.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_TLS
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;tls.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_ANTIFLOOD
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;htable.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;pike.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_XMLRPC
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> loadmodule &quot;xmlrpc.so&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----------------- setting module-specific parameters ---------------
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- mi_fifo params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;mi_fifo&quot;, &quot;fifo_name&quot;, &quot;/tmp/kamailio_fifo&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- tm params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # auto-discard branches from previous serial forking leg
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;tm&quot;, &quot;failure_reply_mode&quot;, 3)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # default retransmission timeout: 30sec
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;tm&quot;, &quot;fr_timer&quot;, 30000)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # default invite retransmission timeout after 1xx: 120sec
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;tm&quot;, &quot;fr_inv_timer&quot;, 120000)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- rr params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # add value to ;lr param to cope with most of the UAs
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;rr&quot;, &quot;enable_full_lr&quot;, 1)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # do not append from tag to the RR (no need for this script)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;rr&quot;, &quot;append_fromtag&quot;, 0)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- registrar params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;registrar&quot;, &quot;method_filtering&quot;, 1)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> /* uncomment the next line to disable parallel forking via location */
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # modparam(&quot;registrar&quot;, &quot;append_branches&quot;, 0)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> /* uncomment the next line not to allow more than 10 contacts per AOR
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> */
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #modparam(&quot;registrar&quot;, &quot;max_contacts&quot;, 10)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- acc params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> /* what special events should be accounted ? */
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;acc&quot;, &quot;early_media&quot;, 0)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;acc&quot;, &quot;report_ack&quot;, 0)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;acc&quot;, &quot;report_cancels&quot;, 0)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> /* by default ww do not adjust the direct of the sequential requests.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; if you enable this parameter, be sure the enable &quot;append_fromtag&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; in &quot;rr&quot; module */
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;acc&quot;, &quot;detect_direction&quot;, 0)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> /* account triggers (flags) */
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;acc&quot;, &quot;log_flag&quot;, FLT_ACC)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;acc&quot;, &quot;log_missed_flag&quot;, FLT_ACCMISSED)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;acc&quot;, &quot;log_extra&quot;,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;&quot;src_user=$fU;src_domain=$fd;dst_ouser=$tU;dst_user=$rU;dst_domain=$rd&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;acc&quot;, &quot;failed_transaction_flag&quot;, FLT_ACCFAILED)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> /* enhanced DB accounting */
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_ACCDB
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;acc&quot;, &quot;db_flag&quot;, FLT_ACC)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;acc&quot;, &quot;db_missed_flag&quot;, FLT_ACCMISSED)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;acc&quot;, &quot;db_url&quot;, DBURL)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;acc&quot;, &quot;db_extra&quot;,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;&quot;src_user=$fU;src_domain=$fd;dst_ouser=$tU;dst_user=$rU;dst_domain=$rd&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- usrloc params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> /* enable DB persistency for location entries */
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_USRLOCDB
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;usrloc&quot;, &quot;db_url&quot;, DBURL)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;usrloc&quot;, &quot;db_mode&quot;, 2)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;usrloc&quot;, &quot;use_domain&quot;, MULTIDOMAIN)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- auth_db params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_AUTH
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;auth_db&quot;, &quot;db_url&quot;, DBURL)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;auth_db&quot;, &quot;calculate_ha1&quot;, yes)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;auth_db&quot;, &quot;password_column&quot;, &quot;password&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;auth_db&quot;, &quot;load_credentials&quot;, &quot;&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;auth_db&quot;, &quot;use_domain&quot;, MULTIDOMAIN)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- permissions params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_IPAUTH
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;permissions&quot;, &quot;db_url&quot;, DBURL)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;permissions&quot;, &quot;db_mode&quot;, 1)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- alias_db params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_ALIASDB
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;alias_db&quot;, &quot;db_url&quot;, DBURL)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;alias_db&quot;, &quot;use_domain&quot;, MULTIDOMAIN)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- domain params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_MULTIDOMAIN
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;domain&quot;, &quot;db_url&quot;, DBURL)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # use caching
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;domain&quot;, &quot;db_mode&quot;, 1)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # register callback to match myself condition with domains list
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;domain&quot;, &quot;register_myself&quot;, 1)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_PRESENCE
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- presence params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;presence&quot;, &quot;db_url&quot;, DBURL)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- presence_xml params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;presence_xml&quot;, &quot;db_url&quot;, DBURL)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;presence_xml&quot;, &quot;force_active&quot;, 1)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_NAT
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- rtpproxy params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;rtpproxy&quot;, &quot;rtpproxy_sock&quot;, &quot;udp:127.0.0.1:7722&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- nathelper params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;nathelper&quot;, &quot;natping_interval&quot;, 30)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;nathelper&quot;, &quot;ping_nated_only&quot;, 1)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;nathelper&quot;, &quot;sipping_bflag&quot;, FLB_NATSIPPING)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;nathelper&quot;, &quot;sipping_from&quot;, &quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pinger at kamailio.org</A>&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # params needed for NAT traversal in other modules
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;nathelper|registrar&quot;, &quot;received_avp&quot;, &quot;$avp(RECEIVED)&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;usrloc&quot;, &quot;nat_bflag&quot;, FLB_NATB)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_TLS
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- tls params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;tls&quot;, &quot;config&quot;, &quot;/usr/local/etc/kamailio/tls.cfg&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_ANTIFLOOD
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- pike params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;pike&quot;, &quot;sampling_time_unit&quot;, 2)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;pike&quot;, &quot;reqs_density_per_unit&quot;, 16)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;pike&quot;, &quot;remove_latency&quot;, 4)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- htable params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ip ban htable with autoexpire after 5 minutes
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;htable&quot;, &quot;htable&quot;, &quot;ipban=&gt;size=8;autoexpire=300;&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_XMLRPC
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # ----- xmlrpc params -----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;xmlrpc&quot;, &quot;route&quot;, &quot;XMLRPC&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;xmlrpc&quot;, &quot;url_match&quot;, &quot;^/RPC&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> ####### Routing Logic ########
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Main SIP request routing logic
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # - processing of any incoming SIP request starts with this route
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# per request initial checks
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;route(REQINIT);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# NAT detection
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;route(NAT);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# handle requests within SIP dialogs
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;route(WITHINDLG);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;### only initial requests (no To tag)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# CANCEL processing
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (is_method(&quot;CANCEL&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;if (t_check_trans())
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;t_relay();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;t_check_trans();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# authentication
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;route(AUTH);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# record routing for dialog forming requests (in case they are
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> routed)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# - remove preloaded route headers
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;remove_hf(&quot;Route&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (is_method(&quot;INVITE|SUBSCRIBE&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;record_route();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# account only INVITEs
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (is_method(&quot;INVITE&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;setflag(FLT_ACC); # do accounting
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# dispatch requests to foreign domains
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;route(SIPOUT);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;### requests for my local domains
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# handle presence related requests
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;route(PRESENCE);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# handle registrations
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;route(REGISTRAR);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if ($rU==$null)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;# request with no Username in RURI
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;sl_send_reply(&quot;484&quot;,&quot;Address Incomplete&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# dispatch destinations to PSTN
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;route(PSTN);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# user location service
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;route(LOCATION);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;route(RELAY);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route[RELAY] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_NAT
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (check_route_param(&quot;nat=yes&quot;)) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;setbflag(FLB_NATB);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (isflagset(FLT_NATS) || isbflagset(FLB_NATB)) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;route(RTPPROXY);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;/* example how to enable some additional event routes */
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (is_method(&quot;INVITE&quot;)) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;#t_on_branch(&quot;BRANCH_ONE&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;t_on_reply(&quot;REPLY_ONE&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;t_on_failure(&quot;FAIL_ONE&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (!t_relay()) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;sl_reply_error();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Per SIP request initial checks
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route[REQINIT] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_ANTIFLOOD
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# flood dection from same IP and traffic ban for a while
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# be sure you exclude checking trusted peers, such as pstn gateways
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# - local host excluded (e.g., loop to self)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if(src_ip!=myself)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;if($sht(ipban=&gt;$si)!=$null)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;# ip is already blocked
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;xdbg(&quot;request from blocked IP - $rm from $fu
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> (IP:$si:$sp)\n&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;if (!pike_check_req())
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;xlog(&quot;L_ALERT&quot;,&quot;ALERT: pike blocking $rm from $fu
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> (IP:$si:$sp)\n&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;$sht(ipban=&gt;$si) = 1;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (!mf_process_maxfwd_header(&quot;10&quot;)) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;sl_send_reply(&quot;483&quot;,&quot;Too Many Hops&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if(!sanity_check(&quot;1511&quot;, &quot;7&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;xlog(&quot;Malformed SIP message from $si:$sp\n&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Handle requests within SIP dialogs
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route[WITHINDLG] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (has_totag()) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;# sequential request withing a dialog should
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;# take the path determined by record-routing
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;if (loose_route()) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;if (is_method(&quot;BYE&quot;)) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;setflag(FLT_ACC); # do accounting ...
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;setflag(FLT_ACCFAILED); # ... even if the transaction
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> fails
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;route(RELAY);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;} else {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;if (is_method(&quot;SUBSCRIBE&quot;)&amp;&amp; &#160;uri == myself) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;# in-dialog subscribe requests
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;route(PRESENCE);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;if ( is_method(&quot;ACK&quot;) ) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;if ( t_check_trans() ) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;# no loose-route, but stateful ACK;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;# must be an ACK after a 487
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;# or e.g. 404 from upstream server
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;t_relay();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;} else {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;# ACK without matching transaction ... ignore and
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> discard
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;sl_send_reply(&quot;404&quot;,&quot;Not here&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Handle SIP registrations
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route[REGISTRAR] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (is_method(&quot;REGISTER&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;if(isflagset(FLT_NATS))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;setbflag(FLB_NATB);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;# uncomment next line to do SIP NAT pinging
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;## setbflag(FLB_NATSIPPING);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;if (!save(&quot;location&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;sl_reply_error();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # USER location service
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route[LOCATION] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_ALIASDB
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# search in DB-based aliases
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;alias_db_lookup(&quot;dbaliases&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (!lookup(&quot;location&quot;)) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;switch ($rc) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;case -1:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;case -3:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;t_newtran();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;t_reply(&quot;404&quot;, &quot;Not Found&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;case -2:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;sl_send_reply(&quot;405&quot;, &quot;Method Not Allowed&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# when routing via usrloc, log the missed calls also
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (is_method(&quot;INVITE&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;setflag(FLT_ACCMISSED);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Presence server route
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route[PRESENCE] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if(!is_method(&quot;PUBLISH|SUBSCRIBE&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;return;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_PRESENCE
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (!t_newtran())
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;sl_reply_error();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;};
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if(is_method(&quot;PUBLISH&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;if($hdr(Sender)!= NULL)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;handle_publish(&quot;$hdr(Sender)&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;else
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;handle_publish(&quot;&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;t_release();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;else
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if( is_method(&quot;SUBSCRIBE&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;handle_subscribe();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;t_release();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# if presence enabled, this part will not be executed
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (is_method(&quot;PUBLISH&quot;) || $rU==$null)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;sl_send_reply(&quot;404&quot;, &quot;Not here&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;return;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Authentication route
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route[AUTH] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_AUTH
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (is_method(&quot;REGISTER&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;# authenticate the REGISTER requests (uncomment to enable auth)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;if (!www_authorize(&quot;$td&quot;, &quot;subscriber&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;www_challenge(&quot;$td&quot;, &quot;0&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;if ($au!=$tU)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;sl_send_reply(&quot;403&quot;,&quot;Forbidden auth ID&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;} else {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_IPAUTH
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;if(allow_source_address())
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;# source IP allowed
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;return;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;# authenticate if from local subscriber
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;if (from_uri==myself)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;if (!proxy_authorize(&quot;$fd&quot;, &quot;subscriber&quot;)) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;proxy_challenge(&quot;$fd&quot;, &quot;0&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;if (is_method(&quot;PUBLISH&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;if ($au!=$tU) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;sl_send_reply(&quot;403&quot;,&quot;Forbidden auth ID&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;} else {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;if ($au!=$fU) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;sl_send_reply(&quot;403&quot;,&quot;Forbidden auth ID&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;consume_credentials();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;# caller authenticated
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;} else {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;# caller is not local subscriber, then check if it calls
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;# a local destination, otherwise deny, not an open relay
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> here
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;if (!uri==myself)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;sl_send_reply(&quot;403&quot;,&quot;Not relaying&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;return;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Caller NAT detection route
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route[NAT] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_NAT
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;force_rport();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (nat_uac_test(&quot;19&quot;)) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;if (method==&quot;REGISTER&quot;) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;fix_nated_register();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;} else {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;fix_nated_contact();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;setflag(FLT_NATS);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;return;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # RTPProxy control
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route[RTPPROXY] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_NAT
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (is_method(&quot;BYE&quot;)) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;unforce_rtp_proxy();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;} else if (is_method(&quot;INVITE&quot;)){
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;force_rtp_proxy();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (!has_totag()) add_rr_param(&quot;;nat=yes&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;return;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Routing to foreign domains
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route[SIPOUT] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (!uri==myself)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;append_hf(&quot;P-hint: outbound\r\n&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;route(RELAY);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # PSTN GW routing
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route[PSTN] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_PSTN
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# check if PSTN GW IP is defined
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (strempty($sel(cfg_get.pstn.gw_ip))) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;xlog(&quot;SCRIPT: PSTN rotuing enabled but pstn.gw_ip not
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> defined\n&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;return;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# route to PSTN dialed numbers starting with '+' or '00'
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# &#160; &#160; (international format)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# - update the condition to match your dialing rules for PSTN
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> routing
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if(!($rU=~&quot;^(\+|00)[1-9][0-9]{3,20}$&quot;))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;return;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# only local users allowed to call
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if(from_uri!=myself) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;sl_send_reply(&quot;403&quot;, &quot;Not Allowed&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;$ru = &quot;sip:&quot; + $rU + &quot;@&quot; + $sel(cfg_get.pstn.gw_ip);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;route(RELAY);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;return;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # XMLRPC routing
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_XMLRPC
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route[XMLRPC]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# allow XMLRPC from localhost
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if ((method==&quot;POST&quot; || method==&quot;GET&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &amp;&amp; &#160;(src_ip==127.0.0.1)) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;# close connection only for xmlrpclib user agents (there is a
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> bug
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> in
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;# xmlrpclib: it waits for EOF before interpreting the
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> response).
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;if ($hdr(User-Agent) =~ &quot;xmlrpclib&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;set_reply_close();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;set_reply_no_connect();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;dispatch_rpc();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;send_reply(&quot;403&quot;, &quot;Forbidden&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Sample branch router
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> branch_route[BRANCH_ONE] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;xdbg(&quot;new branch at $ru\n&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Sample onreply route
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> onreply_route[REPLY_ONE] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;xdbg(&quot;incoming reply\n&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_NAT
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if ((isflagset(FLT_NATS) || isbflagset(FLB_NATB))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &amp;&amp; &#160;status=~&quot;(183)|(2[0-9][0-9])&quot;) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;force_rtp_proxy();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (isbflagset(&quot;6&quot;)) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;fix_nated_contact();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> # Sample failure route
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> failure_route[FAIL_ONE] {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!ifdef WITH_NAT
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (is_method(&quot;INVITE&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &amp;&amp; &#160;(isbflagset(FLB_NATB) || isflagset(FLT_NATS))) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;unforce_rtp_proxy();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> #!endif
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;if (t_is_canceled()) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# uncomment the following lines if you want to block client
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# redirect based on 3xx replies.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;##if (t_check_status(&quot;3[0-9][0-9]&quot;)) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;##t_reply(&quot;404&quot;,&quot;Not found&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;## &#160; &#160;exit;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;##}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# uncomment the following lines if you want to redirect the failed
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;# calls to a different new destination
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;##if (t_check_status(&quot;486|408&quot;)) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;## &#160; &#160;sethostport(&quot;192.168.2.100:5060&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;## &#160; &#160;append_branch();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;## &#160; &#160;# do not set the missed call flag again
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;## &#160; &#160;t_relay();
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160; &#160;##}
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Thanks a lot,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> &#160;Andr&#233;s.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> El 29/11/2010 15:15, Klaus Darilion escribi&#243;:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> If you do not want to authenticate the requests then disable
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> authentication kamailio.cfg
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> regards
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Klaus
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Am 29.11.2010 12:53, schrieb &quot;Andr&#233;s S. Garc&#237;a Ruiz&quot;:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi everybody,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> I'm trying to deploy an IMS network with OpenIMSCore and Kamailio.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Since
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore has been already tested along with Mobicents, now I want
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> substitute Mobicents for Kamailio. I've also successfully installed
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Kamailio. I can run it without any problem, but when SIP Publish
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> messages arrive at Kamalio, it answers with &quot;407 Proxy
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Authentication
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Required&quot;. The IMS presentity is already registered against the
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore. How can I solve that problem?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> The publish message sent:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> PUBLISH sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">testuser01 at open-ims.test</A> SIP/2.0
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Route:&lt;sip:ciervo.inf.um.es:5060;lr&gt;,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=0;d=0;a=7369703a74657374757365723031406f70656e2d696d732e74657374&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Call-ID: K28QO9PYAE5vn3RNdYOkIEddMEd6yDiqeAW7DwSt6XV.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> CSeq: 1 PUBLISH
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> From: &quot;testuser01&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">testuser01 at open-ims.test</A>&gt;;tag=ff123bda
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> To: &quot;testuser01&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">testuser01 at open-ims.test</A>&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Via: SIP/2.0/UDP 155.54.210.135:6060;branch=z9hG4bKa31a.6cba1cd2.0
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Via: SIP/2.0/UDP
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 155.54.210.134:4060;branch=z9hG4bKa31a.71481d13.0;i=1
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Via: SIP/2.0/TCP
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 155.54.190.166:8060;rport=41624;branch=z9hG4bK-d8754z-ce7487ff34be55f9-1---d8754z-
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Max-Forwards: 15
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Content-Type: application/pidf+xml
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Expires: 30000
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Event: presence
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Contact:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">testuser01 at 155.54.190.166</A>:8060&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, NOTIFY, MESSAGE,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SUBSCRIBE, INFO
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> User-Agent: X-Lite IMS-OSGi-Client 0.1
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> CVS-Mon_Nov_29_10-14-33_CET_2010
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Content-Length: 451
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> P-Asserted-Identity:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">testuser01 at open-ims.test</A>&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> P-Charging-Vector:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> icid-value=&quot;P-CSCFabcd000000004cf3708400000002&quot;;icid-generated-at=155.54.210.134;orig-ioi=&quot;open-ims.test&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;presence
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> xmlns='urn:ietf:params:xml:ns:pidf'
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> xmlns:c='urn:ietf:params:xml:ns:pidf:cipid'
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> xmlns:dm='urn:ietf:params:xml:ns:pidf:data-model'
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> xmlns:rpid='urn:ietf:params:xml:ns:pidf:rpid'
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> entity='sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">testuser01 at open-ims.test</A>'&gt;&lt;tuple
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> id='t6b9a6ab3'&gt;&lt;status&gt;&lt;basic&gt;open&lt;/basic&gt;&lt;/status&gt;&lt;/tuple&gt;&lt;dm:person
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> id='p34b126e5'&gt;&lt;rpid:activities&gt;&lt;rpid:Online/&gt;&lt;/rpid:activities&gt;&lt;dm:note&gt;Online&lt;/dm:note&gt;&lt;/dm:person&gt;&lt;/presence&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Kamailio answer:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP/2.0 407 Proxy Authentication Required
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Call-ID: K28QO9PYAE5vn3RNdYOkIEddMEd6yDiqeAW7DwSt6XV.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> CSeq: 1 PUBLISH
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> From: &quot;testuser01&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">testuser01 at open-ims.test</A>&gt;;tag=ff123bda
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> To: &quot;testuser01&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">testuser01 at open-ims.test</A>&gt;;tag=b27e1a1d33761e85846fc98f5f3a7e58.3d3a
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Via: SIP/2.0/UDP 155.54.210.135:6060;branch=z9hG4bKa31a.6cba1cd2.0
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Via: SIP/2.0/UDP
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 155.54.210.134:4060;branch=z9hG4bKa31a.71481d13.0;i=1
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Via: SIP/2.0/TCP
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 155.54.190.166:8060;rport=41624;branch=z9hG4bK-d8754z-ce7487ff34be55f9-1---d8754z-
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Proxy-Authenticate: Digest realm=&quot;open-ims.test&quot;,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> nonce=&quot;TPNwMkzzbwZRE1piAM8yHaXGsXvwS16v&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Server: kamailio (3.1.0 (i386/linux))
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Content-Length: 0
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Kamailio log:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:628]: SIP Request:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:630]: method:&lt;PUBLISH&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:632]: uri:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">testuser01 at open-ims.test</A>&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:634]: version:&lt;SIP/2.0&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:165]: get_hdr_field:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> cseq
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;CSeq&gt;:&lt;1&gt; &#160;&lt;PUBLISH&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/parse_to.c:803]: end of header
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> reached,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> state=10
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:185]: DEBUG:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> get_hdr_field:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;To&gt; &#160;[45]; uri=[sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">testuser01 at open-ims.test</A>]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:187]: DEBUG: to body
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> [&quot;testuser01&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">testuser01 at open-ims.test</A>&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/parse_via.c:1287]: Found param type
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 232,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;branch&gt; &#160;=&lt;z9hG4bKa31a.6cba1cd2.0&gt;; state=16
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/parse_via.c:2300]: end of header
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> reached,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> state=5
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:513]: parse_headers: Via
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> found, flags=2
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:515]: parse_headers:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> this
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> is
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> the first via
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[receive.c:145]: After parse_msg...
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[receive.c:186]: preparing to run routing
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> scripts...
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/parse_via.c:1287]: Found param type
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 232,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;branch&gt; &#160;=&lt;z9hG4bKa31a.71481d13.0&gt;; state=6
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/parse_via.c:1287]: Found param type
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 236,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;i&gt; &#160;=&lt;1&gt;; state=16
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/parse_via.c:2300]: end of header
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> reached,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> state=5
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:513]: parse_headers: Via
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> found, flags=100
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:526]: parse_headers:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> this
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> is
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> the second via
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/parse_via.c:1287]: Found param type
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 235,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;rport&gt; &#160;=&lt;41624&gt;; state=6
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/parse_via.c:1287]: Found param type
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 232,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;branch&gt; &#160;=&lt;z9hG4bK-d8754z-ce7487ff34be55f9-1---d8754z-&gt;; state=16
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/parse_via.c:2300]: end of header
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> reached,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> state=5
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:513]: parse_headers: Via
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> found, flags=100
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: maxfwd [mf_funcs.c:85]: value = 15
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:199]: DEBUG:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> get_hdr_body
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> :
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> content_length=451
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/msg_parser.c:101]: found end of
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> header
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/parse_to.c:174]: DEBUG: add_param:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> tag=ff123bda
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[parser/parse_to.c:803]: end of header
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> reached,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> state=29
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: sanity [mod_sanity.c:217]: all sanity checks passed
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: siputils [checks.c:73]: no totag
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: tm [t_lookup.c:1081]: DEBUG: t_check_msg: msg id=1
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> global id=0 T start=0xffffffff
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: tm [t_lookup.c:528]: t_lookup_request: start
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> searching:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> hash=41274, isACK=0
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: tm [t_lookup.c:485]: DEBUG: RFC3261 transaction
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> matching
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> failed
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: tm [t_lookup.c:711]: DEBUG: t_lookup_request: no
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> transaction found
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: tm [t_lookup.c:1150]: DEBUG: t_check_msg: msg id=1
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> global id=1 T end=(nil)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[socket_info.c:501]: grep_sock_info -
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> checking
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> if
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> host==us: 13==9&amp;&amp; &#160;[open-ims.test] == [127.0.0.1]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[socket_info.c:504]: grep_sock_info -
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> checking
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> if
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> port 5060 matches port 5060
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[socket_info.c:501]: grep_sock_info -
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> checking
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> if
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> host==us: 13==14&amp;&amp; &#160;[open-ims.test] == [155.54.190.245]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[socket_info.c:504]: grep_sock_info -
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> checking
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> if
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> port 5060 matches port 5060
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[socket_info.c:501]: grep_sock_info -
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> checking
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> if
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> host==us: 13==9&amp;&amp; &#160;[open-ims.test] == [127.0.0.1]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[socket_info.c:504]: grep_sock_info -
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> checking
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> if
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> port 5060 matches port 5060
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[socket_info.c:501]: grep_sock_info -
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> checking
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> if
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> host==us: 13==14&amp;&amp; &#160;[open-ims.test] == [155.54.190.245]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[socket_info.c:504]: grep_sock_info -
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> checking
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> if
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> port 5060 matches port 5060
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: auth_db [authorize.c:239]: realm value
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> [open-ims.test]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: auth [api.c:85]: auth:pre_auth: Credentials with
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> realm
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 'open-ims.test' not found
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: auth_db [authorize.c:257]: not authenticated
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: auth [challenge.c:102]: build_challenge_hf:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> realm='open-ims.test'
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: auth [challenge.c:236]: auth: 'Proxy-Authenticate:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Digest realm=&quot;open-ims.test&quot;,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> nonce=&quot;TPNwMkzzbwZRE1piAM8yHaXGsXvwS16v&quot;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> '
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG: sl [sl.c:278]: reply in stateless mode (sl)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[msg_translator.c:207]:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> check_via_address(155.54.210.135, 155.54.210.135, 0)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[usr_avp.c:646]: DEBUG:destroy_avp_list:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> destroying list (nil)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[usr_avp.c:646]: DEBUG:destroy_avp_list:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> destroying list (nil)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[usr_avp.c:646]: DEBUG:destroy_avp_list:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> destroying list (nil)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[usr_avp.c:646]: DEBUG:destroy_avp_list:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> destroying list (nil)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[usr_avp.c:646]: DEBUG:destroy_avp_list:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> destroying list (nil)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[usr_avp.c:646]: DEBUG:destroy_avp_list:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> destroying list (nil)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(15391) DEBUG:&lt;core&gt; &#160;[receive.c:289]: receive_msg: cleaning up
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Thanks in advance,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Andr&#233;s.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP Express Router (SER) and Kamailio (OpenSER) - sr-users mailing
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> list
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sr-users at lists.sip-router.org</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="http://lists.sip-router.org/cgi-bin/mailman/listinfo/sr-users">http://lists.sip-router.org/cgi-bin/mailman/listinfo/sr-users</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;<i> SIP Express Router (SER) and Kamailio (OpenSER) - sr-users mailing list
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sr-users at lists.sip-router.org</A>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="http://lists.sip-router.org/cgi-bin/mailman/listinfo/sr-users">http://lists.sip-router.org/cgi-bin/mailman/listinfo/sr-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;<i> Daniel-Constantin Mierla
+</I>&gt;&gt;&gt;<i> Kamailio (OpenSER) Advanced Training
+</I>&gt;&gt;&gt;<i> Jan 24-26, 2011, Irvine, CA, USA
+</I>&gt;&gt;&gt;<i> <A HREF="http://www.asipto.com">http://www.asipto.com</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> SIP Express Router (SER) and Kamailio (OpenSER) - sr-users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sr-users at lists.sip-router.org</A>
+</I>&gt;&gt;&gt;<i> <A HREF="http://lists.sip-router.org/cgi-bin/mailman/listinfo/sr-users">http://lists.sip-router.org/cgi-bin/mailman/listinfo/sr-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+
+-- 
+Carsten Bock
+Schomburgstr. 80
+22767 Hamburg
+Germany
+
+Mobile +49 179 2021244
+Home +49 40 34927217
+B&#252;ro (Verl) +49 5246 801427
+Fax +49 40 34927218
+mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">carsten at bock.info</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006833.html">[OpenIMSCore-Users] Safety procedure to change de ip in	openimscore
+</A></li>
+	<LI>Next message: <A HREF="006835.html">[OpenIMSCore-Users] [SR-Users] OpenIMSCore and Kamalio	Integration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6834">[ date ]</a>
+              <a href="thread.html#6834">[ thread ]</a>
+              <a href="subject.html#6834">[ subject ]</a>
+              <a href="author.html#6834">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

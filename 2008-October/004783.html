@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Sailfin integration with openimscore
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Sailfin%20integration%20with%20openimscore&In-Reply-To=%3C2cde12940810240535w13cf486cg85a75c1d3511f410%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004782.html">
+   <LINK REL="Next"  HREF="004784.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Sailfin integration with openimscore</H1>
+    <B>Rishikesh Naik</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Sailfin%20integration%20with%20openimscore&In-Reply-To=%3C2cde12940810240535w13cf486cg85a75c1d3511f410%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Sailfin integration with openimscore">rishinaik9 at gmail.com
+       </A><BR>
+    <I>Fri Oct 24 14:35:24 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004782.html">[OpenIMSCore-Users] Sailfin integration with openimscore
+</A></li>
+        <LI>Next message: <A HREF="004784.html">[OpenIMSCore-Users] Sailfin integration with openimscore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4783">[ date ]</a>
+              <a href="thread.html#4783">[ thread ]</a>
+              <a href="subject.html#4783">[ subject ]</a>
+              <a href="author.html#4783">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Franz,
+
+Thanks very much for reply!
+
+When I use DNF in the trigger point configuration, I see REGISTER AND
+SUBSCRIBE in SPT section on the Web Console. And when I use CNF, it shows as
+REGISTER OR SUBSCRIBE. So, which one is correct ? CNF should be OR operation
+or AND operation?
+
+Thanks,
+Rishikesh
+
+On Fri, Oct 24, 2008 at 12:43 AM, Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&gt; wrote:
+
+&gt;<i> Hi Rishikesh,
+</I>&gt;<i>
+</I>&gt;<i> Looking at the Trigger Point you are using I found that the Trigger Point
+</I>&gt;<i> (shown below) can never match. You have to use Disjunctive Normal Form
+</I>&gt;<i> instead of Conjunctive Normal Form. A request can never be a REGISTER and a
+</I>&gt;<i> SUBSCRIBE at the same time!
+</I>&gt;<i>
+</I>&gt;<i> Your trigger point is:
+</I>&gt;<i>
+</I>&gt;<i> &lt;TriggerPoint&gt;
+</I>&gt;<i> &lt;ConditionTypeCNF&gt;1&lt;/ConditionTypeCNF&gt;
+</I>&gt;<i> &lt;SPT&gt;
+</I>&gt;<i> &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i> &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i> &lt;Method&gt;REGISTER&lt;/Method&gt;
+</I>&gt;<i> &lt;Extension&gt;
+</I>&gt;<i> &lt;/Extension&gt;
+</I>&gt;<i> &lt;/SPT&gt;
+</I>&gt;<i> &lt;SPT&gt;
+</I>&gt;<i> &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i> &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i> &lt;Method&gt;SUBSCRIBE&lt;/Method&gt;
+</I>&gt;<i> &lt;Extension&gt;
+</I>&gt;<i> &lt;/Extension&gt;
+</I>&gt;<i> &lt;/SPT&gt;
+</I>&gt;<i> &lt;SPT&gt;
+</I>&gt;<i> &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i> &lt;Group&gt;1&lt;/Group&gt;
+</I>&gt;<i> &lt;SIPHeader&gt;
+</I>&gt;<i> &lt;Header&gt;Event&lt;/Header&gt;
+</I>&gt;<i> &lt;Content&gt;*reg*&lt;/Content&gt;
+</I>&gt;<i> &lt;/SIPHeader&gt;
+</I>&gt;<i> &lt;Extension&gt;
+</I>&gt;<i> &lt;/Extension&gt;
+</I>&gt;<i> &lt;/SPT&gt;
+</I>&gt;<i> &lt;/TriggerPoint&gt;
+</I>&gt;<i> &lt;ApplicationServer&gt;
+</I>&gt;<i> &lt;ServerName&gt;sip:127.0.0.1:5060&lt;/ServerName&gt;
+</I>&gt;<i> &lt;DefaultHandling&gt;1&lt;/DefaultHandling&gt;
+</I>&gt;<i> &lt;/ApplicationServer&gt;
+</I>&gt;<i> &lt;/InitialFilterCriteria&gt;
+</I>&gt;<i> &lt;/ServiceProfile&gt;
+</I>&gt;<i> &lt;/IMSSubscription&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I suggest you should change &lt;ConditionTypeCNF&gt;1&lt;/ConditionTypeCNF&gt; to
+</I>&gt;<i> &lt;ConditionTypeCNF&gt;0&lt;/ConditionTypeCNF&gt;.
+</I>&gt;<i>
+</I>&gt;<i> -Franz
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20081024/f42c1d15/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20081024/f42c1d15/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004782.html">[OpenIMSCore-Users] Sailfin integration with openimscore
+</A></li>
+	<LI>Next message: <A HREF="004784.html">[OpenIMSCore-Users] Sailfin integration with openimscore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4783">[ date ]</a>
+              <a href="thread.html#4783">[ thread ]</a>
+              <a href="subject.html#4783">[ subject ]</a>
+              <a href="author.html#4783">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

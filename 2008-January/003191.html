@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] S-CSCF Crashing on PUBLISH
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20Crashing%20on%20PUBLISH&In-Reply-To=%3Cd957a47f0801160707q15a75d59w16eac93ae5456b2d%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003195.html">
+   <LINK REL="Next"  HREF="003192.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] S-CSCF Crashing on PUBLISH</H1>
+    <B>Leonard Broman</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20Crashing%20on%20PUBLISH&In-Reply-To=%3Cd957a47f0801160707q15a75d59w16eac93ae5456b2d%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] S-CSCF Crashing on PUBLISH">firepiper at gmail.com
+       </A><BR>
+    <I>Wed Jan 16 16:07:34 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003195.html">[OpenIMSCore-Users] Received 0A0D from OpenIMS
+</A></li>
+        <LI>Next message: <A HREF="003192.html">[OpenIMSCore-Users] S-CSCF Crashing on PUBLISH [Solved]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3191">[ date ]</a>
+              <a href="thread.html#3191">[ thread ]</a>
+              <a href="subject.html#3191">[ subject ]</a>
+              <a href="author.html#3191">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey!
+
+After installing another instance of openser on the same machine
+(different prefix) as the S-CSCF the S-CSCF has started crashing when
+PUBLISH requests arrive. It worked properly before. Here's a short
+snipper of what I think might be useful. Anyone has any suggestion
+where to start looking for errors?
+
+/Leo
+
+ 1(3061) INFO:ISC:ISC_match_filter(orig): Orig User &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at ims.ao</A>&gt; [1]
+ 1(3061) INFO:ISC:isc_checker_find: starting search
+ 1(3061) DEBUG:ISC:ifc_checker_trigger: Starting expression check:
+ 1(3061) DEBUG:ISC:ifc_check_spt:             SPT type 2 -&gt; Method ==
+SUBSCRIBE ?
+ 1(3061) DEBUG:ISC:ifc_check_spt:               Found method PUBLISH
+ 1(3061) DEBUG:ISC:ifc_check_spt:             SPT type 2 -&gt; Method == PUBLISH ?
+ 1(3061) DEBUG:ISC:ifc_check_spt:               Found method PUBLISH
+ 1(3061) DEBUG:ISC:ifc_checker_trigger:       - group compromised,
+skipping to next group
+ 1(3061) DEBUG:ISC:ifc_check_spt:             SPT type 3 -&gt;
+Header[Event]  %= *presence* ?
+ 1(3061) parse_headers: flags=ffffffffffffffff
+ 1(3061) DEBUG:ISC:ifc_check_headers:            Looking for
+Header[Event(21)] *presence*
+ 1(3061) DEBUG:ISC:ifc_check_headers:            Found
+Header[Event(21)] presence
+11(3071) ERROR: receive_fd: EOF on 6
+11(3071) DBG: handle_ser_child: dead child 1, pid 3061 (shutting down?)
+11(3071) DBG: io_watch_del (0x814c3a0, 6, -1, 0x0) fd_no=12 called
+ 0(3060) child process 3061 exited by a signal 11
+ 0(3060) core was generated
+ 0(3060) INFO: terminating due to SIGCHLD
+ 0(3060) Process Table:
+ 0(3060)  0. (3060) &gt; attendant
+ 0(3060)  1. (3061) &gt; receiver child=0 sock=172.23.115.137:6060
+ 0(3060)  2. (3062) &gt; slow timer
+ 0(3060)  3. (3063) &gt; timer
+ 0(3060)  4. (3064) &gt; cdp_acceptor
+ 0(3060)  5. (3065) &gt; cdp worker child=0
+ 0(3060)  6. (3066) &gt; cdp worker child=1
+ 0(3060)  7. (3067) &gt; cdp worker child=2
+ 0(3060)  8. (3068) &gt; cdp worker child=3
+ 0(3060)  9. (3069) &gt; cdp_timer
+ 0(3060) 10. (3070) &gt; tcp receiver child=0
+ 0(3060) 11. (3071) &gt; tcp main process
+ 0(3060) 12. (3073) &gt; receiver R
+ 2(3062) INFO: signal 15 received
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003195.html">[OpenIMSCore-Users] Received 0A0D from OpenIMS
+</A></li>
+	<LI>Next message: <A HREF="003192.html">[OpenIMSCore-Users] S-CSCF Crashing on PUBLISH [Solved]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3191">[ date ]</a>
+              <a href="thread.html#3191">[ thread ]</a>
+              <a href="subject.html#3191">[ subject ]</a>
+              <a href="author.html#3191">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

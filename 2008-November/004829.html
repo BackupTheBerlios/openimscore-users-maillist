@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] AKAV2MD5 Issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AKAV2MD5%20Issue&In-Reply-To=%3C491B0CAF.709%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004824.html">
+   <LINK REL="Next"  HREF="004828.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] AKAV2MD5 Issue</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AKAV2MD5%20Issue&In-Reply-To=%3C491B0CAF.709%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] AKAV2MD5 Issue">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Nov 12 18:04:47 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004824.html">[OpenIMSCore-Users] AKAV2MD5 Issue
+</A></li>
+        <LI>Next message: <A HREF="004828.html">[OpenIMSCore-Users] SER &amp; Kamailio (OpenSER) [+ ser_ims?] getting	back together
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4829">[ date ]</a>
+              <a href="thread.html#4829">[ thread ]</a>
+              <a href="subject.html#4829">[ subject ]</a>
+              <a href="author.html#4829">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Veena,
+
+should be fixed now. Or at least this is what I think, but I have only tested it against the same implementation in the client and a similar one in C, so feedback is appreciated.
+
+
+
+Author: vingarzan
+Date: 2008-11-12 17:52:41 +0100 (Wed, 12 Nov 2008)
+New Revision: 601 <A HREF="http://svn.berlios.de/viewcvs/openimscore?view=rev&amp;rev=601">http://svn.berlios.de/viewcvs/openimscore?view=rev&amp;rev=601</A> 
+
+Log:
+Fixed the AKAv2 MD5:
+	- was implemented after draft-torvinen-http-digest-aka-v2-00 and not rfc4169 
+	- the XRESv2 is not XRES||IK||CK but base64(HMAC_MD5(XRES||IK|CK,&quot;http-digest-akav2-password&quot;)
+	- the IK' is HMAC_MD5(IK,&quot;http-digest-akav2-integritykey&quot;)
+	- the CK' is HMAC_MD5(CK,&quot;http-digest-akav2-cipherkey&quot;)
+
+
+Modified:
+   U	FHoSS/trunk/src/de/fhg/fokus/hss/auth/DigestAKA.java
+		<A HREF="http://svn.berlios.de/viewcvs/openimscore/FHoSS/trunk/src/de/fhg/fokus/hss/auth/DigestAKA.java?rev=601&amp;view=diff&amp;r1=601&amp;r2=600">http://svn.berlios.de/viewcvs/openimscore/FHoSS/trunk/src/de/fhg/fokus/hss/auth/DigestAKA.java?rev=601&amp;view=diff&amp;r1=601&amp;r2=600</A>
+
+Cheers,
+-Dragos
+
+
+Dragos Vingarzan wrote:
+&gt;<i> As I just wrote, there's an issue that was brought to my attention just
+</I>&gt;<i> this morning - the S-CSCF implements the
+</I>&gt;<i> <A HREF="http://tools.ietf.org/html/draft-torvinen-http-digest-aka-v2-00">http://tools.ietf.org/html/draft-torvinen-http-digest-aka-v2-00</A> and not
+</I>&gt;<i> the final RFC4169... Not a big difference for the code, but one more MD5
+</I>&gt;<i> operation is required.
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Veena.S wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Dear All,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I tried to change authentication scheme in the web UI to AKAv2-MD5. And  
+</I>&gt;&gt;<i> also I have changed the default
+</I>&gt;&gt;<i> authentication method in scscf.cfg to AKAv2-MD5. But its not working. For  
+</I>&gt;&gt;<i> REGISTER request I am getting 401. After copying the authentication  
+</I>&gt;&gt;<i> credentials once again I am sending REGISTER request, but the server is  
+</I>&gt;&gt;<i> sending 401 response only.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Please refer the below packets and let me know the problem and solution.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bhavya at open-ims.test</A>&gt;;tag=45dfgd555tyrghf6
+</I>&gt;&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bhavya at open-ims.test</A>&gt;
+</I>&gt;&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">c4010-2139012-234-546546 at gesl.com</A>
+</I>&gt;&gt;<i> CSeq: 2 REGISTER
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP 172.16.2.122:6080;rport;branch=z9hG4bK1928984513155287563
+</I>&gt;&gt;<i> Max-Forwards: 70
+</I>&gt;&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bhavya at 172.16.2.122</A>:6080&gt;
+</I>&gt;&gt;<i> Expires: 3600
+</I>&gt;&gt;<i> User_Agent: gesSipPhone/1.0 (GESL)
+</I>&gt;&gt;<i> P-Access-Network-Info: 3GPP-UTRAN-TDD; 3GPP-UTRAN-TDD=234151D0FCE11
+</I>&gt;&gt;<i> Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bhavya at open-ims.test</A>&quot;, realm=&quot;&quot;, nonce=&quot;&quot;,  
+</I>&gt;&gt;<i> uri=&quot;sip:open-ims.test&quot;, response=&quot;&quot;
+</I>&gt;&gt;<i> Allow:  
+</I>&gt;&gt;<i> INVITE,ACK,CANCEL,BYE,OPTIONS,INFO,PUBLISH,SUBSCRIBE,NOTIFY,REFER,MESSAGE,PRACK,UPDATE
+</I>&gt;&gt;<i> Content-Length: 0
+</I>&gt;&gt;<i> Supported: path,timer,replaces
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP/2.0 401 Unauthorized - Challenging the UE
+</I>&gt;&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bhavya at open-ims.test</A>&gt;;tag=45dfgd555tyrghf6
+</I>&gt;&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bhavya at open-ims.test</A>&gt;;tag=08e9876e2895398cd2bba6550b72e964-f6c7
+</I>&gt;&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">c4010-2139012-234-546546 at gesl.com</A>
+</I>&gt;&gt;<i> CSeq: 2 REGISTER
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP  
+</I>&gt;&gt;<i> 172.16.2.122:6080;rport=6080;branch=z9hG4bK1928984513155287563
+</I>&gt;&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY,  
+</I>&gt;&gt;<i> PUBLISH, MESSAGE, INFO
+</I>&gt;&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+</I>&gt;&gt;<i> Content-Length: 0
+</I>&gt;&gt;<i> Warning: 392 172.16.8.51:6060 &quot;Noisy feedback tells:  pid=29018  
+</I>&gt;&gt;<i> req_src_ip=172.16.8.51 req_src_port=5060  
+</I>&gt;&gt;<i> in_uri=sip:scscf.open-ims.test:6060 out_uri=sip:scscf.open-ims.test:6060  
+</I>&gt;&gt;<i> via_cnt==3&quot;
+</I>&gt;&gt;<i> WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,  
+</I>&gt;&gt;<i> nonce=&quot;eGbQY2Ldoso+pQHDKeRPcL4k/OLSXAAA0uvEY2pVsKk=&quot;, algorithm=AKAv2-MD5,  
+</I>&gt;&gt;<i> qop=&quot;auth,auth-int&quot;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bhavya at open-ims.test</A>&gt;;tag=45dfgd555tyrghf6
+</I>&gt;&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bhavya at open-ims.test</A>&gt;
+</I>&gt;&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">c4010-2139012-234-546546 at gesl.com</A>
+</I>&gt;&gt;<i> CSeq: 3 REGISTER
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP 172.16.2.122:6080;rport;branch=z9hG4bK1939955903166258949
+</I>&gt;&gt;<i> Max-Forwards: 70
+</I>&gt;&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bhavya at 172.16.2.122</A>:6080&gt;
+</I>&gt;&gt;<i> Expires: 3600
+</I>&gt;&gt;<i> User_Agent: gesSipPhone/1.0 (GESL)
+</I>&gt;&gt;<i> P-Access-Network-Info: 3GPP-UTRAN-TDD; 3GPP-UTRAN-TDD=234151D0FCE11
+</I>&gt;&gt;<i> Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bhavya at open-ims.test</A>&quot;,  
+</I>&gt;&gt;<i> realm=&quot;open-ims.test&quot;,  
+</I>&gt;&gt;<i> nonce=&quot;eGbQY2Ldoso+pQHDKeRPcL4k/OLSXAAA0uvEY2pVsKk=&quot;,  
+</I>&gt;&gt;<i> uri=&quot;sip:open-ims.test&quot;, response=&quot;56dd37c2b6530bdd5197031fcc20f59e&quot;,  
+</I>&gt;&gt;<i> algorithm=AKAv2-MD5,cnonce=&quot;a2fc72d132664b2d11b6a55798970865&quot;,qop=auth-int,nc=00000001
+</I>&gt;&gt;<i> Allow:  
+</I>&gt;&gt;<i> INVITE,ACK,CANCEL,BYE,OPTIONS,INFO,PUBLISH,SUBSCRIBE,NOTIFY,REFER,MESSAGE,PRACK,UPDATE
+</I>&gt;&gt;<i> Content-Length: 0
+</I>&gt;&gt;<i> Supported: path,timer,replaces
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP/2.0 401 Unauthorized - Challenging the UE
+</I>&gt;&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bhavya at open-ims.test</A>&gt;;tag=45dfgd555tyrghf6
+</I>&gt;&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bhavya at open-ims.test</A>&gt;;tag=08e9876e2895398cd2bba6550b72e964-a736
+</I>&gt;&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">c4010-2139012-234-546546 at gesl.com</A>
+</I>&gt;&gt;<i> CSeq: 3 REGISTER
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP  
+</I>&gt;&gt;<i> 172.16.2.122:6080;rport=6080;branch=z9hG4bK1939955903166258949
+</I>&gt;&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY,  
+</I>&gt;&gt;<i> PUBLISH, MESSAGE, INFO
+</I>&gt;&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+</I>&gt;&gt;<i> Content-Length: 0
+</I>&gt;&gt;<i> Warning: 392 172.16.8.51:6060 &quot;Noisy feedback tells:  pid=29020  
+</I>&gt;&gt;<i> req_src_ip=172.16.8.51 req_src_port=5060  
+</I>&gt;&gt;<i> in_uri=sip:scscf.open-ims.test:6060 out_uri=sip:scscf.open-ims.test:6060  
+</I>&gt;&gt;<i> via_cnt==3&quot;
+</I>&gt;&gt;<i> WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,  
+</I>&gt;&gt;<i> nonce=&quot;EUAfx3KOUznQNXNNvvf5tWoxPjGKTwAAqwocExJ/VUs=&quot;, algorithm=AKAv2-MD5,  
+</I>&gt;&gt;<i> qop=&quot;auth,auth-int&quot;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ---------
+</I>&gt;&gt;<i> ---------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regard,
+</I>&gt;&gt;<i> Bhavya
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004824.html">[OpenIMSCore-Users] AKAV2MD5 Issue
+</A></li>
+	<LI>Next message: <A HREF="004828.html">[OpenIMSCore-Users] SER &amp; Kamailio (OpenSER) [+ ser_ims?] getting	back together
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4829">[ date ]</a>
+              <a href="thread.html#4829">[ thread ]</a>
+              <a href="subject.html#4829">[ subject ]</a>
+              <a href="author.html#4829">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

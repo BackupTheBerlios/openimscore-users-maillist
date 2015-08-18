@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] 400 Bad request- not following	indicated	service routes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2013-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20400%20Bad%20request-%20not%20following%0A%09indicated%09service%20routes&In-Reply-To=%3C010c01ce3554%2433ed0760%249bc71620%24%40technikum-wien.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007666.html">
+   <LINK REL="Next"  HREF="007668.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] 400 Bad request- not following	indicated	service routes</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20400%20Bad%20request-%20not%20following%0A%09indicated%09service%20routes&In-Reply-To=%3C010c01ce3554%2433ed0760%249bc71620%24%40technikum-wien.at%3E"
+       TITLE="[OpenIMSCore-Users] 400 Bad request- not following	indicated	service routes">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Tue Apr  9 20:58:19 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007666.html">[OpenIMSCore-Users] 400 Bad request- not following indicated	service routes
+</A></li>
+        <LI>Next message: <A HREF="007668.html">[OpenIMSCore-Users] 400 Bad request- not following indicated	service routes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7667">[ date ]</a>
+              <a href="thread.html#7667">[ thread ]</a>
+              <a href="subject.html#7667">[ subject ]</a>
+              <a href="author.html#7667">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Ravindra,
+
+ 
+
+That's easy. IMS requires all clients to follow for new standalone or dialog
+initiating requests  the &quot;Service Route&quot; received during registration (just
+read a little bit about IMS).
+
+Your clients obviously are no IMS clients and I guess they do not support
+the Service-Route header field.
+
+ 
+
+To overcome this issue just switch to &quot;variant 2&quot; in pcscf.cfg
+
+                if (!P_follows_service_routes()){
+
+
+                                #Variant 1 - deny access to the network
+
+                                sl_send_reply(&quot;400&quot;,&quot;Bad Request - Not
+following indicated Service-Routes&quot;);                      
+
+                                break;
+
+                                #Variant 2 - enforce routes and let the
+dialog continue
+
+                                #P_enforce_service_routes();
+
+then it will work.
+
+BR Franz
+
+ 
+
+ 
+
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Ravindra
+Gowda
+Sent: Tuesday, April 09, 2013 8:15 AM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Cc: G Madhavi; Midhilesh Kumar
+Subject: [OpenIMSCore-Users] 400 Bad request- not following indicated
+service routes
+
+ 
+
+Dear All,
+
+I am working around with the OpenIMScore server, at the moment i'm trying to
+establish a audio call between two VOIP phones. In the process i was
+successfully got registered my VOIP phones to core. But when i tried to
+call/message the other end client, i received an error from P-CSCF as:
+
+400 Bad request- not following indicated service-routes.
+
+what may be the reasons behind this errors? and what are the possible ways
+to resolve this issues?
+
+please share your valuable answers.  
+
+Please find the attachment, a wireshark trace to give a more complete
+picture.
+
+Thank you and Best regards,
+
+R Ravindra Gowda
+Engineer - Systems and Products.
+
+Thrikasa Technologies
+
+|<i> Office: +91 40 23260434
+</I>|<i> Mob: +918885284050
+</I>
+|<i> Fax:+91 40 23221045
+</I>
+|<i> email: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ravindra at thrikasa.in</A>
+</I>
+|<i> Web: www.thrikasa.in
+</I>
+ 
+
+'If you don't give up,you cannot fail'. 
+
+The information contained in this communication is proprietary to Thrikasa
+Technologies., and/or third parties, may contain classified or privileged
+information, and is intended only for the use of the intended addressee
+thereof. If you are not the intended addressee, please be aware that any
+use, disclosure, distribution and/or copying of this communication is
+strictly prohibited.If you receive this communication in error, please
+notify the sender immediately and delete it from your computer.
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130409/c174d063/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130409/c174d063/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007666.html">[OpenIMSCore-Users] 400 Bad request- not following indicated	service routes
+</A></li>
+	<LI>Next message: <A HREF="007668.html">[OpenIMSCore-Users] 400 Bad request- not following indicated	service routes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7667">[ date ]</a>
+              <a href="thread.html#7667">[ thread ]</a>
+              <a href="subject.html#7667">[ subject ]</a>
+              <a href="author.html#7667">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

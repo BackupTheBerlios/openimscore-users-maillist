@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Not able to register with OpenIMScore	usingAKAv1-MD5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Not%20able%20to%20register%20with%20OpenIMScore%0A%09usingAKAv1-MD5&In-Reply-To=%3CDCAF9CF4698A49499C44125627A9069D%40notebook%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004658.html">
+   <LINK REL="Next"  HREF="004660.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Not able to register with OpenIMScore	usingAKAv1-MD5</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Not%20able%20to%20register%20with%20OpenIMScore%0A%09usingAKAv1-MD5&In-Reply-To=%3CDCAF9CF4698A49499C44125627A9069D%40notebook%3E"
+       TITLE="[OpenIMSCore-Users] Not able to register with OpenIMScore	usingAKAv1-MD5">franz.edler at inode.at
+       </A><BR>
+    <I>Sat Sep 20 12:50:34 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004658.html">[OpenIMSCore-Users] Not able to register with OpenIMScore using	AKAv1-MD5
+</A></li>
+        <LI>Next message: <A HREF="004660.html">[OpenIMSCore-Users] XDMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4659">[ date ]</a>
+              <a href="thread.html#4659">[ thread ]</a>
+              <a href="subject.html#4659">[ subject ]</a>
+              <a href="author.html#4659">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Rishikesh,
+
+&gt;<i> Is this problem in ims-communicator or in ims core?
+</I>
+Maybe it is the problem which Miguel points to (you unfortunately did not
+add a tracefile to securely confirm this issue). 
+The problem Miguel mentioned is on the IMS communicator side and it has its
+root in the nasty &quot;qop&quot; problem.
+
+But there is an easy workaround to be configured in scscf.cfg.
+
+Just use:
+   modparam(&quot;scscf&quot;,&quot;registration_qop&quot;,&quot;&quot;)
+instead of 
+   modparam(&quot;scscf&quot;,&quot;registration_qop&quot;,&quot;auth,auth-int&quot;)
+
+Franz
+
+
+&gt;<i> 
+</I>&gt;<i> If possible, I'll try myself to fix it.
+</I>&gt;<i> 
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Rishikesh
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> On Fri, Sep 19, 2008 at 4:48 AM, Jos&#233; Miguel Freitas &lt;jose-m-
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">freitas at ptinovacao.pt</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 	Hi,
+</I>&gt;<i> 
+</I>&gt;<i> 	There is a issue with the response to the challenge calculated by
+</I>&gt;<i> the ims-communicator.
+</I>&gt;<i> 
+</I>&gt;<i> 	Unfortunately I haven't had the enough free time to patch it
+</I>
+&gt;<i> 
+</I>&gt;<i> 	But I'll let you know as soon I get it working with the latest ims
+</I>&gt;<i> core release.
+</I>&gt;<i> 
+</I>&gt;<i> 	BR,
+</I>&gt;<i> 
+</I>&gt;<i> 	Miguel Freitas
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 	De: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:openimscore-
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">users-bounces at lists.berlios.de</A>] Em nome de Rishikesh Naik
+</I>&gt;<i> 	Enviada: sexta-feira, 19 de Setembro de 2008 6:27
+</I>&gt;<i> 	Para: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> 	Assunto: [OpenIMSCore-Users] Not able to register with OpenIMScore
+</I>&gt;<i> using AKAv1-MD5
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 	Hi All,
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 	I am using ims-communicator client. I was trying to register my
+</I>&gt;<i> client with IMS core but i got following logs on S-CSCF:
+</I>&gt;<i> 
+</I>&gt;<i> 	DBG:sm_process(): Peer hss.ims.gtisc.gatech.edu     State I_Open
+</I>&gt;<i> Event I_Rcv_Message
+</I>&gt;<i> 	 4(6221) DBG:S-CSCF:S_is_authorized: UE said:
+</I>&gt;<i> 48a5ad37f3eba9239b984212a5e69108 and we  expect
+</I>&gt;<i> b23fda321329d79696b5fb0894339b0e ha1 9a8edff40386a98d73fcacca1957fd2c
+</I>&gt;<i> 
+</I>&gt;<i> 	So, does this mean that algorithm implementation is going wrong
+</I>&gt;<i> somewhere either in client or in ims core?
+</I>&gt;<i> 
+</I>&gt;<i> 	I also saw similar issue posted on openims-HSS list. But It did not
+</I>&gt;<i> have answer.
+</I>&gt;<i> 
+</I>&gt;<i> 	<A HREF="http://lists.berlios.de/pipermail/openimscore-hss/2007-">http://lists.berlios.de/pipermail/openimscore-hss/2007-</A>
+</I>&gt;<i> May/000730.html
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 	Another observation I had was, in hss.properties file, I see
+</I>&gt;<i> following lines:
+</I>&gt;<i> 
+</I>&gt;<i> 	# operator_id, as hex bytes, required length 32 byte,
+</I>&gt;<i> 	# e.g. 00000000000000000000000000000000
+</I>&gt;<i> 	operatorId = 00000000000000000000000000000001
+</I>&gt;<i> 
+</I>&gt;<i> 	Whereas in ims-communicator.xml file:
+</I>&gt;<i> 
+</I>&gt;<i> 	 &lt;!-- operator ID : 16 bytes (32 hex char) --&gt;
+</I>&gt;<i> 	    &lt;OPERATOR_ID value=&quot;00000000000000000000000000000001&quot;/&gt;
+</I>&gt;<i> 
+</I>&gt;<i> 	So, which one of these comments is correct? What should be the
+</I>&gt;<i> length of operator ID?
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 	Please, help me regarding this issue.
+</I>&gt;<i> 
+</I>&gt;<i> 	Thanks a lot! :)
+</I>&gt;<i> 
+</I>&gt;<i> 	-Rishikesh
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004658.html">[OpenIMSCore-Users] Not able to register with OpenIMScore using	AKAv1-MD5
+</A></li>
+	<LI>Next message: <A HREF="004660.html">[OpenIMSCore-Users] XDMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4659">[ date ]</a>
+              <a href="thread.html#4659">[ thread ]</a>
+              <a href="subject.html#4659">[ subject ]</a>
+              <a href="author.html#4659">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

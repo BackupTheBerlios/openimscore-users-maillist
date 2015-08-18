@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [01_persistency] New branch created
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5B01_persistency%5D%20New%20branch%20created&In-Reply-To=%3C0AE2132CE51D1943A20F450AA7258E5C022FD23E%40INOAVREX05.ptin.corpPT.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000613.html">
+   <LINK REL="Next"  HREF="000614.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [01_persistency] New branch created</H1>
+    <B>M&#225;rio Almeida Ferreira</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5B01_persistency%5D%20New%20branch%20created&In-Reply-To=%3C0AE2132CE51D1943A20F450AA7258E5C022FD23E%40INOAVREX05.ptin.corpPT.com%3E"
+       TITLE="[OpenIMSCore-Users] [01_persistency] New branch created">est-m-aferreira at ptinovacao.pt
+       </A><BR>
+    <I>Thu Feb  1 18:22:17 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000613.html">[OpenIMSCore-Users] [01_persistency] New branch created
+</A></li>
+        <LI>Next message: <A HREF="000614.html">[OpenIMSCore-Users] FHoSS Castor error during ant gen
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#617">[ date ]</a>
+              <a href="thread.html#617">[ thread ]</a>
+              <a href="subject.html#617">[ subject ]</a>
+              <a href="author.html#617">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+We decided to do two db modes, one like you suggested, all dumped at a time in one row of the table, and an other separating per element, using entry_id. Separating per element can be good in situations where you have a lot of info already in memory and you don't want to exhaust it when dumping because of serializing everything into x buffer before persisting.
+
+This entry id could be a serial, if we don't do searches and load all. But, in the future, maybe we can consider implementing a cache mechanism (e.g. after dumping snapshots remove from memory expired info), and in this case it's necessary to be able to identify an element to retrieve. This way we use, for example, for the auth information, private and public identities as id.
+
+These two modules will allow to test and choose between larger memory consumption or many db accesses. The second db mode also makes it less difficult to implement new persistency approaches (like the cache).
+
+Regarding the large number of sequential INSERTs when dumping, we can look into using PostgreSQL's prepared statements in order to improve dumping times.
+
+The next mails can take place in the list. My mail is <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mariojvp at gmail.com.</A>
+
+M&#225;rio Ferreira
+
+-----Mensagem original-----
+De: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+Enviada: quinta-feira, 1 de Fevereiro de 2007 13:47
+Para: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+Cc: Jo&#227;o Filipe Pl&#225;cido; M&#225;rio Almeida Ferreira
+Assunto: [01_persistency] New branch created
+
+Hi all,
+
+As you have probably noticed, in the last days I have branched the
+ser_ims project and did some commits there. In case that you are curios
+and/or want to help, we are working on putting some persistency support
+into the CSCFs (especially P&amp;S). One of the differences between the
+registrar storage that we have and the usrloc module is that we do not
+yet have any support for saving that data anywhere, so on any restart of
+the CSCFs, those are empty. Normally, for simple test purposes, you
+would not need to restart them and the stability seems pretty good
+relative to our non-carrier-grade purposes (there are no outstanding
+CSCF crashing bugs now).
+
+However, these things happen and the the project's purposes is no excuse
+for having a better reliability. Plus that when you use it in a real
+trial with several hundreds of real users, like we do, it becomes pretty
+annoying when one CSCF crashes and you have all those angry users who
+did not do anything at all and now they need to re-register.
+
+Before I would start detailing it a little, I would just want to say
+that even if we will have this thing in, that allows you to just restart
+the CSCF on a crash, that would be a bad idea as you will probably not
+report a bug back to us - it fixes the effect, not the cause. Rather our
+main purpose here would be to allow you to do configuration changes and
+restart the CSCFs without loosing the state.
+
+The approach that we would like to take is that of making periodic full
+snapshots. The interval should be configurable. If you are more
+aggressive about the stability and you also have more users, making full
+snapshots can be quite expensive and many might use quite high intervals
+if they do not have too much traffic. In this situations, incremental
+changes could be dumped at lower intervals or, in the most aggressive
+case, immediately after a change. Then retrieving the state would be
+done by loading the last snapshot + following changes.
+
+The first step was to write the codec for storing/retrieving the data
+into/from data blocks. This is nearly completed in bin.c/h for basic
+data types and bin_scscf.c/h for the S-CSCF data structures. We have
+chosen a binary format over xml or something else due to space
+considerations. Assuming a 2-3Kbytes/subscriber, then we quickly get to
+hundreds of Megabytes to store. The XML service profile for one is about
+70% smaller in a binary format than in XML.
+
+Then the s_persistency.c/h is supposed to implement the dumping/loading
+functions for snapshots. Now we have this working for the authorization
+vectors and dialogs hash tables. The snapshots are done on timers at
+configurable intervals and also when you break the execution, on the
+shutdown procedures. The last snapshot is loaded on start-up.
+
+For now the data is dumped into files and we are also working on
+database support.
+
+We would be very interested in your opinions, contributions, impressions
+and anything else that you might think about this. If you decide to give
+it a try, you can get it from the SVN under
+ser_ims/branches/01.persistency. Remember though that this is highly
+experimental and as there are different people working on it, commits
+happen often for visibility reasons and many things might be broken. So
+speak now, before most of the work would be done.
+
+
+-Dragos
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000613.html">[OpenIMSCore-Users] [01_persistency] New branch created
+</A></li>
+	<LI>Next message: <A HREF="000614.html">[OpenIMSCore-Users] FHoSS Castor error during ant gen
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#617">[ date ]</a>
+              <a href="thread.html#617">[ thread ]</a>
+              <a href="subject.html#617">[ subject ]</a>
+              <a href="author.html#617">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

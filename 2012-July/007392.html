@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Re-authenticate%20based%20on%20SQN%0A%20%28resynchronization%29%20in%20Open%20IMScore%20during%20REGISTRATION&In-Reply-To=%3C59A209A9ED7A3D468145168E4293B42101A7C222E30B%40ARCATECHSERVER.arcatechl.local%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007391.html">
+   <LINK REL="Next"  HREF="007393.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION</H1>
+    <B>Badri Ranganathan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Re-authenticate%20based%20on%20SQN%0A%20%28resynchronization%29%20in%20Open%20IMScore%20during%20REGISTRATION&In-Reply-To=%3C59A209A9ED7A3D468145168E4293B42101A7C222E30B%40ARCATECHSERVER.arcatechl.local%3E"
+       TITLE="[OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION">badri at arcatech.com
+       </A><BR>
+    <I>Wed Jul  4 13:00:01 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007391.html">[OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION
+</A></li>
+        <LI>Next message: <A HREF="007393.html">[OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7392">[ date ]</a>
+              <a href="thread.html#7392">[ thread ]</a>
+              <a href="subject.html#7392">[ subject ]</a>
+              <a href="author.html#7392">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi paul,
+
+Thanks for the immediate  reply.
+
+The SCSF logs are -
+
+18(4846) ^[[1m^[[32mDBG:sm_process(): Peer hss.open-ims.test    State R_Open    Event R_Rcv_DWA^M^[[0m
+18(4846) ^[[1m^[[32mDBG:sm_process(): Peer hss.open-ims.test    State R_Open    Event R_Rcv_Message^M^[[0m
+3(4831) ^[[1m^[[32mDBG:S-CSCF:S_is_authorized: uri=sip:open-ims.test nonce=pQkueaEPq4XV2Qm5G0c7tC1961FiXAAATsqcXfRg8Bw= response=536c1523e5ace429c9d4b90df522266c qop=auth nc=00000001 cnonce=7C166D46 hbody=^M^[[0m
+3(4831) ^[[1m^[[32mDBG:S-CSCF:S_is_authorized: UE said: 536c1523e5ace429c9d4b90df522266c and we  expect 7b1c4014ea99be6cd8f2a5d5691777c5 ha1 0fafe59420826c9c08a61a3c1dde2de2^M^[[0m
+18(4846) ^[[1m^[[32mDBG:sm_process(): Peer hss.open-ims.test    State R_Open    Event R_Rcv_Message^M^[[0m
+18(4846) ^[[1m^[[32mDBG:sm_process(): Peer hss.open-ims.test    State R_Open    Event R_Rcv_Message^M^[[0m
+3(4831) ^[[1m^[[33mERROR: _reply_light: can't generate 403 reply when a final 403 was sent out^M^[[0m
+3(4831) ^[[1m^[[33mERR:S-CSCF:S_challenge: Error retrieving an auth vector^M^[[0m
+12(4840) ^[[1m^[[32m--- Peer List: ---^M^[[0m
+12(4840) ^[[1m^[[32m S[^[[33mR_Open^[[32m] ^[[34mhss.open-ims.test:3868^[[32m D[^[[31m ^[[32m]^M^[[0m
+12(4840) ^[[1m^[[32m^[[33m      [16777216,10415]^M^[[0m
+
+The HSS logs -
+Synchronize Handling synchronization between Mobile station and Home environment !
+Synchronize USE_AK is enabled and will be used in Milenage algorithm !
+Synchronize XMAC and MAC are different ! User not authorized in performing synchronization !
+Diameter unable to comply
+
+
+My problem is that I do not exactly know what is required for re-synchronization from the UE.  So I have tried the  following -
+
+1.       Computed xmac from incoming data from S-CSCF and copied it over to the mac-s value. But still the HSS complains that synchronize xmac and MAC are different !
+
+
+
+
+
+Cheers,
+Badri.
+
+
+
+
+
+From: Paul Carter-Brown [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">paul.carter-brown at smilecoms.com</A>]
+Sent: 04 July 2012 10:26
+To: Badri Ranganathan
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Re: [OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION
+
+Look in the HSS logs and see why its failing to process the re-sync. The &quot;Unable to Comply&quot; would be from some exception being generated in the HSS.
+On 4 July 2012 11:05, Badri Ranganathan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">badri at arcatech.com</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">badri at arcatech.com</A>&gt;&gt; wrote:
+Hi,
+
+I am doing AKA authentications on my IMS SIP UE. When I send a re-authenticate based on new values of sqn( i.e., re-synchronization) during REGISTRATION , I see that the OpenIMS Core returns a &quot;403 Forbidden - HSS unable to comply&quot;.
+Is this a setting that I can change in scscf.cfg or in the HSS ?
+
+Thanks,
+Badri.
+
+
+-----Original Message-----
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>&gt; [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>&gt;] On Behalf Of <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-request at lists.berlios.de</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-request at lists.berlios.de</A>&gt;
+Sent: 30 June 2012 11:00
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+Subject: OpenIMSCore-Users Digest, Vol 68, Issue 11
+
+Send OpenIMSCore-Users mailing list submissions to
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+
+To subscribe or unsubscribe via the World Wide Web, visit
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+or, via email, send a message with subject or body 'help' to
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-request at lists.berlios.de</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-request at lists.berlios.de</A>&gt;
+
+You can reach the person managing the list at
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-owner at lists.berlios.de</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-owner at lists.berlios.de</A>&gt;
+
+When replying, please edit your Subject line so it is more specific than &quot;Re: Contents of OpenIMSCore-Users digest...&quot;
+
+
+Today's Topics:
+
+   1. Re: Assistance required (Vivek Gupta)
+
+
+----------------------------------------------------------------------
+
+Message: 1
+Date: Fri, 29 Jun 2012 23:05:08 +0530
+From: Vivek Gupta &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vivek.gupta at globallogic.com</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vivek.gupta at globallogic.com</A>&gt;&gt;
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+Subject: Re: [OpenIMSCore-Users] Assistance required
+Message-ID:
+        &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">CAK13ABdZBKZCOt-p833SWJEHOKrhtYzOSFEK6McFJ_c56PcmuA at mail.gmail.com</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">CAK13ABdZBKZCOt-p833SWJEHOKrhtYzOSFEK6McFJ_c56PcmuA at mail.gmail.com</A>&gt;&gt;
+Content-Type: text/plain; charset=&quot;iso-8859-1&quot;
+
+Vivek Gupta | Sr. Consultant Engineering GlobalLogic Inc. | Innovation by Design ARGENTINA | CHILE | CHINA | INDIA | ISRAEL | UKRAINE | UK | USA
+Office: +91.120.406.2000 x 2953&lt;tel:%2B91.120.406.2000%20x%202953&gt; | Mobile: +91.987.390.4358&lt;tel:%2B91.987.390.4358&gt; | Fax:
++91.120.406.2788&lt;tel:%2B91.120.406.2788&gt;
+www.globallogic.com&lt;<A HREF="http://www.globallogic.com">http://www.globallogic.com</A>&gt;
+
+<A HREF="http://www.globallogic.com/email_disclaimer.txt">http://www.globallogic.com/email_disclaimer.txt</A>
+
+
+
+On Fri, Jun 29, 2012 at 3:16 AM, Franz Edler
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;&gt;wrote:
+
+&gt;<i> &gt; Can someone share the link from where I can download bdgcf components?
+</I>&gt;<i>
+</I>&gt;<i> What`s this (&quot;bdgcf&quot;)?
+</I>&gt;<i>
+</I>&gt;<i> BR
+</I>&gt;<i> Franz
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120629/67e5269d/attachment-0001.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120629/67e5269d/attachment-0001.html</A>&gt;
+
+------------------------------
+
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+End of OpenIMSCore-Users Digest, Vol 68, Issue 11
+*************************************************
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+
+
+--
+Paul Carter-Brown
+Group CIO
+Smile Communications
+Johannesburg, South Africa
+Phone: +27 83 442 7179
+
+This email is subject to the disclaimer of Smile Communications (PTY) Ltd. at <A HREF="http://www.smilecoms.com/disclaimer">http://www.smilecoms.com/disclaimer</A>
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120704/1ebec3df/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120704/1ebec3df/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007391.html">[OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION
+</A></li>
+	<LI>Next message: <A HREF="007393.html">[OpenIMSCore-Users] Re-authenticate based on SQN (resynchronization) in Open IMScore during REGISTRATION
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7392">[ date ]</a>
+              <a href="thread.html#7392">[ thread ]</a>
+              <a href="subject.html#7392">[ subject ]</a>
+              <a href="author.html#7392">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

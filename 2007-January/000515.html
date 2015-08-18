@@ -1,0 +1,306 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] IMS level registration and OSIMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IMS%20level%20registration%20and%20OSIMS&In-Reply-To=%3C489320.36458.qm%40web53612.mail.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000514.html">
+   <LINK REL="Next"  HREF="000528.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] IMS level registration and OSIMS</H1>
+    <B>Bindu B Pillai</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IMS%20level%20registration%20and%20OSIMS&In-Reply-To=%3C489320.36458.qm%40web53612.mail.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] IMS level registration and OSIMS">bbp44 at yahoo.com
+       </A><BR>
+    <I>Sat Jan 20 07:52:27 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000514.html">[OpenIMSCore-Users] IMS level registration and OSIMS
+</A></li>
+        <LI>Next message: <A HREF="000528.html">[OpenIMSCore-Users] IMS level registration and OSIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#515">[ date ]</a>
+              <a href="thread.html#515">[ thread ]</a>
+              <a href="subject.html#515">[ subject ]</a>
+              <a href="author.html#515">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I downloaded the latest version and tried to run the
+REGISTER message from the IMS client again. 
+I get the same 401 messages as with the previous rev. 
+
+What can I look at further on the core side, to help
+debug the scenario? The IMS client is configured as
+given in the installation guide. The only missing part
+is OP and AMF - I don't know what these are. Are these
+essential for a successful registration?
+
+How can I look at what actual key is being shared in
+the messages? 
+
+Thanks,
+-bindu
+
+
+--- Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+wrote:
+
+&gt;<i> But Bindu, the headers received and sent by the
+</I>&gt;<i> SIP2IMS are completely
+</I>&gt;<i> different on the 2 sides. There are 2 authorization
+</I>&gt;<i> happening:
+</I>&gt;<i> - one between the SIP client and the SIP2IMS gateway
+</I>&gt;<i> as a server - that
+</I>&gt;<i> is MD5
+</I>&gt;<i> - one between the SIP2IMS gateway as a client and
+</I>&gt;<i> the IMS Core as a
+</I>&gt;<i> server - that is AKAv1-MD5
+</I>&gt;<i> 
+</I>&gt;<i> They happen in &quot;parallel&quot; and if the first is
+</I>&gt;<i> successful, the the
+</I>&gt;<i> SIP2IMS gateway will try and make the 2nd one
+</I>&gt;<i> successful.
+</I>&gt;<i> 
+</I>&gt;<i> Regarding authorization with an AKA client, there
+</I>&gt;<i> was recent fix. Please
+</I>&gt;<i> see the revision 84 log:
+</I>&gt;<i>
+</I><A HREF="https://lists.berlios.de/pipermail/openimscore-cscf/2007-January/000121.html">https://lists.berlios.de/pipermail/openimscore-cscf/2007-January/000121.html</A>
+&gt;<i> 
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Bindu B Pillai wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; OK... help me understand this then.
+</I>&gt;<i> &gt; To start with, I used the Xlite through the
+</I>&gt;<i> sip2ims
+</I>&gt;<i> &gt; gateway. The registration worked.
+</I>&gt;<i> &gt; With the IMS client, i'm not able to get it to
+</I>&gt;<i> &gt; register.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Here is the output from Xlite soft sip phone
+</I>&gt;<i> working
+</I>&gt;<i> &gt; with the sip2ims gateway for registration. The 2nd
+</I>&gt;<i> &gt; REGISTER message sent has the nonce from the 401
+</I>&gt;<i> &gt; message received, but the response is different.
+</I>&gt;<i> &gt; Should this be a 1 to 1 match is my question.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i> &gt; Via: SIP/2.0/UDP
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>172.16.0.11:26418;branch=z9hG4bK-d87543-3b550060c5029939-1--d87543-;rport
+&gt;<i> &gt; Max-Forwards: 70
+</I>&gt;<i> &gt; Contact:
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 172.16.0.11</A>:26418;rinstance=57a223723d7be6f1&gt;
+&gt;<i> &gt; To: &quot;&quot;Alice&quot;&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+</I>&gt;<i> &gt; From:
+</I>&gt;<i> &quot;&quot;Alice&quot;&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=a704b36c
+</I>&gt;<i> &gt; Call-ID:
+</I>&gt;<i> ZWM4YWIzNTExZGRjMzQyNzYzNmM2YWIxY2VlZGIyYWU.
+</I>&gt;<i> &gt; CSeq: 1 REGISTER
+</I>&gt;<i> &gt; Expires: 3600
+</I>&gt;<i> &gt; Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER,
+</I>&gt;<i> &gt; NOTIFY, MESSAGE, SUBSCRIBE, INFO
+</I>&gt;<i> &gt; User-Agent: X-Lite release 1006e stamp 34025
+</I>&gt;<i> &gt; Content-Length: 0
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; SIP/2.0 401 Unauthorized - Challenging the UE
+</I>&gt;<i> &gt; Via: SIP/2.0/UDP
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>172.16.0.11:26418;branch=z9hG4bK-d87543-3b550060c5029939-1--d87543-;rport=26418
+&gt;<i> &gt; Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> &gt; Service-Route:
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> &gt; To:
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&quot;&quot;Alice&quot;&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=8a8b4a4bfe6e9e279a0f819adaa9fa5e-15e0
+&gt;<i> &gt; From:
+</I>&gt;<i> &quot;&quot;Alice&quot;&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=a704b36c
+</I>&gt;<i> &gt; Call-ID:
+</I>&gt;<i> ZWM4YWIzNTExZGRjMzQyNzYzNmM2YWIxY2VlZGIyYWU.
+</I>&gt;<i> &gt; CSeq: 1 REGISTER
+</I>&gt;<i> &gt; Server: Sip EXpress router (0.10.99-dev53-tm_fixes
+</I>&gt;<i> &gt; (i386/linux))
+</I>&gt;<i> &gt; Warning: 392 192.168.64.2:6060 &quot;&quot;Noisy feedback
+</I>&gt;<i> tells:
+</I>&gt;<i> &gt;  pid=23809 req_src_ip=192.168.64.2
+</I>&gt;<i> req_src_port=5060
+</I>&gt;<i> &gt; in_uri=sip:scscf.open-ims.test:6060
+</I>&gt;<i> &gt; out_uri=sip:scscf.open-ims.test:6060 via_cnt==4&quot;&quot;
+</I>&gt;<i> &gt; WWW-Authenticate: Digest
+</I>&gt;<i> &gt; username=&quot;&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;&quot;,
+</I>&gt;<i> &gt; realm=&quot;&quot;open-ims.test&quot;&quot;,
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>opaque=&quot;&quot;AKAv1-MD5ETKl/AmZLeLQGGkEahISbwAAAAABNAAAUg2QxyjnlpE=&quot;&quot;,
+&gt;<i> &gt;
+</I>&gt;<i> nonce=&quot;&quot;45a5159f3ee620dc5f79b32027e4753f9e231463&quot;&quot;,
+</I>&gt;<i> &gt; algorithm=MD5
+</I>&gt;<i> &gt; Content-Length: 0
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i> &gt; Via: SIP/2.0/UDP
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>172.16.0.11:26418;branch=z9hG4bK-d87543-19411c32c739c507-1--d87543-;rport
+&gt;<i> &gt; Max-Forwards: 70
+</I>&gt;<i> &gt; Contact:
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 172.16.0.11</A>:26418;rinstance=57a223723d7be6f1&gt;
+&gt;<i> &gt; To: &quot;&quot;Alice&quot;&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+</I>&gt;<i> &gt; From:
+</I>&gt;<i> &quot;&quot;Alice&quot;&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=a704b36c
+</I>&gt;<i> &gt; Call-ID:
+</I>&gt;<i> ZWM4YWIzNTExZGRjMzQyNzYzNmM2YWIxY2VlZGIyYWU.
+</I>&gt;<i> &gt; CSeq: 2 REGISTER
+</I>&gt;<i> &gt; Expires: 3600
+</I>&gt;<i> &gt; Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER,
+</I>&gt;<i> &gt; NOTIFY, MESSAGE, SUBSCRIBE, INFO
+</I>&gt;<i> &gt; User-Agent: X-Lite release 1006e stamp 34025
+</I>&gt;<i> &gt; Authorization: Digest
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>username=&quot;&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;&quot;,realm=&quot;&quot;open-ims.test&quot;&quot;,nonce=&quot;&quot;45a5159f3ee620dc5f79b32027e4753f9e231463&quot;&quot;,uri=&quot;&quot;sip:open-ims.test&quot;&quot;,response=&quot;&quot;5f255d1378b870e92a488d23ee6a3d29&quot;&quot;,algorithm=MD5,opaque=&quot;&quot;AKAv1-MD5ETKl/AmZLeLQGGkEahISbwAAAAABNAAAUg2QxyjnlpE=&quot;&quot;
+&gt;<i> &gt; Content-Length: 0
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; SIP/2.0 200 OK - SAR succesful and registrar saved
+</I>&gt;<i> &gt; Via: SIP/2.0/UDP
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>172.16.0.11:26418;branch=z9hG4bK-d87543-19411c32c739c507-1--d87543-;rport=26418
+&gt;<i> &gt; Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> &gt; Service-Route:
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> &gt; Contact:
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 172.16.0.11</A>:26418;rinstance=57a223723d7be6f1&gt;;expires=3600
+&gt;<i> &gt; To:
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&quot;&quot;Alice&quot;&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=8a8b4a4bfe6e9e279a0f819adaa9fa5e-2519
+&gt;<i> &gt; From:
+</I>&gt;<i> &quot;&quot;Alice&quot;&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=a704b36c
+</I>&gt;<i> &gt; Call-ID:
+</I>&gt;<i> ZWM4YWIzNTExZGRjMzQyNzYzNmM2YWIxY2VlZGIyYWU.
+</I>&gt;<i> &gt; CSeq: 2 REGISTER
+</I>&gt;<i> &gt; Server: Sip EXpress router (0.10.99-dev53-tm_fixes
+</I>&gt;<i> &gt; (i386/linux))
+</I>&gt;<i> &gt; Warning: 392 192.168.64.2:6060 &quot;&quot;Noisy feedback
+</I>&gt;<i> tells:
+</I>&gt;<i> &gt;  pid=23807 req_src_ip=192.168.64.2
+</I>&gt;<i> req_src_port=5060
+</I>&gt;<i> &gt; in_uri=sip:scscf.open-ims.test:6060
+</I>&gt;<i> &gt; out_uri=sip:scscf.open-ims.test:6060 via_cnt==4&quot;&quot;
+</I>&gt;<i> &gt; P-Associated-URI: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+</I>&gt;<i> &gt; Content-Length: 0
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks,
+</I>&gt;<i> &gt; -bindu
+</I>&gt;<i> &gt; --- Dragos Vingarzan
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; Of course. Else, it's like your shouting a
+</I>&gt;<i> response,
+</I>&gt;<i> &gt; &gt; but you not
+</I>&gt;<i> &gt; &gt; claiming for which random challenge that is.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; -Dragos
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Bindu B Pillai wrote:
+</I>&gt;<i> &gt; &gt; &gt;  Hi...
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt;  Should the response in the Register message
+</I>&gt;<i> match
+</I>&gt;<i> &gt; &gt; &gt;  exactly the 'nonce' field in the 401 message?
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt;  I'm running into a similar issue with the IMS
+</I>&gt;<i> &gt; &gt; &gt;  client.
+</I>&gt;<i> &gt; &gt; &gt;  The Password is alice
+</I>&gt;<i> &gt; &gt; &gt;  User name is alice at open-ims.test
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt;  
+</I>&gt;<i> &gt; &gt; &gt;&gt; Here is the message I get
+</I>&gt;<i> &gt; &gt; &gt;&gt; REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i> &gt; &gt; &gt;&gt;
+</I>&gt;<i> &gt; &gt; &gt;&gt; From:
+</I>&gt;<i> &gt; &gt; &gt;&gt;
+</I>&gt;<i> &gt; &gt; &gt;&gt;    
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=5458688-200a0a0a-1b95-45010-52708-4dc67df3-52708
+&gt;<i> &gt; &gt; &gt;  
+</I>&gt;<i> &gt; &gt; &gt;&gt; To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+</I>&gt;<i> &gt; &gt; &gt;&gt;
+</I>&gt;<i> &gt; &gt; &gt;&gt; Call-ID:
+</I>&gt;<i> &gt; &gt; &gt;&gt;
+</I>&gt;<i> 7890258-200a0a0a-1b95-45010-52704-2aed8277-52704
+</I>&gt;<i> &gt; &gt; &gt;&gt;
+</I>&gt;<i> &gt; &gt; &gt;&gt; CSeq: 1 REGISTER
+</I>&gt;<i> &gt; &gt; &gt;&gt;
+</I>&gt;<i> &gt; &gt; &gt;&gt; Via: SIP/2.0/UDP
+</I>&gt;<i> &gt; &gt; &gt;&gt;
+</I>&gt;<i> &gt; &gt; &gt;&gt;    
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>10.10.10.32:7061;branch=z9hG4bK-52708-142078e2-769c1100
+&gt;<i> &gt; &gt; &gt;  
+</I>&gt;<i> &gt; &gt; &gt;&gt; Max-Forwards: 70
+</I>&gt;<i> &gt; &gt; &gt;&gt;
+</I>&gt;<i> 
+</I>=== message truncated ===
+
+
+
+ 
+____________________________________________________________________________________
+We won't tell. Get more on shows you hate to love 
+(and love to hate): Yahoo! TV's Guilty Pleasures list.
+<A HREF="http://tv.yahoo.com/collections/265">http://tv.yahoo.com/collections/265</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000514.html">[OpenIMSCore-Users] IMS level registration and OSIMS
+</A></li>
+	<LI>Next message: <A HREF="000528.html">[OpenIMSCore-Users] IMS level registration and OSIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#515">[ date ]</a>
+              <a href="thread.html#515">[ thread ]</a>
+              <a href="subject.html#515">[ subject ]</a>
+              <a href="author.html#515">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

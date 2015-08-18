@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Query on Registration Over IPSec
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Query%20on%20Registration%20Over%20IPSec&In-Reply-To=%3C4B84F8CD.3060909%40globaledgesoft.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006091.html">
+   <LINK REL="Next"  HREF="006093.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Query on Registration Over IPSec</H1>
+    <B>Naveen BN</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Query%20on%20Registration%20Over%20IPSec&In-Reply-To=%3C4B84F8CD.3060909%40globaledgesoft.com%3E"
+       TITLE="[OpenIMSCore-Users] Query on Registration Over IPSec">naveen.bn at globaledgesoft.com
+       </A><BR>
+    <I>Wed Feb 24 11:00:45 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006091.html">[OpenIMSCore-Users] Query on Registration Over IPSec
+</A></li>
+        <LI>Next message: <A HREF="006093.html">[OpenIMSCore-Users] Query on Registration Over IPSec
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6092">[ date ]</a>
+              <a href="thread.html#6092">[ thread ]</a>
+              <a href="subject.html#6092">[ subject ]</a>
+              <a href="author.html#6092">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sunil,
+What is the SPI value used in esp message .
+
+Regards
+Naveen
+
+Sunil Suraj-a22975 wrote:
+&gt;<i> Hi Naveen,
+</I>&gt;<i>  
+</I>&gt;<i>     I collected the ethereal log at server side. I can see the ESP 
+</I>&gt;<i> messages reaching the server.
+</I>&gt;<i>  
+</I>&gt;<i> Regards,
+</I>&gt;<i> Suraj
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> *From:* Naveen BN [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naveen.bn at globaledgesoft.com</A>]
+</I>&gt;<i> *Sent:* Wednesday, February 24, 2010 3:25 PM
+</I>&gt;<i> *To:* Sunil Suraj-a22975
+</I>&gt;<i> *Cc:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>; P Sudarshanakrishnan-A14377
+</I>&gt;<i> *Subject:* Re: [OpenIMSCore-Users] Query on Registration Over IPSec
+</I>&gt;<i>
+</I>&gt;<i> Sunil
+</I>&gt;<i> Are you seeing the register protected with esp packet going out.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i> Naveen
+</I>&gt;<i>  
+</I>&gt;<i> Sunil Suraj-a22975 wrote:
+</I>&gt;&gt;<i> Hi Naveen,
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>            I think the below mentioned rule is sufficient for sending 
+</I>&gt;&gt;<i> to spi=5019 or else could you  let me know is there any other rules 
+</I>&gt;&gt;<i> to be added.
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i> spdadd 10.232.14.119[7071] 10.232.15.41[4063] any -P out ipsec 
+</I>&gt;&gt;<i> esp/transport//unique:1;
+</I>&gt;&gt;<i> add 10.232.14.119 10.232.15.41 esp 5019 -m transport -u 1 -E 3des-cbc 
+</I>&gt;&gt;<i> 0x97a16ddcd0e94fc25d1da35b25810b5d97a16ddcd0e94fc2 -A hmac-md5 
+</I>&gt;&gt;<i> 0x2688bdd633606a7ce69893f97f9a2688
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i> Suraj
+</I>&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;<i> *From:* Naveen BN [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naveen.bn at globaledgesoft.com</A>]
+</I>&gt;&gt;<i> *Sent:* Wednesday, February 24, 2010 2:13 PM
+</I>&gt;&gt;<i> *To:* Sunil Suraj-a22975
+</I>&gt;&gt;<i> *Cc:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>; P Sudarshanakrishnan-A14377
+</I>&gt;&gt;<i> *Subject:* Re: [OpenIMSCore-Users] Query on Registration Over IPSec
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Sunil,
+</I>&gt;&gt;<i> Ensure that the protected register message to server is going using 
+</I>&gt;&gt;<i> spi=5019.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards
+</I>&gt;&gt;<i> Naveen
+</I>&gt;&gt;<i> Sunil Suraj-a22975 wrote:
+</I>&gt;&gt;&gt;<i> Following test is performed in below environment
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> OpenIms version : 0595. With ipsec pacage is installed.
+</I>&gt;&gt;&gt;<i> OS : Linux
+</I>&gt;&gt;&gt;<i> kernal : 2.6.21
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;<i> Suraj
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i> *From:* Sunil Suraj-a22975
+</I>&gt;&gt;&gt;<i> *Sent:* Tuesday, February 23, 2010 7:05 PM
+</I>&gt;&gt;&gt;<i> *To:* '<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>'
+</I>&gt;&gt;&gt;<i> *Cc:* Vavilapalli Srikanth-A19563; P Sudarshanakrishnan-A14377
+</I>&gt;&gt;&gt;<i> *Subject:* Query on Registration Over IPSec
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hi All,
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> Our Client sends the SIP REGISTER message to the OpenIMS over UDP, 
+</I>&gt;&gt;&gt;<i> with Security-Client header as follows
+</I>&gt;&gt;&gt;<i> Security-Client: 
+</I>&gt;&gt;&gt;<i> ipsec-3gpp;alg=hmac-md5-96;prot=esp;ealg=des-ede3-cbc;spi-c=3030;spi-s=3031;port-c=7071;port-s=7072
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> OpenIMS challenges the UAC by sending the 401 with  Security-Server 
+</I>&gt;&gt;&gt;<i> header as follows
+</I>&gt;&gt;&gt;<i> Security-Server: ipsec-3gpp; ealg=des-ede3-cbc; alg=hmac-md5-96; 
+</I>&gt;&gt;&gt;<i> spi-c=5018; spi-s=5019; port-c=4062; port-s=4063; prot=esp; 
+</I>&gt;&gt;&gt;<i> mod=trans; q=0.1
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> UAC sends Re_register message to the OpenIms Server from 7071 to 
+</I>&gt;&gt;&gt;<i> 4063 over UDP, with Security-Verify header as
+</I>&gt;&gt;&gt;<i> Security-Verify: 
+</I>&gt;&gt;&gt;<i> ipsec-3gpp;q=0.1;alg=hmac-md5-96;prot=esp;ealg=des-ede3-cbc;spi-c=5018;spi-s=5019;port-c=4062;port-s=4063
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> Before sending the Re-registration client updates ipsec database 
+</I>&gt;&gt;&gt;<i> with following information
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> spdadd 10.232.15.41[4062] 10.232.14.119[7072] any -P in ipsec 
+</I>&gt;&gt;&gt;<i> esp/transport//require;
+</I>&gt;&gt;&gt;<i> add 10.232.15.41 10.232.14.119 esp 3031 -m transport -E 3des-cbc 
+</I>&gt;&gt;&gt;<i> 0x97a16ddcd0e94fc25d1da35b25810b5d97a16ddcd0e94fc2 -A hmac-md5 
+</I>&gt;&gt;&gt;<i> 0x2688bdd633606a7ce69893f97f9a2688;
+</I>&gt;&gt;&gt;<i> spdadd 10.232.15.41[4063] 10.232.14.119[7071] any -P in ipsec 
+</I>&gt;&gt;&gt;<i> esp/transport//require;
+</I>&gt;&gt;&gt;<i> add 10.232.15.41 10.232.14.119 esp 3030 -m transport -E 3des-cbc 
+</I>&gt;&gt;&gt;<i> 0x97a16ddcd0e94fc25d1da35b25810b5d97a16ddcd0e94fc2 -A hmac-md5 
+</I>&gt;&gt;&gt;<i> 0x2688bdd633606a7ce69893f97f9a2688;
+</I>&gt;&gt;&gt;<i> spdadd 10.232.14.119[7071] 10.232.15.41[4063] any -P out ipsec 
+</I>&gt;&gt;&gt;<i> esp/transport//unique:1;
+</I>&gt;&gt;&gt;<i> add 10.232.14.119 10.232.15.41 esp 5019 -m transport -u 1 -E 
+</I>&gt;&gt;&gt;<i> 3des-cbc 0x97a16ddcd0e94fc25d1da35b25810b5d97a16ddcd0e94fc2 -A 
+</I>&gt;&gt;&gt;<i> hmac-md5 0x2688bdd633606a7ce69893f97f9a2688;
+</I>&gt;&gt;&gt;<i> spdadd 10.232.14.119[7072] 10.232.15.41[4062] any -P out ipsec 
+</I>&gt;&gt;&gt;<i> esp/transport//unique:2;
+</I>&gt;&gt;&gt;<i> add 10.232.14.119 10.232.15.41 esp 5018 -m transport -u 2 -E 
+</I>&gt;&gt;&gt;<i> 3des-cbc 0x97a16ddcd0e94fc25d1da35b25810b5d97a16ddcd0e94fc2 -A 
+</I>&gt;&gt;&gt;<i> hmac-md5 0x2688bdd633606a7ce69893f97f9a2688;
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> But openIms doesn't sends response to the REGISTER request.
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> From the OpenIms screen log, I could see only the execution of 
+</I>&gt;&gt;&gt;<i> script ipsec_P_Inc_Req.sh.
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> Ipsec entries are as follows
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at micslin14</A> ~]# setkey -D
+</I>&gt;&gt;&gt;<i> 10.232.14.119 10.232.15.41
+</I>&gt;&gt;&gt;<i>         esp mode=transport spi=5019(0x0000139b) reqid=0(0x00000000)
+</I>&gt;&gt;&gt;<i>         E: 3des-cbc  97a16ddc d0e94fc2 5d1da35b 25810b5d 97a16ddc 
+</I>&gt;&gt;&gt;<i> d0e94fc2
+</I>&gt;&gt;&gt;<i>         A: hmac-md5  2688bdd6 33606a7c e69893f9 7f9a00e3
+</I>&gt;&gt;&gt;<i>         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;&gt;&gt;<i>         created: Jan 21 15:42:55 2007   current: Jan 21 15:42:58 2007
+</I>&gt;&gt;&gt;<i>         diff: 3(s)      hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;&gt;<i>         last: Jan 21 15:42:55 2007      hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;&gt;<i>         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;&gt;&gt;<i>         allocated: 0    hard: 0 soft: 0
+</I>&gt;&gt;&gt;<i>         sadb_seq=0 pid=1361 refcnt=0
+</I>&gt;&gt;&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at micslin14</A> ~]# setkey -DP
+</I>&gt;&gt;&gt;<i> 10.232.14.119[7071] 10.232.15.41[4063] tcp
+</I>&gt;&gt;&gt;<i>         in prio def ipsec
+</I>&gt;&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;&gt;<i>         created: Jan 21 15:42:55 2007  lastused:
+</I>&gt;&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;&gt;<i>         spid=1520 seq=1 pid=1362
+</I>&gt;&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;&gt;<i> 10.232.14.119[7071] 10.232.15.41[4063] udp
+</I>&gt;&gt;&gt;<i>         in prio def ipsec
+</I>&gt;&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;&gt;<i>         created: Jan 21 15:42:55 2007  lastused:
+</I>&gt;&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;&gt;<i>         spid=1536 seq=2 pid=1362
+</I>&gt;&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;&gt;<i> 10.232.14.119[7071] 10.232.15.41[4063] tcp
+</I>&gt;&gt;&gt;<i>         fwd prio def ipsec
+</I>&gt;&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;&gt;<i>         created: Jan 21 15:42:55 2007  lastused:
+</I>&gt;&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;&gt;<i>         spid=1530 seq=3 pid=1362
+</I>&gt;&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;&gt;<i> 10.232.14.119[7071] 10.232.15.41[4063] udp
+</I>&gt;&gt;&gt;<i>         fwd prio def ipsec
+</I>&gt;&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;&gt;<i>         created: Jan 21 15:42:55 2007  lastused:
+</I>&gt;&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;&gt;<i>         spid=1546 seq=0 pid=1362
+</I>&gt;&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at micslin14</A> ~]#
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Can anyone please let me know the reason why OpenIms not sending the 
+</I>&gt;&gt;&gt;<i> responses?
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> Attached OpenIms Screenlog -&gt; screenlog.txt
+</I>&gt;&gt;&gt;<i> ESP messages can be viewed in Ethreal log -&gt; ipsec.pcap
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;<i> Suraj
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100224/cb24f1aa/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100224/cb24f1aa/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006091.html">[OpenIMSCore-Users] Query on Registration Over IPSec
+</A></li>
+	<LI>Next message: <A HREF="006093.html">[OpenIMSCore-Users] Query on Registration Over IPSec
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6092">[ date ]</a>
+              <a href="thread.html#6092">[ thread ]</a>
+              <a href="subject.html#6092">[ subject ]</a>
+              <a href="author.html#6092">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

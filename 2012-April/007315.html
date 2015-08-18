@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Routing of SIP OPTIONS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Routing%20of%20SIP%20OPTIONS&In-Reply-To=%3CCBAC5DE2.8C66%25Alan.Kwon%40interoptechnologies.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007314.html">
+   <LINK REL="Next"  HREF="007316.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Routing of SIP OPTIONS</H1>
+    <B>Kwon, Alan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Routing%20of%20SIP%20OPTIONS&In-Reply-To=%3CCBAC5DE2.8C66%25Alan.Kwon%40interoptechnologies.com%3E"
+       TITLE="[OpenIMSCore-Users] Routing of SIP OPTIONS">Alan.Kwon at interoptechnologies.com
+       </A><BR>
+    <I>Thu Apr 12 17:55:45 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007314.html">[OpenIMSCore-Users] Routing of SIP OPTIONS
+</A></li>
+        <LI>Next message: <A HREF="007316.html">[OpenIMSCore-Users] Routing of SIP OPTIONS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7315">[ date ]</a>
+              <a href="thread.html#7315">[ thread ]</a>
+              <a href="subject.html#7315">[ subject ]</a>
+              <a href="author.html#7315">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Franz,
+
+
+Thanks for the reply. I added some debug prints and I see that for
+OPTIONS, it goes to &quot;Orig_Standalone&quot;. I also added some printout on
+loose.c to see what's happening in loose_route(). The parsed URI's type is
+determined as TEL-URI and it goes to the else branch where it logs
+LOG(L_WARN, &quot;loose_route: pre-loaded strict routing?!\n&quot;); and returns -1.
+These are the formats of the SIP URIs the client app is sending:
+
+OPTIONS sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+14696883264 at ims.iot1.com</A>;user=phone SIP/2.0
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">12395554444 at ims.iot1.com</A>&gt;;tag=W4RuiaTDAA
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+14696883264 at ims.iot1.com</A>;user=phone&gt;
+P-Preferred-Identity: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">12395554444 at ims.iot1.com</A>
+Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.ims.iot1.com</A>:6060;lr&gt;
+
+So, it looks like it's looking at the Request URI rather than
+Route-header. 
+
+
+
+Also, is there any reason why it shouldn't follow the Route when the
+parsed URI is a TEL-URI?
+
+Thank you,
+Alan
+
+
+
+On 4/11/12 11:12 PM, &quot;Franz Edler&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt; wrote:
+
+&gt;<i>Hi Alan,
+</I>&gt;<i>
+</I>&gt;&gt;<i> I have a question about routing of non-dialog initiating messages like
+</I>&gt;&gt;<i> OPTIONS. When a client application sends OPTIONS, it includes a Route-
+</I>&gt;&gt;<i> header pointing to the assigned S-CSCF. OPTIONS is received at P-CSCF
+</I>&gt;&gt;<i>and
+</I>&gt;<i>I
+</I>&gt;&gt;<i> expect the message to goto S-CSCF, however, it's instead routed to
+</I>&gt;&gt;<i>I-CSCF,
+</I>&gt;&gt;<i> then to the S-CSCF. For the INVITE, it goes from P-CSCF to S-CSCF. Not
+</I>&gt;<i>sure
+</I>&gt;&gt;<i> why it's not honoring the Route-header and sending it to I-CSCF first.
+</I>&gt;<i>
+</I>&gt;<i>Yes, you are right. That is what I also expect.
+</I>&gt;<i>Did you check the console-log of P-CSCF?
+</I>&gt;<i>The logic within pcscf.cfg should straight got to the &quot;Orig_Standalone&quot;
+</I>&gt;<i>block. I propose you should check that.
+</I>&gt;<i>In case it does not, you should increase debug-level to 4 and follow the
+</I>&gt;<i>decision logic in pcscf.cfg to get more info what is going wrong.
+</I>&gt;<i>
+</I>&gt;<i>In case you need help you can post the console-log of P-CSCF and a
+</I>&gt;<i>tracefile
+</I>&gt;<i>
+</I>&gt;<i>BR
+</I>&gt;<i>Franz
+</I>&gt;<i>
+</I>
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007314.html">[OpenIMSCore-Users] Routing of SIP OPTIONS
+</A></li>
+	<LI>Next message: <A HREF="007316.html">[OpenIMSCore-Users] Routing of SIP OPTIONS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7315">[ date ]</a>
+              <a href="thread.html#7315">[ thread ]</a>
+              <a href="subject.html#7315">[ subject ]</a>
+              <a href="author.html#7315">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Bob registration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Bob%20registration&In-Reply-To=%3C493329.94880.qm%40web56108.mail.re3.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000934.html">
+   <LINK REL="Next"  HREF="000936.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Bob registration</H1>
+    <B>Sudhakar Patil</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Bob%20registration&In-Reply-To=%3C493329.94880.qm%40web56108.mail.re3.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] Bob registration">spatil4572 at yahoo.com
+       </A><BR>
+    <I>Sun Feb 25 16:21:13 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000934.html">[OpenIMSCore-Users] Bob registration
+</A></li>
+        <LI>Next message: <A HREF="000936.html">[OpenIMSCore-Users] 408: Request Timed out
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#939">[ date ]</a>
+              <a href="thread.html#939">[ thread ]</a>
+              <a href="subject.html#939">[ subject ]</a>
+              <a href="author.html#939">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I am not sure if it is the same problem that you sent
+before. As I had indicated in my earlier response, my
+experience with SPhone was that it did not include
+expires header. So S-CSCF does a SAR but tells HSS to
+deregister the user as expires value is not present
+(you log below shows 0 bindings). 
+If you look at the SJPhone log it will say that
+expires value is not returned by the server and a
+default value is assumed. You need to change code in
+scscf to address this.
+
+--- Alessandro Stile &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a.stile at criai.it</A>&gt; wrote:
+
+&gt;<i> Hi, I've registered user <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>  with
+</I>&gt;<i> SIP2IMS GW using
+</I>&gt;<i> SJPhone as SIP Client. On SJPhone display I read
+</I>&gt;<i> &quot;user registred&quot;. but
+</I>&gt;<i> if I open FHoSS wenb console and browse info-&gt;Data
+</I>&gt;<i> Logging I read:
+</I>&gt;<i> &quot;Size of registered Public User Identifiers 0&quot;
+</I>&gt;<i> So I think that bob isn't really registred, isn't
+</I>&gt;<i> it?
+</I>&gt;<i> How can I check into hssdb if bob has been
+</I>&gt;<i> registred?
+</I>&gt;<i> If I check network traffic I can see that 
+</I>&gt;<i> registration reques has ben
+</I>&gt;<i> sent to SCSCF and it returns &quot;200 OK&quot; message.
+</I>&gt;<i> The captured IP trasffic ( with &lt;ethereal) is:
+</I>&gt;<i> 
+</I>&gt;<i> &quot;No.&quot;, &quot;Time&quot;, &quot;Source&quot;, &quot;Destination&quot;, &quot;Protocol&quot;,
+</I>&gt;<i> &quot;Info&quot;
+</I>&gt;<i> &quot;1&quot;, &quot;0.000000&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32771 &gt; 3869 [PSH, ACK] Seq=0 Ack=0 Win=8192 [TCP
+</I>&gt;<i> CHECKSUM INCORRECT] Len=72 TSV=17489146
+</I>&gt;<i> TSER=17459074&quot;
+</I>&gt;<i> &quot;2&quot;, &quot;0.009962&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;3869 &gt; 32771 [PSH, ACK] Seq=0 Ack=72 Win=8192 [TCP
+</I>&gt;<i> CHECKSUM INCORRECT] Len=136 TSV=17489156
+</I>&gt;<i> TSER=17489146&quot;
+</I>&gt;<i> &quot;3&quot;, &quot;0.010087&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32771 &gt; 3869 [ACK] Seq=72 Ack=136 Win=8192 Len=0
+</I>&gt;<i> TSV=17489156 TSER=17489156&quot;
+</I>&gt;<i> &quot;4&quot;, &quot;1.002523&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32772 &gt; 3870 [PSH, ACK] Seq=0 Ack=0 Win=8192 [TCP
+</I>&gt;<i> CHECKSUM INCORRECT] Len=72 TSV=17490148
+</I>&gt;<i> TSER=17460099&quot;
+</I>&gt;<i> &quot;5&quot;, &quot;1.015733&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;3870 &gt; 32772 [PSH, ACK] Seq=0 Ack=72 Win=8192 [TCP
+</I>&gt;<i> CHECKSUM INCORRECT] Len=136 TSV=17490162
+</I>&gt;<i> TSER=17490148&quot;
+</I>&gt;<i> &quot;6&quot;, &quot;1.017948&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32772 &gt; 3870 [ACK] Seq=72 Ack=136 Win=8192 Len=0
+</I>&gt;<i> TSV=17490164 TSER=17490162&quot;
+</I>&gt;<i> &quot;7&quot;, &quot;5.235920&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;DNS&quot;,
+</I>&gt;<i> &quot;Standard query AAAA mail.criai.it&quot;
+</I>&gt;<i> &quot;8&quot;, &quot;5.236202&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;DNS&quot;,
+</I>&gt;<i> &quot;Standard query response&quot;
+</I>&gt;<i> &quot;9&quot;, &quot;5.236373&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;DNS&quot;,
+</I>&gt;<i> &quot;Standard query AAAA mail.criai.it.criai.it&quot;
+</I>&gt;<i> &quot;10&quot;, &quot;5.236510&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;DNS&quot;,
+</I>&gt;<i> &quot;Standard query response, No such name&quot;
+</I>&gt;<i> &quot;11&quot;, &quot;5.236652&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;DNS&quot;,
+</I>&gt;<i> &quot;Standard query A mail.criai.it&quot;
+</I>&gt;<i> &quot;12&quot;, &quot;5.236821&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;DNS&quot;,
+</I>&gt;<i> &quot;Standard query response A 80.19.171.65&quot;
+</I>&gt;<i> &quot;13&quot;, &quot;6.009721&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;SIP&quot;,
+</I>&gt;<i> &quot;Request: OPTIONS sip:open-ims.test:3060&quot;
+</I>&gt;<i> &quot;14&quot;, &quot;6.010132&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;SIP&quot;,
+</I>&gt;<i> &quot;Status: 403 Forbidden - Not Registered! You must
+</I>&gt;<i> register first with a S-CSCF&quot;
+</I>&gt;<i> &quot;15&quot;, &quot;30.059445&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32771 &gt; 3869 [PSH, ACK] Seq=72 Ack=136 Win=8192
+</I>&gt;<i> [TCP CHECKSUM INCORRECT] Len=72 TSV=17519210
+</I>&gt;<i> TSER=17489156&quot;
+</I>&gt;<i> &quot;16&quot;, &quot;30.059755&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;3869 &gt; 32771 [PSH, ACK] Seq=136 Ack=144 Win=8192
+</I>&gt;<i> [TCP CHECKSUM INCORRECT] Len=136 TSV=17519210
+</I>&gt;<i> TSER=17519210&quot;
+</I>&gt;<i> &quot;17&quot;, &quot;30.060083&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32771 &gt; 3869 [ACK] Seq=144 Ack=272 Win=8192 Len=0
+</I>&gt;<i> TSV=17519210 TSER=17519210&quot;
+</I>&gt;<i> &quot;18&quot;, &quot;30.094487&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;SIP&quot;,
+</I>&gt;<i> &quot;Request: REGISTER sip:open-ims.test&quot;
+</I>&gt;<i> &quot;19&quot;, &quot;30.094784&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;SIP&quot;,
+</I>&gt;<i> &quot;Request: REGISTER sip:open-ims.test&quot;
+</I>&gt;<i> &quot;20&quot;, &quot;30.095150&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;3869 &gt; 32771 [PSH, ACK] Seq=272 Ack=144 Win=8192
+</I>&gt;<i> [TCP CHECKSUM INCORRECT] Len=272 TSV=17519245
+</I>&gt;<i> TSER=17519210&quot;
+</I>&gt;<i> &quot;21&quot;, &quot;30.095277&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32771 &gt; 3869 [ACK] Seq=144 Ack=544 Win=8192 Len=0
+</I>&gt;<i> TSV=17519246 TSER=17519245&quot;
+</I>&gt;<i> &quot;22&quot;, &quot;30.572227&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;SIP&quot;,
+</I>&gt;<i> &quot;Request: REGISTER sip:open-ims.test&quot;
+</I>&gt;<i> &quot;23&quot;, &quot;30.572544&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;3869 &gt; 32771 [PSH, ACK] Seq=544 Ack=144 Win=8192
+</I>&gt;<i> [TCP CHECKSUM INCORRECT] Len=272 TSV=17519723
+</I>&gt;<i> TSER=17519246&quot;
+</I>&gt;<i> &quot;24&quot;, &quot;30.572651&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32771 &gt; 3869 [ACK] Seq=144 Ack=816 Win=8192 Len=0
+</I>&gt;<i> TSV=17519723 TSER=17519723&quot;
+</I>&gt;<i> &quot;25&quot;, &quot;30.578301&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;SIP&quot;,
+</I>&gt;<i> &quot;Request: REGISTER sip:open-ims.test&quot;
+</I>&gt;<i> &quot;26&quot;, &quot;31.061280&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32772 &gt; 3870 [PSH, ACK] Seq=72 Ack=136 Win=8192
+</I>&gt;<i> [TCP CHECKSUM INCORRECT] Len=72 TSV=17520212
+</I>&gt;<i> TSER=17490162&quot;
+</I>&gt;<i> &quot;27&quot;, &quot;31.076170&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;3870 &gt; 32772 [PSH, ACK] Seq=136 Ack=144 Win=8192
+</I>&gt;<i> [TCP CHECKSUM INCORRECT] Len=136 TSV=17520227
+</I>&gt;<i> TSER=17520212&quot;
+</I>&gt;<i> &quot;28&quot;, &quot;31.078234&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32772 &gt; 3870 [ACK] Seq=144 Ack=272 Win=8192 Len=0
+</I>&gt;<i> TSV=17520229 TSER=17520227&quot;
+</I>&gt;<i> &quot;29&quot;, &quot;31.468090&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;SIP&quot;,
+</I>&gt;<i> &quot;Request: REGISTER sip:open-ims.test&quot;
+</I>&gt;<i> &quot;30&quot;, &quot;31.468477&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;3869 &gt; 32771 [PSH, ACK] Seq=816 Ack=144 Win=8192
+</I>&gt;<i> [TCP CHECKSUM INCORRECT] Len=272 TSV=17520619
+</I>&gt;<i> TSER=17519723&quot;
+</I>&gt;<i> &quot;31&quot;, &quot;31.468590&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32771 &gt; 3869 [ACK] Seq=144 Ack=1088 Win=8192 Len=0
+</I>&gt;<i> TSV=17520619 TSER=17520619&quot;
+</I>&gt;<i> &quot;32&quot;, &quot;31.602064&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;SIP&quot;,
+</I>&gt;<i> &quot;Request: REGISTER sip:open-ims.test&quot;
+</I>&gt;<i> &quot;33&quot;, &quot;33.515799&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;SIP&quot;,
+</I>&gt;<i> &quot;Request: REGISTER sip:open-ims.test&quot;
+</I>&gt;<i> &quot;34&quot;, &quot;33.516152&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;3869 &gt; 32771 [PSH, ACK] Seq=1088 Ack=144 Win=8192
+</I>&gt;<i> [TCP CHECKSUM INCORRECT] Len=272 TSV=17522667
+</I>&gt;<i> TSER=17520619&quot;
+</I>&gt;<i> &quot;35&quot;, &quot;33.516264&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32771 &gt; 3869 [ACK] Seq=144 Ack=1360 Win=8192 Len=0
+</I>&gt;<i> TSV=17522667 TSER=17522667&quot;
+</I>&gt;<i> &quot;36&quot;, &quot;33.649755&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;SIP&quot;,
+</I>&gt;<i> &quot;Request: REGISTER sip:open-ims.test&quot;
+</I>&gt;<i> &quot;37&quot;, &quot;36.599504&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;SIP&quot;,
+</I>&gt;<i> &quot;Status: 480 Temporarily Unavailable - Diameter Cx
+</I>&gt;<i> interface failed    (0 bindings)&quot;
+</I>&gt;<i> &quot;38&quot;, &quot;36.649610&quot;, &quot;10.0.0.38&quot;, &quot;10.0.0.38&quot;, &quot;SIP&quot;,
+</I>&gt;<i> &quot;Status: 480 Temporarily Unavailable - Diameter Cx
+</I>&gt;<i> interface failed    (0 bindings)&quot;
+</I>&gt;<i> &quot;39&quot;, &quot;51.742347&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32779 &gt; mysql [SYN] Seq=0 Ack=0 Win=32767 Len=0
+</I>&gt;<i> MSS=16396 TSV=17540896 TSER=0 WS=2&quot;
+</I>&gt;<i> &quot;40&quot;, &quot;51.742380&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;mysql &gt; 32779 [SYN, ACK] Seq=0 Ack=1 Win=32767
+</I>&gt;<i> Len=0 MSS=16396 TSV=17540896 TSER=17540896 WS=2&quot;
+</I>&gt;<i> &quot;41&quot;, &quot;51.742395&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32779 &gt; mysql [ACK] Seq=1 Ack=1 Win=32768 Len=0
+</I>&gt;<i> TSV=17540896 TSER=17540896&quot;
+</I>&gt;<i> &quot;42&quot;, &quot;51.742776&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Server Greeting Protocol : 10 ,version: 
+</I>&gt;<i> 5.0.18-standard Caps: 0xffffa22c&quot;
+</I>&gt;<i> &quot;43&quot;, &quot;51.742915&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;32779 &gt; mysql [ACK] Seq=1 Ack=66 Win=32768 Len=0
+</I>&gt;<i> TSV=17540896 TSER=17540896&quot;
+</I>&gt;<i> &quot;44&quot;, &quot;51.743410&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Login Request Caps: 0xffffa28f ,user:  
+</I>&gt;<i> ,password:  &quot;
+</I>&gt;<i> &quot;45&quot;, &quot;51.743518&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;, &quot;TCP&quot;,
+</I>&gt;<i> &quot;mysql &gt; 32779 [ACK] Seq=66 Ack=49 Win=32768 Len=0
+</I>&gt;<i> TSV=17540897 TSER=17540897&quot;
+</I>&gt;<i> &quot;46&quot;, &quot;51.743731&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Response OK&quot;
+</I>&gt;<i> &quot;47&quot;, &quot;51.743969&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Request Command: Query : SET NAMES latin1&quot;
+</I>&gt;<i> &quot;48&quot;, &quot;51.744145&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Response OK&quot;
+</I>&gt;<i> &quot;49&quot;, &quot;51.744330&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Request Command: Query : SET
+</I>&gt;<i> character_set_results = NULL&quot;
+</I>&gt;<i> &quot;50&quot;, &quot;51.744458&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Response OK&quot;
+</I>&gt;<i> &quot;51&quot;, &quot;51.744665&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Request Command: Query : SHOW VARIABLES&quot;
+</I>&gt;<i> &quot;52&quot;, &quot;51.746146&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Response OK&quot;
+</I>&gt;<i> &quot;53&quot;, &quot;51.752136&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Request Command: Query : SHOW COLLATION&quot;
+</I>&gt;<i> &quot;54&quot;, &quot;51.753176&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Response OK&quot;
+</I>&gt;<i> &quot;55&quot;, &quot;51.754776&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Request Command: Query : SET autocommit=1&quot;
+</I>&gt;<i> &quot;56&quot;, &quot;51.755023&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Response OK&quot;
+</I>&gt;<i> &quot;57&quot;, &quot;51.755444&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Request Command: Query : SHOW VARIABLES
+</I>&gt;<i> LIKE 'tx_isolation'&quot;
+</I>&gt;<i> &quot;58&quot;, &quot;51.755778&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Response OK&quot;
+</I>&gt;<i> &quot;59&quot;, &quot;51.756369&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Request Command: Query : SET SESSION
+</I>&gt;<i> TRANSACTION ISOLATION LEVEL REPEATABLE READ&quot;
+</I>&gt;<i> &quot;60&quot;, &quot;51.756619&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Response OK&quot;
+</I>&gt;<i> &quot;61&quot;, &quot;51.756847&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Request Command: Query : SET autocommit=0&quot;
+</I>&gt;<i> &quot;62&quot;, &quot;51.757143&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Response OK&quot;
+</I>&gt;<i> &quot;63&quot;, &quot;51.757712&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Request Command: Unknown (22) : select
+</I>&gt;<i> impi0_.impi_id as impi1_, impi0_.impi_string as
+</I>&gt;<i> impi2_2_, impi0_.imsi as imsi2_, impi0_.scscf_name
+</I>&gt;<i> as scscf4_2_, impi0_.s_key as s5_2_,
+</I>&gt;<i> impi0_.auth_scheme as auth6_2_, impi0_.amf as amf2_,
+</I>&gt;<i> impi0_.algorithm as algorithm2_, impi0_.operator_id
+</I>&gt;<i> as operator9_2_, impi0_.sqn as sqn2_,
+</I>&gt;<i> impi0_.uiccType as uiccType2_, impi0_.keyLifeTime as
+</I>&gt;<i> keyLife12_2_, impi0_.imsu_id as imsu13_2_,
+</I>&gt;<i> impi0_.chrg_id as chrg14_2_ from impi impi0_ where
+</I>&gt;<i> impi0_.impi_string=?&quot;
+</I>&gt;<i> &quot;64&quot;, &quot;51.758128&quot;, &quot;127.0.0.1&quot;, &quot;127.0.0.1&quot;,
+</I>&gt;<i> &quot;MySQL&quot;, &quot;Response OK&quot;
+</I>&gt;<i> 
+</I>=== message truncated ===
+
+
+
+ 
+____________________________________________________________________________________
+TV dinner still cooling? 
+Check out &quot;Tonight's Picks&quot; on Yahoo! TV.
+<A HREF="http://tv.yahoo.com/">http://tv.yahoo.com/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000934.html">[OpenIMSCore-Users] Bob registration
+</A></li>
+	<LI>Next message: <A HREF="000936.html">[OpenIMSCore-Users] 408: Request Timed out
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#939">[ date ]</a>
+              <a href="thread.html#939">[ thread ]</a>
+              <a href="subject.html#939">[ subject ]</a>
+              <a href="author.html#939">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

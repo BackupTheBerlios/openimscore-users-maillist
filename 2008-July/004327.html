@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Connection failed from Java Diameter Peer to HSS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Connection%20failed%20from%20Java%20Diameter%20Peer%0A%20to%20HSS&In-Reply-To=%3C48844FDC.5080704%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004314.html">
+   <LINK REL="Next"  HREF="004315.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Connection failed from Java Diameter Peer to HSS</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Connection%20failed%20from%20Java%20Diameter%20Peer%0A%20to%20HSS&In-Reply-To=%3C48844FDC.5080704%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Connection failed from Java Diameter Peer to HSS">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Jul 21 10:59:08 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004314.html">[OpenIMSCore-Users] Connection failed from Java Diameter Peer to HSS
+</A></li>
+        <LI>Next message: <A HREF="004315.html">[OpenIMSCore-Users] Trace for STUN
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4327">[ date ]</a>
+              <a href="thread.html#4327">[ thread ]</a>
+              <a href="subject.html#4327">[ subject ]</a>
+              <a href="author.html#4327">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Terry,
+
+you should configure the FQDN entry of each Diameter peer as the Fully 
+Qualified Domain Name that it should have and it would be addressed by 
+the other hosts, like configured in the peer entries.
+
+So you should have on the HSS: FQDN=&quot;hss.open-ims.test&quot; and &lt;Peer 
+FQDN=&quot;peer.open-ims.test&quot;..&gt;. And on the HSS-Peer: 
+FQDN=&quot;peer.open-ims.test&quot; and &lt;Peer FQDN=&quot;hss.open-ims.test&quot; ...&gt;.
+
+Then check with netstat if the right acceptor ports are opened and with 
+dig if the DNS would resolve into expected values. Then also debug with 
+a network analyzer like Wireshark and see where the connection attempts 
+are going.
+
+Cheers,
+-Dragos
+
+
+Terry wrote:
+&gt;<i> Hi:
+</I>&gt;<i>
+</I>&gt;<i> Recently, I installed and configured the Open IMS to test Diameter 
+</I>&gt;<i> client that use JavaDiameterClient.
+</I>&gt;<i> I built the src n run it under use ant. I got the following msg :
+</I>&gt;<i>
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeerTest  - 
+</I>&gt;<i> DiameterPeer Starting...
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - FQDN: 
+</I>&gt;<i> src-tsurayuki
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - Realm: 
+</I>&gt;<i> open-ims.test
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - 
+</I>&gt;<i> Vendor_ID : 10415
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - 
+</I>&gt;<i> Product Name: JavaDiameterClient
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - 
+</I>&gt;<i> AcceptUnknwonPeers: true
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - 
+</I>&gt;<i> DropUnknownOnDisconnect: true
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.transport.Acceptor  - 
+</I>&gt;<i> Acceptor: Opening socket on port 3868
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - FQDN: 
+</I>&gt;<i> src-tsurayuki
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - Realm: 
+</I>&gt;<i> open-ims.test
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - 
+</I>&gt;<i> Vendor_ID : 10415
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - 
+</I>&gt;<i> Product Name: JavaDiameterServer
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - 
+</I>&gt;<i> AcceptUnknwonPeers: true
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - 
+</I>&gt;<i> DropUnknownOnDisconnect: true
+</I>&gt;<i> [main] INFO  de.fhg.fokus.diameter.DiameterPeer.transport.Acceptor  - 
+</I>&gt;<i> Acceptor: Opening socket on port 3869
+</I>&gt;<i> [Thread-19] ERROR 
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine  - StateMachine: 
+</I>&gt;<i> Peer hss.open-ims.test not responding to connection attempt 
+</I>&gt;<i> [Thread-8] ERROR de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine  
+</I>&gt;<i> - StateMachine: Peer hss.open-ims.test not responding to connection 
+</I>&gt;<i> attempt 
+</I>&gt;<i> [main] ERROR de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - 
+</I>&gt;<i> DiameterPeer: Peer hss.open-ims.test not connected.
+</I>&gt;<i> [Thread-19] ERROR 
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine  - StateMachine: 
+</I>&gt;<i> Peer hss.open-ims.test not responding to connection attempt 
+</I>&gt;<i> [Thread-8] ERROR de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine  
+</I>&gt;<i> - StateMachine: Peer hss.open-ims.test not responding to connection 
+</I>&gt;<i> attempt 
+</I>&gt;<i> [Thread-8] ERROR de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine  
+</I>&gt;<i> - StateMachine: Peer hss.open-ims.test not responding to connection 
+</I>&gt;<i> attempt 
+</I>&gt;<i> [Thread-19] ERROR 
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine  - StateMachine: 
+</I>&gt;<i> Peer hss.open-ims.test not responding to connection attempt 
+</I>&gt;<i> [Thread-8] ERROR de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine  
+</I>&gt;<i> - StateMachine: Peer hss.open-ims.test not responding to connection 
+</I>&gt;<i> attempt 
+</I>&gt;<i> [Thread-19] ERROR 
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine  - StateMachine: 
+</I>&gt;<i> Peer hss.open-ims.test not responding to connection attempt 
+</I>&gt;<i> [Thread-19] ERROR 
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine  - StateMachine: 
+</I>&gt;<i> Peer hss.open-ims.test not responding to connection attempt
+</I>&gt;<i> ......
+</I>&gt;<i> I followed the installation doc from open IMS website and inside FHoSS 
+</I>&gt;<i> folder. It seems everything working fine. Here is my configuration of 
+</I>&gt;<i> diameter client and server :
+</I>&gt;<i>
+</I>&gt;<i> Server :
+</I>&gt;<i> &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+</I>&gt;<i> &lt;DiameterPeer
+</I>&gt;<i>     FQDN=&quot;src-tsurayuki&quot;
+</I>&gt;<i>     Realm=&quot;open-ims.test&quot;
+</I>&gt;<i>     Vendor_Id=&quot;10415&quot;
+</I>&gt;<i>     Product_Name=&quot;JavaDiameterServer&quot;
+</I>&gt;<i>     AcceptUnknownPeers=&quot;1&quot;
+</I>&gt;<i>     DropUnknownOnDisconnect=&quot;1&quot;
+</I>&gt;<i>     Tc=&quot;10&quot;
+</I>&gt;<i>     Workers=&quot;8&quot;
+</I>&gt;<i>     QueueLength=&quot;32&quot;
+</I>&gt;<i> &gt;
+</I>&gt;<i>     &lt;Peer FQDN=&quot;hss.open-ims.test&quot; Realm=&quot;open-ims.test&quot; port=&quot;3868&quot;/&gt;
+</I>&gt;<i>
+</I>&gt;<i>     &lt;Acceptor port=&quot;3869&quot; bind=&quot;127.0.0.1 &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;&quot; /&gt;
+</I>&gt;<i>    
+</I>&gt;<i>     &lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;
+</I>&gt;<i>     &lt;Auth id=&quot;16777216&quot; vendor=&quot;10416&quot; /&gt;
+</I>&gt;<i>     &lt;Acct id=&quot;16777216&quot; vendor=&quot;0&quot; /&gt;
+</I>&gt;<i>    
+</I>&gt;<i> &lt;/DiameterPeer&gt;
+</I>&gt;<i>
+</I>&gt;<i> Client :
+</I>&gt;<i>
+</I>&gt;<i> &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+</I>&gt;<i> &lt;DiameterPeer
+</I>&gt;<i>     FQDN=&quot;src-tsurayuki&quot;
+</I>&gt;<i>     Realm=&quot;open-ims.test&quot;
+</I>&gt;<i>     Vendor_Id=&quot;10415&quot;
+</I>&gt;<i>     Product_Name=&quot;JavaDiameterClient&quot;
+</I>&gt;<i>     AcceptUnknownPeers=&quot;1&quot;
+</I>&gt;<i>     DropUnknownOnDisconnect=&quot;1&quot;
+</I>&gt;<i>     Tc=&quot;10&quot;
+</I>&gt;<i>     Workers=&quot;8&quot;
+</I>&gt;<i>     QueueLength=&quot;32&quot;
+</I>&gt;<i> &gt;
+</I>&gt;<i>     &lt;Peer FQDN=&quot;hss.open-ims.test&quot; Realm=&quot;open-ims.test&quot; port=&quot;3868&quot;/&gt;
+</I>&gt;<i>
+</I>&gt;<i>     &lt;Acceptor port=&quot;3868&quot; bind=&quot;127.0.0.1 &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;&quot; /&gt;
+</I>&gt;<i>    
+</I>&gt;<i>     &lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;
+</I>&gt;<i>     &lt;Auth id=&quot;16777216&quot; vendor=&quot;10416&quot; /&gt;
+</I>&gt;<i>     &lt;Acct id=&quot;16777216&quot; vendor=&quot;0&quot; /&gt;
+</I>&gt;<i>
+</I>&gt;<i> &lt;/DiameterPeer&gt;
+</I>&gt;<i>
+</I>&gt;<i> My question is : Is there anything wrong of my configuration or i need 
+</I>&gt;<i> to speicfy sth in JavaDiameterPeer src code?
+</I>&gt;<i>
+</I>&gt;<i> Many Thanks
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004314.html">[OpenIMSCore-Users] Connection failed from Java Diameter Peer to HSS
+</A></li>
+	<LI>Next message: <A HREF="004315.html">[OpenIMSCore-Users] Trace for STUN
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4327">[ date ]</a>
+              <a href="thread.html#4327">[ thread ]</a>
+              <a href="subject.html#4327">[ subject ]</a>
+              <a href="author.html#4327">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

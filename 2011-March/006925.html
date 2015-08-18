@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Open IMS Core and UCT PCC problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Open%20IMS%20Core%20and%20UCT%20PCC%20problem&In-Reply-To=%3C007301cbe9e1%247a540070%246efc0150%24%40technikum-wien.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006924.html">
+   <LINK REL="Next"  HREF="006926.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Open IMS Core and UCT PCC problem</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Open%20IMS%20Core%20and%20UCT%20PCC%20problem&In-Reply-To=%3C007301cbe9e1%247a540070%246efc0150%24%40technikum-wien.at%3E"
+       TITLE="[OpenIMSCore-Users] Open IMS Core and UCT PCC problem">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Thu Mar 24 06:08:13 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006924.html">[OpenIMSCore-Users] Regarding error in sipp or openimscore
+</A></li>
+        <LI>Next message: <A HREF="006926.html">[OpenIMSCore-Users] Not able to register UE in Ipsec setup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6925">[ date ]</a>
+              <a href="thread.html#6925">[ thread ]</a>
+              <a href="subject.html#6925">[ subject ]</a>
+              <a href="author.html#6925">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Niko,
+
+&gt;<i> I'm currently working on integrating UCT Policy Control Framework (rev
+</I>1.0.2)
+&gt;<i> into Open IMS Core (rev. 1044).
+</I>
+That's fine.
+
+&gt;<i> Unfortunately, that bug (lack of Media-Component-Number AVP in the AA
+</I>&gt;<i> Request message) causes PCRF node to throw exceptions on multiple
+</I>&gt;<i> occasions.
+</I>&gt;<i> 
+</I>&gt;<i> I was wondering if You have been able to correct the bug, or maybe You
+</I>&gt;<i> know exactly in the PCSCF source code where the bug needs to be
+</I>&gt;<i> corrected?
+</I>
+No. I expected a student to do that, but unfortunately the skills to dig
+into some code is rare.
+
+&gt;<i> I would gladly correct the bug, but I can't manage to find the problem in
+</I>the
+&gt;<i> source code. It's a little bit too much for me, but maybe if you could
+</I>point me
+&gt;<i> in the right direction, I could find a solution.
+</I>
+O.k. Let's try.
+
+Start with analyzing/understanding the processing logic of P-CSCF
+(pcscf.cfg) when a REGISTER request is processed.
+The &quot;200 OK&quot; on REGISTER is handled by &quot;onreply_route[REGISTER_reply]&quot; in
+pcscf.cfg.
+You will see that &quot; P_AAR(&quot;register&quot;);&quot; is called.
+The function P_AAR () you will find in module &quot;policy_control.c&quot; of pcscf.
+Take this as a starting point. Now you are in the middle of the C-code
+responsible for generating the AAR message.
+
+Are you familiar with C-programming?
+I would be happy if you can as a first step try to adapt the code
+accordingly.
+As a next step you should be aware that also some modifications in Java code
+of PCRF have to be done.
+But I will help you regarding system know-how. It would be really fine if
+you can work on this issue.
+
+BR
+Franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006924.html">[OpenIMSCore-Users] Regarding error in sipp or openimscore
+</A></li>
+	<LI>Next message: <A HREF="006926.html">[OpenIMSCore-Users] Not able to register UE in Ipsec setup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6925">[ date ]</a>
+              <a href="thread.html#6925">[ thread ]</a>
+              <a href="subject.html#6925">[ subject ]</a>
+              <a href="author.html#6925">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

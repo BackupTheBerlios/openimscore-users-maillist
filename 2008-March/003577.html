@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to get notifications upon particular	user registration?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20get%20notifications%20upon%20particular%0A%09user%20registration%3F&In-Reply-To=%3C194.113.59.80.1204730784.wm%40webmail.inode.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003576.html">
+   <LINK REL="Next"  HREF="003578.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to get notifications upon particular	user registration?</H1>
+    <B>franz.edler at inode.at</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20get%20notifications%20upon%20particular%0A%09user%20registration%3F&In-Reply-To=%3C194.113.59.80.1204730784.wm%40webmail.inode.at%3E"
+       TITLE="[OpenIMSCore-Users] How to get notifications upon particular	user registration?">franz.edler at inode.at
+       </A><BR>
+    <I>Wed Mar  5 16:26:24 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003576.html">[OpenIMSCore-Users] How to get notifications upon particular user	registration?
+</A></li>
+        <LI>Next message: <A HREF="003578.html">[OpenIMSCore-Users] How to connect from another computers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3577">[ date ]</a>
+              <a href="thread.html#3577">[ thread ]</a>
+              <a href="subject.html#3577">[ subject ]</a>
+              <a href="author.html#3577">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>NHi Roman,
+
+&gt;<i> Yes, I know about IFC, but if we have 1 000 000 users and need
+</I>&gt;<i> notfications about registation of particular 10 000 users, than it will
+</I>&gt;<i> be a bad idea to handle REGISTER requests from all our users.
+</I>&gt;<i> For example, imagine a following scenario: user A sends message to user
+</I>&gt;<i> B while user B isn't registered. We can store this message and resend it
+</I>&gt;<i> to user B when he/she will register. So we need to know somehow when
+</I>&gt;<i> user B will send REGISTER request, but it has no sense to handle
+</I>&gt;<i> REGISTER requests from all other users as it will cause extra load on
+</I>&gt;<i> AS.
+</I>
+I understand. You need a dynamically activated iFC: activation of the 3rd
+party registration trigger in case a message is in store for this user.
+
+Maybe DSAI may applicable here. For your info in case you are not aware
+about DSAI:
+
+DSAI Dynamic Service Activation Information (C4-060624.doc)
+
+The IMS service logic requires that SIP signalling for sessions
+intialization transit trough the AS that implement the service whenever
+the service is subscribed by the user and related iFCs are present in the
+S-CSCF; this is true even if no action from a AS is required. This could
+impact also delay and network element performance.
+An optimization is proposed, that avoid useless triggering of ASs; it&#146;s
+introduced the Dynamic Service Activation Info DSAI, as an indication
+provided by Application Servers, of whether a subscribed service is active
+or not. A service is active if the AS implementing its logic needs to be
+involved during communication establishment: if it has no action to
+perform when a communication is established, it is inactive. The
+indication of DSAI can be used to &#147;mask&#148; or &#147;unmask&#148; Initial Filter
+Criteria triggering to that Application Server: as such it allows to avoid
+needless involvement of Application Servers. A key point of this mechanism
+is that an Application Server can only enable or disable triggering of a
+(set of) iFC, but it cannot change them since that would raise
+unpredictable service interaction issues.
+
+I am not 100% sure, but I think DSAI is already implemented in OpenIMSCore.
+
+maybe that helps
+
+Franz
+
+
+
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003576.html">[OpenIMSCore-Users] How to get notifications upon particular user	registration?
+</A></li>
+	<LI>Next message: <A HREF="003578.html">[OpenIMSCore-Users] How to connect from another computers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3577">[ date ]</a>
+              <a href="thread.html#3577">[ thread ]</a>
+              <a href="subject.html#3577">[ subject ]</a>
+              <a href="author.html#3577">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

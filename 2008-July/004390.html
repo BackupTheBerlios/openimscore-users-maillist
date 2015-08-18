@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] AUTH-INT issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AUTH-INT%20issue&In-Reply-To=%3C488EECBF.5020707%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004389.html">
+   <LINK REL="Next"  HREF="004392.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] AUTH-INT issue</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AUTH-INT%20issue&In-Reply-To=%3C488EECBF.5020707%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] AUTH-INT issue">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Jul 29 12:11:11 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004389.html">[OpenIMSCore-Users] AUTH-INT issue
+</A></li>
+        <LI>Next message: <A HREF="004392.html">[OpenIMSCore-Users] AUTH-INT issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4390">[ date ]</a>
+              <a href="thread.html#4390">[ thread ]</a>
+              <a href="subject.html#4390">[ subject ]</a>
+              <a href="author.html#4390">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Veena,
+
+You should always try and use the latest version, especially as recent 
+changes on the qop have been performed.
+
+The calc_response() function takes also as a parameter the &quot;method&quot;, so 
+that is also taken into consideration. The code has been tested and 
+seems to work OK with all variants of known qop values.
+
+Then the code that you pasted is not used actually in the Open IMS Core. 
+A modified version of this function, supporting HSS generated 
+authentication vectors and many more authentication methods than just 
+Digest MD5 (e.g. AKAv1, AKAv2, 3x Digest MD5 flavours, Early-IMS, 
+NASS-Bundled) is actually used by the S-CSCF. You can find it in 
+ser_ims/modules/scscf/registration.c - S_is_authorized().
+
+In our code the hent is renamed to hbody, to avoid confusions.
+
+Cheers,
+-Dragos
+
+Veena S wrote:
+&gt;<i> Hi All,
+</I>&gt;<i>  
+</I>&gt;<i> I had a doubt regarding the Hashing of the entity body,when the qop= 
+</I>&gt;<i> &quot;auth-int&quot;.
+</I>&gt;<i>  
+</I>&gt;<i> I wanted to know on the OpenIMS Server side ,how the auth-int qop 
+</I>&gt;<i> value is handled.
+</I>&gt;<i>  
+</I>&gt;<i> I went through the code of the OpenIMS Server 570 version.
+</I>&gt;<i> In authorize.c file,
+</I>&gt;<i> static inline int check_response(dig_cred_t* cred, str* method, char* ha1)
+</I>&gt;<i> {
+</I>&gt;<i>     HASHHEX resp, *hent;*
+</I>&gt;<i>  
+</I>&gt;<i>      .......................
+</I>&gt;<i>         .............................
+</I>&gt;<i>     calc_response(ha1, &amp;(cred-&gt;nonce),
+</I>&gt;<i>                   &amp;(cred-&gt;nc), &amp;(cred-&gt;cnonce),
+</I>&gt;<i>                   &amp;(cred-&gt;qop.qop_str), cred-&gt;qop.qop_parsed == 
+</I>&gt;<i> QOP_AUTHINT,
+</I>&gt;<i>                   method, &amp;(cred-&gt;uri), *hent*, resp);
+</I>&gt;<i>        
+</I>&gt;<i>     DBG(&quot;auth_db:check_response: Our result = \'%s\'\n&quot;, resp);
+</I>&gt;<i>        
+</I>&gt;<i>          /*
+</I>&gt;<i>           * And simply compare the strings, the user is
+</I>&gt;<i>           * authorized if they match
+</I>&gt;<i>           */
+</I>&gt;<i>     if (!memcmp(resp, cred-&gt;response.s, 32)) {
+</I>&gt;<i>         DBG(&quot;auth_db:check_response: Authorization is OK\n&quot;);
+</I>&gt;<i>         return 0;
+</I>&gt;<i>     } else {
+</I>&gt;<i>         DBG(&quot;auth_db:check_response: Authorization failed\n&quot;);
+</I>&gt;<i>         return 2;
+</I>&gt;<i>     }  
+</I>&gt;<i> }  
+</I>&gt;<i>  
+</I>&gt;<i> Here &quot;*hent*&quot; is the entity body according to rfc 2617.I dont 
+</I>&gt;<i> find body of the METHOD(Eg REGISTER,INVITE) being assigned to *hent*.
+</I>&gt;<i>  
+</I>&gt;<i> Please confirm me if the *auth-int qop value* is being handled properly.
+</I>&gt;<i> Im trying to hash the entity body on my IMS Stack and sending to the 
+</I>&gt;<i> OpenIMSServer but it is responding only 401.
+</I>&gt;<i>  
+</I>&gt;<i> Regards,
+</I>&gt;<i> Veena
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> This e-mail contains PRIVILEGED AND CONFIDENTIAL INFORMATION intended solely for the use of the addressee(s). If you are not the intended recipient, please notify the sender by e-mail and delete the original message.Global Edge Software Ltd has taken every reasonable precaution to minimize this risk, but is not liable for any damage you may sustain as a result of any virus in this e-mail. You should carry out your own virus checks before opening the e-mail or attachment. Global Edge Software Ltd reserves the right to monitor and review the content of all messages sent to or from this e-mail address
+</I>&gt;<i>   
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004389.html">[OpenIMSCore-Users] AUTH-INT issue
+</A></li>
+	<LI>Next message: <A HREF="004392.html">[OpenIMSCore-Users] AUTH-INT issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4390">[ date ]</a>
+              <a href="thread.html#4390">[ thread ]</a>
+              <a href="subject.html#4390">[ subject ]</a>
+              <a href="author.html#4390">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

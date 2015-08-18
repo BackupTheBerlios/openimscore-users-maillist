@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20JavaDiameterPeer%3A%20How%20do%20I%20know%20when%20a%20Peer%0A%20is%09connected%3F&In-Reply-To=%3C47E9632B.70602%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003652.html">
+   <LINK REL="Next"  HREF="003592.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20JavaDiameterPeer%3A%20How%20do%20I%20know%20when%20a%20Peer%0A%20is%09connected%3F&In-Reply-To=%3C47E9632B.70602%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Mar 25 21:40:11 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003652.html">[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?
+</A></li>
+        <LI>Next message: <A HREF="003592.html">[OpenIMSCore-Users] S-CSCF - Presence Server Interaction Issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3669">[ date ]</a>
+              <a href="thread.html#3669">[ thread ]</a>
+              <a href="subject.html#3669">[ subject ]</a>
+              <a href="author.html#3669">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi David,
+
+my response inlined...
+
+
+David W Talmage - CONTRACTOR wrote:
+&gt;<i> Thanks for explaining, Dragos.  I have a solution.  It's not ideal but 
+</I>&gt;<i> it works.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Dragos Vingarzan wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> ...
+</I>&gt;&gt;<i> whenever they are broken. Also the send request functions should decide 
+</I>&gt;&gt;<i> on the proper routing of the message and the old send request to peer 
+</I>&gt;&gt;<i> methods are deprecated and not conforming to RFC3588 (but very useful 
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Which methods are deprecated?  I'm using
+</I>&gt;<i>
+</I>&gt;<i> 	boolean sendRequestTransactional(DiameterMessage req, 
+</I>&gt;<i> TransactionListener tl)
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>I meant the ones with &quot;ToPeer&quot; because you should not usually 
+decide/know from the application layer where the message should be sent 
+to, due to diameter realm routing. The destination peer should be 
+discovered by the stack...
+&gt;<i> Somewhere inside the implementation is where the &quot;Peer: Can't send 
+</I>&gt;<i> message when not connected&quot; message comes out.  My code never sees an 
+</I>&gt;<i> indication of the error.
+</I>&gt;<i>   
+</I>this is not good... We should have a proper 
+NoSuitablePeerFoundException() or something...
+
+&gt;<i>  &gt; ...
+</I>&gt;<i>   
+</I>&gt;&gt;<i> thread... If we'd have the initialization period blocking it would be a 
+</I>&gt;&gt;<i> good thing, but again how long should it be blocking? ... unfortunately 
+</I>&gt;&gt;<i> you can't tell how long it would take for the other peers to respond, so 
+</I>&gt;&gt;<i> it might bother you if you have some inactive peers in the list, to wait 
+</I>&gt;&gt;<i> until all the peer connections timeout or are established.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>  &gt; ...
+</I>&gt;<i>
+</I>&gt;<i> My solution is to ask the PeerManager.  He won't tell me directly but if 
+</I>&gt;<i> I dig around in him, I can find out.  Here is the function I made to 
+</I>&gt;<i> tell me if the first Peer is connected:
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>      public boolean connected() {
+</I>&gt;<i> 		Vector&lt;Peer&gt; peers = _diameter.peerManager.peers;
+</I>&gt;<i> 		Peer first = peers.firstElement();
+</I>&gt;<i>
+</I>&gt;<i> 		return (null != first &amp;&amp;
+</I>&gt;<i> 				((first.state == StateMachine.I_Open) ||
+</I>&gt;<i> 				 (first.state == StateMachine.R_Open)));
+</I>&gt;<i>      }
+</I>&gt;<i>
+</I>&gt;<i> As you can see, the code knows something about a DiameterPeer, its 
+</I>&gt;<i> PeerManager, and the PeerManager's StateMachine.
+</I>&gt;<i>   
+</I>yeah.... hmmm.... I would rather not go that deeply with the API... as I 
+just wrote before, the diameter application should not normally be in 
+charge of this... normally... but then, there are some cases when I 
+would find this useful, so why not... but I would have it like:
+
+public boolean connected(String peerFQDN)
+
+or 
+
+public List getConnectedPeers()
+
+or, better
+
+public boolean isDestinationPeerConnected(DiameterMessage req)
+
+
+&gt;<i> For my purposes, it's enough to know that the first Peer is connected. 
+</I>&gt;<i> There is only one Peer in this application.
+</I>&gt;<i>
+</I>&gt;<i> It would be nice if PeerManager could notify me when a Peer enters the 
+</I>&gt;<i> connected state (I_Open or R_Open) and/or when all Peers enter the 
+</I>&gt;<i> connected state.  Something like:
+</I>&gt;<i>
+</I>&gt;<i> 	DiameterPeer _diameter;
+</I>&gt;<i> 	_diameter.peerManager.notifyAnyPeerConnected(this);
+</I>&gt;<i> 	// or
+</I>&gt;<i> 	_diameter.peerManager.notifyAllPeersConnected(this)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	// where 'this' implements some callback interface like:
+</I>&gt;<i>
+</I>&gt;<i> 	public interface PeerStateChange {
+</I>&gt;<i> 	  public void peerConnected(DiameterPeer d, Peer p);
+</I>&gt;<i> 	  public void allPeersConnected(DiameterPeer d);
+</I>&gt;<i> 	  public void peerDisconnected(DiameterPeer d, Peer p);
+</I>&gt;<i> 	  public void allPeersDisconnected(DiameterPeer d);
+</I>&gt;<i> 	}
+</I>&gt;<i>   
+</I>this could certainly be done... although I would skip the all for 
+redundancy reasons...
+
+I suppose you already have a patch?
+
+Cheers,
+-Dragos
+
+&gt;<i>
+</I>&gt;<i> Dave
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003652.html">[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?
+</A></li>
+	<LI>Next message: <A HREF="003592.html">[OpenIMSCore-Users] S-CSCF - Presence Server Interaction Issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3669">[ date ]</a>
+              <a href="thread.html#3669">[ thread ]</a>
+              <a href="subject.html#3669">[ subject ]</a>
+              <a href="author.html#3669">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

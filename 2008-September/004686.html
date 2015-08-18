@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registration failure problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20failure%20problem&In-Reply-To=%3C48DB94B2.9020304%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004650.html">
+   <LINK REL="Next"  HREF="004651.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registration failure problem</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20failure%20problem&In-Reply-To=%3C48DB94B2.9020304%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Registration failure problem">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Sep 25 15:40:02 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004650.html">[OpenIMSCore-Users] Registration failure problem
+</A></li>
+        <LI>Next message: <A HREF="004651.html">[OpenIMSCore-Users] Cannot save HSS Trigger Point settings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4686">[ date ]</a>
+              <a href="thread.html#4686">[ thread ]</a>
+              <a href="subject.html#4686">[ subject ]</a>
+              <a href="author.html#4686">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Doron,
+
+The authentication was successful - the UE response was the same as the
+expected one, as seen in the log. The failure was on the SAR, which
+probably confused by the lack of the Expires header decided to do a
+de-registration and that failed as the user was not registered in the
+first place.
+
+Cheers,
+-Dragos
+
+Doron Kaminetsky wrote:
+&gt;<i>
+</I>&gt;<i> Hi all.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I am able to register OpenIC_Lite client to open ims core.
+</I>&gt;<i>
+</I>&gt;<i> I am trying to register my own written client with the same user.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> The registration authorization is failed on the S-CSCF with the
+</I>&gt;<i> following printout:
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> 18(16199) DBG:sm_process(): Peer hss.open-ims.test      State
+</I>&gt;<i> R_Open    Event R_Rcv_Message
+</I>&gt;<i>
+</I>&gt;<i>  4(16084) DBG:S-CSCF:S_is_authorized: UE said:
+</I>&gt;<i> b23337093774edde99a438392114d2c5 and we  expect
+</I>&gt;<i> b23337093774edde99a438392114d2c5 ha1 654be0e57783ed9964b51f38166607bb
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> But, the expected results are just those that are given by the client ! ?
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I tried to add several headers that exist on the OpenIC_Lite
+</I>&gt;<i> registration, but nothing helped.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Please help.
+</I>&gt;<i>
+</I>&gt;<i> Thank you all.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Following is the REGISTER message with the 500 response from the cscf.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> The REGISTER message is as follows:
+</I>&gt;<i>
+</I>&gt;<i> *REGISTER *sip:open-ims.test SIP/2.0
+</I>&gt;<i>
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.33.36:5080;branch=z9hG4bKlTzT16841
+</I>&gt;<i>
+</I>&gt;<i> To:&quot;User1&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">user1 at open-ims.test</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> From: &quot;User1&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">user1 at open-ims.test</A>&gt;;tag=13630422137
+</I>&gt;<i>
+</I>&gt;<i> Call-ID:DK_REGISTER_CID562
+</I>&gt;<i>
+</I>&gt;<i> CSeq:2 REGISTER
+</I>&gt;<i>
+</I>&gt;<i> Max-Forwards:70
+</I>&gt;<i>
+</I>&gt;<i> Contact: &lt;sip:10.1.33.36:5080;transport=UDP&gt;
+</I>&gt;<i>
+</I>&gt;<i> Authorization:Digest
+</I>&gt;<i> username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">user1 at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;b31bcbe7b89f5ea3fc80b3aba0e5e917&quot;,uri=&quot;sip:open-ims.test&quot;,algorithm=MD5,response=&quot;b23337093774edde99a438392114d2c5&quot;
+</I>&gt;<i>
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> SIP/2.0 *500 Server Internal Error* - Server Assignment failed
+</I>&gt;<i>
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.33.36:5080;rport=5080;branch=z9hG4bKlTzT16841
+</I>&gt;<i>
+</I>&gt;<i> To:&quot;User1&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">user1 at open-ims.test</A>&gt;;tag=e4be100d9258c7f14a2b1dcf34b407e7-b09c
+</I>&gt;<i>
+</I>&gt;<i> From: &quot;User1&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">user1 at open-ims.test</A>&gt;;tag=13630422137
+</I>&gt;<i>
+</I>&gt;<i> Call-ID:DK_REGISTER_CID562
+</I>&gt;<i>
+</I>&gt;<i> CSeq:2 REGISTER
+</I>&gt;<i>
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (sparc/solaris))
+</I>&gt;<i>
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i>
+</I>&gt;<i> Warning: 392 10.1.33.36:6060 &quot;Noisy feedback tells:  pid=16084
+</I>&gt;<i> req_src_ip=10.1.33.36 req_src_port=5060
+</I>&gt;<i> in_uri=sip:scscf.open-ims.test:6060
+</I>&gt;<i> out_uri=sip:scscf.open-ims.test:6060 via_cnt==3&quot;
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004650.html">[OpenIMSCore-Users] Registration failure problem
+</A></li>
+	<LI>Next message: <A HREF="004651.html">[OpenIMSCore-Users] Cannot save HSS Trigger Point settings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4686">[ date ]</a>
+              <a href="thread.html#4686">[ thread ]</a>
+              <a href="subject.html#4686">[ subject ]</a>
+              <a href="author.html#4686">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

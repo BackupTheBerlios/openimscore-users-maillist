@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Open Source IMS Core
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Open%20Source%20IMS%20Core&In-Reply-To=%3C456192B4.40304%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000007.html">
+   <LINK REL="Next"  HREF="000009.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Open Source IMS Core</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Open%20Source%20IMS%20Core&In-Reply-To=%3C456192B4.40304%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Open Source IMS Core">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Nov 20 12:34:12 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000007.html">[OpenIMSCore-Users] SIP2IMS
+</A></li>
+        <LI>Next message: <A HREF="000009.html">[OpenIMSCore-Users] RV:  SIP2IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#8">[ date ]</a>
+              <a href="thread.html#8">[ thread ]</a>
+              <a href="subject.html#8">[ subject ]</a>
+              <a href="author.html#8">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gaurav,
+
+First, I am moving this thread on the <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A> 
+mailing list. Please also subscribe so that you would benefit from other 
+people's ideas. In general, I will not respond on private to development 
+question, but I will always try to reflect the discussion on one of the 
+mailing lists, so that we could build a knowledge base. The mailing list 
+archives are public.
+
+There is a big interest in the Rf functions and I think that you are not 
+the only one that would contribute. Are you also thinking about 
+contributing PDF functionality? If yes, would you prefer CDiameterPeer 
+or JavaDiameterPeer? (both can be used).
+
+
+All is configured out of the box if you get the FHoSS/trunk and 
+ser_ims/trunk into /opt/OpenIMSCore/FHoSS and /opt/OpenIMSCore/ser_ims. 
+For more info on the FHoSS installation, there is a install.txt in 
+FHoSS. I did not had the time to write one for ser_ims, but here are all 
+the commands that should install all of it, including FHoSS.
+
+mkdir /opt/OpenIMSCore
+cd /opt/OpenIMSCore
+mkdir FHoSS
+svn checkout 
+<A HREF="https://vingarzn@svn.berlios.de/svnroot/repos/openimscore/FHoSS/trunk">https://vingarzn@svn.berlios.de/svnroot/repos/openimscore/FHoSS/trunk</A> FHoSS
+
+mkdir ser_ims
+svn checkout 
+<A HREF="https://vingarzn@svn.berlios.de/svnroot/repos/openimscore/ser_ims/trunk">https://vingarzn@svn.berlios.de/svnroot/repos/openimscore/ser_ims/trunk</A> 
+ser_ims
+
+cd FHoSS
+ant gen compile deploy
+cd ..
+
+
+cd ser_ims
+make all
+cd ..
+
+
+mysql -u root -p &lt; FHoSS/scripts/hssdb.sql
+mysql -u root -p &lt; FHoSS/scripts/userdata.sql
+
+mysql -u root -p &lt; ser_ims/cfg/icscf.sql
+mysql -u root -p &lt; ser_ims/cfg/sip2ims.sql
+
+
+cp ser_ims/cfg/*.cfg .
+cp ser_ims/cfg/*.xml .
+cp ser_ims/cfg/*.sh .
+
+Now launch p|i|scscf.sh and FHoSS/deploy/startup.sh
+
+-Dragos
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">upadhyay.gaurav at wipro.com</A> wrote:
+&gt;<i> Hello Dragos Vingarzan,
+</I>&gt;<i>
+</I>&gt;<i> Thanks for your prompt response on this. As mentioned, our use of the
+</I>&gt;<i> OpenSource is limited to R&amp;D purpose and we are not aiming at any
+</I>&gt;<i> commercial product using this.
+</I>&gt;<i>
+</I>&gt;<i> I was able to checkout the svn repository with your instructions, I am
+</I>&gt;<i> now trying to build and install the CSCF components. It will be very
+</I>&gt;<i> helpful if you have any instructions available for installation and
+</I>&gt;<i> configuration of the components.
+</I>&gt;<i>
+</I>&gt;<i> Our focus is to open up the Gq interface on CSCFs (Interface between AF
+</I>&gt;<i> and PDF), and hopefully contribute to your existing CSCF component.
+</I>&gt;<i>
+</I>&gt;<i> Thanks &amp; Regards,
+</I>&gt;<i> Gaurav
+</I>&gt;<i>
+</I>&gt;<i> --------------------------------------------------
+</I>&gt;<i> Gaurav Upadhyay
+</I>&gt;<i> Technical Architect - IMS CoE
+</I>&gt;<i> Wipro Technologies
+</I>&gt;<i> Bangalore
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">upadhyay.gaurav at wipro.com</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000007.html">[OpenIMSCore-Users] SIP2IMS
+</A></li>
+	<LI>Next message: <A HREF="000009.html">[OpenIMSCore-Users] RV:  SIP2IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#8">[ date ]</a>
+              <a href="thread.html#8">[ thread ]</a>
+              <a href="subject.html#8">[ subject ]</a>
+              <a href="author.html#8">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

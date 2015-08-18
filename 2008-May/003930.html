@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot; when	unsubscribing the &quot;reg&quot; event
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Get%20%22403%20Forbidden%20to%20SUBSCRIBE%22%20when%0A%09unsubscribing%20the%20%22reg%22%20event&In-Reply-To=%3C001e01c8b0cc%243e6c96e0%240200a8c0%40notebook%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003929.html">
+   <LINK REL="Next"  HREF="003931.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot; when	unsubscribing the &quot;reg&quot; event</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Get%20%22403%20Forbidden%20to%20SUBSCRIBE%22%20when%0A%09unsubscribing%20the%20%22reg%22%20event&In-Reply-To=%3C001e01c8b0cc%243e6c96e0%240200a8c0%40notebook%3E"
+       TITLE="[OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot; when	unsubscribing the &quot;reg&quot; event">franz.edler at inode.at
+       </A><BR>
+    <I>Thu May  8 07:27:40 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003929.html">[OpenIMSCore-Users] Unable to start I-CSCF and S-CSCF on a	G4	powerpc
+</A></li>
+        <LI>Next message: <A HREF="003931.html">[OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot; when	unsubscribing the &quot;reg&quot; event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3930">[ date ]</a>
+              <a href="thread.html#3930">[ thread ]</a>
+              <a href="subject.html#3930">[ subject ]</a>
+              <a href="author.html#3930">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Do you have any idea? Or is the attached enough for you to identify the
+</I>&gt;<i> location of the problem?
+</I>
+The attached logs were enough.
+I now found - based on the pcscf.log - that in the situation when SUBSCRIBE
+is answered by &quot;403 Forbidden to SUBSCRIBE&quot; the P-CSCF regards the request
+as not coming from a UE, because it cannot find a valid registration for
+that request. 
+
+You can verify my assumption by terminating this kind of requests in P-CSCF.
+For that you should enable the &quot;else&quot; part of the following procedure in
+pcscf.cfg:
+
+route[Orig_Subsequent]
+{
+	log(1,&quot;&gt;&gt;       Orig_Subsequent\n&quot;);
+	if (P_is_registered()){
+		if (!P_assert_identity()){
+		        sl_send_reply(&quot;403&quot;,&quot;Forbidden - You must register
+first with a S-CSCF&quot;);
+	    	    break;
+		};
+	}
+#	else{
+		# let it continue as this probably does not come from an UE
+        #sl_send_reply(&quot;403&quot;,&quot;Forbidden - Not Registered! You must register
+first with a S-CSCF&quot;);	        
+        #break;
+        
+#	}
+
+
+Why this happens I don't know.
+
+But I find it mysterious that your client does not use the same Route header
+fields for SUBSCRIBE and de-SUBSCRIBE?
+
+Regards
+Franz
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003929.html">[OpenIMSCore-Users] Unable to start I-CSCF and S-CSCF on a	G4	powerpc
+</A></li>
+	<LI>Next message: <A HREF="003931.html">[OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot; when	unsubscribing the &quot;reg&quot; event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3930">[ date ]</a>
+              <a href="thread.html#3930">[ thread ]</a>
+              <a href="subject.html#3930">[ subject ]</a>
+              <a href="author.html#3930">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

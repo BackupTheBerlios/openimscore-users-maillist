@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] problems during call between bob and alice
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20problems%20during%20call%20between%20bob%20and%20alice&In-Reply-To=%3C697FA5D6BAA3BD47961272D9916B6A6E0ED9B0%40MADARRMAIL7.indra.es%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005674.html">
+   <LINK REL="Next"  HREF="005677.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] problems during call between bob and alice</H1>
+    <B>&quot;Mart&#237;nez Garc&#237;a, Rebeca&quot;</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20problems%20during%20call%20between%20bob%20and%20alice&In-Reply-To=%3C697FA5D6BAA3BD47961272D9916B6A6E0ED9B0%40MADARRMAIL7.indra.es%3E"
+       TITLE="[OpenIMSCore-Users] problems during call between bob and alice">remartinez at eservicios.indra.es
+       </A><BR>
+    <I>Mon Aug 10 10:03:46 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005674.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] Patch for IPSec support
+</A></li>
+        <LI>Next message: <A HREF="005677.html">[OpenIMSCore-Users] problems during call between bob and alice
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5676">[ date ]</a>
+              <a href="thread.html#5676">[ thread ]</a>
+              <a href="subject.html#5676">[ subject ]</a>
+              <a href="author.html#5676">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi All,
+
+I have installed OpenIMS Core in 4 machines and it seems to work correctly. The configuration is the following one:
+
+P-CSCF/DNS -&gt; xx.xx.xx.201
+S-CSCF -&gt; xx.xx.xx.202
+I-CSCF -&gt; xx.xx.xx.203
+FHoSS  -&gt; xx.xx.xx.204
+
+Then, to test it, I have installed MONSTER in two different laptops and both seem to run ok although this error
+is shown in the console.
+
+9468 [TaskServiceWorker] INFO de.fhg.fokus.ims.client.util.TaskService  - Finished Task! Tasks left: 0
+9633 [main] ERROR de.fhg.fokus.monster.ui.swing.utils.Res  - Can't find resource for bundle java.util.PropertyResourceBundle, key message.autenticating
+
+The users are:
+
+Alice -&gt; xx.xx.xx.205
+Bob -&gt; xx.xx.xx.206
+
+Anyway, although both Bob and Alice are registered, they can not see each other (they are connected but
+if I add Bob as new contact to Alice, he is shown as an offline contact even though he is online). Could it be
+because in the registration process, when the user sends the PUBLISH message it is finally answered by the
+same user with a 501 error (Not implemented)? (I have attached wireshark captures of the registration process).
+
+If the answer is yes, there is a way to solve it?
+
+However, they can call each other!
+Some of the wireshark captures attached correspond to a call from Bob to Alice. There it is possible to see that
+when Bob hangs up, he receives the Alice's 200 OK to his BYE, but he then sends again another BYE and is answered
+directly by the P-CSCF with 403 Forbidden - Originating subsequent requests outside dialog not allowed.
+
+It is normal this second BYE?
+
+I will appreciate any help.
+
+Thanks in advance!
+Rebeca
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: call bob-alice in I-CSCF
+Type: application/octet-stream
+Size: 4386 bytes
+Desc: call bob-alice in I-CSCF
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: call bob-alice in P-CSCF
+Type: application/octet-stream
+Size: 27767 bytes
+Desc: call bob-alice in P-CSCF
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment-0001.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: call bob-alice in S-CSCF
+Type: application/octet-stream
+Size: 12245 bytes
+Desc: call bob-alice in S-CSCF
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment-0002.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment-0002.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: registration process in I-CSCF
+Type: application/octet-stream
+Size: 28313 bytes
+Desc: registration process in I-CSCF
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment-0003.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment-0003.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: registration process in P-CSCF
+Type: application/octet-stream
+Size: 39380 bytes
+Desc: registration process in P-CSCF
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment-0004.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment-0004.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: registration process in S-CSCF
+Type: application/octet-stream
+Size: 22015 bytes
+Desc: registration process in S-CSCF
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment-0005.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090810/1d90e40a/attachment-0005.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005674.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] Patch for IPSec support
+</A></li>
+	<LI>Next message: <A HREF="005677.html">[OpenIMSCore-Users] problems during call between bob and alice
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5676">[ date ]</a>
+              <a href="thread.html#5676">[ thread ]</a>
+              <a href="subject.html#5676">[ subject ]</a>
+              <a href="author.html#5676">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

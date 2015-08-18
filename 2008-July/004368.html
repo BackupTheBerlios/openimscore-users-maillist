@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] &quot;qop&quot;-issue: proposal for a workaraound
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%22qop%22-issue%3A%20proposal%20for%20a%20workaraound&In-Reply-To=%3CDFD4EFAEA23848219C88C6342DD5A576%40notebook%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004367.html">
+   <LINK REL="Next"  HREF="004382.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] &quot;qop&quot;-issue: proposal for a workaraound</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%22qop%22-issue%3A%20proposal%20for%20a%20workaraound&In-Reply-To=%3CDFD4EFAEA23848219C88C6342DD5A576%40notebook%3E"
+       TITLE="[OpenIMSCore-Users] &quot;qop&quot;-issue: proposal for a workaraound">franz.edler at inode.at
+       </A><BR>
+    <I>Sat Jul 26 09:43:10 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004367.html">[OpenIMSCore-Users] client/server diameter
+</A></li>
+        <LI>Next message: <A HREF="004382.html">[OpenIMSCore-Users] &quot;qop&quot;-issue: proposal for a workaraound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4368">[ date ]</a>
+              <a href="thread.html#4368">[ thread ]</a>
+              <a href="subject.html#4368">[ subject ]</a>
+              <a href="author.html#4368">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I have now spent more time in analyzing the &quot;qop&quot; issue.
+There are two options for IMS-communicator to make it usable again with
+OpenIMSCore (r&gt;=570):
+a) implement the qop algorithm
+b) do not implement the qop algorithm
+
+Option a) obviously requires more effort than b). It requires to dig deep
+into RFC2617 and correctly calculate the response (digest and checksum
+value).
+
+Option b) means to simply ignore the qop directive in the WWW-Authenticate
+header field of 401 Unautorized response. In this case the cnonce and the nc
+parameter value in the Authorization header field of the second REGISTER
+MUST not be included. This should automatically invoke the fallback solution
+for &quot;qop not supported&quot;.
+
+Actually the IMS-communicator includes the cnonce and nc parameter value but
+does not correctly calculate the response (so its neither option a) nor
+option b)). So maybe it is simpler to not send the cnonce and nc parameter
+value and have the fallback to &quot;qop not supported&quot; method. This would make
+the IMS-communicator usable again with the actual release of OpenIMSCore.
+
+Maybe option b) is easier to implement.
+
+Franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004367.html">[OpenIMSCore-Users] client/server diameter
+</A></li>
+	<LI>Next message: <A HREF="004382.html">[OpenIMSCore-Users] &quot;qop&quot;-issue: proposal for a workaraound
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4368">[ date ]</a>
+              <a href="thread.html#4368">[ thread ]</a>
+              <a href="subject.html#4368">[ subject ]</a>
+              <a href="author.html#4368">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

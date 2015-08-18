@@ -1,0 +1,327 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] S-CSCF crashes when dealing with an as-featuresubscription request
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20crashes%20when%20dealing%20with%20an%0A%20as-featuresubscription%20request&In-Reply-To=%3C44EE1E31095AE349AC6C3C0B69FFBF02958C99B14E%40ENFIMBOX1.ad.datcon.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006164.html">
+   <LINK REL="Next"  HREF="006149.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] S-CSCF crashes when dealing with an as-featuresubscription request</H1>
+    <B>Tim West</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20crashes%20when%20dealing%20with%20an%0A%20as-featuresubscription%20request&In-Reply-To=%3C44EE1E31095AE349AC6C3C0B69FFBF02958C99B14E%40ENFIMBOX1.ad.datcon.co.uk%3E"
+       TITLE="[OpenIMSCore-Users] S-CSCF crashes when dealing with an as-featuresubscription request">Tim.West at metaswitch.com
+       </A><BR>
+    <I>Wed Mar 31 12:40:49 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006164.html">[OpenIMSCore-Users] S-CSCF crashes when dealing with an as-featuresubscription request
+</A></li>
+        <LI>Next message: <A HREF="006149.html">[OpenIMSCore-Users] Question about support for tel URIs in OpenIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6165">[ date ]</a>
+              <a href="thread.html#6165">[ thread ]</a>
+              <a href="subject.html#6165">[ subject ]</a>
+              <a href="author.html#6165">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sorry, I forgot to add the output from SCSCF.  Please find it attached - it's starts just before alice tries to re-register and subscribe for the AS-feature event.
+
+Thanks,
+
+Tim
+
+
+-----Original Message-----
+From: Tim West 
+Sent: 31 March 2010 11:35
+To: '<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>'; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: RE: [OpenIMSCore-Users] S-CSCF crashes when dealing with an as-featuresubscription request
+
+Hi Franz,
+
+Thanks for the instructions on how to get at the backtrace - the output is:
+
+#0  0x00a74402 in __kernel_vsyscall ()
+#1  0x0093dd80 in raise () from /lib/libc.so.6
+#2  0x0093f691 in abort () from /lib/libc.so.6
+#3  0x080dc0a7 in qm_debug_frag (qm=0x815cfa0, f=&lt;value optimized out&gt;) at mem/q_malloc.c:163
+#4  0x080dd2b4 in qm_free (qm=0x815cfa0, p=0x81b38c8, file=0x47968b &quot;t_reply.c&quot;,
+    func=0x479863 &quot;free_faked_req&quot;, line=653) at mem/q_malloc.c:447
+#5  0x004696c9 in run_failure_handlers (t=0xb615b230, rpl=0x81b2b34, code=403, extra_flags=0)
+    at t_reply.c:653
+#6  0x0046a11a in t_should_relay_response (Trans=0xb615b230, new_code=403, branch=0,
+    should_store=0xbf9a4aa4, should_relay=0xbf9a4aa8, cancel_bitmap=0xbf9a4b60,
+    reply=0x81b2b34) at t_reply.c:932
+#7  0x0046a2a3 in relay_reply (t=0xb615b230, p_msg=0x81b2b34, branch=0, msg_status=403,
+    cancel_bitmap=0xbf9a4b60) at t_reply.c:1256
+#8  0x0046da56 in reply_received (p_msg=0x81b2b34) at t_reply.c:1678
+#9  0x08075026 in forward_reply (msg=0x81b2b34) at forward.c:573 #10 0x08095665 in receive_msg (
+    buf=0x814c7a0 &quot;SIP/2.0 403 Forbidden\r\nVia: SIP/2.0/UDP 10.250.1.13:6060;branch=z9hG4bK5ea.8d119b17.0\r\nVia: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bK8260e2e8c9b8aabef\r\nFrom: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=52e390c01c&quot;..., len=434, rcv_info=0xbf9a4c98) at receive.c:221
+#11 0x080d33ed in udp_rcv_loop () at udp_server.c:496
+#12 0x0807e076 in main_loop () at main.c:1025
+#13 0x0807f541 in main (argc=Cannot access memory at address 0x688b
+) at main.c:1614
+
+I've attached a Wireshark capture file with the signalling between the Aastra and Open IMS.  I've also put at the below all of the cracked out SIP traffic in case you can't access the Wireshark file for some reason.
+
+Thanks again,
+
+Tim
+
+---------------------
+30	10:09:11.706952	10.250.31.8	10.250.1.13	SIP	Request: REGISTER sip:pcscf.open-ims.test:4060
+
+PVA]vEh@@
+
+hREGISTER sip:pcscf.open-ims.test:4060 SIP/2.0
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bKe337bd9e363c58fd6
+Route: &lt;sip:scscf.open-ims.test:6060;lr&gt;
+Max-Forwards: 70
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=15f732abfc
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Call-ID: af5ec95f9810342c
+CSeq: 28962 REGISTER
+Allow:  INVITE, ACK, CANCEL, BYE, NOTIFY, REFER, OPTIONS, UPDATE, PRACK, SUBSCRIBE, INFO
+Allow-Events: talk, hold, conference, LocalModeStatus
+Contact: &quot;&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp&gt;;expires=3600;+sip.instance=&quot;&lt;urn:uuid:00000000-0000-1000-8000-00085D1A1A76&gt;&quot;
+Supported: gruu, path
+User-Agent: Aastra 57i/2.5.2.1010
+Content-Length: 0
+----------
+
+31	10:09:11.741757	10.250.1.13	10.250.31.8	SIP	Status: 401 Unauthorized - Challenging the UE    (0 bindings)
+
+]vPVAE_@@v
+
+KSIP/2.0 401 Unauthorized - Challenging the UE
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bKe337bd9e363c58fd6
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=15f732abfc
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=fe737031fa0a86aca1c1ae3b63b2de1f-aaf4
+Call-ID: af5ec95f9810342c
+CSeq: 28962 REGISTER
+WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;, nonce=&quot;f2bab5e0a003a5da81cf8b5bb8ec9efc&quot;, algorithm=MD5, qop=&quot;auth,auth-int&quot;
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, PUBLISH, MESSAGE, INFO
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+Content-Length: 0
+Warning: 392 10.250.1.13:6060 &quot;Noisy feedback tells:  pid=26759 req_src_ip=10.250.31.8 req_src_port=5060 in_uri=sip:pcscf.open-ims.test:4060 out_uri=sip:pcscf.open-ims.test:4060 via_cnt==1&quot;
+----------
+
+32	10:09:11.802199	10.250.31.8	10.250.1.13	SIP	Request: REGISTER sip:pcscf.open-ims.test:4060
+
+PVA]vEh,@?
+
+dFREGISTER sip:pcscf.open-ims.test:4060 SIP/2.0
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bKea0741a85de2aa940
+Route: &lt;sip:scscf.open-ims.test:6060;lr&gt;
+Max-Forwards: 70
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=15f732abfc
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Call-ID: af5ec95f9810342c
+CSeq: 28963 REGISTER
+Allow:  INVITE, ACK, CANCEL, BYE, NOTIFY, REFER, OPTIONS, UPDATE, PRACK, SUBSCRIBE, INFO
+Allow-Events: talk, hold, conference, LocalModeStatus
+Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;f2bab5e0a003a5da81cf8b5bb8ec9efc&quot;,uri=&quot;sip:pcscf.open-ims.test:4060&quot;,response=&quot;7ecce3c3f49a9b48ec00be8f4d7bb21f&quot;,algorithm=MD5,qop=auth-int,cnonce=&quot;f24dddc6&quot;,nc=00000001
+Contact: &quot;&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp&gt;;expires=3600;+sip.instance=&quot;&lt;urn:uuid:00000000-0000-1000-8000-00085D1A1A76&gt;&quot;
+Supported: gruu, path
+User-Agent: Aastra 57i/2.5.2.1010
+Content-Length: 0
+----------
+
+33	10:09:11.826478	10.250.1.13	10.250.31.8	SIP	Status: 200 OK - SAR succesful and registrar saved    (1 bindings)
+
+]vPVAE@@,
+
+1SIP/2.0 200 OK - SAR succesful and registrar saved
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bKea0741a85de2aa940
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=15f732abfc
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=fe737031fa0a86aca1c1ae3b63b2de1f-990d
+Call-ID: af5ec95f9810342c
+CSeq: 28963 REGISTER
+P-Associated-URI: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp&gt;;expires=3600;pub-gruu=&quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>;gr=urn:uuid:00000000-0000-1000-8000-00085D1A1A76&quot;
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, PUBLISH, MESSAGE, INFO
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+Content-Length: 0
+Warning: 392 10.250.1.13:6060 &quot;Noisy feedback tells:  pid=26763 req_src_ip=10.250.31.8 req_src_port=5060 in_uri=sip:pcscf.open-ims.test:4060 out_uri=sip:pcscf.open-ims.test:4060 via_cnt==1&quot;
+----------
+
+34	10:09:11.923013	10.250.31.8	10.250.1.13	SIP	Request: SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+
+PVA]<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vEh1 at Aq</A>
+
+nSUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> SIP/2.0
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bK8260e2e8c9b8aabef
+Route: &lt;sip:scscf.open-ims.test:6060;lr&gt;
+Max-Forwards: 70
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=52e390c01c
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Call-ID: 7d6e860f10a67116
+CSeq: 4671 SUBSCRIBE
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp&gt;
+Event: as-feature-event
+Expires: 3600
+User-Agent: Aastra 57i/2.5.2.1010
+Content-Length: 0
+----------
+
+35	10:09:11.943084	10.250.1.13	10.250.31.8	SIP	Request: SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp
+
+]vPVAEd@@q
+
+P+SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp SIP/2.0
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+Via: SIP/2.0/UDP 10.250.1.13:6060;branch=z9hG4bK5ea.8d119b17.0
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bK8260e2e8c9b8aabef
+Max-Forwards: 16
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=52e390c01c
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Call-ID: 7d6e860f10a67116
+CSeq: 4671 SUBSCRIBE
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp&gt;
+Event: as-feature-event
+Expires: 3600
+User-Agent: Aastra 57i/2.5.2.1010
+Content-Length: 0
+P-Called-Party-ID: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+----------
+
+36	10:09:12.115078	10.250.31.8	10.250.1.13	SIP	Status: 403 Forbidden
+
+PVA]vEh&lt;@As
+
+SIP/2.0 403 Forbidden
+Via: SIP/2.0/UDP 10.250.1.13:6060;branch=z9hG4bK5ea.8d119b17.0
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bK8260e2e8c9b8aabef
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=52e390c01c
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=3103466111
+Call-ID: 7d6e860f10a67116
+CSeq: 4671 SUBSCRIBE
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>;gr=urn:uuid:00000000-0000-1000-8000-00085D1A1A76&gt;
+Server: Aastra 57i/2.5.2.1010
+Content-Length: 0
+----------
+
+37	10:09:12.203190	10.250.31.8	10.250.1.13	SIP	Request: SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+
+PVA]vEh&gt;@Ad
+
+nSUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> SIP/2.0
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bK8260e2e8c9b8aabef
+Route: &lt;sip:scscf.open-ims.test:6060;lr&gt;
+Max-Forwards: 70
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=52e390c01c
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Call-ID: 7d6e860f10a67116
+CSeq: 4671 SUBSCRIBE
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp&gt;
+Event: as-feature-event
+Expires: 3600
+User-Agent: Aastra 57i/2.5.2.1010
+Content-Length: 0
+----------
+
+38	10:09:12.304086	10.250.31.8	10.250.1.13	SIP	Request: SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+
+PVA]<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vEhL at AV</A>
+
+nSUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> SIP/2.0
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bK8260e2e8c9b8aabef
+Route: &lt;sip:scscf.open-ims.test:6060;lr&gt;
+Max-Forwards: 70
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=52e390c01c
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Call-ID: 7d6e860f10a67116
+CSeq: 4671 SUBSCRIBE
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp&gt;
+Event: as-feature-event
+Expires: 3600
+User-Agent: Aastra 57i/2.5.2.1010
+Content-Length: 0
+----------
+
+41	10:09:12.925725	10.250.31.8	10.250.1.13	SIP	Request: SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+
+PVA]<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vEhg at A</A>;
+
+nSUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> SIP/2.0
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bK8260e2e8c9b8aabef
+Route: &lt;sip:scscf.open-ims.test:6060;lr&gt;
+Max-Forwards: 70
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=52e390c01c
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Call-ID: 7d6e860f10a67116
+CSeq: 4671 SUBSCRIBE
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp&gt;
+Event: as-feature-event
+Expires: 3600
+User-Agent: Aastra 57i/2.5.2.1010
+Content-Length: 0
+----------
+
+
+
+-----Original Message-----
+From: Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>]
+Sent: 29 March 2010 18:15
+To: Tim West; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: AW: [OpenIMSCore-Users] S-CSCF crashes when dealing with an as-featuresubscription request
+
+Hello Tim,
+
+&gt;<i> Are there some diagnostics beyond those at the bottom of my original
+</I>&gt;<i> e- mail that would help to discover the cause of the crash?  Or other 
+</I>&gt;<i> scenarios I should try?
+</I>
+If the crash can be reproduced you should offer a backtrace protocol of the core-dump file (by help of &quot;gdb&quot;). The core-dump is usually in the /root directory. You should follow the steps:
+	- load the GNU debugger (gdb)
+	- from /opt/OpenIMSCore/ser_ims start the commands:
+        gdb ser /core
+	  bt
+	  q
+
+In addition you should provide a signalling trace and a log-file. Then the experts may have a look on the issue.
+
+Franz
+
+
+
+-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: scscf_log.txt
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100331/9a7fe79e/attachment.txt">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100331/9a7fe79e/attachment.txt</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006164.html">[OpenIMSCore-Users] S-CSCF crashes when dealing with an as-featuresubscription request
+</A></li>
+	<LI>Next message: <A HREF="006149.html">[OpenIMSCore-Users] Question about support for tel URIs in OpenIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6165">[ date ]</a>
+              <a href="thread.html#6165">[ thread ]</a>
+              <a href="subject.html#6165">[ subject ]</a>
+              <a href="author.html#6165">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

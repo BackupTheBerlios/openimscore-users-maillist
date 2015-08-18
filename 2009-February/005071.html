@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [oot] Basic question about openimscore vs asterisk
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5Boot%5D%20Basic%20question%20about%20openimscore%20vs%0A%20asterisk&In-Reply-To=%3C499854C2.9080703%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005061.html">
+   <LINK REL="Next"  HREF="005059.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [oot] Basic question about openimscore vs asterisk</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5Boot%5D%20Basic%20question%20about%20openimscore%20vs%0A%20asterisk&In-Reply-To=%3C499854C2.9080703%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] [oot] Basic question about openimscore vs asterisk">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Sun Feb 15 18:45:38 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005061.html">[OpenIMSCore-Users] [oot] Basic question about openimscore vs	asterisk
+</A></li>
+        <LI>Next message: <A HREF="005059.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 28, Issue 12
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5071">[ date ]</a>
+              <a href="thread.html#5071">[ thread ]</a>
+              <a href="subject.html#5071">[ subject ]</a>
+              <a href="author.html#5071">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Reza,
+
+short answer - the two projects have different scopes. Yes, they use the 
+same protocols, but for different purposes. Yes, you can do the same 
+registration/calls, but that does not mean that they fulfill the same needs.
+
+The Open IMS Core is a prototype implementation of the IP Multimedia 
+Subsystem core components. And IMS is supposed to be the architecture of 
+the Next Generation Networks, which tries to bring the IP world to the 
+telecom business and as such replace the current telecom switches. And I 
+am talking about the ones talking SS7, you know, the big guns, at 
+operators, filling entire rooms and serving millions of users.
+
+Asterisk then is a software PBX (IMHO.. the sales buys at the company 
+behind it might tell you it is much more, of course). So I for one am 
+thinking about a company telephony system, something handling let's say 
+hundreds of connected telephones, but really not millions. And really 
+not going to replace those big switches.
+
+Then the Open IMS Core implements some standards (or at least goes in 
+that direction), while Asterisk is a Swiss-army-knife without a standard 
+to follow, just the functional requirements.
+
+Then we only want to play with IMS, not make money by putting the Open 
+IMS Core into commercial exploitation, while Asterisk clearly does that. 
+The institute that I work for spawned before a commercial project, but 
+it was a SIP proxy - www.iptel.org . We are using that base code, but 
+for non-commercial purposes.
+
+So there are different playgrounds here. To make things a bit more 
+confusing, you can probably integrate Asterisk into an IMS core network, 
+in order to add the services that Asterisk can provide.
+
+Then if you talk about quality, you went a bit too far with the codecs. 
+The Open IMS Core only cares and handles the signaling and not the 
+media. That is end-to-end practically and does not depend on the 
+signaling routers and processors, but just on the communication 
+endpoints. So really we can't make any comparison here. Maybe if you 
+would like to compare the delays of the SIP messages, but also then 
+you're comparing apples to oranges.
+
+So, each has its own purpose. For some examples, the Open IMS Core won't 
+provide you with the IVR system, but integrating Asterisk into it would 
+help you there. On the other side Asterisk won't be able to handle 
+millions of users or deal with their security, QoS, all the 
+authentications, service triggering a.s.o., because simply it does not 
+have the architecture for that.
+
+BTW: this is a good reference 
+<A HREF="http://en.wikipedia.org/wiki/IP_Multimedia_Subsystem">http://en.wikipedia.org/wiki/IP_Multimedia_Subsystem</A>
+
+Cheers,
+-Dragos
+
+reza adinata wrote:
+&gt;<i> hi all, I do not know whether this question  is appropriate to be
+</I>&gt;<i> asked in this forum or not. But i am totally curious about this.
+</I>&gt;<i> Perhaps those who are experienced so much in this field can share
+</I>&gt;<i> their knowledge :)
+</I>&gt;<i>
+</I>&gt;<i> Having read this blog :
+</I>&gt;<i> <A HREF="http://sipstuff.blogspot.com/2007/02/competing-eco-systems-ims-ser-asterisk.html">http://sipstuff.blogspot.com/2007/02/competing-eco-systems-ims-ser-asterisk.html</A>
+</I>&gt;<i> I am getting more curious about this.
+</I>&gt;<i>
+</I>&gt;<i> So basically, i have managed to build a testbed for next generation in
+</I>&gt;<i> IP Multimedia Subsystem using OpenIMSCore. Used the x-lite for the
+</I>&gt;<i> client and managed to have a communication between client using
+</I>&gt;<i> video.Meanwhile, I have also once built an asterisk testbed. Alse used
+</I>&gt;<i> the x-lite for the client and managed to do a video communication.
+</I>&gt;<i>
+</I>&gt;<i> However, I still in a doubt. So actually what is the actual benefit of
+</I>&gt;<i> using the openimscore compared to asterisk ? they both can deliver
+</I>&gt;<i> message, voice, and they both are capable of delivering videos
+</I>&gt;<i> communication quite well. Based on the theory that I read, IMS used
+</I>&gt;<i> AMR codec meanwhile the asterisk used g264, etc codec (cmiiw) and it
+</I>&gt;<i> supposed to deliver a big differences.
+</I>&gt;<i>
+</I>&gt;<i> The point is that as a client, i somehow does not feel any big
+</I>&gt;<i> differences between the quality of the communication, including the
+</I>&gt;<i> delay, the bitrate that is transfered, etc. Where does actually the
+</I>&gt;<i> codec act? Sp is the really differences between openimscore and
+</I>&gt;<i> asterisk is only located at the access layer (ubiquitous access) and
+</I>&gt;<i> the capability of integrating different kind of SIP AS, and no others?
+</I>&gt;<i> (in practical ways,i mean from the client point of view)..
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thank you for sharing your knowledge guys, sorry if I have lot of
+</I>&gt;<i> missing concepts  :),
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Reza
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005061.html">[OpenIMSCore-Users] [oot] Basic question about openimscore vs	asterisk
+</A></li>
+	<LI>Next message: <A HREF="005059.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 28, Issue 12
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5071">[ date ]</a>
+              <a href="thread.html#5071">[ thread ]</a>
+              <a href="subject.html#5071">[ subject ]</a>
+              <a href="author.html#5071">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

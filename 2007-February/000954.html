@@ -1,0 +1,403 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] 408: Request Timed out
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20408%3A%20Request%20Timed%20out&In-Reply-To=%3COF559DC660.803FBC88-ONC125728F.00592D5B-C125728F.00598228%40go.com.mt%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000949.html">
+   <LINK REL="Next"  HREF="000937.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] 408: Request Timed out</H1>
+    <B>Josef.Bajada at go.com.mt</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20408%3A%20Request%20Timed%20out&In-Reply-To=%3COF559DC660.803FBC88-ONC125728F.00592D5B-C125728F.00598228%40go.com.mt%3E"
+       TITLE="[OpenIMSCore-Users] 408: Request Timed out">Josef.Bajada at go.com.mt
+       </A><BR>
+    <I>Tue Feb 27 17:17:39 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000949.html">[OpenIMSCore-Users] 408: Request Timed out
+</A></li>
+        <LI>Next message: <A HREF="000937.html">[OpenIMSCore-Users] 200 - ACK signal looping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#954">[ date ]</a>
+              <a href="thread.html#954">[ thread ]</a>
+              <a href="subject.html#954">[ subject ]</a>
+              <a href="author.html#954">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+
+Yes, thats was it! I changed everywhere in all configurations that 
+referred to the 127.0.0.1 and I updated the zone file.
+
+I dont know, maybe a small suggestion, could the servers be configured in 
+a way to listen on all interfaces (i think sockets work like that by 
+default if you dont specificy a binding address)? (Maybe putting a 
+wildcard or leaving it blank or something?) 
+Maybe putting the configuration files like that by default in the svn 
+repository saves us mortals some headaches to change everywhere from 
+127.0.0.1 to the respective IP. 
+
+Anyway, I managed to pass through the call successfully.
+
+thanks a lot,
+
+Josef
+
+
+
+
+
+Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; 
+Sent by: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+27/02/2007 16:46
+
+To
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Josef.Bajada at go.com.mt</A>
+cc
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject
+Re: [OpenIMSCore-Users] 408: Request Timed out
+
+
+
+
+
+
+it looks like you have an inconsistency between how you have the DNS
+configured and how you configured the cscfs. As it can be seen from the
+trace, the pcscf was started probably on 10.158.48.224:4060. The S-CSCF
+when doing a DNS lookup for pcscf.open-ims.test it resolves this name
+into 127.0.0.1 and the call is fwded there, but there is nothing running
+on 127.0.0.1:4060.
+
+
+
+-Dragos
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Josef.Bajada at go.com.mt</A> wrote:
+&gt;<i> Thanks David, I will have a look at that and try it out. However I am
+</I>&gt;<i> still stuck trying to understand why the clients are registering ok
+</I>&gt;<i> through sip2ims but calls are not being routed.
+</I>&gt;<i> 
+</I>&gt;<i> Any idea Dragos? Did you manage to open the traces I sent.
+</I>&gt;<i> 
+</I>&gt;<i> thanks a lot,
+</I>&gt;<i> 
+</I>&gt;<i> Josef
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">-----openimscore-users-bounces at lists.berlios.de</A> wrote: -----
+</I>&gt;<i>
+</I>&gt;<i>     To: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Josef.Bajada at go.com.mt</A>&gt;
+</I>&gt;<i>     From: &quot;Verbeiren, David&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">david.verbeiren at intel.com</A>&gt;
+</I>&gt;<i>     Sent by: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i>     Date: 02/22/2007 04:57PM
+</I>&gt;<i>     cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>     Subject: Re: [OpenIMSCore-Users] 408: Request Timed out
+</I>&gt;<i>
+</I>&gt;<i>     Regarding #3, take a look at this thread:
+</I>&gt;<i>     
+</I><A HREF="000618.html">http://lists.berlios.de/pipermail/openimscore-users/2007-February/000618.html</A>
+
+&gt;<i>     &lt;
+</I><A HREF="000618.html">http://lists.berlios.de/pipermail/openimscore-users/2007-February/000618.html</A>
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     -David
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>     *From: *<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i>     [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] *Sent: *22
+</I>&gt;<i>     February 2007 16:27
+</I>&gt;<i>     *To: *<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>     *Subject: *Re: [OpenIMSCore-Users] 408: Request Timed out
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     Hi  Dragos,
+</I>&gt;<i>
+</I>&gt;<i>     1. Ok. I havent removed the presence criteria yet... might turn
+</I>&gt;<i>     out useful once I manage to get this to work. But I guess its ok
+</I>&gt;<i>     to leave it like this if it doesnt effect call routing etc.
+</I>&gt;<i>
+</I>&gt;<i>     2. I have attached the trace again with all the ports you
+</I>&gt;<i>     indicated to me.
+</I>&gt;<i>
+</I>&gt;<i>     3. To what port should the client connect instead of the sip2ims
+</I>&gt;<i>     3060 port? I tried 4060 (the p-cscf port) but the client didnt
+</I>&gt;<i>     authenticate then. (401 - Unauthorized - Challenging the UE)
+</I>&gt;<i>
+</I>&gt;<i>     thanks again,
+</I>&gt;<i>     Josef
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     *Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; *
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     To
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Josef.Bajada at go.com.mt</A>
+</I>&gt;<i>
+</I>&gt;<i>     cc
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>
+</I>&gt;<i>     Subject
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i>     Re: [OpenIMSCore-Users] 408: Request Timed out
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     Hi Josef,
+</I>&gt;<i>
+</I>&gt;<i>     1. From the HSS interface, delete that filter criteria from the
+</I>&gt;<i>     service
+</I>&gt;<i>     profile.
+</I>&gt;<i>     2. SIP: 4060, 5060, 6060 and Diameter: 3868, 3869 and 3870.
+</I>&gt;<i>     3. It seems that it has evolved though :). It should work even
+</I>&gt;<i>     without
+</I>&gt;<i>     the SIP2IMS Gateway. From the trace, it looks like it saves the
+</I>&gt;<i>     Service-Route and uses it in initial requests. So I might just
+</I>&gt;<i>     like it
+</I>&gt;<i>     again ;-).
+</I>&gt;<i>
+</I>&gt;<i>     -Dragos
+</I>&gt;<i>
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Josef.Bajada at go.com.mt</A> wrote:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Hi Dragos,
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; 1. How do I turn off the presence server stuff? I dont have one.
+</I>&gt;<i>     I am
+</I>&gt;<i>     &gt; just trying to set the core up for now.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; 2. What ports should I monitor for the trace to be useful? Those
+</I>&gt;<i>     &gt; traces are from the box running the core itself but only for port
+</I>&gt;<i>     &gt; 3060, which is why you saw only the client stuff.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; 3. I am using X-lite. (I know you hate it, but I havent found a
+</I>&gt;<i>     better
+</I>&gt;<i>     &gt; one). What should I change from the client side to use the core
+</I>&gt;<i>     directly?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; thanks a lot,
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Josef
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; *Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;*
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; 22/02/2007 15:45
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; 
+</I>&gt;<i>     &gt; To
+</I>&gt;<i>     &gt;                  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Josef.Bajada at go.com.mt</A>
+</I>&gt;<i>     &gt; cc
+</I>&gt;<i>     &gt;                  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>     &gt; Subject
+</I>&gt;<i>     &gt;                  Re: [OpenIMSCore-Users] 408: Request Timed out
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; 
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Hi Josef,
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; 1. Do you actually have a presence server? By default the core is
+</I>&gt;<i>     &gt; provisioned to redirect SUBSCRIBE and PUBLISH request towards an
+</I>&gt;<i>     AS for
+</I>&gt;<i>     &gt; presence. That filter is there for exemplification. If you don't
+</I>&gt;<i>     like it
+</I>&gt;<i>     &gt; and want to do P2P presence, remove it. This is why you get a
+</I>&gt;<i>     timeout.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; 2. I trace from the box running the core would've been more
+</I>&gt;<i>     useful. The
+</I>&gt;<i>     &gt; trace that you have sent show only what happened with the
+</I>&gt;<i>     clients, but
+</I>&gt;<i>     &gt; not what happened in the core and where the INVITE failed.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; 3. Why are you still using the SIP2IMS Gateway when we have MD5
+</I>&gt;<i>     and your
+</I>&gt;<i>     &gt; client also seems to support Service Routes?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; -Dragos
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Josef.Bajada at go.com.mt</A> wrote:
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Hi all,
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; I have managed to set things up, however I am still having a
+</I>&gt;<i>     problem
+</I>&gt;<i>     &gt; &gt; to establish a call between to PCs, with an error saying that
+</I>&gt;<i>     the call
+</I>&gt;<i>     &gt; &gt; failed due to a request timeout.
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; When I took a tcpdump from the host itself hosting the open-ims
+</I>&gt;<i>     core
+</I>&gt;<i>     &gt; &gt; (all on one box), I found that even after registration, for some
+</I>&gt;<i>     &gt; &gt; reason there is this 408 error. However, the client seems to 
+</I>think
+&gt;<i>     &gt; &gt; that it is registered correctly. The timeout seems to be 
+</I>occurring
+&gt;<i>     &gt; &gt; after the SUBSCRIBE request.
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Anyone has any idea what I might have missing in my setup?
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; I have attached a trace. It shows the 2 users registering (the
+</I>&gt;<i>     default
+</I>&gt;<i>     &gt; &gt; user bob and another user i created josef, both seem to have
+</I>&gt;<i>     exactly
+</I>&gt;<i>     &gt; &gt; the same result). Then there is the invite from one to the 
+</I>other.
+&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; thanks,
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Josef
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; _______________________________________________
+</I>&gt;<i>     &gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i>     &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>     &gt; &gt; 
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; --
+</I>&gt;<i>     &gt; -----------------------------------------
+</I>&gt;<i>     &gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     &gt; FOKUS/NGNI
+</I>&gt;<i>     &gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     &gt; 10589 Berlin, Germany
+</I>&gt;<i>     &gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     &gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     &gt; eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &gt; Web www.fokus.fraunhofer.de
+</I>&gt;<i>     &gt; We could change the world if God would give us the source code...
+</I>&gt;<i>     &gt; -----------------------------------------------------------------
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; 
+</I>------------------------------------------------------------------------
+&gt;<i>
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; _______________________________________________
+</I>&gt;<i>     &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>     &gt; 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     -- 
+</I>&gt;<i>     -----------------------------------------
+</I>&gt;<i>     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     FOKUS/NGNI
+</I>&gt;<i>     Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     10589 Berlin, Germany
+</I>&gt;<i>     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     Web www.fokus.fraunhofer.de
+</I>&gt;<i>     We could change the world if God would give us the source code...
+</I>&gt;<i>     -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>     _______________________________________________
+</I>&gt;<i>     OpenIMSCore-Users mailing list
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> 
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070227/552dbd53/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070227/552dbd53/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000949.html">[OpenIMSCore-Users] 408: Request Timed out
+</A></li>
+	<LI>Next message: <A HREF="000937.html">[OpenIMSCore-Users] 200 - ACK signal looping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#954">[ date ]</a>
+              <a href="thread.html#954">[ thread ]</a>
+              <a href="subject.html#954">[ subject ]</a>
+              <a href="author.html#954">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

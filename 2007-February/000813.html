@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users]  BUG: qm_*: prev. fragm. tail overwritten
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%20BUG%3A%20qm_%2A%3A%20prev.%20fragm.%20tail%20overwritten&In-Reply-To=%3C9b7ddabe0702141603re6bb5e0lb9233035531f904%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000825.html">
+   <LINK REL="Next"  HREF="000816.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users]  BUG: qm_*: prev. fragm. tail overwritten</H1>
+    <B>Tran Minh Phuong Anh</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%20BUG%3A%20qm_%2A%3A%20prev.%20fragm.%20tail%20overwritten&In-Reply-To=%3C9b7ddabe0702141603re6bb5e0lb9233035531f904%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users]  BUG: qm_*: prev. fragm. tail overwritten">tran.minh.phuong.anh at gmail.com
+       </A><BR>
+    <I>Thu Feb 15 01:03:48 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000825.html">[OpenIMSCore-Users] registration test
+</A></li>
+        <LI>Next message: <A HREF="000816.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] SIP 403 Message Help
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#813">[ date ]</a>
+              <a href="thread.html#813">[ thread ]</a>
+              <a href="subject.html#813">[ subject ]</a>
+              <a href="author.html#813">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+Until now, I worked with r97 on another machine. I haven't updated this
+since then. Now we needed another IMS, so I tried to install it on this
+machine (where the problem occurs).
+
+Now I've just checked out ser_ims, compiled it with gcc-3.3.6.
+
+MySQL is 4.1, because with 5.0 it gave this error and a segmentation fault:
+
+ 0(16491) ERROR: load_module: could not open module
+&lt;/opt/OpenIMSCore/ser_ims/modules/mysql/mysql.so&gt;:
+/opt/OpenIMSCore/ser_ims/modules/mysql/mysql.so: undefined symbol:
+__pure_virtual
+ 0(16491) parse error (30,13-14): failed to load module
+
+I found a thread in the archive that says 4.1 will do.
+
+So here's a log of my actions. When I changed debug level to 4, it was quite
+large, so I upload it here:
+<A HREF="http://cntic90.hit.bme.hu/~tmpa/icscf.log&lt;http://cntic90.hit.bme.hu/%7Etmpa/icscf.log">http://cntic90.hit.bme.hu/~tmpa/icscf.log&lt;http://cntic90.hit.bme.hu/%7Etmpa/icscf.log</A>&gt;
+
+Maybe it is a DB issue, because sip2ims does the same error, while P-CSCF
+and S-CSCF (which don't use DB) works fine.
+
+I will try to install it on the original machine to see if the problem
+occurs.
+
+I am not sure what do you mean by the &quot;standard&quot; one, but I wrote down every
+changes I made in the action log. Briefly, components are bind on different
+IP addresses and realm is meres-ims.lab.
+
+Phuong Anh
+
+And here is the action log ...
+
+pc101:/opt/OpenIMSCore# gcc --version
+gcc (GCC) 3.3.6 (Debian 1:3.3.6-15)
+Copyright (C) 2003 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+pc101:/opt/OpenIMSCore# g++ --version
+g++ (GCC) 3.3.6 (Debian 1:3.3.6-15)
+Copyright (C) 2003 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+pc101:/opt/OpenIMSCore# ping icscf.meres-ims.lab
+PING icscf.meres-ims.lab (10.0.3.17) 56(84) bytes of data.
+64 bytes from 10.0.3.17: icmp_seq=1 ttl=64 time=0.015 ms
+
+pc101:/opt/OpenIMSCore# /usr/local/mysql/bin/mysqladmin variables | grep
+version
+[...]
+|<i> version                         | 4.1.22-standard
+</I>
+[...]
+
+pc101:/opt/OpenIMSCore/ser_ims/cfg# sh configurator.sh
+Domain Name:meres-ims.lab
+IP Adress:10.0.3.16
+File to change [&quot;all&quot; for everything, &quot;exit&quot; to quit]:all
+changing: icscf.cfg icscf.sql icscf.thig.cfg icscf.xml pcscf.cfg scscf.cfg
+scscf.xml sip2ims.cfg sip2ims.sql
+
+
+Change 10.0.3.16 to 10.0.3.17 in icscf.cfg and icscf.xml
+
+pc101:/opt/OpenIMSCore/ser_ims/cfg# mysql -u root -p &lt; icscf.sql
+pc101:/opt/OpenIMSCore/ser_ims/cfg# mysql -u root -p &lt; sip2ims.sql
+
+
+pc101:/opt/OpenIMSCore# sh icscf.sh
+icscf.sh : line 3: killser: command not found
+ 0(25513) WARNING: fix_socket_list: could not rev. resolve 10.0.3.17
+ 0(25513) WARNING: fix_socket_list: could not rev. resolve 10.0.3.17
+Listening on
+             udp: 10.0.3.17 [10.0.3.17]:5060
+             tcp: 10.0.3.17 [ 10.0.3.17]:5060
+Aliases:
+             *: meres-ims.lab:*
+             *: icscf.meres-ims.lab:*
+
+ 0(25513) init_tcp: using epoll_lt as the io watch method (auto detected)
+ 0(25513) Maxfwd module- initializing
+ 0(25513) INFO:I-CSCF:mod_init: Initialization of module
+ 0(25513) BUG: qm_*: prev. fragm. tail overwritten(0,
+abcdefed)[0x814ea28:0x814ea40]!
+icscf.sh: line 4: 25513 Aborted                 (core dumped)
+/opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+
+------ Semaphore Arrays --------
+key        semid      owner      perms      nsems
+
+
+
+pc101:/opt/OpenIMSCore# sh icscf.sh &gt; icscf.log 2&gt;&amp;1
+pc101:/opt/OpenIMSCore# ls -lh icscf.log
+-rw-r--r-- 1 root root 166K 2007-02-15 00:43 icscf.log
+
+pc101:/opt/OpenIMSCore# mysql -u icscf -p -h localhost icscf
+
+mysql&gt; show tables;
++---------------------+
+|<i> Tables_in_icscf     |
+</I>+---------------------+
+|<i> nds_trusted_domains |
+</I>|<i> s_cscf              |
+</I>|<i> s_cscf_capabilities |
+</I>+---------------------+
+3 rows in set (0.00 sec)
+
+mysql&gt; select * from s_cscf;
++----+-----------------------+------------------------------+
+|<i> id | name                  | s_cscf_uri                   |
+</I>+----+-----------------------+------------------------------+
+|<i>  1 | First and only S-CSCF | sip:scscf.meres-ims.lab:6060 |
+</I>+----+-----------------------+------------------------------+
+1 row in set (0.00 sec)
+
+
+
+On 2/14/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Hello Phuong Anh,
+</I>&gt;<i>
+</I>&gt;<i> In r139 there were some changes in the CDiameterPeer module, but none in
+</I>&gt;<i> the initialization procedures. Then the I-CSCF was not changed since
+</I>&gt;<i> r68. Are you saying that this issue appeared only with the last
+</I>&gt;<i> revision? could you please send a more detailed log (enable a higher
+</I>&gt;<i> debug level in icscf.cfg)? What is different in your setup from the
+</I>&gt;<i> standard one?
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070215/c06c79f3/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070215/c06c79f3/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000825.html">[OpenIMSCore-Users] registration test
+</A></li>
+	<LI>Next message: <A HREF="000816.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] SIP 403 Message Help
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#813">[ date ]</a>
+              <a href="thread.html#813">[ thread ]</a>
+              <a href="subject.html#813">[ subject ]</a>
+              <a href="author.html#813">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,292 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] 477 Unfortunately error on sending to next	hop	occurred (477/TM)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20477%20Unfortunately%20error%20on%20sending%20to%20next%0A%09hop%09occurred%20%28477/TM%29&In-Reply-To=%3CA77C33C36276434691B38D7E44AB3709814DD3%40JTSXWCE006.austria.local%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003899.html">
+   <LINK REL="Next"  HREF="003900.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] 477 Unfortunately error on sending to next	hop	occurred (477/TM)</H1>
+    <B>Schaffer Robin</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20477%20Unfortunately%20error%20on%20sending%20to%20next%0A%09hop%09occurred%20%28477/TM%29&In-Reply-To=%3CA77C33C36276434691B38D7E44AB3709814DD3%40JTSXWCE006.austria.local%3E"
+       TITLE="[OpenIMSCore-Users] 477 Unfortunately error on sending to next	hop	occurred (477/TM)">Robin.Schaffer at telekom.at
+       </A><BR>
+    <I>Thu May  8 09:39:24 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003899.html">[OpenIMSCore-Users] 477 Unfortunately error on sending to next hop	occurred (477/TM)
+</A></li>
+        <LI>Next message: <A HREF="003900.html">[OpenIMSCore-Users] Can not get Notify when unsubscribing &quot;reg&quot; event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3939">[ date ]</a>
+              <a href="thread.html#3939">[ thread ]</a>
+              <a href="subject.html#3939">[ subject ]</a>
+              <a href="author.html#3939">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Dragos
+
+Thanks for this information.
+Now we changed the mtu size  in the sip application server for udp connection and now it works perfect.
+
+Best regards
+Robin 
+
+-----Urspr&#252;ngliche Nachricht-----
+Von: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>] 
+Gesendet: Dienstag, 06. Mai 2008 14:57
+An: Schaffer Robin
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>; Borth Manfred
+Betreff: Re: [OpenIMSCore-Users] 477 Unfortunately error on sending to next hop occurred (477/TM)
+
+The answer is in your traces - look at packets 282-&gt;284. A TCP connection is opened to the address in the Request-URI, but then the AS closes it with a RST.... hence the 477...
+
+Cheers,
+-Dragos
+
+Schaffer Robin wrote:
+&gt;<i> Hello,
+</I>&gt;<i> I would appreciate some help regarding the problem 477 Unfortunately 
+</I>&gt;<i> error on sending to next hop occurred (477/TM).
+</I>&gt;<i>  
+</I>&gt;<i> The testcase is as followed:
+</I>&gt;<i>  
+</I>&gt;<i> Client (IMS Communicator) send the INVITE 
+</I>&gt;<i> &quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">findme at as.home.talab.at</A>&quot; to the OpenIMScore.
+</I>&gt;<i> The S-CSCF forwards this INVITE to the Application Server, this device 
+</I>&gt;<i> is connected to a database and generates a new INVITE 
+</I>&gt;<i> &quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">designer at 10.238.2.64</A>;transport=tcp SIP/2.0&quot; which will be 
+</I>&gt;<i> forwarded to the S-CSCF.
+</I>&gt;<i>  
+</I>&gt;<i> The URI &quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">designer at 10.238.2.64</A>;transport=tcp SIP/2.0&quot; points to a 
+</I>&gt;<i> new Application Server (Voxeo) for Text2Speech.
+</I>&gt;<i>  
+</I>&gt;<i> Now the S-CSCF respond to this INVITE with the 477 Unfortunately error 
+</I>&gt;<i> on sending to next hop occurred (477/TM).
+</I>&gt;<i>  
+</I>&gt;<i> The Trigger Points are correctly set in the HSS.
+</I>&gt;<i>  
+</I>&gt;<i> &lt;IMSSubscription&gt;
+</I>&gt;<i> &lt;PrivateID&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at home.talab.at</A>&lt;/PrivateID&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;ServiceProfile&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;PublicIdentity&gt;
+</I>&gt;<i> &lt;Identity&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at home.talab.at</A>&lt;/Identity&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;Extension&gt;
+</I>&gt;<i> &lt;IdentityType&gt;0&lt;/IdentityType&gt;
+</I>&gt;<i> &lt;/Extension&gt;
+</I>&gt;<i> &lt;/PublicIdentity&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;InitialFilterCriteria&gt;
+</I>&gt;<i> &lt;Priority&gt;1&lt;/Priority&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;TriggerPoint&gt;
+</I>&gt;<i> &lt;ConditionTypeCNF&gt;1&lt;/ConditionTypeCNF&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;SPT&gt;
+</I>&gt;<i> &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i> &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i> &lt;RequestURI&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">findme at as.home.talab.at</A>&lt;/RequestURI&gt;
+</I>&gt;<i> &lt;Extension/&gt;
+</I>&gt;<i> &lt;/SPT&gt;
+</I>&gt;<i> &lt;/TriggerPoint&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;ApplicationServer&gt;
+</I>&gt;<i> &lt;ServerName&gt;sip:10.238.105.40:5060&lt;/ServerName&gt;
+</I>&gt;<i> &lt;DefaultHandling&gt;0&lt;/DefaultHandling&gt;
+</I>&gt;<i> &lt;/ApplicationServer&gt;
+</I>&gt;<i> &lt;/InitialFilterCriteria&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;InitialFilterCriteria&gt;
+</I>&gt;<i> &lt;Priority&gt;2&lt;/Priority&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;TriggerPoint&gt;
+</I>&gt;<i> &lt;ConditionTypeCNF&gt;1&lt;/ConditionTypeCNF&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;SPT&gt;
+</I>&gt;<i> &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i> &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i> &lt;RequestURI&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">jcp at as.home.talab.at</A>&lt;/RequestURI&gt;
+</I>&gt;<i> &lt;Extension/&gt;
+</I>&gt;<i> &lt;/SPT&gt;
+</I>&gt;<i> &lt;/TriggerPoint&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;ApplicationServer&gt;
+</I>&gt;<i> &lt;ServerName&gt;sip:10.238.105.40:5060&lt;/ServerName&gt;
+</I>&gt;<i> &lt;DefaultHandling&gt;0&lt;/DefaultHandling&gt;
+</I>&gt;<i> &lt;/ApplicationServer&gt;
+</I>&gt;<i> &lt;/InitialFilterCriteria&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;InitialFilterCriteria&gt;
+</I>&gt;<i> &lt;Priority&gt;0&lt;/Priority&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;TriggerPoint&gt;
+</I>&gt;<i> &lt;ConditionTypeCNF&gt;1&lt;/ConditionTypeCNF&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;SPT&gt;
+</I>&gt;<i> &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i> &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i> &lt;RequestURI&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bw at as.home.talab.at</A>&lt;/RequestURI&gt;
+</I>&gt;<i> &lt;Extension/&gt;
+</I>&gt;<i> &lt;/SPT&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;SPT&gt;
+</I>&gt;<i> &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i> &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i> &lt;RequestURI&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">431002003 at home.talab.at</A>&lt;/RequestURI&gt;
+</I>&gt;<i> &lt;Extension/&gt;
+</I>&gt;<i> &lt;/SPT&gt;
+</I>&gt;<i> &lt;/TriggerPoint&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;ApplicationServer&gt;
+</I>&gt;<i> &lt;ServerName&gt;sip:10.238.105.40:5060&lt;/ServerName&gt;
+</I>&gt;<i> &lt;DefaultHandling&gt;0&lt;/DefaultHandling&gt;
+</I>&gt;<i> &lt;/ApplicationServer&gt;
+</I>&gt;<i> &lt;/InitialFilterCriteria&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;InitialFilterCriteria&gt;
+</I>&gt;<i> &lt;Priority&gt;3&lt;/Priority&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;TriggerPoint&gt;
+</I>&gt;<i> &lt;ConditionTypeCNF&gt;1&lt;/ConditionTypeCNF&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;SPT&gt;
+</I>&gt;<i> &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i> &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i> &lt;RequestURI&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">nts1 at as.home.talab.at</A>&lt;/RequestURI&gt;
+</I>&gt;<i> &lt;Extension/&gt;
+</I>&gt;<i> &lt;/SPT&gt;
+</I>&gt;<i> &lt;/TriggerPoint&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;ApplicationServer&gt;
+</I>&gt;<i> &lt;ServerName&gt;sip:10.238.105.40:5060&lt;/ServerName&gt;
+</I>&gt;<i> &lt;DefaultHandling&gt;0&lt;/DefaultHandling&gt;
+</I>&gt;<i> &lt;/ApplicationServer&gt;
+</I>&gt;<i> &lt;/InitialFilterCriteria&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;InitialFilterCriteria&gt;
+</I>&gt;<i> &lt;Priority&gt;4&lt;/Priority&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;TriggerPoint&gt;
+</I>&gt;<i> &lt;ConditionTypeCNF&gt;1&lt;/ConditionTypeCNF&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;SPT&gt;
+</I>&gt;<i> &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i> &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i> &lt;RequestURI&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">designer at 10.238.2.64</A>&lt;/RequestURI&gt;
+</I>&gt;<i> &lt;Extension/&gt;
+</I>&gt;<i> &lt;/SPT&gt;
+</I>&gt;<i> &lt;/TriggerPoint&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;ApplicationServer&gt;
+</I>&gt;<i> &lt;ServerName&gt;sip:10.238.2.64:5060&lt;/ServerName&gt;
+</I>&gt;<i> &lt;DefaultHandling&gt;0&lt;/DefaultHandling&gt;
+</I>&gt;<i> &lt;/ApplicationServer&gt;
+</I>&gt;<i> &lt;/InitialFilterCriteria&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;InitialFilterCriteria&gt;
+</I>&gt;<i> &lt;Priority&gt;5&lt;/Priority&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;TriggerPoint&gt;
+</I>&gt;<i> &lt;ConditionTypeCNF&gt;1&lt;/ConditionTypeCNF&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;SPT&gt;
+</I>&gt;<i> &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i> &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i> &lt;RequestURI&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">annc at mrf.home.talab.at</A>;play=3022.wav&lt;/RequestURI&gt;
+</I>&gt;<i> &lt;Extension/&gt;
+</I>&gt;<i> &lt;/SPT&gt;
+</I>&gt;<i> &lt;/TriggerPoint&gt;
+</I>&gt;<i> &#8722;
+</I>&gt;<i>  &lt;ApplicationServer&gt;
+</I>&gt;<i> &lt;ServerName&gt;sip:10.238.105.38:5060&lt;/ServerName&gt;
+</I>&gt;<i> &lt;DefaultHandling&gt;0&lt;/DefaultHandling&gt;
+</I>&gt;<i> &lt;/ApplicationServer&gt;
+</I>&gt;<i> &lt;/InitialFilterCriteria&gt;
+</I>&gt;<i> &lt;/ServiceProfile&gt;
+</I>&gt;<i> &lt;/IMSSubscription&gt;
+</I>&gt;<i>  
+</I>&gt;<i> Attached you will find the Wireshark traces.
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> I repeated the test and changed the database entry form 
+</I>&gt;<i> sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">designer at 10.238.2.64</A>;transport=tcp SIP/2.0 to the following URI 
+</I>&gt;<i> &quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">peter at home.talab.at</A>;transport=tcp SIP/2.0&quot; and it works perfect.
+</I>&gt;<i> The S-CSCF insets the &quot;P-Called-Party-ID: 
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">peter at home.talab.at</A>;transport=tcp&gt;&quot; in the INVITE message and 
+</I>&gt;<i> forwards this message to the P-CSCF.
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>    *
+</I>&gt;<i>       What parameter should the S-CSCF insert in the INVITE in case of
+</I>&gt;<i>       a service?
+</I>&gt;<i>    *
+</I>&gt;<i>       Has anyone experience in the area of IMS Services especially
+</I>&gt;<i>       with the MRF and what information in detail needs the S-CSCF (in
+</I>&gt;<i>       case of a service) to route a request to the next Application
+</I>&gt;<i>       Server?
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> Best regards
+</I>&gt;<i> Robin
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ----------------------------------------------------------------------
+</I>&gt;<i> --
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+--
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003899.html">[OpenIMSCore-Users] 477 Unfortunately error on sending to next hop	occurred (477/TM)
+</A></li>
+	<LI>Next message: <A HREF="003900.html">[OpenIMSCore-Users] Can not get Notify when unsubscribing &quot;reg&quot; event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3939">[ date ]</a>
+              <a href="thread.html#3939">[ thread ]</a>
+              <a href="subject.html#3939">[ subject ]</a>
+              <a href="author.html#3939">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

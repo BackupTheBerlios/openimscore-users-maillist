@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] SCSCF Bug in parsing HA1 - HTTP Digest MD5 auth	method
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SCSCF%20Bug%20in%20parsing%20HA1%20-%20HTTP%20Digest%20MD5%20auth%0A%09method&In-Reply-To=%3C47FCB54D.8000001%40sitronicsts.sk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003752.html">
+   <LINK REL="Next"  HREF="003790.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] SCSCF Bug in parsing HA1 - HTTP Digest MD5 auth	method</H1>
+    <B>Andrej Vrabel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SCSCF%20Bug%20in%20parsing%20HA1%20-%20HTTP%20Digest%20MD5%20auth%0A%09method&In-Reply-To=%3C47FCB54D.8000001%40sitronicsts.sk%3E"
+       TITLE="[OpenIMSCore-Users] SCSCF Bug in parsing HA1 - HTTP Digest MD5 auth	method">Andrej.Vrabel at sitronicsts.sk
+       </A><BR>
+    <I>Wed Apr  9 14:23:41 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003752.html">[OpenIMSCore-Users] AS sends only a 200Ok, but other messages are refused
+</A></li>
+        <LI>Next message: <A HREF="003790.html">[OpenIMSCore-Users] SCSCF Bug in parsing HA1 - HTTP Digest MD5 auth	method
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3753">[ date ]</a>
+              <a href="thread.html#3753">[ thread ]</a>
+              <a href="subject.html#3753">[ subject ]</a>
+              <a href="author.html#3753">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I am attempting to registrate the user (with Kphone client) using
+CableLabs-Digest authentication. I am using Open IMS with proprietary HSS.
+
+User is not registered due to wrong ha1 value because ha1 is not
+properly parsed by Open IMS module.
+
+I am enclosing additional information.
+
+Open IMS Revision: 514
+In the file ser_ims/modules/scscf/registration.c : 571
+&quot;ha1&quot; variable is filled in such as
+      memcpy(ha1,av-&gt;authorization.s,HASHHEXLEN);
+
+In av-&gt;authorization.s variable is not the proper ha1 value as I
+received from HSS.
+
+When I set MANUALLY (in code: memcpy(ha1,
+&quot;b00599f061eb2415a53afed5c654302b&quot;, HASHHEXLEN); ) appropriate ha1 value
+then response will be the same like this
+<A HREF="http://www.crt.realtors.org/projects/rets/variman/support/digest.php?username=md5test1%40ims.sitronicsts.sk&amp;password=testtest&amp;realm=ims.sitronicsts.sk&amp;qop=&amp;nonce=c9694a43d3201ab3a88ca6b5b23dce06&amp;method=REGISTER&amp;uri=sip%3Ademopcscf.ims.sitronicsts.sk&amp;cnonce=abcdefghi&amp;nc=00000001&amp;submit=Calculate+Digest">http://www.crt.realtors.org/projects/rets/variman/support/digest.php?username=md5test1%40ims.sitronicsts.sk&amp;password=testtest&amp;realm=ims.sitronicsts.sk&amp;qop=&amp;nonce=c9694a43d3201ab3a88ca6b5b23dce06&amp;method=REGISTER&amp;uri=sip%3Ademopcscf.ims.sitronicsts.sk&amp;cnonce=abcdefghi&amp;nc=00000001&amp;submit=Calculate+Digest</A>
+and user is registered.
+
+Thank you for your response.
+
+Best regards.
+Andrej
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003752.html">[OpenIMSCore-Users] AS sends only a 200Ok, but other messages are refused
+</A></li>
+	<LI>Next message: <A HREF="003790.html">[OpenIMSCore-Users] SCSCF Bug in parsing HA1 - HTTP Digest MD5 auth	method
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3753">[ date ]</a>
+              <a href="thread.html#3753">[ thread ]</a>
+              <a href="subject.html#3753">[ subject ]</a>
+              <a href="author.html#3753">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

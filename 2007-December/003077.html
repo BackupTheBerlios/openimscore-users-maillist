@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Message Routing Problem with ACKs in	OpenIMSCore?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Message%20Routing%20Problem%20with%20ACKs%20in%0A%09OpenIMSCore%3F&In-Reply-To=%3C0D97944C70029649A81B5B9FDD76DEF81CB8FA868F%40PDAWM03C.ad.sprint.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003094.html">
+   <LINK REL="Next"  HREF="003095.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Message Routing Problem with ACKs in	OpenIMSCore?</H1>
+    <B>Evans, Mark [CTO]</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Message%20Routing%20Problem%20with%20ACKs%20in%0A%09OpenIMSCore%3F&In-Reply-To=%3C0D97944C70029649A81B5B9FDD76DEF81CB8FA868F%40PDAWM03C.ad.sprint.com%3E"
+       TITLE="[OpenIMSCore-Users] Message Routing Problem with ACKs in	OpenIMSCore?">Mark.X.Evans at sprint.com
+       </A><BR>
+    <I>Thu Dec  6 18:46:08 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003094.html">[OpenIMSCore-Users] How to change cscf's SIP response port to UE?
+</A></li>
+        <LI>Next message: <A HREF="003095.html">[OpenIMSCore-Users] Message Routing Problem with ACKs	in	OpenIMSCore?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3077">[ date ]</a>
+              <a href="thread.html#3077">[ thread ]</a>
+              <a href="subject.html#3077">[ subject ]</a>
+              <a href="author.html#3077">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>All
+
+We have an Application Server connected to the OIMSCore. The for example AS can perform a simple redirect on busy.
+
+AS Trigger is set up for Origination trigger only.
+
+In a test scenario we have three users registered, Alice, Kate and John. All use the Franhoffer IC Lite. See attached trace, Sip_scenario file and IMS logs
+
+Alice calls Kate, Kate rejects call with 486 Busy (after initial 180 ringing).
+
+The AS on receipt of 486 sends INVITE to John.
+
+At this point things start to go wrong.
+
+Issue A
+
+*       The P-CSCF sends retries/duplicates  of the 486 Busy to the S-CSCF (even though the S-CSCF seems to correctly ACK the 486)
+
+*       The S-CSCF sends  an extra ACK (with invalid branch values) to the P-CSCF as a result of the AS sending an ACK to 486 from the AS
+
+*       This activity repeats throughout the trace. Cannot find out why from the logs.
+
+Issue B
+
+*       John Receives the INVITE and sends 180 and 200OK when he answers.
+*       Alice receives the 200OK and sends ACK to 200OK
+*       This ACK gets stuck at S-CSCF
+*       John never receives ACK so retries 200OK
+*       Alice gives up and sends BYE.
+*       Gets 403 Dialog not found. This is OK because the dialog is not complete. But shouldn't this be a 481 Dialog not found??
+*       Cannot establish why Alice's 200OK get stuck at S-CSCF
+
+In summary
+
+1) At packet 1878 Kate sends a 486Busy
+2) The P-CSCF correctly sends an ACK to Kate (Packet 1879)
+3) The P-CSCF correctly sends an 486 to the S-CSCF (packet 1880)
+4) The S-CSCF sends an ACK to P-CSCF (packet 1881  - via and branch look correct)
+5) The S-CSCF correctly sends an 486 to the AS (Packet 1882)
+6) The AS (seems) to correctly send an ACK to S-CSCF (packet 1883 - via and branch look correct)
+7) The S-CSCF sends a spurious ACK to the P-CSCF (Packet 1884 See branch values...)
+
+At from this point onwards the P-CSCF keeps sending duplicates of 3) which triggers repeats of 4) to 7)
+
+So either the P-CSCF is not recognizing 4) or 7) is messing it's state up
+
+The other issue is that the when the INVITE is forwarded  to John and when John answers, his 200 OK finally reaches Alice and she sends an ACK (packet 1965). This ACK gets stuck at S-CSCF (Packet 1969)
+
+
+Any Thoughts?
+
+Regards
+
+Mark
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071206/7b3a146b/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071206/7b3a146b/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: call-fmfm6.zip
+Type: application/x-zip-compressed
+Size: 183607 bytes
+Desc: call-fmfm6.zip
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071206/7b3a146b/attachment.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071206/7b3a146b/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003094.html">[OpenIMSCore-Users] How to change cscf's SIP response port to UE?
+</A></li>
+	<LI>Next message: <A HREF="003095.html">[OpenIMSCore-Users] Message Routing Problem with ACKs	in	OpenIMSCore?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3077">[ date ]</a>
+              <a href="thread.html#3077">[ thread ]</a>
+              <a href="subject.html#3077">[ subject ]</a>
+              <a href="author.html#3077">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

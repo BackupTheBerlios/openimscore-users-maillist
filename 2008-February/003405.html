@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] can not run FHOSS/trunk/deploy/startup.sh
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20can%20not%20run%20FHOSS/trunk/deploy/startup.sh&In-Reply-To=%3C47B9A2D6.3020302%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003401.html">
+   <LINK REL="Next"  HREF="003403.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] can not run FHOSS/trunk/deploy/startup.sh</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20can%20not%20run%20FHOSS/trunk/deploy/startup.sh&In-Reply-To=%3C47B9A2D6.3020302%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] can not run FHOSS/trunk/deploy/startup.sh">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Feb 18 16:23:02 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003401.html">[OpenIMSCore-Users] can not run FHOSS/trunk/deploy/startup.sh
+</A></li>
+        <LI>Next message: <A HREF="003403.html">[OpenIMSCore-Users] Problems with authentication and registration on coreims with domain name changed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3405">[ date ]</a>
+              <a href="thread.html#3405">[ thread ]</a>
+              <a href="subject.html#3405">[ subject ]</a>
+              <a href="author.html#3405">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>You have to run startup.sh from your /opt/OpenIMSCore/FHoSS/trunk/deploy!
+
+The 2nd line says: &quot;Classpath is lib/*.jar:.:log4j.properties:..&quot; which
+means that it tries to load the jars from /opt/OpenIMSCore/lib/*.jar,
+which is obviously wrong.
+
+just do:
+
+cd /opt/OpenIMSCore/FHoSS/trunk/deploy
+./startup.sh
+
+-Dragos
+
+
+anh ha wrote:
+&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at localhost</A> OpenIMSCore]# ./FHoSS/trunk/deploy/startup.sh
+</I>&gt;<i> Building Classpath
+</I>&gt;<i> Classpath is lib/*.jar:.:log4j.properties:..
+</I>&gt;<i> Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError:
+</I>&gt;<i> de/fhg/fokus/hss/main/HSSContainer
+</I>&gt;<i> Caused by: java.lang.ClassNotFoundException:
+</I>&gt;<i> de.fhg.fokus.hss.main.HSSContainer
+</I>&gt;<i>         at java.net.URLClassLoader$1.run(URLClassLoader.java:200)
+</I>&gt;<i>         at java.security.AccessController.doPrivileged(Native Method)
+</I>&gt;<i>         at java.net.URLClassLoader.findClass(URLClassLoader.java:188)
+</I>&gt;<i>         at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
+</I>&gt;<i>         at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:276)
+</I>&gt;<i>         at java.lang.ClassLoader.loadClass(ClassLoader.java:251)
+</I>&gt;<i>         at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:319)
+</I>&gt;<i> i installed java by package : &quot;jdk-6u4-linux-i586-rpm.bin&quot;
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at localhost</A> OpenIMSCore]# java -version
+</I>&gt;<i> java version &quot;1.6.0_04&quot;
+</I>&gt;<i> Java(TM) SE Runtime Environment (build 1.6.0_04-b12)
+</I>&gt;<i> Java HotSpot(TM) Client VM (build 10.0-b19, mixed mode, sharing)
+</I>&gt;<i>
+</I>&gt;<i> I configured java in /etc/profile :
+</I>&gt;<i> JAVA_HOME=/usr/java/jdk1604
+</I>&gt;<i> ANT_HOME=/usr/local/apache-ant-1.7.0
+</I>&gt;<i> PATH=$JAVA_HOME/bin:$ANT_HOME/bin:$PATH
+</I>&gt;<i> export PATH JAVA_HOME ANT_HOME
+</I>&gt;<i> export CLASSPATH=.
+</I>&gt;<i>
+</I>&gt;<i> But it doesn't work propety, ex : i write hello.java file in
+</I>&gt;<i> /root/Desktop, after compile that file, i run it :
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at localhost</A> trunk]# java /root/Desktop/hello
+</I>&gt;<i> Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError:
+</I>&gt;<i> /root/Desktop/hello
+</I>&gt;<i> Caused by: java.lang.ClassNotFoundException: .root.Desktop.hello
+</I>&gt;<i>         at java.net.URLClassLoader$1.run(URLClassLoader.java:200)
+</I>&gt;<i>         at java.security.AccessController.doPrivileged(Native Method)
+</I>&gt;<i>         at java.net.URLClassLoader.findClass(URLClassLoader.java:188)
+</I>&gt;<i>         at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
+</I>&gt;<i>         at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:276)
+</I>&gt;<i>         at java.lang.ClassLoader.loadClass(ClassLoader.java:251)
+</I>&gt;<i>         at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:319)
+</I>&gt;<i>
+</I>&gt;<i> Tell me the way to configuing java !!!!                         
+</I>&gt;<i> Tks.....so......much
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003401.html">[OpenIMSCore-Users] can not run FHOSS/trunk/deploy/startup.sh
+</A></li>
+	<LI>Next message: <A HREF="003403.html">[OpenIMSCore-Users] Problems with authentication and registration on coreims with domain name changed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3405">[ date ]</a>
+              <a href="thread.html#3405">[ thread ]</a>
+              <a href="subject.html#3405">[ subject ]</a>
+              <a href="author.html#3405">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

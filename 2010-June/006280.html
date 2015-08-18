@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20no%20answer%20from%20DNS%20server%20for%20query%0A%20SRV_sip._udp&In-Reply-To=%3C20100625085904.126300%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006279.html">
+   <LINK REL="Next"  HREF="006281.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp</H1>
+    <B>Werner.Jager at gmx.net</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20no%20answer%20from%20DNS%20server%20for%20query%0A%20SRV_sip._udp&In-Reply-To=%3C20100625085904.126300%40gmx.net%3E"
+       TITLE="[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp">Werner.Jager at gmx.net
+       </A><BR>
+    <I>Fri Jun 25 10:59:04 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006279.html">[OpenIMSCore-Users] no answer from DNS server for query	SRV_sip._udp
+</A></li>
+        <LI>Next message: <A HREF="006281.html">[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6280">[ date ]</a>
+              <a href="thread.html#6280">[ thread ]</a>
+              <a href="subject.html#6280">[ subject ]</a>
+              <a href="author.html#6280">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Franz,
+
+I followed the instructions in Annex A - DNS HOWTO from OpenIMSCore Installation Guide. The difference is that I have no upstream DNS Server in my Lab config. But I don&#180;t belief that this is a problem.
+
+In /etc/resolv.conf I have the settings:
+nameserver 127.0.0.1
+search open-ims.test
+domain open-ims.test
+
+For the lookup of hostnames pcscf, icscf, scscf and hss I use now the option &quot;+search&quot;. With this option dig can resolve the hostnames. Now the following lookup are ok.
+dig +search pcscf
+dig +search icscf
+dig +search scscf
+dig +search hss  
+
+But when I try this lookup I still get error from DNS server.
+dig +search -t SRV _sip._udp
+Maybe this is because there is a dot between _sip and _udp so dig does not recognize &quot;_sip._udp&quot; as a hostname.
+
+For tests I use SIPp 2.0 with the scripts for this link:
+<A HREF="http://sipp.sourceforge.net/wiki/index.php/Howto_test_on_Open_Source_IMS_platform_using_SIPp">http://sipp.sourceforge.net/wiki/index.php/Howto_test_on_Open_Source_IMS_platform_using_SIPp</A>
+I run the scenario register bob and alice and the scenario register-invite.
+
+For the IMS to PSTN invite I tried scenario bob invites alice (client side) and replaced <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> with &lt;tel:+43-664-2043311&gt;. When I run this scrip I get the following logs:
+
+3(16567) str2ip: ERROR: too few dots in []
+3(16567) str2ip6: ERROR: too few colons in []
+3(16567) dns_hash_find(_sip._udp.(10), 33), h=956
+3(16567) get_record: lookup(_sip._udp., 33) failed
+3(16567) dns_cache_mk_bad_entry(_sip._udp., 33, 60, 1)
+3(16567) dns_cache_add: adding _sip._udp.(10) 33 (flags=1) at 956
+3(16567) str2ip: ERROR: too few dots in []
+3(16567) dns_hash_find((0), 1), h=0
+3(16567) str2ip: ERROR: too few dots in []
+3(16567) get_record: lookup(, 1) failed
+3(16567) dns_cache_mk_bad_entry(, 1, 60, 1)
+3(16567) dns_cache_add: adding (0) 1 (flags=1) at 0
+3(16567) ERROR: sip_hostport2su: could not resolve hostname: &quot;&quot;
+3(16567) ERROR: uri2dst: failed to resolve &quot;&quot;
+3(16567) ERROR: t_forward_nonack: failure to add branches
+3(16567) ERROR:tm:t_relay_to:  t_forward_nonack returned error 
+
+Is it possible that my P-CSCF generates a wrong DNS query?
+
+Regards,
+Werner
+
+
+-------- Original-Nachricht --------
+&gt;<i> Datum: Fri, 25 Jun 2010 05:25:06 +0200
+</I>&gt;<i> Von: &quot;Franz Edler&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+</I>&gt;<i> An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Werner.Jager at gmx.net</A>, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Betreff: AW: [OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+</I>
+&gt;<i> Hello Werner,
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Does anybody know what might be missing or wrong in my configuration?
+</I>&gt;<i> 
+</I>&gt;<i> Did you already follow
+</I>&gt;<i> <A HREF="http://www.openimscore.org/installation_guide#annexa?">http://www.openimscore.org/installation_guide#annexa?</A>
+</I>&gt;<i> 
+</I>&gt;<i> -franz
+</I>
+-- 
+GRATIS f&#252;r alle GMX-Mitglieder: Die maxdome Movie-FLAT!
+Jetzt freischalten unter <A HREF="http://portal.gmx.net/de/go/maxdome01">http://portal.gmx.net/de/go/maxdome01</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006279.html">[OpenIMSCore-Users] no answer from DNS server for query	SRV_sip._udp
+</A></li>
+	<LI>Next message: <A HREF="006281.html">[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6280">[ date ]</a>
+              <a href="thread.html#6280">[ thread ]</a>
+              <a href="subject.html#6280">[ subject ]</a>
+              <a href="author.html#6280">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

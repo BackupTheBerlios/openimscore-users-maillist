@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problems with AS initiated session
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problems%20with%20AS%20initiated%20session&In-Reply-To=%3C20070829061555.174410%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002483.html">
+   <LINK REL="Next"  HREF="002494.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problems with AS initiated session</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problems%20with%20AS%20initiated%20session&In-Reply-To=%3C20070829061555.174410%40gmx.net%3E"
+       TITLE="[OpenIMSCore-Users] Problems with AS initiated session">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Wed Aug 29 08:15:55 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002483.html">[OpenIMSCore-Users] Problems with AS initiated session
+</A></li>
+        <LI>Next message: <A HREF="002494.html">[OpenIMSCore-Users] Problems with AS initiated session
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2485">[ date ]</a>
+              <a href="thread.html#2485">[ thread ]</a>
+              <a href="subject.html#2485">[ subject ]</a>
+              <a href="author.html#2485">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Jose!
+
+your UE does not insert the Record-Route headers in its 200 OK... so first I think the ACK should have been sent directly to UE and not to S-CSCF according to SIP-behaviour, the S-CSCF shouldn't have received this message. Second, because of the record-route header, AS should add in its ACK the corresponding Route-headers!
+
+Actually I think the P-CSCF should have rejected the malicious 200 OK or at least have done anything about it...
+
+br, Klemens
+
+-------- Original-Nachricht --------
+&gt;<i> Datum: Wed, 29 Aug 2007 01:03:19 +0200
+</I>&gt;<i> Von: Jose &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pochete at gmail.com</A>&gt;
+</I>&gt;<i> An: openimscore-users &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;<i> Betreff: [OpenIMSCore-Users] Problems with AS initiated session
+</I>
+&gt;<i> I am trying to test a scenario where the AS initiates a session towards a
+</I>&gt;<i> registered user. It does not work ...
+</I>&gt;<i> 
+</I>&gt;<i> The schematics of the scenario is:
+</I>&gt;<i> 1. AS sends INVITE to Bob to S-CSCF
+</I>&gt;<i> 2. S-CSCF performs terminating services for Bob (no iFC configured)
+</I>&gt;<i> 3. INVITE reaches Bob through P-CSCF
+</I>&gt;<i> 4. Bob answers with 180 Ringing and 200OK
+</I>&gt;<i> 5. 180 Ringing and 200OK reach the AS, through Proxy and Serving CSCF
+</I>&gt;<i> 6. AS ACK's to Bob sending ACK to Service CSCF
+</I>&gt;<i> 7. Serving CSCF does not forward the ACK to Bob
+</I>&gt;<i> 
+</I>&gt;<i> The Serving CSCF fails to recognize the ACK as being subsequent to an
+</I>&gt;<i> ongoing terminating dialog and does not forward it to Bob. Session fails.
+</I>&gt;<i> 
+</I>&gt;<i> Find attached HTML scenario and a pcap capture. I am using sipp to
+</I>&gt;<i> simulate
+</I>&gt;<i> both the AS and Bob.
+</I>&gt;<i> 
+</I>&gt;<i> I think the root cause is that the Serving CSCF is not Record-Route'ing
+</I>&gt;<i> itself towards the AS in the 180Ringing or 200OK. So the AS does not know
+</I>&gt;<i> how to mark the ACK so it is appropriately recognized as belonging to a
+</I>&gt;<i> subsequent dialog.
+</I>&gt;<i> 
+</I>&gt;<i> Thoughts?
+</I>&gt;<i> 
+</I>&gt;<i> Thanks,
+</I>&gt;<i> 
+</I>&gt;<i> Jose
+</I>
+-- 
+Ist Ihr Browser Vista-kompatibel? Jetzt die neuesten 
+Browser-Versionen downloaden: <A HREF="http://www.gmx.net/de/go/browser">http://www.gmx.net/de/go/browser</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002483.html">[OpenIMSCore-Users] Problems with AS initiated session
+</A></li>
+	<LI>Next message: <A HREF="002494.html">[OpenIMSCore-Users] Problems with AS initiated session
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2485">[ date ]</a>
+              <a href="thread.html#2485">[ thread ]</a>
+              <a href="subject.html#2485">[ subject ]</a>
+              <a href="author.html#2485">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

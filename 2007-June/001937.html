@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem with registration using USIM
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20registration%20using%20USIM&In-Reply-To=%3C466914D0.1090605%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001935.html">
+   <LINK REL="Next"  HREF="001940.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem with registration using USIM</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20registration%20using%20USIM&In-Reply-To=%3C466914D0.1090605%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Problem with registration using USIM">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Jun  8 10:35:28 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001935.html">[OpenIMSCore-Users] Problem with registration using USIM
+</A></li>
+        <LI>Next message: <A HREF="001940.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] S-CSCF crash
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1937">[ date ]</a>
+              <a href="thread.html#1937">[ thread ]</a>
+              <a href="subject.html#1937">[ subject ]</a>
+              <a href="author.html#1937">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Andrej,
+
+The I-CSCF extracts the realm for UAR from the host in the Request-URI.
+If you want your domain in there, please use it as a Request-URI in the
+REGISTER. In any case, I can't see the desired realm name anywhere in
+the message...
+
+-Dragos
+
+Andrej Vrabel wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> we are trying to register IMS UE using USIM application. From IMSI
+</I>&gt;<i> resided in USIM application we generate public, private identity and
+</I>&gt;<i> home network domain URI according to 3GPP TS 23.003. So our public
+</I>&gt;<i> identity is
+</I>&gt;<i> &quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">230989900000104 at ims.mnc098.mcc230.IMSI.3gppnetwork.org</A>&quot;, and
+</I>&gt;<i> private identity is
+</I>&gt;<i> &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">230989900000104 at ims.mnc098.mcc230.IMSI.3gppnetwork.org</A>&quot; and home
+</I>&gt;<i> network domain URI is &quot;sip:ims.mnc098.mcc230.IMSI.3gppnetwok.org&quot;. We
+</I>&gt;<i> are using the newest version of OIMS core.
+</I>&gt;<i> our configuration - the ip address of
+</I>&gt;<i> P-cscf is 10.0.1.11
+</I>&gt;<i> S-cscf is 10.0.1.13
+</I>&gt;<i> I-cscf is 10.0.1.12
+</I>&gt;<i> we are using our HSS and the ip is 10.0.1.14
+</I>&gt;<i> The realm of our  network is ims.sitronicsts.sk.
+</I>&gt;<i>
+</I>&gt;<i>   DNS for IMSI.3gppnetwork.org is set like this:
+</I>&gt;<i>
+</I>&gt;<i> $ORIGIN IMSI.3gppnetwork.org.
+</I>&gt;<i> $TTL 1W
+</I>&gt;<i> @                       1D IN SOA       localhost. root.localhost. (
+</I>&gt;<i>                                       2006101001      ; serial
+</I>&gt;<i>                                       3H              ; refresh
+</I>&gt;<i>                                       15M             ; retry
+</I>&gt;<i>                                       1W              ; expiry
+</I>&gt;<i>                                       1D )            ; minimum
+</I>&gt;<i>
+</I>&gt;<i>                       1D IN NS        ns
+</I>&gt;<i> ns                      1D IN A         192.168.200.66
+</I>&gt;<i>
+</I>&gt;<i> pcscf                   1D IN A         10.0.1.11
+</I>&gt;<i> icscf                   1D IN A         10.0.1.12
+</I>&gt;<i> IMSI.3gppnetwork.org.     1D IN A         10.0.1.12
+</I>&gt;<i>
+</I>&gt;<i> _sip                    1D SRV 0 0 5060 icscf
+</I>&gt;<i> _sip._udp               1D SRV 0 0 5060 icscf
+</I>&gt;<i> _sip._tcp               1D SRV 0 0 5060 icscf
+</I>&gt;<i>
+</I>&gt;<i> IMSI.3gppnetwork.org.    1D IN NAPTR 10 50 &quot;s&quot; &quot;SIP+D2U&quot;    &quot;&quot;
+</I>&gt;<i> _sip._udp.IMSI.3gppnetwork.org.
+</I>&gt;<i> IMSI.3gppnetwork.org.    1D IN NAPTR 20 50 &quot;s&quot; &quot;SIP+D2T&quot;    &quot;&quot;
+</I>&gt;<i> _sip._tcp.IMSI.3gppnetwork.org.
+</I>&gt;<i>
+</I>&gt;<i> ims.mnc098.mcc230                   1D IN A        10.0.1.12
+</I>&gt;<i>
+</I>&gt;<i> ue                      1D IN A         127.0.0.1
+</I>&gt;<i>
+</I>&gt;<i> presence        1D IN A            127.0.0.1
+</I>&gt;<i>
+</I>&gt;<i> ----------------------------------------------------------------------------------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   On our HSS, the realm is set to ims.sitronicsts.sk. But the i-cscf
+</I>&gt;<i> sends by registration of our temporary Private User Identity the
+</I>&gt;<i> diameter message (UAR command) to realm (Destination-Realm AVP)
+</I>&gt;<i> ims.mnc098.mcc230.IMSI.3gppnetwok.org so the diameter message fails to
+</I>&gt;<i> deliver.
+</I>&gt;<i> We are sending you a log file from OIMS core see attachment.
+</I>&gt;<i>
+</I>&gt;<i>   We would like to ask you if the OIMS core shouldnt have changed the
+</I>&gt;<i> realm ims.mnc098.mcc230.IMSI.3gppnetwok.org to ims.sitronicsts.sk
+</I>&gt;<i> because our primary realm in HSS is set to ims.sitronicsts.sk. And we
+</I>&gt;<i> are not sure which part of the OIMS core is responsible for this. The
+</I>&gt;<i> configuration files for cscf entities are also attached.
+</I>&gt;<i> Stefan
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001935.html">[OpenIMSCore-Users] Problem with registration using USIM
+</A></li>
+	<LI>Next message: <A HREF="001940.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] S-CSCF crash
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1937">[ date ]</a>
+              <a href="thread.html#1937">[ thread ]</a>
+              <a href="subject.html#1937">[ subject ]</a>
+              <a href="author.html#1937">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

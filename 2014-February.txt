@@ -1,0 +1,117 @@
+From vinodkrpandey at gmail.com  Thu Feb  6 17:54:03 2014
+From: vinodkrpandey at gmail.com (Vinod Pandey)
+Date: Thu, 6 Feb 2014 16:54:03 +0000
+Subject: [OpenIMSCore-Users] getting Audio or video port from INVITE Message
+Message-ID: <CADXK2ai=0C7qnZENjkCvBjW061YSnZ4F7SsrpzYoDQg4hr9P5g@mail.gmail.com>
+
+Dear Group,
+
+
+Is it possible to extract *audio port* from INVITE message or whole INVITE
+message content (as mentioned below)  from  the Open IMS Source code?
+
+
+I am not much familiar with the code base of Open IMS source code....so
+required some expert help here.
+
+
+Currently, I have deployed Application server at IMS to catch the INVITE
+req. method. Which doesn't seems to be a good solution to me. Since this
+required further work to develop B2BUA application to have END-to-END VOIP
+call.
+
+The purpose of getting audio port from INVITE message is to create a
+dedicated bearer on that port for VOLTE testing.
+
+
+
+received INVITE request: INVITE sip:bob at test.3gpp.com SIP/2.0
+
+P-Charging-Vector:
+icid-value="P-CSCFabcd52f2000400000008";icid-generated-at=10.120.4.206;orig-ioi="
+test.3gpp.com"
+
+Accept-Contact:
+*;+g.3gpp.icsi-ref="urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel"
+
+P-Access-Network-Info: ADSL;utran-cell-id-3gpp=00000000
+
+CSeq: 29394 INVITE
+
+Supported: 100rel
+
+Route: <
+sip:iscmark at scscf.test.3gpp.com:6060;lr;s=2;h=1;d=0;a=7369703a616c69636540746573742e336770702e636f6d
+>
+
+Call-ID: 005181bc-327a-f0e8-3114-0f148adaafed
+
+Via: SIP/2.0/UDP 10.120.4.206:6060;branch=z9hG4bK8b46.adfe9302.0
+
+Via: SIP/2.0/UDP 10.120.4.206;branch=z9hG4bK8b46.3a77e2d7.0;i=1
+
+Via: SIP/2.0/TCP 10.120.6.190:20245;branch=z9hG4bK415938319;rport=20245
+
+From: <sip:alice at test.3gpp.com>;tag=415934853
+
+Content-Type: application/sdp
+
+Allow: INVITE, ACK, CANCEL, BYE, MESSAGE, OPTIONS, NOTIFY, PRACK, UPDATE,
+REFER
+
+Privacy: none
+
+To: sip:bob at test.3gpp.com
+
+P-Preferred-Service: urn:urn-7:3gpp-service.ims.icsi.mmtel
+
+Contact: <sip:alice at 10.120.6.190:20245;transport=tcp
+>;+g.oma.sip-im;language="en,fr";+g.3gpp.icsi-ref="urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel"
+
+Content-Length: 270
+
+User-Agent: IM-client/OMA1.0 Boghe/v2.0.97.687
+
+Wlss-Popped-Route: sip:test.3gpp.com:5080;lr
+
+Record-Route: <sip:mo at scscf.test.3gpp.com:6060;lr>
+
+Record-Route: <sip:mo at pcscf.test.3gpp.com:5060;lr>
+
+Max-Forwards: 15
+
+
+
+v=0
+
+o=doubango 1983 678901 IN IP4 10.120.6.190
+
+s=-
+
+c=IN IP4 10.120.6.190
+
+t=0 0
+
+m=audio *27538* RTP/AVP 111 8 101
+
+a=ptime:20
+
+a=rtpmap:111 AMR/8000/1
+
+a=fmtp:111 octet-align=0
+
+a=rtpmap:8 PCMA/8000/1
+
+a=rtpmap:101 telephone-event/8000/1
+
+a=fmtp:101 0-15
+
+a=sendrecv
+
+Regards,
+
+Vinod P
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/openimscore-users/attachments/20140206/a911d341/attachment.html>
+

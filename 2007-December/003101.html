@@ -1,0 +1,282 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to disable IPSec in Open IMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20disable%20IPSec%20in%20Open%20IMS&In-Reply-To=%3C475FF5CC.4060903%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003100.html">
+   <LINK REL="Next"  HREF="003102.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to disable IPSec in Open IMS</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20disable%20IPSec%20in%20Open%20IMS&In-Reply-To=%3C475FF5CC.4060903%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] How to disable IPSec in Open IMS">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Dec 12 15:53:00 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003100.html">[OpenIMSCore-Users] PCSCF, ICSCF, SCSCF,	FHoSS in different computers
+</A></li>
+        <LI>Next message: <A HREF="003102.html">[OpenIMSCore-Users] Service Route
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3101">[ date ]</a>
+              <a href="thread.html#3101">[ thread ]</a>
+              <a href="subject.html#3101">[ subject ]</a>
+              <a href="author.html#3101">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+the latest SVN trunk versions should always be &quot;stable&quot; and working. If
+you have trouble with those, please report.
+
+For now we are not keeping stable versions or packages as the support
+effort for tracking and back-porting bug-fixes would be too great for
+our current development resources.
+
+Cheers,
+-Dragos
+
+Sabyasachi Samal wrote:
+&gt;<i> Hello Dragos,
+</I>&gt;<i>  
+</I>&gt;<i> Thanks for your reply. I am having some problem with Reg with the
+</I>&gt;<i> original conditions so that i have made a little modification. I will
+</I>&gt;<i> try with original cfg file and let you know.
+</I>&gt;<i>  
+</I>&gt;<i> The Open IMS stuffs i am using may be more that six months old. I had
+</I>&gt;<i> tried with latest SVN checkout stuffs for while compiling it is giving
+</I>&gt;<i> some error.
+</I>&gt;<i>  
+</I>&gt;<i> Can you pl let me know from where i can get a stable load without any
+</I>&gt;<i> build problem?
+</I>&gt;<i>  
+</I>&gt;<i> Regards,
+</I>&gt;<i> Sabyasachi
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i> On 12/11/07, *Dragos Vingarzan* &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>     Hello Sabyasachi,
+</I>&gt;<i>
+</I>&gt;<i>     You pcscf.cfg is very very different from the standard one.... sorry,
+</I>&gt;<i>     but can't tell exactly what you wanted to do there....
+</I>&gt;<i>
+</I>&gt;<i>     in route[REGISTER] you replaced the following block:
+</I>&gt;<i>
+</I>&gt;<i>     if (!P_is_integrity_protected()){
+</I>&gt;<i>            #Variant 1 - accept also non IPSec clients
+</I>&gt;<i>            P_remove_security_client();
+</I>&gt;<i>
+</I>&gt;<i>            #Variant 2 - accept only IPSec clients
+</I>&gt;<i>            #if (!P_remove_security_client()){
+</I>&gt;<i>            #    route(REGISTER_494);
+</I>&gt;<i>            #    break;
+</I>&gt;<i>            #}
+</I>&gt;<i>            P_add_integrity_protected(&quot;no&quot;);
+</I>&gt;<i>        }else{
+</I>&gt;<i>            if (!P_remove_security_verify()||!P_remove_security_client()){
+</I>&gt;<i>                route(REGISTER_494);
+</I>&gt;<i>                break;
+</I>&gt;<i>            }
+</I>&gt;<i>            P_add_integrity_protected(&quot;yes&quot;);
+</I>&gt;<i>        };
+</I>&gt;<i>
+</I>&gt;<i>     with something that always matches and send you to
+</I>&gt;<i>     route[REGISTER_494]:
+</I>&gt;<i>        #if (!P_remove_security_client()){
+</I>&gt;<i>        if (!P_remove_security_verify()){
+</I>&gt;<i>            #Variant 1 - accept also non IPSec clients
+</I>&gt;<i>            P_remove_security_client();
+</I>&gt;<i>
+</I>&gt;<i>            #Variant 2 - accept only IPSec clients
+</I>&gt;<i>            if (!P_remove_security_client()){
+</I>&gt;<i>                route(REGISTER_494);
+</I>&gt;<i>                break;
+</I>&gt;<i>            }
+</I>&gt;<i>            P_add_integrity_protected(&quot;no&quot;);
+</I>&gt;<i>        }else{
+</I>&gt;<i>            if (!P_remove_security_verify()||!P_remove_security_client()){
+</I>&gt;<i>                route(REGISTER_494);
+</I>&gt;<i>                break;
+</I>&gt;<i>            }
+</I>&gt;<i>            P_add_integrity_protected(&quot;yes&quot;);
+</I>&gt;<i>        };
+</I>&gt;<i>
+</I>&gt;<i>     ???? the initial condition was !P_is_integrity_protected()... then you
+</I>&gt;<i>     try to do !P_remove_security_verify(), which obviously fails and also
+</I>&gt;<i>     P_remove_security_client() fails... I don't get it why you would
+</I>&gt;<i>     want to
+</I>&gt;<i>     do this....
+</I>&gt;<i>
+</I>&gt;<i>     Then the REGISTER_494 fails because you have a t_newtran() again, but
+</I>&gt;<i>     this was just called from the route[REGISTER]....
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     Sabyasachi Samal wrote:
+</I>&gt;<i>     &gt; Hello,
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Thanx to all. I have already tried as suggested by Klemens. we are
+</I>&gt;<i>     &gt; sending any value for Security-Client. Still it replies with 500
+</I>&gt;<i>     I'm
+</I>&gt;<i>     &gt; terribly sorry error.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Sending my pcscf.cfg file, Pl have a look.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Regards,
+</I>&gt;<i>     &gt; Sabyasachi
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; On 12/4/07, *Dragos Vingarzan* &lt;
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;&gt;&gt; wrote:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     right... so for now if ipsec is enabled like Klemens, it's an
+</I>&gt;<i>     &gt;     auto-detect mode - if you come-up with a Security-Client
+</I>&gt;<i>     header, we
+</I>&gt;<i>     &gt;     assume that you want to negotiate some IPSec or TLS
+</I>&gt;<i>     connection, right?
+</I>&gt;<i>     &gt;     If you don't, then it just leaves you alone - yes it's not
+</I>&gt;<i>     secure
+</I>&gt;<i>     &gt;     because somebody can just be in the middle and remove that
+</I>&gt;<i>     header but
+</I>&gt;<i>     &gt;     you could also enforce it...
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     -Dragos
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     Klemens Schragel wrote:
+</I>&gt;<i>     &gt;     &gt; Hi,
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt; IPSec is by default not mandatory, so there should be no
+</I>&gt;<i>     need to
+</I>&gt;<i>     &gt;     disable it...
+</I>&gt;<i>     &gt;     &gt; If you feel better by disabling it modify in pcscf.cfg
+</I>&gt;<i>     &gt;     &gt;   modparam(&quot;pcscf&quot;,&quot;use_ipsec&quot;,1)
+</I>&gt;<i>     &gt;     &gt; to
+</I>&gt;<i>     &gt;     &gt;   modparam(&quot;pcscf&quot;,&quot;use_ipsec&quot;,0)
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt; ...btw, I think the problem with IPSec you suggest would cause
+</I>&gt;<i>     &gt;     494 &quot;Security Agreement Required&quot;...
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt; br, Klemens
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt; -------- Original-Nachricht --------
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;&gt; Datum: Tue, 4 Dec 2007 20:58:45 +0530
+</I>&gt;<i>     &gt;     &gt;&gt; Von: &quot;Sabyasachi Samal&quot; &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;&gt; An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;&gt; Betreff: [OpenIMSCore-Users] How to disable IPSec in Open
+</I>&gt;<i>     IMS
+</I>&gt;<i>     &gt;     &gt;&gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;&gt; Hello,
+</I>&gt;<i>     &gt;     &gt;&gt;
+</I>&gt;<i>     &gt;     &gt;&gt; Can anybody let know how to disable ipsec in Open IMS? I am
+</I>&gt;<i>     &gt;     getting 500
+</I>&gt;<i>     &gt;     &gt;&gt; error while sending REGISTER without security info to pcscf.
+</I>&gt;<i>     &gt;     &gt;&gt;
+</I>&gt;<i>     &gt;     &gt;&gt; BR,
+</I>&gt;<i>     &gt;     &gt;&gt; Sabyasachi
+</I>&gt;<i>     &gt;     &gt;&gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     --
+</I>&gt;<i>     &gt;     -----------------------------------------
+</I>&gt;<i>     &gt;     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     &gt;     Fraunhofer FOKUS/NGNI
+</I>&gt;<i>     &gt;     Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     &gt;     10589 Berlin,Germany
+</I>&gt;<i>     &gt;     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     &gt;     Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     &gt;     Web www.fokus.fraunhofer.de &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     www.openimscore.org &lt;<A HREF="http://www.openimscore.org">http://www.openimscore.org</A>&gt;
+</I>&gt;<i>     &lt;<A HREF="http://www.openimscore.org">http://www.openimscore.org</A>&gt;
+</I>&gt;<i>     &gt;     We could change the world if God would give us the source
+</I>&gt;<i>     code...
+</I>&gt;<i>     &gt;    
+</I>&gt;<i>     -----------------------------------------------------------------
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     --
+</I>&gt;<i>     -----------------------------------------
+</I>&gt;<i>     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     Fraunhofer FOKUS/NGNI
+</I>&gt;<i>     Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     10589 Berlin,Germany
+</I>&gt;<i>     Phone +49 (0)30 -...
+</I>&gt;<i>     Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i>     Web www.fokus.fraunhofer.de &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     www.openimscore.org &lt;<A HREF="http://www.openimscore.org">http://www.openimscore.org</A>&gt;
+</I>&gt;<i>     We could change the world if God would give us the source code...
+</I>&gt;<i>     -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003100.html">[OpenIMSCore-Users] PCSCF, ICSCF, SCSCF,	FHoSS in different computers
+</A></li>
+	<LI>Next message: <A HREF="003102.html">[OpenIMSCore-Users] Service Route
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3101">[ date ]</a>
+              <a href="thread.html#3101">[ thread ]</a>
+              <a href="subject.html#3101">[ subject ]</a>
+              <a href="author.html#3101">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

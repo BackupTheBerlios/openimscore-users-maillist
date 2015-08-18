@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Difference between Not Registered	StateandUnregistered state...
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Difference%20between%20Not%20Registered%0A%09StateandUnregistered%20state...&In-Reply-To=%3C59141CC76D4344D183FDDCDE62142688%40FranzEdlerPC%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006161.html">
+   <LINK REL="Next"  HREF="006148.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Difference between Not Registered	StateandUnregistered state...</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Difference%20between%20Not%20Registered%0A%09StateandUnregistered%20state...&In-Reply-To=%3C59141CC76D4344D183FDDCDE62142688%40FranzEdlerPC%3E"
+       TITLE="[OpenIMSCore-Users] Difference between Not Registered	StateandUnregistered state...">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Wed Mar 31 22:35:15 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006161.html">[OpenIMSCore-Users] Difference between Not Registered State	andUnregistered state...
+</A></li>
+        <LI>Next message: <A HREF="006148.html">[OpenIMSCore-Users] S-CSCF crashes when dealing with an as-feature	subscription request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6168">[ date ]</a>
+              <a href="thread.html#6168">[ thread ]</a>
+              <a href="subject.html#6168">[ subject ]</a>
+              <a href="author.html#6168">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Ket,
+
+&gt;<i> To go further about this subject, I'd like to know what is the De-
+</I>&gt;<i> registration behavior please:
+</I>&gt;<i> When a basic subscriber (with no IFC enabled) send a REGISTER to ims CORE
+</I>&gt;<i> with expire=0, does the state in HSS become Uneregistered or Not-
+</I>&gt;<i> Registered?
+</I>
+According to the standards both options are valid. This depends on the
+S-CSCF and is reflected in the AVP parameter &quot;Server-Assignment-Type&quot; of the
+SAR diameter message. The two options are:
+If S-CSCF does not keep user profile stored:
+- TIMEOUT_DEREGISTRATION (4)
+- USER_DEREGISTRATION (5)
+If S-CSCF keeps user profile stored:
+- TIMEOUT_DEREGISTRATION_STORE_SERVER_NAME (6)
+- USER_DEREGISTRATION_STORE_SERVER_NAME (7)
+
+I found that there is an exported parameter of S-CSCF which might control
+this behaviour &quot;server_assignment_store_data&quot; but had no chance to dig
+deeper.
+
+BR
+Franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006161.html">[OpenIMSCore-Users] Difference between Not Registered State	andUnregistered state...
+</A></li>
+	<LI>Next message: <A HREF="006148.html">[OpenIMSCore-Users] S-CSCF crashes when dealing with an as-feature	subscription request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6168">[ date ]</a>
+              <a href="thread.html#6168">[ thread ]</a>
+              <a href="subject.html#6168">[ subject ]</a>
+              <a href="author.html#6168">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Set SIP communication between two Application	Servers
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Set%20SIP%20communication%20between%20two%0A%20Application%09Servers&In-Reply-To=%3CBLU124-W53FABC04CE27F56E57E10ED6C10%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004018.html">
+   <LINK REL="Next"  HREF="004011.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Set SIP communication between two Application	Servers</H1>
+    <B>Persa Zaloshnja</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Set%20SIP%20communication%20between%20two%0A%20Application%09Servers&In-Reply-To=%3CBLU124-W53FABC04CE27F56E57E10ED6C10%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] Set SIP communication between two Application	Servers">arushi58 at hotmail.com
+       </A><BR>
+    <I>Fri May 23 13:40:51 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004018.html">[OpenIMSCore-Users] Set SIP communication between two	Application Servers
+</A></li>
+        <LI>Next message: <A HREF="004011.html">[OpenIMSCore-Users] Set SIP communication between two	Application	Servers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4006">[ date ]</a>
+              <a href="thread.html#4006">[ thread ]</a>
+              <a href="subject.html#4006">[ subject ]</a>
+              <a href="author.html#4006">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+Hi, 
+
+Thanks for the reply, Andreas.
+I did try to add an IMPU for each of AS's and choose Distinct_PSI. The AS are added as well under Services as Application Servers with the same Server name as added IMPU's.
+yet I do not see it working - another strange thing happens when I add the IMPU for the AS, I untick the option Can register, but as soon as I click save the value is automatically changed and ticked - ie that the IMPU can register, and in my case the application server doesn't need to register.
+Is this correct what I am trying to set - have you had the same issue or .. ?
+
+Thank you, 
+
+BR, Persa
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">andreas.haber at uia.no</A>
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">arushi58 at hotmail.com</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Date: Fri, 23 May 2008 12:43:11 +0200
+Subject: RE: [OpenIMSCore-Users] Set SIP communication between two Application	Servers
+
+Hi, Depends on the event you want to subscribe to. Seems like youneed to provision Public Service Identities (PSI) to your services (e.g., sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">as1 at example.com</A> and sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">as2 at example.com</A>). In case you haven&#8217;tdone this before it is almost the same as creating an IMPU, except you need to changethe &#8220;IMPU Type&#8221; to Distinct_PSI or Wildcarded_PSI (I think you needthe former in this scenario). Best regards,Andreas From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of PersaZaloshnja
+Sent: 23. mai 2008 11:45
+To: Dragos Vingarzan; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>; Open IMS Core
+Subject: [OpenIMSCore-Users] Set SIP communication between twoApplication Servers Hi all, 
+ 
+We have 2 Application servers connected to the same Open IMS domain ( AS1 andAS2).
+We would like to send a SUBSCRIBE from AS1 to AS2 through the CSCF and then geta 200 OK answer back from AS2 to AS1 via CSCF.
+
+When we send the message from AS1 to AS2 through the S-CSCF we get '404 Notfound - destination user not found on this S-CSCF'.
+(We set the To-field to AS2 but we set a Route header to point to S-CSCF)
+We have set up both App servers in the Open IMS on different ports and we havegiven them own filer criterias that are built on the To-header.
+
+Note: When we send SUBSCRIBE from a user to the servers it works perfect. Themessage go througt to both of them depending on the To-header in the message.
+ 
+ 
+What could be wrong?
+1. Should we send the message through the S-CSCF if we want to communicatebetween 2 app servers in the same domain? Or should we go through I-CSCF?
+2. Is there something that has to be set in some configuration file in thesystem, so the servers can find eachother?
+3. Is the  Profile Part Indicator of the IFC attached to the ASinfluencing whether it should be registered or unregistered?
+4. Each user profile has a service profile, which contains the respectiveifc/tp - how is the application server treated in this case, shouldthe application server have a service profile ?
+ 
+Any suggestion or feedback on the matter is greatly appreciated, 
+ 
+Thank you in advance,
+ 
+Persa
+
+
+Getnews, entertainment and everything you care about at Live.com. Check it out!
+_________________________________________________________________
+Invite your mail contacts to join your friends list with Windows Live Spaces. It's easy!
+<A HREF="http://spaces.live.com/spacesapi.aspx?wx_action=create&amp;wx_url=/friends.aspx&amp;mkt=en-us">http://spaces.live.com/spacesapi.aspx?wx_action=create&amp;wx_url=/friends.aspx&amp;mkt=en-us</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080523/59e68a24/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080523/59e68a24/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004018.html">[OpenIMSCore-Users] Set SIP communication between two	Application Servers
+</A></li>
+	<LI>Next message: <A HREF="004011.html">[OpenIMSCore-Users] Set SIP communication between two	Application	Servers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4006">[ date ]</a>
+              <a href="thread.html#4006">[ thread ]</a>
+              <a href="subject.html#4006">[ subject ]</a>
+              <a href="author.html#4006">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

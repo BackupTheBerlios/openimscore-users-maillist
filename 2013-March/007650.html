@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] PCRF PCEF integration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2013-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PCRF%20PCEF%20integration&In-Reply-To=%3CCAKk0uohdAk6s1YHhksk7cGWfXjt6-TxOYF7UJoeLKKei3Re%3DYQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007649.html">
+   <LINK REL="Next"  HREF="007651.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] PCRF PCEF integration</H1>
+    <B>Mirela Hamidovic</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PCRF%20PCEF%20integration&In-Reply-To=%3CCAKk0uohdAk6s1YHhksk7cGWfXjt6-TxOYF7UJoeLKKei3Re%3DYQ%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] PCRF PCEF integration">mirela.hamidovic at gmail.com
+       </A><BR>
+    <I>Mon Mar  4 19:56:40 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007649.html">[OpenIMSCore-Users] Integration Pcscf.qos and PCRF problem
+</A></li>
+        <LI>Next message: <A HREF="007651.html">[OpenIMSCore-Users] Integration Pcscf.qos and PCRF problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7650">[ date ]</a>
+              <a href="thread.html#7650">[ thread ]</a>
+              <a href="subject.html#7650">[ subject ]</a>
+              <a href="author.html#7650">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Tnx for your reply.
+I killed the process that was using port 8080.
+After that, I still could'nt opet web interface
+<A HREF="http://localhost:8180/uct_web_pcm.">http://localhost:8180/uct_web_pcm.</A>
+The final solution here was to install tomcat webapps package, that
+wasn't included in basic tomcat installation.
+
+Kind regards,
+Mirela
+
+2013/2/26 Carsten Bock &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">carstenbock at users.sourceforge.net</A>&gt;:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> if you run all components on one machine, you should check, what ports are used.
+</I>&gt;<i> It sounds like two processes are using port 8080, one definitely is
+</I>&gt;<i> the Fraunhofer HSS, i don't know which ports the PCRF/PCEF or the
+</I>&gt;<i> underlying Apache Tomcat uses (apart from 8180)....
+</I>&gt;<i> Maybe you could begin starting the PCEF, check if port 8080 is used,
+</I>&gt;<i> then start the PCRF, then ....
+</I>&gt;<i>
+</I>&gt;<i> Kind regards,
+</I>&gt;<i> Carsten
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 2013/2/12 Mirela Hamidovic &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mirela.hamidovic at gmail.com</A>&gt;:
+</I>&gt;&gt;<i> Hello all,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I need to test integration of the UCT Policy Control Framework into
+</I>&gt;&gt;<i> Open IMS Core, and I was following this link:
+</I>&gt;&gt;<i> <A HREF="http://uctimsclient.berlios.de/policy_control_howto.html">http://uctimsclient.berlios.de/policy_control_howto.html</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> First of all, I have downloaded Opne IMS Core Ubuntu Virtual Machine
+</I>&gt;&gt;<i> (<A HREF="http://www.openimscore.org/vm">http://www.openimscore.org/vm</A>), and wanted to integrate policy
+</I>&gt;&gt;<i> control using this virtual machine.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> According to instructions from the link mentioned above, i accomplished 5 steps.
+</I>&gt;&gt;<i> That means that I successfully ran all of PCSCF, SCSCF, ICSCF, HSS, PCEF, PCRF.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> When starting HSS, first I had a problem:
+</I>&gt;&gt;<i> 2013-02-12 20:50:23,170 ERROR org.apache.coyote.http11.Http11Protocol
+</I>&gt;&gt;<i> - init Error initializing endpoint
+</I>&gt;&gt;<i> java.net.BindException: Address already in use:8080
+</I>&gt;&gt;<i>         at org.apache.tomcat.util.net.PoolTcpEndpoint.initEndpoint(PoolTcpEndpoint.java:297)
+</I>&gt;&gt;<i>         at org.apache.coyote.http11.Http11Protocol.init(Http11Protocol.java:142)
+</I>&gt;&gt;<i>         at org.apache.catalina.connector.Connector.initialize(Connector.java:928)
+</I>&gt;&gt;<i>         at org.apache.catalina.startup.Embedded.start(Embedded.java:794)
+</I>&gt;&gt;<i>         at de.fhg.fokus.hss.main.TomcatServer.startTomcat(TomcatServer.java:128)
+</I>&gt;&gt;<i>         at de.fhg.fokus.hss.main.HSSContainer.&lt;init&gt;(HSSContainer.java:74)
+</I>&gt;&gt;<i>         at de.fhg.fokus.hss.main.HSSContainer.main(HSSContainer.java:110)
+</I>&gt;&gt;<i> 2013-02-12 20:50:23,171 ERROR de.fhg.fokus.hss.main.HSSContainer -
+</I>&gt;&gt;<i> &lt;init&gt; Exception occured during starting Tomcat!
+</I>&gt;&gt;<i> Exiting from HSS...
+</I>&gt;&gt;<i> LifecycleException:  Protocol handler initialization failed:
+</I>&gt;&gt;<i> java.net.BindException: Address already in use:8080
+</I>&gt;&gt;<i>         at org.apache.catalina.connector.Connector.initialize(Connector.java:930)
+</I>&gt;&gt;<i>         at org.apache.catalina.startup.Embedded.start(Embedded.java:794)
+</I>&gt;&gt;<i>         at de.fhg.fokus.hss.main.TomcatServer.startTomcat(TomcatServer.java:128)
+</I>&gt;&gt;<i>         at de.fhg.fokus.hss.main.HSSContainer.&lt;init&gt;(HSSContainer.java:74)
+</I>&gt;&gt;<i>         at de.fhg.fokus.hss.main.HSSContainer.main(HSSContainer.java:110)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I killed process that was using 8080:
+</I>&gt;&gt;<i> tcp6       0      0 127.0.0.1:8080          :::*
+</I>&gt;&gt;<i> LISTEN      5020/java
+</I>&gt;&gt;<i> and after that HSS was able to start.
+</I>&gt;&gt;<i> Is this ok?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> When I have all started, I wanted to open
+</I>&gt;&gt;<i> <A HREF="http://localhost:8180/uct_web_pcm/,">http://localhost:8180/uct_web_pcm/,</A> as instructed, but now I have a
+</I>&gt;&gt;<i> probles, since I cannot opet this link.
+</I>&gt;&gt;<i> HTTP Status 404 -
+</I>&gt;&gt;<i> type status report
+</I>&gt;&gt;<i> message
+</I>&gt;&gt;<i> description The requested resource () is not available.
+</I>&gt;&gt;<i> ApacheTomcat5.5
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have uct_web_pcm under /var/lib/tomcat5.5/webapps, and also
+</I>&gt;&gt;<i> uct_web_pcm.policy under /etc/tomcat5.5/policy.d
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What could be the problem, and what should I check?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Please help!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thank you.
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> Mirela Hamidovi&#263;, dipl. el. ing.
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+
+-- 
+Mirela Hamidovi&#263;, dipl. el. ing.
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007649.html">[OpenIMSCore-Users] Integration Pcscf.qos and PCRF problem
+</A></li>
+	<LI>Next message: <A HREF="007651.html">[OpenIMSCore-Users] Integration Pcscf.qos and PCRF problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7650">[ date ]</a>
+              <a href="thread.html#7650">[ thread ]</a>
+              <a href="subject.html#7650">[ subject ]</a>
+              <a href="author.html#7650">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

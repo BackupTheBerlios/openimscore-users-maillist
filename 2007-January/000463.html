@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Register: VIA-header port different to	Contact-header port
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Register%3A%20VIA-header%20port%20different%20to%0A%09Contact-header%20port&In-Reply-To=%3C200701101658.54531.christoph.egger%40tuwien.ac.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000460.html">
+   <LINK REL="Next"  HREF="000461.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Register: VIA-header port different to	Contact-header port</H1>
+    <B>Christoph Egger</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Register%3A%20VIA-header%20port%20different%20to%0A%09Contact-header%20port&In-Reply-To=%3C200701101658.54531.christoph.egger%40tuwien.ac.at%3E"
+       TITLE="[OpenIMSCore-Users] Register: VIA-header port different to	Contact-header port">christoph.egger at tuwien.ac.at
+       </A><BR>
+    <I>Wed Jan 10 16:58:54 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000460.html">[OpenIMSCore-Users] Status &quot;403 Forbidden&quot; thrown by HSS
+</A></li>
+        <LI>Next message: <A HREF="000461.html">[OpenIMSCore-Users] [Bug #9926] UDR operation on Sh interface fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#463">[ date ]</a>
+              <a href="thread.html#463">[ thread ]</a>
+              <a href="subject.html#463">[ subject ]</a>
+              <a href="author.html#463">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+i have the following problem:
+
+Assume that a client has registered sucessfully e.g. as &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.10.10.1</A>:3533&gt;
+
+This client sends then an INVITE message, which has as Via header a different 
+Port than in its Contact header:
+
+Via: SIP/2.0/TCP 10.10.10.1:5060
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.10.10.1</A>:3533&gt;
+
+The P-CSCF declines this request:
+
+403 Forbidden - Not Registered! You must register first with a S-CSCF
+
+
+The P-CSCF searches for the user &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.10.10.1</A>:5060&gt;:
+
+ 5(23007) DBG:P-CSCF:P_is_registered: Looking if registered
+ 5(23007) DBG:P-CSCF:P_is_registered: Looking for &lt;2://10.10.10.1:5060&gt;
+
+But he is actually registered as &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.10.10.1</A>:3533&gt; (!!)
+
+So i think the P-CSCF searches for this user by means of the Via-header.
+This fails if the port of the Via-header is different than the Contact-header 
+port.
+
+Is this a bug of the client?
+
+Regards,
+Christoph
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000460.html">[OpenIMSCore-Users] Status &quot;403 Forbidden&quot; thrown by HSS
+</A></li>
+	<LI>Next message: <A HREF="000461.html">[OpenIMSCore-Users] [Bug #9926] UDR operation on Sh interface fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#463">[ date ]</a>
+              <a href="thread.html#463">[ thread ]</a>
+              <a href="subject.html#463">[ subject ]</a>
+              <a href="author.html#463">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

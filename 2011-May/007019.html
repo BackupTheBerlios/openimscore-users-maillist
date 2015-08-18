@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] help regarding pjsip dialler with openims	core
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20help%20regarding%20pjsip%20dialler%20with%20openims%0A%09core&In-Reply-To=%3CBANLkTi%3D92UxeEAe8FEZ4pH0N5mJJoCaZSQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007018.html">
+   <LINK REL="Next"  HREF="007020.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] help regarding pjsip dialler with openims	core</H1>
+    <B>Carsten Bock</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20help%20regarding%20pjsip%20dialler%20with%20openims%0A%09core&In-Reply-To=%3CBANLkTi%3D92UxeEAe8FEZ4pH0N5mJJoCaZSQ%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] help regarding pjsip dialler with openims	core">carsten at ng-voice.com
+       </A><BR>
+    <I>Tue May 17 09:53:40 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007018.html">[OpenIMSCore-Users] help regarding pjsip dialler with openims	core
+</A></li>
+        <LI>Next message: <A HREF="007020.html">[OpenIMSCore-Users] help regarding pjsip dialler with openims	core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7019">[ date ]</a>
+              <a href="thread.html#7019">[ thread ]</a>
+              <a href="subject.html#7019">[ subject ]</a>
+              <a href="author.html#7019">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+sorry my fault, it is named differently in OpenIMS-Core...
+
+Check the route &quot;route[REGISTER]&quot;. Just comment the following lines out:
+
+                        # Unprotected REGISTER
+                        # Variant 1 - accept also non IPSec clients
+                        if (!S_is_authorized(&quot;open-ims.test&quot;)) {
+                                S_challenge(&quot;open-ims.test&quot;);
+                                route(Service_Routes);
+                                t_reply(&quot;401&quot;, &quot;Unauthorized -
+Challenging the UE&quot;);
+                                exit;
+                        }else{
+
+and the according closing bracket (&quot;}&quot;).
+
+Carsten
+
+there is configured, that the client should be
+
+2011/5/17 abid khan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">abidkhan135 at gmail.com</A>&gt;:
+&gt;<i> there is no such field in scscf.cfg...
+</I>&gt;<i>
+</I>&gt;<i> On Tue, May 17, 2011 at 12:38 PM, Carsten Bock &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">carsten at ng-voice.com</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi abid,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> just look for www_auth / proxy_auth in the scscf.cfg.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Kind regards,
+</I>&gt;&gt;<i> Carsten
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 2011/5/17 abid khan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">abidkhan135 at gmail.com</A>&gt;:
+</I>&gt;&gt;<i> &gt; thanks for the reply. is there anyway through which i can disable
+</I>&gt;&gt;<i> &gt; authentication in openIMS core.???
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; On Tue, May 17, 2011 at 1:01 AM, Franz Edler
+</I>&gt;&gt;<i> &gt; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+</I>&gt;&gt;<i> &gt; wrote:
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Hi Abid Khan,
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; &gt; #define PJSIP_HAS_DIGEST_AKA_AUTH &#160; &#160;1
+</I>&gt;&gt;<i> &gt;&gt; &gt; &#160;but it doest not work.. i also made changes in openIMS core
+</I>&gt;&gt;<i> &gt;&gt; &gt; by selecting Early IMS security
+</I>&gt;&gt;<i> &gt;&gt; &gt; and Early IMS IP as my dialler IP from where i am requesting ... but
+</I>&gt;&gt;<i> &gt;&gt; &gt; it
+</I>&gt;&gt;<i> &gt;&gt; doesnot
+</I>&gt;&gt;<i> &gt;&gt; &gt; work plz help me.
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; You should dig a little bit into authentication mechanisms of IMS and
+</I>&gt;&gt;<i> &gt;&gt; try
+</I>&gt;&gt;<i> &gt;&gt; to
+</I>&gt;&gt;<i> &gt;&gt; analyze the signaling trace.
+</I>&gt;&gt;<i> &gt;&gt; Early IMS is a different authentication than Digest.
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; If nothing helps add the tracefiel.
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; - Franz
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; --
+</I>&gt;&gt;<i> &gt; Abid khan
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; _______________________________________________
+</I>&gt;&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> Carsten Bock
+</I>&gt;&gt;<i> <A HREF="http://www.ng-voice.com">http://www.ng-voice.com</A>
+</I>&gt;&gt;<i> mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">carsten at ng-voice.com</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Schomburgstr. 80
+</I>&gt;&gt;<i> 22767 Hamburg
+</I>&gt;&gt;<i> Germany
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Mobile +49 179 2021244
+</I>&gt;&gt;<i> Office +49 40 34927219
+</I>&gt;&gt;<i> Fax +49 40 34927220
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Abid khan
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+
+-- 
+Carsten Bock
+<A HREF="http://www.ng-voice.com">http://www.ng-voice.com</A>
+mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">carsten at ng-voice.com</A>
+
+Schomburgstr. 80
+22767 Hamburg
+Germany
+
+Mobile +49 179 2021244
+Office +49 40 34927219
+Fax +49 40 34927220
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007018.html">[OpenIMSCore-Users] help regarding pjsip dialler with openims	core
+</A></li>
+	<LI>Next message: <A HREF="007020.html">[OpenIMSCore-Users] help regarding pjsip dialler with openims	core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7019">[ date ]</a>
+              <a href="thread.html#7019">[ thread ]</a>
+              <a href="subject.html#7019">[ subject ]</a>
+              <a href="author.html#7019">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

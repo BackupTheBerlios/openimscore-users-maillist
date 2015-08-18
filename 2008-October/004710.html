@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem with PBX redirecting INVITE	to	sip:scscf.open-ims.test
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20PBX%20redirecting%20INVITE%0A%09to%09sip%3Ascscf.open-ims.test&In-Reply-To=%3C48E34649.6030600%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004709.html">
+   <LINK REL="Next"  HREF="004721.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem with PBX redirecting INVITE	to	sip:scscf.open-ims.test</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20PBX%20redirecting%20INVITE%0A%09to%09sip%3Ascscf.open-ims.test&In-Reply-To=%3C48E34649.6030600%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Problem with PBX redirecting INVITE	to	sip:scscf.open-ims.test">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Oct  1 11:43:37 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004709.html">[OpenIMSCore-Users] REGISTER operation failed with [504 Server Time-Out].
+</A></li>
+        <LI>Next message: <A HREF="004721.html">[OpenIMSCore-Users] Problem with PBX redirecting INVITE	to	sip:scscf.open-ims.test
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4710">[ date ]</a>
+              <a href="thread.html#4710">[ thread ]</a>
+              <a href="subject.html#4710">[ subject ]</a>
+              <a href="author.html#4710">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Juan,
+
+Unfortunately this is the way that the 3rd party registration standards
+are written. So you should not use the saved Contact address in the
+Request-URI, but the destination user's public identity and a Route to
+the saved Contact.
+
+I think that the 3rd party registration standards assume that the
+network's registrars stays in the S-CSCFs and not in the AS. The
+mechanism is meant only as a pushed notification mechanism and not a
+full registrar REGISTER operation.
+
+However, your scenario makes sense and I am thinking about a way to make
+it work:
+- the S-CSCF will use as Contact the IMPU (sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>)
+- the S-CSCF will add a Path header (sip:scscf.open-ims.test:6060 - own
+SIP URI)
+- the PBX would implement the RFC3327 and use the Path header
+
+I would welcome such a patch in the trunk, given that this behavior
+would be somehow configurable as to let the standards compliant behavior
+in place.
+
+Cheers,
+-Dragos
+
+Juan Jos&#233; Navamuel wrote:
+&gt;<i> Dear all,
+</I>&gt;<i>
+</I>&gt;<i> we are building a testbed for the GENESIS project
+</I>&gt;<i> (<A HREF="http://projects.celtic-initiative.org/genesis/">http://projects.celtic-initiative.org/genesis/</A>).
+</I>&gt;<i> On top of a OpenIMSCore, a bunch of advanced services are being
+</I>&gt;<i> deployed for clients accessing from WiMAX and xDSL networks.
+</I>&gt;<i>
+</I>&gt;<i> We have running services as Presence, Multiconference, ...
+</I>&gt;<i> But we are having some troubles to integrate a IP-PBX as an
+</I>&gt;<i> Application Server.
+</I>&gt;<i> 3rd-party registration has been enabled for the PBX and IFCs have been
+</I>&gt;<i> created in order to redirect user calls to the PBX.
+</I>&gt;<i>
+</I>&gt;<i> However, when trying to make a call from UserA (registered both in
+</I>&gt;<i> OpenIMSCore and PBX) to UserB (also registered), call is rejected when
+</I>&gt;<i> coming back from PBX.
+</I>&gt;<i> UA -&gt; P-CSCF -&gt; S-CSCF -&gt; PBX -&gt; SCSCF (x - 403 Forbidden)
+</I>&gt;<i> [I'm sending captures attached]
+</I>&gt;<i>
+</I>&gt;<i> After analyzing traces, we have found that PBX is starting a new call
+</I>&gt;<i> (different call-id) and replacing REQUEST-URI in the INVITE message
+</I>&gt;<i> and using &quot;sip:scscf.genesis.org:5060&quot; instead of the URI of the
+</I>&gt;<i> called party: &quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">90001012 at genesis.org</A>&quot;. This happens because PBX
+</I>&gt;<i> stores the URI contained in the Contact header during 3rd-party
+</I>&gt;<i> registration process, and uses it to reach the called user. S-CSCF
+</I>&gt;<i> rejects call, but we are not sure if this is the right behaviour.
+</I>&gt;<i>
+</I>&gt;<i> I've found in IMS specs that S-CSCF must replace Contact header with
+</I>&gt;<i> its own uri.
+</I>&gt;<i> But then, is it normal that PBX places Contact info into the INVITE
+</I>&gt;<i> request-uri? Is that the normal behaviour for a B2BUA?
+</I>&gt;<i> Any idea will be very helpful.
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Juanjo
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004709.html">[OpenIMSCore-Users] REGISTER operation failed with [504 Server Time-Out].
+</A></li>
+	<LI>Next message: <A HREF="004721.html">[OpenIMSCore-Users] Problem with PBX redirecting INVITE	to	sip:scscf.open-ims.test
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4710">[ date ]</a>
+              <a href="thread.html#4710">[ thread ]</a>
+              <a href="subject.html#4710">[ subject ]</a>
+              <a href="author.html#4710">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

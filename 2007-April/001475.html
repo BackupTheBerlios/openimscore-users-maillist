@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users]  Tel URI
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%20Tel%20URI&In-Reply-To=%3C10d080960704120935h29f3bf1eg61d43e50a88c5fcd%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001474.html">
+   <LINK REL="Next"  HREF="001463.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users]  Tel URI</H1>
+    <B>ketzal devims</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%20Tel%20URI&In-Reply-To=%3C10d080960704120935h29f3bf1eg61d43e50a88c5fcd%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users]  Tel URI">ketzaldevims at gmail.com
+       </A><BR>
+    <I>Thu Apr 12 18:35:02 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001474.html">[OpenIMSCore-Users] Tel URI
+</A></li>
+        <LI>Next message: <A HREF="001463.html">[OpenIMSCore-Users] Tel URI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1475">[ date ]</a>
+              <a href="thread.html#1475">[ thread ]</a>
+              <a href="subject.html#1475">[ subject ]</a>
+              <a href="author.html#1475">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>the error is :
+
+ 4(5209) DBG:S-CSCF:S_save_dialog(orig): Call-ID &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-5098 at hss.open-ims.test</A>&gt;
+ 4(5209) INFO:ISC:ISC_match_filter(orig): Checking triggers
+ 4(5209) INFO:ISC:isc_mark_get_from_msg: Trying to get the mark from the
+message
+ 4(5209) INFO:ISC:ISC_match_filter(orig): Starting triggering
+ 4(5209) INFO:ISC:ISC_match_filter(orig): Orig User &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+[1]
+ 4(5209) INFO:ISC:isc_checker_find: starting search
+ 4(5209) &gt;&gt;        ++++++++
+ 4(5209) parse_regexp(): first ! missing from regexp
+ 4(5209) enum_query(): parsing of NAPTR regexp failed
+ 4(5209) &gt;&gt;        ENUM lookup failed
+
+---------- Forwarded message ----------
+From: ketzal devims &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ketzaldevims at gmail.com</A>&gt;
+Date: 12 avr. 2007 18:24
+Subject: Re: [OpenIMSCore-Users] Tel URI
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+
+Hi heiko
+
+I've tried your function.... very good ;)
+Today, i've been a lot of troubles with my DNS Server... it would'nt work...
+Now i've fixed it
+I only have another probleme :
+
+The scscf said that I've an error with my regex.
+My entry in the DNS Server is this one :
+
+8.9.6.9.4.7.0.4.2.3.3.e164.arpa.        IN NAPTR 10 10 &quot;u&quot; &quot;sip+e2u&quot;
+&quot;/^.*$/sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>/&quot; .
+
+Can you tell me how you writted your DNS entry please...
+
+thanks very much
+Ketzal
+
+
+2007/4/12, heiko &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">timbuktu19 at arcor.de</A>&gt;:
+&gt;<i>
+</I>&gt;<i> ketzal devims schrieb:
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I tried to test an INVITE with Tel URIs (RFC 3966) and It doesn't
+</I>&gt;<i> &gt; work. In fact, I've seen the file scscf.cfg, and, in the originating
+</I>&gt;<i> &gt; route, nothing define an incoming INVITE request with Tel URI.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; That's why , after the lines defined int route[Orig]
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; #PSTN gateway handling
+</I>&gt;<i> &gt;         if (method==&quot;INVITE&quot; &amp;&amp; uri=~&quot;sip:[0-9]<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+ at open-ims</A>\.test(.*)&quot;){
+</I>&gt;<i> &gt;                         route(PSTN);
+</I>&gt;<i> &gt;                         break;
+</I>&gt;<i> &gt;         }
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I've defined  this  :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;          if(method==&quot;INVITE&quot; &amp;&amp; uri=~&quot;tel:\+[0-9]&quot;){
+</I>&gt;<i> &gt;                 route(TELURI);
+</I>&gt;<i> &gt;                 break;
+</I>&gt;<i> &gt;         }
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I've tested it, and when an INVITE request containing a Tel URI
+</I>&gt;<i> &gt; incomes to the scscf, that works.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Now my problem is :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; route[TELURI]
+</I>&gt;<i> &gt; {
+</I>&gt;<i> &gt;         log(1,&quot;&gt;&gt;       Tel URI INVITE\n&quot;);
+</I>&gt;<i> &gt;         exit;
+</I>&gt;<i> &gt; }
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; What sould I write in this part to handle these things :
+</I>&gt;<i> &gt;  - I would like the scscf to do an ENUM Convertion to get the SIP URI
+</I>&gt;<i> &gt; matching with the Tel URI
+</I>&gt;<i> &gt;  - I would like to route the incoming request to the appropriated
+</I>&gt;<i> I-CSCF.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Maybe I'm wrong in what I want to do... Please tell me if it is
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks everybody
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Ketzal
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> i used the following code and it works for me. since the ser enum modul
+</I>&gt;<i> isn't able to handle tel-URIs (why not???) you have to do a workaround
+</I>&gt;<i> by modify the R-URI with the exec modul.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> if (method==&quot;INVITE&quot; &amp;&amp; uri=~&quot;&quot;tel:[0-9]+){
+</I>&gt;<i>                       route(ENUM);
+</I>&gt;<i>                       break;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> #       ENUM module (SER) doesn't support tel-uris at the moment; its a
+</I>&gt;<i> workaround
+</I>&gt;<i> #       tel:--&gt; sip:.*@domain
+</I>&gt;<i>         exec_dset(&quot;echo sip:$<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">SIP_USER at somehost.test</A>;echo&gt;/dev/null&quot;);
+</I>&gt;<i>         # enum funktion wants the &quot;+&quot;
+</I>&gt;<i>         prefix(&quot;+&quot;);
+</I>&gt;<i>         log(1,&quot;&gt;&gt;        ++++++++\n&quot;);
+</I>&gt;<i>         if (!enum_query(&quot;carrier.e164.test.&quot;)) {
+</I>&gt;<i>                 log(1,&quot;&gt;&gt;        ENUM lookup failed\n&quot;);
+</I>&gt;<i>                 sl_send_reply(&quot;404&quot;, &quot;ENUM entry not found&quot;);
+</I>&gt;<i>                 break;
+</I>&gt;<i>         }
+</I>&gt;<i>         else{
+</I>&gt;<i>             log(1,&quot;ENUM lookup successful&quot;);
+</I>&gt;<i>             append_hf(&quot;P-AS: ENUM\r\n&quot;);
+</I>&gt;<i>                 loose_route();
+</I>&gt;<i>                 if (!t_relay()) {
+</I>&gt;<i>                         sl_reply_error();
+</I>&gt;<i>                 };
+</I>&gt;<i>                 break;
+</I>&gt;<i>         };
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> maybe its not so good the best choice to perform this the S-CSCF. i used
+</I>&gt;<i> an AS to do this.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070412/c0a3ef67/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070412/c0a3ef67/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001474.html">[OpenIMSCore-Users] Tel URI
+</A></li>
+	<LI>Next message: <A HREF="001463.html">[OpenIMSCore-Users] Tel URI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1475">[ date ]</a>
+              <a href="thread.html#1475">[ thread ]</a>
+              <a href="subject.html#1475">[ subject ]</a>
+              <a href="author.html#1475">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

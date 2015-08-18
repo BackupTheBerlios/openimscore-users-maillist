@@ -1,0 +1,321 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem while running ./icscf
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20while%20running%20./icscf&In-Reply-To=%3C3e7937890805050531x613796e4m60d2a5ad3c2e7592%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003874.html">
+   <LINK REL="Next"  HREF="003876.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem while running ./icscf</H1>
+    <B>Pinak Saha</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20while%20running%20./icscf&In-Reply-To=%3C3e7937890805050531x613796e4m60d2a5ad3c2e7592%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Problem while running ./icscf">saha.pinak at gmail.com
+       </A><BR>
+    <I>Mon May  5 14:31:54 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003874.html">[OpenIMSCore-Users] Problem while running ./icscf
+</A></li>
+        <LI>Next message: <A HREF="003876.html">[OpenIMSCore-Users] disabling authentication
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3884">[ date ]</a>
+              <a href="thread.html#3884">[ thread ]</a>
+              <a href="subject.html#3884">[ subject ]</a>
+              <a href="author.html#3884">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Sanjoy,
+The problem that you are facing is because you are running the
+&quot;icscf.sh&quot; file from /opt/OpenIMSCore which I understand,is a
+pre-requisite but after you run the script file, a lot of processes
+are being generated which need to be killed before your icscf comes up
+properly. And these processes are killed by the &quot;killser&quot; command. So,
+the location of &quot;killser&quot; has to be changed in your &quot;icscf.sh&quot; file.
+Open &quot;/opt/OpenIMSCore/icscf.sh&quot; file and duly set the apt path to
+your killser,that is change &quot;killser icsf&quot; to &quot;./ser_ims/cfg/killser
+icscf&quot;. Hopefully,this should make your icscf run.
+
+Regards,
+Pinak
+
+
+On 5/2/08, Sanjoy Dey &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ankaneee at gmail.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Hi all,
+</I>&gt;<i> I was trying to run the ./icscf.sh at /opt/OpenIMSCore, while doing that I
+</I>&gt;<i> was getting the following error. Can somebody plaease help me?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> openims1-linux{54}&gt; ./icscf.sh
+</I>&gt;<i> ./icscf.sh: line 3: killser: command not found
+</I>&gt;<i> Listening on
+</I>&gt;<i>              udp: 10.42.188.86 [10.42.188.86]:5060
+</I>&gt;<i>               tcp: 10.42.188.86 [10.42.188.86]:5060
+</I>&gt;<i> Aliases:
+</I>&gt;<i>              tcp: openims1-linux:5060
+</I>&gt;<i>              tcp: openims1-linux.qualcomm.com:5060
+</I>&gt;<i>               udp: openims1-linux:5060
+</I>&gt;<i>              udp: openims1-linux.qualcomm.com:5060
+</I>&gt;<i>               *: qualcomm.com:*
+</I>&gt;<i>              *: icscf.qualcomm.com:*
+</I>&gt;<i>  0(13222) init_tcp: using epoll_lt as the io watch method (auto detected)
+</I>&gt;<i>  0(13222) Maxfwd module- initializing
+</I>&gt;<i>  0(13222) INFO:I-CSCF:mod_init: Initialization of module
+</I>&gt;<i>  0(13222) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>   0(13222) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i>  0(13222) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>   0(13222) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i>  0(13222) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>   0(13222) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i>  0(13222) Twofish encryption ready
+</I>&gt;<i>  0(13222) INFO:cdp:cdp_init(): CDiameterPeer initializing
+</I>&gt;<i>  0(13222) Diameter Peer Config:
+</I>&gt;<i>  0(13222)       FQDN    : icscf.qualcomm.com
+</I>&gt;<i>   0(13222)       Realm   : qualcomm.com
+</I>&gt;<i>  0(13222)       VendorID: 10415
+</I>&gt;<i>  0(13222)       ProdName: CDiameterPeer
+</I>&gt;<i>   0(13222)       AcceptUn: [X]
+</I>&gt;<i>  0(13222)       DropUnkn: [X]
+</I>&gt;<i>  0(13222)       Tc      : 30
+</I>&gt;<i>  0(13222)       Workers : 4
+</I>&gt;<i>  0(13222)       QueueLen: 8
+</I>&gt;<i>  0(13222)       Peers : 1
+</I>&gt;<i>  0(13222)               FQDN:  hss.qualcomm.com          Realm: qualcomm.com
+</I>&gt;<i>  Port: 3868
+</I>&gt;<i>   0(13222)       Acceptors : 1
+</I>&gt;<i>  0(13222)               Port:  3869      Bind: 10.42.188.86
+</I>&gt;<i>  0(13222)       Applications : 3
+</I>&gt;<i>   0(13222)               Auth ID:  16777216       Vendor: 10415
+</I>&gt;<i>  0(13222)               Auth ID:  16777216       Vendor: 4491
+</I>&gt;<i>  0(13222)               Auth ID:  16777216       Vendor: 13019
+</I>&gt;<i>  0(13222)       Routing Table :
+</I>&gt;<i>   0(13222)               DefaultRoute: [  10] hss.qualcomm.com
+</I>&gt;<i>  0(13222) INFO: udp_init: SO_RCVBUF is initially 110592
+</I>&gt;<i>   0(13222) INFO: udp_init: SO_RCVBUF is finally 221184
+</I>&gt;<i>  1(13226) INFO:I-CSCF:mod_init: Initialization of module in child [1]
+</I>&gt;<i>  1(13226) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>   1(13226) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i>  2(13228) INFO:I-CSCF:mod_init: Initialization of module in child [2]
+</I>&gt;<i>  2(13228) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>   2(13228) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i>  3(13230) INFO:I-CSCF:mod_init: Initialization of module in child [3]
+</I>&gt;<i>  3(13230) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>   3(13230) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i>  4(13232) INFO:I-CSCF:mod_init: Initialization of module in child [4]
+</I>&gt;<i>  4(13232) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>   4(13232) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i>  5(13234) INFO:I-CSCF:mod_init: Initialization of module in child [-1]
+</I>&gt;<i>  5(13234) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>   5(13234) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i>  6(13236) INFO:I-CSCF:mod_init: Initialization of module in child [-1]
+</I>&gt;<i>  6(13236) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>   6(13236) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i>  0(13222) INFO:I-CSCF:mod_init: Initialization of module in child [0] main
+</I>&gt;<i>  0(13222) INFO:cdp:cdp_child_init(): CDiameterPeer starting ...
+</I>&gt;<i>   7(13238) INFO:I-CSCF:mod_init: Initialization of module in child [1000]
+</I>&gt;<i>  7(13238) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>   7(13238) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i>  7(13238) INFO:Acceptor process starting up...
+</I>&gt;<i>  7(13238) INFO:create_sockets: IPv4 Listening on 10.42.188.86:3869
+</I>&gt;<i>   7(13238) INFO:... Acceptor opened sockets. Entering accept loop ...
+</I>&gt;<i>  8(13240) INFO:I-CSCF:mod_init: Initialization of module in child [1001]
+</I>&gt;<i>  8(13240) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>   8(13240) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i>  8(13240) INFO:[0] Worker process started...
+</I>&gt;<i>  9(13242) INFO:I-CSCF:mod_init: Initialization of module in child [1002]
+</I>&gt;<i> 10(13244) INFO:I-CSCF:mod_init: Initialization of module in child [1003]
+</I>&gt;<i>  10(13244) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>  10(13244) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i> 10(13244) INFO:[2] Worker process started...
+</I>&gt;<i> 11(13246) INFO:I-CSCF:mod_init: Initialization of module in child [1004]
+</I>&gt;<i> 11(13246) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>  11(13246) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i> 11(13246) INFO:[3] Worker process started...
+</I>&gt;<i> 12(13248) INFO:I-CSCF:mod_init: Initialization of module in child [1001]
+</I>&gt;<i> 12(13248) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>  12(13248) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i> 12(13248) INFO:Timer process starting up...
+</I>&gt;<i>  0(13222) INFO:cdp:cdp_child_init(): ... CDiameterPeer started
+</I>&gt;<i> 13(13250) INFO:I-CSCF:mod_init: Initialization of module in child [5]
+</I>&gt;<i>  13(13250) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>  13(13250) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i> 14(13252) INFO:I-CSCF:mod_init: Initialization of module in child [6]
+</I>&gt;<i> 14(13252) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>  14(13252) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i>  9(13242) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>   9(13242) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i>  9(13242) INFO:[1] Worker process started...
+</I>&gt;<i> 15(13254) INFO:I-CSCF:mod_init: Initialization of module in child [7] tcp
+</I>&gt;<i> receiver child=2
+</I>&gt;<i> 15(13254) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>  15(13254) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i> 16(13255) INFO:I-CSCF:mod_init: Initialization of module in child [8]
+</I>&gt;<i> 16(13255) new_connection: Access denied for user 'icscf'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>&gt;<i>  16(13255) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>&gt;<i> 17(13258) INFO:I-CSCF:mod_init: Initialization of module in child [-4]
+</I>&gt;<i> 12(13248) DBG:peer_timer(): Peer hss.qualcomm.com       State 0
+</I>&gt;<i>  12(13248) DBG:sm_process(): Peer hss.qualcomm.com       State Closed
+</I>&gt;<i> Event Start
+</I>&gt;<i> 12(13248) DBG:I_Snd_Conn_Req(): Peer hss.qualcomm.com
+</I>&gt;<i>  12(13248) WARNING:peer_connect(): Error opening connection to
+</I>&gt;<i> hss.qualcomm.com:3868 &gt;Operation not permitted
+</I>&gt;<i>  12(13248) DBG:sm_process(): Peer hss.qualcomm.com       State Wait_Conn_Ack
+</I>&gt;<i>     Event I_Rcv_Conn_NAck
+</I>&gt;<i> 12(13248) --- Peer List: ---
+</I>&gt;<i>  12(13248)  S[Closed] hss.qualcomm.com:3868 D[ ]
+</I>&gt;<i> 12(13248) ------------------
+</I>&gt;<i> 12(13248) --- Peer List: ---
+</I>&gt;<i>  12(13248)  S[Closed] hss.qualcomm.com:3868 D[ ]
+</I>&gt;<i> 12(13248) ------------------
+</I>&gt;<i> 12(13248) --- Peer List: ---
+</I>&gt;<i>  12(13248)  S[Closed] hss.qualcomm.com:3868 D[ ]
+</I>&gt;<i> 12(13248) ------------------
+</I>&gt;<i> 12(13248) --- Peer List: ---
+</I>&gt;<i>  12(13248)  S[Closed] hss.qualcomm.com:3868 D[ ]
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I am also adding the mysql user statistics that I can see from my machine.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> mysql&gt; use mysql;
+</I>&gt;<i> Database changed
+</I>&gt;<i> mysql&gt; show databases;
+</I>&gt;<i> +----------+
+</I>&gt;<i> | Database |
+</I>&gt;<i> +----------+
+</I>&gt;<i> | hss_db   |
+</I>&gt;<i> | icscf    |
+</I>&gt;<i> | mysql    |
+</I>&gt;<i> | test     |
+</I>&gt;<i> +----------+
+</I>&gt;<i> 4 rows in set (0.00 sec)
+</I>&gt;<i>
+</I>&gt;<i> mysql&gt; select * from user;
+</I>&gt;<i> +----------------+--------------+-------------------------------------------+-------------+-------------+-------------+-------------+-------------+-----------+-------------+---------------+--------------+-----------+------------+-----------------+------------+------------+--------------+------------+-----------------------+------------------+--------------+-----------------+------------------+----------+------------+-------------+--------------+---------------+-------------+-----------------+
+</I>&gt;<i>  | Host           | User         | Password
+</I>&gt;<i>             | Select_priv | Insert_priv | Update_priv |
+</I>&gt;<i> Delete_priv | Create_priv | Drop_priv | Reload_priv | Shutdown_priv |
+</I>&gt;<i> Process_priv | File_priv | Grant_priv | References_priv | Index_priv |
+</I>&gt;<i> Alter_priv | Show_db_priv | Super_priv | Create_tmp_table_priv |
+</I>&gt;<i> Lock_tables_priv | Execute_priv | Repl_slave_priv | Repl_client_priv |
+</I>&gt;<i> ssl_type | ssl_cipher | x509_issuer | x509_subject | max_questions |
+</I>&gt;<i> max_updates | max_connections |
+</I>&gt;<i> +----------------+--------------+-------------------------------------------+-------------+-------------+-------------+-------------+-------------+-----------+-------------+---------------+--------------+-----------+------------+-----------------+------------+------------+--------------+------------+-----------------------+------------------+--------------+-----------------+------------------+----------+------------+-------------+--------------+---------------+-------------+-----------------+
+</I>&gt;<i>  | localhost      | root         |
+</I>&gt;<i>               | Y           | Y           | Y           | Y
+</I>&gt;<i>           | Y           | Y         | Y           | Y             | Y
+</I>&gt;<i>     | Y         | Y          | Y               | Y          | Y          | Y
+</I>&gt;<i>            | Y          | Y                     | Y                | Y
+</I>&gt;<i>      | Y               | Y                |          |            |
+</I>&gt;<i>    |              |             0 |           0 |               0 |
+</I>&gt;<i>  | openims1-linux | root         |
+</I>&gt;<i> *AADB89769FF364D8537700AE065872FDA6E980F3 | Y           | Y
+</I>&gt;<i>           | Y           | Y           | Y           | Y         | Y
+</I>&gt;<i>  | Y             | Y            | Y         | Y          | Y               |
+</I>&gt;<i> Y          | Y          | Y            | Y          | Y
+</I>&gt;<i> | Y                | Y            | Y               | Y                |
+</I>&gt;<i>      |            |             |              |             0 |           0
+</I>&gt;<i> |               0 |
+</I>&gt;<i>  | localhost      | hss          |
+</I>&gt;<i> *AC83FCF24B79020EF2C51D780CDFA559F25CC9BE | N           | N
+</I>&gt;<i>           | N           | N           | N           | N         | N
+</I>&gt;<i>  | N             | N            | N         | N          | N               |
+</I>&gt;<i> N          | N          | N            | N          | N
+</I>&gt;<i> | N                | N            | N               | N                |
+</I>&gt;<i>      |            |             |              |             0 |           0
+</I>&gt;<i> |               0 |
+</I>&gt;<i>  | 10.42.188.86   | hss          |
+</I>&gt;<i> *AC83FCF24B79020EF2C51D780CDFA559F25CC9BE | N           | N
+</I>&gt;<i>           | N           | N           | N           | N         | N
+</I>&gt;<i>  | N             | N            | N         | N          | N               |
+</I>&gt;<i> N          | N          | N            | N          | N
+</I>&gt;<i> | N                | N            | N               | N                |
+</I>&gt;<i>      |            |             |              |             0 |           0
+</I>&gt;<i> |               0 |
+</I>&gt;<i>  | 10.42.188.86   | icscf        |
+</I>&gt;<i> *AADB89769FF364D8537700AE065872FDA6E980F3 | N           | N
+</I>&gt;<i>           | N           | N           | N           | N         | N
+</I>&gt;<i>  | N             | N            | N         | N          | N               |
+</I>&gt;<i> N          | N          | N            | N          | N
+</I>&gt;<i> | N                | N            | N               | N                |
+</I>&gt;<i>      |            |             |              |             0 |           0
+</I>&gt;<i> |               0 |
+</I>&gt;<i>  | 10.42.188.86   | provisioning |
+</I>&gt;<i> *18CC52BB809704BBD196BC40745CA983C2B95E34 | N           | N
+</I>&gt;<i>           | N           | N           | N           | N         | N
+</I>&gt;<i>  | N             | N            | N         | N          | N               |
+</I>&gt;<i> N          | N          | N            | N          | N
+</I>&gt;<i> | N                | N            | N               | N                |
+</I>&gt;<i>      |            |             |              |             0 |           0
+</I>&gt;<i> |               0 |
+</I>&gt;<i> +----------------+--------------+-------------------------------------------+-------------+-------------+-------------+-------------+-------------+-----------+-------------+---------------+--------------+-----------+------------+-----------------+------------+------------+--------------+------------+-----------------------+------------------+--------------+-----------------+------------------+----------+------------+-------------+--------------+---------------+-------------+-----------------+
+</I>&gt;<i>  6 rows in set (0.00 sec)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thanks.
+</I>&gt;<i>
+</I>&gt;<i> Sukanto Polok
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i>  OpenIMSCore-Users mailing list
+</I>&gt;<i>  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003874.html">[OpenIMSCore-Users] Problem while running ./icscf
+</A></li>
+	<LI>Next message: <A HREF="003876.html">[OpenIMSCore-Users] disabling authentication
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3884">[ date ]</a>
+              <a href="thread.html#3884">[ thread ]</a>
+              <a href="subject.html#3884">[ subject ]</a>
+              <a href="author.html#3884">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

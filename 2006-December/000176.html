@@ -1,0 +1,275 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [OpenIMSCore-CSCF] Compile error of ser_ims
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BOpenIMSCore-CSCF%5D%20Compile%20error%20of%20ser_ims&In-Reply-To=%3COF96B8290D.BA1C5B43-ON4825723C.0037409D-4825723C.003802E3%40cn.ibm.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000175.html">
+   <LINK REL="Next"  HREF="000179.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [OpenIMSCore-CSCF] Compile error of ser_ims</H1>
+    <B>Yin Ben Xia</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BOpenIMSCore-CSCF%5D%20Compile%20error%20of%20ser_ims&In-Reply-To=%3COF96B8290D.BA1C5B43-ON4825723C.0037409D-4825723C.003802E3%40cn.ibm.com%3E"
+       TITLE="[OpenIMSCore-Users] [OpenIMSCore-CSCF] Compile error of ser_ims">xiayb at cn.ibm.com
+       </A><BR>
+    <I>Wed Dec  6 11:15:23 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000175.html">[OpenIMSCore-Users] [Bug #9625] ISC module does not route	correctly
+</A></li>
+        <LI>Next message: <A HREF="000179.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] Compile error of ser_ims
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#176">[ date ]</a>
+              <a href="thread.html#176">[ thread ]</a>
+              <a href="subject.html#176">[ subject ]</a>
+              <a href="author.html#176">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Jamal,
+
+You should compile CSCF at /opt/OpenIMSCore/ser_ims/.
+Maybe you do this, but it doesn't create pcscf.so and icscf.so, I meet this
+problem yesterday :)
+
+Go to the /opt/OpenIMSCore/ser_ims/modules/pcscf,
+you will find sip.c and sip.h is not a correct program-file,
+rm sip.c and sip.h,
+ln -s ../scscf/sip.h ./sip.h
+ln -s ../scscf/sip.c ./sip.c
+
+Go to the /opt/OpenIMSCore/ser_ims/modules/icscf,
+rm sip.c and sip.h and cx_avp.c and cx_avp.h,
+ln -s ../scscf/sip.h ./sip.h
+ln -s ../scscf/sip.c ./sip.c
+ln -s ../scscf/cx_avp.h ./cx_avp.h
+ln -s ../scscf/cx_avp.c ./cx_avp.c
+
+go to /opt/OpenIMSCore/ser_ims/
+make all
+
+please try it, hope this can help you.
+
+Best Regards,
+
+
+________________________________________________________________________
+
+
+                                                                           
+ &#22799;&#23493;&#36146;  &#21338;       IBM                                                      
+     &#22763;           IBM China Research Lab, China                            
+ Dr.  Yinben                                                               
+     Xia                                                                   
+                  3/F, ZuanShi Building,Zhongguancun Software Park,        
+             Shangdi,                                                      
+                  Haidian District, Beijing, 100094, PRC China             
+                  TEL: 86-10-58748421                                      
+                  FAX: 86-10-58748330                                      
+                  E-mail: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">xiayb at cn.ibm.com</A>                                 
+                                                                          
+                                                                           
+
+
+
+
+
+
+
+
+                                                                           
+             Jamal Basrire                                                 
+             &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">j_basrire at hotmai</A>                                             
+             l.com&gt;                                                     To 
+             Sent by:                  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-cscf at lists.berlios.de</A>&gt; 
+             openimscore-cscf-                                          cc 
+             <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bounces at lists.ber</A>                                             
+             lios.de                                               Subject 
+                                       [OpenIMSCore-CSCF]  Compile error   
+                                       of ser_ims                          
+             2006-12-06 17:38                                              
+                                                                           
+                                                                           
+                                                                           
+                                                                           
+                                                                           
+
+
+
+
+
+Hi all,
+
+I experencied some troubles to compile ser_ims. Indeed, while compiling
+/opt/OpenIMSCore/ser_ims/modules/pcscf I encountered the following errors :
+
+-----
+../../Makefile.modules:26: &quot;you should run make from the main ser
+directory&quot;
+In file included from dlg_state.c:61:
+sip.h:1: error: expected &#8216;=&#8217;, &#8216;,&#8217;, &#8216;;&#8217;, &#8216;asm&#8217; or &#8216;__attribute__&#8217; before &#8216;.&#8217;
+token
+dlg_state.c: In function &#8216;get_p_dialog_hash&#8217;:
+dlg_state.c:105: error: &#8216;p_dialogs_hash_size&#8217; undeclared (first use in this
+function)
+dlg_state.c:105: error: (Each undeclared identifier is reported only once
+dlg_state.c:105: error: for each function it appears in.)
+dlg_state.c: In function &#8216;p_dialogs_init&#8217;:
+dlg_state.c:118: error: &#8216;p_dialogs_hash_size&#8217; undeclared (first use in this
+function)
+dlg_state.c: In function &#8216;p_dialogs_destroy&#8217;:
+dlg_state.c:144: error: &#8216;p_dialogs_hash_size&#8217; undeclared (first use in this
+function)
+dlg_state.c: In function &#8216;print_p_dialogs&#8217;:
+dlg_state.c:360: error: &#8216;p_dialogs_hash_size&#8217; undeclared (first use in this
+function)
+dlg_state.c: In function &#8216;find_dialog_contact&#8217;:
+dlg_state.c:396: warning: implicit declaration of function
+&#8216;cscf_get_originating_contact&#8217;
+dlg_state.c:403: warning: implicit declaration of function
+&#8216;cscf_get_terminating_contact&#8217;
+dlg_state.c: In function &#8216;P_is_in_dialog&#8217;:
+dlg_state.c:433: warning: implicit declaration of function
+&#8216;cscf_get_call_id&#8217;
+dlg_state.c:433: error: incompatible types in assignment
+dlg_state.c: In function &#8216;P_save_dialog&#8217;:
+dlg_state.c:490: error: incompatible types in assignment
+dlg_state.c:506: warning: implicit declaration of function &#8216;cscf_get_cseq&#8217;
+dlg_state.c: In function &#8216;save_dialog_routes&#8217;:
+dlg_state.c:528: error: &#8216;rr_t&#8217; undeclared (first use in this function)
+dlg_state.c:528: error: &#8216;rr&#8217; undeclared (first use in this function)
+dlg_state.c:528: error: &#8216;ri&#8217; undeclared (first use in this function)
+dlg_state.c:528: warning: left-hand operand of comma expression has no
+effect
+dlg_state.c:528: warning: statement with no effect
+dlg_state.c:537: warning: implicit declaration of function
+&#8216;cscf_get_next_record_route&#8217;
+dlg_state.c:537: warning: assignment makes pointer from integer without a
+cast
+dlg_state.c:537: warning: assignment makes pointer from integer without a
+cast
+dlg_state.c:538: error: expected expression before &#8216;)&#8217; token
+dlg_state.c:553: warning: assignment makes pointer from integer without a
+cast
+dlg_state.c:553: warning: assignment makes pointer from integer without a
+cast
+dlg_state.c:554: error: expected expression before &#8216;)&#8217; token
+dlg_state.c:563: warning: assignment makes pointer from integer without a
+cast
+dlg_state.c:563: warning: assignment makes pointer from integer without a
+cast
+dlg_state.c:564: error: expected expression before &#8216;)&#8217; token
+dlg_state.c: In function &#8216;P_update_dialog&#8217;:
+dlg_state.c:605: error: incompatible types in assignment
+dlg_state.c:614: warning: implicit declaration of function
+&#8216;cscf_get_request_from_reply&#8217;
+dlg_state.c:614: warning: assignment makes pointer from integer without a
+cast
+dlg_state.c:660: warning: assignment makes pointer from integer without a
+cast
+dlg_state.c:684: warning: implicit declaration of function
+&#8216;cscf_get_subscription_state&#8217;
+dlg_state.c: In function &#8216;P_drop_dialog&#8217;:
+dlg_state.c:730: error: incompatible types in assignment
+dlg_state.c:741: warning: assignment makes pointer from integer without a
+cast
+dlg_state.c: In function &#8216;P_drop_all_dialogs&#8217;:
+dlg_state.c:779: error: &#8216;p_dialogs_hash_size&#8217; undeclared (first use in this
+function)
+dlg_state.c: In function &#8216;P_follows_dialog_routes&#8217;:
+dlg_state.c:810: error: &#8216;rr_t&#8217; undeclared (first use in this function)
+dlg_state.c:810: error: &#8216;r&#8217; undeclared (first use in this function)
+dlg_state.c:820: error: incompatible types in assignment
+dlg_state.c:840: warning: implicit declaration of function
+&#8216;cscf_get_next_route&#8217;
+dlg_state.c:840: warning: assignment makes pointer from integer without a
+cast
+dlg_state.c:846: error: expected expression before &#8216;)&#8217; token
+dlg_state.c:851: warning: assignment makes pointer from integer without a
+cast
+dlg_state.c:853: error: expected expression before &#8216;)&#8217; token
+dlg_state.c: In function &#8216;P_enforce_dialog_routes&#8217;:
+dlg_state.c:908: error: incompatible types in assignment
+dlg_state.c:961: warning: implicit declaration of function
+&#8216;cscf_add_header_first&#8217;
+dlg_state.c:962: warning: implicit declaration of function
+&#8216;cscf_del_all_headers&#8217;
+dlg_state.c: In function &#8216;dialog_timer&#8217;:
+dlg_state.c:1075: error: &#8216;p_dialogs_hash_size&#8217; undeclared (first use in
+this function)
+make: *** [dlg_state.o] Erreur 1
+-----
+
+Consequently, pcscf.so is not generated and pcscf.sh is not runnable. Can
+somebody help me ?
+
+Thank you all.
+
+
+Regards,
+Jamal.
+
+_________________________________________________________________
+Essayez Live.com, votre nouvelle page d'accueil ! Personnalisez-la en
+quelques clics pour retrouver tout ce qui vous int&#233;resse au m&#234;me endroit.
+<A HREF="http://www.live.com/getstarted">http://www.live.com/getstarted</A>
+_______________________________________________
+OpenIMSCore-CSCF mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-CSCF at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-cscf">https://lists.berlios.de/mailman/listinfo/openimscore-cscf</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20061206/016b8803/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20061206/016b8803/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: graycol.gif
+Type: image/gif
+Size: 105 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20061206/016b8803/attachment.gif">https://lists.berlios.de/pipermail/openimscore-users/attachments/20061206/016b8803/attachment.gif</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: pic23169.gif
+Type: image/gif
+Size: 1255 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20061206/016b8803/attachment-0001.gif">https://lists.berlios.de/pipermail/openimscore-users/attachments/20061206/016b8803/attachment-0001.gif</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: ecblank.gif
+Type: image/gif
+Size: 45 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20061206/016b8803/attachment-0002.gif">https://lists.berlios.de/pipermail/openimscore-users/attachments/20061206/016b8803/attachment-0002.gif</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000175.html">[OpenIMSCore-Users] [Bug #9625] ISC module does not route	correctly
+</A></li>
+	<LI>Next message: <A HREF="000179.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] Compile error of ser_ims
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#176">[ date ]</a>
+              <a href="thread.html#176">[ thread ]</a>
+              <a href="subject.html#176">[ subject ]</a>
+              <a href="author.html#176">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

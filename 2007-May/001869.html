@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] REGISTER nonce value
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20REGISTER%20nonce%20value&In-Reply-To=%3C465C198F.9060808%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001848.html">
+   <LINK REL="Next"  HREF="001805.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] REGISTER nonce value</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20REGISTER%20nonce%20value&In-Reply-To=%3C465C198F.9060808%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] REGISTER nonce value">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue May 29 14:16:15 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001848.html">[OpenIMSCore-Users] REGISTER nonce value
+</A></li>
+        <LI>Next message: <A HREF="001805.html">[OpenIMSCore-Users] Error During FHOss compilation.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1869">[ date ]</a>
+              <a href="thread.html#1869">[ thread ]</a>
+              <a href="subject.html#1869">[ subject ]</a>
+              <a href="author.html#1869">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well, whatever :). Easy, to fix, so fixed in r 290.
+
+-Dragos
+
+Christoph Egger wrote:
+&gt;<i> We had a similar problem with a Nokia N71 not able to register.
+</I>&gt;<i>
+</I>&gt;<i> The solution was to remove the space AFTER the algorithm=MD5.
+</I>&gt;<i>
+</I>&gt;<i> We have done this in registration.c:
+</I>&gt;<i>
+</I>&gt;<i> algorithm=%.*s \r\n&quot; --&gt; algorithm=%.*s\r\n&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> A good parser should imho ignore this issue, but is this &quot;space&quot; at the end 
+</I>&gt;<i> legal?
+</I>&gt;<i>
+</I>&gt;<i> Christoph
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Thursday 17 May 2007 23:22, Dragos Vingarzan wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> I looked at the SIP RFC and the space is legal there because the
+</I>&gt;&gt;<i> challenge is defined as:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> challenge           =  (&quot;Digest&quot; LWS digest-cln *(COMMA digest-cln))
+</I>&gt;&gt;<i>                        / other-challenge
+</I>&gt;&gt;<i> other-challenge     =  auth-scheme LWS auth-param
+</I>&gt;&gt;<i>                        *(COMMA auth-param)
+</I>&gt;&gt;<i> digest-cln          =  realm / domain / nonce
+</I>&gt;&gt;<i>                         / opaque / stale / algorithm
+</I>&gt;&gt;<i>                         / qop-options / auth-param
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So there is that COMMA between different auth-param.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> and COMMA is not actually just &quot;,&quot; as it might seem at the first look, but
+</I>&gt;&gt;<i> it is defined as:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> COMMA   =  SWS &quot;,&quot; SWS ; comma
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> And SWS (separator white space?) is:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> LWS  =  [*WSP CRLF] 1*WSP ; linear whitespace
+</I>&gt;&gt;<i> SWS  =  [LWS] ; sep whitespace
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ... so maybe the Huawei guys would be interested in fixing their stack then
+</I>&gt;&gt;<i> as a LOT of other implementations do not have an issue with this.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001848.html">[OpenIMSCore-Users] REGISTER nonce value
+</A></li>
+	<LI>Next message: <A HREF="001805.html">[OpenIMSCore-Users] Error During FHOss compilation.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1869">[ date ]</a>
+              <a href="thread.html#1869">[ thread ]</a>
+              <a href="subject.html#1869">[ subject ]</a>
+              <a href="author.html#1869">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

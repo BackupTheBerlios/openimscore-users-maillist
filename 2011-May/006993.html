@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ISC marking and ISC_from_AS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ISC%20marking%20and%20ISC_from_AS&In-Reply-To=%3CBANLkTimvD8JAh2u7tuyTdh-fdEvAUj2zhA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006992.html">
+   <LINK REL="Next"  HREF="006994.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ISC marking and ISC_from_AS</H1>
+    <B>tomas kovacik</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ISC%20marking%20and%20ISC_from_AS&In-Reply-To=%3CBANLkTimvD8JAh2u7tuyTdh-fdEvAUj2zhA%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] ISC marking and ISC_from_AS">tokosk16 at gmail.com
+       </A><BR>
+    <I>Wed May  4 17:52:31 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006992.html">[OpenIMSCore-Users] ser_ims installation:	/usr/local/mysql/lib/libz.a: could not read symbols: File	format not recognized
+</A></li>
+        <LI>Next message: <A HREF="006994.html">[OpenIMSCore-Users] ISC marking and ISC_from_AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6993">[ date ]</a>
+              <a href="thread.html#6993">[ thread ]</a>
+              <a href="subject.html#6993">[ subject ]</a>
+              <a href="author.html#6993">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>dear all.
+i am developing presence-based service, which sends SUBSCRIBE and NOTIFY
+messages between 2 application servers which are located in 2 IMS domains.
+the message flow is as follows:
+SUBSCRIBE from
+AS1.domain1-&gt;icscf1.domain1-&gt;icscf2.domain2-&gt;scscf2.domain2-&gt;AS2.domain2
+200 OK response is transferred from AS2 to AS1. than NOTIFY message follows
+the path:
+AS2.domain2-&gt;scscf2.domain2-&gt;icscf2.domain2-&gt;icscsf1.domain1-&gt;AS1.domain1
+
+the domains are interconnected correctly and the call is possible.
+
+i have been tracing issues in this scenario while it was not trivial to
+allow the cores to let application servers to send SIP messages. for this i
+had to figure out PSI issues, but finaly i have succeeded.
+now i came to point where NOTIFY message cannot be sent from scscf2.domain2
+to icscsf2.domain2. the scscf says 403: Forbidden - Dialog not found on
+S-CSCF or terminating user not suitable for unregistered services. i found
+out, that NOTIFY message contains contact information from previous
+SUBSCRIBE message. it is placed in NOTIFY URI. than scscf2 does not
+recognize the destination and gives me the error. i think, that function
+ISC_from_AS, respectively its sub-function isc_mark_get_from_msg()  does not
+correctly identify the NOTIFY message as message from an application server.
+deep in the code i found that isc_mark_get_from_msg()  searches for
+sip:iscmark string and if it finds it in the Route header field of a SIP
+message, it forwards it towards its destination. however, my message does
+not contain any string as that. does the function correctly determines
+whether the message comes from an application server? should not it check in
+HSS whether originator of the message is one of its application servers?
+
+thank you very much for any advice or correction.
+TOMAS KOVACIK
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20110504/8a5a34e8/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20110504/8a5a34e8/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006992.html">[OpenIMSCore-Users] ser_ims installation:	/usr/local/mysql/lib/libz.a: could not read symbols: File	format not recognized
+</A></li>
+	<LI>Next message: <A HREF="006994.html">[OpenIMSCore-Users] ISC marking and ISC_from_AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6993">[ date ]</a>
+              <a href="thread.html#6993">[ thread ]</a>
+              <a href="subject.html#6993">[ subject ]</a>
+              <a href="author.html#6993">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

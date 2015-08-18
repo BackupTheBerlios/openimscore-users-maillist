@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] SIPp with Open IMS Core,OK message does not arrive from IMS core
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%09%3D%3Futf-8%3Fq%3FSIPp_with_Open_IMS_Core%3D2COK_messag%3F%3D%0A%09%3D%3Futf-8%3Fq%3Fe_does_not_arrive_from_IMS_core%3F%3D&In-Reply-To=%3C201001210909575934165%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006019.html">
+   <LINK REL="Next"  HREF="006021.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] SIPp with Open IMS Core,OK message does not arrive from IMS core</H1>
+    <B>Zhang Wen Hua</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%09%3D%3Futf-8%3Fq%3FSIPp_with_Open_IMS_Core%3D2COK_messag%3F%3D%0A%09%3D%3Futf-8%3Fq%3Fe_does_not_arrive_from_IMS_core%3F%3D&In-Reply-To=%3C201001210909575934165%40gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] SIPp with Open IMS Core,OK message does not arrive from IMS core">zhang.wenhua at gmail.com
+       </A><BR>
+    <I>Thu Jan 21 02:10:01 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006019.html">[OpenIMSCore-Users] SIPp with Open IMS Core,	OK message does not arrive from IMS core
+</A></li>
+        <LI>Next message: <A HREF="006021.html">[OpenIMSCore-Users] Problem with starting P-CSCF &amp; S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6020">[ date ]</a>
+              <a href="thread.html#6020">[ thread ]</a>
+              <a href="subject.html#6020">[ subject ]</a>
+              <a href="author.html#6020">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Rifaee,
+
+We met such issue before. Please try to use SIPp 2.0. I guess the current OpenIMSCore changed it's authentication algorithm. 
+
+
+2010-01-21 
+
+
+
+Zhang Wen Hua 
+
+
+
+&#21457;&#20214;&#20154;&#65306; mustafa rifaee 
+&#21457;&#36865;&#26102;&#38388;&#65306; 2010-01-21  01:21:02 
+&#25910;&#20214;&#20154;&#65306; openimscore-users 
+&#25220;&#36865;&#65306; 
+&#20027;&#39064;&#65306; [OpenIMSCore-Users] SIPp with Open IMS Core,OK message does not arrive from IMS core 
+ 
+Hello all;
+I am using SIPp 3.1 with Open IMS Core, but when i send registration the registration done successfully but the IMS core does not send OK message back to SIPp.
+
+Aborting call on unexpected message for Call-ID'1-17420 at 192.168.3.21': while expecting '200' response, received 'SIP/2.0 401 Unauthorized - Challenging the UE
+
+
+
+Please Help me.
+Best Regards 
+Rifaee
+--------------.
+registration scenario:-
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot; ?&gt;
+&lt;!DOCTYPE scenario SYSTEM &quot;sipp.dtd&quot;&gt;
+&lt;scenario name=&quot;reg_alice&quot;&gt;
+&lt;send retrans=&quot;500&quot;&gt;
+&lt;![CDATA[
+REGISTER sip:open-ims.test SIP/2.0
+Via: SIP/2.0/[transport] [local_ip]:[local_port]
+Route: &lt;sip:pcscf.open-ims.test:4060;
+lr&gt;
+Max-Forwards: 70
+From: &quot;alice&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>:4060&gt;
+To: &quot;alice&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>:4060&gt;
+P-Access-Network-Info: 3GPP-UTRAN-TDD;utran-cell-id-3gpp=C359A3913B20E
+Call-ID: [call_id]
+Contact: &lt;sip:alice@[local_ip]:[local_port]&gt;;transport=[transport]
+Content-Length: 0
+Supported: path
+Expires: 300
+CSeq: 1 REGISTER
+User-Agent: Sipp v1.1-TLS, version 20061124
+]]&gt;
+&lt;/send&gt;
+&lt;recv response=&quot;401&quot; auth=&quot;true&quot; rtd=&quot;true&quot;&gt;
+&lt;action&gt;
+&lt;ereg regexp=&quot;.*&quot; search_in=&quot;hdr&quot; header=&quot;Service-Route&quot; assign_to=&quot;1&quot; /&gt;
+&lt;/action&gt;
+&lt;/recv&gt;
+&lt;send retrans=&quot;500&quot;&gt;
+&lt;![CDATA[
+REGISTER sip:open-ims.test SIP/2.0
+Via: SIP/2.0/[transport] [local_ip]:[local_port]
+Route: &lt;sip:pcscf.open-ims.test:4060;lr&gt;
+Max-Forwards: 70
+From: &quot;alice&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+To: &quot;alice&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+P-Access-Network-Info: 3GPP-UTRAN-TDD;utran-cell-id-3gpp=C359A3913B20E
+Call-ID:[call_id]
+CSeq: 2 REGISTER
+Contact: &lt;sip:alice@[local_ip]:[local_port]&gt;
+Expires: 300
+Content-Length: 0
+[authentication username=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> password=alice]
+Supported: path
+User-Agent: Sipp v1.1-TLS, version 20061124
+]]&gt;
+&lt;/send&gt;
+&lt;recv response=&quot;200&quot;&gt;
+&lt;/recv&gt;
+&lt;/scenario&gt;
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100121/8b9b349c/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100121/8b9b349c/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006019.html">[OpenIMSCore-Users] SIPp with Open IMS Core,	OK message does not arrive from IMS core
+</A></li>
+	<LI>Next message: <A HREF="006021.html">[OpenIMSCore-Users] Problem with starting P-CSCF &amp; S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6020">[ date ]</a>
+              <a href="thread.html#6020">[ thread ]</a>
+              <a href="subject.html#6020">[ subject ]</a>
+              <a href="author.html#6020">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

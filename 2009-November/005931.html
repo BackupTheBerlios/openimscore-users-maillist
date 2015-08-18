@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] FW: Check module P_is_registered in PCSCF (registration.c)&#8207;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%20%3D%3Futf-8%3Fq%3FFW%3D3A_Check_module_P%3D5Fis%3D5Fregiste%3F%3D%0A%20%3D%3Futf-8%3Fq%3Fred_in_PCSCF_%3D28registration%3D2Ec%3D29%3DE2%3D80%3D8F%3F%3D&In-Reply-To=%3C4B0AB449.3060706%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005894.html">
+   <LINK REL="Next"  HREF="005895.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] FW: Check module P_is_registered in PCSCF (registration.c)&#8207;</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%20%3D%3Futf-8%3Fq%3FFW%3D3A_Check_module_P%3D5Fis%3D5Fregiste%3F%3D%0A%20%3D%3Futf-8%3Fq%3Fred_in_PCSCF_%3D28registration%3D2Ec%3D29%3DE2%3D80%3D8F%3F%3D&In-Reply-To=%3C4B0AB449.3060706%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] FW: Check module P_is_registered in PCSCF (registration.c)&#8207;">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Nov 23 17:11:53 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005894.html">[OpenIMSCore-Users] FW: Check module P_is_registered in PCSCF (registration.c)&#8207;
+</A></li>
+        <LI>Next message: <A HREF="005895.html">[OpenIMSCore-Users] Registration problem. Help please.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5931">[ date ]</a>
+              <a href="thread.html#5931">[ thread ]</a>
+              <a href="subject.html#5931">[ subject ]</a>
+              <a href="author.html#5931">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>You might have missed that, by changing the pcscf.cfg, if you wanted it 
+to take effect, you'd need to restart the P-CSCF.
+
+OK, if you did restart the P-CSCF, then you might've missed that 
+restarting it would reset all the registration statuses at the P-CSCF. 
+the P_is_registered() checks only the registration status of that user 
+at that P-CSCF and is not necessarily the same as the status in the HSS, 
+demonstrated by the P-CSCF restart.
+
+Cheers,
+-Dragos
+
+Qu&#7889;c Huy Nguy&#7877;n wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> First, I have (pcscf.cfg):
+</I>&gt;<i>
+</I>&gt;<i> if (method==&quot;REGISTER&quot;) {
+</I>&gt;<i>
+</I>&gt;<i>         route(REGISTER);
+</I>&gt;<i>
+</I>&gt;<i>         break;
+</I>&gt;<i>     }
+</I>&gt;<i>
+</I>&gt;<i> And run:
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu</A>:~/Desktop/backup/sipp.svn# sipp enable -trace_err -sf 
+</I>&gt;<i> alice.xml 127.0.0.1:4060 -i 127.0.0.1 -p 3062
+</I>&gt;<i> --&gt;Alice is registered successfully. See in 
+</I>&gt;<i> <A HREF="http://127.0.0.1:8080/hss.web.console/">http://127.0.0.1:8080/hss.web.console/</A>
+</I>&gt;<i>
+</I>&gt;<i> ID 	Identity 	Implicit-Set ID 	Type 	Reg. Status 	Barring
+</I>&gt;<i> 1 	sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at ptit.edu.vn</A> 
+</I>&gt;<i> &lt;<A HREF="http://127.0.0.1:8080/hss.web.console/IMPU_Load.do?id=1">http://127.0.0.1:8080/hss.web.console/IMPU_Load.do?id=1</A>&gt; 	1 
+</I>&gt;<i> Public_User_Identity 	Registered 	false
+</I>&gt;<i> 2 	sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at ptit.edu.vn</A> 
+</I>&gt;<i> &lt;<A HREF="http://127.0.0.1:8080/hss.web.console/IMPU_Load.do?id=2">http://127.0.0.1:8080/hss.web.console/IMPU_Load.do?id=2</A>&gt; 	2 
+</I>&gt;<i> Public_User_Identity 	Not-Registered 	false
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Then, I add P_is_registered into the code above:
+</I>&gt;<i>
+</I>&gt;<i> if (method==&quot;REGISTER&quot;) {
+</I>&gt;<i>         if (!P_is_registered()) {
+</I>&gt;<i>         route(REGISTER);
+</I>&gt;<i>             }
+</I>&gt;<i>         break;
+</I>&gt;<i>     }
+</I>&gt;<i>
+</I>&gt;<i> And run:
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu</A>:~/Desktop/backup/sipp.svn# sipp enable -trace_err -sf 
+</I>&gt;<i> alice.xml 127.0.0.1:4060 -i 127.0.0.1 -p 3062
+</I>&gt;<i>
+</I>&gt;<i> But only first user is registered successfully (view attach file).
+</I>&gt;<i>
+</I>&gt;<i> Here is the log file:
+</I>&gt;<i>
+</I>&gt;<i> sipp: The following events occured:
+</I>&gt;<i> 2009-11-04 12:30:00: Aborting call on UDP retransmission timeout for 
+</I>&gt;<i> Call-ID '<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-9651 at 127.0.0.1</A>'.
+</I>&gt;<i> 2009-11-04 12:30:00: Discarding message which can't be mapped to a 
+</I>&gt;<i> known SIPp call:
+</I>&gt;<i> SIP/2.0 403 Forbidden - Originating subsequent requests outside dialog 
+</I>&gt;<i> not allowed
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:3062;branch=z9hG4bK-9651-1--1;rport=3062
+</I>&gt;<i> From: sipp &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sipp at 127.0.0.1</A>:3062&gt;;tag=1
+</I>&gt;<i> To: sut 
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">service at 127.0.0.1</A>:4060&gt;;tag=8456b23699f06fdb908a4dfde0051a59.db0f
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-9651 at 127.0.0.1</A>
+</I>&gt;<i> CSeq: 2 BYE
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i> Warning: 392 127.0.0.1:4060 &quot;Noisy feedback tells:  pid=15537 
+</I>&gt;<i> req_src_ip=127.0.0.1 req_src_port=3062 
+</I>&gt;<i> in_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">service at 127.0.0.1</A>:4060 out_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">service at 127.0.0.1</A>:4060 
+</I>&gt;<i> via_cnt==1&quot;
+</I>&gt;<i> .....................................................
+</I>&gt;<i> I try with Bob (not-registered), the result is same.
+</I>&gt;<i> I dont't know why is the result like that, anyone can explain for me ?
+</I>&gt;<i> My purpose is check if the user was previous registered, route to 
+</I>&gt;<i> REGISTER, vice versa break (with users not yet register ). Have other 
+</I>&gt;<i> way to do that ?
+</I>&gt;<i>
+</I>&gt;<i> Thanks in advanced.
+</I>&gt;<i> Quoc Huy
+</I>&gt;<i>
+</I>&gt;<i> *
+</I>&gt;<i>
+</I>&gt;<i> *
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> *
+</I>&gt;<i> *Nguy&#7877;n Qu&#7889;c Huy*
+</I>&gt;<i> *
+</I>&gt;<i> /Post &amp; Telecommunications Institute and Technology/
+</I>&gt;<i> /branch Ho Chi Minh City/
+</I>&gt;<i> --------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> /_Email_:/ / // <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">huy_quocnguyen at live.com</A>/
+</I>&gt;<i>
+</I>&gt;<i> /_Mobile_:// +84 906755226/
+</I>&gt;<i>
+</I>&gt;<i> _/Y/_/_!M_:     //huy_quocnguyen1987/
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Windows Live Hotmail: Your friends can get your Facebook updates, 
+</I>&gt;<i> right from Hotmail&#174;. 
+</I>&gt;<i> &lt;<A HREF="http://www.microsoft.com/middleeast/windows/windowslive/see-it-in-action/social-network-basics.aspx?ocid=PID23461::T:WLMTAGL:ON:WL:en-xm:SI_SB_4:092009">http://www.microsoft.com/middleeast/windows/windowslive/see-it-in-action/social-network-basics.aspx?ocid=PID23461::T:WLMTAGL:ON:WL:en-xm:SI_SB_4:092009</A>&gt; 
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Windows Live: Make it easier for your friends to see what you&#8217;re up to 
+</I>&gt;<i> on Facebook. 
+</I>&gt;<i> &lt;<A HREF="http://www.microsoft.com/middleeast/windows/windowslive/see-it-in-action/social-network-basics.aspx?ocid=PID23461::T:WLMTAGL:ON:WL:en-xm:SI_SB_2:092009">http://www.microsoft.com/middleeast/windows/windowslive/see-it-in-action/social-network-basics.aspx?ocid=PID23461::T:WLMTAGL:ON:WL:en-xm:SI_SB_2:092009</A>&gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005894.html">[OpenIMSCore-Users] FW: Check module P_is_registered in PCSCF (registration.c)&#8207;
+</A></li>
+	<LI>Next message: <A HREF="005895.html">[OpenIMSCore-Users] Registration problem. Help please.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5931">[ date ]</a>
+              <a href="thread.html#5931">[ thread ]</a>
+              <a href="subject.html#5931">[ subject ]</a>
+              <a href="author.html#5931">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

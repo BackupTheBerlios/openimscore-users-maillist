@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Large size SIP messages handling by S-CSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Large%20size%20SIP%20messages%20handling%20by%20S-CSCF&In-Reply-To=%3C199574780911260920q39b6c22v2a14ad03726c3a23%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005945.html">
+   <LINK REL="Next"  HREF="005946.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Large size SIP messages handling by S-CSCF</H1>
+    <B>Ryota Ishibashi</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Large%20size%20SIP%20messages%20handling%20by%20S-CSCF&In-Reply-To=%3C199574780911260920q39b6c22v2a14ad03726c3a23%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Large size SIP messages handling by S-CSCF">ri.tokyo.japan at gmail.com
+       </A><BR>
+    <I>Thu Nov 26 18:20:09 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005945.html">[OpenIMSCore-Users] Large size SIP messages handling by S-CSCF
+</A></li>
+        <LI>Next message: <A HREF="005946.html">[OpenIMSCore-Users] registration with different IMPI and IMPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5949">[ date ]</a>
+              <a href="thread.html#5949">[ thread ]</a>
+              <a href="subject.html#5949">[ subject ]</a>
+              <a href="author.html#5949">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I am sorry there are some mistakes in the post I sent previously.
+I have found them by checking the wireshark logs more carefully.
+
+The SUBSCRIBE request was NOT forwarded to the presence server by the
+S-CSCF, because iFC trigger point was not described properly.
+Then, regarding to this, the NOTIFY request from the presence server
+was generated in an old subscription created by another old SUBSCRIBE
+request.
+The PUBLISH request forwarded to the S-CSCF by the P-CSCF WAS
+fragmented over UDP, and the request WAS forwarded to the presence
+server by the S-CSCF correctly.
+
+Again I am sorry for my hasty post.
+I will take further investigation and share the results if there will
+be any significant information.
+
+Best regards,
+
+Ryota
+
+
+2009/11/26 Ryota Ishibashi &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ri.tokyo.japan at gmail.com</A>&gt;:
+&gt;<i> Hello all,
+</I>&gt;<i>
+</I>&gt;<i> I have a presence server which is connected to the S-CSCF via ISC interface,
+</I>&gt;<i> and also several SIP clients connected to the P-CSCF via Gm interface.
+</I>&gt;<i>
+</I>&gt;<i> Now I am facing two similar problems regarding
+</I>&gt;<i> SUBSCRIBE/NOTIFY/PUBLISH as follows;
+</I>&gt;<i> (I am sorry but I have not prepared wireshark logs yet, so I will
+</I>&gt;<i> attach them later.)
+</I>&gt;<i>
+</I>&gt;<i> a) A SIP client performs initial registration procedure (REG-401 and
+</I>&gt;<i> REG-200 transactions), and it succeeds.
+</I>&gt;<i> Then the client generates and sends a PUBLISH request, which contains
+</I>&gt;<i> XML presence data, to the P-CSCF.
+</I>&gt;<i> This PUBLISH request is over 2KB, so the client sends it to the P-CSCF
+</I>&gt;<i> over TCP, not UDP.
+</I>&gt;<i> Upon receipt of it, P-CSCF forwards it to the S-CSCF over UDP, not TCP.
+</I>&gt;<i> I have not confirmed yet but MTU between P-CSCF and S-CSCF may be enough large,
+</I>&gt;<i> because the PUBLISH request is not fragmented on this forwarding.
+</I>&gt;<i> The problem occurs at the next step.
+</I>&gt;<i> The S-CSCF, upon receipt of the PUBLISH request from the P-CSCF, does
+</I>&gt;<i> not react at all.
+</I>&gt;<i> More concretely to say, not responding by any error/successful
+</I>&gt;<i> responses, nor forwarding it to the presence server.
+</I>&gt;<i> I have not confirmed whether the S-CSCF generated any error log or
+</I>&gt;<i> not, but I will do soon.
+</I>&gt;<i>
+</I>&gt;<i> b) A SIP client performs initial registration procedure (REG-401 and
+</I>&gt;<i> REG-200 transactions), and it succeeds.
+</I>&gt;<i> Then the client generates and sends a SUBSCRIBE request, whose Event
+</I>&gt;<i> header field has &quot;presence&quot; event package,
+</I>&gt;<i> to the P-CSCF.
+</I>&gt;<i> Upon receipt of it, the P-CSCF forwards it to the S-CSCF.
+</I>&gt;<i> In according to the iFC triggar point, the S-CSCF forwards it to the
+</I>&gt;<i> presence server.
+</I>&gt;<i> And 200 OK response is sent back from the presence server to the
+</I>&gt;<i> client through the S-CSCF and the P-CSCF.
+</I>&gt;<i> After that, the presence server generates and send the NOTIFY request,
+</I>&gt;<i> which contains XML presence data, to the S-CSCF.
+</I>&gt;<i> This NOTIFY request is over 2KB, so the presence server sends it to
+</I>&gt;<i> the S-CSCF over TCP, not UDP.
+</I>&gt;<i> Then, the problem occurs.
+</I>&gt;<i> The S-CSCF, upon receipt of the NOTIFY request from the presence
+</I>&gt;<i> server, does not react at all.
+</I>&gt;<i> Not responding by any error/successful responses, nor forwarding it to
+</I>&gt;<i> the P-CSCF.
+</I>&gt;<i> I confirmied that the S-CSCF generated an error log &quot;tcp_read: buffer overrun&quot;.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I checked the openIMScore mailing list archives, and found the similar
+</I>&gt;<i> discussions as above issue b.
+</I>&gt;<i>
+</I>&gt;<i> - <A HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-June/005533.html">http://lists.berlios.de/pipermail/openimscore-users/2008-June/005533.html</A>
+</I>&gt;<i> - <A HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-September/006116.html">http://lists.berlios.de/pipermail/openimscore-users/2008-September/006116.html</A>
+</I>&gt;<i>
+</I>&gt;<i> However I cannot find the solution for this issue b as of the moment,
+</I>&gt;<i> nor the discussions regarding the issue a.
+</I>&gt;<i>
+</I>&gt;<i> Is there anyone who knows anything about these issues?
+</I>&gt;<i> Is there any upper limit of the SIP message size which the S-CSCF can
+</I>&gt;<i> handle correctly?
+</I>&gt;<i> If yes and it is the reason of above issues, how can I work around and
+</I>&gt;<i> avoid them?
+</I>&gt;<i>
+</I>&gt;<i> I would greatly appreciate if anyone could provide me some advise.
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i>
+</I>&gt;<i> Ryota
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005945.html">[OpenIMSCore-Users] Large size SIP messages handling by S-CSCF
+</A></li>
+	<LI>Next message: <A HREF="005946.html">[OpenIMSCore-Users] registration with different IMPI and IMPU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5949">[ date ]</a>
+              <a href="thread.html#5949">[ thread ]</a>
+              <a href="subject.html#5949">[ subject ]</a>
+              <a href="author.html#5949">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

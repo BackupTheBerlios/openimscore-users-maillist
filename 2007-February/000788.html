@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users]  Triggers activation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%20Triggers%20activation&In-Reply-To=%3CC10A7FD0F787D14382109AE458A7DE2901437517%40BEXEXCLUS01.BEX.PRIV%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000787.html">
+   <LINK REL="Next"  HREF="000789.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users]  Triggers activation</H1>
+    <B>frederic moulis</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%20Triggers%20activation&In-Reply-To=%3CC10A7FD0F787D14382109AE458A7DE2901437517%40BEXEXCLUS01.BEX.PRIV%3E"
+       TITLE="[OpenIMSCore-Users]  Triggers activation">frederic.moulis at NIJI.FR
+       </A><BR>
+    <I>Tue Feb 13 16:12:17 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000787.html">[OpenIMSCore-Users]  Triggers activation
+</A></li>
+        <LI>Next message: <A HREF="000789.html">[OpenIMSCore-Users] Triggers activation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#788">[ date ]</a>
+              <a href="thread.html#788">[ thread ]</a>
+              <a href="subject.html#788">[ subject ]</a>
+              <a href="author.html#788">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I think i found a bug. In modules/isc/checker.c, in the method
+&quot;isc_check_headers&quot; :
+
+    109		while(i!=NULL){
+    110                 ch = i-&gt;name.s[i-&gt;name.len];
+    111                 i-&gt;name.s[i-&gt;name.len]=0;
+    112                 if ((spt-&gt;type&gt;0&amp;&amp;spt-&gt;type==i-&gt;type)||
+//matches known type
+    113
+(regexec(&amp;(header_comp),i-&gt;name.s,0,NULL,0)==0)
+    114                         )               //or matches the name
+    115                 {
+    116                         i-&gt;name.s[i-&gt;name.len]=ch;
+    117                         DBG(&quot;DEBUG:&quot;M_NAME&quot;:ifc_check_headers:
+Found Header[%.*s] %.*s \n&quot;,
+    118
+i-&gt;name.len,i-&gt;name.s,i-&gt;body.len,i-&gt;body.s);
+    119                         //if the header should be absent but
+found it
+    120                         if (spt-&gt;sip_header.content.s==NULL)
+    121                                 if (spt-&gt;condition_negated)
+return FALSE;
+    122                         //check regex
+    123                         c = i-&gt;body.s[i-&gt;body.len];
+    124                         i-&gt;body.s[i-&gt;body.len]=0;
+    125                         if
+(regexec(&amp;(content_comp),i-&gt;body.s,0,NULL,0)==0)//regex match
+    126                         {
+    127                                 i-&gt;body.s[i-&gt;body.len]=c;
+    128                                 return TRUE;
+    129                         }
+    130                         i-&gt;body.s[i-&gt;body.len]=c;
+    131                 }
+    132                 else i-&gt;name.s[i-&gt;name.len]=ch;
+    133                 i = i-&gt;next;
+    134         }
+
+I think the test on header type on line 112 should be the following :
+
+if ((spt-&gt;sip_header.type&gt;0&amp;&amp;spt-&gt;sip_header.type==i-&gt;type)|| //matches
+known type
+
+Am I wrong ?
+I think the problem I had is that when finding a &quot;To&quot; header, whose type
+is 3, it matched the spt-&gt;type (that was 3 = IFC_SIP_HEADER in
+ifc_datastruct.h, line 87).
+
+Best regards,
+Frederic
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000787.html">[OpenIMSCore-Users]  Triggers activation
+</A></li>
+	<LI>Next message: <A HREF="000789.html">[OpenIMSCore-Users] Triggers activation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#788">[ date ]</a>
+              <a href="thread.html#788">[ thread ]</a>
+              <a href="subject.html#788">[ subject ]</a>
+              <a href="author.html#788">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

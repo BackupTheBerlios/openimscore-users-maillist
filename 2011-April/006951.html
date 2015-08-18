@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Trouble%20loading%20with%20IMS%20Bench%20SIPp&In-Reply-To=%3C019101cbfc3d%24f339fee0%240500a8c0%40trosc%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006947.html">
+   <LINK REL="Next"  HREF="006954.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp</H1>
+    <B>wondra</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Trouble%20loading%20with%20IMS%20Bench%20SIPp&In-Reply-To=%3C019101cbfc3d%24f339fee0%240500a8c0%40trosc%3E"
+       TITLE="[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp">wondra at volny.cz
+       </A><BR>
+    <I>Sat Apr 16 15:55:31 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006947.html">[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+</A></li>
+        <LI>Next message: <A HREF="006954.html">[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6951">[ date ]</a>
+              <a href="thread.html#6951">[ thread ]</a>
+              <a href="subject.html#6951">[ subject ]</a>
+              <a href="author.html#6951">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yes, that was indeed caused by NAT. Now I am stuck at about 33 regs/s,
+will measure exactly later, and 300 cps with IMS_Bench's default
+scenario mix. 
+
+However, the test doesn't stop with the tested or testing machine
+overloading or running out of memory, but by P-CSCF crashing to the
+ground. 
+
+This time increasing memory limit only leads to heavy swapping while the
+thing's crashing. (It fills the 4GB really quickly from the 100-200MB it
+uses normally.)
+
+Is this normal? Or should I try something else? I _will_ try increasing
+the number of childs to more than I have CPUs.
+
+Symptoms are a mix of:
+4(30961) ERROR: build_req_buf_from_sip_req: out of memory
+ 4(30961) ERROR: print_uac_request: no pkg_mem
+ 4(30961) ERROR: t_forward_nonack: failure to add branches
+ 4(30961) ERR:P-CSCF:P_follows_record_routes(): More RR headers in reply
+than in request
+ 4(30961) ERROR: build_res_buf_from_sip_res: out of mem
+ 4(30961) ERROR: relay_reply: no mem for outbound reply buffer
+ 4(30961) ERROR: build_res_buf_from_sip_req: out of memory  ; needs 843
+.
+.
+.
+4(30961) ERR:P-CSCF:cscf_get_next_record_routes: Error parsing as Route
+header
+ 4(30961) parse_contact(): No memory left
+ 4(30961) get_contact_uri(): Error while parsing Contact body
+ 4(30961) ERROR: del_lump: out of memory
+ 4(30961) build_res_buf_from_sip_res: error trying to remove firstvia
+ 4(30961) ERROR: relay_reply: no mem for outbound reply buffer
+ 4(30961) ERROR: rport_builder: out of memory
+ 4(30961) ERROR: build_res_buf_from_sip_req: rport_builder failed
+ 4(30961) ERROR: via_builder: out of memory
+ 4(30961) ERROR: build_local: no via header got from builder
+ 4(30961) ERROR: attempt to build a CANCEL failed
+
+-----Original Message-----
+From: Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>] 
+Sent: Friday, April 15, 2011 7:17 PM
+To: 'wondra'; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: RE: [OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+
+Hi Thomas,
+
+ 
+&gt;<i> I-CSCF console:
+</I>&gt;<i> 4(22269) ERROR: uri2dst: failed to resolve &quot;scscf.open-ims.test&quot;
+</I>&gt;<i> 4(22269) ERROR: t_forward_nonack: failure to add branches
+</I>&gt;<i> 4(22269) ERROR: w_t_relay (failure mode): forwarding failed
+</I> 
+&gt;<i> I am pretty sure, that there is no &quot;.open-ims.test&quot; left in the config
+</I>&gt;<i> files or database. Only in the source code.
+</I>
+Did you already try to trace the core messages (SIP, diameter)?
+This should show the mysterious domainname.
+
+BR
+Franz
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006947.html">[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+</A></li>
+	<LI>Next message: <A HREF="006954.html">[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6951">[ date ]</a>
+              <a href="thread.html#6951">[ thread ]</a>
+              <a href="subject.html#6951">[ subject ]</a>
+              <a href="author.html#6951">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

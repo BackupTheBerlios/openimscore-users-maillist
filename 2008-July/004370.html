@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Error in trigger points when forwarding to AS	version r573
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20in%20trigger%20points%20when%20forwarding%20to%20AS%0A%09version%20r573&In-Reply-To=%3C5fd52d7a0807280654lbe7a63bw54a11e4c9f84cc7c%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004393.html">
+   <LINK REL="Next"  HREF="004371.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Error in trigger points when forwarding to AS	version r573</H1>
+    <B>Tomasz Zieleniewski</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20in%20trigger%20points%20when%20forwarding%20to%20AS%0A%09version%20r573&In-Reply-To=%3C5fd52d7a0807280654lbe7a63bw54a11e4c9f84cc7c%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Error in trigger points when forwarding to AS	version r573">tzieleniewski at gmail.com
+       </A><BR>
+    <I>Mon Jul 28 15:54:50 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004393.html">[OpenIMSCore-Users] ims-communicator problem while registering
+</A></li>
+        <LI>Next message: <A HREF="004371.html">[OpenIMSCore-Users] Error in trigger points when forwarding to AS	version r573
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4370">[ date ]</a>
+              <a href="thread.html#4370">[ thread ]</a>
+              <a href="subject.html#4370">[ subject ]</a>
+              <a href="author.html#4370">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+When I try to forward INVITE message to AS by SPT
+'method == INVITE' my message is forwarded to AS.
+When try to forward the same message to AS and add
+second disjunctive condition
+'Request-URI == .*iptv.*
+message is not forwarded to AS.
+SCSCF responds:
+478 Unresolvable destination (478/TM)
+and then
+500 Error forwarding towards terminating leg
+
+output from log:
+1(2992) DBG:S-CSCF:S_save_dialog(orig): Call-ID &lt;924835177&gt;
+ 1(2992) INF:S-CSCF:----------  S-CSCF Dialog List begin --------------
+ 1(2992) INF:S-CSCF:[  40] Dir[0] Call-ID:&lt;924835177&gt; AOR:&lt;
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tzl at ims.rd.touk.pl</A> &lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Atzl at ims.rd.touk.pl</A>&gt;&gt;
+ 1(2992) INF:S-CSCF:            Method:[1] State:[1] Exp:[  60] Ref:[]
+Event:[]
+ 1(2992) INF:S-CSCF:----------  S-CSCF Dialog List end   --------------
+ 1(2992) INFO:ISC:ISC_match_filter(orig): Checking triggers
+ 1(2992) INFO:ISC:isc_mark_get_from_msg: Trying to get the mark from the
+message
+ 1(2992) INFO:ISC:ISC_match_filter(orig): Starting triggering
+ 1(2992) INFO:ISC:ISC_match_filter(orig): Orig User
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tzl at ims.rd.touk.pl</A>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Atzl at ims.rd.touk.pl</A>&gt;&gt;
+[1]
+ 1(2992) INFO:ISC:isc_checker_find: starting search
+ 1(2992) INFO:ISC:isc_mark_get_from_msg: Trying to get the mark from the
+message
+ 1(2992) DBG:S-CSCF:cscf_get_terminating_identity: &lt;
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">file at iptv.ims.rd.touk.pl</A> &lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Afile at iptv.ims.rd.touk.pl</A>&gt;&gt;
+ 1(2992) get_r_public (Trying wildcard PSI) found no match
+ 1(2992) ERROR: sip_hostport2su: could not resolve hostname: &quot;
+iptv.ims.rd.touk.pl&quot;
+ 1(2992) ERROR: uri2dst: failed to resolve &quot;iptv.ims.rd.touk.pl&quot;
+ 1(2992) ERROR: t_forward_nonack: failure to add branches
+
+
+I attached wireshark log.
+
+Considered INVITE:
+INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">file at iptv.ims.rd.touk.pl</A> &lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Afile at iptv.ims.rd.touk.pl</A>&gt; SIP/2.0
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.ims.rd.touk.pl</A>:4060;lr&gt;
+Via: SIP/2.0/UDP 212.180.179.42:4060;branch=z9hG4bKe085.56971451.0
+Via: SIP/2.0/UDP 192.168.0.165:5061;rport=5061;branch=z9hG4bK65598236
+Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.ims.rd.touk.pl</A>:6060;lr&gt;
+From: &quot;Tomasz Zieleniewski&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tzl at ims.rd.touk.pl</A>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Atzl at ims.rd.touk.pl</A>&gt;
+&gt;<i>;tag=1343692420
+</I>To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">file at iptv.ims.rd.touk.pl</A> &lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Afile at iptv.ims.rd.touk.pl</A>&gt;&gt;
+Call-ID: 145218108
+CSeq: 20 INVITE
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tzl at 192.168.0.165</A>:5061&gt;
+Content-Type: application/sdp
+Allow: INVITE, ACK, CANCEL, BYE, PRACK, UPDATE, REFER, MESSAGE
+Max-Forwards: 16
+User-Agent: UCT IMS Client
+Subject: IMS Call
+Expires: 120
+P-Preferred-Service: urn:xxx:3gpp-service.ims.icsi.mmtel
+Privacy: none
+P-Access-Network-Info: IEEE-802.11a
+Supported: 100rel
+Content-Length:   342
+P-Asserted-Identity: &quot;Tomasz Zieleniewski&quot;
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tzl at ims.rd.touk.pl</A>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Atzl at ims.rd.touk.pl</A>&gt;
+&gt;<i>
+</I>P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd00000000488dcdad00000017&quot;;icid-generated-at=
+212.180.179.42;orig-ioi=&quot;ims.rd.touk.pl&quot;
+
+v=0
+o=- 0 0 IN IP4 192.168.0.165
+s=IMS Call
+c=IN IP4 212.180.179.42
+t=0 0
+m=audio 16498 RTP/AVP 3 0 101
+b=AS:64
+a=rtpmap:3 GSM/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:101 telephone-event/8000
+a=fmtp:101 0-11
+a=curr:qos local none
+a=curr:qos remote none
+a=des:qos none local sendrecv
+a=des:qos none remote sendrecv
+a=nortpproxy:yes
+
+Waiting for Your feedback
+
+Kind regards
+Tomasz
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080728/cb6f3529/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080728/cb6f3529/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: error_wireshark.pcap
+Type: application/x-extension-pcap
+Size: 8926 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080728/cb6f3529/attachment.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080728/cb6f3529/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004393.html">[OpenIMSCore-Users] ims-communicator problem while registering
+</A></li>
+	<LI>Next message: <A HREF="004371.html">[OpenIMSCore-Users] Error in trigger points when forwarding to AS	version r573
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4370">[ date ]</a>
+              <a href="thread.html#4370">[ thread ]</a>
+              <a href="subject.html#4370">[ subject ]</a>
+              <a href="author.html#4370">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

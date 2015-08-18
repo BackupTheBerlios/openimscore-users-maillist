@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] JavaDiameterPeer Help
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20JavaDiameterPeer%20Help&In-Reply-To=%3Cc4cad5d70702080758xed88f74kfedb9b80ce785426%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000713.html">
+   <LINK REL="Next"  HREF="000743.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] JavaDiameterPeer Help</H1>
+    <B>Rui Leal</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20JavaDiameterPeer%20Help&In-Reply-To=%3Cc4cad5d70702080758xed88f74kfedb9b80ce785426%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] JavaDiameterPeer Help">ruicarlosleal at gmail.com
+       </A><BR>
+    <I>Thu Feb  8 16:58:49 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000713.html">[OpenIMSCore-Users] JavaDiameterPeer Help
+</A></li>
+        <LI>Next message: <A HREF="000743.html">[OpenIMSCore-Users] JavaDiameterPeer Help
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#742">[ date ]</a>
+              <a href="thread.html#742">[ thread ]</a>
+              <a href="subject.html#742">[ subject ]</a>
+              <a href="author.html#742">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi!
+Still having problems with peer configurations. How do I had a peer to a
+peer list? Is it editing this part of the code?
+
+&lt;Acceptor port=&quot;3868&quot; bind=&quot;127.0.1.1&quot; /&gt;
+&lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;
+
+They are both accepting unknown peers.
+I also edited PeerDiameterTest.java with my real realm and my host,
+&quot;centrino&quot;, instead of &quot;cartman&quot; (by the way, I should have met my previous
+laptop. Always crashing. I would called him &quot;kenny&quot;).
+I'm using in the test two peers that phisically are the same (localhost and
+centrino). I guess there's no problem in the simulation.
+
+Thanks for you time
+
+Rui
+
+
+Here are my configuration files:
+
+
+DiameterPeer.xml
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;DiameterPeer
+    FQDN=&quot;centrino&quot;
+    Realm=&quot;netvisao.pt&quot;
+    Vendor_Id=&quot;10415&quot;
+    Product_Name=&quot;JavaDiameterPeer&quot;
+    AcceptUnknownPeers=&quot;1&quot;
+    DropUnknownOnDisconnect=&quot;1&quot;
+    Tc=&quot;10&quot;
+    Workers=&quot;8&quot;
+    QueueLength=&quot;32&quot;
+&gt;<i>
+</I>&lt;!--    &lt;Peer FQDN=&quot;icscf.open-ims.test.&quot; Realm=&quot;open-ims.test&quot;
+port=&quot;3868&quot;/&gt; --&gt;
+&lt;!--    &lt;Peer FQDN=&quot;localhost&quot; Realm=&quot;open-ims.test&quot; port=&quot;3868&quot;/&gt; --&gt;
+
+    &lt;Acceptor port=&quot;3868&quot; bind=&quot;127.0.1.1&quot; /&gt;
+
+    &lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;
+    &lt;Auth id=&quot;16777216&quot; vendor=&quot;10416&quot; /&gt;
+    &lt;Acct id=&quot;16777216&quot; vendor=&quot;0&quot; /&gt;
+
+
+DiameterPeer2.xml
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;DiameterPeer
+    FQDN=&quot;localhost&quot;
+    Realm=&quot;netvisao.pt&quot;
+    Vendor_Id=&quot;10416&quot;
+    Product_Name=&quot;JavaDiameterPeer&quot;
+    AcceptUnknownPeers=&quot;1&quot;
+    DropUnknownOnDisconnect=&quot;1&quot;
+    Tc=&quot;10&quot;
+    Workers=&quot;8&quot;
+    QueueLength=&quot;32&quot;
+&gt;<i>
+</I>&lt;!--    &lt;Peer FQDN=&quot;icscf.open-ims.test.&quot; Realm=&quot;open-ims.test&quot;
+port=&quot;3868&quot;/&gt; --&gt;
+&lt;!--    &lt;Peer FQDN=&quot;localhost&quot; Realm=&quot;open-ims.test&quot; port=&quot;3868&quot;/&gt; --&gt;
+
+    &lt;Acceptor port=&quot;3869&quot; bind=&quot;127.0.0.1&quot; /&gt;
+
+    &lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;
+    &lt;Auth id=&quot;16777216&quot; vendor=&quot;10416&quot; /&gt;
+    &lt;Acct id=&quot;16777216&quot; vendor=&quot;0&quot; /&gt;
+
+Result:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at centrino</A>:~/workspace/JavaDiameterPeer/classes# java -cp .:../lib/log4j-
+1.2.13.jar de.fhg.fokus.diameter.DiameterPeer.DiameterPeerTest../DiameterPeer.xml
+../DiameterPeer2.xml
+[main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeerTest  -
+DiameterPeer Starting...
+[main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - FQDN:
+centrino
+[main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - Realm:
+netvisao.pt
+[main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - Vendor_ID :
+10415
+[main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - Product
+Name: JavaDiameterPeer
+[main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  -
+AcceptUnknwonPeers: true
+[main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  -
+DropUnknownOnDisconnect: true
+[main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - FQDN:
+localhost
+[main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - Realm:
+netvisao.pt
+[main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - Vendor_ID :
+10416
+[main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  - Product
+Name: JavaDiameterPeer
+[main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  -
+AcceptUnknwonPeers: true
+[main] INFO  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  -
+DropUnknownOnDisconnect: true
+[main] ERROR de.fhg.fokus.diameter.DiameterPeer.DiameterPeer  -
+DiameterPeer: Peer centrino not found in peer list.
+
+
+
+
+
+
+
+
+On 2/7/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Did you also configured the peers to connect to each-other? At least one
+</I>&gt;<i> of them has to have the other in the peer list and the other to accept
+</I>&gt;<i> also unknown peers (if you don't want to configure it reciprocal).
+</I>&gt;<i> &quot;cartman&quot; is the name of my laptop (because it's fat and likes to
+</I>&gt;<i> act-up). You can replace that with anything that you like and would also
+</I>&gt;<i> be DNS resolvable. So use real Fully Qualified Domain Names for those
+</I>&gt;<i> entries.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Rui Leal wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks Mr. Dragos!
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I followed your instructions, but I'm having problems setting a
+</I>&gt;<i> &gt; client-server diameter connection, using the provided example
+</I>&gt;<i> &gt; DiameterPeerTest. I'm using two files (DiameterPeer.xml and
+</I>&gt;<i> &gt; DiameterPeer2.xml) with different acceptor ports and different FQDN's,
+</I>&gt;<i> &gt; in the same realm, naming the client &quot;cartman&quot;, resulting
+</I>&gt;<i> &gt; &quot;DiameterPeer: Peer cartman not found in peer list. &quot;. Obviously I
+</I>&gt;<i> &gt; think the problem is in peers configuration.
+</I>&gt;<i> &gt; Any kind of help is appreciated.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks in advance,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Rui
+</I>&gt;<i> &gt;
+</I>&gt;<i> t.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070208/d909ad3d/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070208/d909ad3d/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000713.html">[OpenIMSCore-Users] JavaDiameterPeer Help
+</A></li>
+	<LI>Next message: <A HREF="000743.html">[OpenIMSCore-Users] JavaDiameterPeer Help
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#742">[ date ]</a>
+              <a href="thread.html#742">[ thread ]</a>
+              <a href="subject.html#742">[ subject ]</a>
+              <a href="author.html#742">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

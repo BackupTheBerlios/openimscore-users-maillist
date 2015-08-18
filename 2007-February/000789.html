@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Triggers activation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Triggers%20activation&In-Reply-To=%3C45D1D917.9030509%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000788.html">
+   <LINK REL="Next"  HREF="000798.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Triggers activation</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Triggers%20activation&In-Reply-To=%3C45D1D917.9030509%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Triggers activation">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Feb 13 16:28:23 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000788.html">[OpenIMSCore-Users]  Triggers activation
+</A></li>
+        <LI>Next message: <A HREF="000798.html">[OpenIMSCore-Users] [Feature #3149] Support for RFC 4028 Session	Timers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#789">[ date ]</a>
+              <a href="thread.html#789">[ thread ]</a>
+              <a href="subject.html#789">[ subject ]</a>
+              <a href="author.html#789">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Frederic,
+
+If I would only read my mail more often :)... I have found the same bug
+after some digging.
+
+So you were right. I have also fixed another one in the XML parsing -
+that sip_header.type was not even parsed correctly. It seems that the
+parse_hname2() function in SER changed recently and it was failing if no
+trailing ':' was present after the header name. In SIP messages this
+makes sense, but I only had the simple header name in the service profile.
+
+Fixed in r135.
+
+Thanx for the report,
+-Dragos
+
+
+frederic moulis wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I think i found a bug. In modules/isc/checker.c, in the method
+</I>&gt;<i> &quot;isc_check_headers&quot; :
+</I>&gt;<i>
+</I>&gt;<i>     109		while(i!=NULL){
+</I>&gt;<i>     110                 ch = i-&gt;name.s[i-&gt;name.len];
+</I>&gt;<i>     111                 i-&gt;name.s[i-&gt;name.len]=0;
+</I>&gt;<i>     112                 if ((spt-&gt;type&gt;0&amp;&amp;spt-&gt;type==i-&gt;type)||
+</I>&gt;<i> //matches known type
+</I>&gt;<i>     113
+</I>&gt;<i> (regexec(&amp;(header_comp),i-&gt;name.s,0,NULL,0)==0)
+</I>&gt;<i>     114                         )               //or matches the name
+</I>&gt;<i>     115                 {
+</I>&gt;<i>     116                         i-&gt;name.s[i-&gt;name.len]=ch;
+</I>&gt;<i>     117                         DBG(&quot;DEBUG:&quot;M_NAME&quot;:ifc_check_headers:
+</I>&gt;<i> Found Header[%.*s] %.*s \n&quot;,
+</I>&gt;<i>     118
+</I>&gt;<i> i-&gt;name.len,i-&gt;name.s,i-&gt;body.len,i-&gt;body.s);
+</I>&gt;<i>     119                         //if the header should be absent but
+</I>&gt;<i> found it
+</I>&gt;<i>     120                         if (spt-&gt;sip_header.content.s==NULL)
+</I>&gt;<i>     121                                 if (spt-&gt;condition_negated)
+</I>&gt;<i> return FALSE;
+</I>&gt;<i>     122                         //check regex
+</I>&gt;<i>     123                         c = i-&gt;body.s[i-&gt;body.len];
+</I>&gt;<i>     124                         i-&gt;body.s[i-&gt;body.len]=0;
+</I>&gt;<i>     125                         if
+</I>&gt;<i> (regexec(&amp;(content_comp),i-&gt;body.s,0,NULL,0)==0)//regex match
+</I>&gt;<i>     126                         {
+</I>&gt;<i>     127                                 i-&gt;body.s[i-&gt;body.len]=c;
+</I>&gt;<i>     128                                 return TRUE;
+</I>&gt;<i>     129                         }
+</I>&gt;<i>     130                         i-&gt;body.s[i-&gt;body.len]=c;
+</I>&gt;<i>     131                 }
+</I>&gt;<i>     132                 else i-&gt;name.s[i-&gt;name.len]=ch;
+</I>&gt;<i>     133                 i = i-&gt;next;
+</I>&gt;<i>     134         }
+</I>&gt;<i>
+</I>&gt;<i> I think the test on header type on line 112 should be the following :
+</I>&gt;<i>
+</I>&gt;<i> if ((spt-&gt;sip_header.type&gt;0&amp;&amp;spt-&gt;sip_header.type==i-&gt;type)|| //matches
+</I>&gt;<i> known type
+</I>&gt;<i>
+</I>&gt;<i> Am I wrong ?
+</I>&gt;<i> I think the problem I had is that when finding a &quot;To&quot; header, whose type
+</I>&gt;<i> is 3, it matched the spt-&gt;type (that was 3 = IFC_SIP_HEADER in
+</I>&gt;<i> ifc_datastruct.h, line 87).
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Frederic
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000788.html">[OpenIMSCore-Users]  Triggers activation
+</A></li>
+	<LI>Next message: <A HREF="000798.html">[OpenIMSCore-Users] [Feature #3149] Support for RFC 4028 Session	Timers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#789">[ date ]</a>
+              <a href="thread.html#789">[ thread ]</a>
+              <a href="subject.html#789">[ subject ]</a>
+              <a href="author.html#789">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

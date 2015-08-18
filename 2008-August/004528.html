@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to connect to the HSS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20connect%20to%20the%20HSS&In-Reply-To=%3C48AE96E6.4040508%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004428.html">
+   <LINK REL="Next"  HREF="004429.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to connect to the HSS</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20connect%20to%20the%20HSS&In-Reply-To=%3C48AE96E6.4040508%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] How to connect to the HSS">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Aug 22 12:37:26 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004428.html">[OpenIMSCore-Users] How to connect to the HSS
+</A></li>
+        <LI>Next message: <A HREF="004429.html">[OpenIMSCore-Users] peer list
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4528">[ date ]</a>
+              <a href="thread.html#4528">[ thread ]</a>
+              <a href="subject.html#4528">[ subject ]</a>
+              <a href="author.html#4528">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Miroslave,
+
+1) yes. Fill the auth id of the Sh interface.
+        &lt;Auth id=&quot;16777217&quot; vendor=&quot;10415&quot;/&gt;&lt;!-- 3GPP Sh --&gt;
+If the 2 Diameters peers won't have anything in common, they will not
+establish a successful connection. Also messages are not routed towards
+peers that do not support the specific application ID that they are for.
+
+Also fill in the HSS as a Peer.
+
+2) No. you only need to change the HSS Diameter configuration and
+include the Sh client as a Peer (if the HSS has the AcceptUnknownPeers
+configuration item set to 1, then you don't necessarily need to
+configure it here, but then the connection attempts will happen only
+from the client's side towards the HSS - which is not critical, but it
+might take a little longer until you have an established and usable
+connection). Then remember to configure the Application Server rights on
+the Sh interface, from the HSS web interface.
+
+3) Here you have the HSS itself as example on how to create, send and
+receive Diameter messages. diameterpeertest.java is just a simple use
+example.
+
+Cheers,
+-Dragos
+
+
+Miroslave Gudic wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I would like to know how to connect to the HSS with Java Diameter Peer?
+</I>&gt;<i> I see a lot of messages on the mailing list but i don't really
+</I>&gt;<i> understand.
+</I>&gt;<i>
+</I>&gt;<i> 1) First we must create a diameter client with the Java Diameter Peer
+</I>&gt;<i> (with a config file client.xml but i don't know how to complete it,
+</I>&gt;<i> with which auth id : 16777216 or 16777217,...)
+</I>&gt;<i> 2) Secondly try to establish a connection with the HSS (we must change
+</I>&gt;<i> something on the FHoSS code? how to connect? diameterpeertest.java is
+</I>&gt;<i> the main who establish the connexion?...)
+</I>&gt;<i> 3) Create the good diameter request with AVP
+</I>&gt;<i>
+</I>&gt;<i> More over, i can't see any diameter trace with wireshark? Is it normal?
+</I>&gt;<i>
+</I>&gt;<i> It will be very kind if the persons who achieve to establish the
+</I>&gt;<i> connexion with the HSS explain me (and to the others) how they do.
+</I>&gt;<i>
+</I>&gt;<i> Thanks a lot and best regards,
+</I>&gt;<i>
+</I>&gt;<i> Miroslave
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Discutez sur Messenger o&#249; que vous soyez ! Mettez Messenger sur votre
+</I>&gt;<i> mobile ! &lt;<A HREF="http://www.messengersurvotremobile.com/">http://www.messengersurvotremobile.com/</A>&gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004428.html">[OpenIMSCore-Users] How to connect to the HSS
+</A></li>
+	<LI>Next message: <A HREF="004429.html">[OpenIMSCore-Users] peer list
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4528">[ date ]</a>
+              <a href="thread.html#4528">[ thread ]</a>
+              <a href="subject.html#4528">[ subject ]</a>
+              <a href="author.html#4528">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

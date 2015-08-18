@@ -1,0 +1,299 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ACK and BYE requests
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ACK%20and%20BYE%20requests&In-Reply-To=%3C514857.26722.qm%40web50911.mail.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000917.html">
+   <LINK REL="Next"  HREF="000933.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ACK and BYE requests</H1>
+    <B>Katty Xiong</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ACK%20and%20BYE%20requests&In-Reply-To=%3C514857.26722.qm%40web50911.mail.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] ACK and BYE requests">cyyxiong at yahoo.com
+       </A><BR>
+    <I>Fri Feb 23 02:00:08 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000917.html">[OpenIMSCore-Users] ACK and BYE requests
+</A></li>
+        <LI>Next message: <A HREF="000933.html">[OpenIMSCore-Users] ACK and BYE requests
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#919">[ date ]</a>
+              <a href="thread.html#919">[ thread ]</a>
+              <a href="subject.html#919">[ subject ]</a>
+              <a href="author.html#919">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi Dragos,
+
+Another thing I tried is to use
+P_enforce_service_routes() instead of sending &quot;400 bad
+request&quot; in the route script. I assume this function
+will add scscf to the head of the Route header, and
+finally send something to scscf. But this didn't work
+either. After receiving ACK or BYE from sip2ims, pcscf
+just relay the message to nowhere. 
+
+So it seems to me the problem is caused by incorrect
+service_routes saved in P-CSCF. I notice in
+registration, the service route is
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;, but in the
+route header in ACK or BYE request, it's
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+
+Does this difference matter? 
+
+thanks,
+Joy
+
+--- Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+wrote:
+
+&gt;<i> Hi Katty,
+</I>&gt;<i> 
+</I>&gt;<i> again, could you please check the pcscf.cfg and look
+</I>&gt;<i> for the sip2ims_via
+</I>&gt;<i> parameter if set correctly? The P-CSCF employs a
+</I>&gt;<i> hack to go over the
+</I>&gt;<i> SIP2IMS issues. This might be the cause for the ACK
+</I>&gt;<i> not going through as
+</I>&gt;<i> expected.
+</I>&gt;<i> 
+</I>&gt;<i> Then I would recommend that you use something
+</I>&gt;<i> resolvable for the Contact
+</I>&gt;<i> header - like an IP address. This is actually very
+</I>&gt;<i> relevant as the
+</I>&gt;<i> terminating P-CSCF would not be able to figure out
+</I>&gt;<i> where to forward the
+</I>&gt;<i> ACK sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test.</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Katty Xiong wrote:
+</I>&gt;<i> &gt; Hi Dragos,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (I just dig out your reply. Somehow the yahoo mail
+</I>&gt;<i> put
+</I>&gt;<i> &gt; the message in the bulk folder)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Yes. ACK is on the same dialog. The network trace
+</I>&gt;<i> (as
+</I>&gt;<i> &gt; attached) shows ACK has the same call-ID and tags
+</I>&gt;<i> as
+</I>&gt;<i> &gt; those in INVITE.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; --- Dragos Vingarzan
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; Is the ACK on the same dialog? because the P-CSCF
+</I>&gt;<i> &gt;&gt; checks Service-Routes
+</I>&gt;<i> &gt;&gt; only on initial requests, like INVITE. on
+</I>&gt;<i> subsequent
+</I>&gt;<i> &gt;&gt; it checks
+</I>&gt;<i> &gt;&gt; Record-Routes.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Then about your question on the INVITE route -
+</I>&gt;<i> You
+</I>&gt;<i> &gt;&gt; are right, yet, if
+</I>&gt;<i> &gt;&gt; the S-CSCF knows that the terminating user is to
+</I>&gt;<i> be
+</I>&gt;<i> &gt;&gt; serviced on itself,
+</I>&gt;<i> &gt;&gt; why would it ask again the I-CSCF for that?
+</I>&gt;<i> However,
+</I>&gt;<i> &gt;&gt; if that would not
+</I>&gt;<i> &gt;&gt; be the case, it will happen as you say.
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Just want to make sure I understand this
+</I>&gt;<i> correctly.
+</I>&gt;<i> &gt; If the terminating user is in the same domain,
+</I>&gt;<i> S-CSCF
+</I>&gt;<i> &gt; will always check if it knows the addr for the
+</I>&gt;<i> &gt; terminating user. If yes, the path will not go
+</I>&gt;<i> through
+</I>&gt;<i> &gt; I-CSCF. But if it doesn't know, it will still ask
+</I>&gt;<i> &gt; I-CSCF in the domain.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; thanks,
+</I>&gt;<i> &gt; Joy
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; The SIP2IMS missing from the terminating side -
+</I>&gt;<i> &gt;&gt; again the B2B issues.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Katty Xiong wrote:
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; Hi Dragos,
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; You are exactly right. The ACK and BYE requests
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; missed
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; Route headers. But after I add route header, I
+</I>&gt;<i> hit
+</I>&gt;<i> &gt;&gt;&gt; another error message given by P-CSCF: 400Bad
+</I>&gt;<i> &gt;&gt;&gt; request-not following indicated Service-Routes.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; &gt;From the trace, I see INVITE goes through the
+</I>&gt;<i> &gt;&gt;&gt; following components (ports are shown below):
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>UE1--&gt;SIP2IMS--&gt;P-CSCF--&gt;S-CSCF--&gt;S-CSCF--&gt;P-CSCF--&gt;UE2
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt;&gt; 5061   3060      4060     6060     6060     4060
+</I>&gt;<i>  
+</I>&gt;<i> &gt;&gt;&gt; 5062
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; The Route contained in BYE and ACK headers seems
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; right
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; to me: 
+</I>&gt;<i> &gt;&gt;&gt; Route: &lt;sip:127.0.0.1:3060;lr=on&gt;,
+</I>&gt;<i> &gt;&gt;&gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>;lr&gt;,
+</I>&gt;<i> &gt;&gt;&gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>;lr&gt;,
+</I>&gt;<i> &gt;&gt;&gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>;lr&gt;,
+</I>&gt;<i> &gt;&gt;&gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>;lr&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; But when ACK reaches the P-CSCF from sip2ims,
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; p-cscf
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; just discards the message. And while BYE reaches
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; the
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; P-CSCF from sip2ims, p-cscf generates the error
+</I>&gt;<i> &gt;&gt;&gt; message.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; I am not quite sure about the route the INVITE
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; message
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; goes through. Per my understanding, the route
+</I>&gt;<i> the
+</I>&gt;<i> &gt;&gt;&gt; INVITE message takes should look something like:
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; UE1--&gt;SIP2IMS--&gt;P-CSCF--&gt;S-CSCF--&gt;I-CSCF--&gt;
+</I>&gt;<i> &gt;&gt;&gt; S-CSCF--&gt;P-CSCF--&gt;SIP2IMS--&gt;UE2
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; do I miss something here?
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; thanks,
+</I>&gt;<i> &gt;&gt;&gt; Joy
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; --- Dragos Vingarzan
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; wrote:
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;   
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt;&gt;&gt; Hi Joy,
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; For security issues, the I-CSCF is configured
+</I>&gt;<i> by
+</I>&gt;<i> &gt;&gt;&gt;&gt; default to accept only
+</I>&gt;<i> &gt;&gt;&gt;&gt; INVITE, SUBSCRIBE or MESSAGE as initial
+</I>&gt;<i> requests.
+</I>&gt;<i> &gt;&gt;&gt;&gt; Normally, your ACK,
+</I>&gt;<i> &gt;&gt;&gt;&gt; BYE and any other subsequent requests for
+</I>&gt;<i> dialogs
+</I>&gt;<i> &gt;&gt;&gt;&gt; should contain a Route
+</I>&gt;<i> &gt;&gt;&gt;&gt; header when getting to the I-CSCF and be
+</I>&gt;<i> &gt;&gt;&gt;&gt; loose_routed before reaching
+</I>&gt;<i> &gt;&gt;&gt;&gt; that condition. It seems that yours does not.
+</I>&gt;<i> &gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt; Could
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt; you please check
+</I>&gt;<i> &gt;&gt;&gt;&gt; that and if still in trouble post back a
+</I>&gt;<i> network
+</I>&gt;<i> &gt;&gt;&gt;&gt; dump?
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; Katty Xiong wrote:
+</I>&gt;<i> &gt;&gt;&gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; I couldn't establish session between two UEs.
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt; From
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt;&gt;&gt; the
+</I>&gt;<i> &gt;&gt;&gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; packet trace, I can see ACK and BYE request
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt;&gt;&gt; (scenario
+</I>&gt;<i> &gt;&gt;&gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; is as below) are not received by caller (BOB).
+</I>&gt;<i> 
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; At Alice (Caller) side, an error message:
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt; Aborting
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; call on unexpected message for call id: while
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; expecting 200 responce, received 'SIP/2.0 406
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> 
+</I>=== message truncated ===
+
+
+
+ 
+____________________________________________________________________________________
+Do you Yahoo!?
+Everyone is raving about the all-new Yahoo! Mail beta.
+<A HREF="http://new.mail.yahoo.com">http://new.mail.yahoo.com</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000917.html">[OpenIMSCore-Users] ACK and BYE requests
+</A></li>
+	<LI>Next message: <A HREF="000933.html">[OpenIMSCore-Users] ACK and BYE requests
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#919">[ date ]</a>
+              <a href="thread.html#919">[ thread ]</a>
+              <a href="subject.html#919">[ subject ]</a>
+              <a href="author.html#919">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

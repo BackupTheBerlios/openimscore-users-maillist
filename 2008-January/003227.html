@@ -1,0 +1,280 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] TLS in OpenIMSCore
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20TLS%20in%20OpenIMSCore&In-Reply-To=%3C47976BA9.70702%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003220.html">
+   <LINK REL="Next"  HREF="003231.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] TLS in OpenIMSCore</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20TLS%20in%20OpenIMSCore&In-Reply-To=%3C47976BA9.70702%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] TLS in OpenIMSCore">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Jan 23 17:30:33 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003220.html">[OpenIMSCore-Users] How to test IPSec in Open IMS
+</A></li>
+        <LI>Next message: <A HREF="003231.html">[OpenIMSCore-Users] TLS in OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3227">[ date ]</a>
+              <a href="thread.html#3227">[ thread ]</a>
+              <a href="subject.html#3227">[ subject ]</a>
+              <a href="author.html#3227">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ah, you are right! I omitted that part of the IPSec/AKA security is that
+the CK/IK keys are used, which stop on the trusted P-CSCF. In TLS these
+keys are not used and as such there is no way that you can authenticate
+the P-CSCF without a certificate. My confusion was on the fact that AKA
+authenticates only the home network through nonce and the visited
+network through the CK/IK, which are not used actually for TLS.
+
+So: never trust an unsigned certificate on IMS/TLS, even if you
+authenticate with AKA!
+
+-Dragos
+
+Klemens Schragel wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> well, without a trusted certificate a MitM could mask as P-CSCF and show the
+</I>&gt;<i> Client another untrusted certificate... AKA does not care if the IP-address
+</I>&gt;<i> is changed, messages can be forwarded by MitM with modified IP-addresses.
+</I>&gt;<i> Just the calculated keys can be found only at the real UE and the real
+</I>&gt;<i> P-CSCF so if messages are protected with at least one of these keys a MitM
+</I>&gt;<i> would first need to break the protection to modify the messages (i.e. add
+</I>&gt;<i> its IP)
+</I>&gt;<i>
+</I>&gt;<i> br, Klemens
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;&gt;<i> Sent: Donnerstag, 17. J&#228;nner 2008 09:55
+</I>&gt;&gt;<i> To: Klemens Schragel
+</I>&gt;&gt;<i> Cc: OpenIMS list
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] TLS in OpenIMSCore
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi Klemens,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> we usually don't care too much about restricting functionality like
+</I>&gt;&gt;<i> that, so we will probably let TLS work with any authentication method if
+</I>&gt;&gt;<i> possible. I don't see any security concerns, or? AKA also authenticates
+</I>&gt;&gt;<i> the network so it's a double network authentication after the TLS
+</I>&gt;&gt;<i> certificate validation. Or if the certificate is not trusted on the
+</I>&gt;&gt;<i> chain of trust but AKA authenticates the network, it would still be an
+</I>&gt;&gt;<i> acceptable use case...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Klemens Schragel wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi, just to finish this topic
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I found in TS 33.203 Annex O (Enhancements to the access security to
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> enable TLS) the requirement that in case of TLS access security SIP Digest
+</I>&gt;&gt;<i> shall be used (thus not AKA).
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> This would contravene the below discussed requirements for integrity-
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> protection=*yes... luckily they've already changed TS 24229, in clause
+</I>&gt;&gt;<i> 5.2.2.4 an exception is written where integrity-protected can be set to
+</I>&gt;&gt;<i> tls-yes in case of Digest authentication and 7.2A.2 was also modified. Now
+</I>&gt;&gt;<i> there are also some additional values added like &quot;ip-assoc-yes&quot; for SIP
+</I>&gt;&gt;<i> Digest...
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> br, Klemens
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Klemens
+</I>&gt;&gt;&gt;<i> Schragel
+</I>&gt;&gt;&gt;<i> Sent: Dienstag, 06. November 2007 10:40
+</I>&gt;&gt;&gt;<i> To: 'Dragos Vingarzan'
+</I>&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] TLS in OpenIMSCore
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Yup, I recently read that &quot;integrity-protected&quot; requires AKA, thus &quot;tls-
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> yes&quot;
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> would assumes AKA-authentication and so, in my opinion, PSK-TLS would
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> make
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> sense. Well, maybe I need to have a closer look at PSK-TLS spec...
+</I>&gt;&gt;&gt;<i> Anyway, thanks for your quick answer, br, Klemens
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> [Hide Quoted Text]
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;&gt;&gt;&gt;<i> Sent: Montag, 05. November 2007 16:53
+</I>&gt;&gt;&gt;&gt;<i> To: Klemens Schragel
+</I>&gt;&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] TLS in OpenIMSCore
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Hi Klemens,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> the TS 24.229 - I think it was a overlooked by the guy implementing it.
+</I>&gt;&gt;&gt;&gt;<i> Probably it won't be a big change, but the S-CSCF implications have to
+</I>&gt;&gt;&gt;&gt;<i> be considered and also patched.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> About the 2nd point, I don't know... never looked that deep into it.
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> One
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> thing though is that unless integrated with AKA, TLS can not be used as
+</I>&gt;&gt;&gt;&gt;<i> an authentication method, like AKA-IPSec is, but just purely for
+</I>&gt;&gt;&gt;&gt;<i> encryption. So the P-CSCF does not care about any credentials that the
+</I>&gt;&gt;&gt;&gt;<i> UE might present as part of TLS set-up, but just about the SIP
+</I>&gt;&gt;&gt;&gt;<i> authentication procedure. Only after that authentication goes right,
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> TLS connection is considered to offer &quot;integrity-protected&quot;. Anyway,
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> authentication happens between the UE and the HSS and the HSS
+</I>&gt;&gt;&gt;&gt;<i> information can/should not be relayed to the P-CSCF, except for the AKA
+</I>&gt;&gt;&gt;&gt;<i> Cypher/Integrity keys if AKA is employed.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Cheers,
+</I>&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Klemens Schragel wrote:
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> Hi All,
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> because of TLS support for signalling protection, according to TS
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> 24.229
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i> clause 7.2A.2.2 the Authorization header should contain the param
+</I>&gt;&gt;&gt;&gt;&gt;<i> integrity-protected=&quot;tls-yes&quot; but in the source files I can only find
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> the
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> decision between &quot;yes&quot; and &quot;no&quot;/else... is the detection of a tls-
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> session
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> not yet supported or have I overseen something?
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Another point (more for my interest), does anyone know why there is
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> only
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> TLS
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> with certificates supported and not Pre-Shared-Key TLS (RFC 4279)? Or
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> is
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i> assumed that a UE capable of AKA is also capable of IPSec?
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Thanks and br, Klemens
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;&gt;&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003220.html">[OpenIMSCore-Users] How to test IPSec in Open IMS
+</A></li>
+	<LI>Next message: <A HREF="003231.html">[OpenIMSCore-Users] TLS in OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3227">[ date ]</a>
+              <a href="thread.html#3227">[ thread ]</a>
+              <a href="subject.html#3227">[ subject ]</a>
+              <a href="author.html#3227">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

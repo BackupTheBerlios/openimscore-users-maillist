@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20P_follows_service_routes%28%29&In-Reply-To=%3C457470D2.1090705%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000158.html">
+   <LINK REL="Next"  HREF="000159.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P-CSCF P_follows_service_routes()</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20P_follows_service_routes%28%29&In-Reply-To=%3C457470D2.1090705%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] P-CSCF P_follows_service_routes()">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Dec  4 20:02:42 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000158.html">[OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+</A></li>
+        <LI>Next message: <A HREF="000159.html">[OpenIMSCore-Users] Cannot establish call: ACK message not	propagated beyond P-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#165">[ date ]</a>
+              <a href="thread.html#165">[ thread ]</a>
+              <a href="subject.html#165">[ subject ]</a>
+              <a href="author.html#165">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+When the 2nd person says that you are drunk, you should go to sleep ;-). 
+So I created a bug here: 
+<A HREF="https://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=9615&amp;group_id=7589">https://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=9615&amp;group_id=7589</A> 
+. I am little busy now, so I hope that you guys can ignore it for a few 
+days (or send me a patch).
+
+-Dragos
+
+Jos&#233; Carlos Amorim wrote:
+&gt;<i> Hi, 
+</I>&gt;<i>
+</I>&gt;<i> I repeated my test and captured the user deregistration, I noticed that the S-CSCF does send a Notification to the Client, but from what I read on the specifications this is possible even though this will lead to unnecessary messages trying to reach the client.
+</I>&gt;<i> I also noticed that after the deregistration P-CSCF tries to subscribe to the reg-event like mentioned on the thread <A HREF="https://lists.berlios.de/pipermail/openimscore-users/2006-December/000149.html">https://lists.berlios.de/pipermail/openimscore-users/2006-December/000149.html</A>
+</I>&gt;<i> But I get a different error, I get a 404 Not Found. (I'm not using the sip2ims on my test).
+</I>&gt;<i> I send in annex the capture.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Jose Carlos Silva
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;<i> Sent: quinta-feira, 30 de Novembro de 2006 8:53
+</I>&gt;<i> To: Jos&#233; Carlos Amorim
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+</I>&gt;<i>
+</I>&gt;<i> Hello Jose,
+</I>&gt;<i>
+</I>&gt;<i> P_follows_service_route() was not fixed yet... but the 
+</I>&gt;<i> P_enforce_service_routes() being fixed solves your particular issue and 
+</I>&gt;<i> I don't know if we still need a fix for the first one (it's awfully 
+</I>&gt;<i> complicated :( ).
+</I>&gt;<i>
+</I>&gt;<i> 1 - yes, if you SUBSCRIBE to the &quot;reg&quot; event. and the IPSec or NAT 
+</I>&gt;<i> information is still kept on the P-CSCF for about 30 seconds to allow 
+</I>&gt;<i> that message to still be relayed. I think that you have seen a NOTIFY 
+</I>&gt;<i> towards the P-CSCF, not the client.
+</I>&gt;<i> 2 - yes, the P-CSCF subscribes to &quot;reg&quot; in order to keep the local 
+</I>&gt;<i> registrar updated - for example the HSS pushes a 
+</I>&gt;<i> Registration-Termination-Request and the P-CSCF will take that into account.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Jos&#233; Carlos Amorim wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt;From the test's we done everything looks fine for your fixes of the P-Preferred,P-Asserted-Identity and P_folows_service_routes. Thanks for the correction. 
+</I>&gt;&gt;<i> We haven't tested the P_enforce_service_routes yet.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I started looking at the capture to see the message flows when the client deregisters, and saw some message flows that I am not sure they are correct.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 1) right after the client deregisters the S-CSCF sends a Notification to the client indicating that he has just deregistered.
+</I>&gt;&gt;<i> 2) the P-CSCF sends a subscription for the user bob which has just finished his registration.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is this behavior correct?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks,
+</I>&gt;&gt;<i> Jose Carlos Silva
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;&gt;<i> Sent: quarta-feira, 29 de Novembro de 2006 10:59
+</I>&gt;&gt;<i> To: Jos&#233; Carlos Amorim
+</I>&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I fixed the P_enforce_service_route() (also realized that 
+</I>&gt;&gt;<i> P_enforce_dialog_routes() was broken too).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I tested it a little and it seemed to work. Would be great if you could 
+</I>&gt;&gt;<i> confirm.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Now the thing is... this kind of solves the P_follows_service_route() 
+</I>&gt;&gt;<i> bug... I will come with another fix for that, but later.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Jos&#233; Carlos Amorim wrote:
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hello Dragos,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> The question would be why is there that route.
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> &gt;From what I saw in the specifications I think this is possible.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Would be good if we would create some bug-reports so that we won't 
+</I>&gt;&gt;&gt;&gt;<i> forget about it. I have created them now for both your bug reports.
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> I added another bug report: <A HREF="http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=9581&amp;group_id=7589">http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=9581&amp;group_id=7589</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thanks,
+</I>&gt;&gt;&gt;<i> Jose Carlos Silva
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;&gt;&gt;<i> Sent: quarta-feira, 29 de Novembro de 2006 8:15
+</I>&gt;&gt;&gt;<i> To: Jos&#233; Carlos Amorim
+</I>&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hello Jose,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The question would be why is there that route. You can do without 
+</I>&gt;&gt;&gt;<i> usually. However, I think that this should still work, so I will do a 
+</I>&gt;&gt;&gt;<i> patch to ignore the first one if it is set to &quot;myself&quot;.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Would be good if we would create some bug-reports so that we won't 
+</I>&gt;&gt;&gt;<i> forget about it. I have created them now for both your bug reports.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Dragos
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Jos&#233; Carlos Amorim wrote:
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> When establishing calls the Invite that reaches the P-cscf contains a 
+</I>&gt;&gt;&gt;&gt;<i> Route header that looks like this: Route: 
+</I>&gt;&gt;&gt;&gt;<i> &lt;sip:pcscf.open-ims.test&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> But the service-route that P-CSCF stores during registration is the 
+</I>&gt;&gt;&gt;&gt;<i> following SR : &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> So when the P-cscf receives this Invite and calls the 
+</I>&gt;&gt;&gt;&gt;<i> P_follows_service_routes(), it will get false, which is wrong, since 
+</I>&gt;&gt;&gt;&gt;<i> the Request follows the service Routes.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Since the P_enforce_service_routes is called if the 
+</I>&gt;&gt;&gt;&gt;<i> P_follows_service_routes() fails, this will result on the request 
+</I>&gt;&gt;&gt;&gt;<i> leaving with two Route headers with the following content : 
+</I>&gt;&gt;&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Jose Carlos Silva
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000158.html">[OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+</A></li>
+	<LI>Next message: <A HREF="000159.html">[OpenIMSCore-Users] Cannot establish call: ACK message not	propagated beyond P-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#165">[ date ]</a>
+              <a href="thread.html#165">[ thread ]</a>
+              <a href="subject.html#165">[ subject ]</a>
+              <a href="author.html#165">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

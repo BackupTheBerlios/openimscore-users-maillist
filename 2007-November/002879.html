@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem changing location of S-CSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20changing%20location%20of%20S-CSCF&In-Reply-To=%3COF1E9D6581.6530583F-ONC125738B.0048A85B-C125738B.00503445%40amper.es%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002878.html">
+   <LINK REL="Next"  HREF="002883.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem changing location of S-CSCF</H1>
+    <B>Pedro Antonio Vico Solano</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20changing%20location%20of%20S-CSCF&In-Reply-To=%3COF1E9D6581.6530583F-ONC125738B.0048A85B-C125738B.00503445%40amper.es%3E"
+       TITLE="[OpenIMSCore-Users] Problem changing location of S-CSCF">pvsolano at amper.es
+       </A><BR>
+    <I>Tue Nov  6 15:30:27 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002878.html">[OpenIMSCore-Users] Gamming Server
+</A></li>
+        <LI>Next message: <A HREF="002883.html">[OpenIMSCore-Users] Problem changing location of S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2879">[ date ]</a>
+              <a href="thread.html#2879">[ thread ]</a>
+              <a href="subject.html#2879">[ subject ]</a>
+              <a href="author.html#2879">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello again,
+
+I'm trying to separate the location of S-CSCF from the HSS and I/P-CSCF. 
+Thus I've changed the &quot;Preferred S-CSCF Set&quot; on HSS for all user to a new 
+server called &quot;scscf1.open-ims.test&quot;. Its address is also included on DNS.
+
+The problem is that when a users registers itself, the I-CSCF gets the old 
+S-CSCF name (scscf.open-ims.test) or none on the UAA response. The first 
+UAA does not include any server-name and following responses include old 
+server. Anyway I think I-CSCF is getting the server name from the icscf 
+database.
+
+I attach you the image from HSS and a capture.
+
+Maybe I've missed something &#191;?
+
+Thanks in advance.
+Pedro
+
+
+
+
+First try on I-CSCF:
+
+ 3(31338) ERR:I-CSCF:cscf_get_private_identity: Message does not contain 
+Authorization header.
+ 3(31338) INF:I-CSCF:cscf_get_private_identity: Falling back to 
+private_id=stripped(public_id)
+-&gt; Message did not contain a valid Authorization Header!!! This fallback 
+is deprecated outside Early-IMS or NASS-Bundled!
+18(31378) DBG:sm_process(): Peer hss.open-ims.test      State R_Open Event 
+R_Rcv_Message
+ 3(31338) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+ 3(31338) INFO:I-CSCF:Cx_get_server_name: Failed finding avp
+ 3(31338) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf.open-ims.test:6060&gt;
+ 3(31338) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf1.open-ims.test:6060&gt;
+
+Second try on S-CSCF:
+
+18(31378) DBG:sm_process(): Peer hss.open-ims.test      State R_Open Event 
+R_Rcv_Message
+ 3(31338) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+ 3(31338) INFO:I-CSCF:Cx_get_capabilities: Failed finding avp
+ 3(31338) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf.open-ims.test:6060&gt;
+ 3(31338) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf1.open-ims.test:6060&gt;
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071106/438141d5/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071106/438141d5/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: change_in_scscf.png
+Type: application/octet-stream
+Size: 89119 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071106/438141d5/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071106/438141d5/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: wrong_server_name.ethereal
+Type: application/octet-stream
+Size: 16989 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071106/438141d5/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071106/438141d5/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002878.html">[OpenIMSCore-Users] Gamming Server
+</A></li>
+	<LI>Next message: <A HREF="002883.html">[OpenIMSCore-Users] Problem changing location of S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2879">[ date ]</a>
+              <a href="thread.html#2879">[ thread ]</a>
+              <a href="subject.html#2879">[ subject ]</a>
+              <a href="author.html#2879">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

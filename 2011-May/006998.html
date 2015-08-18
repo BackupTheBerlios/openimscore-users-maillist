@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ISC marking and ISC_from_AS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ISC%20marking%20and%20ISC_from_AS&In-Reply-To=%3CBANLkTikbCXZQ8_3gD578mJmj2Nv6a9HAxw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007000.html">
+   <LINK REL="Next"  HREF="006999.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ISC marking and ISC_from_AS</H1>
+    <B>tomas kovacik</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ISC%20marking%20and%20ISC_from_AS&In-Reply-To=%3CBANLkTikbCXZQ8_3gD578mJmj2Nv6a9HAxw%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] ISC marking and ISC_from_AS">tokosk16 at gmail.com
+       </A><BR>
+    <I>Fri May  6 19:41:00 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007000.html">[OpenIMSCore-Users] Connect to Softswitch NGN
+</A></li>
+        <LI>Next message: <A HREF="006999.html">[OpenIMSCore-Users] ISC marking and ISC_from_AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6998">[ date ]</a>
+              <a href="thread.html#6998">[ thread ]</a>
+              <a href="subject.html#6998">[ subject ]</a>
+              <a href="author.html#6998">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>dear franz.
+finaly i figured out what was the issue about delivering SIP messages to
+application servers (PSIs). the first thing is, that i HAD TO manualy change
+user_state of the PSI in IMPU table of mysql hss_db database  to REGISTERED.
+without the change the messages are not delivered.
+the other thing is, that i had to add Route: header field containing
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf1.domain1</A>:6060 into messages sent to PSIs. i don't think that
+MT@ should be there as the PSI is not mobile terminating, it is PSI.
+i also had to override SCSCF and add a condition into scscf.cfg file which
+adds correct port number to URI of the SIP messages. i think that the port
+number should be read from DB by scscf and inserted to the URI (as the port
+identifies the AS also) but apparently openims does not do that.
+
+finaly, i achieved 2 interconnected openims cores which are able to transfer
+SIP messages from one application server in one core to the other AS in the
+second core.
+
+best regards
+TOMAS KOVACIK
+
+
+
+
+On Thu, May 5, 2011 at 12:38 PM, tomas kovacik &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tokosk16 at gmail.com</A>&gt; wrote:
+
+&gt;<i> unfortunatelly, it did not help.
+</I>&gt;<i> thanks for your time, i'll try to search for the problem.
+</I>&gt;<i> TOMAS
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Thu, May 5, 2011 at 12:31 PM, Franz Edler &lt;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> O.k. That&#8217;s a rather tricky scenario.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I see that the NOTIFY from AS2 is sent to early. It is received by the
+</I>&gt;&gt;<i> S-CSCF before it had processed the SUBSCRIBE.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The 200 OK on SUBSCRIBE is received in packet 4 and forwarded in packet 7,
+</I>&gt;&gt;<i> but meanwhile the NOTIFY arrives (packet 5).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Maybe you should give the S-CSCF some more time to grasp.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> BR
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Franz
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> *From:* tomas kovacik [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tokosk16 at gmail.com</A>]
+</I>&gt;&gt;<i> *Sent:* Thursday, May 05, 2011 11:21 AM
+</I>&gt;&gt;<i> *To:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>
+</I>&gt;&gt;<i> *Subject:* Re: [OpenIMSCore-Users] ISC marking and ISC_from_AS
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> AS1.domain1 = 192.168.107*.45:6000*
+</I>&gt;&gt;<i> AS2.domain2 = 192.168.107*.45:7000*
+</I>&gt;&gt;<i> (so these 2 app servers i have on my windows machine utilizing sip
+</I>&gt;&gt;<i> inspector program)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 192.168.107.*144* contains openims core - there are scscf1.domain1
+</I>&gt;&gt;<i> (6060), icscf1.domain1(5060) and pcscf1.domain1(4060) running on ports in
+</I>&gt;&gt;<i> brackets.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> similarly,
+</I>&gt;&gt;<i> 192.168.107.*145* contains openims core - there are scscf2.domain2
+</I>&gt;&gt;<i> (6060), icscf2.domain2(5060) and pcscf2.domain2(4060) running on ports in
+</I>&gt;&gt;<i> brackets.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> the trace has been made on the node containing app servers, that means on
+</I>&gt;&gt;<i> 192.168.107.*45*.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> here i am sending also traces from the cores.
+</I>&gt;&gt;<i> T.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Thu, May 5, 2011 at 11:07 AM, Franz Edler &lt;
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt; thx.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What exactly is your configuration?
+</I>&gt;&gt;<i> What are the two domains, the 2 AS?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In particular what is behind:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 192.168.107.145:6060
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 192.168.107.45:7000
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 192.168.107.144:5060
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 192.168.107.45:6000
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> There are only theses 4 addresses in the trace. Where did you trace?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Franz
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20110506/2dd6feba/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20110506/2dd6feba/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007000.html">[OpenIMSCore-Users] Connect to Softswitch NGN
+</A></li>
+	<LI>Next message: <A HREF="006999.html">[OpenIMSCore-Users] ISC marking and ISC_from_AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6998">[ date ]</a>
+              <a href="thread.html#6998">[ thread ]</a>
+              <a href="subject.html#6998">[ subject ]</a>
+              <a href="author.html#6998">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to test open-ims setup.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20test%20open-ims%20setup.&In-Reply-To=%3C46A0800D.7020608%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002182.html">
+   <LINK REL="Next"  HREF="002183.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to test open-ims setup.</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20test%20open-ims%20setup.&In-Reply-To=%3C46A0800D.7020608%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] How to test open-ims setup.">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Jul 20 11:27:41 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002182.html">[OpenIMSCore-Users] How to test open-ims setup.
+</A></li>
+        <LI>Next message: <A HREF="002183.html">[OpenIMSCore-Users] Diameter connection is not comming up
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2209">[ date ]</a>
+              <a href="thread.html#2209">[ thread ]</a>
+              <a href="subject.html#2209">[ subject ]</a>
+              <a href="author.html#2209">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Darshak,
+
+Is the S-CSCF started? If it is, could you please send us a network
+trace so that we could pin-point the issue better?
+
+-Dragos
+
+Darshak wrote:
+&gt;<i> This comes at pcscf..
+</I>&gt;<i>  
+</I>&gt;<i> 3(29476) INFO:P-CSCF:P_NAT_relay: &lt;sip:192.168.15.101:5062&gt;
+</I>&gt;<i>  5(29478) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i>  5(29478) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i>  5(29478) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i>  5(29478) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i>  1(29474) INFO:P-CSCF:P_NAT_relay: &lt;sip:192.168.15.101:5062&gt;
+</I>&gt;<i>  5(29478) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> ===========
+</I>&gt;<i> At user end I m getting 
+</I>&gt;<i> REGISTER response [600 Busy everywhere - Forwarding to S-CSCF failed] is not
+</I>&gt;<i> handled by UserEndpoint.
+</I>&gt;<i> REGISTER response [600 Busy everywhere - Forwarding to S-CSCF failed] is not
+</I>&gt;<i> handled by UserEndpoint.
+</I>&gt;<i>   
+</I>&gt;&gt;<i> T:3 E:2 REGISTER operation failed with [600 Busy everywhere - Forwarding
+</I>&gt;&gt;<i>     
+</I>&gt;<i> to S-CSCF failed].
+</I>&gt;<i> ===========================
+</I>&gt;<i> Can anyone help me ?
+</I>&gt;<i>
+</I>&gt;<i> Thanks &amp; Regards,
+</I>&gt;<i> Darshak Modi[x638]
+</I>&gt;<i> Elitecore Technology
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Umut Emin [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>] 
+</I>&gt;<i> Sent: Tuesday, July 17, 2007 11:25 PM
+</I>&gt;<i> To: Darshak
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: RE: [OpenIMSCore-Users] How to test open-ims setup.
+</I>&gt;<i>
+</I>&gt;<i> Hei Darshak,
+</I>&gt;<i>
+</I>&gt;<i> it's not sure that your setup is okay just because *.sh scripts
+</I>&gt;<i> run and you see the debug consoles.
+</I>&gt;<i>
+</I>&gt;<i> To my opinion your request stucks up somewhere in core and you get 504
+</I>&gt;<i> from pcscf, we could see that if you send us a trace. you have to
+</I>&gt;<i> capture the network traffic with wireshark, a tool which
+</I>&gt;<i> does it for you. therefore you have to listen for certain
+</I>&gt;<i> ports/protocols, like &quot;sip&quot;,&quot;diameter&quot; and &quot;dns&quot;(in this case
+</I>&gt;<i> protocols). save it as pcap and send it here. checkout the wireshark
+</I>&gt;<i> projects website how to install &amp; how to use it
+</I>&gt;<i>
+</I>&gt;<i> or do a simple ngrep (which i do usually) like
+</I>&gt;<i> salvoxia&gt; ngrep -d lo -W byline port 4060 or port 5060 or port 6060  
+</I>&gt;<i> -assuming *cscf are running on the same machine
+</I>&gt;<i>
+</I>&gt;<i> Umut
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Tue, 2007-07-17 at 18:21 +0530, Darshak wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi.
+</I>&gt;&gt;<i> Yes hss,icscf,and scscf are working fine. How will I come to know that the
+</I>&gt;&gt;<i> request? Are there any logs for the same? How can I set it  and check it? 
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks for your time and patience
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks &amp; Regards,
+</I>&gt;&gt;<i> Darshak Modi[x638]
+</I>&gt;&gt;<i> Elitecore Technology
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: Umut Emin [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>] 
+</I>&gt;&gt;<i> Sent: Tuesday, July 17, 2007 6:14 PM
+</I>&gt;&gt;<i> To: Darshak
+</I>&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: RE: [OpenIMSCore-Users] How to test open-ims setup.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> are the register requests correctly forwarded from p to i and
+</I>&gt;&gt;<i> to scscf? Does your pcscf get a response from scscf?
+</I>&gt;&gt;<i> and what about the interaction between
+</I>&gt;&gt;<i> the hss, iscsf &amp; scscf? are these all working?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> to see where it fails, better you send us a full
+</I>&gt;&gt;<i> network trace of the core during registration.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Umut
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Tue, 2007-07-17 at 17:22 +0530, Darshak wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i> Thanks for the reply. I have again gone through the doc. And facing some
+</I>&gt;&gt;&gt;<i> problems. I am using client [ OpenIC lite ]
+</I>&gt;&gt;&gt;<i> The configuration is like this
+</I>&gt;&gt;&gt;<i> OpenIMS Client config file
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> #Tue Jul 17 17:18:16 IST 2007
+</I>&gt;&gt;&gt;<i> OP=00000000000000000000000000000000
+</I>&gt;&gt;&gt;<i> AMFSTAR=0000
+</I>&gt;&gt;&gt;<i> secretKey=bob
+</I>&gt;&gt;&gt;<i> AMF=0000
+</I>&gt;&gt;&gt;<i> autoPlaySound=true
+</I>&gt;&gt;&gt;<i> SQN=000000000000
+</I>&gt;&gt;&gt;<i> realm=open-ims.test
+</I>&gt;&gt;&gt;<i> privateIdentity=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;&gt;&gt;<i> algorithm=MD5
+</I>&gt;&gt;&gt;<i> proxyCSCF=192.168.15.101\:4060/UDP
+</I>&gt;&gt;&gt;<i> publicIdentities=sip\:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;&gt;&gt;<i> displayName=Bob
+</I>&gt;&gt;&gt;<i> useAK=true
+</I>&gt;&gt;&gt;<i> earlyIMS=false
+</I>&gt;&gt;&gt;<i> autoSignIn=true
+</I>&gt;&gt;&gt;<i> autoAnswer=true
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> And when I try to register I m getting the error.
+</I>&gt;&gt;&gt;<i> Tue Jul 17 17:15:06 IST 2007
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> T:3 E:2 REGISTER operation failed with [504 Server Time-Out].
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> Tue Jul 17 17:17:02 IST 2007
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> T:2 E:7 REGISTER response [504 Server Time-Out] is not handled by
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> UserEndpoint.
+</I>&gt;&gt;&gt;<i> Tue Jul 17 17:17:02 IST 2007
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> T:3 E:2 REGISTER operation failed with [504 Server Time-Out].
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> Tue Jul 17 17:17:47 IST 2007
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> T:2 E:7 REGISTER response [504 Server Time-Out] is not handled by
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> UserEndpoint.
+</I>&gt;&gt;&gt;<i> Tue Jul 17 17:17:47 IST 2007
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> T:3 E:2 REGISTER operation failed with [504 Server Time-Out].
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> Tue Jul 17 17:18:48 IST 2007
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> T:2 E:7 REGISTER response [504 Server Time-Out] is not handled by
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> UserEndpoint.
+</I>&gt;&gt;&gt;<i> Tue Jul 17 17:18:48 IST 2007
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> T:3 E:2 REGISTER operation failed with [504 Server Time-Out].
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> Tue Jul 17 17:19:04 IST 2007
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> T:2 E:7 REGISTER response [504 Server Time-Out] is not handled by
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> UserEndpoint.
+</I>&gt;&gt;&gt;<i> Tue Jul 17 17:19:04 IST 2007
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> T:3 E:2 REGISTER operation failed with [504 Server Time-Out].
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> Can anyone help me ?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thanks &amp; Regards,
+</I>&gt;&gt;&gt;<i> Darshak Modi
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;<i> From: Umut Emin [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>] 
+</I>&gt;&gt;&gt;<i> Sent: Tuesday, July 17, 2007 4:23 PM
+</I>&gt;&gt;&gt;<i> To: Darshak
+</I>&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] How to test open-ims setup.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hei Darshak,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> if you setup the ims core instances, you can go on with testing some
+</I>&gt;&gt;&gt;<i> scenarios. get an ims client and register your user with this 
+</I>&gt;&gt;&gt;<i> client to the domain, then you can instantiate a call between
+</I>&gt;&gt;&gt;<i> a caller and callee. Afterwards you can try IFCs and so on.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> This will also help you see if you have made any mistakes during
+</I>&gt;&gt;&gt;<i> installation. But, always read the installation manual and faq's
+</I>&gt;&gt;&gt;<i> carefully.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -Umut
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On Tue, 2007-07-17 at 10:34 +0530, Darshak wrote:
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I have setup open-ims like this
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> In single physical server I have pcscf.sh,icscf.sh,scscf.sh and FHoSS
+</I>&gt;&gt;&gt;&gt;<i> running.I am able to open the webview of FHoSS.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> How will I come to know that my xcscf are running. How can I test that
+</I>&gt;&gt;&gt;&gt;<i> my setup is complete and running ?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Help is highly appreciated.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Thanks &amp; Regards,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Darshak Modi[x638]
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Elitecore Technology
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002182.html">[OpenIMSCore-Users] How to test open-ims setup.
+</A></li>
+	<LI>Next message: <A HREF="002183.html">[OpenIMSCore-Users] Diameter connection is not comming up
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2209">[ date ]</a>
+              <a href="thread.html#2209">[ thread ]</a>
+              <a href="subject.html#2209">[ subject ]</a>
+              <a href="author.html#2209">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

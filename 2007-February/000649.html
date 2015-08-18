@@ -1,0 +1,592 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] how to add new user
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20how%20to%20add%20new%20user&In-Reply-To=%3C45C37D2F.2060309%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000643.html">
+   <LINK REL="Next"  HREF="000654.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] how to add new user</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20how%20to%20add%20new%20user&In-Reply-To=%3C45C37D2F.2060309%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] how to add new user">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Feb  2 19:04:31 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000643.html">[OpenIMSCore-Users] how to add new user
+</A></li>
+        <LI>Next message: <A HREF="000654.html">[OpenIMSCore-Users] how to add new user
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#649">[ date ]</a>
+              <a href="thread.html#649">[ thread ]</a>
+              <a href="subject.html#649">[ subject ]</a>
+              <a href="author.html#649">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ankush, it seems to me that you did not read the relevant FAQ entry:
+<A HREF="http://www.openimscore.org/docs/faq.html#sip2ims">http://www.openimscore.org/docs/faq.html#sip2ims</A> . All your questions
+are answered there:
+
+
+      SIP-to-IMS Gateway
+
+    * *How do I provision a new user?*
+      Use serweb or another tool to create a user in the credentials
+      table. Alternatively, you can manually add a similar entry to
+      those of Alice/Bob. HA1 is irrelevant and can be left blank. HA1b
+      can be computed using e.g.:
+
+      ser_ims/utils/gen_ha1/gen_ha1 user realm password
+
+      Don't forget: The username must be the same as the private AND the
+      public identity of the user, as SIP UEs do not usually make a
+      distinction between them. The password must be the same as the
+      secret key provisioned in the HSS. It seems that many users
+      confuse the private identity, so here is a correct example:
+
+      ser_ims/utils/gen_ha1/gen_ha1 <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> open-ims.test alice
+
+
+-Dragos
+
+ankush patni wrote:
+&gt;<i>
+</I>&gt;<i> or problem is related with &quot;Secret Key&quot;.
+</I>&gt;<i> because that i have given like 00000000000000000000000000000000
+</I>&gt;<i>
+</I>&gt;<i> but it is not like bob or alice.
+</I>&gt;<i> for alice and bob it contains some values.
+</I>&gt;<i> On 2/2/07, *Dragos Vingarzan* &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>     Where does it fail, on the SIP2IMS or on the S-CSCF?
+</I>&gt;<i>
+</I>&gt;<i>     -Dragos
+</I>&gt;<i>
+</I>&gt;<i>     ankush patni wrote:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; but i am getting the same error.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; regards,
+</I>&gt;<i>     &gt; Ankush Patni
+</I>&gt;<i>     &gt; On 2/2/07, *Dragos Vingarzan* &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt;&gt; wrote:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     HA1 does not matter. It is recomputed on each authentication.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     -Dragos
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     ankush patni wrote:
+</I>&gt;<i>     &gt;     &gt; but what should be entry for Ha1.
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt; On 2/2/07, *Dragos Vingarzan* &lt;
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt; &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt;&gt;&gt; wrote:
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     That is wrong. As in a previous e-mail, please use:
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     ./gen_ha1 <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ankush at open-ims.test</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ankush at open-ims.test</A>&gt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ankush at open-ims.test</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ankush at open-ims.test</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ankush at open-ims.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ankush at open-ims.test</A>&gt;
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ankush at open-ims.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ankush at open-ims.test</A>&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     open-ims.test ankush
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     -Dragos
+</I>&gt;<i>     &gt;     &gt;     ankush patni wrote:
+</I>&gt;<i>     &gt;     &gt;     &gt; here is command that i have given.
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;  ./gen_ha1 ankush open-ims.test ankush
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt; On 2/2/07, *Dragos Vingarzan* &lt;
+</I>&gt;<i>     &gt;     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt; &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt;&gt;&gt;&gt; wrote:
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     Could you please provide the exact line that you
+</I>&gt;<i>     used to
+</I>&gt;<i>     &gt;     &gt;     generate
+</I>&gt;<i>     &gt;     &gt;     &gt;     the ha1b?
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     -Dragos
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     ankush patni wrote:
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Hi,
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;        I have Created new user through web
+</I>&gt;<i>     interface.
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; And i have kept entry in the credential table of
+</I>&gt;<i>     &gt;     &gt;     sip2ims  databases.
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; For these entry  i have genrated HA1b through
+</I>&gt;<i>     command
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; ser_ims/utils/gen_ha1/gen_ha1 user realm password
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; And i kept entry for H1A same.
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Now when i am sending sip register request
+</I>&gt;<i>     then i am
+</I>&gt;<i>     &gt;     &gt;     getting  401
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Unauthorized - Challenging the UE.
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Then i am again sending the
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Register request.
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Now i am not getting where is error.
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Here i am attaching the my register request.
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; and the ethereal out put for sip request.
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; but same registration request is working with
+</I>&gt;<i>     alice but
+</I>&gt;<i>     &gt;     &gt;     with another
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; user(ankush) it is showing error means 401 .
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; please guide me where is changes required.
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Thanks in advance.
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Ankush Patni
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; On 2/2/07, *Umut Emin* &lt;
+</I>&gt;<i>     &gt;     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">umut.emin at fokus.fraunhofer.de</A>&gt;&gt;&gt;&gt;&gt;&gt; wrote:
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     Hei Ankush,
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     use the
+</I>&gt;<i>     web-interface(<A HREF="http://localhost:8080">http://localhost:8080</A>) to
+</I>&gt;<i>     &gt;     add new
+</I>&gt;<i>     &gt;     &gt;     &gt;     users. Take
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     reference 'already added users' to see
+</I>&gt;<i>     what kind of
+</I>&gt;<i>     &gt;     &gt;     &gt;     information you
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     need. There are some buttons to click on.
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     Greetz,
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     Umut
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     On Fri, 2007-02-02 at 18:05 +0530, ankush
+</I>&gt;<i>     patni
+</I>&gt;<i>     &gt;     wrote:
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     &gt; Hi ,
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     &gt;          Can you tell me that how to add
+</I>&gt;<i>     new user.
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     &gt; Thanks,
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     &gt; Ankush Patni
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     _______________________________________________
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     &lt;mailto:
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;    
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>     &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;     &lt;
+</I>&gt;<i>     &gt;     &gt;    
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;    
+</I>&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; &lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot; ?&gt;
+</I>&gt;<i>     &lt;!DOCTYPE
+</I>&gt;<i>     &gt;     &gt;     scenario
+</I>&gt;<i>     &gt;     &gt;     &gt;     SYSTEM &quot; sipp.dtd &quot;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; &lt;scenario name=&quot;branch_client&quot;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;         &lt;send retrans=&quot;500&quot;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; &lt;![CDATA[
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Via: SIP/2.0/[transport]
+</I>&gt;<i>     &gt;     &gt;     10.11.5.46:[local_port];branch=[branch]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; From: &quot;[field0]&quot;
+</I>&gt;<i>     &gt;     &gt;     &lt;sip:[field0]@open-ims.test&gt;;tag=[call_number]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; To: &quot;[field0]&quot; &lt;sip:[field0]@open-ims.test &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Call-ID: [call_id]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; CSeq: 1 REGISTER
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Contact:
+</I>&gt;<i>     &gt;     &lt;sip:[field0]@10.11.5.46:[local_port]&gt;;expires=3600
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Content-Length: 0
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Expires: 3600
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Authorization: Digest username=&quot;[field1]@
+</I>&gt;<i>     &gt;     open-ims.test &quot;,
+</I>&gt;<i>     &gt;     &gt;     realm=&quot;
+</I>&gt;<i>     &gt;     &gt;     &gt;     open-ims.test&quot;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; ]]&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;/send&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;recv response=&quot;401&quot; auth=&quot;true&quot; rtd=&quot;true&quot;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;   &lt;action&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;         &lt;/action&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;/recv&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;send retrans=&quot;500&quot;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; &lt;![CDATA[
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Via: SIP/2.0/[transport]
+</I>&gt;<i>     &gt;     &gt;     [local_ip]:[local_port];branch=[branch]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; From: &quot;[field0]&quot;
+</I>&gt;<i>     &gt;     &gt;     &lt;sip:[field0]@open-ims.test&gt;;tag=[call_number]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; To: &quot;[field0]&quot; &lt;sip:[field0]@open-ims.test &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Call-ID: [call_id]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; CSeq: 2 REGISTER
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Contact:
+</I>&gt;<i>     &gt;     &lt;sip:[field0]@[local_ip]:[local_port]&gt;;expires=3600
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Content-Length: 0
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Expires: 3600
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; [field2]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Require: sec-agree
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; ]]&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;/send&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;recv response=&quot;200&quot;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;/recv&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; &lt;pause milliseconds=&quot;5000&quot; crlf=&quot;true&quot;/&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;    &lt;send retrans=&quot;500&quot;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; &lt;![CDATA[
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Via: SIP/2.0/[transport]
+</I>&gt;<i>     &gt;     &gt;     [local_ip]:[local_port];branch=[branch]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; From: &quot;[field0]&quot;
+</I>&gt;<i>     &gt;     &gt;     &lt;sip:[field0]@open-ims.test&gt;;tag=[call_number]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; To: &quot;[field0]&quot; &lt;sip:[field0]@open-ims.test &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Call-ID: [call_id]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; CSeq: 1 REGISTER
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Contact:
+</I>&gt;<i>     &gt;     &lt;sip:[field0]@[local_ip]:[local_port]&gt;;expires=0
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Content-Length: 0
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Expires: 0
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Authorization: Digest username=&quot;[field1]@
+</I>&gt;<i>     &gt;     open-ims.test &quot;,
+</I>&gt;<i>     &gt;     &gt;     &gt;     realm=&quot; open-ims.test&quot;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; ]]&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;/send&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;recv response=&quot;401&quot; auth=&quot;true&quot; rtd=&quot;true&quot;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;   &lt;action&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;         &lt;/action&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;/recv&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;       &lt;send retrans=&quot;500&quot;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; &lt;![CDATA[
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Via: SIP/2.0/[transport]
+</I>&gt;<i>     &gt;     &gt;     [local_ip]:[local_port];branch=[branch]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; From: &quot;[field0]&quot;
+</I>&gt;<i>     &gt;     &gt;     &lt;sip:[field0]@open-ims.test&gt;;tag=[call_number]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; To: &quot;[field0]&quot; &lt;sip:[field0]@ open-ims.test&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Call-ID: [call_id]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; CSeq: 2 REGISTER
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Contact:
+</I>&gt;<i>     &gt;     &lt;sip:[field0]@[local_ip]:[local_port]&gt;;expires=0
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Content-Length: 0
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Expires: 0
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; [field2]
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; Require: sec-agree
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; ]]&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;/send&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;         &lt;recv response=&quot;200&quot;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;         &lt;/recv&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;!-- definition of the response time
+</I>&gt;<i>     repartition table
+</I>&gt;<i>     &gt;     &gt;     (unit is
+</I>&gt;<i>     &gt;     &gt;     &gt;     ms)   --&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;ResponseTimeRepartition value=&quot;10, 20&quot;/&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;!-- definition of the call length repartition
+</I>&gt;<i>     &gt;     table (unit is
+</I>&gt;<i>     &gt;     &gt;     &gt;     ms)     --&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;  &lt;CallLengthRepartition value=&quot;10&quot;/&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; &lt;/scenario&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;    
+</I>&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; _______________________________________________
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>     &gt;     &gt;     &gt;     &lt;
+</I>&gt;<i>     &gt;     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>     &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     --
+</I>&gt;<i>     &gt;     &gt;     &gt;     -----------------------------------------
+</I>&gt;<i>     &gt;     &gt;     &gt;     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     &gt;     &gt;     &gt;     FOKUS/NGNI
+</I>&gt;<i>     &gt;     &gt;     &gt;     Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     &gt;     &gt;     &gt;     10589 Berlin,Germany
+</I>&gt;<i>     &gt;     &gt;     &gt;     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     &gt;     &gt;     &gt;     Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     &gt;     &gt;     &gt;     eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; &gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; &gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     Web www.fokus.fraunhofer.de
+</I>&gt;<i>     &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt; &lt;
+</I>&gt;<i>     <A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;     We could change the world if God would give us
+</I>&gt;<i>     the source
+</I>&gt;<i>     &gt;     &gt;     code...
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;    
+</I>&gt;<i>     -----------------------------------------------------------------
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     --
+</I>&gt;<i>     &gt;     &gt;     -----------------------------------------
+</I>&gt;<i>     &gt;     &gt;     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     &gt;     &gt;     FOKUS/NGNI
+</I>&gt;<i>     &gt;     &gt;     Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     &gt;     &gt;     10589 Berlin,Germany
+</I>&gt;<i>     &gt;     &gt;     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     &gt;     &gt;     Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     &gt;     &gt;     eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt;&gt;
+</I>&gt;<i>     &gt;     &gt;     Web www.fokus.fraunhofer.de
+</I>&gt;<i>     &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt; &lt; <A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &gt;     We could change the world if God would give us the source
+</I>&gt;<i>     &gt;     code...
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;    
+</I>&gt;<i>     -----------------------------------------------------------------
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     --
+</I>&gt;<i>     &gt;     -----------------------------------------
+</I>&gt;<i>     &gt;     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     &gt;     FOKUS/NGNI
+</I>&gt;<i>     &gt;     Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     &gt;     10589 Berlin,Germany
+</I>&gt;<i>     &gt;     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     &gt;     Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     &gt;     eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt;
+</I>&gt;<i>     &gt;     Web www.fokus.fraunhofer.de &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     We could change the world if God would give us the source
+</I>&gt;<i>     code...
+</I>&gt;<i>     &gt;    
+</I>&gt;<i>     -----------------------------------------------------------------
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     --
+</I>&gt;<i>     -----------------------------------------
+</I>&gt;<i>     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     FOKUS/NGNI
+</I>&gt;<i>     Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     10589 Berlin,Germany
+</I>&gt;<i>     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     Web www.fokus.fraunhofer.de &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     We could change the world if God would give us the source code...
+</I>&gt;<i>     -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000643.html">[OpenIMSCore-Users] how to add new user
+</A></li>
+	<LI>Next message: <A HREF="000654.html">[OpenIMSCore-Users] how to add new user
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#649">[ date ]</a>
+              <a href="thread.html#649">[ thread ]</a>
+              <a href="subject.html#649">[ subject ]</a>
+              <a href="author.html#649">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

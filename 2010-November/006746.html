@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] unable to establish 2-party call
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20unable%20to%20establish%202-party%20call&In-Reply-To=%3CAANLkTikaJbXyQqp%2Bsjdyu%3DFLsa87j%2BdWY%2BCvJzjXt12A%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006745.html">
+   <LINK REL="Next"  HREF="006748.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] unable to establish 2-party call</H1>
+    <B>Raghu Narasimhan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20unable%20to%20establish%202-party%20call&In-Reply-To=%3CAANLkTikaJbXyQqp%2Bsjdyu%3DFLsa87j%2BdWY%2BCvJzjXt12A%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] unable to establish 2-party call">raghu.united at gmail.com
+       </A><BR>
+    <I>Tue Nov 23 23:10:02 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006745.html">[OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for non emergency calls (Franz Edler)
+</A></li>
+        <LI>Next message: <A HREF="006748.html">[OpenIMSCore-Users] Doubts about FHOSS Sh interface and SNR
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6746">[ date ]</a>
+              <a href="thread.html#6746">[ thread ]</a>
+              <a href="subject.html#6746">[ subject ]</a>
+              <a href="author.html#6746">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Environment: Ubuntu 10.04 LTS (64bit), SIPp 1.1 rc6. everything is running
+on loopback (including clients)
+
+I am enclosing the scenario files i am trying to use to establish a call.
+Also enclosed are the log files and wireshark capture on loopback.
+
+When I take a trace on Wireshark, I see
+
+This is the UAC:
+/home/swuser/Desktop/sipp-1.1rc6/sipp -sf
+invite-bob-net1-AS-alice-net1-client.xml pcscf.open-ims.test:4060 -i
+127.0.0.1 -p 3333 -mp 32233 -m 1 -trace_msg -trace_err
+
+This is the UAS
+/home/swuser/Desktop/sipp-1.1rc6/sipp -sf invite-bob-alice-server.xml
+pcscf.open-ims.test:4060 -i 127.0.0.1 -p 11111 -mp 11112 -m 1 -trace_msg
+-trace_err
+
+On the PCSCF, I have enabled the Variant2 to enforce the service route.
+
+if (!P_follows_service_routes()){
+                #Variant 1 - deny access to the network
+                #sl_send_reply(&quot;400&quot;,&quot;Bad Request - Not following indicated
+Service-Routes&quot;);
+                #break;
+                #Variant 2 - enforce routes and let the dialog continue
+                P_enforce_service_routes();
+        }
+
+
+The UAS doesn't receive anything.
+Can someone please tell me what is wrong with this?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20101123/e2762703/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20101123/e2762703/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006745.html">[OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for non emergency calls (Franz Edler)
+</A></li>
+	<LI>Next message: <A HREF="006748.html">[OpenIMSCore-Users] Doubts about FHOSS Sh interface and SNR
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6746">[ date ]</a>
+              <a href="thread.html#6746">[ thread ]</a>
+              <a href="subject.html#6746">[ subject ]</a>
+              <a href="author.html#6746">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

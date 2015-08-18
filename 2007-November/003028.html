@@ -1,0 +1,354 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] need help on user register
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20need%20help%20on%20user%20register&In-Reply-To=%3C474C5EDB.7010302%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003022.html">
+   <LINK REL="Next"  HREF="003020.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] need help on user register</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20need%20help%20on%20user%20register&In-Reply-To=%3C474C5EDB.7010302%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] need help on user register">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Nov 27 19:15:55 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003022.html">[OpenIMSCore-Users] need help on user register
+</A></li>
+        <LI>Next message: <A HREF="003020.html">[OpenIMSCore-Users] Cancel message send by AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3028">[ date ]</a>
+              <a href="thread.html#3028">[ thread ]</a>
+              <a href="subject.html#3028">[ subject ]</a>
+              <a href="author.html#3028">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>For one, it looks like you miss-configured the clients. The REGISTER
+RequestURI should be &quot;sip:open-ims.test&quot; and not an IP Address. You are
+registering to a domain, not to a node.
+
+then if you configure the S-CSCF as it is by default to select AKA
+authentication, x-lite won't work as it only knows to do MD5.
+
+-Dragos
+
+Jingyi Hu wrote:
+&gt;<i>  
+</I>&gt;<i> Hi Dragos and All,
+</I>&gt;<i>  
+</I>&gt;<i> Here is SIP trace:
+</I>&gt;<i> Client -&gt; IMS Server:
+</I>&gt;<i>  
+</I>&gt;<i> REGISTER sip:10.1.41.100 SIP/2.0
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">858b929a9d37dc0f16ba01a82052c6ec at 10.1.59.70</A>
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">858b929a9d37dc0f16ba01a82052c6ec at 10.1.59.70</A>&gt;
+</I>&gt;<i> CSeq: 1 REGISTER
+</I>&gt;<i> From: &quot;bob&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=1009
+</I>&gt;<i> To: &quot;bob&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> Via: SIP/2.0/UDP
+</I>&gt;<i> 10.1.59.70:5061;branch=z9hG4bKc048bf3439f8b04d244b0233f5bff29f
+</I>&gt;<i> Max-Forwards: 20
+</I>&gt;<i> Expires: 3600
+</I>&gt;<i> Authorization: Digest
+</I>&gt;<i> username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,realm=&quot;10.1.41.100&quot;,nonce=&quot;&quot;,response=&quot;&quot;,uri=&quot;sip:10.1.41.100
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>%22,realm=%2210.1.41.100%22,nonce=%22%22,response=%22%22,uri=%22sip:10.1.41.100&gt;&quot;
+</I>&gt;<i> Supported: path
+</I>&gt;<i> Contact: &quot;bob&quot; &lt;sip:10.1.59.70:5061&gt;
+</I>&gt;<i> P-Preferred-Identity: &quot;bob&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> P-Access-Network-Info: 3GPP-UTRAN-TDD; utran-cell-id-3gpp=00000000
+</I>&gt;<i> Privacy: none
+</I>&gt;<i> User-Agent: Fraunhofer FOKUS/NGNI Java IMS UserEndpoint FoJIE 0.1 (jdk1.3)
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> IMS Server-&gt; Client:
+</I>&gt;<i>  
+</I>&gt;<i> SIP/2.0 401 Unauthorized - Challenging the UE
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">858b929a9d37dc0f16ba01a82052c6ec at 10.1.59.70</A>
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">858b929a9d37dc0f16ba01a82052c6ec at 10.1.59.70</A>&gt;
+</I>&gt;<i> CSeq: 1 REGISTER
+</I>&gt;<i> From: &quot;bob&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=1009
+</I>&gt;<i> To: &quot;bob&quot;
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=5ff0ec4eb2fced23d94096374ed23bd8-484e
+</I>&gt;<i> Via: SIP/2.0/UDP
+</I>&gt;<i> 10.1.59.70:5061;received=10.1.47.254;rport=1027;received=10.1.47.254;branch=z9hG4bKc048bf3439f8b04d244b0233f5bff29f
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY,
+</I>&gt;<i> MESSAGE, INFO
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (x86_64/linux))
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i> Warning: 392 10.1.41.100:6060 &quot;Noisy feedback tells:  pid=19545
+</I>&gt;<i> req_src_ip=10.1.41.100 req_src_port=5060
+</I>&gt;<i> in_uri=sip:scscf.open-ims.test:6060
+</I>&gt;<i> out_uri=sip:scscf.open-ims.test:6060 via_cnt==3&quot;
+</I>&gt;<i> WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,
+</I>&gt;<i> nonce=&quot;QKygJK65t+4bnJAqXJkOEL8p46sODwAAhEdU/b7ETXo=&quot;, algorithm=AKAv1-MD5
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> It make any sense?
+</I>&gt;<i>  
+</I>&gt;<i> Thanks.
+</I>&gt;<i>  
+</I>&gt;<i> Jingyi Hu
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &gt; Date: Wed, 21 Nov 2007 12:17:11 +0100
+</I>&gt;<i> &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">jhu2000 at hotmail.com</A>
+</I>&gt;<i> &gt; Subject: Re: [OpenIMSCore-Users] need help on user register
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hello Jingyi Hu,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The logs do not help in this case. Please send a network trace showing
+</I>&gt;<i> &gt; the SIP and Diameter messages inside the Open IMS Core.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; -Dragos
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Jingyi Hu wrote:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Hi All,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; I have problem when try to register to use OpneIC client. All CSCFs
+</I>&gt;<i> &gt; &gt; and FHos see running fine. I use OpenIC PC client to add bob as
+</I>&gt;<i> &gt; &gt; user. OpenIC Message show as wrong password, but I enter password
+</I>&gt;<i> &gt; &gt; exact as in database?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Here is my setting in OpenIC:
+</I>&gt;<i> &gt; &gt; Public ID: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> &gt; &gt; Private ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> &gt; &gt; Secret key: bob
+</I>&gt;<i> &gt; &gt; Display name: bob
+</I>&gt;<i> &gt; &gt; Realm: 10.1.41.100
+</I>&gt;<i> &gt; &gt; Proxy Server: 10.1.41.100:4060/UDP
+</I>&gt;<i> &gt; &gt; Default Algorithm: AKA.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; But I got those error message:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; PCSCF:
+</I>&gt;<i> &gt; &gt; INF:P-CSCF:---------- Subscription list end -----------
+</I>&gt;<i> &gt; &gt; 1(3047) DBG:P-CSCF:P_verify_security: Looking for
+</I>&gt;<i> &lt;1://10.1.59.70:5064&gt;
+</I>&gt;<i> &gt; &gt; 3(3049) DBG:P-CSCF:cscf_get_pref_security_header: No known Security
+</I>&gt;<i> &gt; &gt; header
+</I>&gt;<i> &gt; &gt; foun
+</I>&gt;<i> &gt; &gt; d.
+</I>&gt;<i> &gt; &gt; 3(3049) INFO:P-CSCF:P_NAT_relay: &lt;sip:10.1.47.254:1032&gt;
+</I>&gt;<i> &gt; &gt; 1(3047) DBG:P-CSCF:P_verify_security: Looking for
+</I>&gt;<i> &lt;1://10.1.59.70:5064&gt;
+</I>&gt;<i> &gt; &gt; 3(3049) DBG:P-CSCF:cscf_get_pref_security_header: No known Security
+</I>&gt;<i> &gt; &gt; header
+</I>&gt;<i> &gt; &gt; foun
+</I>&gt;<i> &gt; &gt; d.
+</I>&gt;<i> &gt; &gt; 3(3049) INFO:P-CSCF:P_NAT_relay: &lt;sip:10.1.47.254:1032&gt;
+</I>&gt;<i> &gt; &gt; 1(3047) DBG:P-CSCF:P_verify_security: Looking for
+</I>&gt;<i> &lt;1://10.1.59.70:5064&gt;
+</I>&gt;<i> &gt; &gt; 3(3049) DBG:P-CSCF:cscf_get_pref_security_header: No known Security
+</I>&gt;<i> &gt; &gt; header
+</I>&gt;<i> &gt; &gt; foun
+</I>&gt;<i> &gt; &gt; d.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; SCSCF:
+</I>&gt;<i> &gt; &gt; 18(3246) DBG:sm_process(): Peer hss.open-ims.test State R_Open Event
+</I>&gt;<i> &gt; &gt; R_Rcv_Message
+</I>&gt;<i> &gt; &gt; 2(3096) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> &gt; &gt; 2(3096) INFO:I-CSCF:Cx_get_capabilities: Failed finding avp
+</I>&gt;<i> &gt; &gt; 2(3096) INFO:I-CSCF:new_scscf_entry: &lt;sip:scscf.open-ims.test:6060&gt;
+</I>&gt;<i> &gt; &gt; 18(3246) DBG:sm_process(): Peer hss.open-ims.test State R_Open Event
+</I>&gt;<i> &gt; &gt; R_Rcv_Message
+</I>&gt;<i> &gt; &gt; 1(3095) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> &gt; &gt; 1(3095) INFO:I-CSCF:Cx_get_capabilities: Failed finding avp
+</I>&gt;<i> &gt; &gt; 1(3095) INFO:I-CSCF:new_scscf_entry: &lt;sip:scscf.open-ims.test:6060&gt;
+</I>&gt;<i> &gt; &gt; 18(3246) DBG:sm_process(): Peer hss.open-ims.test State R_Open Event
+</I>&gt;<i> &gt; &gt; R_Rcv_Message
+</I>&gt;<i> &gt; &gt; 1(3095) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> &gt; &gt; 1(3095) INFO:I-CSCF:Cx_get_capabilities: Failed finding avp
+</I>&gt;<i> &gt; &gt; 1(3095) INFO:I-CSCF:new_scscf_entry: &lt;sip:scscf.open-ims.test:6060&gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; ICSCF:
+</I>&gt;<i> &gt; &gt; 12(3159) ------------------
+</I>&gt;<i> &gt; &gt; 4(3151) ERR:S-CSCF:cscf_get_integrity_protected: No credentials for
+</I>&gt;<i> &gt; &gt; this realm found.
+</I>&gt;<i> &gt; &gt; 4(3151) ERR:S-CSCF:cscf_get_private_identity: No credentials for this
+</I>&gt;<i> &gt; &gt; realm found.
+</I>&gt;<i> &gt; &gt; 4(3151) INF:S-CSCF:cscf_get_private_identity: Falling back to
+</I>&gt;<i> &gt; &gt; private_id=stripped(public_id)
+</I>&gt;<i> &gt; &gt; -&gt; Message did not contain a valid Authorization Header!!! This
+</I>&gt;<i> &gt; &gt; fallback is deprecated outside Early-IMS!
+</I>&gt;<i> &gt; &gt; 4(3151) ERR:S-CSCF:cscf_get_nonce: No credentials for this realm
+</I>&gt;<i> found.
+</I>&gt;<i> &gt; &gt; 4(3151) ERR:S-CSCF:cscf_get_private_identity: No credentials for this
+</I>&gt;<i> &gt; &gt; realm found.
+</I>&gt;<i> &gt; &gt; 4(3151) INF:S-CSCF:cscf_get_private_identity: Falling back to
+</I>&gt;<i> &gt; &gt; private_id=stripped(public_id)
+</I>&gt;<i> &gt; &gt; -&gt; Message did not contain a valid Authorization Header!!! This
+</I>&gt;<i> &gt; &gt; fallback is deprecated outside Early-IMS!
+</I>&gt;<i> &gt; &gt; 4(3151) ERR:S-CSCF:cscf_get_auts: No credentials for this realm found.
+</I>&gt;<i> &gt; &gt; 18(3248) DBG:sm_process(): Peer hss.open-ims.test State R_Open Event
+</I>&gt;<i> &gt; &gt; R_Rcv_Message
+</I>&gt;<i> &gt; &gt; 2(3149) ERR:S-CSCF:cscf_get_integrity_protected: No credentials for
+</I>&gt;<i> &gt; &gt; this realm found.
+</I>&gt;<i> &gt; &gt; 2(3149) ERR:S-CSCF:cscf_get_private_identity: No credentials for this
+</I>&gt;<i> &gt; &gt; realm found.
+</I>&gt;<i> &gt; &gt; 2(3149) INF:S-CSCF:cscf_get_private_identity: Falling back to
+</I>&gt;<i> &gt; &gt; private_id=stripped(public_id)
+</I>&gt;<i> &gt; &gt; -&gt; Message did not contain a valid Authorization Header!!! This
+</I>&gt;<i> &gt; &gt; fallback is deprecated outside Early-IMS!
+</I>&gt;<i> &gt; &gt; 2(3149) ERR:S-CSCF:cscf_get_nonce: No credentials for this realm
+</I>&gt;<i> found.
+</I>&gt;<i> &gt; &gt; 2(3149) ERR:S-CSCF:cscf_get_private_identity: No credentials for this
+</I>&gt;<i> &gt; &gt; realm found.
+</I>&gt;<i> &gt; &gt; 2(3149) INF:S-CSCF:cscf_get_private_identity: Falling back to
+</I>&gt;<i> &gt; &gt; private_id=stripped(public_id)
+</I>&gt;<i> &gt; &gt; -&gt; Message did not contain a valid Authorization Header!!! This
+</I>&gt;<i> &gt; &gt; fallback is deprecated outside Early-IMS!
+</I>&gt;<i> &gt; &gt; 2(3149) ERR:S-CSCF:cscf_get_auts: No credentials for this realm found.
+</I>&gt;<i> &gt; &gt; 18(3248) DBG:sm_process(): Peer hss.open-ims.test State R_Open Event
+</I>&gt;<i> &gt; &gt; R_Rcv_Message
+</I>&gt;<i> &gt; &gt; 4(3151) ERR:S-CSCF:cscf_get_integrity_protected: No credentials for
+</I>&gt;<i> &gt; &gt; this realm found.
+</I>&gt;<i> &gt; &gt; 4(3151) ERR:S-CSCF:cscf_get_private_identity: No credentials for this
+</I>&gt;<i> &gt; &gt; realm found.
+</I>&gt;<i> &gt; &gt; 4(3151) INF:S-CSCF:cscf_get_private_identity: Falling back to
+</I>&gt;<i> &gt; &gt; private_id=stripped(public_id)
+</I>&gt;<i> &gt; &gt; -&gt; Message did not contain a valid Authorization Header!!! This
+</I>&gt;<i> &gt; &gt; fallback is deprecated outside Early-IMS!
+</I>&gt;<i> &gt; &gt; 4(3151) ERR:S-CSCF:cscf_get_nonce: No credentials for this realm
+</I>&gt;<i> found.
+</I>&gt;<i> &gt; &gt; 4(3151) ERR:S-CSCF:cscf_get_private_identity: No credentials for this
+</I>&gt;<i> &gt; &gt; realm found.
+</I>&gt;<i> &gt; &gt; 4(3151) INF:S-CSCF:cscf_get_private_identity: Falling back to
+</I>&gt;<i> &gt; &gt; private_id=stripped(public_id)
+</I>&gt;<i> &gt; &gt; -&gt; Message did not contain a valid Authorization Header!!! This
+</I>&gt;<i> &gt; &gt; fallback is deprecated outside Early-IMS!
+</I>&gt;<i> &gt; &gt; 4(3151) ERR:S-CSCF:cscf_get_auts: No credentials for this realm found.
+</I>&gt;<i> &gt; &gt; 18(3248) DBG:sm_process(): Peer hss.open-ims.test State R_Open Event
+</I>&gt;<i> &gt; &gt; R_Rcv_Message
+</I>&gt;<i> &gt; &gt; 5(3152) INF:S-CSCF:---------- Registrar Contents begin --------
+</I>&gt;<i> &gt; &gt; 5(3152) INF:S-CSCF:---------- Registrar Contents end ----------
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; FHoSS:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-11-19 19:42:32,862 DEBUG de.fhg.fokus.hss.main.Task - execute
+</I>&gt;<i> &gt; &gt; Processing UAR!
+</I>&gt;<i> &gt; &gt; 2007-11-19 19:42:32,918 DEBUG de.fhg.fokus.hss.main.Task - execute
+</I>&gt;<i> &gt; &gt; Processing MAR!
+</I>&gt;<i> &gt; &gt; 2007-11-19 19:42:32,930 DEBUG de.fhg.fokus.hss.cx.op.MAR -
+</I>&gt;<i> &gt; &gt; generateAuthVector Auth-Scheme is Digest-AKA
+</I>&gt;<i> &gt; &gt; 2007-11-19 19:42:32,932 DEBUG de.fhg.fokus.hss.auth.DigestAKA -
+</I>&gt;<i> &gt; &gt; getAuthenticationVector Authentication-Scheme: AKAv1!
+</I>&gt;<i> &gt; &gt; 2007-11-19 19:42:33,050 DEBUG de.fhg.fokus.hss.main.Task - execute
+</I>&gt;<i> &gt; &gt; Processing UAR!
+</I>&gt;<i> &gt; &gt; 2007-11-19 19:42:33,078 DEBUG de.fhg.fokus.hss.main.Task - execute
+</I>&gt;<i> &gt; &gt; Processing MAR!
+</I>&gt;<i> &gt; &gt; 2007-11-19 19:42:33,086 DEBUG de.fhg.fokus.hss.cx.op.MAR -
+</I>&gt;<i> &gt; &gt; generateAuthVector Auth-Scheme is Digest-AKA
+</I>&gt;<i> &gt; &gt; 2007-11-19 19:42:33,087 DEBUG de.fhg.fokus.hss.auth.DigestAKA -
+</I>&gt;<i> &gt; &gt; getAuthenticationVector Authentication-Scheme: AKAv1!
+</I>&gt;<i> &gt; &gt; 2007-11-19 19:42:33,193 DEBUG de.fhg.fokus.hss.main.Task - execute
+</I>&gt;<i> &gt; &gt; Processing UAR!
+</I>&gt;<i> &gt; &gt; 2007-11-19 19:42:33,216 DEBUG de.fhg.fokus.hss.main.Task - execute
+</I>&gt;<i> &gt; &gt; Processing MAR!
+</I>&gt;<i> &gt; &gt; 2007-11-19 19:42:33,222 DEBUG de.fhg.fokus.hss.cx.op.MAR -
+</I>&gt;<i> &gt; &gt; generateAuthVector Auth-Scheme is Digest-AKA
+</I>&gt;<i> &gt; &gt; 2007-11-19 19:42:33,223 DEBUG de.fhg.fokus.hss.auth.DigestAKA -
+</I>&gt;<i> &gt; &gt; getAuthenticationVector Authentication-Scheme: AKAv1!
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Could you tell me what I am doing wrong?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Thank you so much.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Best regards,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Jingyi Hu
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt; You keep typing, we keep giving. Download Messenger and join the i&#8217;m
+</I>&gt;<i> &gt; &gt; Initiative now. Join in!
+</I>&gt;<i> &gt; &gt; &lt;<A HREF="http://im.live.com/messenger/im/home/?source=CRM_WL_joinnow">http://im.live.com/messenger/im/home/?source=CRM_WL_joinnow</A>&gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; _______________________________________________
+</I>&gt;<i> &gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt; -----------------------------------------
+</I>&gt;<i> &gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt; Fraunhofer FOKUS/NGNI
+</I>&gt;<i> &gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt; Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> &gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Connect and share in new ways with Windows Live. Connect now!
+</I>&gt;<i> &lt;<A HREF="http://www.windowslive.com/connect.html?ocid=TXT_TAGLM_Wave2_newways_112007">http://www.windowslive.com/connect.html?ocid=TXT_TAGLM_Wave2_newways_112007</A>&gt;
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003022.html">[OpenIMSCore-Users] need help on user register
+</A></li>
+	<LI>Next message: <A HREF="003020.html">[OpenIMSCore-Users] Cancel message send by AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3028">[ date ]</a>
+              <a href="thread.html#3028">[ thread ]</a>
+              <a href="subject.html#3028">[ subject ]</a>
+              <a href="author.html#3028">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

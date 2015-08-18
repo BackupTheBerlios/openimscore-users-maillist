@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Unsbuscribe error &quot;400 Bad Request - Not	following indicated dialog routes&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Unsbuscribe%20error%20%22400%20Bad%20Request%20-%20Not%0A%09following%20indicated%20dialog%20routes%22&In-Reply-To=%3C99f654280707051806o20e8a0bcp2655a52e2b0956df%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002088.html">
+   <LINK REL="Next"  HREF="002094.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Unsbuscribe error &quot;400 Bad Request - Not	following indicated dialog routes&quot;</H1>
+    <B>alvan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Unsbuscribe%20error%20%22400%20Bad%20Request%20-%20Not%0A%09following%20indicated%20dialog%20routes%22&In-Reply-To=%3C99f654280707051806o20e8a0bcp2655a52e2b0956df%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Unsbuscribe error &quot;400 Bad Request - Not	following indicated dialog routes&quot;">arithdon at gmail.com
+       </A><BR>
+    <I>Fri Jul  6 03:06:51 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002088.html">[OpenIMSCore-Users] Unsbuscribe error &quot;400 Bad Request - Not following indicated dialog routes&quot;
+</A></li>
+        <LI>Next message: <A HREF="002094.html">[OpenIMSCore-Users] Unsbuscribe error &quot;400 Bad Request - Not following indicated dialog routes&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2092">[ date ]</a>
+              <a href="thread.html#2092">[ thread ]</a>
+              <a href="subject.html#2092">[ subject ]</a>
+              <a href="author.html#2092">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dear Dragos,
+You are right. Now the sub and unsub are working.
+But I still confused by the process with NOTIFY.
+
+As you know after successful SUBSCRIBE client will receive a NOTIFY from
+Server.
+And with the default process the subsequent requests in this dialog such as
+unsubscribe
+will take the value in contact header of the previous NOTIFY as the
+REQUEST-URI.That would cause an error of &quot;404 User Not registerd on ...&quot;. I
+commented the behavior of obtaining contact address from NOTIFY and both
+SUBSCRIBE/UNSUBSCRIBE are OK.
+
+But isn't the behavior on getting contact address correct?
+
+The enclosed is the trace.
+
+Would you please take a look at it?
+THX
+BR
+Fengbin
+
+2007/7/5, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;:
+&gt;<i>
+</I>&gt;<i> Hello Fengbin,
+</I>&gt;<i>
+</I>&gt;<i> The unsubscribe has to happen on the same dialog. You are using the same
+</I>&gt;<i> call-id and from/to tags, so this is right. What is wrong is that you
+</I>&gt;<i> are using the Service-Route routes for a subsequent request.
+</I>&gt;<i>
+</I>&gt;<i> The Service-Routes are ONLY for initial requests for dialogs or for
+</I>&gt;<i> non-dialog methods. For any subsequent requests inside dialogs you need
+</I>&gt;<i> to use the Record-Routes for that specific dialog, as saved in the 200
+</I>&gt;<i> OK for the initial request (and in reversed order on the originating
+</I>&gt;<i> side).
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> alvan wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; My client has a successfully talk with server on SUBSCRIBE and NOTIFY
+</I>&gt;<i> &gt; but when I tried to UNSUBSCRIBE there is always error of:
+</I>&gt;<i> &gt; &quot;400 Bad Request - Not following indicated dialog routes&quot;.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The enclosed is the trace, can you take a look at it ?
+</I>&gt;<i> &gt; THX
+</I>&gt;<i> &gt; Best Regards,
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt; Fengbin
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+Fengbin
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070706/76e95302/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070706/76e95302/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: unsub_KO_notifying.cap
+Type: application/cap
+Size: 9512 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070706/76e95302/attachment.cap">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070706/76e95302/attachment.cap</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002088.html">[OpenIMSCore-Users] Unsbuscribe error &quot;400 Bad Request - Not following indicated dialog routes&quot;
+</A></li>
+	<LI>Next message: <A HREF="002094.html">[OpenIMSCore-Users] Unsbuscribe error &quot;400 Bad Request - Not following indicated dialog routes&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2092">[ date ]</a>
+              <a href="thread.html#2092">[ thread ]</a>
+              <a href="subject.html#2092">[ subject ]</a>
+              <a href="author.html#2092">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

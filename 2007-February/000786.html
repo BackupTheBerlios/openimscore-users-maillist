@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users]  Triggers activation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%20Triggers%20activation&In-Reply-To=%3CC10A7FD0F787D14382109AE458A7DE2901437399%40BEXEXCLUS01.BEX.PRIV%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000785.html">
+   <LINK REL="Next"  HREF="000787.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users]  Triggers activation</H1>
+    <B>frederic moulis</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%20Triggers%20activation&In-Reply-To=%3CC10A7FD0F787D14382109AE458A7DE2901437399%40BEXEXCLUS01.BEX.PRIV%3E"
+       TITLE="[OpenIMSCore-Users]  Triggers activation">frederic.moulis at NIJI.FR
+       </A><BR>
+    <I>Tue Feb 13 14:51:19 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000785.html">[OpenIMSCore-Users] Triggers activation
+</A></li>
+        <LI>Next message: <A HREF="000787.html">[OpenIMSCore-Users]  Triggers activation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#786">[ date ]</a>
+              <a href="thread.html#786">[ thread ]</a>
+              <a href="subject.html#786">[ subject ]</a>
+              <a href="author.html#786">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Peter,
+
+I do not understand why the following trigger below matches the
+following INVITE request :
+
+----------------------------------------------------------------
+TRIGGER :
+----------------------------------------------------------------
+&lt;TriggerPoint&gt;
+	&lt;ConditionTypeCNF&gt;true&lt;/ConditionTypeCNF&gt;
+	&lt;SPT&gt;
+		&lt;ConditionNegated&gt;false&lt;/ConditionNegated&gt;
+		&lt;Group&gt;0&lt;/Group&gt;
+		&lt;Method&gt;INVITE&lt;/Method&gt;
+	&lt;/SPT&gt;
+	&lt;SPT&gt;
+		&lt;ConditionNegated&gt;false&lt;/ConditionNegated&gt;
+		&lt;Group&gt;1&lt;/Group&gt;
+		&lt;SIPHeader&gt;
+			&lt;Header&gt;From&lt;/Header&gt;
+			&lt;Content&gt;*.marc*.&lt;/Content&gt;
+		&lt;/SIPHeader&gt;
+	&lt;/SPT&gt;
+&lt;/TriggerPoint&gt;
+
+-------------------------------------------------------
+INVITE request :
+-------------------------------------------------------
+INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">marc at open-ims.test</A> SIP/2.0
+Via: SIP/2.0/UDP
+10.1.0.101:5065;rport;branch=z9hG4bKPj62c000128c0a85593b0b
+Max-Forwards: 70
+From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>;tag=62c000108c0a85593b0b
+To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">marc at open-ims.test</A>
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at 10.1.0.101</A>:5065;transport=UDP&gt;
+Call-ID: 62c000118c0a85593b0b
+CSeq: 1914326598 INVITE
+Route: &lt;sip:10.1.0.201:3060;lr&gt;
+Allow: INVITE, ACK, BYE, CANCEL, SUBSCRIBE, NOTIFY, PUBLISH, REFER,
+MESSAGE, OPTIONS
+Supported: replaces, norefersub
+User-Agent: SIPphone ACIL/0.1
+Accept: application/sdp, application/pidf+xml, application/xpidf+xml,
+message/sipfrag;version=2.0, application/im-iscomposing+xml, text/plain,
+message/external-body
+Content-Type: application/sdp
+Content-Length:   388
+
+v=0
+o=- 3380366368 3380366368 IN IP4 10.1.0.101
+s=pjmedia
+c=IN IP4 10.1.0.101
+t=0 0
+m=audio 4000 RTP/AVP 0 8 102 117 103 3 101
+a=rtcp:4001 IN IP4 10.1.0.101
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=rtpmap:102 speex/8000
+a=rtpmap:117 iLBC/8000
+a=fmtp:117 mode=20
+a=rtpmap:103 speex/16000
+a=rtpmap:3 GSM/8000
+a=sendrecv
+a=rtpmap:101 telephone-event/8000
+a=fmtp:101 0-15
+
+
+
+
+N.B  : The behaviour is exactly the same if Content part of the trigger
+is &quot;marc&quot; instead of &quot;.*marc.*&quot;
+N.B2 : If I add a &quot;Session case&quot; &quot;ORIGINATING&quot;, it does not match
+neither this INVITE, nor the same INVITE from marc to romain.
+
+- Fred
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000785.html">[OpenIMSCore-Users] Triggers activation
+</A></li>
+	<LI>Next message: <A HREF="000787.html">[OpenIMSCore-Users]  Triggers activation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#786">[ date ]</a>
+              <a href="thread.html#786">[ thread ]</a>
+              <a href="subject.html#786">[ subject ]</a>
+              <a href="author.html#786">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> No subject
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.27.1331735690.7444.openimscore-users%40lists.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002696.html">
+   <LINK REL="Next"  HREF="002830.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>No subject</H1>
+    <B></B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.27.1331735690.7444.openimscore-users%40lists.berlios.de%3E"
+       TITLE="No subject">
+       </A><BR>
+    <I>Wed Mar 14 15:33:54 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002696.html">No subject
+</A></li>
+        <LI>Next message: <A HREF="002830.html">No subject
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2787">[ date ]</a>
+              <a href="thread.html#2787">[ thread ]</a>
+              <a href="subject.html#2787">[ subject ]</a>
+              <a href="author.html#2787">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>but the client. It looks like the capture is incomplete (maybe not
+capturing on all interfaces?) and you don't see the message exchanges
+between the P-CSCF and the UE. If any of the CSCFs answers a request,
+you will notice a Server and a Warning header, which are not present here.
+
+The OpenIMSCore seems to be configured properly as the PUBLISH goes to
+the presence server. But then the presence server should respond to the
+request and not just proxy it on its way (to the I-CSCF) as it does now.
+I don't know what is wrong in the presence server, most likely a
+presence server misconfiguration.
+
+Cheers,
+-Dragos
+
+Alvaro Mari Diego wrote:
+&gt;<i> Hi everyone!
+</I>&gt;<i>
+</I>&gt;<i> I've set up the OpenIMSCore (in the address 138.4.7.163 and domain
+</I>&gt;<i> amd-openims.test), and recently I added a Presence server listening on
+</I>&gt;<i> 138.4.7.163:5080 by setting up OpenSER with Presence module in the same
+</I>&gt;<i> machine.
+</I>&gt;<i>
+</I>&gt;<i> I've configurated OpenSER Presence Module as it's told in the OpenSER doc
+</I>&gt;<i> wiki: <A HREF="http://www.openser.org/dokuwiki/doku.php/presence:configuration-file">http://www.openser.org/dokuwiki/doku.php/presence:configuration-file</A>
+</I>&gt;<i>
+</I>&gt;<i> Finally, I changed the IFC config in the HoSS webUI, by pointing
+</I>&gt;<i> sip:138.4.7.163:5080 as AS address (OpenSER address), and unasigning the
+</I>&gt;<i> default Trigger Point, so any message will be forwarded to the OpenSER AS
+</I>&gt;<i> (as the own OpenSER server handles Presence triggering only when SUBSCRIBE
+</I>&gt;<i> or PUBLISH method is found).
+</I>&gt;<i>
+</I>&gt;<i> The result is, that the client (X-lite) registers successfully, and then
+</I>&gt;<i> sends a serie of SIP Presence request that are forwarded to the OpenSER AS
+</I>&gt;<i> as expected. However, the AS re-forward the request back to the S-CSF and
+</I>&gt;<i> this back to the P-CSCF, which generates a 405 Invalid Method response to
+</I>&gt;<i> the AS via S-CSCF. I wonder what's going on and who's the cause of the
+</I>&gt;<i> issue. Seems that it's not CSCF's fault, but I dont know why AS could do
+</I>&gt;<i> this.
+</I>&gt;<i>
+</I>&gt;<i> Find attached a couple of Wireshark captures in the local network (i.e.,
+</I>&gt;<i> SIP messanges between PCSCF, ICSCF, SCSCF, and OpenSER Presence AS), the
+</I>&gt;<i> first one when the X-Lite client registers, and the second one when, once
+</I>&gt;<i> registered, the X-lite client changes his status from busy to on-line.
+</I>&gt;<i> Filter them with sip protocol to be more clearer to read.
+</I>&gt;<i>
+</I>&gt;<i> P-CSCF got port 4060, SCSCF got 6060 and OpenSER Presence AS got 5080.
+</I>&gt;<i>
+</I>&gt;<i> Any help or idea would be very useful! Thanks!
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002696.html">No subject
+</A></li>
+	<LI>Next message: <A HREF="002830.html">No subject
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2787">[ date ]</a>
+              <a href="thread.html#2787">[ thread ]</a>
+              <a href="subject.html#2787">[ subject ]</a>
+              <a href="author.html#2787">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] OpenIMSCore and IPv6 - Diameter interfaces	should work now
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore%20and%20IPv6%20-%20Diameter%20interfaces%0A%09should%20work%20now&In-Reply-To=%3C47B22158.6070107%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003370.html">
+   <LINK REL="Next"  HREF="003373.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] OpenIMSCore and IPv6 - Diameter interfaces	should work now</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore%20and%20IPv6%20-%20Diameter%20interfaces%0A%09should%20work%20now&In-Reply-To=%3C47B22158.6070107%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] OpenIMSCore and IPv6 - Diameter interfaces	should work now">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Feb 12 23:44:40 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003370.html">[OpenIMSCore-Users] Domain name change problems
+</A></li>
+        <LI>Next message: <A HREF="003373.html">[OpenIMSCore-Users] OpenIMSCore and IPv6 - Diameter interfaces should work now
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3367">[ date ]</a>
+              <a href="thread.html#3367">[ thread ]</a>
+              <a href="subject.html#3367">[ subject ]</a>
+              <a href="author.html#3367">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+As the team in one of the many projects that uses the Open IMS Core
+decided to waste a small amount of money on what runs at the base of
+their developments, we are now finally able to take time and add IPv6
+support to it.
+
+1. The implementation of the first step has been completed - IPv6
+support for the Diameter libraries.
+    1.1 The JavaDiameterPeer seems to work just fine due to the hiding
+of the network layer inside the JVM. There was actually not one line of
+code changed
+    1.2 The CDiameterPeer has been fixed and was tested in some basic
+connectivity tests against the JavaDiameterPeer. Try SVN r525 or newer.
+2. The CSCF support
+    2.1 SER already supports IPv6. Here it's a matter of configuration
+    2.2 Some of the CSCF modules probably won't as some of the
+developers (mostly I) were too lazy to write an IPv6 parser when the
+IPv4 one is so trivial; or IPv6 was simply not in scope for the first
+prototype. In the next step I will try and figure all the points where
+changes need to be performed.
+
+
+So you can already start to use IPv6 on the Diameter interfaces and
+feedback is of course mostly welcomed. Don't forget though to
+reconfigure your C/JavaDiameterPeer xml configuration files - in the
+Accept tag use:
+    - no bind parameter to indicate a bind to all available interface,
+IPv4 and IPv6 - I still get a warning that after binding on :: a bind on
+0.0.0.0 is not possible, but it's no bug.
+    - a bind=&quot;::&quot; to listen on all IPv6, similar to bind=&quot;0.0.0.0&quot; for IPv4
+    - a bind=&quot;::1&quot; or whatever IPv6 address you want to use
+
+Don't forget to update your DNS files! Else hss.open-ims.test for
+example will still resolve in 127.0.0.1! For IPv6, instead of:
+
+hss                     1D IN A         127.0.0.1
+
+you should have:
+
+hss                     1D IN AAAA      ::1
+
+Oh, and of course, only try this on a IPv6-ready system...
+
+
+For the SIP interfaces, it would probably fail for now. But watch this
+thread for more announcements and also, if you can indicate failing
+cases, it would help me a lot in the implementation.
+
+
+Cheers,
+-Dragos
+
+P.S. We are very excited that finally we are going to support IPv6 and
+we only wish that more of our users would realize that the Open Source
+model works best when they contribute back, either with feedback,
+financial resources or code. In this way more and more features could be
+supported and the benefits to the users would only be higher...
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003370.html">[OpenIMSCore-Users] Domain name change problems
+</A></li>
+	<LI>Next message: <A HREF="003373.html">[OpenIMSCore-Users] OpenIMSCore and IPv6 - Diameter interfaces should work now
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3367">[ date ]</a>
+              <a href="thread.html#3367">[ thread ]</a>
+              <a href="subject.html#3367">[ subject ]</a>
+              <a href="author.html#3367">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

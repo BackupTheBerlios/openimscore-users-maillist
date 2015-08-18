@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Transport Param &amp; Secured Port in P-CSCF's Record-Route
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Transport%20Param%20%26%20Secured%20Port%20in%20P-CSCF%27s%0A%20Record-Route&In-Reply-To=%3C4AAF4AC1.5000508%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005732.html">
+   <LINK REL="Next"  HREF="005733.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Transport Param &amp; Secured Port in P-CSCF's Record-Route</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Transport%20Param%20%26%20Secured%20Port%20in%20P-CSCF%27s%0A%20Record-Route&In-Reply-To=%3C4AAF4AC1.5000508%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Transport Param &amp; Secured Port in P-CSCF's Record-Route">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Sep 15 10:05:21 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005732.html">[OpenIMSCore-Users] Transport Param &amp; Secured Port in P-CSCF's	Record-Route
+</A></li>
+        <LI>Next message: <A HREF="005733.html">[OpenIMSCore-Users] uctimsclient
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5761">[ date ]</a>
+              <a href="thread.html#5761">[ thread ]</a>
+              <a href="subject.html#5761">[ subject ]</a>
+              <a href="author.html#5761">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Guhan,
+
+So it looks like the P_record_route() would need to detect the case when 
+a client is using TLS and add a different Record-Route to the message. 
+Also maybe it would help to add an additional Service-Route so that the 
+initial requests would also use a proper Route header.
+
+In any case, unfortunately I don't have TLS-ready client now, so any 
+patches from your side to the P-CSCF would be welcomed. If you need help 
+with the code, please let me know.
+
+Cheers,
+-Dragos
+
+
+Guhan P wrote:
+&gt;<i> Hi All,
+</I>&gt;<i>  
+</I>&gt;<i> Attachment was missed out in previous mail.
+</I>&gt;<i> Please find the attached document (RecordRoute_MessageFlow.txt) for 
+</I>&gt;<i> Scenario 2.
+</I>&gt;<i>  
+</I>&gt;<i> Regards,
+</I>&gt;<i> Guhan
+</I>&gt;<i>
+</I>&gt;<i>     ----- Original Message -----
+</I>&gt;<i>     *From:* Guhan P &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">guhan.p at globaledgesoft.com</A>&gt;
+</I>&gt;<i>     *To:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     *Sent:* Saturday, September 05, 2009 6:50 PM
+</I>&gt;<i>     *Subject:* Transport Param &amp; Secured Port in P-CSCF's Record-Route
+</I>&gt;<i>
+</I>&gt;<i>     Hi All,
+</I>&gt;<i>      
+</I>&gt;<i>     We observe that P-CSCF does not add Transport Param(UDP / TCP/
+</I>&gt;<i>     TLS) and secured port(incase of TLS) in its Record-Route while
+</I>&gt;<i>     sending 183 or 2XX (for INVITE) response.By default it is UDP.
+</I>&gt;<i>     Please help us to solve below mentioned issues.
+</I>&gt;<i>      
+</I>&gt;<i>     _Scenario 1 : TLS_
+</I>&gt;<i>     Objective: Registration and corresponding Call &amp; Subscription
+</I>&gt;<i>     should happen only in TLS mode.
+</I>&gt;<i>      
+</I>&gt;<i>     i. Users 'Alice' registers with OpenIMSCore in TLS mode. 'Bob'
+</I>&gt;<i>     registers with OpenIMSCore server in UDP.
+</I>&gt;<i>     ii. Alice Invites 'Bob'.
+</I>&gt;<i>     'INVITE'  is sent with Route Header built using &quot;Service-Route:&quot;
+</I>&gt;<i>     Header of 200 OK response received for REGISTER
+</I>&gt;<i>     and Entry of Outbound proxy with transport URI Parameter as &quot;TLS&quot;.
+</I>&gt;<i>         i.e  Route:
+</I>&gt;<i>     &lt;sip:pcscf.open-ims.test:4061;lr;transport=TLS&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i>     iii. Bob accepted the call.
+</I>&gt;<i>     iv. P-CSCF did not add secured port(4061) and transport type(TLS)
+</I>&gt;<i>     in Record-Route(200 OK).
+</I>&gt;<i>      
+</I>&gt;<i>     Record-Route:
+</I>&gt;<i>     &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>:4060;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i>      
+</I>&gt;<i>     Is it the expected behavior from P-CSCF?
+</I>&gt;<i>     Should ACK &amp; inside dialog requests follow Record
+</I>&gt;<i>     Route(received in 200 OK) even though INVITE was secured(TLS)?
+</I>&gt;<i>      
+</I>&gt;<i>     _Scenario 2 : TCP_
+</I>&gt;<i>     Objective: Registration and corresponding Call &amp; Subscription
+</I>&gt;<i>     should happen only in TCP mode.
+</I>&gt;<i>      
+</I>&gt;<i>     i. Users 'Alice' and 'Bob' registered with OpenIMSCore server in TCP.
+</I>&gt;<i>     ii. Alice Invites 'Bob'.
+</I>&gt;<i>     'INVITE'  is sent with Route Header built using &quot;Service-Route:&quot;
+</I>&gt;<i>     Header of 200 OK response received for REGISTER
+</I>&gt;<i>     and Entry of Outbound proxy with transport URI Parameter as &quot;TCP&quot;.
+</I>&gt;<i>     iii. Bob accepted the call.
+</I>&gt;<i>     But P-CSCF did not mention the transport type 'TCP' in
+</I>&gt;<i>     Record-Route (URI parameter) of  200 OK response for INVITE,
+</I>&gt;<i>     iv.ACK is sent in UDP, since it uses the first entry of
+</I>&gt;<i>     'Record-Route' present in 200 OK response for INVITE
+</I>&gt;<i>      
+</I>&gt;<i>     Please find the attached message flow
+</I>&gt;<i>     document(RecordRoute_MessageFlow.txt) for your reference.
+</I>&gt;<i>
+</I>&gt;<i>     Is there any configuration, so that P-CSCF adds its Record-Route
+</I>&gt;<i>     Header with Transport parameter in URI.
+</I>&gt;<i>
+</I>&gt;<i>     Regards,
+</I>&gt;<i>     Guhan
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005732.html">[OpenIMSCore-Users] Transport Param &amp; Secured Port in P-CSCF's	Record-Route
+</A></li>
+	<LI>Next message: <A HREF="005733.html">[OpenIMSCore-Users] uctimsclient
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5761">[ date ]</a>
+              <a href="thread.html#5761">[ thread ]</a>
+              <a href="subject.html#5761">[ subject ]</a>
+              <a href="author.html#5761">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

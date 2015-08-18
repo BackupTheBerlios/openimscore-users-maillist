@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] 401 - Unauthorized
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20401%20-%20Unauthorized&In-Reply-To=%3C456674.16958.qm%40web56113.mail.re3.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000609.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] 401 - Unauthorized</H1>
+    <B>Sudhakar Patil</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20401%20-%20Unauthorized&In-Reply-To=%3C456674.16958.qm%40web56113.mail.re3.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] 401 - Unauthorized">spatil4572 at yahoo.com
+       </A><BR>
+    <I>Thu Feb  1 02:32:26 CET 2007</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000609.html">[OpenIMSCore-Users] 401 - Unauthorized
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#608">[ date ]</a>
+              <a href="thread.html#608">[ thread ]</a>
+              <a href="subject.html#608">[ subject ]</a>
+              <a href="author.html#608">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Babu, 
+I run into other problems if I change the user name to
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> as X-Lite will send the REGISTER
+as 
+
+Via: SIP/2.0/UDP
+10.166.124.3:54780;branch=z9hG4bK-d87543-7d79cd14e630f453-1--d87543-;rport
+Max-Forwards: 70
+Contact:
+&lt;sip:alice%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">40open-ims.test at 10.166.124.3</A>:54780;rinstance=59ccd90ffce9a278&gt;
+To: &quot;&quot;alice&quot;&quot;&lt;sip:alice%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">40open-ims.test at open-ims.test</A>&gt;
+From:
+&quot;&quot;alice&quot;&quot;&lt;sip:alice%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">40open-ims.test at open-ims.test</A>&gt;;tag=7c4fc82d
+Call-ID: ODY0ZGI4ZTlkOWE3MzQ4OGMwOGU4MWZhOGIzZjEyNzA.
+CSeq: 1 REGISTER
+Expires: 3600
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER,
+NOTIFY, MESSAGE, SUBSCRIBE, INFO
+User-Agent: X-Lite release 1006e stamp 34025
+Content-Length: 0
+
+i.e. sets the From and To
+sip:alice%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">40open-ims.test at open-ims.test</A> and HSS fails
+to lookup this user. So I-CSCF sends 403 to the
+client. 
+
+If I keep the user name as &quot;alice&quot; and Authorization
+user name as &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot; I get the following
+errors in sip2ims GW. Essentially MD5 authentication
+at sip2ims gw is failing and hence it does not
+translate MD5 to AKA and hence S-CSCF cannot match the
+auth response to its earlier 401 and hence challenges
+again. 
+
+SIP2IMS sending 401 to X-Lite client
+------------------------------------
+ 2(15692) DBG:SIP2IMS:Gw_AKA_to_MD5: 401
+ 2(15692) INF:SIP2IMS:sip2ims_get_public_identity:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+ 2(15692) INF:SIP2IMS:Gw_AKA_to_MD5:
++++
+Digest realm=&quot;open-ims.test&quot;,
+nonce=&quot;+51Lvq7jk+WJKi9oQmDqfJz1GhPpiQAAs7F/Kt2g4Rw=&quot;,
+algorithm=AKAv1-MD5
+---
+WWW-Authenticate: Digest
+username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;, realm=&quot;open-ims.test&quot;,
+opaque=&quot;AKAv1-MD5+51Lvq7jk+WJKi9oQmDqfJz1GhPpiQAAs7F/Kt2g4Rw=&quot;,
+nonce=&quot;45c142bc840dbd2c2d9c7f228690e8dca00fe863&quot;,
+algorithm=MD5
++++
+
+401 as received by X-Lite
+-------------------------
+SIP/2.0 401 Unauthorized - Challenging the UE
+Via: SIP/2.0/UDP
+10.166.124.3:35550;branch=z9hG4bK-d87543-0d3a1b4e673d8508-1--d87543-;rport=35550
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+To:
+&quot;&quot;alice&quot;&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=d7837ce6bbd631122d10546eb75bb4cf-4c08
+From: &quot;&quot;alice&quot;&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=5d473b75
+Call-ID: YzlhZGY1NTFlNWNmOWM1ZDc0NzIwODU5NDliZWI1ZTI.
+CSeq: 1 REGISTER
+Server: Sip EXpress router (0.10.99-dev53-tm_fixes
+(sparc64/solaris))
+Warning: 392 127.0.0.1:6060 &quot;&quot;Noisy feedback tells: 
+pid=15705 req_src_ip=127.0.0.1 req_src_port=5060
+in_uri=sip:scscf.open-ims.test:6060
+out_uri=sip:scscf.open-ims.test:6060 via_cnt==4&quot;&quot;
+WWW-Authenticate: Digest
+username=&quot;&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;&quot;,
+realm=&quot;&quot;open-ims.test&quot;&quot;,
+opaque=&quot;&quot;AKAv1-MD53KDUjRDp8HK8c//Je7jpi8z9GKUpwAAAe9O1pYUYc0U=&quot;&quot;,
+nonce=&quot;&quot;45c142bbaf41195b5fa9ce1a34886e47dba80ab0&quot;&quot;,
+algorithm=MD5
+Content-Length: 0
+
+X-Lite response to 401
+-----------------------
+Via: SIP/2.0/
+;branch=z9hG4bK-d87543-c041f5041e02ca28-1--d87543-;rport
+Max-Forwards: 70
+Contact: &lt;sip:alice;rinstance=6c3bff25c9079cb0&gt;
+To: &quot;&quot;alice&quot;&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+From: &quot;&quot;alice&quot;&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=5d473b75
+Call-ID: YzlhZGY1NTFlNWNmOWM1ZDc0NzIwODU5NDliZWI1ZTI.
+CSeq: 2 REGISTER
+Expires: 3600
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER,
+NOTIFY, MESSAGE, SUBSCRIBE, INFO
+User-Agent: X-Lite release 1006e stamp 34025
+Authorization: Digest
+username=&quot;&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;&quot;,realm=&quot;&quot;open-ims.test&quot;&quot;,nonce=&quot;&quot;45c142bbaf41195b5fa9ce1a34886e47dba80ab0&quot;&quot;,uri=&quot;&quot;sip:open-ims.test&quot;&quot;,response=&quot;&quot;feb21da8cdef416a2ed754c95e26e0b4&quot;&quot;,algorithm=MD5,opaque=&quot;&quot;AKAv1-MD53KDUjRDp8HK8c//Je7jpi8z9GKUpwAAAe9O1pYUYc0U=&quot;&quot;
+Content-Length: 0
+
+Nonce comparsion result by www_authorize function
+ called by sip2ims.cfg
+----------------------------------------------------------------------------
+ 2(15692) auth:pre_auth: before find credentials
+ 2(15692) auth:check_nonce: comparing
+[45c142bc840dbd2c2d9c7f228690e8dca00fe863] and
+[45c142bcaa6bdd454ee5a35c3bf1507337f07ae4]
+ 2(15692) auth:pre_auth: Invalid nonce value received
+ 2(15692) authdb:authenticate:switch NOT AUTH
+
+sip2ims sending REGISTER request to P-CSCF
+------------------------------------------
+ 2(15692) INF:SIP2IMS:Gw_MD5_to_AKA:
++++
+Digest
+username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;45c142bc840dbd2c2d9c7f228690e8dca00fe863&quot;,uri=&quot;sip:open-ims.test&quot;,response=&quot;d5a30b2f7b735e8af3208a1af664a9cb&quot;,algorithm=MD5,opaque=&quot;AKAv1-MD5+51Lvq7jk+WJKi9oQmDqfJz1GhPpiQAAs7F/Kt2g4Rw=&quot;
+---
+Authorization: Digest
+username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;45c142bc840dbd2c2d9c7f228690e8dca00fe863&quot;,uri=&quot;sip:open-ims.test&quot;,response=&quot;d5a30b2f7b735e8af3208a1af664a9cb&quot;,algorithm=MD5,opaque=&quot;AKAv1-MD5+51Lvq7jk+WJKi9oQmDqfJz1GhPpiQAAs7F/Kt2g4Rw=&quot;
++++
+
+As you can see nonce value sent by S-CSCF is not sent
+back by SIP2IMS as MD5 authentication failed. 
+
+I am not sure how to get out of this problem. Again my
+X-Lite configuration is given below.
+&gt;<i> Display Name: alice
+</I>&gt;<i> User name: alice
+</I>&gt;<i> Password: alice
+</I>&gt;<i> Authorization user name: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+</I>&gt;<i> Domain: open-ims.test
+</I>
+Appreciate any help.
+
+Regards,
+Sudhakar.
+
+
+
+
+
+
+--- Babu George &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bgeorge at aylus.com</A>&gt; wrote:
+
+&gt;<i> Sudhakar,
+</I>&gt;<i>  Change the user name to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> and
+</I>&gt;<i> try.
+</I>&gt;<i>  It worked fine for me.If you still have problem,
+</I>&gt;<i> please attach the ethereal trace
+</I>&gt;<i> Thanks
+</I>&gt;<i> Babu
+</I>&gt;<i> 
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Sudhakar Patil [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">spatil4572 at yahoo.com</A>] 
+</I>&gt;<i> Sent: Wednesday, January 31, 2007 5:15 AM
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: [OpenIMSCore-Users] 401 - Unauthorized
+</I>&gt;<i> 
+</I>&gt;<i> Hello,
+</I>&gt;<i> I think this was answered before but could not find
+</I>&gt;<i> the right solution. 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> I am using X-lite to interact with OSIMS. I keep
+</I>&gt;<i> getting 401 Unauthorized when trying to REGISTER.
+</I>&gt;<i> S-CSCF seems to be sending MAR to HSS for each of
+</I>&gt;<i> the
+</I>&gt;<i> REGISTER messages and responds with 401. X-lite does
+</I>&gt;<i> generate a new REGISTER with authentication
+</I>&gt;<i> response.
+</I>&gt;<i> So not sure what I am missing. I read in a different
+</I>&gt;<i> thread that this occurs when password is wrong.
+</I>&gt;<i> However I am using the default password &quot;alice&quot;. 
+</I>&gt;<i> 
+</I>&gt;<i> My X-ten client configuration is as follows:
+</I>&gt;<i> Display Name: alice
+</I>&gt;<i> User name: alice
+</I>&gt;<i> Password: alice
+</I>&gt;<i> Authorization user name: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+</I>&gt;<i> Domain: open-ims.test
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Any help is appreciated. 
+</I>&gt;<i> 
+</I>&gt;<i> Regards,
+</I>&gt;<i> Sudhakar.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>____________________________________________________________________________________
+&gt;<i> We won't tell. Get more on shows you hate to love 
+</I>&gt;<i> (and love to hate): Yahoo! TV's Guilty Pleasures
+</I>&gt;<i> list.
+</I>&gt;<i> <A HREF="http://tv.yahoo.com/collections/265">http://tv.yahoo.com/collections/265</A> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>
+</I><A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+&gt;<i> 
+</I>&gt;<i> 
+</I>
+
+
+ 
+____________________________________________________________________________________
+No need to miss a message. Get email on-the-go 
+with Yahoo! Mail for Mobile. Get started.
+<A HREF="http://mobile.yahoo.com/mail">http://mobile.yahoo.com/mail</A> 
+
+
+ 
+____________________________________________________________________________________
+No need to miss a message. Get email on-the-go 
+with Yahoo! Mail for Mobile. Get started.
+<A HREF="http://mobile.yahoo.com/mail">http://mobile.yahoo.com/mail</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000609.html">[OpenIMSCore-Users] 401 - Unauthorized
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#608">[ date ]</a>
+              <a href="thread.html#608">[ thread ]</a>
+              <a href="subject.html#608">[ subject ]</a>
+              <a href="author.html#608">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

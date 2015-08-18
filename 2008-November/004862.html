@@ -1,0 +1,1097 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Disappearing IPsec security associations
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Disappearing%20IPsec%20security%20associations&In-Reply-To=%3C200811191921.16430%40dors.rombobeorn.se%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004859.html">
+   <LINK REL="Next"  HREF="004864.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Disappearing IPsec security associations</H1>
+    <B>Bj&#246;rn Persson</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Disappearing%20IPsec%20security%20associations&In-Reply-To=%3C200811191921.16430%40dors.rombobeorn.se%3E"
+       TITLE="[OpenIMSCore-Users] Disappearing IPsec security associations">bjorn.persson at softwell.se
+       </A><BR>
+    <I>Wed Nov 19 19:21:04 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004859.html">[OpenIMSCore-Users] Opensource Media Resource Function ?
+</A></li>
+        <LI>Next message: <A HREF="004864.html">[OpenIMSCore-Users] Disappearing IPsec security associations
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4862">[ date ]</a>
+              <a href="thread.html#4862">[ thread ]</a>
+              <a href="subject.html#4862">[ subject ]</a>
+              <a href="author.html#4862">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Klemens Schragel wrote:
+&gt;<i> The SIP &quot;contact&quot; header tells the Registrar how the UE shall be reached.
+</I>&gt;<i> This means if your UE wants to receive messages as UAS over IPSec SA then
+</I>&gt;<i> it should add its port-s port =&gt; yes, put port to 16387.
+</I>&gt;<i> Furthermore the via-header added by your UE is wrong. You use e.g. in the
+</I>&gt;<i> first REGISTER TCP port 16385, but on SIP-level you pretend the originating
+</I>&gt;<i> port is 5060... actually P-CSCF should send the 401 only according to the
+</I>&gt;<i> via-header =&gt; to 5060; don't know why it does not...
+</I>&gt;<i>
+</I>&gt;<i> I recommend you to get these erroneous headers right and try again, if the
+</I>&gt;<i> error's the same we can look further..
+</I>
+Well, I changed the port numbers and now the SAs that get set up no longer 
+disappear, but other than that the result is actually a worsening.
+
+I now use port-s in Contact, and in Via I use the sending port of each 
+message, which is the client port of the unauthenticated connection in the 
+first REGISTER and port-c in the second REGISTER. I also removed a 
+redundant &quot;methods&quot; parameter in Contact. The effects I have observed are as 
+follows:
+
+1: SER still doesn't run ipsec_P_Inc_Rpl.sh, ipsec_P_Out_Req.sh or 
+ipsec_P_Out_Rpl.sh, only ipsec_P_Inc_Req.sh. The only improvement is that the 
+SA that ipsec_P_Inc_Req.sh sets up now sticks. That is, SER doesn't run 
+ipsec_P_Drop.sh to remove it after a minute.
+
+2: I can no longer send MESSAGE. I get 200 OK on the second REGISTER, and the 
+user is shown as registered both in the output of the P-CSCF and in the web 
+interface of FHoSS. Despite all this the P-CSCF responds to MESSAGE with &quot;403 
+Forbidden - Not Registered! You must register first with a S-CSCF&quot;. This 
+worked before I changed the port numbers. See the attachment 
+MESSAGE_forbidden.txt.
+
+3: ipsec_P_Inc_Req.sh works unreliably. In some REGISTER transactions no SA 
+gets added even though the P-CSCF calls ipsec_P_Inc_Req.sh. I had similar 
+symptoms a few times before but I couldn't reproduce it. Now it happens much 
+more often. The four attachments that start with &quot;SA_failure&quot; show how one 
+registration succeeds and the second one stalls because the server lacks an 
+SA to decrypt the second REGISTER. At the end of SA_failure_PF_KEY_trace.txt, 
+an attempt to add an SA is rejected with an error code of 17.
+This problem might of course not have any connection to the port numbers. It 
+might just be bad luck that it happens more often now.
+
+Bj&#246;rn Persson
+-------------- next part --------------
+2008-11-19 15:42:37.327119 &gt;&gt;&gt;
+REGISTER sip:open-ims.softwell.se SIP/2.0
+Via: SIP/2.0/tcp 172.16.13.30:16385;branch=z9hG4bK-4f2d7f62-b648-11dd-b398-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1227105757326534
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at 172.16.13.30</A>:16387;transport=tcp&gt;;methods=&quot;INVITE,NOTIFY,INFO,OPTIONS,MESSAGE,ACK,BYE,CANCEL&quot;
+Expires: 3600
+Call-ID: 4f2d7b3e-b648-11dd-b398-0017a43fc587
+CSeq: 1 REGISTER
+Max-Forwards: 30
+User-Agent: SoftWell MBC: uac_adapter trunk: 3411, locally modified
+Allow-Events: presence
+Require: sec-agree
+Proxy-Require: sec-agree
+Supported: path
+Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot;, realm=&quot;open-ims.softwell.se&quot;, nonce=&quot;&quot;, uri=&quot;sip:open-ims.softwell.se&quot;, response=&quot;&quot;
+Security-Client: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=6000; spi-s=6001; port-c=16386; port-s=16387
+Content-Length: 0
+
+
+2008-11-19 15:42:37.648130 &lt;&lt;&lt;
+SIP/2.0 401 Unauthorized - Challenging the UE
+Via: SIP/2.0/tcp 172.16.13.30:16385;rport=16385;branch=z9hG4bK-4f2d7f62-b648-11dd-b398-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1227105757326534
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=19dc8d24bb14b7030dd77409820df168-f7c2
+Call-ID: 4f2d7b3e-b648-11dd-b398-0017a43fc587
+CSeq: 1 REGISTER
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.softwell.se</A>:4060;lr&gt;
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.softwell.se</A>:6060;lr&gt;
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, PUBLISH, MESSAGE, INFO
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (x86_64/linux))
+Content-Length: 0
+Warning: 392 172.16.5.70:6060 &quot;Noisy feedback tells:  pid=17157 req_src_ip=172.16.5.70 req_src_port=5060 in_uri=sip:scscf.open-ims.softwell.se:6060 out_uri=sip:scscf.open-ims.softwell.se:6060 via_cnt==3&quot;
+WWW-Authenticate: Digest realm=&quot;open-ims.softwell.se&quot;, nonce=&quot;AB1SkHB6CX7IElELhtje5PKscOnDNgAAeJcaunX2LY4=&quot;, algorithm=AKAv1-MD5, qop=&quot;auth,auth-int&quot;
+Security-Server: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=5000; spi-s=5001; port-c=4060; port-s=4060; q=0.1
+
+
+2008-11-19 15:42:38.651912 &gt;&gt;&gt;
+REGISTER sip:open-ims.softwell.se SIP/2.0
+Via: SIP/2.0/tcp 172.16.13.30:16386;branch=z9hG4bK-4ff79f2c-b648-11dd-b398-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1227105757326534
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at 172.16.13.30</A>:16387;transport=tcp&gt;;methods=&quot;INVITE,NOTIFY,INFO,OPTIONS,MESSAGE,ACK,BYE,CANCEL&quot;
+Expires: 3600
+Call-ID: 4f2d7b3e-b648-11dd-b398-0017a43fc587
+CSeq: 2 REGISTER
+Max-Forwards: 30
+User-Agent: SoftWell MBC: uac_adapter trunk: 3411, locally modified
+Allow-Events: presence
+Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot;,realm=&quot;open-ims.softwell.se&quot;,nonce=&quot;AB1SkHB6CX7IElELhtje5PKscOnDNgAAeJcaunX2LY4=&quot;,uri=&quot;sip:open-ims.softwell.se&quot;,qop=auth,nc=00000001,cnonce=&quot;4f5eb294&quot;,response=&quot;93eeb9aa345a6a6e9e47fdb51c3d6783&quot;,algorithm=akav1-md5
+Security-Client: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=6000; spi-s=6001; port-c=16386; port-s=16387
+Security-Verify: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=5000; spi-s=5001; port-c=4060; port-s=4060; q=0.1
+Require: sec-agree
+Proxy-Require: sec-agree
+Supported: path
+Content-Length: 0
+
+
+2008-11-19 15:42:38.804425 &lt;&lt;&lt;
+SIP/2.0 200 OK - SAR succesful and registrar saved
+Via: SIP/2.0/tcp 172.16.13.30:16386;rport=16386;branch=z9hG4bK-4ff79f2c-b648-11dd-b398-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1227105757326534
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=19dc8d24bb14b7030dd77409820df168-5840
+Call-ID: 4f2d7b3e-b648-11dd-b398-0017a43fc587
+CSeq: 2 REGISTER
+P-Associated-URI: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at 172.16.13.30</A>:16387;transport=tcp&gt;;expires=3600
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.softwell.se</A>:4060;lr&gt;
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.softwell.se</A>:6060;lr&gt;
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, PUBLISH, MESSAGE, INFO
+P-Charging-Function-Addresses: ccf=pri_ccf_address
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (x86_64/linux))
+Content-Length: 0
+Warning: 392 172.16.5.70:6060 &quot;Noisy feedback tells:  pid=17159 req_src_ip=172.16.5.70 req_src_port=5060 in_uri=sip:scscf.open-ims.softwell.se:6060 out_uri=sip:scscf.open-ims.softwell.se:6060 via_cnt==3&quot;
+
+
+2008-11-19 15:42:44.327057 &gt;&gt;&gt;
+MESSAGE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">userb1 at open-ims.softwell.se</A> SIP/2.0
+Via: SIP/2.0/tcp 172.16.13.30:16386;branch=z9hG4bK-535990b2-b648-11dd-b398-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1227105764326220
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">userb1 at open-ims.softwell.se</A>&gt;
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at 172.16.13.30</A>:16387;transport=tcp&gt;
+Call-ID: 53598f68-b648-11dd-b398-0017a43fc587
+CSeq: 1 MESSAGE
+Max-Forwards: 30
+User-Agent: SoftWell MBC: uac_adapter trunk: 3411, locally modified
+Content-Type: text/plain;charset=UTF-8
+Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.softwell.se</A>:6060;lr&gt;
+Content-Length: 200
+
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+2008-11-19 15:42:44.328100 &lt;&lt;&lt;
+SIP/2.0 403 Forbidden - Not Registered! You must register first with a S-CSCF
+Via: SIP/2.0/tcp 172.16.13.30:16386;branch=z9hG4bK-535990b2-b648-11dd-b398-0017a43fc587;rport=16386
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1227105764326220
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">userb1 at open-ims.softwell.se</A>&gt;;tag=645efc209b100eb41c80d05bffaab395.3328
+Call-ID: 53598f68-b648-11dd-b398-0017a43fc587
+CSeq: 1 MESSAGE
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (x86_64/linux))
+Content-Length: 0
+Warning: 392 172.16.5.70:4060 &quot;Noisy feedback tells:  pid=17131 req_src_ip=172.16.13.30 req_src_port=16386 in_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">userb1 at open-ims.softwell.se</A> out_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">userb1 at open-ims.softwell.se</A> via_cnt==1&quot;
+
+
+-------------- next part --------------
+2008-11-19 18:22:04.732004 &gt;&gt;&gt;
+REGISTER sip:open-ims.softwell.se SIP/2.0
+Via: SIP/2.0/tcp 172.16.13.30:16385;branch=z9hG4bK-95cba186-b65e-11dd-8447-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1227115324731440
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at 172.16.13.30</A>:16387;transport=tcp&gt;;methods=&quot;INVITE,NOTIFY,INFO,OPTIONS,MESSAGE,ACK,BYE,CANCEL&quot;
+Expires: 3600
+Call-ID: 95cb9d30-b65e-11dd-8447-0017a43fc587
+CSeq: 1 REGISTER
+Max-Forwards: 30
+User-Agent: SoftWell MBC: uac_adapter trunk: 3411, locally modified
+Allow-Events: presence
+Require: sec-agree
+Proxy-Require: sec-agree
+Supported: path
+Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot;, realm=&quot;open-ims.softwell.se&quot;, nonce=&quot;&quot;, uri=&quot;sip:open-ims.softwell.se&quot;, response=&quot;&quot;
+Security-Client: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=6000; spi-s=6001; port-c=16386; port-s=16387
+Content-Length: 0
+
+
+2008-11-19 18:22:05.000364 &lt;&lt;&lt;
+SIP/2.0 401 Unauthorized - Challenging the UE
+Via: SIP/2.0/tcp 172.16.13.30:16385;rport=16385;branch=z9hG4bK-95cba186-b65e-11dd-8447-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1227115324731440
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=19dc8d24bb14b7030dd77409820df168-c95f
+Call-ID: 95cb9d30-b65e-11dd-8447-0017a43fc587
+CSeq: 1 REGISTER
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.softwell.se</A>:4060;lr&gt;
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.softwell.se</A>:6060;lr&gt;
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, PUBLISH, MESSAGE, INFO
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (x86_64/linux))
+Content-Length: 0
+Warning: 392 172.16.5.70:6060 &quot;Noisy feedback tells:  pid=17160 req_src_ip=172.16.5.70 req_src_port=5060 in_uri=sip:scscf.open-ims.softwell.se:6060 out_uri=sip:scscf.open-ims.softwell.se:6060 via_cnt==3&quot;
+WWW-Authenticate: Digest realm=&quot;open-ims.softwell.se&quot;, nonce=&quot;eMaoAkmcOYM34FbktMYLRSukGPywtQAAN9Lq8nBFP0g=&quot;, algorithm=AKAv1-MD5, qop=&quot;auth,auth-int&quot;
+Security-Server: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=5000; spi-s=5001; port-c=4060; port-s=4060; q=0.1
+
+
+2008-11-19 18:22:06.003767 &gt;&gt;&gt;
+REGISTER sip:open-ims.softwell.se SIP/2.0
+Via: SIP/2.0/tcp 172.16.13.30:16386;branch=z9hG4bK-968da9ca-b65e-11dd-8447-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1227115324731440
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at 172.16.13.30</A>:16387;transport=tcp&gt;;methods=&quot;INVITE,NOTIFY,INFO,OPTIONS,MESSAGE,ACK,BYE,CANCEL&quot;
+Expires: 3600
+Call-ID: 95cb9d30-b65e-11dd-8447-0017a43fc587
+CSeq: 2 REGISTER
+Max-Forwards: 30
+User-Agent: SoftWell MBC: uac_adapter trunk: 3411, locally modified
+Allow-Events: presence
+Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot;,realm=&quot;open-ims.softwell.se&quot;,nonce=&quot;eMaoAkmcOYM34FbktMYLRSukGPywtQAAN9Lq8nBFP0g=&quot;,uri=&quot;sip:open-ims.softwell.se&quot;,qop=auth,nc=00000001,cnonce=&quot;95f4cbc4&quot;,response=&quot;bf074961522fa4b4904d68d15f5d0a23&quot;,algorithm=akav1-md5
+Security-Client: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=6000; spi-s=6001; port-c=16386; port-s=16387
+Security-Verify: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=5000; spi-s=5001; port-c=4060; port-s=4060; q=0.1
+Require: sec-agree
+Proxy-Require: sec-agree
+Supported: path
+Content-Length: 0
+
+
+2008-11-19 18:22:06.121989 &lt;&lt;&lt;
+SIP/2.0 200 OK - SAR succesful and registrar saved
+Via: SIP/2.0/tcp 172.16.13.30:16386;rport=16386;branch=z9hG4bK-968da9ca-b65e-11dd-8447-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1227115324731440
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=19dc8d24bb14b7030dd77409820df168-0559
+Call-ID: 95cb9d30-b65e-11dd-8447-0017a43fc587
+CSeq: 2 REGISTER
+P-Associated-URI: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at 172.16.13.30</A>:16387;transport=tcp&gt;;expires=3600
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.softwell.se</A>:4060;lr&gt;
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.softwell.se</A>:6060;lr&gt;
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, PUBLISH, MESSAGE, INFO
+P-Charging-Function-Addresses: ccf=pri_ccf_address
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (x86_64/linux))
+Content-Length: 0
+Warning: 392 172.16.5.70:6060 &quot;Noisy feedback tells:  pid=17157 req_src_ip=172.16.5.70 req_src_port=5060 in_uri=sip:scscf.open-ims.softwell.se:6060 out_uri=sip:scscf.open-ims.softwell.se:6060 via_cnt==3&quot;
+
+
+2008-11-19 18:22:10.732568 &gt;&gt;&gt;
+REGISTER sip:open-ims.softwell.se SIP/2.0
+Via: SIP/2.0/tcp 172.16.13.31:16385;branch=z9hG4bK-995f3c0e-b65e-11dd-8447-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera2 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera2 at open-ims.softwell.se</A>&gt;;tag=tomat-1-1227115330731938
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera2 at open-ims.softwell.se</A>&gt;
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera2 at 172.16.13.31</A>:16387;transport=tcp&gt;;methods=&quot;INVITE,NOTIFY,INFO,OPTIONS,MESSAGE,ACK,BYE,CANCEL&quot;
+Expires: 3600
+Call-ID: 995f3b1e-b65e-11dd-8447-0017a43fc587
+CSeq: 1 REGISTER
+Max-Forwards: 30
+User-Agent: SoftWell MBC: uac_adapter trunk: 3411, locally modified
+Allow-Events: presence
+Require: sec-agree
+Proxy-Require: sec-agree
+Supported: path
+Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera2 at open-ims.softwell.se</A>&quot;, realm=&quot;open-ims.softwell.se&quot;, nonce=&quot;&quot;, uri=&quot;sip:open-ims.softwell.se&quot;, response=&quot;&quot;
+Security-Client: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=6000; spi-s=6001; port-c=16386; port-s=16387
+Content-Length: 0
+
+
+2008-11-19 18:22:11.050908 &lt;&lt;&lt;
+SIP/2.0 401 Unauthorized - Challenging the UE
+Via: SIP/2.0/tcp 172.16.13.31:16385;rport=16385;branch=z9hG4bK-995f3c0e-b65e-11dd-8447-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera2 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera2 at open-ims.softwell.se</A>&gt;;tag=tomat-1-1227115330731938
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera2 at open-ims.softwell.se</A>&gt;;tag=19dc8d24bb14b7030dd77409820df168-4190
+Call-ID: 995f3b1e-b65e-11dd-8447-0017a43fc587
+CSeq: 1 REGISTER
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.softwell.se</A>:4060;lr&gt;
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.softwell.se</A>:6060;lr&gt;
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, PUBLISH, MESSAGE, INFO
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (x86_64/linux))
+Content-Length: 0
+Warning: 392 172.16.5.70:6060 &quot;Noisy feedback tells:  pid=17157 req_src_ip=172.16.5.70 req_src_port=5060 in_uri=sip:scscf.open-ims.softwell.se:6060 out_uri=sip:scscf.open-ims.softwell.se:6060 via_cnt==3&quot;
+WWW-Authenticate: Digest realm=&quot;open-ims.softwell.se&quot;, nonce=&quot;m8OHkrpxyWhAOi1eg3XQKjD00SMGtAAA8/j25gb1l/M=&quot;, algorithm=AKAv1-MD5, qop=&quot;auth,auth-int&quot;
+Security-Server: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=5000; spi-s=5001; port-c=4060; port-s=4060; q=0.1
+
+-------------- next part --------------
+18:22:04.780946
+sadb_msg{ version=2 type=7 errno=0 satype=0
+  len=2 reserved=0 seq=0 pid=17745
+
+18:22:04.880846
+sadb_msg{ version=2 type=7 errno=0 satype=0
+  len=15 reserved=0 seq=0 pid=17745
+sadb_ext{ len=5 type=14 }
+sadb_sup{
+  { id=251 ivlen=0 min=0 max=0 }
+  { id=2 ivlen=0 min=128 max=128 }
+  { id=3 ivlen=0 min=160 max=160 }
+  { id=5 ivlen=0 min=256 max=256 }
+}
+sadb_ext{ len=8 type=15 }
+sadb_sup{
+  { id=11 ivlen=0 min=0 max=0 }
+  { id=2 ivlen=8 min=64 max=64 }
+  { id=3 ivlen=8 min=192 max=192 }
+  { id=7 ivlen=8 min=40 max=448 }
+  { id=12 ivlen=8 min=128 max=256 }
+  { id=252 ivlen=8 min=128 max=256 }
+  { id=253 ivlen=8 min=128 max=256 }
+}
+
+18:22:04.881615
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=12 reserved=0 seq=0 pid=17745
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=1 id=0 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+
+18:22:04.881865
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17745
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115324, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=1 id=350 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:04.881932
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17745
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115324, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=1 id=350 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:04.882651
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=12 reserved=0 seq=0 pid=17745
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=3 id=0 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+
+18:22:04.882832
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17745
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115324, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=3 id=35a priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:04.882906
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17745
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115324, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=3 id=35a priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:04.883897
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=12 reserved=0 seq=0 pid=17745
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=1 id=0 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+
+18:22:04.884076
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17745
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115324, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=1 id=360 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:04.884644
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17745
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115324, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=1 id=360 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:04.884850
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=12 reserved=0 seq=0 pid=17745
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=3 id=0 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+
+18:22:04.885023
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17745
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115324, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=3 id=36a priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:04.885097
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17745
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115324, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=3 id=36a priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:04.885874
+sadb_msg{ version=2 type=3 errno=0 satype=3
+  len=19 reserved=0 seq=0 pid=17745
+sadb_ext{ len=3 type=9 }
+sadb_key{ bits=128 reserved=0
+  key= 0000030c 40000000 02001300 01000000 }
+sadb_ext{ len=4 type=8 }
+sadb_key{ bits=160 reserved=0
+  key= 03000500 ff200000 02000000 ac100d1e 00000000 }
+sadb_ext{ len=2 type=1 }
+sadb_sa{ spi=5001 replay=0 state=0
+  auth=3 encrypt=12 flags=0x00000040 }
+sadb_ext{ len=2 type=19 }
+sadb_x_sa2{ mode=1 reqid=0
+  reserved1=0 reserved2=0 sequence=0 }
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=255 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=0
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=255 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=0
+ ac100546  }
+
+18:22:04.984803
+sadb_msg{ version=2 type=3 errno=0 satype=3
+  len=27 reserved=0 seq=0 pid=17745
+sadb_ext{ len=2 type=1 }
+sadb_sa{ spi=5001 replay=0 state=1
+  auth=3 encrypt=12 flags=0x00000000 }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115324, usetime=0 }
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=0 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=0
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=0 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=0
+ ac100546  }
+sadb_ext{ len=3 type=7 }
+sadb_address{ proto=255 prefixlen=0 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=0
+ 00000000  }
+sadb_ext{ len=2 type=19 }
+sadb_x_sa2{ mode=1 reqid=0
+  reserved1=0 reserved2=0 sequence=0 }
+
+18:22:04.984889
+sadb_msg{ version=2 type=3 errno=0 satype=3
+  len=27 reserved=0 seq=0 pid=17745
+sadb_ext{ len=2 type=1 }
+sadb_sa{ spi=5001 replay=0 state=1
+  auth=3 encrypt=12 flags=0x00000000 }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115324, usetime=0 }
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=0 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=0
+ ac100d1e  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=0 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=0
+ ac100546  }
+sadb_ext{ len=3 type=7 }
+sadb_address{ proto=255 prefixlen=0 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=0
+ 00000000  }
+sadb_ext{ len=2 type=19 }
+sadb_x_sa2{ mode=1 reqid=0
+  reserved1=0 reserved2=0 sequence=0 }
+
+18:22:10.792834
+sadb_msg{ version=2 type=7 errno=0 satype=0
+  len=2 reserved=0 seq=0 pid=17764
+
+18:22:10.892604
+sadb_msg{ version=2 type=7 errno=0 satype=0
+  len=15 reserved=0 seq=0 pid=17764
+sadb_ext{ len=5 type=14 }
+sadb_sup{
+  { id=251 ivlen=0 min=0 max=0 }
+  { id=2 ivlen=0 min=128 max=128 }
+  { id=3 ivlen=0 min=160 max=160 }
+  { id=5 ivlen=0 min=256 max=256 }
+}
+sadb_ext{ len=8 type=15 }
+sadb_sup{
+  { id=11 ivlen=0 min=0 max=0 }
+  { id=2 ivlen=8 min=64 max=64 }
+  { id=3 ivlen=8 min=192 max=192 }
+  { id=7 ivlen=8 min=40 max=448 }
+  { id=12 ivlen=8 min=128 max=256 }
+  { id=252 ivlen=8 min=128 max=256 }
+  { id=253 ivlen=8 min=128 max=256 }
+}
+
+18:22:10.892884
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=12 reserved=0 seq=0 pid=17764
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=1 id=0 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1f  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+
+18:22:10.893631
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17764
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1f  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115330, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=1 id=370 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:10.893701
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17764
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1f  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115330, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=1 id=370 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:10.893916
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=12 reserved=0 seq=0 pid=17764
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=3 id=0 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1f  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+
+18:22:10.894595
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17764
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1f  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115330, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=3 id=37a priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:10.894675
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17764
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1f  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=6 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115330, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=3 id=37a priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:10.895663
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=12 reserved=0 seq=0 pid=17764
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=1 id=0 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1f  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+
+18:22:10.895843
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17764
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1f  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115330, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=1 id=380 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:10.895909
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17764
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1f  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115330, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=1 id=380 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:10.896615
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=12 reserved=0 seq=0 pid=17764
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=3 id=0 priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1f  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+
+18:22:10.896829
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17764
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1f  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115330, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=3 id=38a priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:10.896894
+sadb_msg{ version=2 type=14 errno=0 satype=0
+  len=24 reserved=3 seq=0 pid=17764
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=16386
+ ac100d1f  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=17 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=4060
+ ac100546  }
+sadb_ext{ len=4 type=3 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=4 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=0, usetime=0 }
+sadb_ext{ len=4 type=2 }
+sadb_lifetime{ alloc=0, bytes=0
+  addtime=1227115330, usetime=0 }
+sadb_ext{ len=4 type=18 }
+sadb_x_policy{ type=2 dir=3 id=38a priority=2147483648 }
+ { len=16 proto=50 mode=1 level=2 reqid=0
+ }
+
+18:22:10.897741
+sadb_msg{ version=2 type=3 errno=0 satype=3
+  len=19 reserved=0 seq=0 pid=17764
+sadb_ext{ len=3 type=9 }
+sadb_key{ bits=128 reserved=0
+  key= 0000030c 40000000 02001300 01000000 }
+sadb_ext{ len=4 type=8 }
+sadb_key{ bits=160 reserved=0
+  key= 03000500 ff200000 02000000 ac100d1f 00000000 }
+sadb_ext{ len=2 type=1 }
+sadb_sa{ spi=5001 replay=0 state=0
+  auth=3 encrypt=12 flags=0x00000040 }
+sadb_ext{ len=2 type=19 }
+sadb_x_sa2{ mode=1 reqid=0
+  reserved1=0 reserved2=0 sequence=0 }
+sadb_ext{ len=3 type=5 }
+sadb_address{ proto=255 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=0
+ ac100d1f  }
+sadb_ext{ len=3 type=6 }
+sadb_address{ proto=255 prefixlen=32 reserved=0x0000 }
+sockaddr{ len=16 family=2 port=0
+ ac100546  }
+
+18:22:10.998013
+sadb_msg{ version=2 type=3 errno=17 satype=3
+  len=2 reserved=0 seq=0 pid=17764
+
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: SA_failure_traffic
+Type: application/octet-stream
+Size: 10170 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20081119/5bbc67c1/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20081119/5bbc67c1/attachment.obj</A>&gt;
+-------------- next part --------------
+172.16.13.30 172.16.5.70
+        esp mode=transport spi=5001(0x00001389) reqid=0(0x00000000)
+        E: aes-cbc  5887c35a 228feced dfd00300 118be6a1
+        A: hmac-sha1  189e70cc 0cc3c9a9 a2c3dc9d 7aa47e9a 00000000
+        seq=0x00000000 replay=0 flags=0x00000000 state=mature
+        created: Nov 19 18:22:04 2008   current: Nov 19 18:29:51 2008
+        diff: 467(s)    hard: 0(s)      soft: 0(s)
+        last: Nov 19 18:22:05 2008      hard: 0(s)      soft: 0(s)
+        current: 1309(bytes)    hard: 0(bytes)  soft: 0(bytes)
+        allocated: 4    hard: 0 soft: 0
+        sadb_seq=0 pid=17793 refcnt=0
+172.16.13.30[16386] 172.16.5.70[4060] tcp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 19 18:22:04 2008  lastused: Nov 19 18:26:12 2008
+        lifetime: 0(s) validtime: 0(s)
+        spid=848 seq=21 pid=17794
+        refcnt=2
+172.16.13.30[16386] 172.16.5.70[4060] udp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 19 18:22:04 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=864 seq=20 pid=17794
+        refcnt=1
+172.16.13.31[16386] 172.16.5.70[4060] tcp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 19 18:22:10 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=880 seq=19 pid=17794
+        refcnt=1
+172.16.13.31[16386] 172.16.5.70[4060] udp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 19 18:22:10 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=896 seq=18 pid=17794
+        refcnt=1
+172.16.13.30[16386] 172.16.5.70[4060] tcp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 19 18:22:04 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=858 seq=17 pid=17794
+        refcnt=1
+172.16.13.30[16386] 172.16.5.70[4060] udp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 19 18:22:04 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=874 seq=16 pid=17794
+        refcnt=1
+172.16.13.31[16386] 172.16.5.70[4060] tcp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 19 18:22:10 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=890 seq=15 pid=17794
+        refcnt=1
+172.16.13.31[16386] 172.16.5.70[4060] udp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 19 18:22:10 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=906 seq=14 pid=17794
+        refcnt=1
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part.
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20081119/5bbc67c1/attachment.pgp">https://lists.berlios.de/pipermail/openimscore-users/attachments/20081119/5bbc67c1/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004859.html">[OpenIMSCore-Users] Opensource Media Resource Function ?
+</A></li>
+	<LI>Next message: <A HREF="004864.html">[OpenIMSCore-Users] Disappearing IPsec security associations
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4862">[ date ]</a>
+              <a href="thread.html#4862">[ thread ]</a>
+              <a href="subject.html#4862">[ subject ]</a>
+              <a href="author.html#4862">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

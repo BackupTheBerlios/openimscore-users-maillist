@@ -1,0 +1,978 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Got 480 Temporarily Unavailable - Diameter Cx interface failed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Got%20480%20Temporarily%20Unavailable%20-%20Diameter%0A%20Cx%20interface%20failed&In-Reply-To=%3CDUB103-W581A2ACF5D82E85825FEC3AF0D0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007131.html">
+   <LINK REL="Next"  HREF="007134.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Got 480 Temporarily Unavailable - Diameter Cx interface failed</H1>
+    <B>Graham Bright</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Got%20480%20Temporarily%20Unavailable%20-%20Diameter%0A%20Cx%20interface%20failed&In-Reply-To=%3CDUB103-W581A2ACF5D82E85825FEC3AF0D0%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] Got 480 Temporarily Unavailable - Diameter Cx interface failed">brightgfc at hotmail.com
+       </A><BR>
+    <I>Wed Sep 21 19:10:01 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007131.html">[OpenIMSCore-Users] Got 480 Temporarily Unavailable -	Diameter	Cx interface failed
+</A></li>
+        <LI>Next message: <A HREF="007134.html">[OpenIMSCore-Users] Got 480 Temporarily Unavailable -	Diameter	Cx interface failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7132">[ date ]</a>
+              <a href="thread.html#7132">[ thread ]</a>
+              <a href="subject.html#7132">[ subject ]</a>
+              <a href="author.html#7132">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi,  Your hss error could be a dns issue. I assume you are trying to run the IMS scripts on a machine with your own IP configuration and name settings ? if you perform a dig open-ims.test you should get back NOERROR with answer section against your local ip address  What is the contents of your files open-ims.dnszone /etc/resolve.conf /etc/named.conf  Graham    From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">oferg at radvision.com</A>
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">brightgfc at hotmail.com</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at kabsi.at</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: RE: [OpenIMSCore-Users] Got 480 Temporarily Unavailable - Diameter	Cx interface failed
+Date: Wed, 21 Sep 2011 14:00:50 +0000
+
+
+
+
+
+
+
+
+
+
+
+Hi.
+ 
+I was able to restart the mysqld service. This time, I gave it a &#8211;bind-address parameter with the public IP I&#8217;m using (--bind-address=172.16.70.208).
+
+Now, most errors are gone, but I still get failures on my SCSCF and ICSCF:
+ 
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu-vm</A>:/opt/OpenIMSCore# ./scscf.sh
+
+Listening on
+
+             udp: 172.16.70.208 [172.16.70.208]:6060
+             tcp: 172.16.70.208 [172.16.70.208]:6060
+Aliases:
+
+             tcp: ubuntu-vm-3.local:6060
+             udp: ubuntu-vm-3.local:6060
+             *: scscf.:6060
+ 
+0(25953) init_tcp: using epoll_lt as the io watch method (auto detected)
+0(25953) Maxfwd module- initializing
+0(25953) INFO:S-CSCF:mod_init: Initialization of module
+0(25953) INFO:ISC: - init
+0(25953) INFO:cdp:cdp_init(): CDiameterPeer initializing
+0(25953) Diameter Peer Config:
+0(25953)              FQDN    : scscf.
+0(25953)              Realm   :
+
+ 0(25953)              VendorID: 10415
+0(25953)              ProdName: CDiameterPeer
+0(25953)              AcceptUn: [X]
+0(25953)              DropUnkn: [X]
+0(25953)              Tc      : 30
+0(25953)              Workers : 4
+0(25953)              QueueLen: 8
+0(25953)              Peers : 1
+0(25953)                              FQDN:  hss.          Realm:                  Port: 3868
+0(25953)              Acceptors : 1
+0(25953)                              Port:  3870            Bind: 172.16.70.208
+
+ 0(25953)              Applications : 3
+0(25953)                              Auth ID:  16777216            Vendor: 10415
+
+ 0(25953)                              Auth ID:  16777216            Vendor: 4491
+
+ 0(25953)                              Auth ID:  16777216            Vendor: 13019
+
+ 0(25953)              Routing Table :
+
+ 0(25953)                              DefaultRoute: [  10] hss.
+0(25953) INFO: udp_init: SO_RCVBUF is initially 112640
+0(25953) INFO: udp_init: SO_RCVBUF is finally 262142
+1(25954) INFO:S-CSCF:mod_child_init: Initialization of module in child [1]
+
+ 2(25955) INFO:S-CSCF:mod_child_init: Initialization of module in child [2]
+
+ 1(25954) INFO:ISC: - child init [1]
+3(25956) INFO:S-CSCF:mod_child_init: Initialization of module in child [3]
+
+ 2(25955) INFO:ISC: - child init [2]
+4(25957) INFO:S-CSCF:mod_child_init: Initialization of module in child [4]
+
+ 3(25956) INFO:ISC: - child init [3]
+5(25958) INFO:S-CSCF:mod_child_init: Initialization of module in child [-1]
+
+ 4(25957) INFO:ISC: - child init [4]
+6(25959) INFO:S-CSCF:mod_child_init: Initialization of module in child [-1]
+
+ 5(25958) INFO:ISC: - child init [-1]
+0(25953) INFO:S-CSCF:mod_child_init: Initialization of module in child [0]
+
+ 0(25953) INFO:ISC: - child init [0]
+0(25953) INFO:cdp:cdp_child_init(): CDiameterPeer starting ...
+7(25960) INFO:S-CSCF:mod_child_init: Initialization of module in child [1000]
+
+ 6(25959) INFO:ISC: - child init [-1]
+8(25961) INFO:S-CSCF:mod_child_init: Initialization of module in child [1001]
+
+ 7(25960) INFO:ISC: - child init [1000]
+7(25960) INFO:Acceptor process starting up...
+7(25960) INFO:create_socket(): Trying to open/bind/listen on 172.16.70.208 port 3870
+7(25960) INFO:create_socket(): Successful socket open/bind/listen on 172.16.70.208 port 3870
+7(25960) INFO:... Acceptor opened sockets. Entering accept loop ...
+9(25962) INFO:S-CSCF:mod_child_init: Initialization of module in child [1002]
+
+ 8(25961) INFO:ISC: - child init [1001]
+8(25961) INFO:[0] Worker process started...
+10(25963) INFO:S-CSCF:mod_child_init: Initialization of module in child [1003]
+
+ 9(25962) INFO:ISC: - child init [1002]
+9(25962) INFO:[1] Worker process started...
+11(25964) INFO:S-CSCF:mod_child_init: Initialization of module in child [1004]
+
+10(25963) INFO:ISC: - child init [1003]
+10(25963) INFO:[2] Worker process started...
+12(25965) INFO:S-CSCF:mod_child_init: Initialization of module in child [1001]
+
+11(25964) INFO:ISC: - child init [1004]
+11(25964) INFO:[3] Worker process started...
+0(25953) INFO:cdp:cdp_child_init(): ... CDiameterPeer started
+13(25966) INFO:S-CSCF:mod_child_init: Initialization of module in child [5]
+
+12(25965) INFO:ISC: - child init [1001]
+12(25965) INFO:Timer process starting up...
+14(25967) INFO:S-CSCF:mod_child_init: Initialization of module in child [6]
+
+13(25966) INFO:ISC: - child init [5]
+15(25968) INFO:S-CSCF:mod_child_init: Initialization of module in child [7]
+
+14(25967) INFO:ISC: - child init [6]
+16(25969) INFO:S-CSCF:mod_child_init: Initialization of module in child [8]
+
+15(25968) INFO:ISC: - child init [7]
+17(25970) INFO:S-CSCF:mod_child_init: Initialization of module in child [-4]
+
+17(25970) INFO:ISC: - child init [-4]
+16(25969) INFO:ISC: - child init [8]
+12(25965) DBG:peer_timer(): Peer hss.                 State 0
+
+12(25965) DBG:sm_process(): Peer hss.                State Closed       Event Start
+12(25965) DBG:I_Snd_Conn_Req(): Peer hss.
+
+12(25965) WARNING:peer_connect(): Error opening connection to hss.:3868 &gt;Name or service not known
+12(25965) DBG:sm_process(): Peer hss.                State Wait_Conn_Ack    Event I_Rcv_Conn_NAck
+12(25965) --- Peer List: ---
+12(25965)  S[Closed] hss.:3868 D[ ]
+12(25965) ------------------
+12(25965) --- Peer List: ---
+12(25965)  S[Closed] hss.:3868 D[ ]
+12(25965) -----------
+ 
+ 
+What am I missing?
+Thanks!!
+ 
+
+
+From: Graham Bright [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">brightgfc at hotmail.com</A>]
+
+
+Sent: Wednesday, September 21, 2011 15:49
+
+To: Ofer Goren; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at kabsi.at</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+
+Subject: RE: [OpenIMSCore-Users] Got 480 Temporarily Unavailable - Diameter Cx interface failed
+
+
+ 
+
+Hi Ofer,
+
+ 
+
+Is mysqld running ?
+
+ 
+
+On Redhat you can check this using service mysqld check, I'm not sure about your installation.
+
+
+ 
+
+Graham 
+
+&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">oferg at radvision.com</A>
+</I>
+&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at kabsi.at</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>
+&gt;<i> Date: Wed, 21 Sep 2011 12:38:45 +0000
+</I>
+&gt;<i> Subject: Re: [OpenIMSCore-Users] Got 480 Temporarily Unavailable - Diameter Cx interface failed
+</I>
+&gt;<i> 
+</I>
+&gt;<i> Hi.
+</I>
+&gt;<i> 
+</I>
+&gt;<i> I updated the IP, restarted the bind9 service, and restarted all imscore processes. I still have a problem.
+</I>
+&gt;<i> When running the icscf, this is what I get in the terminal:
+</I>
+&gt;<i> 
+</I>
+&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu-vm</A>:/etc/bind# cd /opt/OpenIMSCore/
+</I>
+&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu-vm</A>:/opt/OpenIMSCore# ./icscf.sh 
+</I>
+&gt;<i> 22367 ? S 0:00 /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22368 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22369 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22370 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22371 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22372 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22373 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22374 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22375 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22376 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22377 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22378 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22379 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22380 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22381 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22382 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22383 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> 22384 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>
+&gt;<i> Listening on 
+</I>
+&gt;<i> udp: 172.16.70.208 [172.16.70.208]:5060
+</I>
+&gt;<i> tcp: 172.16.70.208 [172.16.70.208]:5060
+</I>
+&gt;<i> Aliases: 
+</I>
+&gt;<i> tcp: ubuntu-vm-3.local:5060
+</I>
+&gt;<i> udp: ubuntu-vm-3.local:5060
+</I>
+&gt;<i> *: :*
+</I>
+&gt;<i> *: icscf.:*
+</I>
+&gt;<i> 
+</I>
+&gt;<i> 0(22440) init_tcp: using epoll_lt as the io watch method (auto detected)
+</I>
+&gt;<i> 0(22440) Maxfwd module- initializing
+</I>
+&gt;<i> 0(22440) INFO:I-CSCF:mod_init: Initialization of module
+</I>
+&gt;<i> 0(22440) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 0(22440) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 0(22440) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 0(22440) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 0(22440) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 0(22440) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 0(22440) Twofish encryption ready
+</I>
+&gt;<i> 0(22440) INFO:cdp:cdp_init(): CDiameterPeer initializing
+</I>
+&gt;<i> 0(22440) Diameter Peer Config:
+</I>
+&gt;<i> 0(22440) FQDN : icscf.
+</I>
+&gt;<i> 0(22440) Realm : 
+</I>
+&gt;<i> 0(22440) VendorID: 10415
+</I>
+&gt;<i> 0(22440) ProdName: CDiameterPeer
+</I>
+&gt;<i> 0(22440) AcceptUn: [X]
+</I>
+&gt;<i> 0(22440) DropUnkn: [X]
+</I>
+&gt;<i> 0(22440) Tc : 30
+</I>
+&gt;<i> 0(22440) Workers : 4
+</I>
+&gt;<i> 0(22440) QueueLen: 8
+</I>
+&gt;<i> 0(22440) Peers : 1
+</I>
+&gt;<i> 0(22440) FQDN: hss. Realm: Port: 3868
+</I>
+&gt;<i> 0(22440) Acceptors : 1
+</I>
+&gt;<i> 0(22440) Port: 3869 Bind: 172.16.70.208 
+</I>
+&gt;<i> 0(22440) Applications : 3
+</I>
+&gt;<i> 0(22440) Auth ID: 16777216 Vendor: 10415 
+</I>
+&gt;<i> 0(22440) Auth ID: 16777216 Vendor: 4491 
+</I>
+&gt;<i> 0(22440) Auth ID: 16777216 Vendor: 13019 
+</I>
+&gt;<i> 0(22440) Routing Table : 
+</I>
+&gt;<i> 0(22440) DefaultRoute: [ 10] hss.
+</I>
+&gt;<i> 0(22440) INFO: udp_init: SO_RCVBUF is initially 112640
+</I>
+&gt;<i> 0(22440) INFO: udp_init: SO_RCVBUF is finally 262142
+</I>
+&gt;<i> 2(22442) INFO:I-CSCF:mod_init: Initialization of module in child [2] 
+</I>
+&gt;<i> 1(22441) INFO:I-CSCF:mod_init: Initialization of module in child [1] receiver child=0 sock=172.16.70.208:5060
+</I>
+
+&gt;<i> 2(22442) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 2(22442) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 1(22441) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 3(22443) INFO:I-CSCF:mod_init: Initialization of module in child [3] 
+</I>
+&gt;<i> 1(22441) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 3(22443) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 3(22443) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 4(22444) INFO:I-CSCF:mod_init: Initialization of module in child [4] receiver child=3 sock=172.16.70.208:5060
+</I>
+
+&gt;<i> 5(22445) INFO:I-CSCF:mod_init: Initialization of module in child [-1] 
+</I>
+&gt;<i> 4(22444) 5(22445) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 5(22445) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 4(22444) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 6(22446) INFO:I-CSCF:mod_init: Initialization of module in child [-1] 
+</I>
+&gt;<i> 6(22446) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 6(22446) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 0(22440) INFO:I-CSCF:mod_init: Initialization of module in child [0] main 
+</I>
+&gt;<i> 0(22440) INFO:cdp:cdp_child_init(): CDiameterPeer starting ...
+</I>
+&gt;<i> 7(22447) INFO:I-CSCF:mod_init: Initialization of module in child [1000] 
+</I>
+&gt;<i> 7(22447) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 7(22447) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 7(22447) INFO:Acceptor process starting up...
+</I>
+&gt;<i> 7(22447) INFO:create_socket(): Trying to open/bind/listen on 172.16.70.208 port 3869
+</I>
+&gt;<i> 7(22447) INFO:create_socket(): Successful socket open/bind/listen on 172.16.70.208 port 3869
+</I>
+&gt;<i> 7(22447) INFO:... Acceptor opened sockets. Entering accept loop ...
+</I>
+&gt;<i> 8(22448) INFO:I-CSCF:mod_init: Initialization of module in child [1001] 
+</I>
+&gt;<i> 8(22448) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 8(22448) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 8(22448) INFO:[0] Worker process started...
+</I>
+&gt;<i> 9(22449) INFO:I-CSCF:mod_init: Initialization of module in child [1002] cdp_worker
+</I>
+
+&gt;<i> 10(22450) INFO:I-CSCF:mod_init: Initialization of module in child [1003] 
+</I>
+&gt;<i> 9(22449) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 9(22449) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 9(22449) INFO:[1] Worker process started...
+</I>
+&gt;<i> 10(22450) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 10(22450) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 10(22450) INFO:[2] Worker process started...
+</I>
+&gt;<i> 11(22451) INFO:I-CSCF:mod_init: Initialization of module in child [1004] cdp_worker
+</I>
+
+&gt;<i> 11(22451) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 11(22451) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 11(22451) INFO:[3] Worker process started...
+</I>
+&gt;<i> 12(22452) INFO:I-CSCF:mod_init: Initialization of module in child [1001] 
+</I>
+&gt;<i> 12(22452) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 12(22452) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 12(22452) INFO:Timer process starting up...
+</I>
+&gt;<i> 0(22440) INFO:cdp:cdp_child_init(): ... CDiameterPeer started
+</I>
+&gt;<i> 13(22453) INFO:I-CSCF:mod_init: Initialization of module in child [5] 
+</I>
+&gt;<i> 13(22453) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 13(22453) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 14(22454) INFO:I-CSCF:mod_init: Initialization of module in child [6] 
+</I>
+&gt;<i> 14(22454) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 14(22454) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 15(22455) INFO:I-CSCF:mod_init: Initialization of module in child [7] 
+</I>
+&gt;<i> 15(22455) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 15(22455) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 16(22456) INFO:I-CSCF:mod_init: Initialization of module in child [8] 
+</I>
+&gt;<i> 16(22456) new_connection: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+</I>
+&gt;<i> 16(22456) ERR:I-CSCF:icscf_db_init: cannot initialize database connection
+</I>
+&gt;<i> 17(22457) INFO:I-CSCF:mod_init: Initialization of module in child [-4] 
+</I>
+&gt;<i> 12(22452) DBG:peer_timer(): Peer hss. State 0 
+</I>
+&gt;<i> 12(22452) DBG:sm_process(): Peer hss. State Closed Event Start
+</I>
+&gt;<i> 12(22452) DBG:I_Snd_Conn_Req(): Peer hss. 
+</I>
+&gt;<i> 12(22452) WARNING:peer_connect(): Error opening connection to hss.:3868 &gt;Name or service not known
+</I>
+&gt;<i> 12(22452) DBG:sm_process(): Peer hss. State Wait_Conn_Ack Event I_Rcv_Conn_NAck
+</I>
+&gt;<i> 12(22452) --- Peer List: ---
+</I>
+&gt;<i> 12(22452) S[Closed] hss.:3868 D[ ]
+</I>
+&gt;<i> 12(22452) ------------------
+</I>
+&gt;<i> 12(22452) --- Peer List: ---
+</I>
+&gt;<i> 12(22452) S[Closed] hss.:3868 D[ ]
+</I>
+&gt;<i> 12(22452) ------------------
+</I>
+&gt;<i> 12(22452) --- Peer List: ---
+</I>
+&gt;<i> 12(22452) S[Closed] hss.:3868 D[ ]
+</I>
+&gt;<i> 12(22452) ------------------
+</I>
+&gt;<i> 12(22452) --- Peer List: ---
+</I>
+&gt;<i> 12(22452) S[Closed] hss.:3868 D[ ]
+</I>
+&gt;<i> 12(22452) ------------------
+</I>
+&gt;<i> 
+</I>
+&gt;<i> 
+</I>
+&gt;<i> 
+</I>
+&gt;<i> And this is what I get when running the SCSCF:
+</I>
+&gt;<i> 
+</I>
+&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu-vm</A>:/opt/OpenIMSCore# ./scscf.sh 
+</I>
+&gt;<i> 22273 ? S 0:00 /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22274 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22275 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22276 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22277 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22278 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22279 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22280 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22281 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22282 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22283 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22284 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22285 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22286 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22287 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22288 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22289 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> 22290 ? S 0:00 \_ /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/scscf.cfg -D -D
+</I>
+&gt;<i> Listening on 
+</I>
+&gt;<i> udp: 172.16.70.208 [172.16.70.208]:6060
+</I>
+&gt;<i> tcp: 172.16.70.208 [172.16.70.208]:6060
+</I>
+&gt;<i> Aliases: 
+</I>
+&gt;<i> tcp: ubuntu-vm-3.local:6060
+</I>
+&gt;<i> udp: ubuntu-vm-3.local:6060
+</I>
+&gt;<i> *: scscf.:6060
+</I>
+&gt;<i> 
+</I>
+&gt;<i> 0(22539) init_tcp: using epoll_lt as the io watch method (auto detected)
+</I>
+&gt;<i> 0(22539) Maxfwd module- initializing
+</I>
+&gt;<i> 0(22539) INFO:S-CSCF:mod_init: Initialization of module
+</I>
+&gt;<i> 0(22539) INFO:ISC: - init
+</I>
+&gt;<i> 0(22539) INFO:cdp:cdp_init(): CDiameterPeer initializing
+</I>
+&gt;<i> 0(22539) Diameter Peer Config:
+</I>
+&gt;<i> 0(22539) FQDN : scscf.
+</I>
+&gt;<i> 0(22539) Realm : 
+</I>
+&gt;<i> 0(22539) VendorID: 10415
+</I>
+&gt;<i> 0(22539) ProdName: CDiameterPeer
+</I>
+&gt;<i> 0(22539) AcceptUn: [X]
+</I>
+&gt;<i> 0(22539) DropUnkn: [X]
+</I>
+&gt;<i> 0(22539) Tc : 30
+</I>
+&gt;<i> 0(22539) Workers : 4
+</I>
+&gt;<i> 0(22539) QueueLen: 8
+</I>
+&gt;<i> 0(22539) Peers : 1
+</I>
+&gt;<i> 0(22539) FQDN: hss. Realm: Port: 3868
+</I>
+&gt;<i> 0(22539) Acceptors : 1
+</I>
+&gt;<i> 0(22539) Port: 3870 Bind: 172.16.70.208 
+</I>
+&gt;<i> 0(22539) Applications : 3
+</I>
+&gt;<i> 0(22539) Auth ID: 16777216 Vendor: 10415 
+</I>
+&gt;<i> 0(22539) Auth ID: 16777216 Vendor: 4491 
+</I>
+&gt;<i> 0(22539) Auth ID: 16777216 Vendor: 13019 
+</I>
+&gt;<i> 0(22539) Routing Table : 
+</I>
+&gt;<i> 0(22539) DefaultRoute: [ 10] hss.
+</I>
+&gt;<i> 0(22539) INFO: udp_init: SO_RCVBUF is initially 112640
+</I>
+&gt;<i> 0(22539) INFO: udp_init: SO_RCVBUF is finally 262142
+</I>
+&gt;<i> 2(22541) INFO:S-CSCF:mod_child_init: Initialization of module in child [2] 
+</I>
+&gt;<i> 1(22540) INFO:S-CSCF:mod_child_init: Initialization of module in child [1] 
+</I>
+&gt;<i> 4(22543) INFO:S-CSCF:mod_child_init: Initialization of module in child [4] 
+</I>
+&gt;<i> 1(22540) INFO:ISC: - child init [1]
+</I>
+&gt;<i> 2(22541) INFO:ISC: - child init [2]
+</I>
+&gt;<i> 3(22542) INFO:S-CSCF:mod_child_init: Initialization of module in child [3] 
+</I>
+&gt;<i> 6(22545) INFO:S-CSCF:mod_child_init: Initialization of module in child [-1] 
+</I>
+&gt;<i> 3(22542) INFO:ISC: - child init [3]
+</I>
+&gt;<i> 5(22544) INFO:S-CSCF:mod_child_init: Initialization of module in child [-1] 
+</I>
+&gt;<i> 0(22539) INFO:S-CSCF:mod_child_init: Initialization of module in child [0] 
+</I>
+&gt;<i> 0(22539) INFO:ISC: - child init [0]
+</I>
+&gt;<i> 0(22539) INFO:cdp:cdp_child_init(): CDiameterPeer starting ...
+</I>
+&gt;<i> 9(22548) INFO:S-CSCF:mod_child_init: Initialization of module in child [1002] 
+</I>
+&gt;<i> 5(22544) INFO:ISC: - child init [-1]
+</I>
+&gt;<i> 8(22547) INFO:S-CSCF:mod_child_init: Initialization of module in child [1001] 
+</I>
+&gt;<i> 0(22539) INFO:cdp:cdp_child_init(): ... CDiameterPeer started
+</I>
+&gt;<i> 8(22547) 16(22555) 17(22556) INFO:S-CSCF:mod_child_init: Initialization of module in child [-4]
+</I>
+
+&gt;<i> 15(22554) INFO:S-CSCF:mod_child_init: Initialization of module in child [7] 
+</I>
+&gt;<i> 17(22556) INFO:ISC: - child init [-4]
+</I>
+&gt;<i> INFO:ISC: - child init [1001]
+</I>
+&gt;<i> 8(22547) INFO:[0] Worker process started...
+</I>
+&gt;<i> INFO:S-CSCF:mod_child_init: Initialization of module in child [8] 
+</I>
+&gt;<i> 15(22554) INFO:ISC: - child init [7]
+</I>
+&gt;<i> 16(22555) INFO:ISC: - child init [8]
+</I>
+&gt;<i> 7(22546) 6(22545) INFO:ISC: - child init [-1]
+</I>
+&gt;<i> 4(22543) INFO:ISC: - child init [4]
+</I>
+&gt;<i> 9(22548) INFO:ISC: - child init [1002]
+</I>
+&gt;<i> 9(22548) INFO:[1] Worker process started...
+</I>
+&gt;<i> 14(22553) INFO:S-CSCF:mod_child_init: Initialization of module in child [6] 
+</I>
+&gt;<i> INFO:S-CSCF:mod_child_init: Initialization of module in child [1000] 
+</I>
+&gt;<i> 7(22546) INFO:ISC: - child init [1000]
+</I>
+&gt;<i> 14(22553) INFO:ISC: - child init [6]
+</I>
+&gt;<i> 7(22546) INFO:Acceptor process starting up...
+</I>
+&gt;<i> 7(22546) INFO:create_socket(): Trying to open/bind/listen on 172.16.70.208 port 3870
+</I>
+&gt;<i> 7(22546) INFO:create_socket(): Successful socket open/bind/listen on 172.16.70.208 port 3870
+</I>
+&gt;<i> 7(22546) INFO:... Acceptor opened sockets. Entering accept loop ...
+</I>
+&gt;<i> 13(22552) INFO:S-CSCF:mod_child_init: Initialization of module in child [5] 
+</I>
+&gt;<i> 11(22550) INFO:S-CSCF:mod_child_init: Initialization of module in child [1004] 
+</I>
+&gt;<i> 11(22550) INFO:ISC: - child init [1004]
+</I>
+&gt;<i> 11(22550) INFO:[3] Worker process started...
+</I>
+&gt;<i> 10(22549) INFO:S-CSCF:mod_child_init: Initialization of module in child [1003] 
+</I>
+&gt;<i> 13(22552) INFO:ISC: - child init [5]
+</I>
+&gt;<i> 12(22551) INFO:S-CSCF:mod_child_init: Initialization of module in child [1001] 
+</I>
+&gt;<i> 10(22549) INFO:ISC: - child init [1003]
+</I>
+&gt;<i> 10(22549) INFO:[2] Worker process started...
+</I>
+&gt;<i> 12(22551) INFO:ISC: - child init [1001]
+</I>
+&gt;<i> 12(22551) INFO:Timer process starting up...
+</I>
+&gt;<i> 12(22551) DBG:peer_timer(): Peer hss. State 0 
+</I>
+&gt;<i> 12(22551) DBG:sm_process(): Peer hss. State Closed Event Start
+</I>
+&gt;<i> 12(22551) DBG:I_Snd_Conn_Req(): Peer hss. 
+</I>
+&gt;<i> 12(22551) WARNING:peer_connect(): Error opening connection to hss.:3868 &gt;Name or service not known
+</I>
+&gt;<i> 12(22551) DBG:sm_process(): Peer hss. State Wait_Conn_Ack Event I_Rcv_Conn_NAck
+</I>
+&gt;<i> 12(22551) --- Peer List: ---
+</I>
+&gt;<i> 12(22551) S[Closed] hss.:3868 D[ ]
+</I>
+&gt;<i> 12(22551) ------------------
+</I>
+&gt;<i> 12(22551) --- Peer List: ---
+</I>
+&gt;<i> 12(22551) S[Closed] hss.:3868 D[ ]
+</I>
+&gt;<i> 12(22551) ------------------
+</I>
+&gt;<i> 7(22546) INFO:accept_connection(): new tcp connection accepted!
+</I>
+&gt;<i> 7(22546) INFO:accept_connection(): Receiver process forked [22578]
+</I>
+&gt;<i> 18(22578) INFO:S-CSCF:mod_child_init: Initialization of module in child [12] 
+</I>
+&gt;<i> 18(22578) INFO:ISC: - child init [12]
+</I>
+&gt;<i> 18(22578) INFO:receiver_process(): [14] Receiver process starting up...
+</I>
+&gt;<i> 18(22578) DBG:sm_process(): Peer hss.open-ims.test State Closed Event R_Conn_CER
+</I>
+&gt;<i> 18(22578) ERROR:AAACreateAVP: NULL value received for param data/length !!
+</I>
+&gt;<i> 18(22578) ERROR:AAANewMessage: cannot create/add Origin-Realm avp
+</I>
+&gt;<i> 18(22578) ERROR:AAANewMessage: failed to create a new AAA message!
+</I>
+&gt;<i> 18(22578) --- Peer List: ---
+</I>
+&gt;<i> 18(22578) S[Closed] hss.:3868 D[ ]
+</I>
+&gt;<i> 18(22578) S[R_Open] hss.open-ims.test:3868 D[X]
+</I>
+&gt;<i> 18(22578) [16777216,10415]
+</I>
+&gt;<i> 18(22578) [16777216,4491]
+</I>
+&gt;<i> 18(22578) [16777216,13019]
+</I>
+&gt;<i> 18(22578) [16777217,10415]
+</I>
+&gt;<i> 18(22578) [16777221,10415]
+</I>
+&gt;<i> 18(22578) ------------------
+</I>
+&gt;<i> 12(22551) --- Peer List: ---
+</I>
+&gt;<i> 12(22551) S[Closed] hss.:3868 D[ ]
+</I>
+&gt;<i> 12(22551) S[R_Open] hss.open-ims.test:3868 D[X]
+</I>
+&gt;<i> 12(22551) [16777216,10415]
+</I>
+&gt;<i> 12(22551) [16777216,4491]
+</I>
+&gt;<i> 12(22551) [16777216,13019]
+</I>
+&gt;<i> 12(22551) [16777217,10415]
+</I>
+&gt;<i> 12(22551) [16777221,10415]
+</I>
+&gt;<i> 12(22551) ------------------
+</I>
+&gt;<i> 5(22544) INF:S-CSCF:---------- Registrar Contents begin --------
+</I>
+&gt;<i> 5(22544) INF:S-CSCF:---------- Registrar Contents end ----------
+</I>
+&gt;<i> 12(22551) --- Peer List: ---
+</I>
+&gt;<i> 12(22551) S[Closed] hss.:3868 D[ ]
+</I>
+&gt;<i> 12(22551) S[R_Open] hss.open-ims.test:3868 D[X]
+</I>
+&gt;<i> 12(22551) [16777216,10415]
+</I>
+&gt;<i> 12(22551) [16777216,4491]
+</I>
+&gt;<i> 12(22551) [16777216,13019]
+</I>
+&gt;<i> 12(22551) [16777217,10415]
+</I>
+&gt;<i> 12(22551) [16777221,10415]
+</I>
+&gt;<i> 12(22551) ------------------
+</I>
+&gt;<i> 12(22551) --- Peer List: ---
+</I>
+&gt;<i> 12(22551) S[Closed] hss.:3868 D[ ]
+</I>
+&gt;<i> 12(22551) S[R_Open] hss.open-ims.test:3868 D[X]
+</I>
+&gt;<i> 12(22551) [16777216,10415]
+</I>
+&gt;<i> 12(22551) [16777216,4491]
+</I>
+&gt;<i> 12(22551) [16777216,13019]
+</I>
+&gt;<i> 12(22551) [16777217,10415]
+</I>
+&gt;<i> 12(22551) [16777221,10415]
+</I>
+&gt;<i> 12(22551) ------------------
+</I>
+&gt;<i> 12(22551) --- Peer List: ---
+</I>
+&gt;<i> 12(22551) S[Closed] hss.:3868 D[ ]
+</I>
+&gt;<i> 12(22551) S[R_Open] hss.open-ims.test:3868 D[X]
+</I>
+&gt;<i> 12(22551) [16777216,10415]
+</I>
+&gt;<i> 12(22551) [16777216,4491]
+</I>
+&gt;<i> 12(22551) [16777216,13019]
+</I>
+&gt;<i> 12(22551) [16777217,10415]
+</I>
+&gt;<i> 12(22551) [16777221,10415]
+</I>
+&gt;<i> 12(22551) ------------------
+</I>
+&gt;<i> 5(22544) INF:S-CSCF:---------- Registrar Contents begin --------
+</I>
+&gt;<i> 5(22544) INF:S-CSCF:---------- Registrar Contents end ----------
+</I>
+&gt;<i> 12(22551) --- Peer List: ---
+</I>
+&gt;<i> 12(22551) S[Closed] hss.:3868 D[ ]
+</I>
+&gt;<i> 12(22551) S[R_Open] hss.open-ims.test:3868 D[X]
+</I>
+&gt;<i> 12(22551) [16777216,10415]
+</I>
+&gt;<i> 12(22551) [16777216,4491]
+</I>
+&gt;<i> 12(22551) [16777216,13019]
+</I>
+&gt;<i> 12(22551) [16777217,10415]
+</I>
+&gt;<i> 12(22551) [16777221,10415]
+</I>
+&gt;<i> 
+</I>
+&gt;<i> Something is wrong, but I can't figure what.
+</I>
+&gt;<i> Any help will be appreciated.
+</I>
+&gt;<i> Thank you,
+</I>
+&gt;<i> 
+</I>
+&gt;<i> Ofer.
+</I>
+&gt;<i> 
+</I>
+&gt;<i> -----Original Message-----
+</I>
+&gt;<i> From: Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at kabsi.at</A>] 
+</I>
+&gt;<i> Sent: Tuesday, September 20, 2011 21:35
+</I>
+&gt;<i> To: Ofer Goren; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>
+&gt;<i> Subject: RE: [OpenIMSCore-Users] Got 480 Temporarily Unavailable - Diameter Cx interface failed
+</I>
+&gt;<i> 
+</I>
+&gt;<i> Hi,
+</I>
+&gt;<i> 
+</I>
+
+&gt;<i> &gt; Should I need to update the /etc/bind/db.open-ims.test file with the new
+</I>
+&gt;<i> IP
+</I>
+&gt;<i> &gt; I'm using, or should I leave it as is?
+</I>
+&gt;<i> 
+</I>
+&gt;<i> Yes you should. That's the reason.
+</I>
+&gt;<i> When you look into a tracefile, you will see it yourself. The TCP-connection
+</I>
+&gt;<i> for Diameter is probably set-up towards 127.0.0.1, but this node does not
+</I>
+&gt;<i> accept the connection.
+</I>
+&gt;<i> 
+</I>
+&gt;<i> BR
+</I>
+&gt;<i> FRanz
+</I>
+&gt;<i> 
+</I>
+&gt;<i> _______________________________________________
+</I>
+&gt;<i> OpenIMSCore-Users mailing list
+</I>
+&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>
+&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+ 		 	   		  
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20110921/17c9c7aa/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20110921/17c9c7aa/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007131.html">[OpenIMSCore-Users] Got 480 Temporarily Unavailable -	Diameter	Cx interface failed
+</A></li>
+	<LI>Next message: <A HREF="007134.html">[OpenIMSCore-Users] Got 480 Temporarily Unavailable -	Diameter	Cx interface failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7132">[ date ]</a>
+              <a href="thread.html#7132">[ thread ]</a>
+              <a href="subject.html#7132">[ subject ]</a>
+              <a href="author.html#7132">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

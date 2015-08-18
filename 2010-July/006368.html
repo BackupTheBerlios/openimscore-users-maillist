@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] SUBSCRIBE Method Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SUBSCRIBE%20Method%20Problems&In-Reply-To=%3CCOL117-DS7E3F654EA584328F5FE17F7A50%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006366.html">
+   <LINK REL="Next"  HREF="006370.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] SUBSCRIBE Method Problems</H1>
+    <B>Patricio Latini</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SUBSCRIBE%20Method%20Problems&In-Reply-To=%3CCOL117-DS7E3F654EA584328F5FE17F7A50%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] SUBSCRIBE Method Problems">p_latini at hotmail.com
+       </A><BR>
+    <I>Sun Jul 25 23:19:23 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006366.html">[OpenIMSCore-Users] SUBSCRIBE Method Problems
+</A></li>
+        <LI>Next message: <A HREF="006370.html">[OpenIMSCore-Users] SUBSCRIBE Method Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6368">[ date ]</a>
+              <a href="thread.html#6368">[ thread ]</a>
+              <a href="subject.html#6368">[ subject ]</a>
+              <a href="author.html#6368">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Franz:
+	Thanks a lot for confirming my guess that the user=phone was the
+issue. The UE should be either registering with user=phone or subscribing
+without that parameter if it is not included on the Register.
+
+Thanks!
+
+Patricio
+
+-----Original Message-----
+From: Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>] 
+Sent: Sunday, July 25, 2010 3:40 PM
+To: 'Patricio Latini'; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: RE: [OpenIMSCore-Users] SUBSCRIBE Method Problems
+
+Hi Patricio,
+
+&gt;<i> Here is the trace the only think I can identify is
+</I>&gt;<i> 
+</I>&gt;<i> In the register response
+</I>&gt;<i> P-Associated-URI: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">7778889999 at lab.com.ar</A>&gt;
+</I>&gt;<i> In the subscribe
+</I>&gt;<i> P-Preferred-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">7778889999 at lab.com.ar</A>;user=phone&gt;
+</I>&gt;<i> 
+</I>&gt;<i> Where the UE is adding the option &quot;;user=phone&quot; but I may think that the
+</I>&gt;<i> CSCF would strip it off or it shouldnt?
+</I>
+After rethinking about your issue it became clear to me.
+The two URIs &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">7778889999 at lab.com.ar</A>&gt; and
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">7778889999 at lab.com.ar</A>;user=phone&gt; are different ones.
+In the first case the userpart is treated as a string but in the second case
+it is interpreted as a telefone number. 
+
+Stripping off the parameter &quot;user=phone&quot; is therefore not allowed because it
+would mean to change the address.
+
+The only way to solve your problem is therfore to bring your UE to omit the
+user=phone parameter. Then the subscription will work.
+
+BR
+Franz
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006366.html">[OpenIMSCore-Users] SUBSCRIBE Method Problems
+</A></li>
+	<LI>Next message: <A HREF="006370.html">[OpenIMSCore-Users] SUBSCRIBE Method Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6368">[ date ]</a>
+              <a href="thread.html#6368">[ thread ]</a>
+              <a href="subject.html#6368">[ subject ]</a>
+              <a href="author.html#6368">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

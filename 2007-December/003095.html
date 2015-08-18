@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Message Routing Problem with ACKs	in	OpenIMSCore?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Message%20Routing%20Problem%20with%20ACKs%0A%09in%09OpenIMSCore%3F&In-Reply-To=%3C475E6038.2080803%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003077.html">
+   <LINK REL="Next"  HREF="003099.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Message Routing Problem with ACKs	in	OpenIMSCore?</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Message%20Routing%20Problem%20with%20ACKs%0A%09in%09OpenIMSCore%3F&In-Reply-To=%3C475E6038.2080803%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Message Routing Problem with ACKs	in	OpenIMSCore?">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Dec 11 11:02:32 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003077.html">[OpenIMSCore-Users] Message Routing Problem with ACKs in	OpenIMSCore?
+</A></li>
+        <LI>Next message: <A HREF="003099.html">[OpenIMSCore-Users] Message Routing Problem with	ACKs	in	OpenIMSCore?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3095">[ date ]</a>
+              <a href="thread.html#3095">[ thread ]</a>
+              <a href="subject.html#3095">[ subject ]</a>
+              <a href="author.html#3095">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Mark,
+
+The ACK is a little strange... but so is the scenario :)...
+
+First thing... you say &quot;Origination trigger&quot;... yet I see the triggering
+happening on the terminating side...
+
+Then... I don't think that what you are trying would work. It seems that
+when your AS receives the 486, it just forks the old INVITE and carries
+on... on the same dialog.... sorry, but I never thought about this
+scenario and the new INVITE would be identified on the same dialog as
+the first one and that old one is being closed in parallel... I think
+that usually this scenario is best done with a B2BUA AS, which handles
+one dialog towards the originator and then one or more towards the
+terminating side...
+
+I am looking at the ACK there and can't figure out what is wrong... too
+complicated...
+
+One thing that would surely not work - your AS changes the terminating
+user on the terminating S-CSCF... this would mean that the specific
+S-CSCF would somehow have to move into an originating mode and then
+forward to the S-CSCF assigned to john? (you are lucky now that you have
+just one S-CSCF and everybody is there). This scenario is a little too
+awkward... I would go with a proper B2B UA that would not just proxy the
+message through, but do proper termination.
+
+
+Cheers,
+-Dragos
+
+
+Evans, Mark [CTO] wrote:
+&gt;<i> All
+</I>&gt;<i>  
+</I>&gt;<i> We have an Application Server connected to the OIMSCore. The for
+</I>&gt;<i> example AS can perform a simple redirect on busy.
+</I>&gt;<i>  
+</I>&gt;<i> AS Trigger is set up for Origination trigger only.
+</I>&gt;<i>  
+</I>&gt;<i> In a test scenario we have three users registered, Alice, Kate and
+</I>&gt;<i> John. All use the Franhoffer IC Lite. See attached trace, Sip_scenario
+</I>&gt;<i> file and IMS logs
+</I>&gt;<i>  
+</I>&gt;<i> Alice calls Kate, Kate rejects call with 486 Busy (after initial 180
+</I>&gt;<i> ringing).
+</I>&gt;<i>  
+</I>&gt;<i> The AS on receipt of 486 sends INVITE to John.
+</I>&gt;<i>  
+</I>&gt;<i> At this point things start to go wrong.
+</I>&gt;<i>  
+</I>&gt;<i> Issue A
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>     * The P-CSCF sends retries/duplicates  of the 486 Busy to the
+</I>&gt;<i>       S-CSCF (even though the S-CSCF seems to correctly ACK the 486)
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>     * The S-CSCF sends  an extra ACK (with invalid branch values) to
+</I>&gt;<i>       the P-CSCF as a result of the AS sending an ACK to 486 from the AS
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>     * This activity repeats throughout the trace. Cannot find out why
+</I>&gt;<i>       from the logs.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i> Issue B
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>     * John Receives the INVITE and sends 180 and 200OK when he answers.
+</I>&gt;<i>     * Alice receives the 200OK and sends ACK to 200OK
+</I>&gt;<i>     * This ACK gets stuck at S-CSCF
+</I>&gt;<i>     * John never receives ACK so retries 200OK
+</I>&gt;<i>     * Alice gives up and sends BYE.
+</I>&gt;<i>     * Gets 403 Dialog not found. This is OK because the dialog is not
+</I>&gt;<i>       complete. But shouldn&#8217;t this be a 481 Dialog not found??
+</I>&gt;<i>     * Cannot establish why Alice&#8217;s 200OK get stuck at S-CSCF
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i> In summary
+</I>&gt;<i>  
+</I>&gt;<i> 1) At packet 1878 Kate sends a 486Busy
+</I>&gt;<i> 2) The P-CSCF correctly sends an ACK to Kate (Packet 1879)
+</I>&gt;<i> 3) The P-CSCF correctly sends an 486 to the S-CSCF (packet 1880)
+</I>&gt;<i> 4) The S-CSCF sends an ACK to P-CSCF (packet 1881  - via and branch
+</I>&gt;<i> look correct)
+</I>&gt;<i> 5) The S-CSCF correctly sends an 486 to the AS (Packet 1882)
+</I>&gt;<i> 6) The AS (seems) to correctly send an ACK to S-CSCF (packet 1883 -
+</I>&gt;<i> via and branch look correct)
+</I>&gt;<i> 7) The S-CSCF sends a spurious ACK to the P-CSCF (Packet 1884 See
+</I>&gt;<i> branch values...)
+</I>&gt;<i>  
+</I>&gt;<i> At from this point onwards the P-CSCF keeps sending duplicates of 3)
+</I>&gt;<i> which triggers repeats of 4) to 7)
+</I>&gt;<i>  
+</I>&gt;<i> So either the P-CSCF is not recognizing 4) or 7) is messing it&#8217;s state up
+</I>&gt;<i>  
+</I>&gt;<i> The other issue is that the when the INVITE is forwarded  to John and
+</I>&gt;<i> when John answers, his 200 OK finally reaches Alice and she sends an
+</I>&gt;<i> ACK (packet 1965). This ACK gets stuck at S-CSCF (Packet 1969)
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> Any Thoughts?
+</I>&gt;<i>  
+</I>&gt;<i> Regards
+</I>&gt;<i>  
+</I>&gt;<i> Mark
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003077.html">[OpenIMSCore-Users] Message Routing Problem with ACKs in	OpenIMSCore?
+</A></li>
+	<LI>Next message: <A HREF="003099.html">[OpenIMSCore-Users] Message Routing Problem with	ACKs	in	OpenIMSCore?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3095">[ date ]</a>
+              <a href="thread.html#3095">[ thread ]</a>
+              <a href="subject.html#3095">[ subject ]</a>
+              <a href="author.html#3095">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

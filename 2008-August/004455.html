@@ -1,0 +1,403 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users]  How to Install OpenIMSCore on solaris10?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%20How%20to%20Install%20OpenIMSCore%20on%20solaris10%3F&In-Reply-To=%3C6086FF19-2718-4442-9F40-9043C70EA5CE%40tssg.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004454.html">
+   <LINK REL="Next"  HREF="004456.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users]  How to Install OpenIMSCore on solaris10?</H1>
+    <B>Jerry Horgan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%20How%20to%20Install%20OpenIMSCore%20on%20solaris10%3F&In-Reply-To=%3C6086FF19-2718-4442-9F40-9043C70EA5CE%40tssg.org%3E"
+       TITLE="[OpenIMSCore-Users]  How to Install OpenIMSCore on solaris10?">jhorgan at tssg.org
+       </A><BR>
+    <I>Thu Aug  7 02:10:38 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004454.html">[OpenIMSCore-Users] Problem compiling FHoSS
+</A></li>
+        <LI>Next message: <A HREF="004456.html">[OpenIMSCore-Users] Question about diameter FQDN when adding an AS	in OpenIMSCOre
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4455">[ date ]</a>
+              <a href="thread.html#4455">[ thread ]</a>
+              <a href="subject.html#4455">[ subject ]</a>
+              <a href="author.html#4455">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>A quick hack that worked for me was to add the following line to  
+simple_profile.h
+typedef void (*__sighandler_t )();
+I get a bit further but then get an ld issue (using GNU ld)
+&lt;snip&gt;
+gmake YACC=bison CC=gcc INSTALL=install
+gcc -shared    -I/opt/ser_ims/lib/cds/.. -o libcds.so cds.o dbid.o  
+dstring.o hash_table.o memory.o msg_queue.o ptr_vector.o ref_cntr.o  
+rr_serialize.o ser_profile.o serialize.o simple_profile.o sip_utils.o  
+sstr.o vector.o
+Text relocation remains                         referenced
+     against symbol                  offset      in file
+&lt;unknown&gt;                           0x8         cds.o
+&lt;unknown&gt;                           0xc         cds.o
+&lt;unknown&gt;                           0x20        cds.o
+&lt;unknown&gt;                           0x24        cds.o
+&lt;unknown&gt;                           0x3c        cds.o
+&lt;unknown&gt;                           0x40        cds.o
+&lt;unknown&gt;                           0x64        cds.o
+&lt;unknown&gt;                           0x68        cds.o
+&lt;unknown&gt;                           0x74        cds.o
+&lt;unknown&gt;                           0x78        cds.o
+&lt;unknown&gt;                           0x90        cds.o
+&lt;unknown&gt;                           0x94        cds.o
+&lt;unknown&gt;                           0x9c        cds.o
+&lt;unknown&gt;                           0xa0        cds.o
+&lt;unknown&gt;                           0xf0        cds.o
+&lt;unknown&gt;                           0xf4        cds.o
+&lt;unknown&gt;                           0xfc        cds.o
+&lt;unknown&gt;                           0x100       cds.o
+&lt;unknown&gt;                           0x12c       cds.o
+&lt;unknown&gt;                           0x130       cds.o
+&lt;unknown&gt;                           0x144       cds.o
+&lt;unknown&gt;                           0x148       cds.o
+&lt;unknown&gt;                           0x150       cds.o
+&lt;unknown&gt;                           0x154       cds.o
+&lt;unknown&gt;                           0x18c       cds.o
+&lt;unknown&gt;                           0x190       cds.o
+&lt;unknown&gt;                           0x1a0       cds.o
+&lt;unknown&gt;                           0x1a4       cds.o
+&lt;unknown&gt;                           0xc0        cds.o
+&lt;unknown&gt;                           0xc4        cds.o
+&lt;unknown&gt;                           0x174       cds.o
+&lt;unknown&gt;                           0x178       cds.o
+malloc                              0x2c        cds.o
+malloc                              0x1c        dstring.o
+malloc                              0x470       dstring.o
+malloc                              0x588       dstring.o
+malloc                              0x80        hash_table.o
+malloc                              0x24c       hash_table.o
+malloc                              0x28        msg_queue.o
+malloc                              0xac        msg_queue.o
+malloc                              0x28        ref_cntr.o
+malloc                              0x420       sstr.o
+malloc                              0x534       sstr.o
+malloc                              0x5b4       sstr.o
+malloc                              0x684       sstr.o
+malloc                              0x730       sstr.o
+malloc                              0xd18       sstr.o
+malloc                              0x84        vector.o
+malloc                              0x434       vector.o
+printf                              0xc8        cds.o
+printf                              0x17c       cds.o
+printf                              0x40c       sstr.o
+reference_counter_initialize        0xd0        cds.o
+reference_counter_cleanup           0x184       cds.o
+free                                0x198       cds.o
+free                                0x688       dstring.o
+free                                0x1cc       hash_table.o
+free                                0x200       hash_table.o
+free                                0x73c       hash_table.o
+free                                0x108       msg_queue.o
+free                                0x10c       msg_queue.o
+free                                0x210       msg_queue.o
+free                                0x71c       msg_queue.o
+free                                0xc4        ref_cntr.o
+free                                0x104       vector.o
+free                                0x3a0       vector.o
+&lt;unknown&gt;                           0x30        dbid.o
+&lt;unknown&gt;                           0x34        dbid.o
+time                                0x10        dbid.o
+rand                                0x1c        dbid.o
+snprintf                            0x40        dbid.o
+dstr_append                         0x2c4       dstring.o
+dstr_append                         0x31c       dstring.o
+dstr_append                         0x498       serialize.o
+dstr_append                         0xf0c       sstr.o
+memcpy                              0x1c0       dstring.o
+memcpy                              0x39c       dstring.o
+memcpy                              0x46c       sstr.o
+memcpy                              0x580       sstr.o
+memcpy                              0x6c8       sstr.o
+memcpy                              0x764       sstr.o
+memcpy                              0xd94       sstr.o
+memcpy                              0xdcc       sstr.o
+memcpy                              0xf4        vector.o
+memcpy                              0x15c       vector.o
+memcpy                              0x2f0       vector.o
+dstr_append_zt                      0x464       serialize.o
+strlen                              0x2ac       dstring.o
+strlen                              0x320       sstr.o
+strlen                              0x650       sstr.o
+strlen                              0x6f8       sstr.o
+dstr_append_str                     0x26c       serialize.o
+dstr_append_str                     0xf20       sstr.o
+dstr_append_str                     0xf80       sstr.o
+dstr_get_data                       0x4b8       dstring.o
+dstr_get_data                       0x5d0       dstring.o
+dstr_get_data                       0x174       serialize.o
+dstr_get_str                        0x120       serialize.o
+dstr_get_str                        0xfac       sstr.o
+dstr_init                           0xe0        serialize.o
+dstr_init                           0xeb8       sstr.o
+dstr_destroy                        0x4d0       serialize.o
+dstr_destroy                        0xfc4       sstr.o
+memset                              0xd8        hash_table.o
+memset                              0x124       simple_profile.o
+.urem                               0x2c0       hash_table.o
+.urem                               0x45c       hash_table.o
+.urem                               0x5bc       hash_table.o
+.umul                               0xaf0       hash_table.o
+.umul                               0xb1c       hash_table.o
+.umul                               0x6b4       serialize.o
+.umul                               0x74        vector.o
+.umul                               0xdc        vector.o
+.umul                               0x138       vector.o
+.umul                               0x1f4       vector.o
+.umul                               0x220       vector.o
+.umul                               0x240       vector.o
+.umul                               0x2cc       vector.o
+.umul                               0x348       vector.o
+.umul                               0x424       vector.o
+free_message                        0x678       msg_queue.o
+pthread_mutex_lock                  0x288       msg_queue.o
+pthread_mutex_lock                  0x37c       msg_queue.o
+pthread_mutex_lock                  0x43c       msg_queue.o
+pthread_mutex_lock                  0x518       msg_queue.o
+pthread_mutex_lock                  0x644       msg_queue.o
+pthread_mutex_lock                  0x154       ref_cntr.o
+pthread_mutex_lock                  0x1d8       ref_cntr.o
+pthread_mutex_lock                  0x258       ref_cntr.o
+pthread_mutex_unlock                0x300       msg_queue.o
+pthread_mutex_unlock                0x3e0       msg_queue.o
+pthread_mutex_unlock                0x4cc       msg_queue.o
+pthread_mutex_unlock                0x558       msg_queue.o
+pthread_mutex_unlock                0x6c0       msg_queue.o
+pthread_mutex_unlock                0x18c       ref_cntr.o
+pthread_mutex_unlock                0x208       ref_cntr.o
+pthread_mutex_unlock                0x2c0       ref_cntr.o
+msg_queue_init_ex                   0x580       msg_queue.o
+pthread_mutex_init                  0x5c4       msg_queue.o
+pthread_mutex_init                  0x60        ref_cntr.o
+init_reference_counter              0x5d0       msg_queue.o
+msg_queue_destroy                   0x710       msg_queue.o
+pthread_mutex_destroy               0x6d4       msg_queue.o
+pthread_mutex_destroy               0xb0        ref_cntr.o
+remove_reference                    0x6f4       msg_queue.o
+vector_add                          0x18        ptr_vector.o
+vector_get                          0x50        ptr_vector.o
+vector_remove                       0x9c        ptr_vector.o
+vector_destroy                      0xc0        ptr_vector.o
+vector_init                         0xec        ptr_vector.o
+&lt;unknown&gt;                           0x4         ref_cntr.o
+&lt;unknown&gt;                           0x8         ref_cntr.o
+&lt;unknown&gt;                           0x1c        ref_cntr.o
+&lt;unknown&gt;                           0x20        ref_cntr.o
+&lt;unknown&gt;                           0x38        ref_cntr.o
+&lt;unknown&gt;                           0x3c        ref_cntr.o
+&lt;unknown&gt;                           0x50        ref_cntr.o
+&lt;unknown&gt;                           0x54        ref_cntr.o
+&lt;unknown&gt;                           0x8c        ref_cntr.o
+&lt;unknown&gt;                           0x90        ref_cntr.o
+&lt;unknown&gt;                           0xa4        ref_cntr.o
+&lt;unknown&gt;                           0xa8        ref_cntr.o
+&lt;unknown&gt;                           0xb8        ref_cntr.o
+&lt;unknown&gt;                           0xbc        ref_cntr.o
+&lt;unknown&gt;                           0xcc        ref_cntr.o
+&lt;unknown&gt;                           0xd0        ref_cntr.o
+&lt;unknown&gt;                           0x108       ref_cntr.o
+&lt;unknown&gt;                           0x10c       ref_cntr.o
+&lt;unknown&gt;                           0x6e4       serialize.o
+&lt;unknown&gt;                           0x6e8       serialize.o
+&lt;unknown&gt;                           0x854       serialize.o
+&lt;unknown&gt;                           0x858       serialize.o
+sstream_get                         0x550       serialize.o
+sstream_get                         0x77c       serialize.o
+sstream_get                         0xad8       serialize.o
+sstream_get                         0xb60       serialize.o
+sstream_get_str_ex                  0x3d4       serialize.o
+sstream_get_str_ex                  0xa40       serialize.o
+sstream_get_str                     0x940       serialize.o
+str_dup_impl                        0x400       serialize.o
+str_dup_impl                        0x5dc       sstr.o
+sstream_put_zt                      0x708       serialize.o
+sstream_put_zt                      0x878       serialize.o
+sstream_put                         0x96c       serialize.o
+sstream_put                         0xa6c       serialize.o
+sstream_put                         0xafc       serialize.o
+sstream_put                         0xb84       serialize.o
+serialize_int                       0x8d0       serialize.o
+serialize_int                       0x9d0       serialize.o
+sprintf                             0x6f4       serialize.o
+sprintf                             0x864       serialize.o
+&lt;unknown&gt;                           0x8c        simple_profile.o
+&lt;unknown&gt;                           0x90        simple_profile.o
+&lt;unknown&gt;                           0xa4        simple_profile.o
+&lt;unknown&gt;                           0xa8        simple_profile.o
+&lt;unknown&gt;                           0xcc        simple_profile.o
+&lt;unknown&gt;                           0xd0        simple_profile.o
+&lt;unknown&gt;                           0xf4        simple_profile.o
+&lt;unknown&gt;                           0xf8        simple_profile.o
+&lt;unknown&gt;                           0x104       simple_profile.o
+&lt;unknown&gt;                           0x108       simple_profile.o
+&lt;unknown&gt;                           0x160       simple_profile.o
+&lt;unknown&gt;                           0x164       simple_profile.o
+&lt;unknown&gt;                           0x1f4       simple_profile.o
+&lt;unknown&gt;                           0x1f8       simple_profile.o
+&lt;unknown&gt;                           0x22c       simple_profile.o
+&lt;unknown&gt;                           0x230       simple_profile.o
+&lt;unknown&gt;                           0x244       simple_profile.o
+&lt;unknown&gt;                           0x248       simple_profile.o
+&lt;unknown&gt;                           0x26c       simple_profile.o
+&lt;unknown&gt;                           0x270       simple_profile.o
+tick_counter                        0x60        simple_profile.o
+tick_counter                        0x64        simple_profile.o
+tick_counter                        0x68        simple_profile.o
+tick_counter                        0x6c        simple_profile.o
+reset_timer                         0x1b8       simple_profile.o
+setitimer                           0x30        simple_profile.o
+prof_handler                        0x12c       simple_profile.o
+prof_handler                        0x130       simple_profile.o
+trace_handler                       0x1a4       simple_profile.o
+trace_handler                       0x1a8       simple_profile.o
+sigemptyset                         0x144       simple_profile.o
+sigaction                           0x168       simple_profile.o
+sigaction                           0x200       simple_profile.o
+sigaction                           0x278       simple_profile.o
+old_sigx_action                     0x198       simple_profile.o
+old_sigx_action                     0x19c       simple_profile.o
+old_sigx_action                     0x1d8       simple_profile.o
+old_sigx_action                     0x1dc       simple_profile.o
+old_sigx_action                     0x250       simple_profile.o
+old_sigx_action                     0x254       simple_profile.o
+signal                              0x1ac       simple_profile.o
+signal                              0x1e8       simple_profile.o
+signal                              0x260       simple_profile.o
+&lt;unknown&gt;                           0x3fc       sstr.o
+&lt;unknown&gt;                           0x400       sstr.o
+is_str_empty                        0xaf0       sstr.o
+is_str_empty                        0xb20       sstr.o
+is_str_empty                        0xdfc       sstr.o
+is_str_empty                        0xe48       sstr.o
+tolower                             0x870       sstr.o
+tolower                             0x89c       sstr.o
+str_str                             0xecc       sstr.o
+memmove                             0x258       vector.o
+ld: fatal: relocations remain against allocatable but non-writable  
+sections
+collect2: ld returned 1 exit status
+gmake: *** [libcds.so] Error 1
+&lt;/snip&gt;
+
+BTW: The FHoSS installs fine.
+Regards
+
+Jerry
+
+&gt;<i> Hello.
+</I>&gt;<i>
+</I>&gt;<i> I have a question about OpenIMS Core.
+</I>&gt;<i>
+</I>&gt;<i> Is it possible to install OpenIMS Core on Solaris?
+</I>&gt;<i>
+</I>&gt;<i> I'm currently trying to compile OpenIMS Core on Solaris 10 (Sparc).
+</I>&gt;<i>
+</I>&gt;<i> I have all the prerequisites (gcc, make, bison, yacc, flex, mysql )
+</I>&gt;<i>
+</I>&gt;<i> I'm using 'make install-libs all' and it seems that the compilation  
+</I>&gt;<i> runs
+</I>&gt;<i> fail. There are some errors like following.
+</I>&gt;<i>
+</I>&gt;<i> __sigHandler_t doesn't define.can't find definition of __sigHandler_t
+</I>&gt;<i>
+</I>&gt;<i> I think Solaris10 doesn't have a 'signal.h' and doesn't define
+</I>&gt;<i> __sigHandler_t.
+</I>&gt;<i>
+</I>&gt;<i> How to solve it?
+</I>&gt;<i>
+</I>&gt;<i> Thank you .
+</I>&gt;<i>
+</I>&gt;<i> Our result :
+</I>&gt;<i> &gt;gmake install-libs all
+</I>&gt;<i>
+</I>&gt;<i> ............
+</I>&gt;<i> gcc -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' - 
+</I>&gt;<i> DARCH='&quot;sparc64&quot;'
+</I>&gt;<i> -DOS='solaris_'
+</I>&gt;<i> -DOS_QUOTED='&quot;solaris&quot;' -DCOMPILER='&quot;gcc 3.4.2&quot;' -D__CPU_sparc64
+</I>&gt;<i> -D__OS_solaris -DSER_VER=2001000
+</I>&gt;<i> -DCFG_DIR='&quot;/usr/local/etc/ser/&quot;' -DPKG_MALLOC -DSHM_MEM  -DSHM_MMAP
+</I>&gt;<i> -DDNS_IP_HACK -DUSE_IPV6 -DUSE_MCAST
+</I>&gt;<i> -DUSE_TCP -DDISABLE_NAGLE -DHAVE_RESOLV_RES -DDBG_QM_MALLOC - 
+</I>&gt;<i> DUSE_DNS_CACHE
+</I>&gt;<i> -DUSE_DNS_FAILOVER
+</I>&gt;<i> -DUSE_DST_BLACKLIST -ggdb  -DUSE_TLS -DTLS_HOOKS -DFAST_LOCK - 
+</I>&gt;<i> DADAPTIVE_WAIT
+</I>&gt;<i> -DADAPTIVE_WAIT_LOOPS=1024
+</I>&gt;<i>  -DCC_GCC_LIKE_ASM -DSPARC64_MODE -DHAVE_GETIPNODEBYNAME - 
+</I>&gt;<i> DHAVE_SYS_SOCKIO_H
+</I>&gt;<i> -DHAVE_SCHED_YIELD -DHAVE_ALLOCA_H
+</I>&gt;<i> -DUSE_SIGACTION -DHAVE_DEVPOLL -DHAVE_SELECT -DSER -fPIC -DPIC -m64 - 
+</I>&gt;<i> g -O9
+</I>&gt;<i> -funroll-loops
+</I>&gt;<i>  -mcpu=ultrasparc -mtune=ultrasparc  -Wall -Wall
+</I>&gt;<i> -I/home/openims/openIMS/ser_ims/lib
+</I>&gt;<i> -I/home/openims/openIMS/ser_ims/lib/.. -c simple_profile.c
+</I>&gt;<i> simple_profile.c:14: error: parse error before &quot;old_sigx_action&quot;
+</I>&gt;<i> simple_profile.c:14: warning: type defaults to `int' in declaration of
+</I>&gt;<i> `old_sigx_action'
+</I>&gt;<i> simple_profile.c:14: warning: data definition has no type or storage  
+</I>&gt;<i> class
+</I>&gt;<i> simple_profile.c: In function `start_profile':
+</I>&gt;<i> simple_profile.c:65: warning: assignment makes integer from pointer  
+</I>&gt;<i> without
+</I>&gt;<i> a cast
+</I>&gt;<i> simple_profile.c:70: warning: passing arg 2 of `signal' makes  
+</I>&gt;<i> pointer from
+</I>&gt;<i> integer without a cast
+</I>&gt;<i> simple_profile.c: In function `stop_profile':
+</I>&gt;<i> simple_profile.c:82: warning: passing arg 2 of `signal' makes  
+</I>&gt;<i> pointer from
+</I>&gt;<i> integer without a cast
+</I>&gt;<i> gmake[2]: *** [simple_profile.o] Error 1
+</I>&gt;<i> ............
+</I>&gt;<i>
+</I>&gt;<i> simple_profile.c:14:
+</I>&gt;<i> 13 static struct sigaction old_sigprof_action;
+</I>&gt;<i> 14 __sighandler_t old_sigx_action;
+</I>&gt;<i> 15 static int initialized = 0;
+</I>&gt;<i> 16 static trace_f trace_function = NULL;
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080807/d8b9c231/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080807/d8b9c231/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004454.html">[OpenIMSCore-Users] Problem compiling FHoSS
+</A></li>
+	<LI>Next message: <A HREF="004456.html">[OpenIMSCore-Users] Question about diameter FQDN when adding an AS	in OpenIMSCOre
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4455">[ date ]</a>
+              <a href="thread.html#4455">[ thread ]</a>
+              <a href="subject.html#4455">[ subject ]</a>
+              <a href="author.html#4455">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

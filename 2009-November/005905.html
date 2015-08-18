@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] registering multiple IMPUs on OSIMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20registering%20multiple%20IMPUs%20on%20OSIMS&In-Reply-To=%3C1ED35D6A30DD4BC888D4017CEBBA5533%40FRANZNOTEBOOK%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005901.html">
+   <LINK REL="Next"  HREF="005932.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] registering multiple IMPUs on OSIMS</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20registering%20multiple%20IMPUs%20on%20OSIMS&In-Reply-To=%3C1ED35D6A30DD4BC888D4017CEBBA5533%40FRANZNOTEBOOK%3E"
+       TITLE="[OpenIMSCore-Users] registering multiple IMPUs on OSIMS">franz-edler at aon.at
+       </A><BR>
+    <I>Sat Nov  7 16:37:47 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005901.html">[OpenIMSCore-Users] registering multiple IMPUs on OSIMS
+</A></li>
+        <LI>Next message: <A HREF="005932.html">[OpenIMSCore-Users] registering multiple IMPUs on OSIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5905">[ date ]</a>
+              <a href="thread.html#5905">[ thread ]</a>
+              <a href="subject.html#5905">[ subject ]</a>
+              <a href="author.html#5905">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Jean-Yves,
+
+&gt;<i> #2 after some time, IMS client wants to register IMPU2. My understanding
+</I>&gt;<i> is that it shall build a new REGISTER request for IMPU2
+</I>&gt;<i> and send it using IPSec tunnel set up in #1.
+</I>
+According to TS 24.229 &#167;5.1.1.4.1 the UE has two choices:
+
+The UE shall perform the registration of additional public user identities
+either:
+- over the existing set of security associations or TLS sessions, if
+appropriate to the security mechanism in use, that is associated with the
+related contact address; or
+- via an initial registration as specified in subclause 5.1.1.2.
+
+&gt;<i> In this case, whatever the authorization field in this 2nd register, the
+</I>&gt;<i> S-CSCF shall not trigg AKA because S-CSCF can validate that
+</I>&gt;<i> the IMPI associated to IMPU2 is already authenticated (done with IMPU1
+</I>&gt;<i> registration).
+</I>&gt;<i> afterwards IMS client will be able to re-register / de-register IMPU2
+</I>&gt;<i> independantly from IMPU1
+</I>
+Yes, if it uses the first option (re-use of an existing set of security
+associations). This leads to an integrity-protectde=&quot;yes&quot; parameter in the
+Authorization header and therefore no MAR/MAA sequence is triggered.
+
+&gt;<i> am I right? is it the way OSIMS works? (not able to test it for the
+</I>&gt;<i> moment)
+</I>
+Yes, you are right and so I expect that OpenIMSCore will work (not tested
+yet).
+
+Regards
+Franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005901.html">[OpenIMSCore-Users] registering multiple IMPUs on OSIMS
+</A></li>
+	<LI>Next message: <A HREF="005932.html">[OpenIMSCore-Users] registering multiple IMPUs on OSIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5905">[ date ]</a>
+              <a href="thread.html#5905">[ thread ]</a>
+              <a href="subject.html#5905">[ subject ]</a>
+              <a href="author.html#5905">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

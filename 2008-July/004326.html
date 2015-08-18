@@ -1,0 +1,332 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] DNS Issues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20DNS%20Issues&In-Reply-To=%3C48844E59.6070907%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004324.html">
+   <LINK REL="Next"  HREF="004325.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] DNS Issues</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20DNS%20Issues&In-Reply-To=%3C48844E59.6070907%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] DNS Issues">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Jul 21 10:52:41 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004324.html">[OpenIMSCore-Users] DNS Issues
+</A></li>
+        <LI>Next message: <A HREF="004325.html">[OpenIMSCore-Users] openIC Lite don't send Ack
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4326">[ date ]</a>
+              <a href="thread.html#4326">[ thread ]</a>
+              <a href="subject.html#4326">[ subject ]</a>
+              <a href="author.html#4326">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+BTW: the latest security issues with DNS prompted many admins to upgrade 
+the bind server to the latest versions. If you did and wonder why only 
+some of the DNS names from the open-ims.test.zone or other derived zone 
+are working, that is because we used &quot;_&quot; in the NAPTR entries. It turns 
+out that &quot;_&quot; is not a valid DNS name character. So, the zone files are 
+loaded until the &quot;_&quot; is reached and then an error is outputed in the 
+logs. bind 9.4.1 or older accepted it though.
+
+Since r573, I have removed all the &quot;_&quot; characters from the example file. 
+So, instead of _sip, _udp and _tcp, just use sip, udp and tcp or any 
+other names.
+
+Cheers,
+-Dragos
+
+
+Patrick Vetsch wrote:
+&gt;<i> Thanks Andreas,
+</I>&gt;<i>  
+</I>&gt;<i> I should have known that, i spent ages installing chroot bind, Must have been at it too long last night, 
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> Thnaks for the help
+</I>&gt;<i>  
+</I>&gt;<i> Patrick
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ________________________________
+</I>&gt;<i>
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> on behalf of Andreas H&#228;ber
+</I>&gt;<i> Sent: Sun 20/07/2008 5:02 a.m.
+</I>&gt;<i> To: Patrick Vetsch; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] DNS Issues
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Do you run named under a chroot jail? In that case /etc/open-ims.dnszone should actually be located in [chroot-jail]/etc/. For example it could be /var/lib/named/etc/open-ims.dnszone. Another problem that may occur is if you've got stuff like Novell AppArmor doing tricks in the background. Novell AppArmor can ensure that the process only can read/write/execute specific files/directories.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> So, to summarize, there are lot's of reasons why it does not work as expected, depending on the operating system and various settings.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Hope this helps!
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i>
+</I>&gt;<i> Andreas H&#228;ber
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Patrick Vetsch
+</I>&gt;<i> Sent: 19. juli 2008 11:48
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: [OpenIMSCore-Users] DNS Issues
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Hi All,
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Im Having issues currently with my DNS Setup that I hoped people out there may be able to help me with,
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I have added a link into my named.conf to view the /etc/open-ims.dnszone file for resolving IMS components
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> The file looks like this
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> //
+</I>&gt;<i> // named.caching-nameserver.conf
+</I>&gt;<i> //
+</I>&gt;<i> // Provided by Red Hat caching-nameserver package to configure the
+</I>&gt;<i> // ISC BIND named(8) DNS server as a caching only nameserver 
+</I>&gt;<i> // (as a localhost DNS resolver only).
+</I>&gt;<i> //
+</I>&gt;<i> // See /usr/share/doc/bind*/sample/ for example named configuration files.
+</I>&gt;<i> //
+</I>&gt;<i> // DO NOT EDIT THIS FILE - use system-config-bind or an editor
+</I>&gt;<i> // to create named.conf - edits to this file will be lost on 
+</I>&gt;<i> // caching-nameserver package upgrade.
+</I>&gt;<i> //
+</I>&gt;<i>
+</I>&gt;<i> options {
+</I>&gt;<i>        listen-on port 53 { 127.0.0.1; };
+</I>&gt;<i>        listen-on-v6 port 53 { ::1; };
+</I>&gt;<i>        directory     &quot;/var/named&quot;;
+</I>&gt;<i>        dump-file     &quot;/var/named/data/cache_dump.db&quot;;
+</I>&gt;<i>         statistics-file &quot;/var/named/data/named_stats.txt&quot;;
+</I>&gt;<i>         memstatistics-file &quot;/var/named/data/named_mem_stats.txt&quot;;
+</I>&gt;<i>        allow-query     { localhost; };
+</I>&gt;<i>        recursion yes;
+</I>&gt;<i> };
+</I>&gt;<i>
+</I>&gt;<i> logging {
+</I>&gt;<i>         channel default_debug {
+</I>&gt;<i>                 file &quot;data/named.run&quot;;
+</I>&gt;<i>                 severity dynamic;
+</I>&gt;<i>         };
+</I>&gt;<i> };
+</I>&gt;<i>
+</I>&gt;<i> zone &quot;.&quot; IN {
+</I>&gt;<i>        type hint;
+</I>&gt;<i>        file &quot;named.ca&quot;;
+</I>&gt;<i> };
+</I>&gt;<i>
+</I>&gt;<i> zone &quot;open-ims.test&quot; { 
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>             type master; 
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>             file &quot;/etc/open-ims.dnszone&quot;; 
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> }; 
+</I>&gt;<i>
+</I>&gt;<i> include &quot;/etc/named.rfc1912.zones&quot;;
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> However when I go to restart named I get the following error
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> __________________________________________________________________________
+</I>&gt;<i>
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at localhost</A> ~]# /etc/init.d/named restart
+</I>&gt;<i> Stopping named:                                            [  OK  ]
+</I>&gt;<i> Starting named: 
+</I>&gt;<i> Error in named configuration:
+</I>&gt;<i> zone open-ims.test/IN: loading from master file /etc/open-ims.dnszone failed: file not found
+</I>&gt;<i> _default/open-ims.test/IN: file not found
+</I>&gt;<i> zone localhost.localdomain/IN: loaded serial 0
+</I>&gt;<i> zone localhost/IN: loaded serial 0
+</I>&gt;<i> zone 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa/IN: NS '1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa' has no address records (A or AAAA)
+</I>&gt;<i> zone 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa/IN: loaded serial 0
+</I>&gt;<i> zone 1.0.0.127.in-addr.arpa/IN: NS '1.0.0.127.in-addr.arpa' has no address records (A or AAAA)
+</I>&gt;<i> zone 1.0.0.127.in-addr.arpa/IN: loaded serial 0
+</I>&gt;<i> zone 0.in-addr.arpa/IN: NS '0.in-addr.arpa' has no address records (A or AAAA)
+</I>&gt;<i> zone 0.in-addr.arpa/IN: loaded serial 0
+</I>&gt;<i>                                                            [FAILED]
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at localhost</A> ~]# 
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I see it says it cannot find /etc/open-ims.dnszone file however ive checked and the file is there 
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Here is the contents of /etc/open-ims.dnszone
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> $ORIGIN open-ims.test.
+</I>&gt;<i> $TTL 1W
+</I>&gt;<i> @                       1D IN SOA       localhost. root.localhost. (
+</I>&gt;<i>                                         2006101001      ; serial
+</I>&gt;<i>                                         3H              ; refresh
+</I>&gt;<i>                                         15M             ; retry
+</I>&gt;<i>                                         1W              ; expiry
+</I>&gt;<i>                                         1D )            ; minimum
+</I>&gt;<i>
+</I>&gt;<i>                         1D IN NS        ns
+</I>&gt;<i> ns                      1D IN A         127.0.0.1
+</I>&gt;<i>
+</I>&gt;<i> pcscf                   1D IN A         127.0.0.1
+</I>&gt;<i>
+</I>&gt;<i> open-ims.test.             1D IN A         127.0.0.1
+</I>&gt;<i> icscf                   1D IN A         127.0.0.1
+</I>&gt;<i> _sip                    1D SRV 0 0 5060 icscf
+</I>&gt;<i> _sip._udp               1D SRV 0 0 5060 icscf
+</I>&gt;<i> _sip._tcp               1D SRV 0 0 5060 icscf
+</I>&gt;<i>
+</I>&gt;<i> open-ims.test.             1D IN NAPTR 10 50 &quot;s&quot; &quot;SIP+D2U&quot;   &quot;&quot;     _sip._udp.open-ims.test.
+</I>&gt;<i> open-ims.test.             1D IN NAPTR 20 50 &quot;s&quot; &quot;SIP+D2T&quot;   &quot;&quot;     _sip._tcp.open-ims.test.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> scscf                   1D IN A         127.0.0.1
+</I>&gt;<i>
+</I>&gt;<i> hss                     1D IN A         127.0.0.1
+</I>&gt;<i>
+</I>&gt;<i> ue                      1D IN A         127.0.0.1
+</I>&gt;<i>
+</I>&gt;<i> presence                          1D IN A                    127.0.0.1
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Any ideas greatly appreciated
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Patrick Vetsch
+</I>&gt;<i> Incident Management Specialist
+</I>&gt;<i> Alcatel-Lucent NZ
+</I>&gt;<i>
+</I>&gt;<i> T
+</I>&gt;<i>
+</I>&gt;<i> +64 7 859 8833
+</I>&gt;<i>
+</I>&gt;<i> 0800 103060 opt 2 opt4
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> M
+</I>&gt;<i>
+</I>&gt;<i> +64 27 2456138
+</I>&gt;<i>
+</I>&gt;<i> E
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Patrick.Vetsch at telecom.co.nz</A>
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Patrick.Vetsch at alcatel-lucent.co.nz</A>
+</I>&gt;<i>
+</I>&gt;<i> W
+</I>&gt;<i>
+</I>&gt;<i> www.alcatel-lucent.co.nz
+</I>&gt;<i>
+</I>&gt;<i> Level 4, Caro Street Exchange, Caro Street
+</I>&gt;<i> Hamilton
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004324.html">[OpenIMSCore-Users] DNS Issues
+</A></li>
+	<LI>Next message: <A HREF="004325.html">[OpenIMSCore-Users] openIC Lite don't send Ack
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4326">[ date ]</a>
+              <a href="thread.html#4326">[ thread ]</a>
+              <a href="subject.html#4326">[ subject ]</a>
+              <a href="author.html#4326">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

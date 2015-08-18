@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] FHoSS - ant gen Execption
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20FHoSS%20-%20ant%20gen%20Execption&In-Reply-To=%3C804B13F8F3D94A4AB18B9B01ACB68FA112D3F3%40EXCHSRV.fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000048.html">
+   <LINK REL="Next"  HREF="000054.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] FHoSS - ant gen Execption</H1>
+    <B>Popescu, Adrian-Daniel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20FHoSS%20-%20ant%20gen%20Execption&In-Reply-To=%3C804B13F8F3D94A4AB18B9B01ACB68FA112D3F3%40EXCHSRV.fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] FHoSS - ant gen Execption">Adrian-Daniel.Popescu at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Nov 23 21:39:49 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000048.html">[OpenIMSCore-Users] FHoSS - ant gen Execption
+</A></li>
+        <LI>Next message: <A HREF="000054.html">[OpenIMSCore-Users] FHoSS - ant gen Execption
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#53">[ date ]</a>
+              <a href="thread.html#53">[ thread ]</a>
+              <a href="subject.html#53">[ subject ]</a>
+              <a href="author.html#53">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+    Hello Jose,
+
+ If you want to do &quot;ant gen&quot; when you do not have an internet connection you should solve this problem like this:
+
+1 - download the xml.xsd from here: <A HREF="http://www.w3.org/2001/xml.xsd">http://www.w3.org/2001/xml.xsd</A> and copy it on your machine, for example in xsd/ folder of FHoSS
+
+2 - edit the file xsd/ZhDataType.xsd and change the path &quot;<A HREF="http://www.w3.org/2001/xml.xsd">http://www.w3.org/2001/xml.xsd</A>&quot; to your local path; for example: &quot;<A HREF="file:///opt/openimscore/FHoSS/xsd/xml.xsd">file:///opt/openimscore/FHoSS/xsd/xml.xsd</A>&quot;
+
+e.g. 
+Original:
+ &lt;xs:import namespace=&quot;<A HREF="http://www.w3.org/XML/1998/namespace">http://www.w3.org/XML/1998/namespace</A>&quot;
+      schemaLocation=&quot;<A HREF="http://www.w3.org/2001/xml.xsd">http://www.w3.org/2001/xml.xsd</A>&quot;/&gt;
+
+Modified:
+ &lt;xs:import namespace=&quot;<A HREF="http://www.w3.org/XML/1998/namespace">http://www.w3.org/XML/1998/namespace</A>&quot;
+      schemaLocation=&quot;<A HREF="file:///opt/openimscore/FHoSS/xsd/xml.xsd">file:///opt/openimscore/FHoSS/xsd/xml.xsd</A>&quot;/&gt;
+
+3 - run ant gen and it should work :)
+
+Cheers,
+Adrian
+
+--------------------------------------------------
+Dipl. Eng. Adrian Popescu
+FOKUS / Next Generation Network Infrastructures
+Kaiserin-Augusta-Allee 31
+10589 Berlin, Germany
+Phone +49 (0)30 - 3463 - 9488
+Mobile +49 (0)178 - 153 - 7466
+e-mail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">adrian-daniel.popescu at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+--------------------------------------------------
+
+
+
+-----Original Message-----
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> on behalf of Jos&#233; Carlos Amorim
+Sent: Thu 11/23/2006 7:01 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: [OpenIMSCore-Users] FHoSS - ant gen Execption
+ 
+Hi all,
+
+I'm trying to install FHoSS on a PC with no connectivity with the internet and I'm getting the following error when I run ant gen:
+
+ 
+
+ant gen 
+
+ 
+
+Buildfile: build.xml
+
+ 
+
+init:
+
+ 
+
+clean-gen:
+
+   [delete] Deleting directory /root/FHoSS/trunk/src-gen
+
+ 
+
+gen:
+
+     [java] Error reading import file '<A HREF="http://www.w3.org/2001/xml.xsd">http://www.w3.org/2001/xml.xsd</A>': java.net.NoRouteToHostException: No route to host
+
+     [java]     at org.exolab.castor.xml.schema.reader.ImportUnmarshaller.&lt;init&gt;(ImportUnmarshaller.java:199)
+
+     [java]     at org.exolab.castor.xml.schema.reader.SchemaUnmarshaller.startElement(SchemaUnmarshaller.java:523)
+
+     [java]     at org.exolab.castor.xml.schema.reader.Sax2ComponentReader.startElement(Sax2ComponentReader.java:253)
+
+     [java]     at org.apache.xerces.parsers.AbstractSAXParser.startElement(Unknown Source)
+
+     [java]     at org.apache.xerces.parsers.AbstractXMLDocumentParser.emptyElement(Unknown Source)
+
+     [java]     at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.scanStartElement(Unknown Source)
+
+     [java]     at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl$FragmentContentDispatcher.dispatch(Unknown Source)
+
+     [java]     at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)
+
+     [java]     at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+
+     [java]     at org.apache.xerces.parsers.DTDConfiguration.parse(Unknown Source)
+
+     [java]     at org.apache.xerces.parsers.XMLParser.parse(Unknown Source)
+
+     [java]     at org.apache.xerces.parsers.AbstractSAXParser.parse(Unknown Source)
+
+     [java]     at org.exolab.castor.builder.SourceGenerator.generateSource(SourceGenerator.java:383)
+
+     [java]     at org.exolab.castor.builder.SourceGenerator.generateSource(SourceGenerator.java:436)
+
+     [java]     at org.exolab.castor.builder.SourceGenerator.main(SourceGenerator.java:792)
+
+ 
+
+Can't I just have the xml.xsd locally?
+
+ 
+
+Thanks,
+
+Jos&#233; Carlos Silva
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20061123/269716f2/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20061123/269716f2/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000048.html">[OpenIMSCore-Users] FHoSS - ant gen Execption
+</A></li>
+	<LI>Next message: <A HREF="000054.html">[OpenIMSCore-Users] FHoSS - ant gen Execption
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#53">[ date ]</a>
+              <a href="thread.html#53">[ thread ]</a>
+              <a href="subject.html#53">[ subject ]</a>
+              <a href="author.html#53">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

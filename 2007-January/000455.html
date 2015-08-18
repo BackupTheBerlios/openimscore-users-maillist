@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Application Server as B2BUA
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Application%20Server%20as%20B2BUA&In-Reply-To=%3C45A4E469.1080208%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000454.html">
+   <LINK REL="Next"  HREF="000456.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Application Server as B2BUA</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Application%20Server%20as%20B2BUA&In-Reply-To=%3C45A4E469.1080208%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Application Server as B2BUA">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Jan 10 14:04:41 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000454.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+        <LI>Next message: <A HREF="000456.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#455">[ date ]</a>
+              <a href="thread.html#455">[ thread ]</a>
+              <a href="subject.html#455">[ subject ]</a>
+              <a href="author.html#455">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Arnold,
+
+The message flow that your are giving is quite odd. The P-CSCF is
+usually involved only when talking with a UE as that is its function in
+IMS. If you would detail a little bit more your scenario and provide
+some signaling flows, maybe we could understand better what you are
+actually trying to do.
+
+Regarding the AS trusting. Well, it's up to the service provider to
+create the policy. You have SER's script available to any kind of
+modifications like this one. You can from there create and enforce your
+own policy.In our examples, the core is pretty insecure and accepting
+all kinds of traffic, including any AS.
+
+In a normal flow, from the P-CSCF the message should go towards the
+client if it comes from a non-client node and it is not targeted to the
+P-CSCF itself. However, I think that you missed something,
+architecturally speaking. The P-CSCF behaves as it should and refuses
+messages that it does not recognize as coming from trusted UEs or as
+part of established registrations, towards the UEs.
+
+Also, you are talking about AS and UE, but I don't see any UE in your flow.
+
+-Dragos
+
+
+Arnold Schwarz wrote:
+&gt;<i> As I see it, the AS does not contact the P-CSCF directly, but it does
+</I>&gt;<i> it through the S-CSCF. But I still end up with the 403. :(
+</I>&gt;<i>
+</I>&gt;<i> The messages go respectively AS -&gt; S-CSCF -&gt; P-CSCF -&gt; S-CSCF -&gt; AS
+</I>&gt;<i> and both the AS and the UEs are connecting to the same S-CSCF
+</I>&gt;<i>
+</I>&gt;<i> A couple of questions about the functionality: is it expected, that
+</I>&gt;<i> the ASs are trusted by the core networks, and can include a
+</I>&gt;<i> P-asserted-identity, or should there be some authentication mechanism
+</I>&gt;<i> implemented between the S-CSCF and the AS? And how do I tell the
+</I>&gt;<i> S-CSCF, that it is ok for it to let the AS send messages to a UE? Or
+</I>&gt;<i> should the UE first make a registration to a specific AS? (which is
+</I>&gt;<i> not needed at the moment for my AS implementation) Or what should the
+</I>&gt;<i> S-CSCF do to the message before sending it further to the P-CSCF so
+</I>&gt;<i> that it wouldn't end up as &quot;403 Forbidden - Not Registered! You must
+</I>&gt;<i> register first with a S-CSCF&quot; ?
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i>
+</I>&gt;<i> Arnold
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;<i> To: Arnold Schwarz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">scharn333 at hotmail.com</A>&gt;
+</I>&gt;&gt;<i> CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Application Server as B2BUA
+</I>&gt;&gt;<i> Date: Tue, 09 Jan 2007 17:05:21 +0100
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi Arnold,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Yes, this functionality was used and it works.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> However, if you get a 403, you get it from the P-CSCF. Then I might ask:
+</I>&gt;&gt;<i> How come the AS contacts the P-CSCF directly?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If your AS does origination you should use the Route that you have seen
+</I>&gt;&gt;<i> in a 3rd party REGISTER in the Service-Route field:
+</I>&gt;&gt;<i> AS-&gt;S_orig-&gt;I_term-&gt;S_term-&gt;P_term-&gt;UE_term
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If your AS does termination, just use the normal DNS. You will end-up in
+</I>&gt;&gt;<i> the I-CSCF: AS-&gt;I_term-&gt;S_term-&gt;P_term-&gt;UE_term
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> As you can see, in neither case the AS should send a message to a P-CSCF
+</I>&gt;&gt;<i> directly.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Arnold Schwarz wrote:
+</I>&gt;&gt;<i> &gt; Has anyone tested the OSIMS with an Application Server, which works
+</I>&gt;&gt;<i> as a
+</I>&gt;&gt;<i> &gt; Back-to-Back User Agent? And also succeeded with the tests?
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; At the moment my messages go:  UE1 --&gt; core --&gt; AS
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; But when the AS tries to create a new session and send a message
+</I>&gt;&gt;<i> via: AS --&gt;
+</I>&gt;&gt;<i> &gt; core --&gt; UE2
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; I get &quot;Status: 403 Forbidden - Not Registered! You must register
+</I>&gt;&gt;<i> first with
+</I>&gt;&gt;<i> &gt; a S-CSCF.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Should the AS be registered like the &quot;normal UE&quot;s? Or is that kind of
+</I>&gt;&gt;<i> &gt; functionality not supported? Or where should I add the information,
+</I>&gt;&gt;<i> that it
+</I>&gt;&gt;<i> &gt; is ok that the AS acts as the originator?
+</I>&gt;<i>
+</I>&gt;<i> _________________________________________________________________
+</I>&gt;<i> Find sales, coupons, and free shipping, all in one place!  MSN
+</I>&gt;<i> Shopping Sales &amp; Deals
+</I>&gt;<i> <A HREF="http://shopping.msn.com/content/shp/?ctid=198,ptnrid=176,ptnrdata=200639">http://shopping.msn.com/content/shp/?ctid=198,ptnrid=176,ptnrdata=200639</A>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000454.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+	<LI>Next message: <A HREF="000456.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#455">[ date ]</a>
+              <a href="thread.html#455">[ thread ]</a>
+              <a href="subject.html#455">[ subject ]</a>
+              <a href="author.html#455">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

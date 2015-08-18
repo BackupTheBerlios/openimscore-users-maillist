@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registeration over IPSec fails
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registeration%20over%20IPSec%20fails&In-Reply-To=%3COFF56A6C51.B486B2CA-ON6525734C.003954F8-6525734C.003A9C1A%40flextronicssoftware.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002606.html">
+   <LINK REL="Next"  HREF="002532.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registeration over IPSec fails</H1>
+    <B>Divya Singh</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registeration%20over%20IPSec%20fails&In-Reply-To=%3COFF56A6C51.B486B2CA-ON6525734C.003954F8-6525734C.003A9C1A%40flextronicssoftware.com%3E"
+       TITLE="[OpenIMSCore-Users] Registeration over IPSec fails">divya.singh at aricent.com
+       </A><BR>
+    <I>Tue Sep  4 12:39:33 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002606.html">[OpenIMSCore-Users] IPSec-Problem: ICMP &quot;dst. unreachable (protocol unreachable)&quot;
+</A></li>
+        <LI>Next message: <A HREF="002532.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2530">[ date ]</a>
+              <a href="thread.html#2530">[ thread ]</a>
+              <a href="subject.html#2530">[ subject ]</a>
+              <a href="author.html#2530">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks Dragos,
+I was able to install openswan &amp; ipsec-tools through RPMs on fedora 6. 
+I have been trying setting up an ipsec connection over it but still not 
+successfull. I am using pre-shared-key between windows 2000 and fedora 6.
+Running Racoon in the foreground gives the following error : -
+unsupported PF_KEY in message REGISTER.
+
+I followed the procedures described at 
+<A HREF="http://www.slackbasics.org/html/ipsec.html#AEN3839">http://www.slackbasics.org/html/ipsec.html#AEN3839</A> 
+under the section 24.5
+
+The 1st unprotected Register msg with security-client header is sent to 
+P-CSCF, which finally responds back with a 401 ( containing the 
+security-server header )
+The 2nd Register msg ( with authorisation) is sent in plain text and not 
+using the secure connection!
+The P-CSCF does not respond to the this Register Req.
+Attached are the ethereal logs &amp; racoon log file (secure) for reference.
+
+It appears to be some settings issue but unable to get it working. Have 
+been struck here for a long time now, would appreciate early replies.
+
+Thanks &amp; Regards,
+Divya
+
+
+ 
+
+
+
+
+Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; 
+08/29/2007 04:44 PM
+
+
+To
+Divya Singh/<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">HSS at HSS</A>
+cc
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject
+Re: [OpenIMSCore-Users] Registeration over IPSec fails
+
+
+
+
+
+
+Well, first you need to compile your kernel with support for IPSec - AH
+and ESP. Then you need the setkey utility, which, on Gentoo, is in the
+ipsec-tools package.
+
+Hope this helps...
+
+-Dragos
+
+Divya Singh wrote:
+&gt;<i>
+</I>&gt;<i> Just to add..
+</I>&gt;<i> I was initially using Fedora Core 6 (/kernel 2.6.18/) but was unable
+</I>&gt;<i> to find the ipsec rpms / source code.
+</I>&gt;<i> would appreciate any help on how to get ipsec installed &amp; running.
+</I>&gt;<i>
+</I>&gt;<i> Thanks
+</I>&gt;<i> Divya
+</I>&gt;<i>
+</I>&gt;<i> ----- Forwarded by Divya Singh/HSS on 08/23/2007 03:33 PM -----
+</I>&gt;<i> *Divya Singh/HSS*
+</I>&gt;<i>
+</I>&gt;<i> 08/23/2007 03:10 PM
+</I>&gt;<i> Aricent-Unclassified
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i> To
+</I>&gt;<i>                <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">florin.popescu at fokus.fraunhofer.de</A>
+</I>&gt;<i> cc
+</I>&gt;<i>                <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject
+</I>&gt;<i>                Re: [OpenIMSCore-Users]  Registeration over IPSec 
+</I>failsLink
+&gt;<i> &lt;
+</I><A HREF="Notes:///652570230046D0CE/DABA975B9FB113EB852564B5001283EA/AE673634D87339F26525733F005995B6">Notes:///652570230046D0CE/DABA975B9FB113EB852564B5001283EA/AE673634D87339F26525733F005995B6</A>
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thanks Florin.
+</I>&gt;<i> You rightly identified that my UE and P-CSCF are not running on the
+</I>&gt;<i> same machine.
+</I>&gt;<i> my linux machine did not have ipsec demon running!
+</I>&gt;<i> I am using suse linux 9.0 (with 2.4 kernel) &amp; trying to install
+</I>&gt;<i> openswan 2.4.9 on it
+</I>&gt;<i> but source code compilation is breaking.
+</I>&gt;<i> Pls. suggest if i am going the wrong way or if there is any better way
+</I>&gt;<i> of installing ipsec.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Divya
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> *Florin Popescu &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">florin.popescu at fokus.fraunhofer.de</A>&gt;*
+</I>&gt;<i>
+</I>&gt;<i> 08/22/2007 09:37 PM
+</I>&gt;<i> Please respond to
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">florin.popescu at fokus.fraunhofer.de</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i> To
+</I>&gt;<i>                Divya Singh/<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">HSS at HSS</A>
+</I>&gt;<i> cc
+</I>&gt;<i>                <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject
+</I>&gt;<i>                Re: [OpenIMSCore-Users]  Registeration over IPSec fails
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> If you see the second REGISTER in plain text and you are not running the
+</I>&gt;<i> client and the P-CSCF on the same machine, there, for sure, the client
+</I>&gt;<i> failed to set the IPSEC tunnel.
+</I>&gt;<i>
+</I>&gt;<i> The P-CSCF made the IPSEC associations and now is waiting for a message
+</I>&gt;<i> over an IPSEC tunnel. This is way it doesn't react to the second
+</I>&gt;<i> REGISTER.
+</I>&gt;<i>
+</I>&gt;<i> Florin.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Mon, 2007-08-20 at 11:23 +0530, Divya Singh wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt; I am not able to register with openimscore with ipsec enabled.
+</I>&gt;<i> &gt; The problem I encountered is different from that reported by Sanjeev
+</I>&gt;<i> &gt; though!
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The UE(IMS communicator) sends initial Register msg with
+</I>&gt;<i> &gt; security-client as ipsec-3gpp. 
+</I>&gt;<i> &gt; The P-CSCF responds with a 401 with security-server as ipsec-3gpp
+</I>&gt;<i> &gt; The UE sends the 2nd Register msg (with authentication) to P-CSCF  in
+</I>&gt;<i> &gt; plain text  rather than on ipsec ! 
+</I>&gt;<i> &gt; The P-CSCF neither responds to this msg nor forwards it..  the P-CSCF
+</I>&gt;<i> &gt; logs suggest that P-CSCF does have the IPSec connection details
+</I>&gt;<i> &gt; ( active for abt 60 seconds)
+</I>&gt;<i> &gt; It appears to be an issue with the UE at the first place 'coz it
+</I>&gt;<i> &gt; should send the 2md register on the security connection.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I am attaching the wireshark/ethereal logs as well for reference. 
+</I>&gt;<i> &gt; Can anyone give some pointers on how to debug the problem.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks &amp; Regards,
+</I>&gt;<i> &gt; Divya
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ***********************  Aricent-Unclassified
+</I>&gt;<i> &gt; ***********************
+</I>&gt;<i> &gt; &quot;DISCLAIMER: This message is proprietary to Aricent  and is intended
+</I>&gt;<i> solely for the use of
+</I>&gt;<i> &gt; the individual to whom it is addressed. It may contain privileged or
+</I>&gt;<i> confidential information and should not be
+</I>&gt;<i> &gt; circulated or used for any purpose other than for what it is
+</I>&gt;<i> intended. If you have received this message in error,
+</I>&gt;<i> &gt; please notify the originator immediately. If you are not the
+</I>&gt;<i> intended recipient, you are notified that you are strictly
+</I>&gt;<i> &gt; prohibited from using, copying, altering, or disclosing the contents
+</I>&gt;<i> of this message. Aricent accepts no responsibility for
+</I>&gt;<i> &gt; loss or damage arising from the use of the information transmitted
+</I>&gt;<i> by this email including damage from virus.&quot;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ***********************  Aricent-Unclassified   ***********************
+</I>&gt;<i>
+</I>&gt;<i> ***********************  Aricent-Unclassified   ***********************
+</I>&gt;<i> &quot;DISCLAIMER: This message is proprietary to Aricent  and is intended 
+</I>solely for the use of 
+&gt;<i> the individual to whom it is addressed. It may contain privileged or 
+</I>confidential information and should not be 
+&gt;<i> circulated or used for any purpose other than for what it is intended. 
+</I>If you have received this message in error, 
+&gt;<i> please notify the originator immediately. If you are not the intended 
+</I>recipient, you are notified that you are strictly
+&gt;<i> prohibited from using, copying, altering, or disclosing the contents of 
+</I>this message. Aricent accepts no responsibility for 
+&gt;<i> loss or damage arising from the use of the information transmitted by 
+</I>this email including damage from virus.&quot;
+&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> 
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+
+
+***********************  Aricent-Unclassified   ***********************
+&quot;DISCLAIMER: This message is proprietary to Aricent  and is intended solely for the use of 
+the individual to whom it is addressed. It may contain privileged or confidential information and should not be 
+circulated or used for any purpose other than for what it is intended. If you have received this message in error, 
+please notify the originator immediately. If you are not the intended recipient, you are notified that you are strictly
+prohibited from using, copying, altering, or disclosing the contents of this message. Aricent accepts no responsibility for 
+loss or damage arising from the use of the information transmitted by this email including damage from virus.&quot;
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070904/4be1cf7e/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070904/4be1cf7e/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: security.zip
+Type: application/zip
+Size: 105053 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070904/4be1cf7e/attachment.zip">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070904/4be1cf7e/attachment.zip</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002606.html">[OpenIMSCore-Users] IPSec-Problem: ICMP &quot;dst. unreachable (protocol unreachable)&quot;
+</A></li>
+	<LI>Next message: <A HREF="002532.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2530">[ date ]</a>
+              <a href="thread.html#2530">[ thread ]</a>
+              <a href="subject.html#2530">[ subject ]</a>
+              <a href="author.html#2530">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

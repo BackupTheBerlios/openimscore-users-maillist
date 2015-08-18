@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Help needed on detailed authentication procedure
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Help%20needed%20on%20detailed%20authentication%20procedure&In-Reply-To=%3C9e02a1590804282058u300ab173kb3bb0159e34ecd50%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003841.html">
+   <LINK REL="Next"  HREF="003848.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Help needed on detailed authentication procedure</H1>
+    <B>Xuelin</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Help%20needed%20on%20detailed%20authentication%20procedure&In-Reply-To=%3C9e02a1590804282058u300ab173kb3bb0159e34ecd50%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Help needed on detailed authentication procedure">xuelinlin at gmail.com
+       </A><BR>
+    <I>Tue Apr 29 05:58:39 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003841.html">[OpenIMSCore-Users] SCSCF Bug in parsing HA1 - HTTP Digest MD5 auth	method
+</A></li>
+        <LI>Next message: <A HREF="003848.html">[OpenIMSCore-Users] Help needed on detailed authentication	procedure
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3847">[ date ]</a>
+              <a href="thread.html#3847">[ thread ]</a>
+              <a href="subject.html#3847">[ subject ]</a>
+              <a href="author.html#3847">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I am using registering <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.org</A>  using UCT to Open IMS Core.
+The registration is successful and the password for alice is alice. I
+am looking into the detail how the authentication works so I can
+verify the procedure by doing the MD5 calculation by myself with the
+help of Wireshark trace.
+
+The challenge and response between alice and the core are:
+------------------------------------------------------------------------------------------------------------------
+401 Unauthorized - Challenging the UE
+WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,
+nonce=&quot;lZJoAoXoyuQyoaxHJMJEAJE06tzrMgAACehynTjMbi4=&quot;,
+algorithm=AKAv1-MD5, ck=&quot;6c04278d5abffd7b5549096f22729c6c&quot;,
+ik=&quot;ed4295656a44fbe0e86cc7a089c34101&quot;
+
+Request: REGISTER sip:open-ims.test
+Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;,
+realm=&quot;open-ims.test&quot;,
+nonce=&quot;lZJoAoXoyuQyoaxHJMJEAJE06tzrMgAACehynTjMbi4=&quot;,
+uri=&quot;sip:open-ims.test&quot;, response=&quot;610eb39ed4f73c74335979d3a41fb241&quot;,
+algorithm=AKAv1-MD5
+------------------------------------------------------------------------------------------------------------------
+
+Question #1: As of  RFC3310, nonce is base64 encoding of
+RAND&amp;AUTN&amp;Server specific data. In this case, how do I know RAND&amp;AUTN
+from nonce=&quot;lZJoAoXoyuQyoaxHJMJEAJE06tzrMgAACehynTjMbi4=&quot;?
+
+Question #2: Why there is no qop, cnonce and opaque field in 401
+Unauthorized  message? As of RFC2617, these are needed for calculating
+the digest.
+
+Question #3: Both the client and HSS need SQN. In this case, how could
+I know SQN?
+
+Question #4: From RFC3310 page 4, I got that the HSS generates AV from
+secret key (in this case, it is alice) and SQN. How could I know the
+detailed procedure for doing that?
+
+Question #5: Similar to #4, client uses Key and SQN to verify AUTN,
+need detailed procedure here.
+
+Question #6: The response=&quot;610eb39ed4f73c74335979d3a41fb241&quot; is
+calculated using MD5 with Key and RAND. As of RFC2617,
+
+  request-digest  = &lt;&quot;&gt; &lt; KD ( H(A1),     unq(nonce-value)
+                                          &quot;:&quot; nc-value
+                                          &quot;:&quot; unq(cnonce-value)
+                                          &quot;:&quot; unq(qop-value)
+                                          &quot;:&quot; H(A2)
+                                  ) &lt;&quot;&gt;
+
+Here    A2       = Method &quot;:&quot; digest-uri-value
+
+   If the &quot;qop&quot; value is &quot;auth-int&quot;, then A2 is:
+
+      A2       = Method &quot;:&quot; digest-uri-value &quot;:&quot; H(entity-body)
+
+My question is what are &quot;Method&quot; and  &quot;digest-uri-value&quot; in my case or
+where I can find them?
+
+End of questions. Sorry for popping up so many this time. Thanks for
+all your help.
+
+Best Regards,
+
+Xuelin
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003841.html">[OpenIMSCore-Users] SCSCF Bug in parsing HA1 - HTTP Digest MD5 auth	method
+</A></li>
+	<LI>Next message: <A HREF="003848.html">[OpenIMSCore-Users] Help needed on detailed authentication	procedure
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3847">[ date ]</a>
+              <a href="thread.html#3847">[ thread ]</a>
+              <a href="subject.html#3847">[ subject ]</a>
+              <a href="author.html#3847">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

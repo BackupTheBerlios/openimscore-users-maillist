@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20About%20NOTIFY%20for%20SUBSCRIBE%20to%20reg%20event&In-Reply-To=%3C561127.20303.qm%40web73813.mail.tp2.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004616.html">
+   <LINK REL="Next"  HREF="004628.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event</H1>
+    <B>sssere as</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20About%20NOTIFY%20for%20SUBSCRIBE%20to%20reg%20event&In-Reply-To=%3C561127.20303.qm%40web73813.mail.tp2.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event">cwchungcwchung at yahoo.com.tw
+       </A><BR>
+    <I>Tue Sep  9 03:43:08 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004616.html">[OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event
+</A></li>
+        <LI>Next message: <A HREF="004628.html">[OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4622">[ date ]</a>
+              <a href="thread.html#4622">[ thread ]</a>
+              <a href="subject.html#4622">[ subject ]</a>
+              <a href="author.html#4622">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+
+Thank you for the explanation. I check the SUBSCRIBE and NOTIFY as below:
+
+subs_1.cap
+init-SUBSCRIBE
+NOTIFY (reginfo version=&quot;0&quot;, state=&quot;full&quot;; contact event=&quot;registered&quot;)
+subs_2.cap
+re-SUBSCRIBE
+NOTIFY (reginfo version=&quot;1&quot;, state=&quot;partial&quot;; contact event=&quot;refreshed&quot;)
+NOTIFY (reginfo version=&quot;2&quot;, state=&quot;full&quot;; contact event=&quot;registered&quot;)
+
+In the 2nd NOTIFY of subs_2.cap for re-subscription, the version is 2. I think maybe this is the issue. I am not sure if the OpenIMSCore shell send NOTIFY with version=&quot;0&quot;, state=&quot;full&quot; or the UE should accept the NOTIFY with version=&quot;2&quot;, state=&quot;full&quot; as a full state notification?
+
+--- 08/9/8 (&#26143;&#26399;&#19968;)&#65292;Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; &#23531;&#36947;&#65306;
+&#23492;&#20214;&#32773;: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+&#20027;&#26088;: Re: [OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event
+&#25910;&#20214;&#32773;: &quot;sssere as&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cwchungcwchung at yahoo.com.tw</A>&gt;
+&#21103;&#26412;: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+&#26085;&#26399;: 2008 9 8 &#26143;&#26399;&#19968; &#19979;&#21320; 8:22
+
+Hi Chung,
+
+all seems in order. Couldn't spot any problem in there... What might be
+the issue?
+
+in subs_2.cap the first notify is due to the refresh in registration and
+the 2nd due to the re-subscribe
+
+in subs_4.cap the first NOTIFY is for the initial SUBSCRIBE. The 2nd and
+forth seem to be retransmissions - strange, but still ok. The 3rd is the
+one for the registration expiration. Please notice the
+Subscription-State: terminated header.
+
+In case you missed it - if there are no more things to watch - all
+contacts have been de-registere/expired, the subscription is terminated
+by the S-CSCF. Watch always the Subscription-State header. Even if your
+expires was 3600, it might contain something like active;expires=60. The
+S-CSCF will automatically reduce the huge initial expiration to
+something more suitable, like the max expiration of a contact watched +
+30 seconds.
+
+There's no point of keeping a reg subscription active beyond the
+registration period. Anyway, even if the S-CSCF will send notifications,
+you won't be able to receive them anymore. This is because of the
+security associations (IPSec/TLS) being dropped on the registration
+expiration.
+
+Cheers,
+-Dragos
+
+
+sssere as wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>  
+</I>&gt;<i> Thank you for your response. I've attached 3 traces:
+</I>&gt;<i>  
+</I>&gt;<i> subs_1.cap: First subscription with reg expire 3600 and subs expire 3761
+</I>&gt;<i> subs_2.cap: Re-subscribe before expire
+</I>&gt;<i> subs_4.cap: Re-subscribe after reg expire (reg expire 30 and subs
+</I>&gt;<i> expire 3761)
+</I>&gt;<i>  
+</I>&gt;<i> The OpenIMSCore is r582. I found that re-subscribing after reg or subs
+</I>&gt;<i> expire would be ok.
+</I>&gt;<i>  
+</I>&gt;<i> Best Regards,
+</I>&gt;<i> CW Chung
+</I>&gt;<i>
+</I>&gt;<i> --- *08/9/6 (&#26143;&#26399;&#20845;)&#65292;Dragos Vingarzan
+</I>&gt;<i> /&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;/* &#23531;&#36947;&#65306;
+</I>&gt;<i>
+</I>&gt;<i>     &#23492;&#20214;&#32773;: Dragos Vingarzan
+</I>&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+&gt;<i>     &#20027;&#26088;: Re: [OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg
+</I>event
+&gt;<i>     &#25910;&#20214;&#32773;: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cwchungcwchung at yahoo.com.tw</A>
+</I>&gt;<i>     &#21103;&#26412;: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>     &#26085;&#26399;: 2008 9 6 &#26143;&#26399;&#20845; &#19978;&#21320; 1:29
+</I>&gt;<i>
+</I>&gt;<i>     Could be an issue. I looked in the code and there's no difference
+</I>&gt;<i>     between subscribe and re-subscriber: the same full one should be
+</I>generated.
+&gt;<i>
+</I>&gt;<i>     Could you please send a trace?
+</I>&gt;<i>
+</I>&gt;<i>     Cheers,
+</I>&gt;<i>     -Dragos
+</I>&gt;<i>
+</I>&gt;<i>     sssere as wrote:
+</I>&gt;<i>     &gt; Hi All,
+</I>&gt;<i>     &gt;  
+</I>&gt;<i>     &gt; When I subscribe without a body, the NOTIFY's body is with
+</I>&gt;<i>     version=&quot;0&quot;
+</I>&gt;<i>     &gt; and state=&quot;full&quot;. But when I subscribe again before
+</I>subscription
+&gt;<i>     &gt; expire, the NOTIFY's body is however with
+</I>version=&quot;1&quot; and
+&gt;<i>     &gt; state=&quot;partial&quot;. If I subscribe after subscription
+</I>expire, the
+&gt;<i>     NOTIFY
+</I>&gt;<i>     &gt; is good. In RFC 3680 4.3, it says the default policy is:
+</I>&gt;<i>     &gt; &quot;Notifications triggered from a SUBSCRIBE contain full state
+</I>(the
+&gt;<i>     list
+</I>&gt;<i>     &gt; of all contacts bound to the address-of-record)&quot;.
+</I>&gt;<i>     &gt;  
+</I>&gt;<i>     &gt; I am wondering if this is an issue or my misunderstanding?
+</I>&gt;<i>     &gt;  
+</I>&gt;<i>     &gt; Best Regards,
+</I>&gt;<i>     &gt; CW Chung
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; &#24819;&#30693;&#36947;&#28961;&#32842;&#29983;&#27963;&#22914;&#20309;&#22823;&#35722;&#36523;&#22043;&#65311; - *&#39340;&#19978;&#30631;&#30631;*
+</I>&gt;<i>     &gt;
+</I>&gt;<i>    
+</I>&lt;<A HREF="http://tw.rd.yahoo.com/referurl/mail/dc/campiagn/*http://tw.promote.mail.yahoo.com/dc/change.html">http://tw.rd.yahoo.com/referurl/mail/dc/campiagn/*http://tw.promote.mail.yahoo.com/dc/change.html</A>&gt;
+&gt;<i>     &gt; *&#65281;*
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>------------------------------------------------------------------------
+&gt;<i>     &gt;
+</I>&gt;<i>     &gt; _______________________________________________
+</I>&gt;<i>     &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>     &gt;   
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     -- 
+</I>&gt;<i>     -----------------------------------------
+</I>&gt;<i>     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     Fraunhofer FOKUS/NGNI
+</I>&gt;<i>     Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     10589 Berlin,Germany
+</I>&gt;<i>     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i>     Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i>     We could change the world if God would give us the source code...
+</I>&gt;<i>     -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>               
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &#24819;&#30693;&#36947;&#28961;&#32842;&#29983;&#27963;&#22914;&#20309;&#22823;&#35722;&#36523;&#22043;&#65311; - *&#39340;&#19978;&#30631;&#30631;*
+</I>&gt;<i>
+</I>&lt;<A HREF="http://tw.rd.yahoo.com/referurl/mail/dc/campiagn/*http://tw.promote.mail.yahoo.com/dc/change.html">http://tw.rd.yahoo.com/referurl/mail/dc/campiagn/*http://tw.promote.mail.yahoo.com/dc/change.html</A>&gt;
+&gt;<i> *&#65281;*
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+
+      _________________________________________________________________________________________________________
+&#24819;&#30693;&#36947;&#28961;&#32842;&#29983;&#27963;&#22914;&#20309;&#22823;&#35722;&#36523;&#22043;&#65311; <A HREF="http://tw.promote.mail.yahoo.com/dc/change.html">http://tw.promote.mail.yahoo.com/dc/change.html</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080909/d50e1a47/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080909/d50e1a47/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004616.html">[OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event
+</A></li>
+	<LI>Next message: <A HREF="004628.html">[OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4622">[ date ]</a>
+              <a href="thread.html#4622">[ thread ]</a>
+              <a href="subject.html#4622">[ subject ]</a>
+              <a href="author.html#4622">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

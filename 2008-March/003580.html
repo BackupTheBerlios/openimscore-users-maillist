@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to get notifications upon particular user	registration?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20get%20notifications%20upon%20particular%20user%0A%09registration%3F&In-Reply-To=%3C067C9C32AA86BF4E89E111E2112B71BBA1E04472%40srvcentral00.inycom.es%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003637.html">
+   <LINK REL="Next"  HREF="003583.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to get notifications upon particular user	registration?</H1>
+    <B>Beatriz Calvo P&#233;rez</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20get%20notifications%20upon%20particular%20user%0A%09registration%3F&In-Reply-To=%3C067C9C32AA86BF4E89E111E2112B71BBA1E04472%40srvcentral00.inycom.es%3E"
+       TITLE="[OpenIMSCore-Users] How to get notifications upon particular user	registration?">beatriz.calvo at inycom.es
+       </A><BR>
+    <I>Thu Mar  6 09:08:05 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003637.html">[OpenIMSCore-Users] PacketCable support - Bug in
+</A></li>
+        <LI>Next message: <A HREF="003583.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3580">[ date ]</a>
+              <a href="thread.html#3580">[ thread ]</a>
+              <a href="subject.html#3580">[ subject ]</a>
+              <a href="author.html#3580">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Roman, 
+
+As Franz said, you could define an IFC so that it triggers a notification to your AS when the user registers in the core. Then you should attach this IFC to the users' Service Profile (to the SPs of all the 1 000 000 users). And to avoid massive notifications to your AS, you could switch that IFC OFF/ON and viceversa whenever it is necessary by means of the DSAI: You should create a DSAI, attach the IFC (the one previously defined) to the DSAI and configure the DSAI value for each user. The default value for all the users should be INACTIVE, so that every user registering does not trigger a notification to the AS. And when you need that trigger activated for a certain user, you could switch the DSAI value to ACTIVE for that particular user.
+
+Going on with your example, you could switch the DSAI for the destination host (user B) to ACTIVE when you detect that he is not registered. When user B registers, the AS will be notified about that by the S-CSCF and will be able to resend the stored message to user B.
+
+The DSAI is already implemented (please refer to the branch &quot;07_Dynamic_Service_Activation&quot; in the FHoSS) and I hope it is merged soon into the trunk. Maybe Alberto could tell us when he expects merging that ;) 
+
+Regards  
+
+Beatriz Calvo Perez 
+Intelligent Networks Group 
+Instrumentacion y Componentes S.A ( INYCOM ) 
+
+
+
+
+AVISO LEGAL 
+
+
+Este mensaje y los archivos que en su caso lleve adjuntos son privados y confidenciales y se dirigen exclusivamente a su destinatario. Por ello, se informa a quien lo reciba por error que la informaci&#243;n contenida en el mismo es reservada y su utilizaci&#243;n, copia o distribuci&#243;n est&#225; prohibida, por lo que en tal caso le rogamos que nos lo comunique por esta misma v&#237;a o por tel&#233;fono (+34976013300) y proceda a borrarlo de inmediato. 
+
+ 
+
+En cumplimiento del Art. 5 de la Ley Org&#225;nica 15/1999, de 13 de diciembre, de Protecci&#243;n de Datos de Car&#225;cter Personal, se le informa que sus datos personales forman parte de un fichero propiedad de INSTRUMENTACI&#211;N Y COMPONENTES, S.A.  En cualquier momento podr&#225; ejercitar sus derechos de acceso, cancelaci&#243;n, rectificaci&#243;n y oposici&#243;n RESPONDIENDO a este correo.
+
+ 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080306/6651e649/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080306/6651e649/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003637.html">[OpenIMSCore-Users] PacketCable support - Bug in
+</A></li>
+	<LI>Next message: <A HREF="003583.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3580">[ date ]</a>
+              <a href="thread.html#3580">[ thread ]</a>
+              <a href="subject.html#3580">[ subject ]</a>
+              <a href="author.html#3580">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] TCP- IPSec issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20TCP-%20IPSec%20issue&In-Reply-To=%3C20080821081941.196200%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004502.html">
+   <LINK REL="Next"  HREF="004505.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] TCP- IPSec issue</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20TCP-%20IPSec%20issue&In-Reply-To=%3C20080821081941.196200%40gmx.net%3E"
+       TITLE="[OpenIMSCore-Users] TCP- IPSec issue">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Thu Aug 21 10:19:41 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004502.html">[OpenIMSCore-Users] TCP- IPSec issue
+</A></li>
+        <LI>Next message: <A HREF="004505.html">[OpenIMSCore-Users] TCP- IPSec issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4504">[ date ]</a>
+              <a href="thread.html#4504">[ thread ]</a>
+              <a href="subject.html#4504">[ subject ]</a>
+              <a href="author.html#4504">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Veena,
+
+unfortunately the trace in your previous mail does not show the originating edge of the INVITE, just the terminating... is the invite from client &quot;172.16.8.55&quot; to P-CSCF sent ESP encrypted?
+
+anyway, it is definitely the fault of your client!
+It is the responsibility of the originator to use the corresponding IPSec SA and thus embed the TCP datagram into ESP header. At the second REGISTER you should see only an ESP header but your client does not use the negotiated IPSec SA.
+As you can see the response from P-CSCF (thus P-CSCFs responsibility to use IPSec) is encrypted and only the ESP header, identified by the negotiated SPI, can be resolved the sniffer. So server uses IPSec and should thus work correctly.
+
+I remember having a similar problem...I think the IPSec SAs are defined by orig.ip+orig.port=&gt;dst.ip+dst.port = SPI, so your client needs to use as originating tcp port the one defined in the IPSec SA (in your case easy: 4060 and not 37886). After transmission, so at its destination it is identified by the SPI.
+
+I hope I made myself clear, if don't hesitate to ask..
+
+cheers
+
+-------- Original-Nachricht --------
+&gt;<i> Datum: Thu, 21 Aug 2008 12:03:35 +0530
+</I>&gt;<i> Von: &quot;Veena S&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">veena.s at globaledgesoft.com</A>&gt;
+</I>&gt;<i> An: &quot;Klemens Schragel&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt;, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Betreff: Re: [OpenIMSCore-Users] TCP- IPSec issue
+</I>
+&gt;<i> Hi Klemens,
+</I>&gt;<i> 
+</I>&gt;<i> Yes i have registered both the end points with IPSec support.(172.16.8.116
+</I>&gt;<i> and 172.16.8.55)
+</I>&gt;<i> And tried Invite from 172.16.8.55 to 172.16.8.116.
+</I>&gt;<i> 
+</I>&gt;<i> So regarding my previous mail ,Is the issue from client side or server
+</I>&gt;<i> side.
+</I>&gt;<i> 
+</I>&gt;<i> Regards,
+</I>&gt;<i> Veena
+</I>&gt;<i> ----- Original Message ----- 
+</I>&gt;<i> From: &quot;Klemens Schragel&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt;
+</I>&gt;<i> To: &quot;Veena S&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">veena.s at globaledgesoft.com</A>&gt;; 
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;<i> Sent: Wednesday, August 20, 2008 8:29 PM
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] TCP- IPSec issue
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Hi Veena,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; the behavior of your client at registration seems somehow odd...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; first Register: client uses 8080 in via and contact header, although it 
+</I>&gt;<i> &gt; mentions in the security-client 4060 (shouldn't be a big deal, but still
+</I>&gt;<i> &gt; it's not really nice).
+</I>&gt;<i> &gt; second register: 4060 in via and contact header; so far so good. but it 
+</I>&gt;<i> &gt; uses tcp port 37886 instead of 4060 as source port, i.e. it bypasses the
+</I>&gt;<i> &gt; (most probably already created) IPSec SAs.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; as far as I understand the trace right your ipsec-client is then called
+</I>&gt;<i> by 
+</I>&gt;<i> &gt; another party and acts correct... did you try to send an INVITE from the
+</I>&gt;<i> &gt; registrated ipsec-client?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; cheers, Klemens
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; -------- Original-Nachricht --------
+</I>&gt;<i> &gt;&gt; Datum: Wed, 20 Aug 2008 18:18:00 +0530
+</I>&gt;<i> &gt;&gt; Von: &quot;Veena S&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">veena.s at globaledgesoft.com</A>&gt;
+</I>&gt;<i> &gt;&gt; An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>
+</I>&gt;<i> &gt;&gt; Betreff: [OpenIMSCore-Users] TCP- IPSec issue
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Hi Franz,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; I had a doubt regarding IPSec,
+</I>&gt;<i> &gt;&gt; In UDP mode IPSec is fine.
+</I>&gt;<i> &gt;&gt; But in TCP mode IPSec is creating a problem ,i wanted to know whether
+</I>&gt;<i> the
+</I>&gt;<i> &gt;&gt; problem is on Server side or in our stack.
+</I>&gt;<i> &gt;&gt; I have enabled IPSec Support.And now trying to Register to the Server.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Once 401 is sent ,Our stack is sending Register again but in NON ESP
+</I>&gt;<i> &gt;&gt; format,but the Server responds 200 ok in ESP format which is arriving
+</I>&gt;<i> in 
+</I>&gt;<i> &gt;&gt; UDP
+</I>&gt;<i> &gt;&gt; mode.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; The problem doesnt arise in UDP mode.Please suggest me regarding this
+</I>&gt;<i> &gt;&gt; issue.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Regards and Thanks,
+</I>&gt;<i> &gt;&gt; Veena
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; -- 
+</I>&gt;<i> &gt; GMX startet ShortView.de. Hier findest Du Leute mit Deinen Interessen!
+</I>&gt;<i> &gt; Jetzt dabei sein: 
+</I>&gt;<i> &gt; <A HREF="http://www.shortview.de/wasistshortview.php?mc=sv_ext_mf@gmx">http://www.shortview.de/wasistshortview.php?mc=sv_ext_mf@gmx</A> 
+</I>&gt;<i> 
+</I>
+-- 
+GMX Kostenlose Spiele: Einfach online spielen und Spa&#223; haben mit Pastry Passion!
+<A HREF="http://games.entertainment.gmx.net/de/entertainment/games/free/puzzle/6169196">http://games.entertainment.gmx.net/de/entertainment/games/free/puzzle/6169196</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004502.html">[OpenIMSCore-Users] TCP- IPSec issue
+</A></li>
+	<LI>Next message: <A HREF="004505.html">[OpenIMSCore-Users] TCP- IPSec issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4504">[ date ]</a>
+              <a href="thread.html#4504">[ thread ]</a>
+              <a href="subject.html#4504">[ subject ]</a>
+              <a href="author.html#4504">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

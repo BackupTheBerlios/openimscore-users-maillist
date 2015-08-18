@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] What should i see after executing	allcomponents in IMS core
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20What%20should%20i%20see%20after%20executing%0A%09allcomponents%20in%20IMS%20core&In-Reply-To=%3C1206432570.6243.20.camel%40walqa347.inycom.es%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003664.html">
+   <LINK REL="Next"  HREF="003684.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] What should i see after executing	allcomponents in IMS core</H1>
+    <B>Eduardo Moreno</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20What%20should%20i%20see%20after%20executing%0A%09allcomponents%20in%20IMS%20core&In-Reply-To=%3C1206432570.6243.20.camel%40walqa347.inycom.es%3E"
+       TITLE="[OpenIMSCore-Users] What should i see after executing	allcomponents in IMS core">eduardo.moreno at inycom.es
+       </A><BR>
+    <I>Tue Mar 25 09:09:30 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003664.html">[OpenIMSCore-Users] What should i see after executing all	components in IMS core
+</A></li>
+        <LI>Next message: <A HREF="003684.html">[OpenIMSCore-Users] What should i see after executing all	components in IMS core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3665">[ date ]</a>
+              <a href="thread.html#3665">[ thread ]</a>
+              <a href="subject.html#3665">[ subject ]</a>
+              <a href="author.html#3665">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gray.
+
+I just think the next things...
+
+P-CSCF:
+It sounds good.
+
+I-CSCF:
+Connection with MySQL server is broken. In line #44 of icscf.cfg (r396),
+it is the database connection URL:
+
+        modparam(&quot;icscf&quot;,&quot;db_url&quot;,&quot;<A HREF="mysql://icscf:heslo@localhost/icscf">mysql://icscf:heslo@localhost/icscf</A>&quot;)
+
+So you will have an error until you can connect to your MySQL server
+with user &quot;icscf&quot; and password &quot;heslo&quot;. Review the steps in installation
+guide about MySQL installation and data loading.
+
+S-CSCF:
+This error can be because two distinct situations:
+1. You started the S-CSCF before HSS =&gt; The error is provisional until
+FHoSS startup is completed and S-CSCF is able to connect with it.
+2. You have DNS problems. The host where S-CSCF is running should be
+able of resolving hss.open-ims.test name to the host where HSS is
+installed.
+(I hope that was the case #1)
+
+FHoSS:
+You have to start FHoSS from /opt/OpenIMSCore/FHoSS/deploy directory. It
+is not valid doing from /home/me like is seen in your console dump. Try
+this:
+
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at orion</A>:/home/me# cd /opt/OpenIMSCore/FHoSS/deploy
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at orion</A>:/opt/OpenIMSCore/FHoSS/deploy# ./startup.sh
+
+
+Regards...
+
+El mar, 25-03-2008 a las 02:44 +0000, Gray Satriya escribi&#243;:
+
+&gt;<i> Dear All,
+</I>&gt;<i> 
+</I>&gt;<i> Thank you so much to all the solution that is provided here. 
+</I>&gt;<i> 
+</I>&gt;<i> I have some other questions, hoping that any of you would help me to
+</I>&gt;<i> figure this out.
+</I>&gt;<i> 
+</I>&gt;<i> Below are my problems, after executing all components :
+</I>&gt;<i> 
+</I>&gt;<i> After executing PCSCF
+</I>&gt;<i> 
+</I>&gt;<i>  5(4269) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i>  5(4269) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 
+</I>&gt;<i> After executing I-CSCF
+</I>&gt;<i> 
+</I>&gt;<i> 15(4475) ERR:I-CSCF:icscf_db_init: cannot initialize database
+</I>&gt;<i> connection
+</I>&gt;<i> 16(4476) INFO:I-CSCF:mod_init: Initialization of module in child [8]
+</I>&gt;<i> 16(4476) new_connection: Unknown database 'icscf'
+</I>&gt;<i> 16(4476) ERR:I-CSCF:icscf_db_init: cannot initialize database
+</I>&gt;<i> connection
+</I>&gt;<i> 17(4477) INFO:I-CSCF:mod_init: Initialization of module in child [-4]
+</I>&gt;<i> 14(4474) new_connection: Unknown database 'icscf'
+</I>&gt;<i> 14(4474) ERR:I-CSCF:icscf_db_init: cannot initialize database
+</I>&gt;<i> connection
+</I>&gt;<i> 
+</I>&gt;<i> After executing S-CSCF
+</I>&gt;<i> 
+</I>&gt;<i> 12(4496) WARNING:peer_connect(): Error opening connection to
+</I>&gt;<i> hss.open-ims.test:3868 &gt;Name or service not known
+</I>&gt;<i> 12(4496) DBG:sm_process(): Peer hss.open-ims.test       State
+</I>&gt;<i> Wait_Conn_Ack    Event I_Rcv_Conn_NAck
+</I>&gt;<i> 12(4496) --- Peer List: ---
+</I>&gt;<i> 12(4496)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i> 12(4496) ------------------
+</I>&gt;<i> 
+</I>&gt;<i> After executing FHoSS
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at orion</A>:/home/me# /opt/OpenIMSCore/FHoSS/deploy/./startup.sh
+</I>&gt;<i> Building Classpath
+</I>&gt;<i> Classpath is lib/*.jar::log4j.properties:..
+</I>&gt;<i> Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError:
+</I>&gt;<i> de/fhg/fokus/hss/main/HSSContainer
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> there seems to be a lot of mistakes on it.. I haven't put any software
+</I>&gt;<i> to test the IMS core, and I have not registered any user (totally
+</I>&gt;<i> clean install). I just installed all the components antd try to look
+</I>&gt;<i> wheter it works just fine when it is executed (CSCF and HSS). Do i
+</I>&gt;<i> need to use x-lite or such to see whether this core works fine, or
+</I>&gt;<i> just by executing all components, I can see first will works? 
+</I>&gt;<i> What should i see after executing all components in IMS core ? ( in my
+</I>&gt;<i> terminal )
+</I>&gt;<i> Perhaps any of you can help me?
+</I>&gt;<i> 
+</I>&gt;<i> I am following  this  (with changes in some version of the software)
+</I>&gt;<i> <A HREF="http://uctimsclient.berlios.de/openimscore_on_ubuntu_howto.html">http://uctimsclient.berlios.de/openimscore_on_ubuntu_howto.html</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Sorry for my bad english
+</I>&gt;<i> 
+</I>&gt;<i> BR//Gray
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Send instant messages to your online friends
+</I>&gt;<i> <A HREF="http://uk.messenger.yahoo.com">http://uk.messenger.yahoo.com</A> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+AVISO LEGAL 
+
+Este mensaje y los archivos que en su caso lleve adjuntos son privados y confidenciales y se dirigen exclusivamente a su destinatario. Por ello, se informa a quien lo reciba por error que la informaci&#243;n contenida en el mismo es reservada y su utilizaci&#243;n, copia o distribuci&#243;n est&#225; prohibida, por lo que en tal caso le rogamos que nos lo comunique por esta misma v&#237;a o por tel&#233;fono (+34976013300) y proceda a borrarlo de inmediato. 
+
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080325/465f7c0e/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080325/465f7c0e/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003664.html">[OpenIMSCore-Users] What should i see after executing all	components in IMS core
+</A></li>
+	<LI>Next message: <A HREF="003684.html">[OpenIMSCore-Users] What should i see after executing all	components in IMS core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3665">[ date ]</a>
+              <a href="thread.html#3665">[ thread ]</a>
+              <a href="subject.html#3665">[ subject ]</a>
+              <a href="author.html#3665">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

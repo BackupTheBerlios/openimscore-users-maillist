@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Open IMS Core IPv6 supported clients
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Open%20IMS%20Core%20IPv6%20supported%20clients&In-Reply-To=%3C000001cbfc61%24dbbdd6f0%24933984d0%24%40technikum-wien.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006952.html">
+   <LINK REL="Next"  HREF="006955.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Open IMS Core IPv6 supported clients</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Open%20IMS%20Core%20IPv6%20supported%20clients&In-Reply-To=%3C000001cbfc61%24dbbdd6f0%24933984d0%24%40technikum-wien.at%3E"
+       TITLE="[OpenIMSCore-Users] Open IMS Core IPv6 supported clients">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Sat Apr 16 20:12:33 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006952.html">[OpenIMSCore-Users] Open IMS Core IPv6 supported clients
+</A></li>
+        <LI>Next message: <A HREF="006955.html">[OpenIMSCore-Users] Open IMS Core IPv6 supported clients
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6953">[ date ]</a>
+              <a href="thread.html#6953">[ thread ]</a>
+              <a href="subject.html#6953">[ subject ]</a>
+              <a href="author.html#6953">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gino,
+
+&gt;<i> I still believe Monster is the problem here. 
+</I>
+&gt;<i> The port number is 5060, it just gets add to the IPv6 address, and P-CSCF
+</I>just
+&gt;<i> extracts information and nothing more.
+</I>
+I think we both are right. There is a problem at Monster which I did not see
+before: It uses an erroneous address in Contact header
+&quot;[3ffe:200:58:1:0:0:0:2:5060]&quot; by adding the port-number to the address
+part. In the Via header field the address is correct:
+[3ffe:200:58:1:0:0:0:2]:5060, the port-number kept outside of the address.
+
+But in addition also the parser in OpenIMSCore is erroneous, it sometimes
+truncates parts of the address before storing it in P-CSCF. 
+
+So there are 2 problems:
+- Monster creates an erroneous Contact header field.
+- OpenIMSCore parses sometimes  the address in Contact header field
+erroneously.
+
+For the parser problem in OpenIMSCore I just looked into the parser code
+(module ser_ims/trunk/parser/contact/parse_contact.c) and I found that there
+is no parsing for IPv6 addresses.
+ 
+&gt;<i> Do you know maybe some other clients that work in the IPv6 network?
+</I>
+I only know the Mercuro client (silver or gold), which cannot be purchased
+anymore, because the company went bancrupt last summer.
+
+BR
+Franz
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006952.html">[OpenIMSCore-Users] Open IMS Core IPv6 supported clients
+</A></li>
+	<LI>Next message: <A HREF="006955.html">[OpenIMSCore-Users] Open IMS Core IPv6 supported clients
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6953">[ date ]</a>
+              <a href="thread.html#6953">[ thread ]</a>
+              <a href="subject.html#6953">[ subject ]</a>
+              <a href="author.html#6953">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

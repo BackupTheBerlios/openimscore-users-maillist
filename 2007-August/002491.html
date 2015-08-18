@@ -1,0 +1,1100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problems with AS initiated session
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problems%20with%20AS%20initiated%20session&In-Reply-To=%3C46D5501D.8010100%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002513.html">
+   <LINK REL="Next"  HREF="002484.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problems with AS initiated session</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problems%20with%20AS%20initiated%20session&In-Reply-To=%3C46D5501D.8010100%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Problems with AS initiated session">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Aug 29 12:53:17 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002513.html">[OpenIMSCore-Users] Problems with AS initiated session
+</A></li>
+        <LI>Next message: <A HREF="002484.html">[OpenIMSCore-Users] How to create a Public Service Identity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2491">[ date ]</a>
+              <a href="thread.html#2491">[ thread ]</a>
+              <a href="subject.html#2491">[ subject ]</a>
+              <a href="author.html#2491">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Jose,
+
+The problem is in the 200 OK from your UE. There you should have a
+Record-Route and not a Route header. Then the ACK would need to have a
+Route header populated with these values.
+
+Cheers,
+Dragos
+
+Jose wrote:
+&gt;<i> I am trying to test a scenario where the AS initiates a session
+</I>&gt;<i> towards a registered user. It does not work ...
+</I>&gt;<i>
+</I>&gt;<i> The schematics of the scenario is:
+</I>&gt;<i> 1. AS sends INVITE to Bob to S-CSCF
+</I>&gt;<i> 2. S-CSCF performs terminating services for Bob (no iFC configured)
+</I>&gt;<i> 3. INVITE reaches Bob through P-CSCF
+</I>&gt;<i> 4. Bob answers with 180 Ringing and 200OK
+</I>&gt;<i> 5. 180 Ringing and 200OK reach the AS, through Proxy and Serving CSCF
+</I>&gt;<i> 6. AS ACK's to Bob sending ACK to Service CSCF
+</I>&gt;<i> 7. Serving CSCF does not forward the ACK to Bob
+</I>&gt;<i>
+</I>&gt;<i> The Serving CSCF fails to recognize the ACK as being subsequent to an
+</I>&gt;<i> ongoing terminating dialog and does not forward it to Bob. Session fails.
+</I>&gt;<i>
+</I>&gt;<i> Find attached HTML scenario and a pcap capture. I am using sipp to
+</I>&gt;<i> simulate both the AS and Bob.
+</I>&gt;<i>
+</I>&gt;<i> I think the root cause is that the Serving CSCF is not
+</I>&gt;<i> Record-Route'ing itself towards the AS in the 180Ringing or 200OK. So
+</I>&gt;<i> the AS does not know how to mark the ACK so it is appropriately
+</I>&gt;<i> recognized as belonging to a subsequent dialog.
+</I>&gt;<i>
+</I>&gt;<i> Thoughts?
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i>
+</I>&gt;<i> Jose
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> */Sip Scenario Trace
+</I>&gt;<i> /*
+</I>&gt;<i> File: call_not_ok_2.pcap
+</I>&gt;<i> Generated: Wed Aug 29 00:59:48 2007
+</I>&gt;<i> Traced on: Wed Aug 29 00:29:52 2007
+</I>&gt;<i> Created by:sip_scenario.pl version=1.2.7
+</I>&gt;<i>
+</I>&gt;<i> AppServer                      Bob                            Proxy                          Serving                        Interrog
+</I>&gt;<i> 192.168.1.35:7070              127.0.0.1:10000                192.168.1.35:4060              192.168.1.35:6060              192.168.1.35:5060
+</I>&gt;<i> |                              |                              |                              |                              | &lt;Call&gt;&lt;PFrame&gt;&lt;Time&gt;
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              | F1 REGISTER                  |                              |                              |
+</I>&gt;<i> |                              |&gt;----------------------------&gt; &lt;#FRAME1&gt;|                              |                              |  1 PF:1   00:29:52.4795
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              | F2 REGISTER                  |                              |
+</I>&gt;<i> |                              |                              |&gt;-----------------------------------------------------------&gt; &lt;#FRAME2&gt;|  1 PF:2   00:29:52.4807
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |                              |                  REGISTER F3 |
+</I>&gt;<i> |                              |                              |                              |&lt;----------------------------&lt; &lt;#FRAME3&gt;|  1 PF:3   00:29:52.6989
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |                    F4 401 Unauthorized - Challenging the UE |
+</I>&gt;<i> |                              |                              |                              | F4 401 Unauthorized - Challe |
+</I>&gt;<i> |                              |                              |                              |&gt;----------------------------&gt; &lt;#FRAME4&gt;|  1 PF:4   00:29:52.7169
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |                    Unauthorized - Challenging the UE 401 F5 |
+</I>&gt;<i> |                              |                              |&lt;-----------------------------------------------------------&lt; &lt;#FRAME5&gt;|  1 PF:5   00:29:52.7176
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                    Unauthorized - Challenging the UE 401 F6 |                              |                              |
+</I>&gt;<i> |                              |  - Challenging the UE 401 F6 |                              |                              |
+</I>&gt;<i> |                              |&lt;----------------------------&lt; &lt;#FRAME6&gt;|                              |                              |  1 PF:6   00:29:52.7182
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              | F7 REGISTER                  |                              |                              |
+</I>&gt;<i> |                              |&gt;----------------------------&gt; &lt;#FRAME7&gt;|                              |                              |  1 PF:7   00:29:52.7188
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              | F8 REGISTER                  |                              |
+</I>&gt;<i> |                              |                              |&gt;-----------------------------------------------------------&gt; &lt;#FRAME8&gt;|  1 PF:8   00:29:52.7194
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |                              |                  REGISTER F9 |
+</I>&gt;<i> |                              |                              |                              |&lt;----------------------------&lt; &lt;#FRAME9&gt;|  1 PF:9   00:29:53.0009
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              | F10 REGISTER                 |                              |
+</I>&gt;<i> |                              |                              |&gt;-----------------------------------------------------------&gt; &lt;#FRAME10&gt;|  1 PF:10  00:29:53.1790
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              | F11 REGISTER                 |                              |                              |
+</I>&gt;<i> |                              |&gt;----------------------------&gt; &lt;#FRAME11&gt;|                              |                              |  1 PF:11  00:29:53.2190
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |              F12 200 OK - SAR succesful and registrar saved |
+</I>&gt;<i> |                              |                              |                              | F12 200 OK - SAR succesful a |
+</I>&gt;<i> |                              |                              |                              |&gt;----------------------------&gt; &lt;#FRAME12&gt;|  1 PF:12  00:29:53.4480
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |              OK - SAR succesful and registrar saved 200 F13 |
+</I>&gt;<i> |                              |                              |&lt;-----------------------------------------------------------&lt; &lt;#FRAME13&gt;|  1 PF:13  00:29:53.4486
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |              OK - SAR succesful and registrar saved 200 F14 |                              |                              |
+</I>&gt;<i> |                              |  and registrar saved 200 F14 |                              |                              |
+</I>&gt;<i> |                              |&lt;----------------------------&lt; &lt;#FRAME14&gt;|                              |                              |  1 PF:14  00:29:53.4503
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              | F15 SUBSCRIBE                |                              |
+</I>&gt;<i> |                              |                              |&gt;-----------------------------------------------------------&gt; &lt;#FRAME15&gt;|  2 PF:15  00:29:55.7417
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |                              |                SUBSCRIBE F16 |
+</I>&gt;<i> |                              |                              |                              |&lt;----------------------------&lt; &lt;#FRAME16&gt;|  2 PF:16  00:29:56.0400
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |                           F17 200 Subscription to REG saved |
+</I>&gt;<i> |                              |                              |                              | F17 200 Subscription to REG  |
+</I>&gt;<i> |                              |                              |                              |&gt;----------------------------&gt; &lt;#FRAME17&gt;|  2 PF:17  00:29:56.0513
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |                           Subscription to REG saved 200 F18 |
+</I>&gt;<i> |                              |                              |&lt;-----------------------------------------------------------&lt; &lt;#FRAME18&gt;|  2 PF:18  00:29:56.0595
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |             (xml) NOTIFY F19 |                              |
+</I>&gt;<i> |                              |                              |&lt;----------------------------&lt; &lt;#FRAME19&gt;|                              |  2 PF:19  00:29:58.4276
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |             (xml) NOTIFY F20 |                              |
+</I>&gt;<i> |                              |                              |&lt;----------------------------&lt; &lt;#FRAME20&gt;|                              |  2 PF:20  00:29:58.4280
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              | F21 200 OK - P-CSCF processed notification                  |
+</I>&gt;<i> |                              |                              | F21 200 OK - P-CSCF processe |                              |
+</I>&gt;<i> |                              |                              |&gt;----------------------------&gt; &lt;#FRAME21&gt;|                              |  2 PF:21  00:29:58.4513
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              | F22 200 OK - P-CSCF processed notification                  |
+</I>&gt;<i> |                              |                              | F22 200 OK - P-CSCF processe |                              |
+</I>&gt;<i> |                              |                              |&gt;----------------------------&gt; &lt;#FRAME22&gt;|                              |  2 PF:22  00:29:58.4875
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> | F23 INVITE (sdp)             |                              |                              |                              |
+</I>&gt;<i> |&gt;------------------------------------------------------------------------------------------&gt; &lt;#FRAME23&gt;|                              |  3 PF:23  00:30:28.9096
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |              trying -- your call is important to us 100 F24 |                              |
+</I>&gt;<i> |&lt;------------------------------------------------------------------------------------------&lt; &lt;#FRAME24&gt;|                              |  3 PF:24  00:30:28.9221
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |             (sdp) INVITE F25 |                              |
+</I>&gt;<i> |                              |                              |&lt;----------------------------&lt; &lt;#FRAME25&gt;|                              |  3 PF:25  00:30:28.9222
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              | F26 100 trying -- your call is important to us              |
+</I>&gt;<i> |                              |                              | F26 100 trying -- your call  |                              |
+</I>&gt;<i> |                              |                              |&gt;----------------------------&gt; &lt;#FRAME26&gt;|                              |  3 PF:26  00:30:28.9577
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |             (sdp) INVITE F27 |                              |                              |
+</I>&gt;<i> |                              |&lt;----------------------------&lt; &lt;#FRAME27&gt;|                              |                              |  3 PF:27  00:30:28.9579
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              | F28 100 Trying               |                              |                              |
+</I>&gt;<i> |                              |&gt;----------------------------&gt; &lt;#FRAME28&gt;|                              |                              |  3 PF:28  00:30:28.9745
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              | F29 100 Trying               |                              |
+</I>&gt;<i> |                              |                              |&gt;----------------------------&gt; &lt;#FRAME29&gt;|                              |  3 PF:29  00:30:28.9815
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |               Trying 100 F30 |                              |
+</I>&gt;<i> |&lt;------------------------------------------------------------------------------------------&lt; &lt;#FRAME30&gt;|                              |  3 PF:30  00:30:28.9822
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              | F31 180 Ringing              |                              |                              |
+</I>&gt;<i> |                              |&gt;----------------------------&gt; &lt;#FRAME31&gt;|                              |                              |  3 PF:31  00:30:29.0773
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              | F32 180 Ringing              |                              |
+</I>&gt;<i> |                              |                              |&gt;----------------------------&gt; &lt;#FRAME32&gt;|                              |  3 PF:32  00:30:29.0778
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |              Ringing 180 F33 |                              |
+</I>&gt;<i> |&lt;------------------------------------------------------------------------------------------&lt; &lt;#FRAME33&gt;|                              |  3 PF:33  00:30:29.0896
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |             (sdp) INVITE F34 |                              |                              |
+</I>&gt;<i> |                              |&lt;----------------------------&lt; &lt;#FRAME34&gt;|                              |                              |  3 PF:34  00:30:29.4293
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              | F35 100 Trying               |                              |                              |
+</I>&gt;<i> |                              |&gt;----------------------------&gt; &lt;#FRAME35&gt;|                              |                              |  3 PF:35  00:30:29.4296
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              | F36 100 Trying               |                              |
+</I>&gt;<i> |                              |                              |&gt;----------------------------&gt; &lt;#FRAME36&gt;|                              |  3 PF:36  00:30:29.4303
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |               Trying 100 F37 |                              |
+</I>&gt;<i> |&lt;------------------------------------------------------------------------------------------&lt; &lt;#FRAME37&gt;|                              |  3 PF:37  00:30:29.4311
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              | F38 200 OK (sdp)             |                              |                              |
+</I>&gt;<i> |                              |&gt;----------------------------&gt; &lt;#FRAME38&gt;|                              |                              |  3 PF:38  00:30:29.4815
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              | F39 200 OK (sdp)             |                              |
+</I>&gt;<i> |                              |                              |&gt;----------------------------&gt; &lt;#FRAME39&gt;|                              |  3 PF:39  00:30:29.4823
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |             (sdp) OK 200 F40 |                              |
+</I>&gt;<i> |&lt;------------------------------------------------------------------------------------------&lt; &lt;#FRAME40&gt;|                              |  3 PF:40  00:30:29.4831
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> | F41 ACK                      |                              |                              |                              |
+</I>&gt;<i> |&gt;------------------------------------------------------------------------------------------&gt; &lt;#FRAME41&gt;|                              |  3 PF:41  00:30:29.4835
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              | F42 200 OK (sdp)             |                              |                              |
+</I>&gt;<i> |                              |&gt;----------------------------&gt; &lt;#FRAME42&gt;|                              |                              |  3 PF:42  00:30:29.9854
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              | F43 200 OK (sdp)             |                              |
+</I>&gt;<i> |                              |                              |&gt;----------------------------&gt; &lt;#FRAME43&gt;|                              |  3 PF:43  00:30:29.9858
+</I>&gt;<i> |                              |                              |                              |                              |
+</I>&gt;<i> |                              |                              |             (sdp) OK 200 F44 |                              |
+</I>&gt;<i> |&lt;------------------------------------------------------------------------------------------&lt; &lt;#FRAME44&gt;|                              |  3 PF:44  00:30:29.9863
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 1        127.0.0.1:10000(Bob) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 1        29/Aug/07 00:29:52.4795 TimeFromPreviousSipFrame=0.0000 TimeFromStart=0.0000 
+</I>&gt;<i> REGISTER sip:sip.dynserv.org SIP/2.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 1 REGISTER 
+</I>&gt;<i> Contact: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 
+</I>&gt;<i> Max-Forwards: 5 
+</I>&gt;<i> Expires: 1800 
+</I>&gt;<i> User-Agent: SIPp/Linux 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 2        192.168.1.35:4060(Proxy) -&gt; 192.168.1.35:5060(Interrog)
+</I>&gt;<i>      UDP Frame 2        29/Aug/07 00:29:52.4807 TimeFromPreviousSipFrame=0.0012 TimeFromStart=0.0012 
+</I>&gt;<i> REGISTER sip:sip.dynserv.org SIP/2.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKed46.83212444.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;rport=10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 1 REGISTER 
+</I>&gt;<i> Contact: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 
+</I>&gt;<i> Max-Forwards: 4 
+</I>&gt;<i> Expires: 1800 
+</I>&gt;<i> User-Agent: SIPp/Linux 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Require: path 
+</I>&gt;<i> P-Charging-Vector: icid-value=&quot;P-CSCFabcd46d4a1e00000000b&quot;;icid-generated-at=192.168.1.35;orig-ioi=&quot;sip.dynserv.org&quot; 
+</I>&gt;<i> P-Visited-Network-ID: sip.dynserv.org 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 3        192.168.1.35:5060(Interrog) -&gt; 192.168.1.35:6060(Serving)
+</I>&gt;<i>      UDP Frame 3        29/Aug/07 00:29:52.6989 TimeFromPreviousSipFrame=0.2182 TimeFromStart=0.2194 
+</I>&gt;<i> REGISTER sip:scscf.sip.dynserv.org:6060 SIP/2.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35;branch=z9hG4bKed46.5b84d165.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKed46.83212444.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;rport=10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 1 REGISTER 
+</I>&gt;<i> Contact: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 
+</I>&gt;<i> Max-Forwards: 3 
+</I>&gt;<i> Expires: 1800 
+</I>&gt;<i> User-Agent: SIPp/Linux 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Require: path 
+</I>&gt;<i> P-Charging-Vector: icid-value=&quot;P-CSCFabcd46d4a1e00000000b&quot;;icid-generated-at=192.168.1.35;orig-ioi=&quot;sip.dynserv.org&quot; 
+</I>&gt;<i> P-Visited-Network-ID: sip.dynserv.org 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 4        192.168.1.35:6060(Serving) -&gt; 192.168.1.35:5060(Interrog)
+</I>&gt;<i>      UDP Frame 4        29/Aug/07 00:29:52.7169 TimeFromPreviousSipFrame=0.0180 TimeFromStart=0.2374 
+</I>&gt;<i> SIP/2.0 401 Unauthorized - Challenging the UE 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35;branch=z9hG4bKed46.5b84d165.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKed46.83212444.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;rport=10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=8d1ee60ac9e5bcb863bf977c2888980b-4866 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 1 REGISTER 
+</I>&gt;<i> WWW-Authenticate: Digest realm=&quot;sip.dynserv.org&quot;, nonce=&quot;6727ee2d0e7fcce6d45276bf405ebf96&quot;, algorithm=MD5 
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.sip.dynserv.org</A>:6060;lr&gt; 
+</I>&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, MESSAGE, INFO 
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Warning: 392 192.168.1.35:6060 &quot;Noisy feedback tells:  pid=10652 req_src_ip=192.168.1.35 req_src_port=5060 in_uri=sip:scscf.sip.dynserv.org:6060 out_uri=sip:scscf.sip.dynserv.org:6060 via_cnt==3&quot; 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 5        192.168.1.35:5060(Interrog) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 5        29/Aug/07 00:29:52.7176 TimeFromPreviousSipFrame=0.0007 TimeFromStart=0.2381 
+</I>&gt;<i> SIP/2.0 401 Unauthorized - Challenging the UE 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKed46.83212444.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;rport=10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=8d1ee60ac9e5bcb863bf977c2888980b-4866 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 1 REGISTER 
+</I>&gt;<i> WWW-Authenticate: Digest realm=&quot;sip.dynserv.org&quot;, nonce=&quot;6727ee2d0e7fcce6d45276bf405ebf96&quot;, algorithm=MD5 
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.sip.dynserv.org</A>:6060;lr&gt; 
+</I>&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, MESSAGE, INFO 
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Warning: 392 192.168.1.35:6060 &quot;Noisy feedback tells:  pid=10652 req_src_ip=192.168.1.35 req_src_port=5060 in_uri=sip:scscf.sip.dynserv.org:6060 out_uri=sip:scscf.sip.dynserv.org:6060 via_cnt==3&quot; 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 6        192.168.1.35:4060(Proxy) -&gt; 127.0.0.1:10000(Bob)
+</I>&gt;<i>      UDP Frame 6        29/Aug/07 00:29:52.7182 TimeFromPreviousSipFrame=0.0007 TimeFromStart=0.2387 
+</I>&gt;<i> SIP/2.0 401 Unauthorized - Challenging the UE 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;rport=10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=8d1ee60ac9e5bcb863bf977c2888980b-4866 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 1 REGISTER 
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.sip.dynserv.org</A>:6060;lr&gt; 
+</I>&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, MESSAGE, INFO 
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Warning: 392 192.168.1.35:6060 &quot;Noisy feedback tells:  pid=10652 req_src_ip=192.168.1.35 req_src_port=5060 in_uri=sip:scscf.sip.dynserv.org:6060 out_uri=sip:scscf.sip.dynserv.org:6060 via_cnt==3&quot; 
+</I>&gt;<i> WWW-Authenticate: Digest realm=&quot;sip.dynserv.org&quot;, nonce=&quot;6727ee2d0e7fcce6d45276bf405ebf96&quot;, algorithm=MD5 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 7        127.0.0.1:10000(Bob) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 7        29/Aug/07 00:29:52.7188 TimeFromPreviousSipFrame=0.0005 TimeFromStart=0.2392 
+</I>&gt;<i> REGISTER sip:sip.dynserv.org SIP/2.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;rport=10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=8d1ee60ac9e5bcb863bf977c2888980b-4866 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 2 REGISTER 
+</I>&gt;<i> Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&quot;,realm=&quot;sip.dynserv.org&quot;,uri=&quot;sip:192.168.1.35:4060&quot;,nonce=&quot;6727ee2d0e7fcce6d45276bf405ebf96&quot;,response=&quot;048a59879ee5b3dfbe6fe20b0fc239a4&quot;,algorithm=MD5 
+</I>&gt;<i> Max-Forwards: 70 
+</I>&gt;<i> Contact: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 
+</I>&gt;<i> Expires: 1800 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 8        192.168.1.35:4060(Proxy) -&gt; 192.168.1.35:5060(Interrog)
+</I>&gt;<i>      UDP Frame 8        29/Aug/07 00:29:52.7194 TimeFromPreviousSipFrame=0.0007 TimeFromStart=0.2399 
+</I>&gt;<i> REGISTER sip:sip.dynserv.org SIP/2.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKbd46.287d039.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;rport=10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=8d1ee60ac9e5bcb863bf977c2888980b-4866 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 2 REGISTER 
+</I>&gt;<i> Max-Forwards: 16 
+</I>&gt;<i> Contact: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 
+</I>&gt;<i> Expires: 1800 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&quot;,realm=&quot;sip.dynserv.org&quot;,uri=&quot;sip:192.168.1.35:4060&quot;,nonce=&quot;6727ee2d0e7fcce6d45276bf405ebf96&quot;,response=&quot;048a59879ee5b3dfbe6fe20b0fc239a4&quot;,algorithm=MD5, integrity-protected=&quot;no&quot; 
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Require: path 
+</I>&gt;<i> P-Charging-Vector: icid-value=&quot;P-CSCFabcd46d4a1e00000000c&quot;;icid-generated-at=192.168.1.35;orig-ioi=&quot;sip.dynserv.org&quot; 
+</I>&gt;<i> P-Visited-Network-ID: sip.dynserv.org 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 9        192.168.1.35:5060(Interrog) -&gt; 192.168.1.35:6060(Serving)
+</I>&gt;<i>      UDP Frame 9        29/Aug/07 00:29:53.0009 TimeFromPreviousSipFrame=0.2815 TimeFromStart=0.5214 
+</I>&gt;<i> REGISTER sip:scscf.sip.dynserv.org:6060 SIP/2.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35;branch=z9hG4bKbd46.679e3ca2.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKbd46.287d039.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;rport=10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=8d1ee60ac9e5bcb863bf977c2888980b-4866 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 2 REGISTER 
+</I>&gt;<i> Max-Forwards: 15 
+</I>&gt;<i> Contact: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 
+</I>&gt;<i> Expires: 1800 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&quot;,realm=&quot;sip.dynserv.org&quot;,uri=&quot;sip:192.168.1.35:4060&quot;,nonce=&quot;6727ee2d0e7fcce6d45276bf405ebf96&quot;,response=&quot;048a59879ee5b3dfbe6fe20b0fc239a4&quot;,algorithm=MD5, integrity-protected=&quot;no&quot; 
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Require: path 
+</I>&gt;<i> P-Charging-Vector: icid-value=&quot;P-CSCFabcd46d4a1e00000000c&quot;;icid-generated-at=192.168.1.35;orig-ioi=&quot;sip.dynserv.org&quot; 
+</I>&gt;<i> P-Visited-Network-ID: sip.dynserv.org 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 10       192.168.1.35:4060(Proxy) -&gt; 192.168.1.35:5060(Interrog)
+</I>&gt;<i>      UDP Frame 10       29/Aug/07 00:29:53.1790 TimeFromPreviousSipFrame=0.1781 TimeFromStart=0.6995 
+</I>&gt;<i> REGISTER sip:sip.dynserv.org SIP/2.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKbd46.287d039.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;rport=10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=8d1ee60ac9e5bcb863bf977c2888980b-4866 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 2 REGISTER 
+</I>&gt;<i> Max-Forwards: 16 
+</I>&gt;<i> Contact: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 
+</I>&gt;<i> Expires: 1800 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&quot;,realm=&quot;sip.dynserv.org&quot;,uri=&quot;sip:192.168.1.35:4060&quot;,nonce=&quot;6727ee2d0e7fcce6d45276bf405ebf96&quot;,response=&quot;048a59879ee5b3dfbe6fe20b0fc239a4&quot;,algorithm=MD5, integrity-protected=&quot;no&quot; 
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Require: path 
+</I>&gt;<i> P-Charging-Vector: icid-value=&quot;P-CSCFabcd46d4a1e00000000c&quot;;icid-generated-at=192.168.1.35;orig-ioi=&quot;sip.dynserv.org&quot; 
+</I>&gt;<i> P-Visited-Network-ID: sip.dynserv.org 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 11       127.0.0.1:10000(Bob) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 11       29/Aug/07 00:29:53.2190 TimeFromPreviousSipFrame=0.0399 TimeFromStart=0.7395 
+</I>&gt;<i> REGISTER sip:sip.dynserv.org SIP/2.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;rport=10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=8d1ee60ac9e5bcb863bf977c2888980b-4866 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 2 REGISTER 
+</I>&gt;<i> Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&quot;,realm=&quot;sip.dynserv.org&quot;,uri=&quot;sip:192.168.1.35:4060&quot;,nonce=&quot;6727ee2d0e7fcce6d45276bf405ebf96&quot;,response=&quot;048a59879ee5b3dfbe6fe20b0fc239a4&quot;,algorithm=MD5 
+</I>&gt;<i> Max-Forwards: 70 
+</I>&gt;<i> Contact: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 
+</I>&gt;<i> Expires: 1800 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 12       192.168.1.35:6060(Serving) -&gt; 192.168.1.35:5060(Interrog)
+</I>&gt;<i>      UDP Frame 12       29/Aug/07 00:29:53.4480 TimeFromPreviousSipFrame=0.2290 TimeFromStart=0.9685 
+</I>&gt;<i> SIP/2.0 200 OK - SAR succesful and registrar saved 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35;branch=z9hG4bKbd46.679e3ca2.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKbd46.287d039.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;rport=10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=8d1ee60ac9e5bcb863bf977c2888980b-4866 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 2 REGISTER 
+</I>&gt;<i> P-Associated-URI: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&gt;;expires=1800 
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.sip.dynserv.org</A>:6060;lr&gt; 
+</I>&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, MESSAGE, INFO 
+</I>&gt;<i> P-Charging-Function-Addresses: ccf=pri_ccf_address 
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Warning: 392 192.168.1.35:6060 &quot;Noisy feedback tells:  pid=10653 req_src_ip=192.168.1.35 req_src_port=5060 in_uri=sip:scscf.sip.dynserv.org:6060 out_uri=sip:scscf.sip.dynserv.org:6060 via_cnt==3&quot; 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 13       192.168.1.35:5060(Interrog) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 13       29/Aug/07 00:29:53.4486 TimeFromPreviousSipFrame=0.0006 TimeFromStart=0.9691 
+</I>&gt;<i> SIP/2.0 200 OK - SAR succesful and registrar saved 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKbd46.287d039.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;rport=10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=8d1ee60ac9e5bcb863bf977c2888980b-4866 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 2 REGISTER 
+</I>&gt;<i> P-Associated-URI: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&gt;;expires=1800 
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.sip.dynserv.org</A>:6060;lr&gt; 
+</I>&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, MESSAGE, INFO 
+</I>&gt;<i> P-Charging-Function-Addresses: ccf=pri_ccf_address 
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Warning: 392 192.168.1.35:6060 &quot;Noisy feedback tells:  pid=10653 req_src_ip=192.168.1.35 req_src_port=5060 in_uri=sip:scscf.sip.dynserv.org:6060 out_uri=sip:scscf.sip.dynserv.org:6060 via_cnt==3&quot; 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 14       192.168.1.35:4060(Proxy) -&gt; 127.0.0.1:10000(Bob)
+</I>&gt;<i>      UDP Frame 14       29/Aug/07 00:29:53.4503 TimeFromPreviousSipFrame=0.0017 TimeFromStart=0.9708 
+</I>&gt;<i> SIP/2.0 200 OK - SAR succesful and registrar saved 
+</I>&gt;<i> Via: SIP/2.0/UDP 127.0.0.1:10000;rport=10000;branch=z9hG4bK-13089-1-0 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=8d1ee60ac9e5bcb863bf977c2888980b-4866 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=1 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13089 at 127.0.0.1</A> 
+</I>&gt;<i> CSeq: 2 REGISTER 
+</I>&gt;<i> P-Associated-URI: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&gt;;expires=1800 
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.sip.dynserv.org</A>:6060;lr&gt; 
+</I>&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, MESSAGE, INFO 
+</I>&gt;<i> P-Charging-Function-Addresses: ccf=pri_ccf_address 
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Warning: 392 192.168.1.35:6060 &quot;Noisy feedback tells:  pid=10653 req_src_ip=192.168.1.35 req_src_port=5060 in_uri=sip:scscf.sip.dynserv.org:6060 out_uri=sip:scscf.sip.dynserv.org:6060 via_cnt==3&quot; 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 15       192.168.1.35:4060(Proxy) -&gt; 192.168.1.35:5060(Interrog)
+</I>&gt;<i>      UDP Frame 15       29/Aug/07 00:29:55.7417 TimeFromPreviousSipFrame=2.2915 TimeFromStart=3.2622 
+</I>&gt;<i> SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A> SIP/2.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bK833c.d108aa3.0 
+</I>&gt;<i> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>;tag=8d1ee60ac9e5bcb863bf977c2888980b-39f5 
+</I>&gt;<i> From: sip:pcscf.sip.dynserv.org:4060;tag=f6ee40670a909eeb3fdc8619ba27d29b-b63b 
+</I>&gt;<i> CSeq: 2 SUBSCRIBE 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">6efdf5e1-10602 at 192.168.1.35</A> 
+</I>&gt;<i> User-Agent: Sip EXpress router(2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Event: reg 
+</I>&gt;<i> Accept: application/reginfo+xml 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Max-Forwards: 10 
+</I>&gt;<i> Expires: 1830 
+</I>&gt;<i> Contact: &lt;sip:pcscf.sip.dynserv.org:4060&gt; 
+</I>&gt;<i> P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060&gt; 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 16       192.168.1.35:5060(Interrog) -&gt; 192.168.1.35:6060(Serving)
+</I>&gt;<i>      UDP Frame 16       29/Aug/07 00:29:56.0400 TimeFromPreviousSipFrame=0.2982 TimeFromStart=3.5605 
+</I>&gt;<i> SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A> SIP/2.0 
+</I>&gt;<i> Route: &lt;sip:scscf.sip.dynserv.org:6060&gt; 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35;branch=z9hG4bK833c.b5de3b91.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bK833c.d108aa3.0 
+</I>&gt;<i> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>;tag=8d1ee60ac9e5bcb863bf977c2888980b-39f5 
+</I>&gt;<i> From: sip:pcscf.sip.dynserv.org:4060;tag=f6ee40670a909eeb3fdc8619ba27d29b-b63b 
+</I>&gt;<i> CSeq: 2 SUBSCRIBE 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">6efdf5e1-10602 at 192.168.1.35</A> 
+</I>&gt;<i> User-Agent: Sip EXpress router(2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Event: reg 
+</I>&gt;<i> Accept: application/reginfo+xml 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Max-Forwards:  9 
+</I>&gt;<i> Expires: 1830 
+</I>&gt;<i> Contact: &lt;sip:pcscf.sip.dynserv.org:4060&gt; 
+</I>&gt;<i> P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060&gt; 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 17       192.168.1.35:6060(Serving) -&gt; 192.168.1.35:5060(Interrog)
+</I>&gt;<i>      UDP Frame 17       29/Aug/07 00:29:56.0513 TimeFromPreviousSipFrame=0.0113 TimeFromStart=3.5718 
+</I>&gt;<i> SIP/2.0 200 Subscription to REG saved 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35;branch=z9hG4bK833c.b5de3b91.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bK833c.d108aa3.0 
+</I>&gt;<i> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>;tag=8d1ee60ac9e5bcb863bf977c2888980b-39f5 
+</I>&gt;<i> From: sip:pcscf.sip.dynserv.org:4060;tag=f6ee40670a909eeb3fdc8619ba27d29b-b63b 
+</I>&gt;<i> CSeq: 2 SUBSCRIBE 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">6efdf5e1-10602 at 192.168.1.35</A> 
+</I>&gt;<i> Expires: 1830 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Warning: 392 192.168.1.35:6060 &quot;Noisy feedback tells:  pid=10652 req_src_ip=192.168.1.35 req_src_port=5060 in_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A> out_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A> via_cnt==2&quot; 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 18       192.168.1.35:5060(Interrog) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 18       29/Aug/07 00:29:56.0595 TimeFromPreviousSipFrame=0.0082 TimeFromStart=3.5800 
+</I>&gt;<i> SIP/2.0 200 Subscription to REG saved 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bK833c.d108aa3.0 
+</I>&gt;<i> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>;tag=8d1ee60ac9e5bcb863bf977c2888980b-39f5 
+</I>&gt;<i> From: sip:pcscf.sip.dynserv.org:4060;tag=f6ee40670a909eeb3fdc8619ba27d29b-b63b 
+</I>&gt;<i> CSeq: 2 SUBSCRIBE 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">6efdf5e1-10602 at 192.168.1.35</A> 
+</I>&gt;<i> Expires: 1830 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Warning: 392 192.168.1.35:6060 &quot;Noisy feedback tells:  pid=10652 req_src_ip=192.168.1.35 req_src_port=5060 in_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A> out_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A> via_cnt==2&quot; 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 19       192.168.1.35:6060(Serving) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 19       29/Aug/07 00:29:58.4276 TimeFromPreviousSipFrame=2.3681 TimeFromStart=5.9481 
+</I>&gt;<i> NOTIFY sip:pcscf.sip.dynserv.org:4060 SIP/2.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:6060;branch=z9hG4bKf1af.cc9a0053.0 
+</I>&gt;<i> To: sip:pcscf.sip.dynserv.org:4060;tag=f6ee40670a909eeb3fdc8619ba27d29b-b63b 
+</I>&gt;<i> From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>;tag=8d1ee60ac9e5bcb863bf977c2888980b-39f5 
+</I>&gt;<i> CSeq: 12 NOTIFY 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">6efdf5e1-10602 at 192.168.1.35</A> 
+</I>&gt;<i> Content-Length: 331 
+</I>&gt;<i> User-Agent: Sip EXpress router(2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Event: reg 
+</I>&gt;<i> Max-Forwards: 70 
+</I>&gt;<i> Subscription-State: active;expires=1830 
+</I>&gt;<i> Content-Type: application/reginfo+xml 
+</I>&gt;<i>  
+</I>&gt;<i> &lt;?xml version=&quot;1.0&quot;?&gt;
+</I>&gt;<i> &lt;reginfo xmlns=&quot;urn:ietf:params:xml:ns:reginfo&quot; version=&quot;2&quot; state=&quot;partial&quot;&gt;
+</I>&gt;<i> [09]&lt;registration aor=&quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&quot; id=&quot;0xb5db4ff8&quot; state=&quot;active&quot;&gt;
+</I>&gt;<i> [09][09]&lt;contact id=&quot;0xb5db47b0&quot; state=&quot;active&quot; event=&quot;refreshed&quot; expires=&quot;1800&quot;&gt;
+</I>&gt;<i> [09][09][09]&lt;uri&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&lt;/uri&gt;
+</I>&gt;<i> [09][09]&lt;/contact&gt;
+</I>&gt;<i> [09]&lt;/registration&gt;
+</I>&gt;<i> &lt;/reginfo&gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 20       192.168.1.35:6060(Serving) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 20       29/Aug/07 00:29:58.4280 TimeFromPreviousSipFrame=0.0004 TimeFromStart=5.9485 
+</I>&gt;<i> NOTIFY sip:pcscf.sip.dynserv.org:4060 SIP/2.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:6060;branch=z9hG4bK02af.fcc01b35.0 
+</I>&gt;<i> To: sip:pcscf.sip.dynserv.org:4060;tag=f6ee40670a909eeb3fdc8619ba27d29b-b63b 
+</I>&gt;<i> From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>;tag=8d1ee60ac9e5bcb863bf977c2888980b-39f5 
+</I>&gt;<i> CSeq: 13 NOTIFY 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">6efdf5e1-10602 at 192.168.1.35</A> 
+</I>&gt;<i> Content-Length: 329 
+</I>&gt;<i> User-Agent: Sip EXpress router(2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Event: reg 
+</I>&gt;<i> Max-Forwards: 70 
+</I>&gt;<i> Subscription-State: active;expires=1827 
+</I>&gt;<i> Content-Type: application/reginfo+xml 
+</I>&gt;<i>  
+</I>&gt;<i> &lt;?xml version=&quot;1.0&quot;?&gt;
+</I>&gt;<i> &lt;reginfo xmlns=&quot;urn:ietf:params:xml:ns:reginfo&quot; version=&quot;3&quot; state=&quot;full&quot;&gt;
+</I>&gt;<i> [09]&lt;registration aor=&quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&quot; id=&quot;0xb5db4ff8&quot; state=&quot;active&quot;&gt;
+</I>&gt;<i> [09][09]&lt;contact id=&quot;0xb5db47b0&quot; state=&quot;active&quot; event=&quot;registered&quot; expires=&quot;1797&quot;&gt;
+</I>&gt;<i> [09][09][09]&lt;uri&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&lt;/uri&gt;
+</I>&gt;<i> [09][09]&lt;/contact&gt;
+</I>&gt;<i> [09]&lt;/registration&gt;
+</I>&gt;<i> &lt;/reginfo&gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 21       192.168.1.35:4060(Proxy) -&gt; 192.168.1.35:6060(Serving)
+</I>&gt;<i>      UDP Frame 21       29/Aug/07 00:29:58.4513 TimeFromPreviousSipFrame=0.0233 TimeFromStart=5.9718 
+</I>&gt;<i> SIP/2.0 200 OK - P-CSCF processed notification 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:6060;branch=z9hG4bKf1af.cc9a0053.0;rport=6060 
+</I>&gt;<i> To: sip:pcscf.sip.dynserv.org:4060;tag=f6ee40670a909eeb3fdc8619ba27d29b-b63b 
+</I>&gt;<i> From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>;tag=8d1ee60ac9e5bcb863bf977c2888980b-39f5 
+</I>&gt;<i> CSeq: 12 NOTIFY 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">6efdf5e1-10602 at 192.168.1.35</A> 
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Warning: 392 192.168.1.35:4060 &quot;Noisy feedback tells:  pid=10598 req_src_ip=192.168.1.35 req_src_port=6060 in_uri=sip:pcscf.sip.dynserv.org:4060 out_uri=sip:pcscf.sip.dynserv.org:4060 via_cnt==1&quot; 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 22       192.168.1.35:4060(Proxy) -&gt; 192.168.1.35:6060(Serving)
+</I>&gt;<i>      UDP Frame 22       29/Aug/07 00:29:58.4875 TimeFromPreviousSipFrame=0.0362 TimeFromStart=6.0080 
+</I>&gt;<i> SIP/2.0 200 OK - P-CSCF processed notification 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:6060;branch=z9hG4bK02af.fcc01b35.0;rport=6060 
+</I>&gt;<i> To: sip:pcscf.sip.dynserv.org:4060;tag=f6ee40670a909eeb3fdc8619ba27d29b-b63b 
+</I>&gt;<i> From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>;tag=8d1ee60ac9e5bcb863bf977c2888980b-39f5 
+</I>&gt;<i> CSeq: 13 NOTIFY 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">6efdf5e1-10602 at 192.168.1.35</A> 
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Warning: 392 192.168.1.35:4060 &quot;Noisy feedback tells:  pid=10601 req_src_ip=192.168.1.35 req_src_port=6060 in_uri=sip:pcscf.sip.dynserv.org:4060 out_uri=sip:pcscf.sip.dynserv.org:4060 via_cnt==1&quot; 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 23       192.168.1.35:7070(AppServer) -&gt; 192.168.1.35:6060(Serving)
+</I>&gt;<i>      UDP Frame 23       29/Aug/07 00:30:28.9096 TimeFromPreviousSipFrame=30.4221 TimeFromStart=36.4301 
+</I>&gt;<i> INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A> SIP/2.0 
+</I>&gt;<i> Record-Route: &lt;sip:192.168.1.35:7070;lr&gt; 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hola 
+</I>&gt;<i> Via: SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 1.1.1.1</A>:5060&gt; 
+</I>&gt;<i> Content-Type: application/sdp 
+</I>&gt;<i> Allow: INVITE,ACK,CANCEL,BYE 
+</I>&gt;<i> Supported: 100rel 
+</I>&gt;<i> Content-Length:  144 
+</I>&gt;<i>  
+</I>&gt;<i> v=0 
+</I>&gt;<i> o=- 0 0 IN IP4 1.1.1.1 
+</I>&gt;<i> s=- 
+</I>&gt;<i> c=IN IP4 1.1.1.1 
+</I>&gt;<i> t=0 0 
+</I>&gt;<i> m=video 57386 RTP/AVP 96 
+</I>&gt;<i> a=fmtp:96 PROFILE=0;LEVEL=10 
+</I>&gt;<i> a=rtpmap:96 H263-2000/90000 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 24       192.168.1.35:6060(Serving) -&gt; 192.168.1.35:7070(AppServer)
+</I>&gt;<i>      UDP Frame 24       29/Aug/07 00:30:28.9221 TimeFromPreviousSipFrame=0.0125 TimeFromStart=36.4426 
+</I>&gt;<i> SIP/2.0 100 trying -- your call is important to us 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hola 
+</I>&gt;<i> Via: SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Warning: 392 192.168.1.35:6060 &quot;Noisy feedback tells:  pid=10653 req_src_ip=192.168.1.35 req_src_port=7070 in_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A> out_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 via_cnt==2&quot; 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 25       192.168.1.35:6060(Serving) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 25       29/Aug/07 00:30:28.9222 TimeFromPreviousSipFrame=0.0001 TimeFromStart=36.4427 
+</I>&gt;<i> INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 SIP/2.0 
+</I>&gt;<i> Max-Forwards: 10 
+</I>&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.sip.dynserv.org</A>:6060;lr&gt; 
+</I>&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Record-Route: &lt;sip:192.168.1.35:7070;lr&gt; 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:6060;branch=z9hG4bKb8bd.745d2e77.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hola 
+</I>&gt;<i> Via: SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 1.1.1.1</A>:5060&gt; 
+</I>&gt;<i> Content-Type: application/sdp 
+</I>&gt;<i> Allow: INVITE,ACK,CANCEL,BYE 
+</I>&gt;<i> Supported: 100rel 
+</I>&gt;<i> Content-Length:  144 
+</I>&gt;<i> P-Called-Party-ID: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i>  
+</I>&gt;<i> v=0 
+</I>&gt;<i> o=- 0 0 IN IP4 1.1.1.1 
+</I>&gt;<i> s=- 
+</I>&gt;<i> c=IN IP4 1.1.1.1 
+</I>&gt;<i> t=0 0 
+</I>&gt;<i> m=video 57386 RTP/AVP 96 
+</I>&gt;<i> a=fmtp:96 PROFILE=0;LEVEL=10 
+</I>&gt;<i> a=rtpmap:96 H263-2000/90000 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 26       192.168.1.35:4060(Proxy) -&gt; 192.168.1.35:6060(Serving)
+</I>&gt;<i>      UDP Frame 26       29/Aug/07 00:30:28.9577 TimeFromPreviousSipFrame=0.0355 TimeFromStart=36.4782 
+</I>&gt;<i> SIP/2.0 100 trying -- your call is important to us 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:6060;branch=z9hG4bKb8bd.745d2e77.0;rport=6060 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hola 
+</I>&gt;<i> Via: SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux)) 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i> Warning: 392 192.168.1.35:4060 &quot;Noisy feedback tells:  pid=10598 req_src_ip=192.168.1.35 req_src_port=6060 in_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 out_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 via_cnt==3&quot; 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 27       192.168.1.35:4060(Proxy) -&gt; 127.0.0.1:10000(Bob)
+</I>&gt;<i>      UDP Frame 27       29/Aug/07 00:30:28.9579 TimeFromPreviousSipFrame=0.0002 TimeFromStart=36.4784 
+</I>&gt;<i> INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 SIP/2.0 
+</I>&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Max-Forwards:  9 
+</I>&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.sip.dynserv.org</A>:6060;lr&gt; 
+</I>&gt;<i> Record-Route: &lt;sip:192.168.1.35:7070;lr&gt; 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKb8bd.b0214b24.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:6060;received=192.168.1.35;rport=6060;branch=z9hG4bKb8bd.745d2e77.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hola 
+</I>&gt;<i> Via: SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 1.1.1.1</A>:5060&gt; 
+</I>&gt;<i> Content-Type: application/sdp 
+</I>&gt;<i> Allow: INVITE,ACK,CANCEL,BYE 
+</I>&gt;<i> Supported: 100rel 
+</I>&gt;<i> Content-Length:  144 
+</I>&gt;<i> P-Called-Party-ID: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i>  
+</I>&gt;<i> v=0 
+</I>&gt;<i> o=- 0 0 IN IP4 1.1.1.1 
+</I>&gt;<i> s=- 
+</I>&gt;<i> c=IN IP4 1.1.1.1 
+</I>&gt;<i> t=0 0 
+</I>&gt;<i> m=video 57386 RTP/AVP 96 
+</I>&gt;<i> a=fmtp:96 PROFILE=0;LEVEL=10 
+</I>&gt;<i> a=rtpmap:96 H263-2000/90000 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 28       127.0.0.1:10000(Bob) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 28       29/Aug/07 00:30:28.9745 TimeFromPreviousSipFrame=0.0165 TimeFromStart=36.4950 
+</I>&gt;<i> SIP/2.0 100 Trying 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKb8bd.b0214b24., SIP/2.0/UDP 192.168.1.35:6060;received=192.168.1.35;rport=6060;branch=z9hG4bKb8bd.745d2e77., SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=130981 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 29       192.168.1.35:4060(Proxy) -&gt; 192.168.1.35:6060(Serving)
+</I>&gt;<i>      UDP Frame 29       29/Aug/07 00:30:28.9815 TimeFromPreviousSipFrame=0.0070 TimeFromStart=36.5020 
+</I>&gt;<i> SIP/2.0 100 Trying 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:6060;received=192.168.1.35;rport=6060;branch=z9hG4bKb8bd.745d2e77., SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=130981 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 30       192.168.1.35:6060(Serving) -&gt; 192.168.1.35:7070(AppServer)
+</I>&gt;<i>      UDP Frame 30       29/Aug/07 00:30:28.9822 TimeFromPreviousSipFrame=0.0007 TimeFromStart=36.5027 
+</I>&gt;<i> SIP/2.0 100 Trying 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=130981 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 31       127.0.0.1:10000(Bob) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 31       29/Aug/07 00:30:29.0773 TimeFromPreviousSipFrame=0.0952 TimeFromStart=36.5978 
+</I>&gt;<i> SIP/2.0 180 Ringing 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKb8bd.b0214b24., SIP/2.0/UDP 192.168.1.35:6060;received=192.168.1.35;rport=6060;branch=z9hG4bKb8bd.745d2e77., SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=130981 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&gt; 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 32       192.168.1.35:4060(Proxy) -&gt; 192.168.1.35:6060(Serving)
+</I>&gt;<i>      UDP Frame 32       29/Aug/07 00:30:29.0778 TimeFromPreviousSipFrame=0.0005 TimeFromStart=36.5983 
+</I>&gt;<i> SIP/2.0 180 Ringing 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:6060;received=192.168.1.35;rport=6060;branch=z9hG4bKb8bd.745d2e77., SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=130981 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&gt; 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 33       192.168.1.35:6060(Serving) -&gt; 192.168.1.35:7070(AppServer)
+</I>&gt;<i>      UDP Frame 33       29/Aug/07 00:30:29.0896 TimeFromPreviousSipFrame=0.0118 TimeFromStart=36.6101 
+</I>&gt;<i> SIP/2.0 180 Ringing 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=130981 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&gt; 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 34       192.168.1.35:4060(Proxy) -&gt; 127.0.0.1:10000(Bob)
+</I>&gt;<i>      UDP Frame 34       29/Aug/07 00:30:29.4293 TimeFromPreviousSipFrame=0.3397 TimeFromStart=36.9498 
+</I>&gt;<i> INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 SIP/2.0 
+</I>&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Max-Forwards:  9 
+</I>&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.sip.dynserv.org</A>:6060;lr&gt; 
+</I>&gt;<i> Record-Route: &lt;sip:192.168.1.35:7070;lr&gt; 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKb8bd.b0214b24.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:6060;received=192.168.1.35;rport=6060;branch=z9hG4bKb8bd.745d2e77.0 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hola 
+</I>&gt;<i> Via: SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 1.1.1.1</A>:5060&gt; 
+</I>&gt;<i> Content-Type: application/sdp 
+</I>&gt;<i> Allow: INVITE,ACK,CANCEL,BYE 
+</I>&gt;<i> Supported: 100rel 
+</I>&gt;<i> Content-Length:  144 
+</I>&gt;<i> P-Called-Party-ID: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt; 
+</I>&gt;<i>  
+</I>&gt;<i> v=0 
+</I>&gt;<i> o=- 0 0 IN IP4 1.1.1.1 
+</I>&gt;<i> s=- 
+</I>&gt;<i> c=IN IP4 1.1.1.1 
+</I>&gt;<i> t=0 0 
+</I>&gt;<i> m=video 57386 RTP/AVP 96 
+</I>&gt;<i> a=fmtp:96 PROFILE=0;LEVEL=10 
+</I>&gt;<i> a=rtpmap:96 H263-2000/90000 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 35       127.0.0.1:10000(Bob) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 35       29/Aug/07 00:30:29.4296 TimeFromPreviousSipFrame=0.0003 TimeFromStart=36.9501 
+</I>&gt;<i> SIP/2.0 100 Trying 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKb8bd.b0214b24., SIP/2.0/UDP 192.168.1.35:6060;received=192.168.1.35;rport=6060;branch=z9hG4bKb8bd.745d2e77., SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=130981 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 36       192.168.1.35:4060(Proxy) -&gt; 192.168.1.35:6060(Serving)
+</I>&gt;<i>      UDP Frame 36       29/Aug/07 00:30:29.4303 TimeFromPreviousSipFrame=0.0007 TimeFromStart=36.9508 
+</I>&gt;<i> SIP/2.0 100 Trying 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:6060;received=192.168.1.35;rport=6060;branch=z9hG4bKb8bd.745d2e77., SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=130981 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 37       192.168.1.35:6060(Serving) -&gt; 192.168.1.35:7070(AppServer)
+</I>&gt;<i>      UDP Frame 37       29/Aug/07 00:30:29.4311 TimeFromPreviousSipFrame=0.0008 TimeFromStart=36.9516 
+</I>&gt;<i> SIP/2.0 100 Trying 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=130981 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 38       127.0.0.1:10000(Bob) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 38       29/Aug/07 00:30:29.4815 TimeFromPreviousSipFrame=0.0504 TimeFromStart=37.0020 
+</I>&gt;<i> SIP/2.0 200 OK 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKb8bd.b0214b24., SIP/2.0/UDP 192.168.1.35:6060;received=192.168.1.35;rport=6060;branch=z9hG4bKb8bd.745d2e77., SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=13098SIPpTag011 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Route:  &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.sip.dynserv.org</A>:6060;lr, &lt;sip:192.168.1.35:7070;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&gt; 
+</I>&gt;<i> Content-Type: application/sdp 
+</I>&gt;<i> Content-Length:  211 
+</I>&gt;<i>  
+</I>&gt;<i> v=0 
+</I>&gt;<i> o=- 52068 52068 IN IP4 127.0.0.1 
+</I>&gt;<i> s=- 
+</I>&gt;<i> c=IN IP4 127.0.0.1 
+</I>&gt;<i> t=0 0 
+</I>&gt;<i> m=video 49152 RTP/AVP 96 
+</I>&gt;<i> b=AS:128 
+</I>&gt;<i> a=recvonly 
+</I>&gt;<i> a=X-application:com.nokia.rtvs 
+</I>&gt;<i> a=rtpmap:96 H263-2000/90000 
+</I>&gt;<i> a=fmtp:96 profile=0; level=10 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 39       192.168.1.35:4060(Proxy) -&gt; 192.168.1.35:6060(Serving)
+</I>&gt;<i>      UDP Frame 39       29/Aug/07 00:30:29.4823 TimeFromPreviousSipFrame=0.0008 TimeFromStart=37.0028 
+</I>&gt;<i> SIP/2.0 200 OK 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:6060;received=192.168.1.35;rport=6060;branch=z9hG4bKb8bd.745d2e77., SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=13098SIPpTag011 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Route:  &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.sip.dynserv.org</A>:6060;lr, &lt;sip:192.168.1.35:7070;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&gt; 
+</I>&gt;<i> Content-Type: application/sdp 
+</I>&gt;<i> Content-Length:  211 
+</I>&gt;<i>  
+</I>&gt;<i> v=0 
+</I>&gt;<i> o=- 52068 52068 IN IP4 127.0.0.1 
+</I>&gt;<i> s=- 
+</I>&gt;<i> c=IN IP4 127.0.0.1 
+</I>&gt;<i> t=0 0 
+</I>&gt;<i> m=video 49152 RTP/AVP 96 
+</I>&gt;<i> b=AS:128 
+</I>&gt;<i> a=recvonly 
+</I>&gt;<i> a=X-application:com.nokia.rtvs 
+</I>&gt;<i> a=rtpmap:96 H263-2000/90000 
+</I>&gt;<i> a=fmtp:96 profile=0; level=10 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 40       192.168.1.35:6060(Serving) -&gt; 192.168.1.35:7070(AppServer)
+</I>&gt;<i>      UDP Frame 40       29/Aug/07 00:30:29.4831 TimeFromPreviousSipFrame=0.0008 TimeFromStart=37.0036 
+</I>&gt;<i> SIP/2.0 200 OK 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=13098SIPpTag011 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Route:  &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.sip.dynserv.org</A>:6060;lr, &lt;sip:192.168.1.35:7070;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&gt; 
+</I>&gt;<i> Content-Type: application/sdp 
+</I>&gt;<i> Content-Length:  211 
+</I>&gt;<i>  
+</I>&gt;<i> v=0 
+</I>&gt;<i> o=- 52068 52068 IN IP4 127.0.0.1 
+</I>&gt;<i> s=- 
+</I>&gt;<i> c=IN IP4 127.0.0.1 
+</I>&gt;<i> t=0 0 
+</I>&gt;<i> m=video 49152 RTP/AVP 96 
+</I>&gt;<i> b=AS:128 
+</I>&gt;<i> a=recvonly 
+</I>&gt;<i> a=X-application:com.nokia.rtvs 
+</I>&gt;<i> a=rtpmap:96 H263-2000/90000 
+</I>&gt;<i> a=fmtp:96 profile=0; level=10 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 41       192.168.1.35:7070(AppServer) -&gt; 192.168.1.35:6060(Serving)
+</I>&gt;<i>      UDP Frame 41       29/Aug/07 00:30:29.4835 TimeFromPreviousSipFrame=0.0004 TimeFromStart=37.0040 
+</I>&gt;<i> ACK sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000 SIP/2.0 
+</I>&gt;<i> Record-Route: &lt;sip:192.168.1.35:7070;lr&gt; 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-4;my=hola 
+</I>&gt;<i> Via: SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-4.12345 
+</I>&gt;<i> CSeq: 1 ACK 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=13098SIPpTag011 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000;lr&gt; 
+</I>&gt;<i> Content-Length: 0 
+</I>&gt;<i>  
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 42       127.0.0.1:10000(Bob) -&gt; 192.168.1.35:4060(Proxy)
+</I>&gt;<i>      UDP Frame 42       29/Aug/07 00:30:29.9854 TimeFromPreviousSipFrame=0.5018 TimeFromStart=37.5059 
+</I>&gt;<i> SIP/2.0 200 OK 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:4060;branch=z9hG4bKb8bd.b0214b24., SIP/2.0/UDP 192.168.1.35:6060;received=192.168.1.35;rport=6060;branch=z9hG4bKb8bd.745d2e77., SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=13098SIPpTag011 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Route:  &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.sip.dynserv.org</A>:6060;lr, &lt;sip:192.168.1.35:7070;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&gt; 
+</I>&gt;<i> Content-Type: application/sdp 
+</I>&gt;<i> Content-Length:  211 
+</I>&gt;<i>  
+</I>&gt;<i> v=0 
+</I>&gt;<i> o=- 52068 52068 IN IP4 127.0.0.1 
+</I>&gt;<i> s=- 
+</I>&gt;<i> c=IN IP4 127.0.0.1 
+</I>&gt;<i> t=0 0 
+</I>&gt;<i> m=video 49152 RTP/AVP 96 
+</I>&gt;<i> b=AS:128 
+</I>&gt;<i> a=recvonly 
+</I>&gt;<i> a=X-application:com.nokia.rtvs 
+</I>&gt;<i> a=rtpmap:96 H263-2000/90000 
+</I>&gt;<i> a=fmtp:96 profile=0; level=10 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 43       192.168.1.35:4060(Proxy) -&gt; 192.168.1.35:6060(Serving)
+</I>&gt;<i>      UDP Frame 43       29/Aug/07 00:30:29.9858 TimeFromPreviousSipFrame=0.0004 TimeFromStart=37.5063 
+</I>&gt;<i> SIP/2.0 200 OK 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:6060;received=192.168.1.35;rport=6060;branch=z9hG4bKb8bd.745d2e77., SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=13098SIPpTag011 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Route:  &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.sip.dynserv.org</A>:6060;lr, &lt;sip:192.168.1.35:7070;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&gt; 
+</I>&gt;<i> Content-Type: application/sdp 
+</I>&gt;<i> Content-Length:  211 
+</I>&gt;<i>  
+</I>&gt;<i> v=0 
+</I>&gt;<i> o=- 52068 52068 IN IP4 127.0.0.1 
+</I>&gt;<i> s=- 
+</I>&gt;<i> c=IN IP4 127.0.0.1 
+</I>&gt;<i> t=0 0 
+</I>&gt;<i> m=video 49152 RTP/AVP 96 
+</I>&gt;<i> b=AS:128 
+</I>&gt;<i> a=recvonly 
+</I>&gt;<i> a=X-application:com.nokia.rtvs 
+</I>&gt;<i> a=rtpmap:96 H263-2000/90000 
+</I>&gt;<i> a=fmtp:96 profile=0; level=10 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>      SIP MESSAGE 44       192.168.1.35:6060(Serving) -&gt; 192.168.1.35:7070(AppServer)
+</I>&gt;<i>      UDP Frame 44       29/Aug/07 00:30:29.9863 TimeFromPreviousSipFrame=0.0005 TimeFromStart=37.5068 
+</I>&gt;<i> SIP/2.0 200 OK 
+</I>&gt;<i> Via: SIP/2.0/UDP 192.168.1.35:7070;branch=z9hG4bK-13103-1-0;my=hol, SIP/2.0/UDP 1.1.1.1:5060;branch=z9hG4bK-13103-1-0.12345 
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">609 at 609.net</A>&gt;;tag=1 
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at sip.dynserv.org</A>&gt;;tag=13098SIPpTag011 
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-13103 at 192.168.1.35</A> 
+</I>&gt;<i> CSeq: 1 INVITE 
+</I>&gt;<i> Route:  &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.sip.dynserv.org</A>:6060;lr, &lt;sip:192.168.1.35:7070;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.sip.dynserv.org</A>:4060;lr&gt; 
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:10000&gt; 
+</I>&gt;<i> Content-Type: application/sdp 
+</I>&gt;<i> Content-Length:  211 
+</I>&gt;<i>  
+</I>&gt;<i> v=0 
+</I>&gt;<i> o=- 52068 52068 IN IP4 127.0.0.1 
+</I>&gt;<i> s=- 
+</I>&gt;<i> c=IN IP4 127.0.0.1 
+</I>&gt;<i> t=0 0 
+</I>&gt;<i> m=video 49152 RTP/AVP 96 
+</I>&gt;<i> b=AS:128 
+</I>&gt;<i> a=recvonly 
+</I>&gt;<i> a=X-application:com.nokia.rtvs 
+</I>&gt;<i> a=rtpmap:96 H263-2000/90000 
+</I>&gt;<i> a=fmtp:96 profile=0; level=10 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Sip Message Descriptor was Truncated. An Extra line with full msg
+</I>&gt;<i> descriptor was added. Current gapwidth=30.
+</I>&gt;<i> Set gapwidth to 49 to avoid truncation: -gap:49
+</I>&gt;<i> or Disable Adding of Extra line by: -description:0
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002513.html">[OpenIMSCore-Users] Problems with AS initiated session
+</A></li>
+	<LI>Next message: <A HREF="002484.html">[OpenIMSCore-Users] How to create a Public Service Identity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2491">[ date ]</a>
+              <a href="thread.html#2491">[ thread ]</a>
+              <a href="subject.html#2491">[ subject ]</a>
+              <a href="author.html#2491">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] about Start the components error
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20about%20Start%20the%20components%20error&In-Reply-To=%3CCOL120-W41E04A6A2D8E177327268FFD570%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006043.html">
+   <LINK REL="Next"  HREF="006045.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] about Start the components error</H1>
+    <B>kavitha N K</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20about%20Start%20the%20components%20error&In-Reply-To=%3CCOL120-W41E04A6A2D8E177327268FFD570%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] about Start the components error">kavitha_nk at hotmail.com
+       </A><BR>
+    <I>Tue Feb  2 12:06:32 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006043.html">[OpenIMSCore-Users] about Start the components error
+</A></li>
+        <LI>Next message: <A HREF="006045.html">[OpenIMSCore-Users] Error using add-imscore-users_newdb.sh
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6044">[ date ]</a>
+              <a href="thread.html#6044">[ thread ]</a>
+              <a href="subject.html#6044">[ subject ]</a>
+              <a href="author.html#6044">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi Rohini,
+
+ 
+
+Please check if there was any error / warning related to this during compilation. I had faced this issue and it was resolved by making the following change for the Makefile under  ser_ims/modules/mysql directory.
+
+change &quot;-lmysqlclient -lz&quot;  to &quot;-lmysqlclient -lz -lm&quot; 
+
+ 
+
+Hope this helps !
+
+ 
+
+Regards
+
+kavitha
+
+
+Date: Tue, 2 Feb 2010 16:03:23 +0530
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">rohini.n56 at wipro.com</A>
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: [OpenIMSCore-Users] about Start the components error
+
+
+
+Hello Sir, 
+
+
+
+
+ 
+
+now as given in 6th step 
+
+
+Start pcscf.sh, icscf.sh and scscf.sh 
+
+All these should run in parallel. 
+here when executing this using linux command [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at localhost</A> OpenIMSCore]# ./pcscf.sh 
+i was getting error as given in below, now as 
+
+./pcscf.sh: line 3: ./ser_ims/cfg/killser: Permission denied 
+ 0(3243) ERROR: load_module: could not open module &lt;/opt/OpenIMSCore/ser_ims/modules/dialog/dialog.so&gt;: lib_ser_cds.so: cannot open shared object file: No such file or directory
+ 0(3243) parse error (37,13-14): failed to load module
+ 0(3243) ERROR: load_module: could not open module &lt;/opt/OpenIMSCore/ser_ims/modules/pcscf/pcscf.so&gt;: lib_ser_cds.so: cannot open shared object file: No such file or directory
+ 0(3243) parse error (42,13-14): failed to load module
+ 0(3243) set_mod_param_regex: No module matching &lt;pcscf&gt; found
+ 0(3243) parse error (44,18-19): Can't set module parameter
+
+
+we solved this by using the cmmnd #chmod 744
+
+read write executable the permission is accessed now
+but only that error is solved and now its coming as given in below..
+ 
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at localhost</A> OpenIMSCore]# ./icscf.sh
+ 0(7528) ERROR: load_module: could not open module &lt;/opt/OpenIMSCore/ser_ims/modules/mysql/mysql.so&gt;: /opt/OpenIMSCore/ser_ims/modules/mysql/mysql.so: undefined symbol: log
+ 0(7528) parse error (30,13-14): failed to load module
+ERROR: bad config file (1 errors)
+ 0(7528) INFO:cdp:cdp_exit(): CDiameterPeer stoping ...
+./icscf.sh: line 4:  7528 Segmentation fault      /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+------ Semaphore Arrays --------
+key        semid      owner      perms      nsems     
+0x4d00024c 0          wipro     600        8         
+do have any idea about it!!
+
+if so then plz guide me in this..
+
+
+
+
+With Regards,
+N.Rohini
+Project Trainee
+Please do not print this email unless it is absolutely necessary. 
+
+The information contained in this electronic message and any attachments to this message are intended for the exclusive use of the addressee(s) and may contain proprietary, confidential or privileged information. If you are not the intended recipient, you should not disseminate, distribute or copy this e-mail. Please notify the sender immediately and destroy all copies of this message and any attachments. 
+
+WARNING: Computer viruses can be transmitted via email. The recipient should check this email and any attachments for the presence of viruses. The company accepts no liability for any damage caused by any virus transmitted by this email. 
+
+www.wipro.com 
+ 		 	   		  
+_________________________________________________________________
+Hotmail: Trusted email with Microsoft&#8217;s powerful SPAM protection.
+<A HREF="https://signup.live.com/signup.aspx?id=60969">https://signup.live.com/signup.aspx?id=60969</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100202/ef17b363/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100202/ef17b363/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006043.html">[OpenIMSCore-Users] about Start the components error
+</A></li>
+	<LI>Next message: <A HREF="006045.html">[OpenIMSCore-Users] Error using add-imscore-users_newdb.sh
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6044">[ date ]</a>
+              <a href="thread.html#6044">[ thread ]</a>
+              <a href="subject.html#6044">[ subject ]</a>
+              <a href="author.html#6044">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

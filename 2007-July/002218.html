@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] default_as doesn't send response, pcscf iteratively sends request, and eventually scscf crashes.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20default_as%20doesn%27t%20send%20response%2C%0A%20pcscf%20iteratively%20sends%20request%2C%20and%20eventually%20scscf%20crashes.&In-Reply-To=%3C46A087EB.9090603%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002134.html">
+   <LINK REL="Next"  HREF="002135.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] default_as doesn't send response, pcscf iteratively sends request, and eventually scscf crashes.</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20default_as%20doesn%27t%20send%20response%2C%0A%20pcscf%20iteratively%20sends%20request%2C%20and%20eventually%20scscf%20crashes.&In-Reply-To=%3C46A087EB.9090603%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] default_as doesn't send response, pcscf iteratively sends request, and eventually scscf crashes.">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Jul 20 12:01:15 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002134.html">[OpenIMSCore-Users] default_as doesn't send response, pcscf iteratively sends request, and eventually scscf crashes.
+</A></li>
+        <LI>Next message: <A HREF="002135.html">[OpenIMSCore-Users] P-Associated Uri does not contain all public	address
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2218">[ date ]</a>
+              <a href="thread.html#2218">[ thread ]</a>
+              <a href="subject.html#2218">[ subject ]</a>
+              <a href="author.html#2218">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>When the event header is reg, the S-CSCF is responding because it's a
+subscription to the registration event and not for presence. the
+registration event is an internal feature of the S-CSCF registrar.
+
+Joao is working on a fix for the S-CSCF crash. However, your issue is
+that the presence server, which by your trace should run at
+148.88.233.209:5065, does not answer at all...
+
+Because of the default_handling=0, finally the S-CSCF gives up and
+routes the SUBSCRIBE further, in this case back to Alice's UE. But it
+seems that not even the UE responds...
+
+
+-Dragos
+
+KevinKinnan wrote:
+&gt;<i> If the value of Event header in SUBSCRIBE request is 'reg', the UE
+</I>&gt;<i> receives NOTIFY response from S-CSCF with a basic XML content whatever
+</I>&gt;<i> the service profile is default_as or another added AS.
+</I>&gt;<i>
+</I>&gt;<i> But if this value modifies to 'presence', the situation I said will
+</I>&gt;<i> occur, pcscf repeatedly sends request and scscf crashes. I suppose
+</I>&gt;<i> that the presence server(Openser Presence Module) is not configured
+</I>&gt;<i> well, although it runs well. BTW, I act as alice to SUBSCRIBE to IMS
+</I>&gt;<i> Open Core using presence_as as service profile instead. The settings
+</I>&gt;<i> of presence_as service profile are as follows:
+</I>&gt;<i>
+</I>&gt;<i> apsvr_id=2, name=presence_as, address=sip:open-ims.test:5065,
+</I>&gt;<i> default_handling=0;
+</I>&gt;<i> the values of as_perm_list table in database are all zeros;
+</I>&gt;<i> ifc_id=2, trigpt_id=2, apsvr_id=2, ifc_name=presence_ifc;
+</I>&gt;<i> ifc_id=2, svp_id=2, priority=0;
+</I>&gt;<i> spt_id=4, trigpt_id=2, sip_header=Event,
+</I>&gt;<i> sip_header_content=.*presence.*, neg=0, groupid=1, type=5;
+</I>&gt;<i> spt_id=5, trigpt_id=2, session_case=0, neg=0, gr oupid=0, type=2;
+</I>&gt;<i> spt_id=6, trigpt_id=2, session_case=0, neg=0, groupid=0, type=2;
+</I>&gt;<i> svp_id=2, name=presence_sp;
+</I>&gt;<i> trigpt_id=2, name=presence_tp, cnf=1;
+</I>&gt;<i>
+</I>&gt;<i> Soory about wrong format of the trace file, Dragos. I attach some new
+</I>&gt;<i> trace files. The internal trace file is tracing port
+</I>&gt;<i> 3060,4060,5060,6060 and 5065.
+</I>&gt;<i>
+</I>&gt;<i> Kevin,
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &#20351;&#29992;&#19979;&#19968;&#20195;&#30340; MSN Messenger&#12290; &#31435;&#21363;&#23581;&#35797;&#65281;
+</I>&gt;<i> &lt;<A HREF="http://imagine-msn.com/messenger/launch80/default.aspx?locale=zh-cn&amp;source=wlmailtagline">http://imagine-msn.com/messenger/launch80/default.aspx?locale=zh-cn&amp;source=wlmailtagline</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002134.html">[OpenIMSCore-Users] default_as doesn't send response, pcscf iteratively sends request, and eventually scscf crashes.
+</A></li>
+	<LI>Next message: <A HREF="002135.html">[OpenIMSCore-Users] P-Associated Uri does not contain all public	address
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2218">[ date ]</a>
+              <a href="thread.html#2218">[ thread ]</a>
+              <a href="subject.html#2218">[ subject ]</a>
+              <a href="author.html#2218">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

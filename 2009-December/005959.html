@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] AS infor(URI) in Route Header of requests from	SCSCF to AS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AS%20infor%28URI%29%20in%20Route%20Header%20of%20requests%20from%0A%09SCSCF%20to%20AS&In-Reply-To=%3C200912092118080629368%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005958.html">
+   <LINK REL="Next"  HREF="005961.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] AS infor(URI) in Route Header of requests from	SCSCF to AS</H1>
+    <B>Zhang Wen Hua</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AS%20infor%28URI%29%20in%20Route%20Header%20of%20requests%20from%0A%09SCSCF%20to%20AS&In-Reply-To=%3C200912092118080629368%40gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] AS infor(URI) in Route Header of requests from	SCSCF to AS">zhang.wenhua at gmail.com
+       </A><BR>
+    <I>Wed Dec  9 14:18:14 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005958.html">[OpenIMSCore-Users] 2nd Open NGN and IMS Testbeds Workshop @	TRIDENTCOM 2010
+</A></li>
+        <LI>Next message: <A HREF="005961.html">[OpenIMSCore-Users] AS infor(URI) in Route Header of requests	fromSCSCF to AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5959">[ date ]</a>
+              <a href="thread.html#5959">[ thread ]</a>
+              <a href="subject.html#5959">[ subject ]</a>
+              <a href="author.html#5959">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dragos and all,
+
+Currently, we use the openimscore to integrate our AS(sip:192.168.15.67:5060).  The SUBSCRIBE is routed from SCSCF to AS correctly, but the AS information of Route header in SUBSCRIBE is not what we expected. I want to use the sip uri in route header to do some specific handling, so I cofigured the Service Name(SIP: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">isps at ps.open-ims.test</A>:5060) instead of the IP address in FoHSS, but when SCSCF adds the AS route header, it still resolve the configured Service Name to IP address(sip:192.168.15.67:5060), not the expected (sip: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">isps at ps.open-ims.test</A>:5060),  is there any specific configuration on the SCSCF or HSS? 
+
+Your help is very appreciated. 
+
+Below is the received SUBSCRIBE message in AS. I also attached the IFC used in this case.
+=============================================================
+SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">50000 at open-ims.test</A> SIP/2.0
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Route: &lt;sip:192.168.15.67:5060;lr&gt;, &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=1;d=0;a=7369703a3530303030406f70656e2d696d732e74657374&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+Via: SIP/2.0/UDP 192.168.15.157:6060;branch=z9hG4bK0609.746c4f22.0
+Via: SIP/2.0/UDP 192.168.15.157:4060;branch=z9hG4bK0609.4655d5a1.0
+Via: SIP/2.0/UDP 192.168.11.19:4248;received=192.168.14.163;received=192.168.14.163;rport=4248;branch=z9hG4bK1260164430350
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">50000 at open-ims.test</A>&gt;;tag=3195
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">50000 at open-ims.test</A>&gt;
+Call-ID: M-e75ab9bb4a9f9fcff4c1d69cccd0050c
+CSeq: 601 SUBSCRIBE
+Max-Forwards: 15
+Allow: INVITE, ACK, CANCEL, BYE, MESSAGE, OPTIONS, NOTIFY, PRACK, UPDATE, REFER
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">50000 at 192.168.11.19</A>:4248;transport=udp&gt;
+User-Agent: IM-client/OMA1.0 Mercuro-Bronze/v4.0.1489.0
+Expires: 600000
+Event: presence.winfo
+Accept: application/watcherinfo+xml
+P-Access-Network-Info: ADSL2+;utran-cell-id-3gpp=00000000
+Privacy: none
+Allow-Events: refer, presence, presence.winfo, xcap-diff
+Content-Length: 0
+P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">50000 at open-ims.test</A>&gt;
+P-Charging-Vector: icid-value=&quot;P-CSCFabcd4b1cbc8400000098&quot;;icid-generated-at=192.168.15.157;orig-ioi=&quot;open-ims.test&quot;
+==================ifc==============================
+&lt;IMSSubscription&gt;
+&lt;PrivateID&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">50000 at open-ims.test</A>&lt;/PrivateID&gt;
+&lt;ServiceProfile&gt;
+&lt;PublicIdentity&gt;
+&lt;Identity&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">50000 at open-ims.test</A>&lt;/Identity&gt;
+&lt;Extension&gt;
+&lt;IdentityType&gt;0&lt;/IdentityType&gt;
+&lt;/Extension&gt;
+&lt;/PublicIdentity&gt;
+&lt;InitialFilterCriteria&gt;
+&lt;Priority&gt;0&lt;/Priority&gt;
+&lt;TriggerPoint&gt;
+&lt;ConditionTypeCNF&gt;1&lt;/ConditionTypeCNF&gt;
+&lt;SPT&gt;
+&lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+&lt;Group&gt;0&lt;/Group&gt;
+&lt;Method&gt;REGISTER&lt;/Method&gt;
+&lt;Extension&gt;
+&lt;RegistrationType&gt;0&lt;/RegistrationType&gt;
+&lt;/Extension&gt;
+&lt;/SPT&gt;
+&lt;SPT&gt;
+&lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+&lt;Group&gt;0&lt;/Group&gt;
+&lt;Method&gt;PUBLISH&lt;/Method&gt;
+&lt;Extension/&gt;
+&lt;/SPT&gt;
+&lt;SPT&gt;
+&lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+&lt;Group&gt;0&lt;/Group&gt;
+&lt;Method&gt;SUBSCRIBE&lt;/Method&gt;
+&lt;Extension/&gt;
+&lt;/SPT&gt;
+&lt;/TriggerPoint&gt;
+&lt;ApplicationServer&gt;
+&lt;ServerName&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">isps at ps.open-ims.test</A>:5060&lt;/ServerName&gt;
+&lt;DefaultHandling&gt;0&lt;/DefaultHandling&gt;
+&lt;/ApplicationServer&gt;
+&lt;/InitialFilterCriteria&gt;
+&lt;/ServiceProfile&gt;
+&lt;/IMSSubscription&gt;
+
+2009-12-09 
+
+
+
+Zhang Wen Hua 
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20091209/db8e0965/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20091209/db8e0965/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005958.html">[OpenIMSCore-Users] 2nd Open NGN and IMS Testbeds Workshop @	TRIDENTCOM 2010
+</A></li>
+	<LI>Next message: <A HREF="005961.html">[OpenIMSCore-Users] AS infor(URI) in Route Header of requests	fromSCSCF to AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5959">[ date ]</a>
+              <a href="thread.html#5959">[ thread ]</a>
+              <a href="subject.html#5959">[ subject ]</a>
+              <a href="author.html#5959">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

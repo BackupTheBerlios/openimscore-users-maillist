@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registration with IPSEC
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20with%20IPSEC&In-Reply-To=%3C4614D982.7070002%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001410.html">
+   <LINK REL="Next"  HREF="001412.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registration with IPSEC</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20with%20IPSEC&In-Reply-To=%3C4614D982.7070002%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Registration with IPSEC">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Apr  5 13:12:02 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001410.html">[OpenIMSCore-Users] Registration with IPSEC
+</A></li>
+        <LI>Next message: <A HREF="001412.html">[OpenIMSCore-Users] Registration with IPSEC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1411">[ date ]</a>
+              <a href="thread.html#1411">[ thread ]</a>
+              <a href="subject.html#1411">[ subject ]</a>
+              <a href="author.html#1411">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Then how do you explain Figure 9 in the same document? An what is the
+use of 4 SAs when you only have 2 ways of communication? Here I would
+rather go with the standard SIP way of returning responses to where the
+request came from.
+
+-Dragos
+
+Prateek Shadangi wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i> Whatever you have said is true for TCP,
+</I>&gt;<i> But When Client is using UPD as transport protocol, It should send
+</I>&gt;<i> Request from port-uc and expect responses at port-us.
+</I>&gt;<i>
+</I>&gt;<i> Below is the excepts from 3GPP 33.203:
+</I>&gt;<i> ....
+</I>&gt;<i> These ports are used with both, UDP and TCP. The use of these ports
+</I>&gt;<i> may differ for TCP and UDP, as follows:
+</I>&gt;<i>         UDP case: the UE receives requests and responses protected
+</I>&gt;<i> with ESP on the port port_us (the&quot;protected server port&quot;). The UE
+</I>&gt;<i> sends requests and responses protected with ESP on the port port_uc
+</I>&gt;<i> (the &quot;protected client port&quot;).
+</I>&gt;<i>         TCP case: the UE, if it does not have a TCP connection towards
+</I>&gt;<i> the P CSCF yet, shall set up a TCP connection to the port port_ps of
+</I>&gt;<i> the P CSCF before sending a request to it.
+</I>&gt;<i> ....
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Prateek
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of
+</I>&gt;<i> Dragos Vingarzan
+</I>&gt;<i> Sent: Thursday, April 05, 2007 3:41 PM
+</I>&gt;<i> To: Prateek Shadangi
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] Registration with IPSEC
+</I>&gt;<i>
+</I>&gt;<i> Hello Prateek,
+</I>&gt;<i>
+</I>&gt;<i> The responses are sent to the port_uc - User Client. When the Endpoint
+</I>&gt;<i> is doing UAC, then it sends requests from port_uc and should be ready
+</I>&gt;<i> to receive answers for those requests on the same port. Only requests
+</I>&gt;<i> are sent towards port_us.
+</I>&gt;<i>
+</I>&gt;<i> Then about your error, please register the same contacts that you are
+</I>&gt;<i> going to use: you registered 192.168.1.2:5060 and then you use
+</I>&gt;<i> 192.168.1.2:1052 because of IPSec. So the error below was normal.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Prateek Shadangi wrote:
+</I>&gt;<i> &gt; Hi All,
+</I>&gt;<i> &gt; I am testing REGISTRATION with IPSEC enabled.
+</I>&gt;<i> &gt; I am able to send the 1st register and get 401 response for it.
+</I>&gt;<i> &gt; I am able to send the 2nd encrypted register and pcscf is able to
+</I>&gt;<i> &gt; decrypt it.
+</I>&gt;<i> &gt; But I am not receiving a 200 OK for it.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; From the ethereal logs I can see that the 200 OK is being sent as a
+</I>&gt;<i> &gt; plain text.
+</I>&gt;<i> &gt; One more issue is 200 OK is being sent to port-uc of the client
+</I>&gt;<i> &gt; instead of port-us.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I can see the following msgs in pcscf log:
+</I>&gt;<i> &gt; 1(19977) DBG:P-CSCF:P_ipsec_200: Looking for &lt;1://192.168.1.2:1052&gt;
+</I>&gt;<i> &gt; 1(19977) DBG:P-CSCF:P_ipsec_200: Contact expired or no IPSec info
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Attaching the ethereal trace and pcscf log.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Can anyone tell me where is the problem ??
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Regards,
+</I>&gt;<i> &gt; Prateek
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ----------------------------------------------------------------------
+</I>&gt;<i> &gt; -- Don't be flakey. Get Yahoo! Mail for Mobile
+</I>&gt;<i> &gt; &lt;<A HREF="http://us.rd.yahoo.com/evt=43909/*http://mobile.yahoo.com/mail">http://us.rd.yahoo.com/evt=43909/*http://mobile.yahoo.com/mail</A>&gt; and
+</I>&gt;<i> &gt; always stay connected
+</I>&gt;<i> &gt; &lt;<A HREF="http://us.rd.yahoo.com/evt=43909/*http://mobile.yahoo.com/mail">http://us.rd.yahoo.com/evt=43909/*http://mobile.yahoo.com/mail</A>&gt; to
+</I>&gt;<i> &gt; friends.
+</I>&gt;<i> &gt; ----------------------------------------------------------------------
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt; 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Finding fabulous fares is fun.
+</I>&gt;<i> Let Yahoo! FareChase search your favorite travel sites
+</I>&gt;<i> &lt;<A HREF="http://farechase.yahoo.com/promo-generic-14795097;_ylc=X3oDMTFtNW45amVpBF9TAzk3NDA3NTg5BF9zAzI3MTk0ODEEcG9zAzEEc2VjA21haWx0YWdsaW5lBHNsawNxMS0wNw--">http://farechase.yahoo.com/promo-generic-14795097;_ylc=X3oDMTFtNW45amVpBF9TAzk3NDA3NTg5BF9zAzI3MTk0ODEEcG9zAzEEc2VjA21haWx0YWdsaW5lBHNsawNxMS0wNw--</A>&gt;
+</I>&gt;<i> to find flight and hotel bargains.
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001410.html">[OpenIMSCore-Users] Registration with IPSEC
+</A></li>
+	<LI>Next message: <A HREF="001412.html">[OpenIMSCore-Users] Registration with IPSEC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1411">[ date ]</a>
+              <a href="thread.html#1411">[ thread ]</a>
+              <a href="subject.html#1411">[ subject ]</a>
+              <a href="author.html#1411">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

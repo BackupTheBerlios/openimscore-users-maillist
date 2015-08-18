@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Anyone faced Error 479 with extra space? //KIndly help
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Anyone%20faced%20Error%20479%20with%20extra%20space%3F%0A%20//KIndly%20help&In-Reply-To=%3CAANLkTinGTHbxbb4A3peocxjUBAKO42oxFe8JxeTNv20c%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006440.html">
+   <LINK REL="Next"  HREF="006442.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Anyone faced Error 479 with extra space? //KIndly help</H1>
+    <B>sougata pal</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Anyone%20faced%20Error%20479%20with%20extra%20space%3F%0A%20//KIndly%20help&In-Reply-To=%3CAANLkTinGTHbxbb4A3peocxjUBAKO42oxFe8JxeTNv20c%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Anyone faced Error 479 with extra space? //KIndly help">sougata.pal at gmail.com
+       </A><BR>
+    <I>Mon Aug 16 18:25:48 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006440.html">[OpenIMSCore-Users] Anyone faced Error 479 with extra space?	//KIndly help
+</A></li>
+        <LI>Next message: <A HREF="006442.html">[OpenIMSCore-Users] Anyone faced Error 479 with extra space? //KIndly help
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6441">[ date ]</a>
+              <a href="thread.html#6441">[ thread ]</a>
+              <a href="subject.html#6441">[ subject ]</a>
+              <a href="author.html#6441">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Franz
+
+I guess i have found some anomalies in this regard which i would like to
+discuss.
+When i go to icscf database and look into its tables ,
+
+mysql&gt; show tables;
++---------------------+
+|<i> Tables_in_icscf     |
+</I>+---------------------+
+|<i> nds_trusted_domains |
+</I>|<i> s_cscf              |
+</I>|<i> s_cscf_capabilities |
+</I>+---------------------+
+3 rows in set (0.00 sec)
+
+mysql&gt; SELECT * FROM s_cscf;
++----+-----------------------+---------------------------------+
+|<i> id | name                  | s_cscf_uri                      |
+</I>+----+-----------------------+---------------------------------+
+|<i>  1 | First and only S-CSCF | sip:scscf.open-ims.sougata:6060 |
+</I>+----+-----------------------+---------------------------------+
+1 row in set (0.00 sec)
+
+mysql&gt; SELECT * FROM s_cscf_capabilities;
++----+-----------+------------+
+|<i> id | id_s_cscf | capability |
+</I>+----+-----------+------------+
+|<i>  1 |         1 |          0 |
+</I>|<i>  2 |         1 |          1 |
+</I>+----+-----------+------------+
+2 rows in set (0.02 sec)
+
+Now just to mention in my icscf.sql file,
+
+/*!40000 ALTER TABLE `nds_trusted_domains` DISABLE KEYS */;
+LOCK TABLES `nds_trusted_domains` WRITE;
+INSERT INTO `nds_trusted_domains` VALUES (1,'open-ims.sougata');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `nds_trusted_domains` ENABLE KEYS */;
+
+--
+-- Dumping data for table `s_cscf`
+--
+
+/*!40000 ALTER TABLE `s_cscf` DISABLE KEYS */;
+LOCK TABLES `s_cscf` WRITE;
+INSERT INTO `s_cscf` VALUES (1,'First and only
+S-CSCF','sip:scscf.open-ims.sougata:6060');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `s_cscf` ENABLE KEYS */;
+
+--
+-- Dumping data for table `s_cscf_capabilities`
+--
+
+/*!40000 ALTER TABLE `s_cscf_capabilities` DISABLE KEYS */;
+LOCK TABLES `s_cscf_capabilities` WRITE;
+INSERT INTO `s_cscf_capabilities` VALUES (1,1,0),(2,1,1);
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `s_cscf_capabilities` ENABLE KEYS */;
+
+
+Now when i check into the hss_db database and then in its table
+preferred_scscf_set i see that
+
+mysql&gt; use &quot;hss_db&quot;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql&gt; SELECT * FROM preferred_scscf_set;
++----+--------+---------------------------------+----------------------------------+----------+
+|<i> id | id_set | name                            |
+</I>scscf_name                       | priority |
++----+--------+---------------------------------+----------------------------------+----------+
+|<i>  2 |      1 | sip:scscf.open-ims.sougata:6060 |
+</I>sip:scscf.open-ims.sougata:6060  |        1 |
++----+--------+---------------------------------+----------------------------------+----------+
+1 row in set (0.01 sec)
+
+In the userdata.sql in the preferred scscf section its like this ,
+
+
+LOCK TABLES `preferred_scscf_set` WRITE;
+/*!40000 ALTER TABLE `preferred_scscf_set` DISABLE KEYS */;
+INSERT INTO `preferred_scscf_set` VALUES
+(1,1,'scscf','sip:scscf.open-ims.sougata:6060',0);
+/*!40000 ALTER TABLE `preferred_scscf_set` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+
+The anomalies which i guess is regarding the id values mismatching along
+with its priorities.
+
+Again also when i see in the hss.web.console , in the NETWORK CONFIGURATION
+section the preferred scscf set is with id 1 and with name
+sip:scscf.open-ims.sougata:6060. There is nothing in against id 2.
+
+Do i have to update the id values in both the sql files and also in the
+mysql database?
+As i see this mismatch in the icscf.sql and userdata.sql files.
+
+Regards,
+
+Sougata
+
+
+
+On Mon, Aug 16, 2010 at 3:46 PM, Franz Edler
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> &gt; I can see that there is an extra &quot;space&quot; coming after the port being
+</I>&gt;<i> &gt; declared which is 6060.
+</I>&gt;<i>
+</I>&gt;<i> Yes. This seems to be the root cause of your problem.
+</I>&gt;<i>
+</I>&gt;<i> &gt; How to get rid of this extra space, which i am sure is the root cause for
+</I>&gt;<i> &gt; this error and which is not letting my users to get registered?
+</I>&gt;<i>
+</I>&gt;<i> &gt; Everywhere i have updated the scscf as &lt;sip:scscf.open-ims.sougata:6060&gt;
+</I>&gt;<i> ,
+</I>&gt;<i> &gt; but still this extra space is coming and not letting my users get
+</I>&gt;<i> &gt; registered.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Just to mention on this error trace that i am reviewing now, i see in
+</I>&gt;<i> &gt; wireshark that error is coming after the uri is reaching ICSCF&lt;5060&gt; ,
+</I>&gt;<i> &gt; which if i have correctly understood the &quot;extra&quot; space is coming at this
+</I>&gt;<i> &gt; stage , which the icscf can't match as the corresponding scscf uri which
+</I>&gt;<i> &gt; should be &lt;sip:scscf.open-ims.sougata:6060&gt; rather than &lt;sip:scscf.open-
+</I>&gt;<i> &gt; ims.sougata:6060 &gt;
+</I>&gt;<i>
+</I>&gt;<i> The S-CSCF address comes from I-CSCF database as a result of diameter
+</I>&gt;<i> UAR/UAA messages. The UAA (packet 315) contains in Server-Name AVP the
+</I>&gt;<i> extra
+</I>&gt;<i> space at the end of &quot;sip:scscf.open-ims.sougata:6060 &quot;.
+</I>&gt;<i> You can verify this when you count the AVP length within the packet bytes.
+</I>&gt;<i>
+</I>&gt;<i> I suggest that you correct this within the mentioned database table.
+</I>&gt;<i> You should look into your &quot;FHoSS/scripts/userdata.sql&quot; script where the
+</I>&gt;<i> extra space obviously comes from.
+</I>&gt;<i>
+</I>&gt;<i> -franz
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100816/07922dd0/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100816/07922dd0/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006440.html">[OpenIMSCore-Users] Anyone faced Error 479 with extra space?	//KIndly help
+</A></li>
+	<LI>Next message: <A HREF="006442.html">[OpenIMSCore-Users] Anyone faced Error 479 with extra space? //KIndly help
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6441">[ date ]</a>
+              <a href="thread.html#6441">[ thread ]</a>
+              <a href="subject.html#6441">[ subject ]</a>
+              <a href="author.html#6441">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

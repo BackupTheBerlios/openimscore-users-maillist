@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P-CSCF Via header problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20Via%20header%20problem&In-Reply-To=%3Cba4a96320707110805h45f3ee4fvd9a3cbb4752307df%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002132.html">
+   <LINK REL="Next"  HREF="002102.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P-CSCF Via header problem</H1>
+    <B>raman gupta</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20Via%20header%20problem&In-Reply-To=%3Cba4a96320707110805h45f3ee4fvd9a3cbb4752307df%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] P-CSCF Via header problem">ramandumcs at gmail.com
+       </A><BR>
+    <I>Wed Jul 11 17:05:44 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002132.html">[OpenIMSCore-Users] P-CSCF Via header problem
+</A></li>
+        <LI>Next message: <A HREF="002102.html">[OpenIMSCore-Users] why the OpenSER presence server works only in	localhost?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2131">[ date ]</a>
+              <a href="thread.html#2131">[ thread ]</a>
+              <a href="subject.html#2131">[ subject ]</a>
+              <a href="author.html#2131">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos
+
+I have tried this with IMS Communicator ( IMS Client ). But   IMS
+Communicator  is not interoperating properly with STUN server( Though it has
+support for STUN  ).That's why I moved to EyeBeam.
+
+
+On 7/11/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Hello Raman,
+</I>&gt;<i>
+</I>&gt;<i> eyebeam is not an IMS client. Then the idea behind IMS is that you
+</I>&gt;<i> should control the access network, so no need for STUN.... Sorry, but
+</I>&gt;<i> you are trying to mix two technologies in a manner that abuses the
+</I>&gt;<i> standards.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> raman gupta wrote:
+</I>&gt;<i> &gt; Hi Dragos
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; My Softphone( eyebeam ) is behind the NAT and is using STUN server to
+</I>&gt;<i> &gt; detect the public IP (assigned by NAT) Which  it can  use in SDP for
+</I>&gt;<i> &gt; RTP transmission.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; EyeBeam--&gt;NAT--&gt;STUN
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Eyebeam gets registered with public IP in the contact (  STUN server
+</I>&gt;<i> &gt; tells EyeBeam its public IP)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; So in INVITE message contact ip( public ) is different from via header
+</I>&gt;<i> &gt; ( private ip  ).And thus P-CSCF rejects it.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On 7/11/07, *Dragos Vingarzan* &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;&gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     Hello Raman,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     The P-CSCF needs to identify the user based on the source IP:port.
+</I>&gt;<i> &gt;     If it
+</I>&gt;<i> &gt;     would identify it by contact, then anybody that finds out your
+</I>&gt;<i> &gt;     contact
+</I>&gt;<i> &gt;     (for example by calling you) can then impersonate your user  and
+</I>&gt;<i> make
+</I>&gt;<i> &gt;     calls in your name.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     As such you always need to register the address that you would like
+</I>&gt;<i> to
+</I>&gt;<i> &gt;     use in Via as a valid Contact through normal registration
+</I>&gt;<i> procedures.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     -Dragos
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     raman gupta wrote:
+</I>&gt;<i> &gt;     &gt; Hi
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; P-CSCF is using  First Via header field in invite message to
+</I>&gt;<i> &gt;     determine
+</I>&gt;<i> &gt;     &gt; whether a user is registered or not . It is not taking this
+</I>&gt;<i> decision
+</I>&gt;<i> &gt;     &gt; on  the basis of Contact header field. since Contact can be
+</I>&gt;<i> &gt;     different
+</I>&gt;<i> &gt;     &gt; from First  Via header , It gives error message user is not
+</I>&gt;<i> &gt;     &gt; registered When the user is actually registered.
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; _______________________________________________
+</I>&gt;<i> &gt;     &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i> &gt;     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;     &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>&gt;
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     --
+</I>&gt;<i> &gt;     -----------------------------------------
+</I>&gt;<i> &gt;     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt;     Fraunhofer FOKUS/NGNI
+</I>&gt;<i> &gt;     Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt;     10589 Berlin,Germany
+</I>&gt;<i> &gt;     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt;     Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt;     Web www.fokus.fraunhofer.de &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt;     www.openimscore.org &lt;<A HREF="http://www.openimscore.org">http://www.openimscore.org</A>&gt;
+</I>&gt;<i> &gt;     We could change the world if God would give us the source code...
+</I>&gt;<i> &gt;     -----------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070711/7d57e1f6/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070711/7d57e1f6/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002132.html">[OpenIMSCore-Users] P-CSCF Via header problem
+</A></li>
+	<LI>Next message: <A HREF="002102.html">[OpenIMSCore-Users] why the OpenSER presence server works only in	localhost?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2131">[ date ]</a>
+              <a href="thread.html#2131">[ thread ]</a>
+              <a href="subject.html#2131">[ subject ]</a>
+              <a href="author.html#2131">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

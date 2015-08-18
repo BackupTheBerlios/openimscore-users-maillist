@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] RLS SUBSCRIBE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20RLS%20SUBSCRIBE&In-Reply-To=%3C008001cbb6c9%2411c388a0%24354a99e0%24%40technikum-wien.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006837.html">
+   <LINK REL="Next"  HREF="006838.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] RLS SUBSCRIBE</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20RLS%20SUBSCRIBE&In-Reply-To=%3C008001cbb6c9%2411c388a0%24354a99e0%24%40technikum-wien.at%3E"
+       TITLE="[OpenIMSCore-Users] RLS SUBSCRIBE">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Tue Jan 18 05:35:01 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006837.html">[OpenIMSCore-Users] RLS SUBSCRIBE
+</A></li>
+        <LI>Next message: <A HREF="006838.html">[OpenIMSCore-Users] [SR-Users] OpenIMSCore and Kamalio	Integration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6839">[ date ]</a>
+              <a href="thread.html#6839">[ thread ]</a>
+              <a href="subject.html#6839">[ subject ]</a>
+              <a href="author.html#6839">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i> When the SUBSCRIBE with the &quot;Supported: eventlist&quot; header and the SIP
+</I>&gt;<i> URI of a resource list is sent, the core acts in two different ways:
+</I>&gt;<i> 1) If the subscribed URI is a known  user of the domain, it translates
+</I>&gt;<i> its SIP URI to the sip contact uri.
+</I>&gt;<i> 2) If the subscribed URI is not an user, it answers with &quot;HSS User
+</I>&gt;<i> unknown&quot;.
+</I>&gt;<i> 
+</I>&gt;<i> In case 1, the core should not translate an URI, for instance,
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at domain.com</A> to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at IP</A>:PORT, it should send the original SUBSCRIBE
+</I>&gt;<i> to the previously configured AS. The trigger points are evaluated before
+</I>&gt;<i> translating the URI?
+</I>&gt;<i> 
+</I>&gt;<i> Anyone knows how to do that?
+</I>
+Yes, you have to provide a PSI (Public Service Identity) as defined in 3GPP
+TS 23.228 &#167;5.4.12.
+
+BR
+Franz
+
+
+This can be done as follows (text copied from E-mails from 2008):
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+-----------------------
+Distinct PSI and Wildcarded PSI are supported
+
+Provisioning an PSI in the HSS is not easy, so you&#180;ll need to play around a
+bit.
+
+if you want I-CSCF routing is a bit easier and there wont be any S-CSCF
+involved, this procedure is defined by 3GPP for trusted AS that don&#180;t need 
+to go through the S-CSCF
+
+I-CSCF routing
+-------------------------
+
+- put the address of your AS as a preferred-SCSCF (and set priority to 1 at
+least)
+- create an IMSU for your AS and asign the preferred-SCSCF to it
+- create IMPI and IMPU  and attach the whole thing  IMSU-IMPI-IMPU
+
+UE--{SIP INVITE}----&gt;I-CSCF----{Diameter LIR}---&gt;HSS--{-Diameter
+LIA}---&gt;I-CSCF----{SIP INVITE}--&gt;AS
+
+
+S-CSCF routing
+--------------------------
+
+- create Application Server with your settings for the AS that hosts the PSI
+- create iFC with no Trigger point (that means matches everything) and
+profile part indicator Any or Unregistered
+- attach iFC to AS
+- Create a service profile and attach iFC created
+
+- create an IMSU and assign a normal preferred-SCSCF to it (but asign one!
+if not it wont work)
+- create an IMPI
+- create an IMPU choosing Distinct or Wildcard and write the wildcard in the
+appropriate format 
+    (sip:your*wildcarded?expre??<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ion at open-ims.test</A>), 
+    it would be logical to click in the can Register thing and don't let
+this IMPU to register and of course you have to click the 
+    PSI Activation to activate it and select the created service profile for
+that PSI
+- attach IMPU to IMPI and IMPI to IMSU
+
+UE--{SIP INVITE}----&gt;I-CSCF----{Diameter LIR}---&gt;HSS---{Diameter
+LIA}---&gt;I-CSCF----{SIP INVITE}--&gt;S-CSCF---{Diameter SAR}--&gt;HSS---&gt;{Diameter
+SAA}--&gt;S-CSCF---{SIP INVITE}--&gt;AS
+
+***************************************************************
+Wildcarded PSI issues
+
+- I didnt use the standardised format for PSI definition (TS23003?) but an
+easier one
+    you define  sip:*<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">games at open-ims.test</A>  and it would match
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sportgames at open-ims.test</A> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sims2.games at open-ims.test</A> ...            
+    you define sip:channel.?<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">.tv at open-ims.test</A> and it matches
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">channel.1.tv at open-ims.test</A>  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">channel.e.tv at open-ims.test</A>  ..
+
+    do not forget the sip: in the HSS interface !
+
+- Support for Wildcard PSI makes S-CSCF a bit inefficent because when it
+receives a request for an user, it searchs in the user database and 
+  afterwards if no match it trys to match with all wildcards to activate
+this support you have to put a parameter in S-CSCF config 
+     file modparam(&quot;scscf&quot;,&quot;support_wildcardPSI&quot;,1)
+
+  Distinct PSI work always
+
+
+My suggestion is to have a network with two S-CSCF one with the parameter
+enabled and this is selected as preferred for all the PSI 
+things and the other one for the normal users (much quicker!)
+
+We might make some changes in the FHoSS web to give some hints on doing
+this, but i guess dedicating one hour to play with the different 
+possibilities you are an expert in PSI provisioning
+	
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006837.html">[OpenIMSCore-Users] RLS SUBSCRIBE
+</A></li>
+	<LI>Next message: <A HREF="006838.html">[OpenIMSCore-Users] [SR-Users] OpenIMSCore and Kamalio	Integration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6839">[ date ]</a>
+              <a href="thread.html#6839">[ thread ]</a>
+              <a href="subject.html#6839">[ subject ]</a>
+              <a href="author.html#6839">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

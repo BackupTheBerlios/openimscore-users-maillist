@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Trouble%20loading%20with%20IMS%20Bench%20SIPp&In-Reply-To=%3C014701cbfb4b%242fc5eb10%240500a8c0%40trosc%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006944.html">
+   <LINK REL="Next"  HREF="006946.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp</H1>
+    <B>wondra</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Trouble%20loading%20with%20IMS%20Bench%20SIPp&In-Reply-To=%3C014701cbfb4b%242fc5eb10%240500a8c0%40trosc%3E"
+       TITLE="[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp">wondra at volny.cz
+       </A><BR>
+    <I>Fri Apr 15 10:57:45 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006944.html">[OpenIMSCore-Users]  I can not send invite
+</A></li>
+        <LI>Next message: <A HREF="006946.html">[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6945">[ date ]</a>
+              <a href="thread.html#6945">[ thread ]</a>
+              <a href="subject.html#6945">[ subject ]</a>
+              <a href="author.html#6945">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dear list,
+I have a research project involving distributed load-testing of Open IMS
+core with IMS Bench SIPp.
+I have a Gentoo amd64 quad-core 4GB RAM server with Open IMS Core
+installed from SVN in November 2010.
+DNS is external, loaded with a real public domain.
+I'm testing from home over a 4Mb/s WiFi link, IPv4 and NAT. IMS_Bench is
+installed from source.
+I have loaded some 24000 users into the database with the supplied
+srcipt. I can register with an IMS client and call between two of them.
+IMS Bench scenarios seem to work as well.
+
+However, the server is terribly unstable. When I start registering users
+at a rate of 100 reg/s, the S-CSCF crashes nearly immediately. Worst is,
+even if I load it very gently, with 10 reg/s, CPU load is negligible,
+but after a few thousand of registrations, the S-CSCF locks up. I never
+achieved more than 3700 regs at once. Restarting S-CSCF helps.
+Symptoms:
+
+SIP message: SIP/2.0 500 Error forwarding towards next S-CSCF
+
+I-CSCF console:
+4(22269) ERROR: uri2dst: failed to resolve &quot;scscf.open-ims.test&quot;
+4(22269) ERROR: t_forward_nonack: failure to add branches
+4(22269) ERROR: w_t_relay (failure mode): forwarding failed
+
+S-CSCF console:
+4(22241) ERROR:get_routing_peer(): No connected DefaultRoute peer found
+for app_id 16777216 and vendor id 10415.
+4(22241) ERROR:AAASendRecvMessage(): Can't find a suitable connected
+peer in the routing table.
+4(22241) ERR:S-CSCF:S_challenge: Error retrieving an auth vector
+
+I am pretty sure, that there is no &quot;.open-ims.test&quot; left in the config
+files or database. Only in the source code.
+
+Has anyone encoutered that? What should I do?
+Thanks, Tomas Vondra
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006944.html">[OpenIMSCore-Users]  I can not send invite
+</A></li>
+	<LI>Next message: <A HREF="006946.html">[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6945">[ date ]</a>
+              <a href="thread.html#6945">[ thread ]</a>
+              <a href="subject.html#6945">[ subject ]</a>
+              <a href="author.html#6945">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

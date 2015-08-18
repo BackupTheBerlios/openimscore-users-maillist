@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Facing problem in starting up the components
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Facing%20problem%20in%20starting%20up%20the%20components&In-Reply-To=%3C46254018.1050904%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001500.html">
+   <LINK REL="Next"  HREF="001501.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Facing problem in starting up the components</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Facing%20problem%20in%20starting%20up%20the%20components&In-Reply-To=%3C46254018.1050904%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Facing problem in starting up the components">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Apr 17 23:46:00 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001500.html">[OpenIMSCore-Users] Facing problem in starting up the components
+</A></li>
+        <LI>Next message: <A HREF="001501.html">[OpenIMSCore-Users] How to use the OpenIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1502">[ date ]</a>
+              <a href="thread.html#1502">[ thread ]</a>
+              <a href="subject.html#1502">[ subject ]</a>
+              <a href="author.html#1502">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Yogi,
+
+it looks like your DNS is not working properly and that you might have
+some firewalls on the components. Please check that the *.open-ims.test
+names defined in the DNS file are resolvable by your local machine and
+that you you can actually connect to those ports.
+
+Also keep in mind that it is normal to see some connection errors as you
+can not start both the I/S-CSCF on one side and the HSS on the other
+side, exactly at the same time. However, both are configured to connect
+to the other ones, so even if the ones that you start first fail to
+connect, the 2nd ones will connect after a few seconds that they are
+started. You can verify that this happened by watching a network trace
+with wireshark for example or by watching the Peer Lists on the I/S-CSCF
+and HSS.
+
+-Dragos
+
+lambodara lakumi wrote:
+&gt;<i> Hi All,
+</I>&gt;<i>
+</I>&gt;<i> After step 4 , DNS &amp; MySQl are working .
+</I>&gt;<i>
+</I>&gt;<i> I am facing problem in starting up the componenrs.
+</I>&gt;<i>
+</I>&gt;<i> I am not getting this below thing given in the step 5
+</I>&gt;<i>
+</I>&gt;<i> # FHoSS
+</I>&gt;<i>
+</I>&gt;<i>     * Take a look at the configuration files in FHoSS/deploy/
+</I>&gt;<i> (available after Step 3 completes)
+</I>&gt;<i>
+</I>&gt;<i> # Edit these files to your own preferences (don't forget to update the
+</I>&gt;<i> DNS zone file accordingly and restart the name server)
+</I>&gt;<i>
+</I>&gt;<i> when i stsrt ./pcscf , ./icscf , ./scscf &amp; ./startup.sh
+</I>&gt;<i>
+</I>&gt;<i> starting ./icscf &amp; ./scscf is showing below errors
+</I>&gt;<i>
+</I>&gt;<i> 2(3006) DBG:peer_timer(): Peer hss.open-ims.test       State 0
+</I>&gt;<i> 12(3006) DBG:sm_process(): Peer hss.open-ims.test       State
+</I>&gt;<i> Closed     Event Start
+</I>&gt;<i> 12(3006) DBG:I_Snd_Conn_Req(): Peer hss.open-ims.test
+</I>&gt;<i> 12(3006) WARNING:peer_connect(): Error opening connection to
+</I>&gt;<i> hss.open-ims.test:3868 &gt;Operation not permitted
+</I>&gt;<i> 12(3006) DBG:sm_process(): Peer hss.open-ims.test       State
+</I>&gt;<i> Wait_Conn_Ack      Event I_Rcv_Conn_NAck
+</I>&gt;<i> 12(3006) --- Peer List: ---
+</I>&gt;<i> 12(3006)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i> 12(3006) ------------------
+</I>&gt;<i> 12(3006) --- Peer List: ---
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> when i start  ./startup.sh , ii is showing below errors
+</I>&gt;<i>
+</I>&gt;<i> 2007-04-17 14:42:38,495 ERROR
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - I_Snd_Conn_Req
+</I>&gt;<i> StateMachine: Peer icscf.open-ims.test can not be resolved.
+</I>&gt;<i> 2007-04-17 14:42:38,496 DEBUG
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.peer.PeerManager - run Connecting
+</I>&gt;<i> to peer scscf.open-ims.test dynamic false dropping true
+</I>&gt;<i> 2007-04-17 14:42:38,500 ERROR
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - I_Snd_Conn_Req
+</I>&gt;<i> StateMachine: Peer scscf.open-ims.test can not be resolved.
+</I>&gt;<i>
+</I>&gt;<i> Please help me in this regard.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Yogi
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Ahhh...imagining that irresistible &quot;new car&quot; smell?
+</I>&gt;<i> Check out new cars at Yahoo! Autos.
+</I>&gt;<i> &lt;<A HREF="http://us.rd.yahoo.com/evt=48245/*http://autos.yahoo.com/new_cars.html;_ylc=X3oDMTE1YW1jcXJ2BF9TAzk3MTA3MDc2BHNlYwNtYWlsdGFncwRzbGsDbmV3LWNhcnM-">http://us.rd.yahoo.com/evt=48245/*http://autos.yahoo.com/new_cars.html;_ylc=X3oDMTE1YW1jcXJ2BF9TAzk3MTA3MDc2BHNlYwNtYWlsdGFncwRzbGsDbmV3LWNhcnM-</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001500.html">[OpenIMSCore-Users] Facing problem in starting up the components
+</A></li>
+	<LI>Next message: <A HREF="001501.html">[OpenIMSCore-Users] How to use the OpenIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1502">[ date ]</a>
+              <a href="thread.html#1502">[ thread ]</a>
+              <a href="subject.html#1502">[ subject ]</a>
+              <a href="author.html#1502">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

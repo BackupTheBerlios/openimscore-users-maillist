@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Digest-MD5 problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Digest-MD5%20problem&In-Reply-To=%3C000701c909bc%24401fb050%24c05f10f0%24%40se%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004576.html">
+   <LINK REL="Next"  HREF="004580.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Digest-MD5 problem</H1>
+    <B>Jonas Petersson</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Digest-MD5%20problem&In-Reply-To=%3C000701c909bc%24401fb050%24c05f10f0%24%40se%3E"
+       TITLE="[OpenIMSCore-Users] Digest-MD5 problem">jonas at ip-solutions.se
+       </A><BR>
+    <I>Fri Aug 29 11:47:28 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004576.html">[OpenIMSCore-Users] regading t_reply funtion perameter geting in	pcscf.cfg file.
+</A></li>
+        <LI>Next message: <A HREF="004580.html">[OpenIMSCore-Users] New IMS client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4577">[ date ]</a>
+              <a href="thread.html#4577">[ thread ]</a>
+              <a href="subject.html#4577">[ subject ]</a>
+              <a href="author.html#4577">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello!
+
+ 
+
+We have a problem.
+
+We try to register to the OpenIMS core with two different clients using
+digest-MD5. 
+
+These two clients works nice in other environments (e.g. OMA/PoC) so we
+really trust the MD5 calculation in the clients.
+
+However, we do not succeed to get them to register to the OpenIMS core.
+
+ 
+
+We try to use Digest-MD5. Digest-MD5 is the only valid authentication
+mechanism in the HSS for this user and we also 
+
+configured the S-CSCF to use Digest-MD5 as default. We get 401 responses all
+the time and the logging on the S-CSCF verifies that the MD5 response sent
+by the client is not what was expected.
+
+ 
+
+For one of the clients, this is the message flow:
+
+ 
+
+UE -&gt; P-CSCF
+
+REGISTER sip:ip-s-a.com SIP/2.0
+
+Via: SIP/2.0/UDP 172.28.10.10:5060;branch=z9hG4bK42.fcb.1
+
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kenneth at ip-s-a.com</A>&gt;
+
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kenneth at ip-s-a.com</A>&gt;;tag=25098f8-1698.1
+
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">18be-213-67840 at 172.28.10.10</A>
+
+CSeq: 4709 REGISTER
+
+Max-Forwards: 70
+
+User-Agent: PoC-client/OMA1.0 SleIPner/2.10.14
+
+Contact:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kenneth at 172.28.10.10</A>:5060&gt;;q=1.0;expires=3600;description=&quot;Available&quot;;+
+g.poc.talkburst;+g.poc.groupad
+
+Content-Length: 0
+
+Require: pref
+
+ 
+
+P-CSCF -&gt; UE
+
+SIP/2.0 401 Unauthorized - Challenging the UE
+
+Via: SIP/2.0/UDP 172.28.10.10:5060;rport=5060;branch=z9hG4bK42.fcb.1
+
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kenneth at ip-s-a.com</A>&gt;;tag=834c78919e4d2814467d58d24dfcb34f-d6a6
+
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kenneth at ip-s-a.com</A>&gt;;tag=25098f8-1698.1
+
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">18be-213-67840 at 172.28.10.10</A>
+
+CSeq: 4709 REGISTER
+
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.ip-s-a.com</A>:5060;lr&gt;
+
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.ip-s-a.com</A>:5060;lr&gt;
+
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, MESSAGE,
+INFO
+
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+
+Content-Length: 0
+
+Warning: 392 172.28.0.30:5060 &quot;Noisy feedback tells:  pid=2751
+req_src_ip=172.28.0.20 req_src_port=5060 in_uri=sip:scscf.ip-s-a.com:5060
+out_uri=sip:scscf.ip-s-a.com:5060 via_cnt==3&quot;
+
+WWW-Authenticate: Digest realm=&quot;ip-s-a.com&quot;,
+nonce=&quot;24678a82292f1efea2fc1a53debb36f1&quot;, qop=&quot;auth&quot;, algorithm=MD5
+
+ 
+
+UE -&gt; P-CSCF
+
+REGISTER sip:ip-s-a.com SIP/2.0
+
+Via: SIP/2.0/UDP 172.28.10.10:5060;branch=z9hG4bK43.fcb.2
+
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kenneth at ip-s-a.com</A>&gt;
+
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kenneth at ip-s-a.com</A>&gt;;tag=250c988-1698.2
+
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">18be-213-67840 at 172.28.10.10</A>
+
+CSeq: 4710 REGISTER
+
+Max-Forwards: 70
+
+User-Agent: PoC-client/OMA1.0 SleIPner/2.10.14
+
+Contact:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kenneth at 172.28.10.10</A>:5060&gt;;q=1.0;expires=3600;description=&quot;Available&quot;;+
+g.poc.talkburst;+g.poc.groupad
+
+Content-Length: 0
+
+Require: pref
+
+Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kenneth at ip-s-a.com</A>&quot;,realm=&quot;ip-s-a.com&quot;,
+nonce=&quot;24678a82292f1efea2fc1a53debb36f1&quot;,uri=&quot;sip:ip-s-a.com&quot;,response=&quot;b946
+f158a4bff5250070b9304f2b4270&quot;,
+algorithm=MD5,cnonce=&quot;b0cfcb&quot;,qop=auth,nc=00000001
+
+ 
+
+P-CSCF -&gt; UE
+
+SIP/2.0 401 Unauthorized - Challenging the UE
+
+Via: SIP/2.0/UDP 172.28.10.10:5060;rport=5060;branch=z9hG4bK43.fcb.2
+
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kenneth at ip-s-a.com</A>&gt;;tag=834c78919e4d2814467d58d24dfcb34f-b62b
+
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kenneth at ip-s-a.com</A>&gt;;tag=250c988-1698.2
+
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">18be-213-67840 at 172.28.10.10</A>
+
+CSeq: 4710 REGISTER
+
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.ip-s-a.com</A>:5060;lr&gt;
+
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.ip-s-a.com</A>:5060;lr&gt;
+
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, MESSAGE,
+INFO
+
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+
+Content-Length: 0
+
+Warning: 392 172.28.0.30:5060 &quot;Noisy feedback tells:  pid=2753
+req_src_ip=172.28.0.20 req_src_port=5060 in_uri=sip:scscf.ip-s-a.com:5060
+out_uri=sip:scscf.ip-s-a.com:5060 via_cnt==3&quot;
+
+WWW-Authenticate: Digest realm=&quot;ip-s-a.com&quot;,
+nonce=&quot;87bc6a5a703ee0456e8bf3c6ca5b007a&quot;, qop=&quot;auth&quot;, algorithm=MD5
+
+ 
+
+Attached: Wireshark trace
+
+ 
+
+BR,
+
+           /Jonas
+
+ 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080829/333d4aa4/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080829/333d4aa4/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: Digest_Failure.pcap
+Type: application/octet-stream
+Size: 29652 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080829/333d4aa4/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080829/333d4aa4/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004576.html">[OpenIMSCore-Users] regading t_reply funtion perameter geting in	pcscf.cfg file.
+</A></li>
+	<LI>Next message: <A HREF="004580.html">[OpenIMSCore-Users] New IMS client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4577">[ date ]</a>
+              <a href="thread.html#4577">[ thread ]</a>
+              <a href="subject.html#4577">[ subject ]</a>
+              <a href="author.html#4577">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

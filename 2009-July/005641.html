@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Trigger-point matches where it should not
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Trigger-point%20matches%20where%20it%20should%20not&In-Reply-To=%3CEDD5A2BC543949D0848B68488DB91C0E%40FRANZNOTEBOOK%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005640.html">
+   <LINK REL="Next"  HREF="005654.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Trigger-point matches where it should not</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Trigger-point%20matches%20where%20it%20should%20not&In-Reply-To=%3CEDD5A2BC543949D0848B68488DB91C0E%40FRANZNOTEBOOK%3E"
+       TITLE="[OpenIMSCore-Users] Trigger-point matches where it should not">franz-edler at aon.at
+       </A><BR>
+    <I>Mon Jul 27 17:39:32 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005640.html">[OpenIMSCore-Users] P-CSCF got segfault while Forwarding INVITE	received in TLS.
+</A></li>
+        <LI>Next message: <A HREF="005654.html">[OpenIMSCore-Users] Trigger-point matches where it should not
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5641">[ date ]</a>
+              <a href="thread.html#5641">[ thread ]</a>
+              <a href="subject.html#5641">[ subject ]</a>
+              <a href="author.html#5641">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,	
+
+I detected the following issue:
+The Mercuro (Silver) automatically subscribes to &quot;message-summary&quot; event at
+registration. The default trigger point in OpenIMSCore should match only in
+case of SUBSCRIBE to an event containing the string &quot;presence&quot;. But in fact
+it also matches in case of &quot;message-summary&quot; event.
+
+In attached trace-file you can find in packet 59 the SAA command for bob
+during registaration (to verify the user profile).
+Packet 72 then contains the SUBSCRIBE request at the terminating side which
+is forwarded to the AS in packet 73 due to the matching trigger-point.
+
+S-CSCF log contains in this case the following:
+
+ 3(3226) INFO:ISC:ISC_match_filter(term): Checking triggers
+ 3(3226) INFO:ISC:isc_mark_get_from_msg: Trying to get the mark from the
+message 
+ 3(3226) INFO:ISC:ISC_match_filter(term): Starting triggering
+ 3(3226) INFO:ISC:ISC_match_filter(term): Term User &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at net1.test</A>&gt; [1]
+ 3(3226) INFO:ISC:isc_checker_find: starting search
+ 3(3226) INFO:ISC:isc_checker_find: MATCH -&gt; sip:10.0.0.1:5060 () handling 0
+
+ 3(3226) INFO:ISC:isc_mark_set: NEW mark
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.net1.test</A>:6060;lr;s=1;h=0;d=1;a=7369703a626f62406e6574312
+e74657374&gt;
+ 3(3226) INFO:ISC&gt;&gt;       msg was fwded to AS
+ 3(3226) &gt;&gt;       Term - msg was fwded to AS
+
+
+I think that is a bug.
+
+Best regards
+Franz
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: event_tp.pcap
+Type: application/octet-stream
+Size: 49376 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090727/867f0ae0/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090727/867f0ae0/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005640.html">[OpenIMSCore-Users] P-CSCF got segfault while Forwarding INVITE	received in TLS.
+</A></li>
+	<LI>Next message: <A HREF="005654.html">[OpenIMSCore-Users] Trigger-point matches where it should not
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5641">[ date ]</a>
+              <a href="thread.html#5641">[ thread ]</a>
+              <a href="subject.html#5641">[ subject ]</a>
+              <a href="author.html#5641">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

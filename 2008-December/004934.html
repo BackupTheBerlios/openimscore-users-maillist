@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] HSS throwing Errors - (i and s	)cscf.open-ims.test not responding to connection attempt
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20HSS%20throwing%20Errors%20-%20%28i%20and%20s%0A%09%29cscf.open-ims.test%20not%20responding%20to%20connection%20attempt&In-Reply-To=%3C18f4c6fd0812120503l187fb0a1i927eda6a32746ec2%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004933.html">
+   <LINK REL="Next"  HREF="004935.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] HSS throwing Errors - (i and s	)cscf.open-ims.test not responding to connection attempt</H1>
+    <B>Raghu Narasimhan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20HSS%20throwing%20Errors%20-%20%28i%20and%20s%0A%09%29cscf.open-ims.test%20not%20responding%20to%20connection%20attempt&In-Reply-To=%3C18f4c6fd0812120503l187fb0a1i927eda6a32746ec2%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] HSS throwing Errors - (i and s	)cscf.open-ims.test not responding to connection attempt">raghu.united at gmail.com
+       </A><BR>
+    <I>Fri Dec 12 14:03:33 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004933.html">[OpenIMSCore-Users] X-Lite on mobile terminates calls	immediately after accepting them
+</A></li>
+        <LI>Next message: <A HREF="004935.html">[OpenIMSCore-Users] HSS throwing Errors - (i and	s)cscf.open-ims.test not responding to connection attempt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4934">[ date ]</a>
+              <a href="thread.html#4934">[ thread ]</a>
+              <a href="subject.html#4934">[ subject ]</a>
+              <a href="author.html#4934">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+I got OpenIMS up and running on loopback on an FC5 machine.
+
+Now following this link to get OpenIMS working on the external box
+interface.:
+<A HREF="http://letsgoustc.spaces.live.com/blog/cns!89AD27DFB5E249BA!181.entry?_c=BlogPart">http://letsgoustc.spaces.live.com/blog/cns!89AD27DFB5E249BA!181.entry?_c=BlogPart</A>
+STEP 8 in particular*
+*
+
+**
+
+*Tip: If you just need to change to external IP address, then you can modify
+the following files: icscf.cfg, pcscf.cfg, icscf.xml, scscf.xml,
+FHoSS/deploy/hss.properties, FHoSS/deploy/DiameterPeerHSS.xml and scscf.cfg,
+replace all &quot;127.0.0.1&quot; with your IP address. And also you need to modify
+the DNS zone file /etc/open-ims.dnszone, replace all &quot;127.0.0.1&quot; with your
+IP address.*
+
+
+**
+It isn't working and HSS is constantly throwing the error:Peer
+scscf.open-ims.test not responding to connection attempt.
+
+
+Same with icscf as well
+
+I have started everything - mysql, named, pcscf, icscf, scscf and HSS - in
+that order.
+
+# ./startup.sh
+
+Building Classpath
+Classpath is
+lib/xml-apis.jar:lib/xercesImpl.jar:lib/xerces-2.4.0.jar:lib/xalan-2.4.0.jar:lib/tomcat-util.jar:lib/tomcat-http.jar:lib/tomcat-coyote.jar:lib/struts.jar:lib/servlets-default.jar:lib/servlet-api.jar:lib/naming-resources.jar:lib/naming-factory.jar:lib/mysql-connector-java-3.1.12-bin.jar:lib/mx4j-3.0.1.jar:lib/log4j.jar:lib/junit.jar:lib/junitee.jar:lib/jta.jar:lib/jsp-api.jar:lib/jmx.jar:lib/jdp.jar:lib/jasper-runtime.jar:lib/jasper-compiler-jdt.jar:lib/jasper-compiler.jar:lib/hibernate3.jar:lib/FHoSS.jar:lib/ehcache-1.1.jar:lib/dom4j-1.6.1.jar:lib/commons-validator.jar:lib/commons-modeler.jar:lib/commons-logging.jar:lib/commons-logging-1.0.4.jar:lib/commons-lang.jar:lib/commons-fileupload.jar:lib/commons-el.jar:lib/commons-digester.jar:lib/commons-collections-3.1.jar:lib/commons-beanutils.jar:lib/cglib-2.1.3.jar:lib/catalina-optional.jar:lib/catalina.jar:lib/c3p0-0.9.1.jar:lib/base64.jar:lib/asm.jar:lib/asm-attrs.jar:lib/antlr-2.7.6.jar:/opt/SDK/jdk/lib/tools.jar:/opt/SDK/lib:/opt/SDK/jdk/lib:.:log4j.properties:..
+2008-12-12 18:28:00,930 INFO  de.fhg.fokus.hss.main.TomcatServer -
+startTomcat Tomcat-Server is started.
+2008-12-12 18:28:05,116 WARN  org.apache.catalina.connector.MapperListener -
+registerEngine Unknown default host: 10.232.112.241
+2008-12-12 18:28:06,379 INFO  de.fhg.fokus.hss.web.servlet.ResponseFilter -
+init Response Filter Initialisation!
+2008-12-12 18:28:07,626 INFO  de.fhg.fokus.hss.main.TomcatServer -
+startTomcat WebConsole of FHoSS was started !
+2008-12-12 18:28:11,814 WARN  org.hibernate.impl.SessionFactoryObjectFactory
+- addInstance InitialContext did not implement EventContext
+2008-12-12 18:28:11,975 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; FQDN:
+hss.open-ims.test
+2008-12-12 18:28:11,975 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Realm:
+open-ims.test
+2008-12-12 18:28:11,976 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Vendor_ID : 10415
+2008-12-12 18:28:11,976 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Product Name:
+JavaDiameterPeer
+2008-12-12 18:28:11,977 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; AcceptUnknwonPeers:
+true
+2008-12-12 18:28:11,977 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+DropUnknownOnDisconnect: true
+2008-12-12 18:28:12,028 ERROR
+de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - I_Snd_Conn_Req
+StateMachine: Peer icscf.open-ims.test not responding to connection attempt
+2008-12-12 18:28:12,029 ERROR
+de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - I_Snd_Conn_Req
+StateMachine: Peer scscf.open-ims.test not responding to connection attempt
+2008-12-12 18:28:12,032 INFO  de.fhg.fokus.hss.main.HSSContainer -
+waitForExit
+Type &quot;exit&quot; to stop FHoSS!
+
+
+
+Please advise.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20081212/766c2d14/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20081212/766c2d14/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004933.html">[OpenIMSCore-Users] X-Lite on mobile terminates calls	immediately after accepting them
+</A></li>
+	<LI>Next message: <A HREF="004935.html">[OpenIMSCore-Users] HSS throwing Errors - (i and	s)cscf.open-ims.test not responding to connection attempt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4934">[ date ]</a>
+              <a href="thread.html#4934">[ thread ]</a>
+              <a href="subject.html#4934">[ subject ]</a>
+              <a href="author.html#4934">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

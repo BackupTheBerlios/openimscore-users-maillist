@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Questions regarding DNS settings
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2013-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Questions%20regarding%20DNS%20settings&In-Reply-To=%3CCAObRy0o9Pv_%2B8OAG2PTVGhR4sUz5RHbGYY29MyYucu04_-0wJg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007764.html">
+   <LINK REL="Next"  HREF="007767.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Questions regarding DNS settings</H1>
+    <B>Elven Cao</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Questions%20regarding%20DNS%20settings&In-Reply-To=%3CCAObRy0o9Pv_%2B8OAG2PTVGhR4sUz5RHbGYY29MyYucu04_-0wJg%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Questions regarding DNS settings">elvencao at gmail.com
+       </A><BR>
+    <I>Sun Sep 29 13:47:27 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007764.html">[OpenIMSCore-Users] question about sending a cancel from B2BUA
+</A></li>
+        <LI>Next message: <A HREF="007767.html">[OpenIMSCore-Users] Questions regarding DNS settings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7766">[ date ]</a>
+              <a href="thread.html#7766">[ thread ]</a>
+              <a href="subject.html#7766">[ subject ]</a>
+              <a href="author.html#7766">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I am encountering some problem to my openims DNS settings following the
+guide in website.
+
+bind server report the following errors:
+29-Sep-2013 04:25:45.181 starting BIND 9.7.0-P1 -g
+29-Sep-2013 04:25:45.181 built with '--prefix=/usr'
+'--mandir=/usr/share/man' '--infodir=/usr/share/info'
+'--sysconfdir=/etc/bind' '--localstatedir=/var' '--enable-threads'
+'--enable-largefile' '--with-libtool' '--enable-shared' '--enable-static'
+'--with-openssl=/usr' '--with-gssapi=/usr' '--with-gnu-ld'
+'--with-dlz-postgres=no' '--with-dlz-mysql=no' '--with-dlz-bdb=yes'
+'--with-dlz-filesystem=yes' '--with-dlz-ldap=yes' '--with-dlz-stub=yes'
+'--with-geoip=/usr' '--enable-ipv6' 'CFLAGS=-fno-strict-aliasing
+-DDIG_SIGCHASE -O2' 'LDFLAGS=-Wl,-Bsymbolic-functions' 'CPPFLAGS='
+29-Sep-2013 04:25:45.181 adjusted limit on open files from 1024 to 1048576
+29-Sep-2013 04:25:45.181 found 2 CPUs, using 2 worker threads
+29-Sep-2013 04:25:45.181 using up to 4096 sockets
+29-Sep-2013 04:25:45.188 loading configuration from '/etc/bind/named.conf'
+29-Sep-2013 04:25:45.196 /etc/bind/open-ims.dnszone:1: unknown option
+'$ORIGIN'
+29-Sep-2013 04:25:45.196 /etc/bind/open-ims.dnszone:4: unknown option
+'serial'
+29-Sep-2013 04:25:45.196 /etc/bind/open-ims.dnszone:5: unknown option
+'refresh'
+29-Sep-2013 04:25:45.196 /etc/bind/open-ims.dnszone:6: unknown option
+'retry'
+29-Sep-2013 04:25:45.196 /etc/bind/open-ims.dnszone:7: unknown option
+'expiry'
+29-Sep-2013 04:25:45.196 /etc/bind/open-ims.dnszone:8: unknown option
+'minimum'
+29-Sep-2013 04:25:45.197 /etc/bind/named.conf:20: unexpected token near end
+of file
+29-Sep-2013 04:25:45.205 loading configuration: unexpected token
+29-Sep-2013 04:25:45.205 exiting (due to fatal error)
+
+I just copied open-ims.dnszone to /etc/bind/ and made below changes.
+1. Update named.conf as
+include &quot;/etc/bind/named.conf.options&quot;;
+include &quot;/etc/bind/named.conf.local&quot;;
+include &quot;/etc/bind/named.conf.default-zones&quot;;
+
+zone &quot;open-ims.test&quot; IN {
+        type master;
+        file &quot;/etc/bind/open-ims.dnszone&quot;;
+        notify no;
+};
+
+include &quot;/etc/bind/open-ims.dnszone&quot;;
+
+2. Update named.conf.options as below
+options {
+        ...
+        forward first;
+
+        forwarders {
+                8.8.8.8;
+        };
+        ...
+}
+
+I've searched the maillist and got
+<A HREF="../2010-August/006486.html">http://lists.berlios.de/pipermail/openimscore-users/2010-August/006486.html</A>
+But there is no further update of this thread with answers.
+
+Can someone kindly help me?
+Thanks in advance!
+
+-- 
+Best regards,
+Elven Cao
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130929/c02c0d51/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130929/c02c0d51/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007764.html">[OpenIMSCore-Users] question about sending a cancel from B2BUA
+</A></li>
+	<LI>Next message: <A HREF="007767.html">[OpenIMSCore-Users] Questions regarding DNS settings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7766">[ date ]</a>
+              <a href="thread.html#7766">[ thread ]</a>
+              <a href="subject.html#7766">[ subject ]</a>
+              <a href="author.html#7766">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

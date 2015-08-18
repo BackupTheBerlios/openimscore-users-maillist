@@ -1,0 +1,1357 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Which format for Key &amp; OP in AKA_V1_MD5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Which%20format%20for%20Key%20%26%20OP%20in%20AKA_V1_MD5&In-Reply-To=%3C0D97944C70029649A81B5B9FDD76DEF81CC545DA7A%40PDAWM03C.ad.sprint.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003519.html">
+   <LINK REL="Next"  HREF="003526.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Which format for Key &amp; OP in AKA_V1_MD5</H1>
+    <B>Evans, Mark [CTO]</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Which%20format%20for%20Key%20%26%20OP%20in%20AKA_V1_MD5&In-Reply-To=%3C0D97944C70029649A81B5B9FDD76DEF81CC545DA7A%40PDAWM03C.ad.sprint.com%3E"
+       TITLE="[OpenIMSCore-Users] Which format for Key &amp; OP in AKA_V1_MD5">Mark.X.Evans at sprint.com
+       </A><BR>
+    <I>Thu Feb 28 21:02:18 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003519.html">[OpenIMSCore-Users] Which format for Key &amp; OP in AKA_V1_MD5
+</A></li>
+        <LI>Next message: <A HREF="003526.html">[OpenIMSCore-Users] Which format for Key &amp; OP in AKA_V1_MD5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3522">[ date ]</a>
+              <a href="thread.html#3522">[ thread ]</a>
+              <a href="subject.html#3522">[ subject ]</a>
+              <a href="author.html#3522">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks Dragos
+
+Mark Evans
+Sprint Advanced Technology Labs
+
+
+ -----Original Message-----
+ From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:openimscore-users-
+ <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bounces at lists.berlios.de</A>] On Behalf Of Dragos Vingarzan
+ Sent: Thursday, February 28, 2008 11:54 AM
+ To: Evans, Mark [CTO]
+ Cc: Bali, Soshant [CTO]; FINE Jean-Yves; openimscore-
+ <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">users at lists.berlios.de</A>; Weik, Peter
+ Subject: Re: [OpenIMSCore-Users] Which format for Key &amp; OP in AKA_V1_MD5
+
+ exactly... so if you have 32 chars[0-9a-f] in K it's a hex
+ representation for AKA. Else it's ASCII. You have to be careful though
+ as one little char can throw it off...
+
+ done since r535 - a db change is also necessary - either use the new
+ creates in hss_db.sql or:
+
+ alter table impi modify k tinyblob not null;
+
+ Cheers
+ -Dragos
+
+
+ Evans, Mark [CTO] wrote:
+ &gt; OK
+ &gt;
+ &gt; I think the a change needs to be made,  so if you can make it work like
+ OP/AMF that would be great.
+ &gt;
+ &gt; I'm not sure what you meant by
+ &gt;
+ &gt; &quot;A dual representation would be messy in the web form there, so I will
+ &gt;  try something else: you can input/output it there for AKA in hex, just
+ &gt;  like the OP field, but it has to have exactly 16 bytes in binary! Else
+ &gt;  the input/output is treated as ASCII&quot;
+ &gt;
+ &gt; Is this the web form change you are proposing. E.g. &quot;alice&quot; would be
+ treated as Ascii but 61616161616161616161616161616161 would be treated as
+ HEX?
+ &gt;
+ &gt; Cheers
+ &gt;
+ &gt; Mark Evans
+ &gt; Sprint
+ &gt; Advanced Technology Labs
+ &gt;
+ &gt;
+ &gt;  -----Original Message-----
+ &gt;  From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>]
+ &gt;  Sent: Thursday, February 28, 2008 11:32 AM
+ &gt;  To: Evans, Mark [CTO]
+ &gt;  Cc: FINE Jean-Yves; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>; Bali, Soshant
+ &gt;  [CTO]; Weik, Peter
+ &gt;  Subject: Re: [OpenIMSCore-Users] Which format for Key &amp; OP in AKA_V1_MD5
+ &gt;
+ &gt;  The OP/AMF values in the db are stored in tinyblob. The K is not, but
+ &gt;  now see it's varchar(255). It should be tinyblob. I am doing the changes
+ &gt;  right now...
+ &gt;
+ &gt;  A dual representation would be messy in the web form there, so I will
+ &gt;  try something else: you can input/output it there for AKA in hex, just
+ &gt;  like the OP field, but it has to have exactly 16 bytes in binary! Else
+ &gt;  the input/output is treated as ASCII.
+ &gt;
+ &gt;  BTW: the K in AKA is truncated at 16 bytes or \0 padded to the right up
+ &gt;  to 16 bytes.
+ &gt;
+ &gt;  I think Jean-Yves was looking for this:
+ &gt;
+ &gt;  update impi set op=x'6161616161....' where id=123;
+ &gt;
+ &gt;  I couldn't find how to escape an arbitrary character inside a string in
+ &gt;  a query, but just some special ones and the rest seem to be written by
+ &gt;  mysqldump as non-ascii. But you can specify for blobs instead of a
+ &gt;  string a byte array in hex:
+ &gt;  <A HREF="http://dev.mysql.com/doc/refman/5.0/en/hexadecimal-values.html">http://dev.mysql.com/doc/refman/5.0/en/hexadecimal-values.html</A> . But for
+ &gt;  varchar it does not work. Probably writting non-ascii chars would work,
+ &gt;  with the explicitly escaped exceptions from here:
+ &gt;  <A HREF="http://dev.mysql.com/doc/refman/5.0/en/string-syntax.html">http://dev.mysql.com/doc/refman/5.0/en/string-syntax.html</A> . Anyway, we
+ &gt;  should change that to tinyblob I would say.
+ &gt;
+ &gt;  -Dragos
+ &gt;
+ &gt;
+ &gt;  Evans, Mark [CTO] wrote:
+ &gt;  &gt; Jean-Yves,
+ &gt;  &gt;
+ &gt;  &gt; We have had some experience with this and we found that the database
+ will
+ &gt;  only accept ASCII characters. We could not find a way to directly insert
+ &gt;  the key value in HEX (or binary).
+ &gt;  &gt;
+ &gt;  &gt; This meant that our client could only have keys that could be
+ represented
+ &gt;  by ASCII characters.
+ &gt;  &gt;
+ &gt;  &gt; For example on the client we set k to
+ 0x61616161616161616161616161616161
+ &gt;  &gt;
+ &gt;  &gt; And in the database script
+ &gt;  &gt;
+ &gt;  &gt; 'aaaaaaaaaaaaaaaa'
+ &gt;  &gt;
+ &gt;  &gt; I could see that this probably isn't practical if you using a real
+ ISIM
+ &gt;  unless you can set/modify the k value.
+ &gt;  &gt; I'd mentioned this to Dragos at the IMS workshop in Nov. We haven't
+ &gt;  reported this as a bug. Mostly because we weren't sure if this was a
+ real
+ &gt;  problem or just our lack of mysql knowledge.
+ &gt;  &gt;
+ &gt;  &gt; Hope this helps
+ &gt;  &gt;
+ &gt;  &gt; Mark Evans
+ &gt;  &gt; Sprint Advanced Technology Labs
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  -----Original Message-----
+ &gt;  &gt;  From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:openimscore-
+ &gt;  users-
+ &gt;  &gt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bounces at lists.berlios.de</A>] On Behalf Of FINE Jean-Yves
+ &gt;  &gt;  Sent: Thursday, February 28, 2008 9:33 AM
+ &gt;  &gt;  To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+ &gt;  &gt;  Subject: [OpenIMSCore-Users] Which format for Key &amp; OP in AKA_V1_MD5
+ &gt;  &gt;
+ &gt;  &gt;  Hello
+ &gt;  &gt;  I hope usefull question for everyone:
+ &gt;  &gt;
+ &gt;  &gt;  I try AKA_V1 MD5 on real ISIM card (minisip client) and i am facing
+ &gt;  &gt;  Key and OP format understanding issue:
+ &gt;  &gt;
+ &gt;  &gt;  Let K be the string &quot;key&quot;
+ &gt;  &gt;  Let OP be the string &quot;op&quot;
+ &gt;  &gt;
+ &gt;  &gt;  What shall I put (see ?????????????? fields below) as input in the
+ &gt;  &gt;  database ????
+ &gt;  &gt;
+ &gt;  &gt;  insert into hss_db.impi(
+ &gt;  &gt;          identity,
+ &gt;  &gt;          id_imsu,
+ &gt;  &gt;          k,
+ &gt;  &gt;          auth_scheme,
+ &gt;  &gt;          default_auth_scheme,
+ &gt;  &gt;          amf,
+ &gt;  &gt;          op
+ &gt;  &gt;
+ &gt;  &gt;  values( 'xxx',
+ &gt;  &gt;          xxx,
+ &gt;  &gt;          '??????????????',
+ &gt;  &gt;          xxx,
+ &gt;  &gt;          xxx,
+ &gt;  &gt;          xxx,
+ &gt;  &gt;          '??????????????');
+ &gt;  &gt;
+ &gt;  &gt;  Jean yves fine
+ &gt;  &gt;
+ &gt;  &gt;  -----Original Message-----
+ &gt;  &gt;  From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:openimscore-
+ &gt;  users-
+ &gt;  &gt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bounces at lists.berlios.de</A>] On Behalf Of openimscore-users-
+ &gt;  &gt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">request at lists.berlios.de</A>
+ &gt;  &gt;  Sent: jeudi 28 f&#233;vrier 2008 18:04
+ &gt;  &gt;  To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+ &gt;  &gt;  Subject: OpenIMSCore-Users Digest, Vol 16, Issue 81
+ &gt;  &gt;
+ &gt;  &gt;  Send OpenIMSCore-Users mailing list submissions to
+ &gt;  &gt;          <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+ &gt;  &gt;
+ &gt;  &gt;  To subscribe or unsubscribe via the World Wide Web, visit
+ &gt;  &gt;          <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+ &gt;  &gt;  or, via email, send a message with subject or body 'help' to
+ &gt;  &gt;          <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-request at lists.berlios.de</A>
+ &gt;  &gt;
+ &gt;  &gt;  You can reach the person managing the list at
+ &gt;  &gt;          <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-owner at lists.berlios.de</A>
+ &gt;  &gt;
+ &gt;  &gt;  When replying, please edit your Subject line so it is more specific
+ &gt;  &gt;  than &quot;Re: Contents of OpenIMSCore-Users digest...&quot;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  Today's Topics:
+ &gt;  &gt;
+ &gt;  &gt;     1. Re: First run again (<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mrawashd at site.uottawa.ca</A>)
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  ---------------------------------------------------------------------
+ -
+ &gt;  &gt;
+ &gt;  &gt;  Message: 1
+ &gt;  &gt;  Date: Thu, 28 Feb 2008 12:01:49 -0500 (EST)
+ &gt;  &gt;  From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mrawashd at site.uottawa.ca</A>
+ &gt;  &gt;  Subject: Re: [OpenIMSCore-Users] First run again
+ &gt;  &gt;  To: &quot;Dragos Vingarzan&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+ &gt;  &gt;  Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+ &gt;  &gt;  Message-ID:
+ &gt;  &gt;
+ &gt;  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">42790.137.122.88.111.1204218109.squirrel at courriel.site.uottawa.ca</A>&gt;
+ &gt;  &gt;  Content-Type: text/plain;charset=iso-8859-1
+ &gt;  &gt;
+ &gt;  &gt;  Hi Dragos,
+ &gt;  &gt;
+ &gt;  &gt;  As you advised me I checked and corrected my DNS server settings it
+ &gt;  seems
+ &gt;  &gt;  to me okay, below are my DNS configuration settings and my new run
+ &gt;  result
+ &gt;  &gt;  I am just wondering how come I am able to get IMS page at
+ &gt;  &gt;  <A HREF="http://localhost:8080">http://localhost:8080</A> successfully and also able to register users
+ make
+ &gt;  &gt;  calls and chat on uctimsclient successfully  while the error is still
+ &gt;  &gt;  there.
+ &gt;  &gt;
+ &gt;  &gt;  Note :I running Ubuntu 7.10 (Gusty Gibbon)
+ &gt;  &gt;
+ &gt;  &gt;  DNS configuration settings for (open-ims.dnszone,  named.conf.local
+ &gt;  &gt;  ,named.conf.options, resolv.conf) as you see below
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  ***********************************
+ &gt;  &gt;  content of the file open-ims.dnszone
+ &gt;  &gt;  ************************************-
+ &gt;  &gt;
+ &gt;  &gt;  $ORIGIN open-ims.test.
+ &gt;  &gt;  $TTL 1W
+ &gt;  &gt;  @                       1D IN SOA       localhost. root.localhost. (
+ &gt;  &gt;                                          2006101001      ; serial
+ &gt;  &gt;                                          3H              ; refresh
+ &gt;  &gt;                                          15M             ; retry
+ &gt;  &gt;                                          1W              ; expiry
+ &gt;  &gt;                                          1D )            ; minimum
+ &gt;  &gt;
+ &gt;  &gt;                          1D IN NS        ns
+ &gt;  &gt;  ns                      1D IN A         127.0.0.1
+ &gt;  &gt;
+ &gt;  &gt;  pcscf                   1D IN A         127.0.0.1
+ &gt;  &gt;
+ &gt;  &gt;  open-ims.test.          1D IN A         127.0.0.1
+ &gt;  &gt;  icscf                   1D IN A         127.0.0.1
+ &gt;  &gt;  _sip                    1D SRV 0 0 5060 icscf
+ &gt;  &gt;  _sip._udp               1D SRV 0 0 5060 icscf
+ &gt;  &gt;  _sip._tcp               1D SRV 0 0 5060 icscf
+ &gt;  &gt;
+ &gt;  &gt;  open-ims.test.          1D IN NAPTR 10 50 &quot;s&quot; &quot;SIP+D2U&quot; &quot;&quot;
+ &gt;  &gt;  _sip._udp.open-ims.test.
+ &gt;  &gt;  open-ims.test.          1D IN NAPTR 20 50 &quot;s&quot; &quot;SIP+D2T&quot; &quot;&quot;
+ &gt;  &gt;  _sip._tcp.open-ims.test.
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  scscf                   1D IN A         127.0.0.1
+ &gt;  &gt;
+ &gt;  &gt;  hss                     1D IN A         127.0.0.1
+ &gt;  &gt;
+ &gt;  &gt;  ue                      1D IN A         127.0.0.1
+ &gt;  &gt;
+ &gt;  &gt;  presence                                1D IN A
+ &gt;  127.0.0.1
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  ***********************************
+ &gt;  &gt;  content of the file  named.conf.local
+ &gt;  &gt;  *************************************
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  //
+ &gt;  &gt;  // Do any local configuration here
+ &gt;  &gt;  //
+ &gt;  &gt;
+ &gt;  &gt;  // Consider adding the 1918 zones here, if they are not used in your
+ &gt;  &gt;  // organization
+ &gt;  &gt;  //include &quot;/etc/bind/zones.rfc1918&quot;;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  zone &quot;open-ims.test&quot; {
+ &gt;  &gt;          type master;
+ &gt;  &gt;          file &quot;/etc/bind/open-ims.dnszone&quot;;
+ &gt;  &gt;  };
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  ***************************************
+ &gt;  &gt;  content of the file  named.conf.options
+ &gt;  &gt;  ***************************************
+ &gt;  &gt;
+ &gt;  &gt;  options {
+ &gt;  &gt;
+ &gt;  &gt;          directory &quot;/var/cache/bind&quot;;
+ &gt;  &gt;
+ &gt;  &gt;          // If there is a firewall between you and nameservers you
+ want
+ &gt;  &gt;          // to talk to, you might need to uncomment the query-source
+ &gt;  &gt;          // directive below.  Previous versions of BIND always asked
+ &gt;  &gt;          // questions using port 53, but BIND 8.1 and later use an
+ &gt;  &gt;  unprivileged
+ &gt;  &gt;          // port by default.
+ &gt;  &gt;
+ &gt;  &gt;          // query-source address * port 53;
+ &gt;  &gt;
+ &gt;  &gt;          // If your ISP provided one or more IP addresses for stable
+ &gt;  &gt;          // nameservers, you probably want to use them as forwarders.
+ &gt;  &gt;          // Uncomment the following block, and insert the addresses
+ &gt;  &gt;  replacing
+ &gt;  &gt;          // the all-0's placeholder.
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;          forwarders {
+ &gt;  &gt;              137.122.89.160;
+ &gt;  &gt;              137.122.89.39;
+ &gt;  &gt;          };
+ &gt;  &gt;
+ &gt;  &gt;          auth-nxdomain no;    # conform to RFC1035
+ &gt;  &gt;          listen-on-v6 { any; };
+ &gt;  &gt;  };
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  **********************************
+ &gt;  &gt;  content of the file  resolv.conf
+ &gt;  &gt;  **********************************
+ &gt;  &gt;
+ &gt;  &gt;  search open-ims.test
+ &gt;  &gt;  nameserver 127.0.0.1
+ &gt;  &gt;  domain open-ims.test
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  THE NEW RUN RESULT
+ &gt;  &gt;
+ &gt;  &gt;  *************************************************
+ &gt;  &gt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu</A>:/opt/OpenIMSCore# ./pcscf.sh
+ &gt;  &gt;  Listening on
+ &gt;  &gt;               udp: 127.0.0.1 [127.0.0.1]:4060
+ &gt;  &gt;               tcp: 127.0.0.1 [127.0.0.1]:4060
+ &gt;  &gt;  Aliases:
+ &gt;  &gt;               tcp: localhost:4060
+ &gt;  &gt;               udp: localhost:4060
+ &gt;  &gt;               *: pcscf.open-ims.test:4060
+ &gt;  &gt;
+ &gt;  &gt;   0(10033) init_tcp: using epoll_lt as the io watch method (auto
+ &gt;  detected)
+ &gt;  &gt;   0(10033) Maxfwd module- initializing
+ &gt;  &gt;   0(10033) INFO:P-CSCF:mod_init: Initialization of module
+ &gt;  &gt;   0(10033) INFO: udp_init: SO_RCVBUF is initially 110592
+ &gt;  &gt;   0(10033) INFO: udp_init: SO_RCVBUF is finally 221184
+ &gt;  &gt;   1(10034) INFO:P-CSCF:mod_init: Initialization of module in child [1]
+ &gt;  &gt;   2(10035) INFO:P-CSCF:mod_init: Initialization of module in child [2]
+ &gt;  &gt;   3(10036) INFO:P-CSCF:mod_init: Initialization of module in child [3]
+ &gt;  &gt;   4(10037) INFO:P-CSCF:mod_init: Initialization of module in child [4]
+ &gt;  &gt;   5(10038) INFO:P-CSCF:mod_init: Initialization of module in child [-
+ 1]
+ &gt;  &gt;   6(10039) INFO:P-CSCF:mod_init: Initialization of module in child [-
+ 1]
+ &gt;  &gt;   0(10033) INFO:P-CSCF:mod_init: Initialization of module in child [0]
+ &gt;  &gt;   7(10040) INFO:P-CSCF:mod_init: Initialization of module in child [5]
+ &gt;  &gt;   8(10041) INFO:P-CSCF:mod_init: Initialization of module in child [6]
+ &gt;  &gt;   9(10042) INFO:P-CSCF:mod_init: Initialization of module in child [7]
+ &gt;  &gt;  10(10043) INFO:P-CSCF:mod_init: Initialization of module in child [8]
+ &gt;  &gt;  11(10044) INFO:P-CSCF:mod_init: Initialization of module in child [-
+ 4]
+ &gt;  &gt;   5(10038) INF:P-CSCF:----------  Registrar Contents begin --------
+ &gt;  &gt;   5(10038) INF:P-CSCF:----------  Registrar Contents end ----------
+ &gt;  &gt;   5(10038) INF:P-CSCF:----------  Subscription list begin ---------
+ &gt;  &gt;   5(10038) INF:P-CSCF:----------  Subscription list end -----------
+ &gt;  &gt;   5(10038) INF:P-CSCF:----------  Registrar Contents begin --------
+ &gt;  &gt;   5(10038) INF:P-CSCF:----------  Registrar Contents end ----------
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;
+ *************************************************************************
+ &gt;  &gt;
+ &gt;  &gt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu</A>:/opt/OpenIMSCore# ./icscf.sh
+ &gt;  &gt;  Listening on
+ &gt;  &gt;               udp: 127.0.0.1 [127.0.0.1]:5060
+ &gt;  &gt;               tcp: 127.0.0.1 [127.0.0.1]:5060
+ &gt;  &gt;  Aliases:
+ &gt;  &gt;               tcp: localhost:5060
+ &gt;  &gt;               udp: localhost:5060
+ &gt;  &gt;               *: open-ims.test:*
+ &gt;  &gt;               *: icscf.open-ims.test:*
+ &gt;  &gt;
+ &gt;  &gt;   0(10052) init_tcp: using epoll_lt as the io watch method (auto
+ &gt;  detected)
+ &gt;  &gt;   0(10052) Maxfwd module- initializing
+ &gt;  &gt;   0(10052) INFO:I-CSCF:mod_init: Initialization of module
+ &gt;  &gt;   0(10052) INF:I-CSCF:icscf_db_get_nds: Loaded 1 trusted domains
+ &gt;  &gt;   0(10052) INF:I-CSCF:icscf_db_get_capabilities: Loaded 2 capabilities
+ &gt;  for
+ &gt;  &gt;  1 S-CSCFs (0 invalid entries in db)
+ &gt;  &gt;   0(10052) Twofish encryption ready
+ &gt;  &gt;   0(10052) INFO:cdp:cdp_init(): CDiameterPeer initializing
+ &gt;  &gt;   0(10052) Diameter Peer Config:
+ &gt;  &gt;   0(10052)       FQDN    : icscf.open-ims.test
+ &gt;  &gt;   0(10052)       Realm   : open-ims.test
+ &gt;  &gt;   0(10052)       VendorID: 10415
+ &gt;  &gt;   0(10052)       ProdName: CDiameterPeer
+ &gt;  &gt;   0(10052)       AcceptUn: [X]
+ &gt;  &gt;   0(10052)       DropUnkn: [X]
+ &gt;  &gt;   0(10052)       Tc      : 30
+ &gt;  &gt;   0(10052)       Workers : 4
+ &gt;  &gt;   0(10052)       QueueLen: 8
+ &gt;  &gt;   0(10052)       Peers : 1
+ &gt;  &gt;   0(10052)               FQDN:  hss.open-ims.test         Realm:
+ &gt;  &gt;  open-ims.test   Port: 3868
+ &gt;  &gt;   0(10052)       Acceptors : 1
+ &gt;  &gt;   0(10052)               Port:  3869      Bind: 127.0.0.1
+ &gt;  &gt;   0(10052)       Applications : 3
+ &gt;  &gt;   0(10052)               Auth ID:  16777216       Vendor: 10415
+ &gt;  &gt;   0(10052)               Auth ID:  16777216       Vendor: 4491
+ &gt;  &gt;   0(10052)               Auth ID:  16777216       Vendor: 13019
+ &gt;  &gt;   0(10052)       Routing Table :
+ &gt;  &gt;   0(10052)               DefaultRoute: [  10] hss.open-ims.test
+ &gt;  &gt;   0(10052) INFO: udp_init: SO_RCVBUF is initially 110592
+ &gt;  &gt;   0(10052) INFO: udp_init: SO_RCVBUF is finally 221184
+ &gt;  &gt;   1(10053) INFO:I-CSCF:mod_init: Initialization of module in child [1]
+ &gt;  &gt;   2(10054) INFO:I-CSCF:mod_init: Initialization of module in child [2]
+ &gt;  &gt;   3(10055) INFO:I-CSCF:mod_init: Initialization of module in child [3]
+ &gt;  &gt;   4(10056) INFO:I-CSCF:mod_init: Initialization of module in child [4]
+ &gt;  &gt;   5(10057) INFO:I-CSCF:mod_init: Initialization of module in child [-
+ 1]
+ &gt;  &gt;   6(10058) INFO:I-CSCF:mod_init: Initialization of module in child [-
+ 1]
+ &gt;  &gt;   0(10052) INFO:I-CSCF:mod_init: Initialization of module in child [0]
+ &gt;  main
+ &gt;  &gt;   0(10052) INFO:cdp:cdp_child_init(): CDiameterPeer starting ...
+ &gt;  &gt;   7(10059) INFO:I-CSCF:mod_init: Initialization of module in child
+ [1000]
+ &gt;  &gt;   7(10059) INFO:Acceptor process starting up...
+ &gt;  &gt;   7(10059) INFO:create_socket(): Trying to open/bind/listen on
+ 127.0.0.1
+ &gt;  &gt;  port 3869
+ &gt;  &gt;   7(10059) INFO:create_socket(): Successful socket open/bind/listen on
+ &gt;  &gt;  127.0.0.1 port 3869
+ &gt;  &gt;   7(10059) INFO:... Acceptor opened sockets. Entering accept loop ...
+ &gt;  &gt;   8(10060) INFO:I-CSCF:mod_init: Initialization of module in child
+ [1001]
+ &gt;  &gt;   8(10060) INFO:[0] Worker process started...
+ &gt;  &gt;   9(10061) INFO:I-CSCF:mod_init: Initialization of module in child
+ [1002]
+ &gt;  &gt;   9(10061) INFO:[1] Worker process started...
+ &gt;  &gt;  10(10062) INFO:I-CSCF:mod_init: Initialization of module in child
+ [1003]
+ &gt;  &gt;  10(10062) INFO:[2] Worker process started...
+ &gt;  &gt;  11(10063) INFO:I-CSCF:mod_init: Initialization of module in child
+ [1004]
+ &gt;  &gt;  11(10063) INFO:[3] Worker process started...
+ &gt;  &gt;  12(10064) INFO:I-CSCF:mod_init: Initialization of module in child
+ [1001]
+ &gt;  &gt;  12(10064) INFO:Timer process starting up...
+ &gt;  &gt;   0(10052) INFO:cdp:cdp_child_init(): ... CDiameterPeer started
+ &gt;  &gt;  13(10065) INFO:I-CSCF:mod_init: Initialization of module in child [5]
+ &gt;  &gt;  14(10066) INFO:I-CSCF:mod_init: Initialization of module in child [6]
+ &gt;  &gt;  15(10067) INFO:I-CSCF:mod_init: Initialization of module in child [7]
+ &gt;  &gt;  16(10068) INFO:I-CSCF:mod_init: Initialization of module in child [8]
+ &gt;  &gt;  17(10069) INFO:I-CSCF:mod_init: Initialization of module in child [-
+ 4]
+ &gt;  &gt;  12(10064) DBG:peer_timer(): Peer hss.open-ims.test      State 0
+ &gt;  &gt;  12(10064) DBG:sm_process(): Peer hss.open-ims.test      State Closed
+ &gt;  &gt;  Event Start
+ &gt;  &gt;  12(10064) DBG:I_Snd_Conn_Req(): Peer hss.open-ims.test
+ &gt;  &gt;  12(10064) INFO:peer_connect(): Trying to connect to 127.0.0.1 port
+ 3868
+ &gt;  &gt;  12(10064) WARNING:peer_connect(): Error opening connection to to
+ &gt;  127.0.0.1
+ &gt;  &gt;  port 3868 &gt;Connection refused
+ &gt;  &gt;  12(10064) DBG:sm_process(): Peer hss.open-ims.test      State
+ &gt;  &gt;  Wait_Conn_Ack    Event I_Rcv_Conn_NAck
+ &gt;  &gt;  12(10064) --- Peer List: ---
+ &gt;  &gt;  12(10064)  S[Closed] hss.open-ims.test:3868 D[ ]
+ &gt;  &gt;  12(10064) ------------------
+ &gt;  &gt;  12(10064) --- Peer List: ---
+ &gt;  &gt;  12(10064)  S[Closed] hss.open-ims.test:3868 D[ ]
+ &gt;  &gt;  12(10064) ------------------
+ &gt;  &gt;  12(10064) --- Peer List: ---
+ &gt;  &gt;  12(10064)  S[Closed] hss.open-ims.test:3868 D[ ]
+ &gt;  &gt;  12(10064) ------------------
+ &gt;  &gt;  12(10064) --- Peer List: ---
+ &gt;  &gt;  12(10064)  S[Closed] hss.open-ims.test:3868 D[ ]
+ &gt;  &gt;  12(10064) ------------------
+ &gt;  &gt;  12(10064) --- Peer List: ---
+ &gt;  &gt;  12(10064)  S[Closed] hss.open-ims.test:3868 D[ ]
+ &gt;  &gt;  12(10064) ------------------
+ &gt;  &gt;  12(10064) --- Peer List: ---
+ &gt;  &gt;  12(10064)  S[Closed] hss.open-ims.test:3868 D[ ]
+ &gt;  &gt;  12(10064) ------------------
+ &gt;  &gt;  12(10064) --- Peer List: ---
+ &gt;  &gt;  12(10064)  S[Closed] hss.open-ims.test:3868 D[ ]
+ &gt;  &gt;  12(10064) ------------------
+ &gt;  &gt;  12(10064) --- Peer List: ---
+ &gt;  &gt;  12(10064)  S[Closed] hss.open-ims.test:3868 D[ ]
+ &gt;  &gt;  12(10064) ------------------
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;
+ *************************************************************************
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu</A>:/opt/OpenIMSCore# ./scscf.sh
+ &gt;  &gt;  Listening on
+ &gt;  &gt;               udp: 127.0.0.1 [127.0.0.1]:6060
+ &gt;  &gt;               tcp: 127.0.0.1 [127.0.0.1]:6060
+ &gt;  &gt;  Aliases:
+ &gt;  &gt;               tcp: localhost:6060
+ &gt;  &gt;               udp: localhost:6060
+ &gt;  &gt;               *: scscf.open-ims.test:6060
+ &gt;  &gt;
+ &gt;  &gt;   0(10077) init_tcp: using epoll_lt as the io watch method (auto
+ &gt;  detected)
+ &gt;  &gt;   0(10077) Maxfwd module- initializing
+ &gt;  &gt;   0(10077) INFO:S-CSCF:mod_init: Initialization of module
+ &gt;  &gt;   0(10077) INFO:ISC: - init
+ &gt;  &gt;   0(10077) INFO:cdp:cdp_init(): CDiameterPeer initializing
+ &gt;  &gt;   0(10077) Diameter Peer Config:
+ &gt;  &gt;   0(10077)       FQDN    : scscf.open-ims.test
+ &gt;  &gt;   0(10077)       Realm   : open-ims.test
+ &gt;  &gt;   0(10077)       VendorID: 10415
+ &gt;  &gt;   0(10077)       ProdName: CDiameterPeer
+ &gt;  &gt;   0(10077)       AcceptUn: [X]
+ &gt;  &gt;   0(10077)       DropUnkn: [X]
+ &gt;  &gt;   0(10077)       Tc      : 30
+ &gt;  &gt;   0(10077)       Workers : 4
+ &gt;  &gt;   0(10077)       QueueLen: 8
+ &gt;  &gt;   0(10077)       Peers : 1
+ &gt;  &gt;   0(10077)               FQDN:  hss.open-ims.test         Realm:
+ &gt;  &gt;  open-ims.test   Port: 3868
+ &gt;  &gt;   0(10077)       Acceptors : 1
+ &gt;  &gt;   0(10077)               Port:  3870      Bind: 127.0.0.1
+ &gt;  &gt;   0(10077)       Applications : 3
+ &gt;  &gt;   0(10077)               Auth ID:  16777216       Vendor: 10415
+ &gt;  &gt;   0(10077)               Auth ID:  16777216       Vendor: 4491
+ &gt;  &gt;   0(10077)               Auth ID:  16777216       Vendor: 13019
+ &gt;  &gt;   0(10077)       Routing Table :
+ &gt;  &gt;   0(10077)               DefaultRoute: [  10] hss.open-ims.test
+ &gt;  &gt;   0(10077) INFO: udp_init: SO_RCVBUF is initially 110592
+ &gt;  &gt;   0(10077) INFO: udp_init: SO_RCVBUF is finally 221184
+ &gt;  &gt;   1(10078) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  [1]
+ &gt;  &gt;   2(10079) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  [2]
+ &gt;  &gt;   3(10080) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  [3]
+ &gt;  &gt;   4(10081) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  [4]
+ &gt;  &gt;   5(10082) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  [-
+ &gt;  &gt;  1]
+ &gt;  &gt;   6(10083) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  [-
+ &gt;  &gt;  1]
+ &gt;  &gt;   0(10077) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  [0]
+ &gt;  &gt;   0(10077) INFO:ISC: - child init [0]
+ &gt;  &gt;   0(10077) INFO:cdp:cdp_child_init(): CDiameterPeer starting ...
+ &gt;  &gt;   7(10084) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  &gt;  [1000]
+ &gt;  &gt;   8(10085) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  &gt;  [1001]
+ &gt;  &gt;   9(10086) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  &gt;  [1002]
+ &gt;  &gt;  10(10087) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  &gt;  [1003]
+ &gt;  &gt;  11(10088) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  &gt;  [1004]
+ &gt;  &gt;  12(10089) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  &gt;  [1001]
+ &gt;  &gt;   0(10077) INFO:cdp:cdp_child_init(): ... CDiameterPeer started
+ &gt;  &gt;  13(10090) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  [5]
+ &gt;  &gt;  14(10091) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  [6]
+ &gt;  &gt;  15(10092) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  [7]
+ &gt;  &gt;  16(10093) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  [8]
+ &gt;  &gt;  17(10094) INFO:S-CSCF:mod_child_init: Initialization of module in
+ child
+ &gt;  [-
+ &gt;  &gt;  4]
+ &gt;  &gt;  17(10094) INFO:ISC: - child init [-4]
+ &gt;  &gt;   2(10079) INFO:ISC: - child init [2]
+ &gt;  &gt;   3(10080) INFO:ISC: - child init [3]
+ &gt;  &gt;   5(10082)  1(10078) INFO:ISC: - child init [1]
+ &gt;  &gt;  INFO:ISC: - child init [-1]
+ &gt;  &gt;   6(10083) INFO:ISC: - child init [-1]
+ &gt;  &gt;   7(10084) INFO:ISC: - child init [1000]
+ &gt;  &gt;   7(10084) INFO:Acceptor process starting up...
+ &gt;  &gt;   7(10084) INFO:create_socket(): Trying to open/bind/listen on
+ 127.0.0.1
+ &gt;  &gt;  port 3870
+ &gt;  &gt;   7(10084) INFO:create_socket(): Successful socket open/bind/listen on
+ &gt;  &gt;  127.0.0.1 port 3870
+ &gt;  &gt;   7(10084) INFO:... Acceptor opened sockets. Entering accept loop ...
+ &gt;  &gt;  10(10087) INFO:ISC: - child init [1003]
+ &gt;  &gt;  10(10087) INFO:[2] Worker process started...
+ &gt;  &gt;  11(10088) INFO:ISC: - child init [1004]
+ &gt;  &gt;  11(10088) INFO:[3] Worker process started...
+ &gt;  &gt;  12(10089) INFO:ISC: - child init [1001]
+ &gt;  &gt;  12(10089) INFO:Timer process starting up...
+ &gt;  &gt;  13(10090) INFO:ISC: - child init [5]
+ &gt;  &gt;  15(10092) INFO:ISC: - child init [7]
+ &gt;  &gt;  16(10093) INFO:ISC: - child init [8]
+ &gt;  &gt;   8(10085) INFO:ISC: - child init [1001]
+ &gt;  &gt;   8(10085)  4(10081) INFO:ISC: - child init [4]
+ &gt;  &gt;   9(10086) INFO:ISC: - child init [1002]
+ &gt;  &gt;   9(10086) INFO:[1] Worker process started...
+ &gt;  &gt;  14(10091) INFO:ISC: - child init [6]
+ &gt;  &gt;  INFO:[0] Worker process started...
+ &gt;  &gt;  12(10089) DBG:peer_timer(): Peer hss.open-ims.test      State 0
+ &gt;  &gt;  12(10089) DBG:sm_process(): Peer hss.open-ims.test      State Closed
+ &gt;  &gt;  Event Start
+ &gt;  &gt;  12(10089) DBG:I_Snd_Conn_Req(): Peer hss.open-ims.test
+ &gt;  &gt;  12(10089) INFO:peer_connect(): Trying to connect to 127.0.0.1 port
+ 3868
+ &gt;  &gt;  12(10089) WARNING:peer_connect(): Error opening connection to to
+ &gt;  127.0.0.1
+ &gt;  &gt;  port 3868 &gt;Connection refused
+ &gt;  &gt;  12(10089) DBG:sm_process(): Peer hss.open-ims.test      State
+ &gt;  &gt;  Wait_Conn_Ack    Event I_Rcv_Conn_NAck
+ &gt;  &gt;  12(10089) --- Peer List: ---
+ &gt;  &gt;  12(10089)  S[Closed] hss.open-ims.test:3868 D[ ]
+ &gt;  &gt;  12(10089) ------------------
+ &gt;  &gt;  12(10089) --- Peer List: ---
+ &gt;  &gt;  12(10089)  S[Closed] hss.open-ims.test:3868 D[ ]
+ &gt;  &gt;    E
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;
+ *************************************************************************
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu</A>:/opt/OpenIMSCore/FHoSS/deploy# ./startup.sh
+ &gt;  &gt;  Building Classpath
+ &gt;  &gt;  Classpath is
+ &gt;  &gt;  lib/xml-apis.jar:lib/xercesImpl.jar:lib/xerces-2.4.0.jar:lib/xalan-
+ &gt;  &gt;  2.4.0.jar:lib/tomcat-util.jar:lib/tomcat-http.jar:lib/tomcat-
+ &gt;  &gt;  coyote.jar:lib/struts.jar:lib/servlets-default.jar:lib/servlet-
+ &gt;  &gt;  api.jar:lib/naming-resources.jar:lib/naming-factory.jar:lib/mysql-
+ &gt;  &gt;  connector-java-3.1.12-bin.jar:lib/mx4j-
+ &gt;  &gt;
+ &gt;
+ 3.0.1.jar:lib/log4j.jar:lib/junit.jar:lib/junitee.jar:lib/jta.jar:lib/jsp-
+ &gt;  &gt;  api.jar:lib/jmx.jar:lib/jdp.jar:lib/jasper-runtime.jar:lib/jasper-
+ &gt;  compiler-
+ &gt;  &gt;  jdt.jar:lib/jasper-
+ &gt;  &gt;  compiler.jar:lib/hibernate3.jar:lib/FHoSS.jar:lib/ehcache-
+ &gt;  &gt;  1.1.jar:lib/dom4j-1.6.1.jar:lib/commons-validator.jar:lib/commons-
+ &gt;  &gt;  modeler.jar:lib/commons-logging.jar:lib/commons-logging-
+ &gt;  &gt;  1.0.4.jar:lib/commons-lang.jar:lib/commons-
+ fileupload.jar:lib/commons-
+ &gt;  &gt;  el.jar:lib/commons-digester.jar:lib/commons-collections-
+ &gt;  &gt;  3.1.jar:lib/commons-beanutils.jar:lib/cglib-2.1.3.jar:lib/catalina-
+ &gt;  &gt;  optional.jar:lib/catalina.jar:lib/c3p0-
+ &gt;  &gt;  0.9.1.jar:lib/base64.jar:lib/asm.jar:lib/asm-attrs.jar:lib/antlr-
+ &gt;  &gt;  2.7.6.jar:.:/home/majdi/testjava/classes:log4j.p!
+ &gt;  &gt;   roperties:..
+ &gt;  &gt;  2008-02-28 06:54:19,388 INFO  de.fhg.fokus.hss.main.TomcatServer -
+ &gt;  &gt;  startTomcat Tomcat-Server is started.
+ &gt;  &gt;  2008-02-28 06:54:21,012 WARN
+ &gt;  org.apache.catalina.connector.MapperListener
+ &gt;  &gt;  - registerEngine Unknown default host: 127.0.0.1
+ &gt;  &gt;  2008-02-28 06:54:22,808 INFO
+ &gt;  de.fhg.fokus.hss.web.servlet.ResponseFilter
+ &gt;  &gt;  - init Response Filter Initialisation!
+ &gt;  &gt;  2008-02-28 06:54:24,000 INFO  de.fhg.fokus.hss.main.TomcatServer -
+ &gt;  &gt;  startTomcat WebConsole of FHoSS was started !
+ &gt;  &gt;  2008-02-28 06:54:28,055 WARN
+ &gt;  &gt;  org.hibernate.impl.SessionFactoryObjectFactory - addInstance
+ &gt;  &gt;  InitialContext did not implement EventContext
+ &gt;  &gt;  2008-02-28 06:54:28,274 INFO
+ &gt;  &gt;  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; FQDN:
+ &gt;  &gt;  hss.open-ims.test
+ &gt;  &gt;  2008-02-28 06:54:28,275 INFO
+ &gt;  &gt;  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Realm:
+ &gt;  &gt;  open-ims.test
+ &gt;  &gt;  2008-02-28 06:54:28,276 INFO
+ &gt;  &gt;  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Vendor_ID :
+ &gt;  10415
+ &gt;  &gt;  2008-02-28 06:54:28,277 INFO
+ &gt;  &gt;  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Product
+ Name:
+ &gt;  &gt;  JavaDiameterPeer
+ &gt;  &gt;  2008-02-28 06:54:28,277 INFO
+ &gt;  &gt;  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+ &gt;  &gt;  AcceptUnknwonPeers: true
+ &gt;  &gt;  2008-02-28 06:54:28,278 INFO
+ &gt;  &gt;  de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+ &gt;  &gt;  DropUnknownOnDisconnect: true
+ &gt;  &gt;  2008-02-28 06:54:28,398 INFO  de.fhg.fokus.hss.main.HSSContainer -
+ &gt;  &gt;  waitForExit
+ &gt;  &gt;  Type &quot;exit&quot; to stop FHoSS!
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  Thanks you
+ &gt;  &gt;  Majdi
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  &gt; Mostly they are debug logs. I can see thought that your DNS server
+ was
+ &gt;  &gt;  &gt; not configured properly.
+ &gt;  &gt;  &gt;
+ &gt;  &gt;  &gt; 12(6536) DBG:I_Snd_Conn_Req(): Peer hss.open-ims.test
+ &gt;  &gt;  &gt; 12(6536) WARNING:peer_connect(): Error opening connection to
+ &gt;  &gt;  &gt; hss.open-ims.test:3868 &gt;No address associated with hostname
+ &gt;  &gt;  &gt;
+ &gt;  &gt;  &gt;
+ &gt;  &gt;  &gt;
+ &gt;  &gt;  &gt; -Dragos
+ &gt;  &gt;  &gt;
+ &gt;  &gt;  &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mrawashd at site.uottawa.ca</A> wrote:
+ &gt;  &gt;  &gt;&gt; (same e-mail without attachment)
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt; Hi,
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt; Finally I managed to install and configured all the components of
+ the
+ &gt;  &gt;  &gt;&gt; OpenIMSCore, I started the components, typed <A HREF="http://localhost:8080">http://localhost:8080</A>
+ I
+ &gt;  got
+ &gt;  &gt;  &gt;&gt; the message below
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;       Welcome to Fokus Home Subscriber Server (FHoSS)
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt; but on the terminal windows I see some errors bur I am not sure
+ what
+ &gt;  &gt;  &gt;&gt; these
+ &gt;  &gt;  &gt;&gt; errors are, I included the errors separated by ***** for
+ &gt;  &gt;  &gt;&gt;  ./startup.sh
+ &gt;  &gt;  &gt;&gt;  ./pcscf.sh
+ &gt;  &gt;  &gt;&gt;  ./icscf.sh
+ &gt;  &gt;  &gt;&gt;  ./scscf.sh
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt; Thanks guys
+ &gt;  &gt;  &gt;&gt; Majdi
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu</A>:/opt/OpenIMSCore/FHoSS/deploy# ./startup.sh
+ &gt;  &gt;  &gt;&gt; Building Classpath
+ &gt;  &gt;  &gt;&gt; Classpath is
+ &gt;  &gt;  &gt;&gt; lib/xml-apis.jar:lib/xercesImpl.jar:lib/xerces-
+ 2.4.0.jar:lib/xalan-
+ &gt;  &gt;  2.4.0.jar:lib/tomcat-util.jar:lib/tomcat-http.jar:lib/tomcat-
+ &gt;  &gt;  coyote.jar:lib/struts.jar:lib/servlets-default.jar:lib/servlet-
+ &gt;  &gt;  api.jar:lib/naming-resources.jar:lib/naming-factory.jar:lib/mysql-
+ &gt;  &gt;  connector-java-3.1.12-bin.jar:lib/mx4j-
+ &gt;  &gt;
+ &gt;
+ 3.0.1.jar:lib/log4j.jar:lib/junit.jar:lib/junitee.jar:lib/jta.jar:lib/jsp-
+ &gt;  &gt;  api.jar:lib/jmx.jar:lib/jdp.jar:lib/jasper-runtime.jar:lib/jasper-
+ &gt;  compiler-
+ &gt;  &gt;  jdt.jar:lib/jasper-
+ &gt;  &gt;  compiler.jar:lib/hibernate3.jar:lib/FHoSS.jar:lib/ehcache-
+ &gt;  &gt;  1.1.jar:lib/dom4j-1.6.1.jar:lib/commons-validator.jar:lib/commons-
+ &gt;  &gt;  modeler.jar:lib/commons-logging.jar:lib/commons-logging-
+ &gt;  &gt;  1.0.4.jar:lib/commons-lang.jar:lib/commons-
+ fileupload.jar:lib/commons-
+ &gt;  &gt;  el.jar:lib/commons-digester.jar:lib/commons-collections-
+ &gt;  &gt;  3.1.jar:lib/commons-beanutils.jar:lib/cglib-2.1.3.jar:lib/catalina-
+ &gt;  &gt;  optional.jar:lib/catalina.jar:lib/c3p0-
+ &gt;  &gt;  0.9.1.jar:lib/base64.jar:lib/asm.jar:lib/asm-attrs.jar:lib/antlr-
+ &gt;  &gt;  2.7.6.jar:.:/home/majdi/testjava/classes:log4!
+ &gt;  &gt;   j.p!
+ &gt;  &gt;  &gt;&gt;  roperties:..
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:12,897 INFO  de.fhg.fokus.hss.main.TomcatServer -
+ &gt;  &gt;  &gt;&gt; startTomcat Tomcat-Server is started.
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:15,701 WARN
+ &gt;  &gt;  &gt;&gt; org.apache.catalina.connector.MapperListener
+ &gt;  &gt;  &gt;&gt; - registerEngine Unknown default host: 127.0.0.1
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:18,405 INFO
+ &gt;  &gt;  &gt;&gt; de.fhg.fokus.hss.web.servlet.ResponseFilter
+ &gt;  &gt;  &gt;&gt; - init Response Filter Initialisation!
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:19,721 INFO  de.fhg.fokus.hss.main.TomcatServer -
+ &gt;  &gt;  &gt;&gt; startTomcat WebConsole of FHoSS was started !
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:25,273 WARN
+ &gt;  &gt;  &gt;&gt; org.hibernate.impl.SessionFactoryObjectFactory - addInstance
+ &gt;  &gt;  &gt;&gt; InitialContext did not implement EventContext
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:25,487 INFO
+ &gt;  &gt;  &gt;&gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; FQDN:
+ &gt;  &gt;  &gt;&gt; hss.open-ims.test
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:25,488 INFO
+ &gt;  &gt;  &gt;&gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Realm:
+ &gt;  &gt;  &gt;&gt; open-ims.test
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:25,488 INFO
+ &gt;  &gt;  &gt;&gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+ Vendor_ID :
+ &gt;  &gt;  &gt;&gt; 10415
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:25,488 INFO
+ &gt;  &gt;  &gt;&gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Product
+ &gt;  Name:
+ &gt;  &gt;  &gt;&gt; JavaDiameterPeer
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:25,490 INFO
+ &gt;  &gt;  &gt;&gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+ &gt;  &gt;  &gt;&gt; AcceptUnknwonPeers: true
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:25,493 INFO
+ &gt;  &gt;  &gt;&gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+ &gt;  &gt;  &gt;&gt; DropUnknownOnDisconnect: true
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:25,540 ERROR
+ &gt;  &gt;  &gt;&gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+ I_Snd_Conn_Req
+ &gt;  &gt;  &gt;&gt; StateMachine: Peer icscf.open-ims.test can not be resolved.
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:25,541 INFO  de.fhg.fokus.hss.main.HSSContainer -
+ &gt;  &gt;  &gt;&gt; waitForExit
+ &gt;  &gt;  &gt;&gt; Type &quot;exit&quot; to stop FHoSS!
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:25,543 ERROR
+ &gt;  &gt;  &gt;&gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+ I_Snd_Conn_Req
+ &gt;  &gt;  &gt;&gt; StateMachine: Peer scscf.open-ims.test can not be resolved.
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:55,573 ERROR
+ &gt;  &gt;  &gt;&gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+ I_Snd_Conn_Req
+ &gt;  &gt;  &gt;&gt; StateMachine: Peer icscf.open-ims.test can not be resolved.
+ &gt;  &gt;  &gt;&gt; 2008-02-25 05:26:55,576 ERROR
+ &gt;  &gt;  &gt;&gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+ I_Snd_Conn_Req
+ &gt;  &gt;  &gt;&gt; StateMachine: Peer scscf.open-ims.test can not be resolved
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;
+ &gt;
+ ***************************************************************************
+ &gt;  &gt;
+ &gt;
+ *************************************************************************
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu</A>:/# cd opt/OpenIMSCore/
+ &gt;  &gt;  &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu</A>:/opt/OpenIMSCore# ./pcscf.sh
+ &gt;  &gt;  &gt;&gt; ./pcscf.sh: line 3: killser: command not found
+ &gt;  &gt;  &gt;&gt; Listening on
+ &gt;  &gt;  &gt;&gt;              udp: 127.0.0.1 [127.0.0.1]:4060
+ &gt;  &gt;  &gt;&gt;              tcp: 127.0.0.1 [127.0.0.1]:4060
+ &gt;  &gt;  &gt;&gt; Aliases:
+ &gt;  &gt;  &gt;&gt;              tcp: localhost:4060
+ &gt;  &gt;  &gt;&gt;              udp: localhost:4060
+ &gt;  &gt;  &gt;&gt;              *: pcscf.open-ims.test:4060
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;  0(6504) init_tcp: using epoll_lt as the io watch method (auto
+ &gt;  detected)
+ &gt;  &gt;  &gt;&gt;  0(6504) Maxfwd module- initializing
+ &gt;  &gt;  &gt;&gt;  0(6504) INFO:P-CSCF:mod_init: Initialization of module
+ &gt;  &gt;  &gt;&gt;  0(6504) INFO: udp_init: SO_RCVBUF is initially 110592
+ &gt;  &gt;  &gt;&gt;  0(6504) INFO: udp_init: SO_RCVBUF is finally 221184
+ &gt;  &gt;  &gt;&gt;  1(6505) INFO:P-CSCF:mod_init: Initialization of module in child
+ [1]
+ &gt;  &gt;  &gt;&gt;  2(6506) INFO:P-CSCF:mod_init: Initialization of module in child
+ [2]
+ &gt;  &gt;  &gt;&gt;  3(6507) INFO:P-CSCF:mod_init: Initialization of module in child
+ [3]
+ &gt;  &gt;  &gt;&gt;  4(6508) INFO:P-CSCF:mod_init: Initialization of module in child
+ [4]
+ &gt;  &gt;  &gt;&gt;  5(6509) INFO:P-CSCF:mod_init: Initialization of module in child
+ [-1]
+ &gt;  &gt;  &gt;&gt;  6(6510) INFO:P-CSCF:mod_init: Initialization of module in child
+ [-1]
+ &gt;  &gt;  &gt;&gt;  0(6504) INFO:P-CSCF:mod_init: Initialization of module in child
+ [0]
+ &gt;  &gt;  &gt;&gt;  7(6511) INFO:P-CSCF:mod_init: Initialization of module in child
+ [5]
+ &gt;  &gt;  &gt;&gt;  8(6512) INFO:P-CSCF:mod_init: Initialization of module in child
+ [6]
+ &gt;  &gt;  &gt;&gt;  9(6513) INFO:P-CSCF:mod_init: Initialization of module in child
+ [7]
+ &gt;  &gt;  &gt;&gt; 10(6514) INFO:P-CSCF:mod_init: Initialization of module in child
+ [8]
+ &gt;  &gt;  &gt;&gt; 11(6515) INFO:P-CSCF:mod_init: Initialization of module in child
+ [-4]
+ &gt;  &gt;  &gt;&gt;  5(6509) INF:P-CSCF:----------  Registrar Contents begin --------
+ &gt;  &gt;  &gt;&gt;  5(6509) INF:P-CSCF:----------  Registrar Contents end ----------
+ &gt;  &gt;  &gt;&gt;  5(6509) INF:P-CSCF:----------  Subscription list begin ---------
+ &gt;  &gt;  &gt;&gt;  5(6509) INF:P-CSCF:----------  Subscription list end -----------
+ &gt;  &gt;  &gt;&gt;  5(6509) INF:P-CSCF:----------  Registrar Contents begin --------
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;
+ &gt;
+ ***************************************************************************
+ &gt;  &gt;
+ &gt;
+ *************************************************************************
+ &gt;  &gt;  &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu</A>:/# cd opt/OpenIMSCore/
+ &gt;  &gt;  &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu</A>:/opt/OpenIMSCore# ./icscf.sh
+ &gt;  &gt;  &gt;&gt; ./icscf.sh: line 3: killser: command not found
+ &gt;  &gt;  &gt;&gt; Listening on
+ &gt;  &gt;  &gt;&gt;              udp: 127.0.0.1 [127.0.0.1]:5060
+ &gt;  &gt;  &gt;&gt;              tcp: 127.0.0.1 [127.0.0.1]:5060
+ &gt;  &gt;  &gt;&gt; Aliases:
+ &gt;  &gt;  &gt;&gt;              tcp: localhost:5060
+ &gt;  &gt;  &gt;&gt;              udp: localhost:5060
+ &gt;  &gt;  &gt;&gt;              *: open-ims.test:*
+ &gt;  &gt;  &gt;&gt;              *: icscf.open-ims.test:*
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;  0(6524) init_tcp: using epoll_lt as the io watch method (auto
+ &gt;  detected)
+ &gt;  &gt;  &gt;&gt;  0(6524) Maxfwd module- initializing
+ &gt;  &gt;  &gt;&gt;  0(6524) INFO:I-CSCF:mod_init: Initialization of module
+ &gt;  &gt;  &gt;&gt;  0(6524) INF:I-CSCF:icscf_db_get_nds: Loaded 1 trusted domains
+ &gt;  &gt;  &gt;&gt;  0(6524) INF:I-CSCF:icscf_db_get_capabilities: Loaded 2
+ capabilities
+ &gt;  for
+ &gt;  &gt;  &gt;&gt; 1
+ &gt;  &gt;  &gt;&gt; S-CSCFs (0 invalid entries in db)
+ &gt;  &gt;  &gt;&gt;  0(6524) Twofish encryption ready
+ &gt;  &gt;  &gt;&gt;  0(6524) INFO:cdp:cdp_init(): CDiameterPeer initializing
+ &gt;  &gt;  &gt;&gt;  0(6524) Diameter Peer Config:
+ &gt;  &gt;  &gt;&gt;  0(6524)        FQDN    : icscf.open-ims.test
+ &gt;  &gt;  &gt;&gt;  0(6524)        Realm   : open-ims.test
+ &gt;  &gt;  &gt;&gt;  0(6524)        VendorID: 10415
+ &gt;  &gt;  &gt;&gt;  0(6524)        ProdName: CDiameterPeer
+ &gt;  &gt;  &gt;&gt;  0(6524)        AcceptUn: [X]
+ &gt;  &gt;  &gt;&gt;  0(6524)        DropUnkn: [X]
+ &gt;  &gt;  &gt;&gt;  0(6524)        Tc      : 30
+ &gt;  &gt;  &gt;&gt;  0(6524)        Workers : 4
+ &gt;  &gt;  &gt;&gt;  0(6524)        QueueLen: 8
+ &gt;  &gt;  &gt;&gt;  0(6524)        Peers : 1
+ &gt;  &gt;  &gt;&gt;  0(6524)                FQDN:  hss.open-ims.test         Realm:
+ &gt;  &gt;  &gt;&gt; open-ims.test   Port: 3868
+ &gt;  &gt;  &gt;&gt;  0(6524)        Acceptors : 1
+ &gt;  &gt;  &gt;&gt;  0(6524)                Port:  3869      Bind: 127.0.0.1
+ &gt;  &gt;  &gt;&gt;  0(6524)        Applications : 3
+ &gt;  &gt;  &gt;&gt;  0(6524)                Auth ID:  16777216       Vendor: 10415
+ &gt;  &gt;  &gt;&gt;  0(6524)                Auth ID:  16777216       Vendor: 4491
+ &gt;  &gt;  &gt;&gt;  0(6524)                Auth ID:  16777216       Vendor: 13019
+ &gt;  &gt;  &gt;&gt;  0(6524)        Routing Table :
+ &gt;  &gt;  &gt;&gt;  0(6524)                DefaultRoute: [  10] hss.open-ims.test
+ &gt;  &gt;  &gt;&gt;  0(6524) INFO: udp_init: SO_RCVBUF is initially 110592
+ &gt;  &gt;  &gt;&gt;  0(6524) INFO: udp_init: SO_RCVBUF is finally 221184
+ &gt;  &gt;  &gt;&gt;  1(6525) INFO:I-CSCF:mod_init: Initialization of module in child
+ [1]
+ &gt;  &gt;  &gt;&gt;  2(6526) INFO:I-CSCF:mod_init: Initialization of module in child
+ [2]
+ &gt;  &gt;  &gt;&gt;  3(6527) INFO:I-CSCF:mod_init: Initialization of module in child
+ [3]
+ &gt;  &gt;  &gt;&gt;  4(6528) INFO:I-CSCF:mod_init: Initialization of module in child
+ [4]
+ &gt;  &gt;  &gt;&gt;  5(6529) INFO:I-CSCF:mod_init: Initialization of module in child
+ [-1]
+ &gt;  &gt;  &gt;&gt;  6(6530) INFO:I-CSCF:mod_init: Initialization of module in child
+ [-1]
+ &gt;  &gt;  &gt;&gt;  0(6524) INFO:I-CSCF:mod_init: Initialization of module in child
+ [0]
+ &gt;  &gt;  &gt;&gt; main
+ &gt;  &gt;  &gt;&gt;  0(6524) INFO:cdp:cdp_child_init(): CDiameterPeer starting ...
+ &gt;  &gt;  &gt;&gt;  7(6531) INFO:I-CSCF:mod_init: Initialization of module in child
+ &gt;  [1000]
+ &gt;  &gt;  &gt;&gt;  7(6531) INFO:Acceptor process starting up...
+ &gt;  &gt;  &gt;&gt;  7(6531) INFO:create_socket(): Trying to open/bind/listen on
+ &gt;  127.0.0.1
+ &gt;  &gt;  &gt;&gt; port 3869
+ &gt;  &gt;  &gt;&gt;  7(6531) INFO:create_socket(): Successful socket open/bind/listen
+ on
+ &gt;  &gt;  &gt;&gt; 127.0.0.1 port 3869
+ &gt;  &gt;  &gt;&gt;  7(6531) INFO:... Acceptor opened sockets. Entering accept loop ...
+ &gt;  &gt;  &gt;&gt;  8(6532) INFO:I-CSCF:mod_init: Initialization of module in child
+ &gt;  [1001]
+ &gt;  &gt;  &gt;&gt;  8(6532) INFO:[0] Worker process started...
+ &gt;  &gt;  &gt;&gt;  9(6533) INFO:I-CSCF:mod_init: Initialization of module in child
+ &gt;  [1002]
+ &gt;  &gt;  &gt;&gt;  9(6533) INFO:[1] Worker process started...
+ &gt;  &gt;  &gt;&gt; 10(6534) INFO:I-CSCF:mod_init: Initialization of module in child
+ &gt;  [1003]
+ &gt;  &gt;  &gt;&gt; 10(6534) INFO:[2] Worker process started...
+ &gt;  &gt;  &gt;&gt; 11(6535) INFO:I-CSCF:mod_init: Initialization of module in child
+ &gt;  [1004]
+ &gt;  &gt;  &gt;&gt; 11(6535) INFO:[3] Worker process started...
+ &gt;  &gt;  &gt;&gt; 12(6536) INFO:I-CSCF:mod_init: Initialization of module in child
+ &gt;  [1001]
+ &gt;  &gt;  &gt;&gt; 12(6536) INFO:Timer process starting up...
+ &gt;  &gt;  &gt;&gt;  0(6524) INFO:cdp:cdp_child_init(): ... CDiameterPeer started
+ &gt;  &gt;  &gt;&gt; 13(6537) INFO:I-CSCF:mod_init: Initialization of module in child
+ [5]
+ &gt;  &gt;  &gt;&gt; 14(6538) INFO:I-CSCF:mod_init: Initialization of module in child
+ [6]
+ &gt;  &gt;  &gt;&gt; 16(6540) INFO:I-CSCF:mod_init: Initialization of module in child
+ [8]
+ &gt;  &gt;  &gt;&gt; 17(6541) INFO:I-CSCF:mod_init: Initialization of module in child
+ [-4]
+ &gt;  &gt;  &gt;&gt; 15(6539) INFO:I-CSCF:mod_init: Initialization of module in child
+ [7]
+ &gt;  tcp
+ &gt;  &gt;  &gt;&gt; receiver child=2
+ &gt;  &gt;  &gt;&gt; 12(6536) DBG:peer_timer(): Peer hss.open-ims.test       State 0
+ &gt;  &gt;  &gt;&gt; 12(6536) DBG:sm_process(): Peer hss.open-ims.test       State
+ Closed
+ &gt;  &gt;  &gt;&gt; Event Start
+ &gt;  &gt;  &gt;&gt; 12(6536) DBG:I_Snd_Conn_Req(): Peer hss.open-ims.test
+ &gt;  &gt;  &gt;&gt; 12(6536) WARNING:peer_connect(): Error opening connection to
+ &gt;  &gt;  &gt;&gt; hss.open-ims.test:3868 &gt;No address associated with hostname
+ &gt;  &gt;  &gt;&gt; 12(6536) DBG:sm_process(): Peer hss.open-ims.test       State
+ &gt;  &gt;  &gt;&gt; Wait_Conn_Ack    Event I_Rcv_Conn_NAck
+ &gt;  &gt;  &gt;&gt; 12(6536) --- Peer List: ---
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;
+ &gt;
+ ***************************************************************************
+ &gt;  &gt;
+ &gt;
+ *************************************************************************
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu</A>:/# cd opt/OpenIMSCore/
+ &gt;  &gt;  &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ubuntu</A>:/opt/OpenIMSCore# ./scscf.sh
+ &gt;  &gt;  &gt;&gt; ./scscf.sh: line 5: killser: command not found
+ &gt;  &gt;  &gt;&gt; Listening on
+ &gt;  &gt;  &gt;&gt;              udp: 127.0.0.1 [127.0.0.1]:6060
+ &gt;  &gt;  &gt;&gt;              tcp: 127.0.0.1 [127.0.0.1]:6060
+ &gt;  &gt;  &gt;&gt; Aliases:
+ &gt;  &gt;  &gt;&gt;              tcp: localhost:6060
+ &gt;  &gt;  &gt;&gt;              udp: localhost:6060
+ &gt;  &gt;  &gt;&gt;              *: scscf.open-ims.test:6060
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;  0(6544) init_tcp: using epoll_lt as the io watch method (auto
+ &gt;  detected)
+ &gt;  &gt;  &gt;&gt;  0(6544) Maxfwd module- initializing
+ &gt;  &gt;  &gt;&gt;  0(6544) INFO:S-CSCF:mod_init: Initialization of module
+ &gt;  &gt;  &gt;&gt;  0(6544) INFO:ISC: - init
+ &gt;  &gt;  &gt;&gt;  0(6544) INFO:cdp:cdp_init(): CDiameterPeer initializing
+ &gt;  &gt;  &gt;&gt;  0(6544) Diameter Peer Config:
+ &gt;  &gt;  &gt;&gt;  0(6544)        FQDN    : scscf.open-ims.test
+ &gt;  &gt;  &gt;&gt;  0(6544)        Realm   : open-ims.test
+ &gt;  &gt;  &gt;&gt;  0(6544)        VendorID: 10415
+ &gt;  &gt;  &gt;&gt;  0(6544)        ProdName: CDiameterPeer
+ &gt;  &gt;  &gt;&gt;  0(6544)        AcceptUn: [X]
+ &gt;  &gt;  &gt;&gt;  0(6544)        DropUnkn: [X]
+ &gt;  &gt;  &gt;&gt;  0(6544)        Tc      : 30
+ &gt;  &gt;  &gt;&gt;  0(6544)        Workers : 4
+ &gt;  &gt;  &gt;&gt;  0(6544)        QueueLen: 8
+ &gt;  &gt;  &gt;&gt;  0(6544)        Peers : 1
+ &gt;  &gt;  &gt;&gt;  0(6544)                FQDN:  hss.open-ims.test         Realm:
+ &gt;  &gt;  &gt;&gt; open-ims.test   Port: 3868
+ &gt;  &gt;  &gt;&gt;  0(6544)        Acceptors : 1
+ &gt;  &gt;  &gt;&gt;  0(6544)                Port:  3870      Bind: 127.0.0.1
+ &gt;  &gt;  &gt;&gt;  0(6544)        Applications : 3
+ &gt;  &gt;  &gt;&gt;  0(6544)                Auth ID:  16777216       Vendor: 10415
+ &gt;  &gt;  &gt;&gt;  0(6544)                Auth ID:  16777216       Vendor: 4491
+ &gt;  &gt;  &gt;&gt;  0(6544)                Auth ID:  16777216       Vendor: 13019
+ &gt;  &gt;  &gt;&gt;  0(6544)        Routing Table :
+ &gt;  &gt;  &gt;&gt;  0(6544)                DefaultRoute: [  10] hss.open-ims.test
+ &gt;  &gt;  &gt;&gt;  0(6544) INFO: udp_init: SO_RCVBUF is initially 110592
+ &gt;  &gt;  &gt;&gt;  0(6544) INFO: udp_init: SO_RCVBUF is finally 221184
+ &gt;  &gt;  &gt;&gt;  1(6545) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [1]
+ &gt;  &gt;  &gt;&gt;  2(6546) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [2]
+ &gt;  &gt;  &gt;&gt;  3(6547) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [3]
+ &gt;  &gt;  &gt;&gt;  4(6548) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [4]
+ &gt;  &gt;  &gt;&gt;  5(6549) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [-1]
+ &gt;  &gt;  &gt;&gt;  6(6550) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [-1]
+ &gt;  &gt;  &gt;&gt;  0(6544) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [0]
+ &gt;  &gt;  &gt;&gt;  0(6544) INFO:ISC: - child init [0]
+ &gt;  &gt;  &gt;&gt;  0(6544) INFO:cdp:cdp_child_init(): CDiameterPeer starting ...
+ &gt;  &gt;  &gt;&gt;  7(6551) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [1000]
+ &gt;  &gt;  &gt;&gt;  8(6552) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [1001]
+ &gt;  &gt;  &gt;&gt;  9(6553) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [1002]
+ &gt;  &gt;  &gt;&gt; 10(6554) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [1003]
+ &gt;  &gt;  &gt;&gt; 12(6556) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [1001]
+ &gt;  &gt;  &gt;&gt;  0(6544) INFO:cdp:cdp_child_init(): ... CDiameterPeer started
+ &gt;  &gt;  &gt;&gt; 13(6557) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [5]
+ &gt;  &gt;  &gt;&gt; 14(6558) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [6]
+ &gt;  &gt;  &gt;&gt; 15(6559) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [7]
+ &gt;  &gt;  &gt;&gt; 11(6555) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [1004]
+ &gt;  &gt;  &gt;&gt; 16(6560) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [8]
+ &gt;  &gt;  &gt;&gt; 17(6561) INFO:S-CSCF:mod_child_init: Initialization of module in
+ &gt;  child
+ &gt;  &gt;  &gt;&gt; [-4]
+ &gt;  &gt;  &gt;&gt; 17(6561) INFO:ISC: - child init [-4]
+ &gt;  &gt;  &gt;&gt;  1(6545) INFO:ISC: - child init [1]
+ &gt;  &gt;  &gt;&gt;  2(6546) INFO:ISC: - child init [2]
+ &gt;  &gt;  &gt;&gt;  3(6547) INFO:ISC: - child init [3]
+ &gt;  &gt;  &gt;&gt;  4(6548) INFO:ISC: - child init [4]
+ &gt;  &gt;  &gt;&gt;  5(6549) INFO:ISC: - child init [-1]
+ &gt;  &gt;  &gt;&gt;  6(6550) INFO:ISC: - child init [-1]
+ &gt;  &gt;  &gt;&gt;  7(6551) INFO:ISC: - child init [1000]
+ &gt;  &gt;  &gt;&gt;  7(6551) INFO:Acceptor process starting up...
+ &gt;  &gt;  &gt;&gt;  7(6551) INFO:create_socket(): Trying to open/bind/listen on
+ &gt;  127.0.0.1
+ &gt;  &gt;  &gt;&gt; port 3870
+ &gt;  &gt;  &gt;&gt;  7(6551) INFO:create_socket(): Successful socket open/bind/listen
+ on
+ &gt;  &gt;  &gt;&gt; 127.0.0.1 port 3870
+ &gt;  &gt;  &gt;&gt;  7(6551) INFO:... Acceptor opened sockets. Entering accept loop ...
+ &gt;  &gt;  &gt;&gt; 13(6557) INFO:ISC: - child init [5]
+ &gt;  &gt;  &gt;&gt;  8(6552) INFO:ISC: - child init [1001]
+ &gt;  &gt;  &gt;&gt;  8(6552) INFO:[0] Worker process started...
+ &gt;  &gt;  &gt;&gt;  9(6553) INFO:ISC: - child init [1002]
+ &gt;  &gt;  &gt;&gt;  9(6553) INFO:[1] Worker process started...
+ &gt;  &gt;  &gt;&gt; 10(6554) INFO:ISC: - child init [1003]
+ &gt;  &gt;  &gt;&gt; 10(6554) INFO:[2] Worker process started...
+ &gt;  &gt;  &gt;&gt; 11(6555) INFO:ISC: - child init [1004]
+ &gt;  &gt;  &gt;&gt; 11(6555) INFO:[3] Worker process started...
+ &gt;  &gt;  &gt;&gt; 12(6556) INFO:ISC: - child init [1001]
+ &gt;  &gt;  &gt;&gt; 12(6556) INFO:Timer process starting up...
+ &gt;  &gt;  &gt;&gt; 15(6559) INFO:ISC: - child init [7]
+ &gt;  &gt;  &gt;&gt; 16(6560) INFO:ISC: - child init [8]
+ &gt;  &gt;  &gt;&gt; 14(6558) INFO:ISC: - child init [6]
+ &gt;  &gt;  &gt;&gt; 12(6556) DBG:peer_timer(): Peer hss.open-ims.test       State 0
+ &gt;  &gt;  &gt;&gt; 12(6556) DBG:sm_process(): Peer hss.open-ims.test       State
+ Closed
+ &gt;  &gt;  &gt;&gt; Event Start
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt; .
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt; _______________________________________________
+ &gt;  &gt;  &gt;&gt; OpenIMSCore-Users mailing list
+ &gt;  &gt;  &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+ &gt;  &gt;  &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;&gt;
+ &gt;  &gt;  &gt;
+ &gt;  &gt;  &gt;
+ &gt;  &gt;  &gt; --
+ &gt;  &gt;  &gt; -----------------------------------------
+ &gt;  &gt;  &gt; Dipl. Eng. Dragos Vingarzan
+ &gt;  &gt;  &gt; Fraunhofer FOKUS/NGNI
+ &gt;  &gt;  &gt; Kaiserin-Augusta-Allee 31
+ &gt;  &gt;  &gt; 10589 Berlin,Germany
+ &gt;  &gt;  &gt; Phone +49 (0)30 - 3463 - 7385
+ &gt;  &gt;  &gt; Mobile +49 (0)176 - 48 32 16 00
+ &gt;  &gt;  &gt; Web www.fokus.fraunhofer.de www.openimscore.org
+ &gt;  &gt;  &gt; We could change the world if God would give us the source code...
+ &gt;  &gt;  &gt; -----------------------------------------------------------------
+ &gt;  &gt;  &gt;
+ &gt;  &gt;  &gt;
+ &gt;  &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  ------------------------------
+ &gt;  &gt;
+ &gt;  &gt;  _______________________________________________
+ &gt;  &gt;  OpenIMSCore-Users mailing list
+ &gt;  &gt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+ &gt;  &gt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;  End of OpenIMSCore-Users Digest, Vol 16, Issue 81
+ &gt;  &gt;  *************************************************
+ &gt;  &gt;  _______________________________________________
+ &gt;  &gt;  OpenIMSCore-Users mailing list
+ &gt;  &gt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+ &gt;  &gt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;  &gt;
+ &gt;
+ &gt;
+ &gt;  --
+ &gt;  -----------------------------------------
+ &gt;  Dipl. Eng. Dragos Vingarzan
+ &gt;  Fraunhofer FOKUS/NGNI
+ &gt;  Kaiserin-Augusta-Allee 31
+ &gt;  10589 Berlin,Germany
+ &gt;  Phone +49 (0)30 - 3463 - 7385
+ &gt;  Mobile +49 (0)176 - 48 32 16 00
+ &gt;  Web www.fokus.fraunhofer.de www.openimscore.org
+ &gt;  We could change the world if God would give us the source code...
+ &gt;  -----------------------------------------------------------------
+ &gt;
+ &gt;
+ &gt;
+ &gt;
+ &gt;
+
+
+ --
+ -----------------------------------------
+ Dipl. Eng. Dragos Vingarzan
+ Fraunhofer FOKUS/NGNI
+ Kaiserin-Augusta-Allee 31
+ 10589 Berlin,Germany
+ Phone +49 (0)30 - 3463 - 7385
+ Mobile +49 (0)176 - 48 32 16 00
+ Web www.fokus.fraunhofer.de www.openimscore.org
+ We could change the world if God would give us the source code...
+ -----------------------------------------------------------------
+
+ _______________________________________________
+ OpenIMSCore-Users mailing list
+ <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+ <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003519.html">[OpenIMSCore-Users] Which format for Key &amp; OP in AKA_V1_MD5
+</A></li>
+	<LI>Next message: <A HREF="003526.html">[OpenIMSCore-Users] Which format for Key &amp; OP in AKA_V1_MD5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3522">[ date ]</a>
+              <a href="thread.html#3522">[ thread ]</a>
+              <a href="subject.html#3522">[ subject ]</a>
+              <a href="author.html#3522">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

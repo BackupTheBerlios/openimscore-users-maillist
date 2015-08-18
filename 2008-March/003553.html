@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] HSS jdbc Exceptions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20HSS%20jdbc%20Exceptions&In-Reply-To=%3C1204484936.30851.5.camel%40salvoxia%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003552.html">
+   <LINK REL="Next"  HREF="003565.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] HSS jdbc Exceptions</H1>
+    <B>Umut Emin</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20HSS%20jdbc%20Exceptions&In-Reply-To=%3C1204484936.30851.5.camel%40salvoxia%3E"
+       TITLE="[OpenIMSCore-Users] HSS jdbc Exceptions">umut.emin at fokus.fraunhofer.de
+       </A><BR>
+    <I>Sun Mar  2 20:08:56 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003552.html">[OpenIMSCore-Users] HSS jdbc Exceptions
+</A></li>
+        <LI>Next message: <A HREF="003565.html">[OpenIMSCore-Users] HSS jdbc Exceptions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3553">[ date ]</a>
+              <a href="thread.html#3553">[ thread ]</a>
+              <a href="subject.html#3553">[ subject ]</a>
+              <a href="author.html#3553">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Arun,
+
+vixen icscf # grep -r -n -I 'localhost' ./
+./mod.c:95:char*
+icscf_db_url=&quot;<A HREF="mysql://icscf:heslo@localhost/hssdata">mysql://icscf:heslo@localhost/hssdata</A>&quot;;	/**&lt; DB URL */
+
+user:icscf
+pwd:heslo
+
+in scscf, you need to login to a db  if only under activation of
+persistency utility with db support. For that case, see mod.c, line 135
+on scscf module.
+
+Greetz,
+Umut
+
+
+On Sun, 2008-03-02 at 18:32 +0000, arunk wrote:
+&gt;<i>   
+</I>&gt;<i> Hi Franz,
+</I>&gt;<i> I have following problem from icscf.
+</I>&gt;<i> What should be password for user <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">icscf at localhost</A> ?
+</I>&gt;<i> Also for <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">scscf at localhost</A> ?
+</I>&gt;<i> Thanks and Regards,
+</I>&gt;<i> arun
+</I>&gt;<i> 
+</I>&gt;<i> ===========================================
+</I>&gt;<i> 0(7418) new_connection: Access denied for user
+</I>&gt;<i> 'icscf'@'localhost' (using password: YES)
+</I>&gt;<i> 0(7418) ERR:I-CSCF:icscf_db_init: cannot initialize database
+</I>&gt;<i> connection
+</I>&gt;<i> 0(7418) new_connection: Access denied for user
+</I>&gt;<i> 'icscf'@'localhost' (using password: YES)
+</I>&gt;<i> 0(7418) ERR:I-CSCF:icscf_db_init: cannot initialize database
+</I>&gt;<i> connection
+</I>&gt;<i> 0(7418) new_connection: Access denied for user
+</I>&gt;<i> 'icscf'@'localhost' (using password: YES)
+</I>&gt;<i> 0(7418) ERR:I-CSCF:icscf_db_init: cannot initialize database
+</I>&gt;<i> connection
+</I>&gt;<i> 0(7418) Twofish encryption ready
+</I>&gt;<i> =================================
+</I>&gt;<i> 
+</I>&gt;<i> On Sun, 02 Mar 2008 arunk  wrote :
+</I>&gt;<i> &gt;  Thanks Franz,
+</I>&gt;<i> &gt;I could dig into the problems with your help.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;I installed mysql-admin by using sudo apt-get install mysql-admin
+</I>&gt;<i> &gt;Then I ran mysql-admin and found no user configured.
+</I>&gt;<i> &gt;Then I searched *.cnf files in the system and located debian.cnf.
+</I>&gt;<i> &gt; From the file I got the user debian-sys-maint and the password.
+</I>&gt;<i> &gt;using the same, I changed the root password to admin.
+</I>&gt;<i> &gt;And then i could get the mysql prompt.
+</I>&gt;<i> &gt;Then Using the sql scripts, I created hss_db. (hss_db.sql and
+</I>&gt;<i> userdata.sql in sequence)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;And I ran the script for FHoSS to start. (startup.sh in  deploy path)
+</I>&gt;<i> &gt;And ran pcscf, icscf and Scscf scripts after copying the cfg files
+</I>&gt;<i> into  one directory back. PCSCF seems ok.
+</I>&gt;<i> &gt;But, icscf and scscf are not able to establish connections as
+</I>&gt;<i> diameter peers.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;I am looking into the cfg files.
+</I>&gt;<i> &gt;Meanwhile If you can help me ?
+</I>&gt;<i> &gt;I appriciate the helps from you ,Daniel and Dragos.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Thanks and Regards,
+</I>&gt;<i> &gt;arun
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;On Sat, 01 Mar 2008 Franz Edler wrote :
+</I>&gt;<i> &gt; &gt;Hi Arun,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; I got following messages after running FHoSS.
+</I>&gt;<i> &gt; &gt; &gt; Can anyone help me how to fix the problem?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; From &quot;Access denied for user 'hss'@'localhost' (using password:
+</I>&gt;<i> YES)&quot; I
+</I>&gt;<i> &gt; &gt;guess you have a problem with access permissions in your mysql
+</I>&gt;<i> database.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;Look at the user privileges on hss_db database and if they are
+</I>&gt;<i> granted
+</I>&gt;<i> &gt; &gt;against the right hostname.
+</I>&gt;<i> &gt; &gt;A further hint: In hss_db.sql you can find as the last statement:
+</I>&gt;<i> &gt; &gt;grant delete,insert,select,update on hss_db.* to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">hss at localhost</A>
+</I>&gt;<i> identified by
+</I>&gt;<i> &gt; &gt;'hss';
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;Franz
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;_______________________________________________
+</I>&gt;<i> &gt;OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Nokia
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003552.html">[OpenIMSCore-Users] HSS jdbc Exceptions
+</A></li>
+	<LI>Next message: <A HREF="003565.html">[OpenIMSCore-Users] HSS jdbc Exceptions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3553">[ date ]</a>
+              <a href="thread.html#3553">[ thread ]</a>
+              <a href="subject.html#3553">[ subject ]</a>
+              <a href="author.html#3553">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

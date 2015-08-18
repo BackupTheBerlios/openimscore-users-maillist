@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] 403 Forbidden - Dialog not found on	S-CSCForTerminating user not suitable for unregistered services
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20403%20Forbidden%20-%20Dialog%20not%20found%20on%0A%09S-CSCForTerminating%20user%20not%20suitable%20for%20unregistered%20services&In-Reply-To=%3CA77C33C36276434691B38D7E44AB3709814D93%40JTSXWCE006.austria.local%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003707.html">
+   <LINK REL="Next"  HREF="003710.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] 403 Forbidden - Dialog not found on	S-CSCForTerminating user not suitable for unregistered services</H1>
+    <B>Schaffer Robin</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20403%20Forbidden%20-%20Dialog%20not%20found%20on%0A%09S-CSCForTerminating%20user%20not%20suitable%20for%20unregistered%20services&In-Reply-To=%3CA77C33C36276434691B38D7E44AB3709814D93%40JTSXWCE006.austria.local%3E"
+       TITLE="[OpenIMSCore-Users] 403 Forbidden - Dialog not found on	S-CSCForTerminating user not suitable for unregistered services">Robin.Schaffer at telekom.at
+       </A><BR>
+    <I>Wed Apr  2 11:24:32 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003707.html">[OpenIMSCore-Users] 403 Forbidden - Dialog not found on	S-CSCForTerminating user not suitable for unregistered services
+</A></li>
+        <LI>Next message: <A HREF="003710.html">[OpenIMSCore-Users] 403 Forbidden - Dialog not found on	S-CSCForTerminating user not suitable for unregistered services
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3708">[ date ]</a>
+              <a href="thread.html#3708">[ thread ]</a>
+              <a href="subject.html#3708">[ subject ]</a>
+              <a href="author.html#3708">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Enrique
+Hi Franz
+
+Now i createt a PSI in the HSS as follwed for the S-CSCF routing
+
+IMSU: mrf
+IMPI: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mrf at home.talab.at</A>
+IMPU: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mrf at home.talab.at</A>
+Service Profile: default_mrf
+IMPU Type: Distinct_PSI
+PSI Activation &gt; yes
+
+Service Profile: default_mrf
+iFC: default_mrf
+Trigger Point: SIP Methode &gt; INVITE
+Application Server:mrf
+Sh Interface -Permissions: PSI Activation &gt; yes for UDR and SNR
+Profil Part Indicator: Any 
+
+But the User-Status is NOT-REGISTERED and S-CSCF now respond with a 404 Not Found - destination not found on this S-CSCF status message.
+So i didn&#180;t undestand how the MRF should register?
+
+Also i created the address of the mrf (sip:mrf.home.talab.at:5060) as preferred S-CSCF in the HSS for the I-CSCF routing.
+But the call flow is as followed:
+OpenIC to P-CSCF (INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mrf at home.talab.at</A>)
+P-CSCF to S-CSCF (INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mrf at home.talab.at</A>)
+S-CSCF to I-CSCF (INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mrf at home.talab.at</A>)
+I-CSCF to S-CSCF (INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mrf at home.talab.at</A>)
+
+The S-CSCF respond with a 404 Not Found - destination not found on this S-CSCF status message.
+
+Attached you will find the Wireshark trace for the I-CSCF routing
+
+Best regards
+Robin
+
+
+
+-----Urspr&#252;ngliche Nachricht-----
+Von: Enrique de Meer [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">enrique.demeer at inycom.es</A>] 
+Gesendet: Mittwoch, 02. April 2008 09:08
+An: Schaffer Robin
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Betreff: Re: [OpenIMSCore-Users] 403 Forbidden - Dialog not found on S-CSCForTerminating user not suitable for unregistered services
+
+Hi,
+
+As Franz says, you should create a PSI. Maybe this indications could help you to do that...they are from another thread in the list, in which Alberto showed me how to provision a PSI:
+
+-----------------------------------------------------------
+
+hi Enrique and all!
+
+
+PSI are implemented and work. There are several issues.
+
+Distinct PSI and Wildcarded PSI are supported
+
+
+Provisioning an PSI in the HSS is not easy, so you&#180;ll need to play around a bit.
+
+if you want I-CSCF routing is a bit easier and there wont be any S-CSCF involved, this procedure is defined by 3GPP for trusted AS that don&#180;t need to go through the S-CSCF
+
+I-CSCF routing
+-------------------------
+
+---- put the address of your AS as a preferred-SCSCF (and set priority to 1 at least)
+---- create an IMSU for your AS and asign the preferred-SCSCF to it
+--- create IMPI and IMPU  and attach the whole thing  IMSU-IMPI-IMPU
+
+UE--{SIP INVITE}----&gt;I-CSCF----{Diameter LIR}---&gt;HSS--{-Diameter LIA}---&gt;I-CSCF----{SIP INVITE}--&gt;AS
+
+
+S-CSCF routing
+--------------------------
+
+--create Application Server with your settings for the AS that hosts the
+PSI
+--create iFC with no Trigger point (that means matchs everything) and 
+profile part indicator Any or Unregistered
+--attach ifC to AS
+--Create a service profile and attach ifC created
+
+---create an IMSU and asign a normal preferred-SCSCF to it (but asign 
+one! if not it wont work)
+--- create an IMPI
+---create an IMPU choosing Distinct or Wildcard and write the wildcard 
+int he appropriate format 
+(sip:your*wildcarded?expre??<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ion at open-ims.test</A>), it would be logical to 
+click in the Can Register thing and dont let this IMPU to register  and 
+of course you have to click the PSI Activation to activate it and
+select 
+the created service profile for that PSI
+--- attach IMPU to IMPI and IMPI to IMSU
+
+
+UE--{SIP INVITE}----&gt;I-CSCF----{Diameter LIR}---&gt;HSS---{Diameter 
+LIA}---&gt;I-CSCF----{SIP INVITE}--&gt;S-CSCF---{Diameter 
+SAR}--&gt;HSS---&gt;{Diameter SAA}--&gt;S-CSCF---{SIP INVITE}--&gt;AS
+
+***************************************************************
+Wildcarded PSI issues
+
+- I didnt use the standardised format for PSI definition (TS23003?) but 
+an easier one
+
+    you define  sip:*<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">games at open-ims.test</A>  and  it would match 
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sportgames at open-ims.test</A> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sims2.games at open-ims.test</A> ...            
+    you define sip:channel.?<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">.tv at open-ims.test</A>   and it matches 
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">channel.1.tv at open-ims.test</A>  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">channel.e.tv at open-ims.test</A>  ..
+
+do not forget the sip: in the HSS interface
+
+
+- Support for Wildcard PSI makes S-CSCF a bit inefficent because when
+it 
+receives a request for an user, it searchs in the user database and 
+afterwards if no match it trys to match with all wildcards
+  to activate this support you have to put a parameter in S-CSCF config 
+file modparam(&quot;scscf&quot;,&quot;support_wildcardPSI&quot;,1)
+
+Distinct work always
+
+------------------------------------------------------------------------
+
+I hope it will be helpful.
+
+Regards, Enrique
+
+
+&gt;<i> Hi Robin,
+</I>&gt;<i> 
+</I>&gt;<i> &gt; I would appreciate some help regarding the problem 403 Forbidden - Dialog
+</I>&gt;<i> &gt; not found on S-CSCF or Terminating user not suitable for unregistered
+</I>&gt;<i> &gt; services.
+</I>&gt;<i> 
+</I>&gt;<i> I found two issues in your configuration:
+</I>&gt;<i> 
+</I>&gt;<i> 1. How is your MRF embedded at the test-platform?
+</I>&gt;<i> IMS has defined the concept of PSI (Public Service Identity).
+</I>&gt;<i> You should create a PSI and use it for addressing the MRF.
+</I>&gt;<i> 
+</I>&gt;<i> 2. You should not use a numeric IP address as a Request URI.
+</I>&gt;<i> A true Public User Identity or in your case a PSI should be used.
+</I>&gt;<i> 
+</I>&gt;<i> Regards
+</I>&gt;<i> Franz
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 404 not found_20408
+Type: application/octet-stream
+Size: 8927 bytes
+Desc: 404 not found_20408
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080402/09430006/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080402/09430006/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003707.html">[OpenIMSCore-Users] 403 Forbidden - Dialog not found on	S-CSCForTerminating user not suitable for unregistered services
+</A></li>
+	<LI>Next message: <A HREF="003710.html">[OpenIMSCore-Users] 403 Forbidden - Dialog not found on	S-CSCForTerminating user not suitable for unregistered services
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3708">[ date ]</a>
+              <a href="thread.html#3708">[ thread ]</a>
+              <a href="subject.html#3708">[ subject ]</a>
+              <a href="author.html#3708">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

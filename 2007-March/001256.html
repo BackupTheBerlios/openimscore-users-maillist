@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Sip Messaging
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Sip%20Messaging&In-Reply-To=%3CDB34F1EA9B96FA40B3CC558CFCC4672D851429%40MILVL0PA.icn.siemens.it%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001254.html">
+   <LINK REL="Next"  HREF="001258.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Sip Messaging</H1>
+    <B>Cavalera Claudio</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Sip%20Messaging&In-Reply-To=%3CDB34F1EA9B96FA40B3CC558CFCC4672D851429%40MILVL0PA.icn.siemens.it%3E"
+       TITLE="[OpenIMSCore-Users] Sip Messaging">Claudio.Cavalera at siemens.com
+       </A><BR>
+    <I>Tue Mar 20 17:39:36 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001254.html">[OpenIMSCore-Users] Sip Messaging
+</A></li>
+        <LI>Next message: <A HREF="001258.html">[OpenIMSCore-Users] Sip Messaging
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1256">[ date ]</a>
+              <a href="thread.html#1256">[ thread ]</a>
+              <a href="subject.html#1256">[ subject ]</a>
+              <a href="author.html#1256">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I reply to myself,
+I have changed sofia-sip client and now it sends messages to port 5060, but this crashes scscf:
+
+ 1(24669) INFO:ISC:isc_mark_get_from_msg: Trying to get the mark from the message 
+ 1(24669) DBG:S-CSCF:cscf_get_terminating_identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; 
+18(24686) DBG:sm_process(): Peer hss.open-ims.test      State I_Open    Event I_Rcv_Message
+ 1(24669) ERR:S-CSCF:save_location: No contacts found
+ 1(24669) BUG: qm_free: bad pointer 0xb7b9c5fb (out of memory block!) - aborting
+17(24685) ERROR: receive_fd: EOF on 6
+ 0(24668) child process 24669 exited by a signal 6
+ 0(24668) core was generated
+ 0(24668) INFO: terminating due to SIGCHLD
+
+
+but again, this may be caused by my mistake somewhere.
+
+Ciao
+Claudio
+
+
+-----Original Message-----
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> on behalf of Cavalera Claudio
+Sent: Tue 3/20/2007 5:15 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: [OpenIMSCore-Users] Sip Messaging
+ 
+Hello,
+I keep on testing sofia-sip and OpenIMSCore. After having successfully registered bob, alice and other users to the platform, I get a Timeout error when I try to send a message.
+Is there any wrong/missing header? Or maybe is necessary some trigger on fhoss?
+Actually it seems that anything sent on port 6060 gets timeout (publish, subscribe, invite...) maybe this is the problem? :-)
+Also, is OK whenever I update openimscore to the later revision to NOT update the mysql database?
+Thanks a lot,
+Claudio
+
+
+sofsip&gt; m <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+UA: sending message to sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+Enter message&gt; this is a test message
+Enter message&gt; send 544 bytes to udp/[127.0.0.1]:6060 at 15:59:58.763296:
+   ------------------------------------------------------------------------
+   MESSAGE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> SIP/2.0
+   Via: SIP/2.0/UDP 172.31.77.49:32938;rport;branch=z9hG4bKr4mcDp9QXX9QN
+   Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+   Max-Forwards: 70
+   From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=pZHSXUyHZt7rS
+   To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+   Call-ID: e5134744-519e-122a-b6b7-000e0cc407cd
+   CSeq: 81084684 MESSAGE
+   User-Agent: sofia-sip/1.12.5
+   Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, PRACK, MESSAGE, SUBSCRIBE, NOTIFY, REFER, UPDATE
+   Supported: timer, 100rel
+   Content-Type: text/plain
+   Content-Length: 22
+
+   this is a test message
+   ------------------------------------------------------------------------
+
+
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070320/17152419/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070320/17152419/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001254.html">[OpenIMSCore-Users] Sip Messaging
+</A></li>
+	<LI>Next message: <A HREF="001258.html">[OpenIMSCore-Users] Sip Messaging
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1256">[ date ]</a>
+              <a href="thread.html#1256">[ thread ]</a>
+              <a href="subject.html#1256">[ subject ]</a>
+              <a href="author.html#1256">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

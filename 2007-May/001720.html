@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Limiting number of dialogs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Limiting%20number%20of%20dialogs&In-Reply-To=%3C003d01c7921b%240f3b3820%240b40000a%40blr.velankani.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001711.html">
+   <LINK REL="Next"  HREF="001725.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Limiting number of dialogs</H1>
+    <B>Gaurav Kansal</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Limiting%20number%20of%20dialogs&In-Reply-To=%3C003d01c7921b%240f3b3820%240b40000a%40blr.velankani.com%3E"
+       TITLE="[OpenIMSCore-Users] Limiting number of dialogs">gkansal at velankani.com
+       </A><BR>
+    <I>Wed May  9 11:18:52 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001711.html">[OpenIMSCore-Users] Limiting number of dialogs
+</A></li>
+        <LI>Next message: <A HREF="001725.html">[OpenIMSCore-Users] Limiting number of dialogs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1720">[ date ]</a>
+              <a href="thread.html#1720">[ thread ]</a>
+              <a href="subject.html#1720">[ subject ]</a>
+              <a href="author.html#1720">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi
+
+As of now this is a general limit per CSCF application. The immediate
+need arose because of the S-CSCF crash issue which I posted to the list.
+
+Regards,
+Gaurav Kansal
+ 
+Velankani Software Private Limited,
+43, Electronics City,
+Phase - 2, Hosur Road,
+Bangalore - 560100
+Phone : +91 80 4037 5300/01 Extn. # 5401
+Direct: +91 80 4037 5401
+Fax   : +91 80 4037 5303
+Mobile: +91 98454 22400
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">gkansal at velankani.com</A>
+www.velankani.com
+ 
+&quot;Every Customer is a Reference Customer&quot;
+
+
+-----Original Message-----
+From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+Sent: Wednesday, May 09, 2007 2:16 PM
+To: Gaurav Kansal
+Cc: '<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Openimscore-Users at Lists.</A> Berlios. De'
+Subject: Re: [OpenIMSCore-Users] Limiting number of dialogs
+
+This looks good. Do you intend to put the limit per user or just
+general?
+
+-Dragos
+Gaurav Kansal wrote:
+&gt;<i>
+</I>&gt;<i> Hi
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I want to put a count to limit the number of active dialogs for a CSCF
+</I>&gt;<i> application. Are the following 2 functions (in dlg_state.c)
+</I>&gt;<i> appropriate to put such count?
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> add_p_dialog: Increment the count. Before incrementing, check that the
+</I>&gt;<i> count has not reached its max configured value. Otherwise return
+</I>failure.
+&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> del_p_dialog: Decrement the count.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Similarly for S-CSCF.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> The value for maximum number of dialogs which can be established can
+</I>&gt;<i> be taken through cfg file.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> The counter variable to be used to check the number of dialogs needs
+</I>&gt;<i> to be malloced using shm_malloc so that same counter gets used for all
+</I>&gt;<i> child processes of an application.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> In cfg file, following changes need to be done then:
+</I>&gt;<i>
+</I>&gt;<i>    1. Add one modparam for max dialog counter number
+</I>&gt;<i>    2. Put P_save_dialog in a if condition. If not return true, then
+</I>&gt;<i>       send an error. Same code below:
+</I>&gt;<i>
+</I>&gt;<i> if(!P_save_dialog(&quot;orig&quot;)) {
+</I>&gt;<i>
+</I>&gt;<i>                 sl_send_reply(&quot;500&quot;,&quot;Error:P-CSCF out of resources&quot;);
+</I>&gt;<i>
+</I>&gt;<i>                 break;
+</I>&gt;<i>
+</I>&gt;<i>         }
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Can somebody comment on this?
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Gaurav Kansal
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Velankani Software Private Limited,
+</I>&gt;<i> 43, Electronics City,
+</I>&gt;<i> Phase - 2, Hosur Road,
+</I>&gt;<i> Bangalore - 560100
+</I>&gt;<i> Phone : +91 80 4037 5300/01 Extn. # 5401
+</I>&gt;<i> Direct: +91 80 4037 5401
+</I>&gt;<i> Fax   : +91 80 4037 5303
+</I>&gt;<i> Mobile: +91 98454 22400
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">gkansal at velankani.com</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">gkansal at velankani.com</A>&gt;
+</I>&gt;<i> www.velankani.com &lt;<A HREF="http://www.velankani.com">http://www.velankani.com</A>&gt;
+</I>&gt;<i>  
+</I>&gt;<i> **&quot;Every Customer is a Reference Customer&quot;**
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>
+</I>------------------------------------------------------------------------
+&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001711.html">[OpenIMSCore-Users] Limiting number of dialogs
+</A></li>
+	<LI>Next message: <A HREF="001725.html">[OpenIMSCore-Users] Limiting number of dialogs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1720">[ date ]</a>
+              <a href="thread.html#1720">[ thread ]</a>
+              <a href="subject.html#1720">[ subject ]</a>
+              <a href="author.html#1720">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

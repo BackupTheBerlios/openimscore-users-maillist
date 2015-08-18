@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] RTP Proxy
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20RTP%20Proxy&In-Reply-To=%3C45746F28.9070002%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000157.html">
+   <LINK REL="Next"  HREF="000158.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] RTP Proxy</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20RTP%20Proxy&In-Reply-To=%3C45746F28.9070002%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] RTP Proxy">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Dec  4 19:55:36 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000157.html">[OpenIMSCore-Users] RTP Proxy
+</A></li>
+        <LI>Next message: <A HREF="000158.html">[OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#163">[ date ]</a>
+              <a href="thread.html#163">[ thread ]</a>
+              <a href="subject.html#163">[ subject ]</a>
+              <a href="author.html#163">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Outi,
+
+The RTPProxy should've been started with:
+
+rtpproxy -l 192.168.17.101 -s udp:127.0.0.1:34999 -f
+
+and in the pcscf.cfg keep the same line, as probably you don't want the RTPProxy to be controllable by other hosts.
+
+modparam(&quot;pcscf&quot;,&quot;rtpproxy_socket&quot;, &quot;udp:127.0.0.1:34999&quot;)
+
+Anyway, it seems that you got the idea. Try and see with wireshark if the commands are going right between the P-CSCF and the RTPProxy. I hope that this is not an issue with different versions of the RTPProxy. I don't know how to help you with this one...
+
+But me wonders: what is a RTPProxy on a private IP address good for? :)
+
+-Dragos
+
+Outi Koski (AC/EDD) wrote:
+
+&gt;&gt;&gt;&gt;&gt;<i> 5)    And I am Using Mediaproxy as my mediaserver does it support 
+</I>&gt;&gt;&gt;&gt;&gt;<i> all types of media this IMS protocols.?
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> the IMS core does not deal with any media, except when you would 
+</I>&gt;&gt;&gt;&gt;<i> enable the RTPProxy - then obviously only the RTP media is proxied 
+</I>&gt;&gt;&gt;&gt;<i> through there. I am not sure what do you mean here
+</I>&gt;&gt;&gt;&gt;<i> - the core components only deal with signaling.
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> Just a quick question: what all has to be done to enable 
+</I>&gt;&gt;&gt;<i> the RTPproxy?
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> There is one entry in the FAQ regarding it:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> <A HREF="http://www.openimscore.org/docs/faq.html#CSCFs">http://www.openimscore.org/docs/faq.html#CSCFs</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Tell me if it is enough.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The RTPproxy worked ok with the localhost configuration, but since I now
+</I>&gt;<i> decided to move from the closed model to an &quot;open box model&quot; (in order
+</I>&gt;<i> to test the serice triggering with ASs) and configured all the
+</I>&gt;<i> interfaces again according to the instructions: 
+</I>&gt;<i>
+</I>&gt;<i> (all 127.0.0.1 addresses to the IP address of the computer in the
+</I>&gt;<i> following files:
+</I>&gt;<i> pcscf.cfg
+</I>&gt;<i> icscf.cfg
+</I>&gt;<i> scscf.cfg
+</I>&gt;<i> sip2ims.cfg
+</I>&gt;<i> icscf.xml
+</I>&gt;<i> scscf.xml
+</I>&gt;<i> diameterPeerHSS.xml
+</I>&gt;<i> And also in the commandline for the start of the rtpproxy)
+</I>&gt;<i>
+</I>&gt;<i> I get an error message at the P-CSCF:
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------
+</I>&gt;<i>  0(5886) INFO:P-CSCF:mod_init: Initialization of module
+</I>&gt;<i>  0(5886) rtpproxy_enable block , rtpproxy_enable var is:1
+</I>&gt;<i>  0(5886) loop with p:udp:192.168.17.101:34999
+</I>&gt;<i>  0(5886) node is created
+</I>&gt;<i>  0(5886) started to add the pnode to rtpp list
+</I>&gt;<i>  0(5886) rtpp_node_count is incremented to 1
+</I>&gt;<i>  0(5886) is getting out of the rtp block
+</I>&gt;<i>  0(5886) INFO: udp_init: SO_RCVBUF is initially 108544
+</I>&gt;<i>  0(5886) INFO: udp_init: SO_RCVBUF is finally 217088
+</I>&gt;<i>  0(5886) INFO:P-CSCF:mod_init: Initialization of module in child [0]
+</I>&gt;<i>  1(5887) INFO:P-CSCF:mod_init: Initialization of module in child [1]
+</I>&gt;<i>  1(5887) INFO:P-CSCF:mod_init: Initialization of module/pcscf/rtpproxy
+</I>&gt;<i> in 
+</I>&gt;<i> child [1]
+</I>&gt;<i>  1(5887) ERROR: send_rtpp_command: can't send command to a RTP proxy
+</I>&gt;<i>  1(5887) send_rtpp_command(): proxy &lt;udp:192.168.17.101:34999&gt; does not 
+</I>&gt;<i> responding, disable it
+</I>&gt;<i>  1(5887) WARNING: rtpp_test: can't get version of the RTP proxy
+</I>&gt;<i>  1(5887) WARNING: rtpp_test: support for RTP proxy 
+</I>&gt;<i> &lt;udp:192.168.17.101:34999&gt;has been disabled temporarily
+</I>&gt;<i>  2(5888) INFO:P-CSCF:mod_init: Initialization of module in child [2]
+</I>&gt;<i>  2(5888) INFO:P-CSCF:mod_init: Initialization of module/pcscf/rtpproxy
+</I>&gt;<i> in 
+</I>&gt;<i> child [2]
+</I>&gt;<i>  2(5888) ERROR: send_rtpp_command: can't send command to a RTP proxy
+</I>&gt;<i>  2(5888) send_rtpp_command(): proxy &lt;udp:192.168.17.101:34999&gt; does not 
+</I>&gt;<i> responding, disable it                         
+</I>&gt;<i> ------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Is there still some file, where I should switch the address? 
+</I>&gt;<i>
+</I>&gt;<i> I also tried it with keeping the local host address in the commandline
+</I>&gt;<i> which starts the rtpproxy and in the respective line in the pcscf.cfg
+</I>&gt;<i> file. The control plane works ok in the sense, that all SIP messages are
+</I>&gt;<i> delivered correctly, but problems start when the rtpproxy is introduced
+</I>&gt;<i> to the picture.
+</I>&gt;<i>
+</I>&gt;<i> Could someone with more experience with the rtpproxy help with the
+</I>&gt;<i> issue?
+</I>&gt;<i>
+</I>&gt;<i> Outi
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000157.html">[OpenIMSCore-Users] RTP Proxy
+</A></li>
+	<LI>Next message: <A HREF="000158.html">[OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#163">[ date ]</a>
+              <a href="thread.html#163">[ thread ]</a>
+              <a href="subject.html#163">[ subject ]</a>
+              <a href="author.html#163">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

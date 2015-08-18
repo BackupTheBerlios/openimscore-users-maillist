@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Existing Application Servers?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Existing%20Application%20Servers%3F&In-Reply-To=%3C45D5B092.8020807%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000824.html">
+   <LINK REL="Next"  HREF="000835.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Existing Application Servers?</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Existing%20Application%20Servers%3F&In-Reply-To=%3C45D5B092.8020807%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Existing Application Servers?">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Feb 16 14:24:34 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000824.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+        <LI>Next message: <A HREF="000835.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#833">[ date ]</a>
+              <a href="thread.html#833">[ thread ]</a>
+              <a href="subject.html#833">[ subject ]</a>
+              <a href="author.html#833">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Andrey,
+
+First, let me make some things clear. The best way to integrate an AS
+into Open IMS Core (or any other IMS network) is to make use of the ISC
+interface and not by changing the scscf.cfg. You can define in the
+user's service profile on the HSS different filters and on match, the
+initial request will be forwarded to the indicated application servers.
+The scscf.cfg should not be changed except for operator specific
+settings (some things are optional, customizable, etc). We did modify it
+slightly for example to route to PSTN as this something usually common
+for all users, but Shared IFC is on the roadmap and will be there to do
+just that.
+
+I am saying the things above, just to rule out misunderstandings. I
+guess that you did not mean that, but I just want to be sure
+
+Then, regarding the use of SER as an application server (or SER+cdp
+module, if you'd like to call it OpenIMS). Recently I have questioned
+the targeted usage of SER on the development list there. One relevant
+conclusion stands out: SER is a SIP proxy and should no be abused as an
+AS. Now I know that this is contradictory with what happens actually in
+SER, as there are application server modules in the main tree  (e.g.
+presence application server), but this is the position of the core
+developers there. So considered yourself warned ;-) and prepare yourself
+to be disappointed if you want to do barring with a B2BUA by using SER.
+If you have lots of programming resources, you can do it, no pb.
+
+However, SER does have great performance and flexibility, so a simple AS
+would be very easy to hack in. The CDP module offers you support for
+Diameter but you still need a module/functionality for the Sh interface
+with the HSS if you want that. I was thinking about it, but so far
+nobody was interested. If we get some more interest here, we could put
+it on the road-map.
+
+I am not sure that I was clear enough, but I am very interested in
+continuing this thread.
+
+-Dragos
+
+Andrey Kuprianov wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Has anyone tried to implement or implemented AS's of any kind on OpenIMS?
+</I>&gt;<i>
+</I>&gt;<i> For instance, Call Barring AS. As I understand (and, please, correct
+</I>&gt;<i> me if im wrong), many other AS's are already available on OpenIMS:
+</I>&gt;<i> like presence or IM. These servers can be implemented by playing with
+</I>&gt;<i> ser.cfg. However, some cannot be. Therefore, I am interested in the
+</I>&gt;<i> most *efficient* (quick) way to implement AS's on OpenIMS. Would it be
+</I>&gt;<i> trying accomplish this with my ser.cfg or would it be adding an extra
+</I>&gt;<i> module to SER or both?
+</I>&gt;<i>
+</I>&gt;<i> If im not clear (i am actually confused myself), please, let me know.
+</I>&gt;<i> I would be happy to clarify my problem.
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000824.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+	<LI>Next message: <A HREF="000835.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#833">[ date ]</a>
+              <a href="thread.html#833">[ thread ]</a>
+              <a href="subject.html#833">[ subject ]</a>
+              <a href="author.html#833">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

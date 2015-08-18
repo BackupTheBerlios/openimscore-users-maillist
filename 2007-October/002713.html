@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registration using sec-agree...
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20using%20sec-agree...&In-Reply-To=%3C470B52D7.2080602%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002703.html">
+   <LINK REL="Next"  HREF="002704.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registration using sec-agree...</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20using%20sec-agree...&In-Reply-To=%3C470B52D7.2080602%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Registration using sec-agree...">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Oct  9 12:07:19 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002703.html">[OpenIMSCore-Users] Registration using sec-agree...
+</A></li>
+        <LI>Next message: <A HREF="002704.html">[OpenIMSCore-Users] RE :  408: Request Timed out
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2713">[ date ]</a>
+              <a href="thread.html#2713">[ thread ]</a>
+              <a href="subject.html#2713">[ subject ]</a>
+              <a href="author.html#2713">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>To debug this, you should analyze the SA that the client is setting. The
+P-CSCF side is set with the following command from the log below:
+
+/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_E_Inc_Req.sh 192.168.1.12
+2468 192.168.1.141 4060 5001 rijndael-cbc
+0x897d143fe8eb07fe4d57aca09546989c hmac-md5
+0x50141c92cef7119e6c8a4f2f2d6707ad
+
+Of course, every registration has a different random and different keys.
+Look also in this file
+/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_E_Inc_Req.sh and try and
+log from the client this information just to check that you set the same.
+
+-Dragos
+
+Santosh Prasad wrote:
+&gt;<i> Hi,
+</I>&gt;<i>  
+</I>&gt;<i>        I am trying to register to OpenIMS core using sec-agree. I am
+</I>&gt;<i> sending REGISTER ans receiving 401 response, and when I send next
+</I>&gt;<i> REGISTER packet which is ESP, server is dropping it.
+</I>&gt;<i>  
+</I>&gt;<i> I am getting the below log message in OpneIMS..
+</I>&gt;<i>  
+</I>&gt;<i> ----------------------------------------------------------------
+</I>&gt;<i>  1(20686) DBG:P-CSCF:P_remove_header_tag(): Original &lt;Proxy-Require&gt;
+</I>&gt;<i> -&gt; &lt;sec-agree&gt;
+</I>&gt;<i>  1(20686) DBG:P-CSCF:P_remove_header_tag(): Modified &lt;Proxy-Require&gt; -&gt; &lt;&gt;
+</I>&gt;<i>  4(20689) DBG:P-CSCF:P_security_401: Security-Client header found :
+</I>&gt;<i> &lt;ipsec-3gpp;mode=trans;alg=hmac-md5-96;ealg=aes-cbc;spi-c=23456789;spi-s=12345678;port-c=2468;port-s=2468&gt;.
+</I>&gt;<i>  4(20689) INF:P-CSCF:execute_cmd:
+</I>&gt;<i> [/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_E_Inc_Req.sh
+</I>&gt;<i> 192.168.1.12 2468 192.168.1.141 4060 5001 rijndael-cbc
+</I>&gt;<i> 0x897d143fe8eb07fe4d57aca09546989c hmac-md5
+</I>&gt;<i> 0x50141c92cef7119e6c8a4f2f2d6707ad]
+</I>&gt;<i>  4(20689) INFO:P-CSCF:P_NAT_relay: &lt;sip:192.168.1.12:5062&gt;
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i>  5(20690) INF:P-CSCF:[ 237] C: &lt;0://192.168.1.12:5062&gt; Exp:[  56]
+</I>&gt;<i> R:[-1] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.1.12</A>:5062&gt;
+</I>&gt;<i>  5(20690) INF:P-CSCF:        Temp.IPSec: UAS: 23456789:2468-&gt;5001 
+</I>&gt;<i> UAC: 12345678:2468&lt;-5000 E[rijndael-cbc] I[hmac-md5]
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i>  5(20690) INF:P-CSCF:[ 237] C: &lt;0://192.168.1.12:5062&gt; Exp:[  46]
+</I>&gt;<i> R:[-1] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.1.12</A>:5062&gt;
+</I>&gt;<i>  5(20690) INF:P-CSCF:        Temp.IPSec: UAS: 23456789:2468-&gt;5001 
+</I>&gt;<i> UAC: 12345678:2468&lt;-5000 E[rijndael-cbc] I[hmac-md5]
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i>  5(20690) INF:P-CSCF:[ 237] C: &lt;0://192.168.1.12:5062&gt; Exp:[  36]
+</I>&gt;<i> R:[-1] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.1.12</A>:5062&gt;
+</I>&gt;<i>  5(20690) INF:P-CSCF:        Temp.IPSec: UAS: 23456789:2468-&gt;5001 
+</I>&gt;<i> UAC: 12345678:2468&lt;-5000 E[rijndael-cbc] I[hmac-md5]
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i>  5(20690) INF:P-CSCF:[ 237] C: &lt;0://192.168.1.12:5062&gt; Exp:[  26]
+</I>&gt;<i> R:[-1] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.1.12</A>:5062&gt;
+</I>&gt;<i>  5(20690) INF:P-CSCF:        Temp.IPSec: UAS: 23456789:2468-&gt;5001 
+</I>&gt;<i> UAC: 12345678:2468&lt;-5000 E[rijndael-cbc] I[hmac-md5]
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  P-CSCF Dialog List begin --------------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  P-CSCF Dialog List end   --------------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i>  5(20690) INF:P-CSCF:[ 237] C: &lt;0://192.168.1.12:5062&gt; Exp:[  16]
+</I>&gt;<i> R:[-1] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.1.12</A>:5062&gt;
+</I>&gt;<i>  5(20690) INF:P-CSCF:        Temp.IPSec: UAS: 23456789:2468-&gt;5001 
+</I>&gt;<i> UAC: 12345678:2468&lt;-5000 E[rijndael-cbc] I[hmac-md5]
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i>  5(20690) INF:P-CSCF:[ 237] C: &lt;0://192.168.1.12:5062&gt; Exp:[   6]
+</I>&gt;<i> R:[-1] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.1.12</A>:5062&gt;
+</I>&gt;<i>  5(20690) INF:P-CSCF:        Temp.IPSec: UAS: 23456789:2468-&gt;5001 
+</I>&gt;<i> UAC: 12345678:2468&lt;-5000 E[rijndael-cbc] I[hmac-md5]
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i>  5(20690) INF:P-CSCF:execute_cmd:
+</I>&gt;<i> [/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Drop.sh 192.168.1.12
+</I>&gt;<i> 2468 2468 192.168.1.141 4060 4060 23456789 12345678 5000 5001]
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i>  5(20690) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> ----------------------------------------------------------------
+</I>&gt;<i> Please tell me what could be wrong here.
+</I>&gt;<i>  
+</I>&gt;<i> If I use SIPp scripts (given by OpenIms) to test OpenIMS then it
+</I>&gt;<i> registers successfully but second REGISTER packet is not a ESP packet...
+</I>&gt;<i>  
+</I>&gt;<i> Regards,
+</I>&gt;<i> Santosh
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Unlimited freedom, unlimited storage. Get it now
+</I>&gt;<i> &lt;<A HREF="http://in.rd.yahoo.com/tagline_mail_2/*http://help.yahoo.com/l/in/yahoo/mail/yahoomail/tools/tools-08.html/">http://in.rd.yahoo.com/tagline_mail_2/*http://help.yahoo.com/l/in/yahoo/mail/yahoomail/tools/tools-08.html/</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002703.html">[OpenIMSCore-Users] Registration using sec-agree...
+</A></li>
+	<LI>Next message: <A HREF="002704.html">[OpenIMSCore-Users] RE :  408: Request Timed out
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2713">[ date ]</a>
+              <a href="thread.html#2713">[ thread ]</a>
+              <a href="subject.html#2713">[ subject ]</a>
+              <a href="author.html#2713">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

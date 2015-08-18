@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] mysql.so issue reloaded
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20mysql.so%20issue%20reloaded&In-Reply-To=%3C45EC7A18.3050707%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001054.html">
+   <LINK REL="Next"  HREF="001143.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] mysql.so issue reloaded</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20mysql.so%20issue%20reloaded&In-Reply-To=%3C45EC7A18.3050707%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] mysql.so issue reloaded">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Mar  5 21:14:16 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001054.html">[OpenIMSCore-Users] mysql.so issue reloaded
+</A></li>
+        <LI>Next message: <A HREF="001143.html">[OpenIMSCore-Users] mysql.so issue reloaded
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1060">[ date ]</a>
+              <a href="thread.html#1060">[ thread ]</a>
+              <a href="subject.html#1060">[ subject ]</a>
+              <a href="author.html#1060">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Phuong Anh,
+
+It seems that you know what you are doing ;-) here it is (attached).
+
+cartman mysql # ldd mysql.so
+        linux-gate.so.1 =&gt;  (0xffffe000)
+        libmysqlclient.so.14 =&gt; /usr/lib/libmysqlclient.so.14 (0xb7e65000)
+        libz.so.1 =&gt; /lib/libz.so.1 (0xb7e4b000)
+        libc.so.6 =&gt; /lib/tls/libc.so.6 (0xb7d30000)
+        libcrypt.so.1 =&gt; /lib/libcrypt.so.1 (0xb7d02000)
+        libnsl.so.1 =&gt; /lib/libnsl.so.1 (0xb7ced000)
+        libm.so.6 =&gt; /lib/tls/libm.so.6 (0xb7cca000)
+        libssl.so.0.9.7 =&gt; /usr/lib/libssl.so.0.9.7 (0xb7c96000)
+        libcrypto.so.0.9.7 =&gt; /usr/lib/libcrypto.so.0.9.7 (0xb7b82000)
+        /lib/ld-linux.so.2 (0x80000000)
+        libdl.so.2 =&gt; /lib/libdl.so.2 (0xb7b7e000)
+
+
+Hope it helps you.
+
+-Dragos
+
+
+Tran Minh Phuong Anh wrote:
+&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i> I had previously a problem with mysql.so. After compiling, I checked:
+</I>&gt;<i>
+</I>&gt;<i> pc101:/opt/OpenIMSCore/ser_ims# ldd
+</I>&gt;<i> /opt/OpenIMSCore/ser_ims/modules/mysql/mysql.so
+</I>&gt;<i>         linux-gate.so.1 =&gt;  (0xffffe000)
+</I>&gt;<i>         libz.so.1 =&gt; /usr/lib/libz.so.1 (0xb7eb3000)
+</I>&gt;<i>         libc.so.6 =&gt; /lib/tls/i686/cmov/libc.so.6 (0xb7d81000)
+</I>&gt;<i>         /lib/ld-linux.so.2 (0x80000000)
+</I>&gt;<i>
+</I>&gt;<i> I had this output. However, it should be:
+</I>&gt;<i>
+</I>&gt;<i> pc104:~# ldd /opt/OpenIMSCore/ser_ims/modules/mysql/mysql.so
+</I>&gt;<i>         linux-gate.so.1 =&gt;  (0xffffe000)
+</I>&gt;<i>         libmysqlclient.so.14 =&gt; /usr/lib/libmysqlclient.so.14 (0xb7e1b000)
+</I>&gt;<i>         libz.so.1 =&gt; /usr/lib/libz.so.1 (0xb7e07000)
+</I>&gt;<i>         libc.so.6 =&gt; /lib/tls/i686/cmov/libc.so.6 (0xb7cd6000)
+</I>&gt;<i>         libcrypt.so.1 =&gt; /lib/tls/i686/cmov/libcrypt.so.1 (0xb7ca8000)
+</I>&gt;<i>         libnsl.so.1 =&gt; /lib/tls/i686/cmov/libnsl.so.1 (0xb7c92000)
+</I>&gt;<i>         libm.so.6 =&gt; /lib/tls/i686/cmov/libm.so.6 (0xb7c6d000)
+</I>&gt;<i>         /lib/ld-linux.so.2 (0x80000000)
+</I>&gt;<i>
+</I>&gt;<i> including libmysqlclient ... and other libraries too.
+</I>&gt;<i>
+</I>&gt;<i> I compiled with many configurations, but didn't succeed to get a
+</I>&gt;<i> proper mysql.so Fortunately I had a mysql.so from a previous compile,
+</I>&gt;<i> so after compiling Open IMS, I just copied the proper mysql.so to
+</I>&gt;<i> modules/mysql/
+</I>&gt;<i>
+</I>&gt;<i> It worked fine until now. Because ser is updated to Ottendorf, my old
+</I>&gt;<i> mysql.so is not workiing anymore.
+</I>&gt;<i>
+</I>&gt;<i> I have libmysqlclient14 and -dev installed, it's a Debian on an Intel Core Duo.
+</I>&gt;<i>
+</I>&gt;<i> So could you please tell me where the problem is and I'd ask you to
+</I>&gt;<i> send me a &quot;new&quot; mysql.so using one of these libmysqlclient
+</I>&gt;<i>
+</I>&gt;<i> p   libmysqlclient10                - LGPL-licensed client library for MySQL dat
+</I>&gt;<i> p   libmysqlclient12                - mysql database client library
+</I>&gt;<i> i   libmysqlclient14                - mysql database client library
+</I>&gt;<i> p   libmysqlclient15off             - mysql database client library
+</I>&gt;<i>
+</I>&gt;<i> Thank you,
+</I>&gt;<i> Phuong Anh
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: mysql.so
+Type: application/octet-stream
+Size: 98221 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070305/ce288196/attachment.so">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070305/ce288196/attachment.so</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001054.html">[OpenIMSCore-Users] mysql.so issue reloaded
+</A></li>
+	<LI>Next message: <A HREF="001143.html">[OpenIMSCore-Users] mysql.so issue reloaded
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1060">[ date ]</a>
+              <a href="thread.html#1060">[ thread ]</a>
+              <a href="subject.html#1060">[ subject ]</a>
+              <a href="author.html#1060">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

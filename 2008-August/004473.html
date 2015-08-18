@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problems with X-lite
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problems%20with%20X-lite&In-Reply-To=%3C5F84EB8072A74D8F8EB3A25FC51FEF80%40notebook%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004472.html">
+   <LINK REL="Next"  HREF="004474.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problems with X-lite</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problems%20with%20X-lite&In-Reply-To=%3C5F84EB8072A74D8F8EB3A25FC51FEF80%40notebook%3E"
+       TITLE="[OpenIMSCore-Users] Problems with X-lite">franz.edler at inode.at
+       </A><BR>
+    <I>Tue Aug 19 05:54:20 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004472.html">[OpenIMSCore-Users] OpenIMSCore - Dx interface
+</A></li>
+        <LI>Next message: <A HREF="004474.html">[OpenIMSCore-Users] Problems with X-lite
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4473">[ date ]</a>
+              <a href="thread.html#4473">[ thread ]</a>
+              <a href="subject.html#4473">[ subject ]</a>
+              <a href="author.html#4473">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+ 
+
+according to your log below there are two issues as you marked:
+
+ 
+
+1. You need a diameter connection between S-CSCF and the HSS.
+
+    It is useless to try to register as long as there are no diameter
+connections active.
+
+ 
+
+2. Your Public and/or Private User Identity in REGISTER request is wrong (I
+guess it&#146;s the username in Authorization header field).
+
+     To be precise a wireshark/tcpdump trace would be necessary.
+
+ 
+
+-franz
+
+ 
+
+I have also added the user mailing-list on CC to also increase the
+&#147;knowledge base&#148; for others.
+
+ 
+
+  _____  
+
+From: anonymus anonymus [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mx2sb at yahoo.es</A>] 
+Sent: Tuesday, August 19, 2008 1:00 AM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>
+Subject: Problems with X-lite
+
+ 
+
+
+Hi Franz:
+
+I try your recomendation, I change the autentication algoritm (digest md5)
+in web page (tomcat), I imagine than is only the hss (?), so, I  change  the
+scscf too for digest-md5 and don't register the x-lite, this is the error
+message:
+
+403 Forbidden : HSS user unknown Error.
+
+I seek this error message in the next scripts:
+
+script scscf.sh:
+
+ INFO:ISC: - child init [1002]
+ 9(6782) INFO:[1] Worker process started...
+12(6785) INFO:peer_connect(): Trying to connect to xxx.xxx.xxx.xxx port 3868
+12(6785) WARNING:peer_connect(): Error opening connection to to
+xxx.xxx.xxx.xxx (my public ip) port 3868 &gt;Connection refused
+12(6785) DBG:sm_process(): Peer hss.open-ims.test       State Wait_Conn_Ack
+Event I_Rcv_Conn_NAck
+12(6785) --- Peer List: ---
+12(6785)  S[Closed] hss.open-ims.test:3868 D[ ]
+12(6785) ------------------
+13(6786) INFO:ISC: - child init [5]
+14(6787) INFO:ISC: - child init [6]
+12(6785) --- Peer List: ---
+12(6785)  S[Closed] hss.open-ims.test:3868 D[ ]
+12(6785) ------------------
+
+
+script startup.sh:
+2008-08-17 17:41:24,833 DEBUG de.fhg.fokus.hss.main.Task - execute
+Processing UAR!
+2008-08-17 17:41:25,550 DEBUG de.fhg.fokus.hss.main.Task - execute
+Processing UAR!
+2008-08-17 17:41:26,096 DEBUG de.fhg.fokus.hss.main.Task - execute
+Processing MAR!
+2008-08-17 17:41:26,631 DEBUG de.fhg.fokus.hss.cx.op.MAR -
+generateAuthVector Auth-Scheme is Digest-MD5
+2008-08-17 17:41:27,315 DEBUG de.fhg.fokus.hss.main.Task - execute
+Processing UAR!
+de.fhg.fokus.hss.cx.CxExperimentalResultException:
+IMS_Diameter_Error_User_Unknown
+        at de.fhg.fokus.hss.cx.op.UAR.processRequest(UAR.java:113)
+        at de.fhg.fokus.hss.main.Task.execute(Task.java:169)
+        at de.fhg.fokus.hss.main.Worker.run(Worker.java:66)
+
+I startup all scripts wright, pcscf, icscf, scscf and startup.sh, DNS server
+is active, i don't have sip2ims, it is can be the problem?.
+
+Thanks my friend.
+
+
+--- El dom, 17/8/08, Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&gt; escribi&#243;:
+De: Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&gt;
+Asunto: RE: [OpenIMSCore-HSS] Registration error: 401 User
+UnauthorizedChallenging the UE
+Para: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mx2sb at yahoo.es</A>, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-hss at lists.berlios.de</A>
+Fecha: domingo, 17 agosto, 2008 9:23
+
+Hi anonymous,
+
+
+  
+
+
+&gt;<i> ... changed by digest-MD5.
+</I>
+
+  
+
+
+Did you change the authetication algorithm in both the scscf.cfg and HSS
+
+
+(IMPI)
+
+
+  
+
+
+  
+ accordingly?
+
+
+  
+
+
+-franz
+
+
+__________________________________________________
+Correo Yahoo!
+Espacio para todos tus mensajes, antivirus y antispam &#161;gratis! 
+Reg&#237;strate ya - <A HREF="http://correo.yahoo.es">http://correo.yahoo.es</A> 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080819/8f9902d6/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080819/8f9902d6/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004472.html">[OpenIMSCore-Users] OpenIMSCore - Dx interface
+</A></li>
+	<LI>Next message: <A HREF="004474.html">[OpenIMSCore-Users] Problems with X-lite
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4473">[ date ]</a>
+              <a href="thread.html#4473">[ thread ]</a>
+              <a href="subject.html#4473">[ subject ]</a>
+              <a href="author.html#4473">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

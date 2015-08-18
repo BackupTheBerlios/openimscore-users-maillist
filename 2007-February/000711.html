@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] OpenIMSCore with AS as B2BUA : header size pb
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore%20with%20AS%20as%20B2BUA%20%3A%20header%20size%20pb&In-Reply-To=%3C20070207174117.1102.qmail%40web26506.mail.ukl.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000751.html">
+   <LINK REL="Next"  HREF="000714.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] OpenIMSCore with AS as B2BUA : header size pb</H1>
+    <B>cplusou-s at yahoo.fr</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore%20with%20AS%20as%20B2BUA%20%3A%20header%20size%20pb&In-Reply-To=%3C20070207174117.1102.qmail%40web26506.mail.ukl.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] OpenIMSCore with AS as B2BUA : header size pb">cplusou-s at yahoo.fr
+       </A><BR>
+    <I>Wed Feb  7 18:41:17 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000751.html">[OpenIMSCore-Users] Fw: I-CSCF segmentation fault on mysql.so
+</A></li>
+        <LI>Next message: <A HREF="000714.html">[OpenIMSCore-Users] OpenIMSCore with AS as B2BUA : header size pb
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#711">[ date ]</a>
+              <a href="thread.html#711">[ thread ]</a>
+              <a href="subject.html#711">[ subject ]</a>
+              <a href="author.html#711">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+When we used OpenIMSCore with an AS as B2B2UA, we have a very big header with all via header and record-route send to the callee that some SIPphone can't process because it is to big : 
+
+example : 
+No.     Time        Source                Destination           Protocol Info
+    Message Header
+        Record-Route: &lt;sip:10.1.0.201:3060;ftag=4edddcab;lr=on&gt;
+        Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>:4060;lr&gt;
+        Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+        Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+        Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+        Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+        Record-Route: &lt;sip:10.1.0.201:3060;ftag=4edddcab;lr=on&gt;
+...
+        Via: SIP/2.0/UDP 10.1.0.201:3060;branch=z9hG4bK4395.cbd00863.0
+        Via: SIP/2.0/UDP 10.1.0.201:4060;branch=z9hG4bK4395.7ac402f7.0
+        Via: SIP/2.0/UDP 10.1.0.201:6060;rport=6060;branch=z9hG4bK4395.e0a81242.0
+        Via: SIP/2.0/UDP 10.1.0.201:6060;branch=z9hG4bK4395.d0a81242.0;i=1
+        Via: SIP/2.0/TCP 10.1.0.222:5060;wlsscid=37783d98603f4da;branch=z9hG4bK88216caf07143f4e3cf219e0217ca65f
+        Via: SIP/2.0/UDP 10.1.0.201:6060;branch=z9hG4bK4395.c0a81242.0
+        Via: SIP/2.0/UDP 10.1.0.201:4060;branch=z9hG4bK4395.6ac402f7.0
+        Via: SIP/2.0/UDP 10.1.0.201:3060;rport=3060;branch=z9hG4bK4395.bbd00863.0
+        Via: SIP/2.0/UDP 10.1.0.111:5060;branch=z9hG4bKb6de3eac0564615ab4fa7a7;rport=5060
+...
+
+Is there a way to limit Via and Record-Route header ? 
+
+Thanks in advance
+
+Fred
+
+
+
+
+	
+
+	
+		
+___________________________________________________________________________ 
+D&#233;couvrez une nouvelle fa&#231;on d'obtenir des r&#233;ponses &#224; toutes vos questions ! 
+Profitez des connaissances, des opinions et des exp&#233;riences des internautes sur Yahoo! Questions/R&#233;ponses 
+<A HREF="http://fr.answers.yahoo.com">http://fr.answers.yahoo.com</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070207/308606fd/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070207/308606fd/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000751.html">[OpenIMSCore-Users] Fw: I-CSCF segmentation fault on mysql.so
+</A></li>
+	<LI>Next message: <A HREF="000714.html">[OpenIMSCore-Users] OpenIMSCore with AS as B2BUA : header size pb
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#711">[ date ]</a>
+              <a href="thread.html#711">[ thread ]</a>
+              <a href="subject.html#711">[ subject ]</a>
+              <a href="author.html#711">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

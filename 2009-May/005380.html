@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] pstn-ims
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20pstn-ims&In-Reply-To=%3C3df4af750905120332n7c816d96w640d6d2d6dcf5987%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005375.html">
+   <LINK REL="Next"  HREF="005384.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] pstn-ims</H1>
+    <B>manal rifki</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20pstn-ims&In-Reply-To=%3C3df4af750905120332n7c816d96w640d6d2d6dcf5987%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] pstn-ims">manal.rifki at gmail.com
+       </A><BR>
+    <I>Tue May 12 12:32:44 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005375.html">[OpenIMSCore-Users] pstn-ims
+</A></li>
+        <LI>Next message: <A HREF="005384.html">[OpenIMSCore-Users] pstn-ims
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5380">[ date ]</a>
+              <a href="thread.html#5380">[ thread ]</a>
+              <a href="subject.html#5380">[ subject ]</a>
+              <a href="author.html#5380">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Franz,
+
+i am sorry for the previous incomplete message i have sent to you!
+
+here are my IP addresses:
+
+pcscf : 192.168.100.161
+icscf : 192.168.100.162
+scscf : 192.168.100.163
+hss : 192.168.100.164
+local dns : 192.168.100.170
+the machine : 192.168.100.20
+
+pstn geteway : 192.168.100.22
+
+
+here are what we changed for the icscf.cfg in the /opt/OpenIMSCore/ file :
+
+route[PSTN]
+{
+    t_on_reply(&quot;PSTN_reply&quot;);
+    t_relay_to_udp(&quot;192.168.100.22&quot;, &quot;5060&quot;);
+    exit;
+}
+
+here are what we changed for the scscf.cfg in the /opt/OpenIMSCore/ file :
+
+route[PSTN]
+{
+    t_on_reply(&quot;PSTN_reply&quot;);
+    t_relay_to_udp(&quot;192.168.100.22&quot;, &quot;5060&quot;);
+    exit;
+}
+
+you can find the hole icscf.cfg and scscf.cfg files attached to this email.
+
+after registeration in uctimsclient we have launched wireshark to get a
+trace of the paquet exchange and we start the call.
+
+here is the VoIP call got from wireshark. By the way is the URI correct?
+
+Conv.| Time    | 192.168.100.161   | 192.168.100.163   | 192.168.100.22    |
+0    |9,497    |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:\+212537736839
+     |         |(5061)   ------------------&gt;  (4060)   |                   |
+0    |10,037   |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:\+212537736839
+     |         |(5061)   ------------------&gt;  (4060)   |                   |
+0    |11,048   |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:\+212537736839
+     |         |(5061)   ------------------&gt;  (4060)   |                   |
+0    |13,060   |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:\+212537736839
+     |         |(5061)   ------------------&gt;  (4060)   |                   |
+0    |17,072   |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:\+212537736839
+     |         |(5061)   ------------------&gt;  (4060)   |                   |
+0    |25,140   |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:\+212537736839
+     |         |(5061)   ------------------&gt;  (4060)   |                   |
+0    |41,236   |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:\+212537736839
+     |         |(5061)   ------------------&gt;  (4060)   |                   |
+-----------------------------------------------------------------------------
+1    |229,220  |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:+212537736839
+     |         |(5061)   ------------------&gt;  (4060)   |                   |
+1    |229,221  |         100 trying -- your call is important to us
+|<i>                   |SIP Status
+</I>     |         |(4060)   ------------------&gt;  (5061)   |                   |
+1    |229,221  |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:+212537736839
+     |         |(4060)   ------------------&gt;  (6060)   |                   |
+1    |229,661  |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:+212537736839
+     |         |(4060)   ------------------&gt;  (6060)   |                   |
+1    |230,661  |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:+212537736839
+     |         |(4060)   ------------------&gt;  (6060)   |                   |
+1    |232,661  |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:+212537736839
+     |         |(4060)   ------------------&gt;  (6060)   |                   |
+1    |236,661  |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:+212537736839
+     |         |(4060)   ------------------&gt;  (6060)   |                   |
+1    |240,661  |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:+212537736839
+     |         |(4060)   ------------------&gt;  (6060)   |                   |
+1    |244,661  |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:+212537736839
+     |         |(4060)   ------------------&gt;  (6060)   |                   |
+1    |248,661  |         INVITE SDP ( telephone-event)
+|<i>                   |SIP From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naima at iamnet.ma</A>
+</I>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Anaima at iamnet.ma</A>&gt;To:tel:+212537736839
+     |         |(4060)   ------------------&gt;  (6060)   |                   |
+1    |249,237  |         100 trying -- your call is important to us
+|<i>                   |SIP Status
+</I>     |         |(4060)   &lt;------------------  (6060)   |                   |
+1    |249,241  |                   |         INVITE SDP (
+telephone-event)          |SIP Request
+     |         |                   |(6060)   ------------------&gt;  (5060)   |
+1    |249,248  |                   |         420 Bad Extension
+|<i>SIP Status
+</I>     |         |                   |(6060)   &lt;------------------  (50610)  |
+1    |249,248  |                   |         ACK       |
+|<i>SIP Request
+</I>     |         |                   |(6060)   ------------------&gt;  (5060)   |
+1    |249,248  |         420 Bad Extension             |
+|<i>SIP Status
+</I>     |         |(4060)   &lt;------------------  (6060)   |                   |
+1    |249,248  |         ACK       |                   |
+|<i>SIP Request
+</I>     |         |(4060)   ------------------&gt;  (6060)   |                   |
+1    |249,249  |         420 Bad Extension             |
+|<i>SIP Status
+</I>     |         |(4060)   ------------------&gt;  (5061)   |                   |
+1    |249,249  |         ACK       |                   |
+|<i>SIP Request
+</I>     |         |(5061)   ------------------&gt;  (4060)   |                   |
+
+
+it's available also in the attached files.
+
+Thank you for your help!
+
+Best regards,
+manal
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090512/ef4f94c5/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090512/ef4f94c5/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: scscf.cfg
+Type: application/octet-stream
+Size: 17105 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090512/ef4f94c5/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090512/ef4f94c5/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: pstn3
+Type: application/octet-stream
+Size: 5102 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090512/ef4f94c5/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090512/ef4f94c5/attachment-0001.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: icscf.cfg
+Type: application/octet-stream
+Size: 7584 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090512/ef4f94c5/attachment-0002.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090512/ef4f94c5/attachment-0002.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005375.html">[OpenIMSCore-Users] pstn-ims
+</A></li>
+	<LI>Next message: <A HREF="005384.html">[OpenIMSCore-Users] pstn-ims
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5380">[ date ]</a>
+              <a href="thread.html#5380">[ thread ]</a>
+              <a href="subject.html#5380">[ subject ]</a>
+              <a href="author.html#5380">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

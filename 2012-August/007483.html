@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] openIMS and PSTN termination.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20openIMS%20and%20PSTN%20termination.&In-Reply-To=%3CCAOCjumH-QXZ0tzy8JS73e7%2B22NeVXGOb7s9hHT348dw9ncYEFg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007482.html">
+   <LINK REL="Next"  HREF="007484.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] openIMS and PSTN termination.</H1>
+    <B>Carsten Bock</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20openIMS%20and%20PSTN%20termination.&In-Reply-To=%3CCAOCjumH-QXZ0tzy8JS73e7%2B22NeVXGOb7s9hHT348dw9ncYEFg%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] openIMS and PSTN termination.">carsten at ng-voice.com
+       </A><BR>
+    <I>Fri Aug 24 18:06:10 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007482.html">[OpenIMSCore-Users] openIMS and PSTN termination.
+</A></li>
+        <LI>Next message: <A HREF="007484.html">[OpenIMSCore-Users] openIMS and PSTN termination.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7483">[ date ]</a>
+              <a href="thread.html#7483">[ thread ]</a>
+              <a href="subject.html#7483">[ subject ]</a>
+              <a href="author.html#7483">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Thomas,
+
+did you look at what you have in your service-route (in the 200 OK to
+the REGISTER)? My 200 OK contains the following service-route:
+
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.ims.ng-voice.com</A>:5060;lr&gt;.
+
+As a conclusion, the INVITE contains the following route:
+
+Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.ims.ng-voice.com</A>:5060;lr&gt;.
+
+This service-route info explains the DNS query (at least in my setup).
+
+Could you check and provide some traces?
+
+Kind regards,
+Carsten
+
+2012/8/24 Thomas Secula &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tsecula at gmail.com</A>&gt;:
+&gt;<i> Hello all,
+</I>&gt;<i>
+</I>&gt;<i> 2 questions that are befuddling me :)
+</I>&gt;<i>
+</I>&gt;<i> I see the pcscf at port 4060 issue a 100 trying and then an immediate dns
+</I>&gt;<i> query for _sip._udp when it receives a tel uri.  This fails as I have
+</I>&gt;<i> pointed out earlier on this list becasue the tel uri provides no domain in
+</I>&gt;<i> the request-uri.
+</I>&gt;<i>
+</I>&gt;<i> I think the PCSCF should not care about destination request-uri for
+</I>&gt;<i> registered users and just follow the service-route it stored after the
+</I>&gt;<i> successful registration for my UAC making the call.
+</I>&gt;<i>
+</I>&gt;<i> Once I figure out how to make the pcscf handle the invite I have another
+</I>&gt;<i> question:
+</I>&gt;<i>
+</I>&gt;<i> I would like to know if one would need the trcf/mgcf processes started in
+</I>&gt;<i> order to terminate calls to non subscribers resident in the PSTN?
+</I>&gt;<i>
+</I>&gt;<i> I have an asterisk pbx which I would like to use to terminate calls into the
+</I>&gt;<i> pstn.
+</I>&gt;<i>
+</I>&gt;<i> Thank you for any insight you might have on these questions!!!
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+
+-- 
+Carsten Bock
+CEO (Gesch&#228;ftsf&#252;hrer)
+
+ng-voice GmbH
+Schomburgstr. 80
+D-22767 Hamburg / Germany
+
+<A HREF="http://www.ng-voice.com">http://www.ng-voice.com</A>
+mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">carsten at ng-voice.com</A>
+
+Office +49 40 34927219
+Fax +49 40 34927220
+
+Sitz der Gesellschaft: Hamburg
+Registergericht: Amtsgericht Hamburg, HRB 120189
+Gesch&#228;ftsf&#252;hrer: Carsten Bock
+Ust-ID: DE279344284
+
+Hier finden Sie unsere handelsrechtlichen Pflichtangaben:
+<A HREF="http://www.ng-voice.com/imprint/">http://www.ng-voice.com/imprint/</A>
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007482.html">[OpenIMSCore-Users] openIMS and PSTN termination.
+</A></li>
+	<LI>Next message: <A HREF="007484.html">[OpenIMSCore-Users] openIMS and PSTN termination.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7483">[ date ]</a>
+              <a href="thread.html#7483">[ thread ]</a>
+              <a href="subject.html#7483">[ subject ]</a>
+              <a href="author.html#7483">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

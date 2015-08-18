@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Presentation of IP-address in log
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Presentation%20of%20IP-address%20in%20log&In-Reply-To=%3C48C16ADA.5040905%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004597.html">
+   <LINK REL="Next"  HREF="004600.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Presentation of IP-address in log</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Presentation%20of%20IP-address%20in%20log&In-Reply-To=%3C48C16ADA.5040905%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Presentation of IP-address in log">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Sep  5 19:22:34 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004597.html">[OpenIMSCore-Users] Presentation of IP-address in log
+</A></li>
+        <LI>Next message: <A HREF="004600.html">[OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4608">[ date ]</a>
+              <a href="thread.html#4608">[ thread ]</a>
+              <a href="subject.html#4608">[ subject ]</a>
+              <a href="author.html#4608">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Mark,
+
+&quot;Lev Andropov: It's stuck, yes?
+Watts: Back off! You don't know the components!
+Lev Andropov: [annoyed] Components. American components, Russian
+Components, ALL MADE IN TAIWAN! &quot;
+- Armageddon (1998)
+
+Signed chars, unsigned chars, all made of bits :-p.
+
+Well, the thing is that it is much easier to work with a standard data
+type and then cast its contents as required. It helps a lot in not
+having to define the same function but with a different parameters all
+the time. So I reused a lot those types. If you are consistent, there's
+no problem.
+
+So that piece of data was being packed as binary inside a str, which is
+a structure like this:
+
+typedef struct{
+    int len;
+    char* s;
+}
+
+Now char is a signed byte. So I fixed this in the same way that the IPv6
+was printed just a few lines lower, by casting it first to (unsiged
+char). Your solution was better though, but I find it more readable like
+it is now.
+
+Hopefully there aren't many places that would print IP addresses in our
+code like that. After all, the thing should not be dependent on IPv4 or
+IPv6, but transparent for the IP layer.
+
+Cheers,
+-Dragos
+
+
+
+Evans, Mark [CTO] wrote:
+&gt;<i> Hi Franz
+</I>&gt;<i>
+</I>&gt;<i> Looks like the IP address variables are being stored as signed int or possibly signed char. (4294967232 is -64 printed out as an unsiged int, using %u). Ideally the type for these variables should be unsigned char.
+</I>&gt;<i>
+</I>&gt;<i> You could try printing the absolute value of the variables. In this case
+</I>&gt;<i>  %d would work
+</I>&gt;<i>
+</I>&gt;<i> Cheers
+</I>&gt;<i>
+</I>&gt;<i> Mark
+</I>&gt;<i>
+</I>&gt;<i> Sent from my Windows Mobile&#174; phone.
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&gt;
+</I>&gt;<i> Sent: Wednesday, September 03, 2008 10:00 PM
+</I>&gt;<i> To: 'Hannes L. Weisgrab' &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">weisi2 at ftw.at</A>&gt;
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] Presentation of IP-address in log
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi Hannes and all C-experts,
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> simply replace all &quot;%d&quot; by &quot;%u&quot;.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> This I already tried but the result was not as expected. To be precise:
+</I>&gt;<i>
+</I>&gt;<i> For address 192.168.0.3 I get
+</I>&gt;<i> - with original code ... &lt;%d.%d.%d.%d&gt;:         &lt;-64.-88.0.3&gt;
+</I>&gt;<i> - with modified code ... &lt;%u.%u.%u.%u&gt;:         &lt;4294967232.4294967208.0.3&gt;
+</I>&gt;<i>
+</I>&gt;<i> Cheers
+</I>&gt;<i> -franz
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004597.html">[OpenIMSCore-Users] Presentation of IP-address in log
+</A></li>
+	<LI>Next message: <A HREF="004600.html">[OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4608">[ date ]</a>
+              <a href="thread.html#4608">[ thread ]</a>
+              <a href="subject.html#4608">[ subject ]</a>
+              <a href="author.html#4608">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

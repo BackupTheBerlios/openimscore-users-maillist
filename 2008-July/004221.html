@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Sip request
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Sip%20request&In-Reply-To=%3C019001c8db8f%2470c16d30%2452444790%24%40haber%40uia.no%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004219.html">
+   <LINK REL="Next"  HREF="004222.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Sip request</H1>
+    <B>Andreas H&#228;ber</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Sip%20request&In-Reply-To=%3C019001c8db8f%2470c16d30%2452444790%24%40haber%40uia.no%3E"
+       TITLE="[OpenIMSCore-Users] Sip request">andreas.haber at uia.no
+       </A><BR>
+    <I>Tue Jul  1 17:30:49 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004219.html">[OpenIMSCore-Users] Sip request
+</A></li>
+        <LI>Next message: <A HREF="004222.html">[OpenIMSCore-Users] Getting problem while installation ofOpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4221">[ date ]</a>
+              <a href="thread.html#4221">[ thread ]</a>
+              <a href="subject.html#4221">[ subject ]</a>
+              <a href="author.html#4221">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+ 
+
+You should put such logic in the AS (e.g., the VoD service). When handling the INVITE request check whether the video is available or not. If not then reply with a meaningful status code. For example, reply with a &#8220;486 Busy Here&#8221; and include a Retry-After that says when the video is available.
+
+ 
+
+Best regards,
+
+Andreas
+
+ 
+
+From: Wathana Hak [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wathana35 at hotmail.com</A>] 
+Sent: 1. juli 2008 17:14
+To: Andreas H&#228;ber
+Subject: RE: [OpenIMSCore-Users] Sip request
+
+ 
+
+Hi thank you for your reply,
+
+When a sip request &quot;Invite sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">channel1 at iptv.open-ims.test</A>&quot; is sent to the ims core, behind the iptv starts.
+I wantt to do the same thing : send &quot;Invite sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">video1 at vod.open-ims.test</A>&quot; and start the VoD service.
+
+Of course I have define in the FHoSS an application servers (VoD Server), trigger points (VoDTrigger), IFC (VoD) and i have attached all to the service profiles. 
+I would like for example only bob can watch video 1 and video 2 and alice can watch only video 3.
+
+I hope i have been clear.
+
+Thanks for ur help
+
+Wathana
+
+  _____  
+
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">andreas.haber at uia.no</A>
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wathana35 at hotmail.com</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">uctimsclient-users at lists.berlios.de</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Date: Tue, 1 Jul 2008 16:50:06 +0200
+Subject: RE: [OpenIMSCore-Users] Sip request
+
+Hi,
+
+ 
+
+It is not clear to me what you are asking about here, in addition to what you assume about the core network:
+
+-          What is the network ID? Open-ims.test or iptv/vod.open-ims.test?
+
+-          Do you have a wildcard PSI for channelX@ setup?
+
+-          What do you think is different with this request as compared to &#8220;INVITE sip:alice@ open-ims.test&#8221;? Or, said in a different way: What is special with this request as compared to &#8220;INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&#8221;?
+
+ 
+
+Basically, the OpenIMS CN does not care whether the request is to me (sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">nobody at open-ims.test</A>) or IPTV (sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iptv at open-ims.test</A>). If there is any iFC or PSI involved it will take care of that to route it to the right place, but not so much more. It&#8217;s the service that needs to make the session valuable&#8230; 
+
+ 
+
+PS: You might be interested in checking out the ETSI TISPAN IPTV standardization for details here. For example ETSI TS 183 063 NGN-R2 &#8220;MS-based IPTV stage 3 specification&#8221; (<A HREF="http://www.tech-invite.com/Ti-tispan-standards-b.html#ts-183-063">http://www.tech-invite.com/Ti-tispan-standards-b.html#ts-183-063</A>) and ETSI TS 182 028 NGN-R2 &#8220;IPTV Architecture; Dedicated subsystem for IPTV functions&#8221; (<A HREF="http://www.tech-invite.com/Ti-tispan-standards.html#ts-182-028">http://www.tech-invite.com/Ti-tispan-standards.html#ts-182-028</A>) &lt;<A HREF="http://www.tech-invite.com/Ti-tispan-standards.html#ts-182-028%29">http://www.tech-invite.com/Ti-tispan-standards.html#ts-182-028%29</A>&gt; ... And related documents. Moreover, [1] gives more practical details on IPTV in NGN.
+
+ 
+
+[1] Al-Hezmi, Adel; Riede, Christian; Friedrich, Oliver; Arbanowski, Stefan; Magedanz, Thomas, &quot;Cross-fertilization of IMS and IPTV services over NGN,&quot; Innovations in NGN: Future Network and Services, 2008. K-INGN 2008. First ITU-T Kaleidoscope Academic Conference , vol., no., pp.153-160, 12-13 May 2008
+URL:  &lt;<A HREF="http://ieeexplore.ieee.org/iel5/4534704/4542234/04542261.pdf?isnumber=4542234&amp;prod=STD&amp;arnumber=4542261&amp;arnumber=4542261&amp;arSt=153&amp;ared=160&amp;arAuthor=Al-Hezmi,+Adel;+Riede,+Christian;+Friedrich,+Oliver;+Arbanowski,+Stefan;+Magedanz,+Thomas">http://ieeexplore.ieee.org/iel5/4534704/4542234/04542261.pdf?isnumber=4542234&amp;prod=STD&amp;arnumber=4542261&amp;arnumber=4542261&amp;arSt=153&amp;ared=160&amp;arAuthor=Al-Hezmi,+Adel;+Riede,+Christian;+Friedrich,+Oliver;+Arbanowski,+Stefan;+Magedanz,+Thomas</A>&gt; <A HREF="http://ieeexplore.ieee.org/iel5/4534704/4542234/04542261.pdf?isnumber=4542234&#8719;=STD&amp;arnumber=4542261&amp;arnumber=4542261&amp;arSt=153&amp;ared=160&amp;arAuthor=Al-Hezmi%2C+Adel%3B+Riede%2C+Christian%3B+Friedrich%2C+Oliver%3B+Arbanowski%2C+Stefan%3B+Magedanz%2C+Thomas">http://ieeexplore.ieee.org/iel5/4534704/4542234/04542261.pdf?isnumber=4542234&#8719;=STD&amp;arnumber=4542261&amp;arnumber=4542261&amp;arSt=153&amp;ared=160&amp;arAuthor=Al-Hezmi%2C+Adel%3B+Riede%2C+Christian%3B+Friedrich%2C+Oliver%3B+Arbanowski%2C+Stefan%3B+Magedanz%2C+Thomas</A>
+
+ 
+
+Best regards,
+
+Andreas
+
+ 
+
+ 
+
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Wathana Hak
+Sent: 1. juli 2008 15:34
+To: ims client; ims mailing list
+Subject: [OpenIMSCore-Users] Sip request
+
+ 
+
+Hi,
+
+Anybody could explain me what happen when the ims core receive an &quot;Invite sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">channel1 at iptv.open-ims.test</A>&quot;. 
+I ask this question because i want to do VoD so my idea is to send an &quot;Invite sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">video1 at vod.open-ims.test</A>&quot; to the ims core...
+
+Best regards
+
+Wathana
+
+  _____  
+
+Discutez gratuitement avec vos amis en vid&#233;o ! T&#233;l&#233;chargez &lt;<A HREF="http://www.windowslive.fr/messenger/">http://www.windowslive.fr/messenger/</A>&gt;  Messenger, c'est gratuit !
+
+ 
+
+  _____  
+
+Centralisez tous vos comptes mails dans Hotmail ! Cr&#233;ez un compte &lt;<A HREF="http://www.windowslive.fr/hotmail/">http://www.windowslive.fr/hotmail/</A>&gt;  Hotmail, c'est gratuit !
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080701/aae6a833/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080701/aae6a833/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004219.html">[OpenIMSCore-Users] Sip request
+</A></li>
+	<LI>Next message: <A HREF="004222.html">[OpenIMSCore-Users] Getting problem while installation ofOpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4221">[ date ]</a>
+              <a href="thread.html#4221">[ thread ]</a>
+              <a href="subject.html#4221">[ subject ]</a>
+              <a href="author.html#4221">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

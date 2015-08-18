@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] scscf and icscf
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20scscf%20and%20icscf&In-Reply-To=%3C1277116999.2806.7.camel%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006271.html">
+   <LINK REL="Next"  HREF="006273.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] scscf and icscf</H1>
+    <B>Andreea Ancuta Onofrei</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20scscf%20and%20icscf&In-Reply-To=%3C1277116999.2806.7.camel%40localhost%3E"
+       TITLE="[OpenIMSCore-Users] scscf and icscf">andreea.ancuta.onofrei at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Jun 21 12:43:19 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006271.html">[OpenIMSCore-Users] tel: URI
+</A></li>
+        <LI>Next message: <A HREF="006273.html">[OpenIMSCore-Users] Alice Bob test
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6272">[ date ]</a>
+              <a href="thread.html#6272">[ thread ]</a>
+              <a href="subject.html#6272">[ subject ]</a>
+              <a href="author.html#6272">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Antonio,
+
+It seems that there is a miss-configured HSS.
+May I remind you from the previous mail:
+
+&quot;In the case that you are using another IP/DNS configuration that the
+        default one, for the HSS you can check the configuration files:
+        FHoSS/deploy/DiameterPeerHSS.xml and
+        FHoSS/deploy/hss.properties
+&quot;
+
+Best regards,
+Ancuta
+        
+PS: please use one of the mailing lists as the destination e-mail
+address. In this way you increase your chances of receiving an answer,
+and as well anybody/you can browse/search the e-mail exchange with no
+need of storing the e-mail.
+        
+
+On Mo, 2010-06-21 at 03:37 -0700, Ionescu Antonio wrote:
+&gt;<i> Hello, 
+</I>&gt;<i>  
+</I>&gt;<i> I've managed to resolve the &quot;Name or service not known&quot; error, but I
+</I>&gt;<i> still have some problems. As you told me, I've tried ping on
+</I>&gt;<i> hss.open-ims.test and it worked just fine:
+</I>&gt;<i>  
+</I>&gt;<i> debian:~# ping hss.open-ims.test
+</I>&gt;<i> PING hss.open-ims.test (192.168.182.131) 56(84) bytes of data.
+</I>&gt;<i> 64 bytes from hss.open-ims.test (192.168.182.131): icmp_seq=1 ttl=64
+</I>&gt;<i> time=0.019 ms
+</I>&gt;<i> 64 bytes from scscf.open-ims.test (192.168.182.131): icmp_seq=2 ttl=64
+</I>&gt;<i> time=0.028 ms
+</I>&gt;<i> 64 bytes from pcscf.open-ims.test (192.168.182.131): icmp_seq=3 ttl=64
+</I>&gt;<i> time=0.028 ms
+</I>&gt;<i> ^C
+</I>&gt;<i> --- hss.open-ims.test ping statistics ---
+</I>&gt;<i> 3 packets transmitted, 3 received, 0% packet loss, time 1998ms
+</I>&gt;<i> rtt min/avg/max/mdev = 0.019/0.025/0.028/0.004 ms
+</I>&gt;<i>  
+</I>&gt;<i> The S-CSCF log file printed the following:
+</I>&gt;<i>  
+</I>&gt;<i> debian:~# tail -f /var/log/OpenIMSCore/scscf.log 
+</I>&gt;<i> ------ Semaphore Arrays --------
+</I>&gt;<i> key        semid      owner      perms      nsems     
+</I>&gt;<i> 13(18475) INFO:create_socket(): Trying to open/bind/listen on
+</I>&gt;<i> 192.168.182.131 port 3870
+</I>&gt;<i> 13(18475) INFO:create_socket(): Successful socket open/bind/listen on
+</I>&gt;<i> 192.168.182.131 port 3870
+</I>&gt;<i> 14(18476) INFO:peer_connect(): Trying to connect to 192.168.182.131
+</I>&gt;<i> port 3868
+</I>&gt;<i> 14(18476) INFO:peer_connect(): Trying to connect to 192.168.182.131
+</I>&gt;<i> port 3868
+</I>&gt;<i> 14(18476) WARNING:peer_connect(): Error opening connection to to
+</I>&gt;<i> 192.168.182.131 port 3868 &gt;Connection refused
+</I>&gt;<i> 
+</I>&gt;<i> And the I-CSCF had came with some errors:
+</I>&gt;<i>  
+</I>&gt;<i> debian:~# tail -f /var/log/OpenIMSCore/icscf.log 
+</I>&gt;<i> key        semid      owner      perms      nsems     
+</I>&gt;<i> 13(18770) INFO:create_socket(): Trying to open/bind/listen on
+</I>&gt;<i> 192.168.182.131 port 3869
+</I>&gt;<i> 13(18770) INFO:create_socket(): Successful socket open/bind/listen on
+</I>&gt;<i> 192.168.182.131 port 3869
+</I>&gt;<i> 14(18771) INFO:peer_connect(): Trying to connect to 192.168.182.131
+</I>&gt;<i> port 3868
+</I>&gt;<i> 12(18769) ERROR:I_Snd_CER(): Error on finding local host address &gt;
+</I>&gt;<i> Socket operation on non-socket
+</I>&gt;<i> 14(18771) ERROR:peer_send_msg(): Peer hss.open-ims.test has no
+</I>&gt;<i> attached send pipe
+</I>&gt;<i> 14(18771) INFO:peer_connect(): Trying to connect to 192.168.182.131
+</I>&gt;<i> port 3868
+</I>&gt;<i> 14(18771) WARNING:peer_connect(): Error opening connection to to
+</I>&gt;<i> 192.168.182.131 port 3868 &gt;Connection refused
+</I>&gt;<i> 
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Antonio
+</I>&gt;<i> 
+</I>&gt;<i> --- On Tue, 6/15/10, Andreea Ancuta Onofrei
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">andreea.ancuta.onofrei at fokus.fraunhofer.de</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;<i>         
+</I>&gt;<i>         From: Andreea Ancuta Onofrei
+</I>&gt;<i>         &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">andreea.ancuta.onofrei at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>         Subject: [OpenIMSCore-Users] scscf and icscf
+</I>&gt;<i>         To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>         Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ionescu_antonio at yahoo.com</A>
+</I>&gt;<i>         Date: Tuesday, June 15, 2010, 1:26 PM
+</I>&gt;<i>         
+</I>&gt;<i>         Hello Antonio,
+</I>&gt;<i>         
+</I>&gt;<i>         I think the error message &quot;Name or service not known&quot; is
+</I>&gt;<i>         generated
+</I>&gt;<i>         because the host hss.open-ims.test was not successfully
+</I>&gt;<i>         resolved.
+</I>&gt;<i>         
+</I>&gt;<i>         To test this, use ping hss.open-ims.test. If the IP you wanted
+</I>&gt;<i>         is shown,
+</I>&gt;<i>         than:
+</I>&gt;<i>         1) either the HSS is not running
+</I>&gt;<i>         2) either the interface between the HSS and I-CSCF/S-CSCF is
+</I>&gt;<i>         broken
+</I>&gt;<i>         
+</I>&gt;<i>         In the case that you are using another IP/DNS configuration
+</I>&gt;<i>         that the
+</I>&gt;<i>         default one, for the HSS you can check the configuration
+</I>&gt;<i>         files:
+</I>&gt;<i>         FHoSS/deploy/DiameterPeerHSS.xml and
+</I>&gt;<i>         FHoSS/deploy/hss.properties
+</I>&gt;<i>         
+</I>&gt;<i>         For the I-CSCF and S-CSCF diameter interface you can check the
+</I>&gt;<i>         configuration files:
+</I>&gt;<i>         ser_ims/cfg/icscf.xml and ser_ims/cfg/scscf.xml
+</I>&gt;<i>         
+</I>&gt;<i>         (Acceptor port is the XML tag that tells you where the
+</I>&gt;<i>         HSS/I-CSCF/S-CSCF
+</I>&gt;<i>         is expecting diameter messages)
+</I>&gt;<i>         
+</I>&gt;<i>         Best regards,
+</I>&gt;<i>         Ancuta
+</I>&gt;<i>         
+</I>&gt;<i>         On Di, 2010-06-15 at 11:33 +0200,
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-request at lists.berlios.de</A> wrote:
+</I>&gt;<i>         &gt; [OpenIMSCore-Users] scscf and icscf
+</I>&gt;<i>         
+</I>&gt;<i> 
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006271.html">[OpenIMSCore-Users] tel: URI
+</A></li>
+	<LI>Next message: <A HREF="006273.html">[OpenIMSCore-Users] Alice Bob test
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6272">[ date ]</a>
+              <a href="thread.html#6272">[ thread ]</a>
+              <a href="subject.html#6272">[ subject ]</a>
+              <a href="author.html#6272">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20%2B%20PCRF%20rejecting%20the%20Term-side&In-Reply-To=%3C804B13F8F3D94A4AB18B9B01ACB68FA101578DFE%40EXCHSRV.fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003979.html">
+   <LINK REL="Next"  HREF="003985.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side</H1>
+    <B>Diez, Alberto</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20%2B%20PCRF%20rejecting%20the%20Term-side&In-Reply-To=%3C804B13F8F3D94A4AB18B9B01ACB68FA101578DFE%40EXCHSRV.fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side">Alberto.Diez at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed May 21 22:34:19 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003979.html">[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+</A></li>
+        <LI>Next message: <A HREF="003985.html">[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3980">[ date ]</a>
+              <a href="thread.html#3980">[ thread ]</a>
+              <a href="subject.html#3980">[ subject ]</a>
+              <a href="author.html#3980">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+just do, the same you do in the originating route block but in the terminating, it should work
+if it does not, send a complete trace and define what is are the strange things done
+
+-----Original Message-----
+From: Pedro Antonio Vico Solano [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pvsolano at amper.es</A>]
+Sent: Wed 5/21/2008 5:57 PM
+To: Diez, Alberto
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: P-CSCF + PCRF rejecting the Term-side
+ 
+Hello Alberto &amp; everyone,
+
+I'm testing a third-party PCRF with two independent IMS domains. So I need 
+to reserve resources on both the orig &amp; term side.
+
+If the term side rejects the AAR, the P-CSCF does strange things if the 
+following sentences are put on Term_Initial_reply.
+
+
+if (t_check_status(&quot;183&quot;)||t_check_status(&quot;200&quot;)){
+                P_SDP_manipulate();
+                # 183 can be cancelled by proxy, however 200?
+ 
+                # check if QoS is ok, 0 - originating, 1 - terminating 
+                if (!P_AAR(&quot;1&quot;)) {
+                        P_release_call_onreply(&quot;term&quot;);
+                #   end_media_session();
+                }
+                # else {
+                #       use_media_proxy(); 
+                #} 
+        }
+
+If I leave the original  &quot;P_release_call_onreply(&quot;orig&quot;);&quot;  sentence, the 
+term side does not do nothing with SIP signalling.
+
+I attach you the signalling MSCs.
+
+Am I doing it OK?
+
+BR
+Pedro
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080521/779863e8/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080521/779863e8/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003979.html">[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+</A></li>
+	<LI>Next message: <A HREF="003985.html">[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3980">[ date ]</a>
+              <a href="thread.html#3980">[ thread ]</a>
+              <a href="subject.html#3980">[ subject ]</a>
+              <a href="author.html#3980">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Route Sets mismatch in ACK request
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Route%20Sets%20mismatch%20in%20ACK%20request&In-Reply-To=%3C23D52CF27A66BF4E9352313D60E46F3E01BB9E94%40EXCLUSTER.kcc.local%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001900.html">
+   <LINK REL="Next"  HREF="001905.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Route Sets mismatch in ACK request</H1>
+    <B>Mikhanov Sergey</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Route%20Sets%20mismatch%20in%20ACK%20request&In-Reply-To=%3C23D52CF27A66BF4E9352313D60E46F3E01BB9E94%40EXCLUSTER.kcc.local%3E"
+       TITLE="[OpenIMSCore-Users] Route Sets mismatch in ACK request">sergey.mikhanov at kapsch.net
+       </A><BR>
+    <I>Thu May 31 14:18:28 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001900.html">[OpenIMSCore-Users] [Uctimsclient-users] Presence HOWTO
+</A></li>
+        <LI>Next message: <A HREF="001905.html">[OpenIMSCore-Users] using SIPp script to register failed with	latest release of OPEN IMS core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1902">[ date ]</a>
+              <a href="thread.html#1902">[ thread ]</a>
+              <a href="subject.html#1902">[ subject ]</a>
+              <a href="author.html#1902">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>   Greetings,
+
+ 
+
+Yesterday's problem with domain name rewriting solved (thanks, Dragos!),
+but I've faced a new one.
+
+ 
+
+When establishing a call between Alice and Bob, at some point (namely,
+after reception of 200 OK from Bob) Alice need to send ACK to
+acknowledge it. When creating ACK request on client side, I am taking
+the reversed Route Set for the dialog and putting it to ACK. Here's how:
+
+ 
+
+[response being acknowledged]
+
+ 
+
+SIP/2.0 200 OK
+
+Record-Route:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:5060;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:5060;lr
+&gt;<i>,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:5060;lr&gt;
+</I>
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">035802b8defd72a98f93b38ae88430da at 10.110.16.246</A>
+
+CSeq: 1 INVITE
+
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1319459678
+
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=517731329
+
+Via: SIP/2.0/UDP
+10.110.16.246:5600;received=10.110.16.246;rport=5600;branch=z9hG4bK1367d
+c4e35a4b90708ec3dc0082a4a91
+
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.110.16.246</A>:5600&gt;
+
+Content-Length: 0
+
+ 
+
+[ACK for it]
+
+ 
+
+ACK sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.110.16.246</A>:5600 SIP/2.0
+
+Via: SIP/2.0/UDP
+10.110.16.246:5600;branch=z9hG4bKca8fed2ff25cce902ee6f5f6c9f7911b
+
+CSeq: 1 ACK
+
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">035802b8defd72a98f93b38ae88430da at 10.110.16.246</A>
+
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1319459678
+
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=517731329
+
+Max-Forwards: 70
+
+Route:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:5060;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:5060;lr
+&gt;<i>,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:5060;lr&gt;
+</I>
+Content-Length: 0
+
+ 
+
+Alice and Bob in this example are on the same IP.
+
+ 
+
+Route Set seems correct, because I can see in P-CSCF logs:
+
+ 
+
+4(32301) INF:P-CSCF:----------  P-CSCF Dialog List begin --------------
+
+4(32301) INF:P-CSCF:[ 126]
+Call-ID:&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ae905339906f6631a7fcb1982a05aba2 at 10.110.16.246</A>&gt;
+1://10.110.16.246:5600  Met:[1] State:[3] Exp:[3600]
+
+4(32301) INF:P-CSCF:    RR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:5060;lr&gt;
+
+4(32301) INF:P-CSCF:    RR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:5060;lr&gt;
+
+4(32301) INF:P-CSCF:    RR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:5060;lr&gt;
+
+4(32301) INF:P-CSCF:----------  P-CSCF Dialog List end   --------------
+
+ 
+
+(difference in Call-IDs confuses me a little).
+
+ 
+
+Nevertheless, later in the logs I am getting the error &quot;Orig_Subsequent:
+Request not following indicated dialog routes&quot; (not only for ACK, but
+also for BYE, resulting in 400 Bad Request).
+
+ 
+
+Could you give me a clue?
+
+Is reversing a problem? It seems correct from the RFC's point.
+
+All necessary files are attached for your reference.
+
+ 
+
+Thanks,
+
+Sergey.
+
+
+
+The information contained in this e-mail message is privileged and
+confidential and is for the exclusive use of the addressee. The person
+who receives this message and who is not the addressee, one of his
+employees or an agent entitled to hand it over to the addressee, is
+informed that he may not use, disclose or reproduce the contents thereof.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070531/534d3634/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070531/534d3634/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: pcscf.cfg
+Type: application/octet-stream
+Size: 13872 bytes
+Desc: pcscf.cfg
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070531/534d3634/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070531/534d3634/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: pcscf.cap
+Type: application/octet-stream
+Size: 41486 bytes
+Desc: pcscf.cap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070531/534d3634/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070531/534d3634/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001900.html">[OpenIMSCore-Users] [Uctimsclient-users] Presence HOWTO
+</A></li>
+	<LI>Next message: <A HREF="001905.html">[OpenIMSCore-Users] using SIPp script to register failed with	latest release of OPEN IMS core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1902">[ date ]</a>
+              <a href="thread.html#1902">[ thread ]</a>
+              <a href="subject.html#1902">[ subject ]</a>
+              <a href="author.html#1902">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

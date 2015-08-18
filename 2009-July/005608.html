@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Questions and problems about QoS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Questions%20and%20problems%20about%20QoS&In-Reply-To=%3C4A5F4A5E.4070209%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005607.html">
+   <LINK REL="Next"  HREF="005609.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Questions and problems about QoS</H1>
+    <B>Alberto Diez</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Questions%20and%20problems%20about%20QoS&In-Reply-To=%3C4A5F4A5E.4070209%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Questions and problems about QoS">Alberto.Diez at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Jul 16 17:42:22 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005607.html">[OpenIMSCore-Users] Questions and problems about QoS
+</A></li>
+        <LI>Next message: <A HREF="005609.html">[OpenIMSCore-Users] AS as an originating SIP UA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5608">[ date ]</a>
+              <a href="thread.html#5608">[ thread ]</a>
+              <a href="subject.html#5608">[ subject ]</a>
+              <a href="author.html#5608">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>no, i do not know this problem.
+
+Take a look at what happens before the crash (in the logs of the P-CSCF 
+if necessary increasing the debug level) and if you find a solution 
+please contribute it so that we can improve the software
+
+
+
+Sarah Sarette wrote:
+&gt;<i> Hi,
+</I>&gt;<i> Thanks for your response.
+</I>&gt;<i>  
+</I>&gt;<i> PCSCF_qos uses QoS for call, but not for VoD (because my VoD server 
+</I>&gt;<i> doesn't add SDP in SIP message). So it's normal.
+</I>&gt;<i> But I have a new problem with PCSCF_qos because when a call with QoS is 
+</I>&gt;<i> created, PCSCF crashes (when bob accepts the call).
+</I>&gt;<i> Do you know this problem?? (It's after the QoS, so IP flows are created 
+</I>&gt;<i> because PCSCF sends the AAR message).
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> 2009/7/10 Alberto Diez &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A> 
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>&gt;&gt;
+</I>&gt;<i> 
+</I>&gt;<i>     hi Sarette,
+</I>&gt;<i>     answer to your questions follows
+</I>&gt;<i> 
+</I>&gt;<i>      &gt;With wireshark my SIP/SDP invite is normal.
+</I>&gt;<i>      &gt;Have you the same problem?
+</I>&gt;<i> 
+</I>&gt;<i>     I have never had such a problem but it is possible that the SIP
+</I>&gt;<i>     INVITE was badly parsed or that there is a bug in some or many of
+</I>&gt;<i>     the functions involved in the AAR procedure
+</I>&gt;<i> 
+</I>&gt;<i>     the error you got comes from file sdp_util.c line 152
+</I>&gt;<i> 
+</I>&gt;<i>     try to investigate what is wrong with your SIP INVITE  / SDP or with
+</I>&gt;<i>     the software as there are several known bugs in the P-CSCF with Rx
+</I>&gt;<i>     support
+</I>&gt;<i>     wehn you discover please notify me so i can add your patch to the branch
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i>      &gt;Then I wants to know if PCSCF must send a diameter message to PCRF
+</I>&gt;<i>     when &gt;he
+</I>&gt;<i>      &gt;receives a SIP register? My PCSCF-qos sends only STR diameter
+</I>&gt;<i>     message &gt;when
+</I>&gt;<i>      &gt;the session is terminated.
+</I>&gt;<i> 
+</I>&gt;<i>     In current standards it is possible that the P-CSCF sends an AAR
+</I>&gt;<i>     message on SIP register (to allow the PCRF to perform session
+</I>&gt;<i>     binding etc.. ) but this is not supported nor tested.
+</I>&gt;<i> 
+</I>&gt;<i>     But you can give it a try by modifying the config file and the
+</I>&gt;<i>     functions in policy_control.c, pcc.c and pcc_avp.c to support this
+</I>&gt;<i> 
+</I>&gt;<i>     the idea is you need to create a new P_AAR and PCC_AAR functions
+</I>&gt;<i>     which also generates an AAR message on REGISTER (which has no SDP)
+</I>&gt;<i> 
+</I>&gt;<i>     For more details look at TS 29.213 Annex B  Section 1 (Release 8)
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i>     good luck!
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i>     -- 
+</I>&gt;<i>     --------------------------------
+</I>&gt;<i>     Alberto Diez Albaladejo
+</I>&gt;<i>     Fraunhofer FOKUS
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alberto.diez at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alberto.diez at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     tel:00493034637307
+</I>&gt;<i>     --------------------------------
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+-- 
+--------------------------------
+Alberto Diez Albaladejo
+Fraunhofer FOKUS
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alberto.diez at fokus.fraunhofer.de</A>
+tel:00493034637307
+--------------------------------
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005607.html">[OpenIMSCore-Users] Questions and problems about QoS
+</A></li>
+	<LI>Next message: <A HREF="005609.html">[OpenIMSCore-Users] AS as an originating SIP UA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5608">[ date ]</a>
+              <a href="thread.html#5608">[ thread ]</a>
+              <a href="subject.html#5608">[ subject ]</a>
+              <a href="author.html#5608">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

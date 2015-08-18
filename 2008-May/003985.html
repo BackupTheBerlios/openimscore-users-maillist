@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20%2B%20PCRF%20rejecting%20the%20Term-side&In-Reply-To=%3COF495E0B6E.63C7987F-ONC1257451.002D0B46-C1257451.002E3F35%40amper.es%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003980.html">
+   <LINK REL="Next"  HREF="003986.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side</H1>
+    <B>Pedro Antonio Vico Solano</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20%2B%20PCRF%20rejecting%20the%20Term-side&In-Reply-To=%3COF495E0B6E.63C7987F-ONC1257451.002D0B46-C1257451.002E3F35%40amper.es%3E"
+       TITLE="[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side">pvsolano at amper.es
+       </A><BR>
+    <I>Thu May 22 10:21:48 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003980.html">[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+</A></li>
+        <LI>Next message: <A HREF="003986.html">[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3985">[ date ]</a>
+              <a href="thread.html#3985">[ thread ]</a>
+              <a href="subject.html#3985">[ subject ]</a>
+              <a href="author.html#3985">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Alberto,
+
+I attach you the capture file for the term side. The problem is:
+
+- If the release function is &quot;P_release_call_onreply(&quot;orig&quot;);&quot; the term 
+side does nothing (normal)
+- It the release function is &quot;P_release_call_onreply(&quot;term&quot;);&quot; the term 
+side does strange things:
+
+     * Strange messages towards orig side, but, in the end, the call is 
+released on orig.
+     * ACK towards the term side so the called user begins to talk (with 
+noone!)
+
+BR
+Pedro
+
+
+
+
+
+
+&quot;Diez, Alberto&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>&gt; 
+21/05/2008 22:34
+
+Para
+&quot;Pedro Antonio Vico Solano&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pvsolano at amper.es</A>&gt;
+cc
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+Asunto
+RE: P-CSCF + PCRF rejecting the Term-side
+
+
+
+
+
+
+
+just do, the same you do in the originating route block but in the 
+terminating, it should work
+if it does not, send a complete trace and define what is are the strange 
+things done
+
+-----Original Message-----
+From: Pedro Antonio Vico Solano [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pvsolano at amper.es</A>]
+Sent: Wed 5/21/2008 5:57 PM
+To: Diez, Alberto
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: P-CSCF + PCRF rejecting the Term-side
+
+Hello Alberto &amp; everyone,
+
+I'm testing a third-party PCRF with two independent IMS domains. So I need
+to reserve resources on both the orig &amp; term side.
+
+If the term side rejects the AAR, the P-CSCF does strange things if the
+following sentences are put on Term_Initial_reply.
+
+
+if (t_check_status(&quot;183&quot;)||t_check_status(&quot;200&quot;)){
+                P_SDP_manipulate();
+                # 183 can be cancelled by proxy, however 200?
+
+                # check if QoS is ok, 0 - originating, 1 - terminating
+                if (!P_AAR(&quot;1&quot;)) {
+                        P_release_call_onreply(&quot;term&quot;);
+                #   end_media_session();
+                }
+                # else {
+                #       use_media_proxy();
+                #}
+        }
+
+If I leave the original  &quot;P_release_call_onreply(&quot;orig&quot;);&quot;  sentence, the
+term side does not do nothing with SIP signalling.
+
+I attach you the signalling MSCs.
+
+Am I doing it OK?
+
+BR
+Pedro
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080522/4b3998a1/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080522/4b3998a1/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: term_side_rejected_aar.pcap
+Type: application/octet-stream
+Size: 50259 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080522/4b3998a1/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080522/4b3998a1/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003980.html">[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+</A></li>
+	<LI>Next message: <A HREF="003986.html">[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3985">[ date ]</a>
+              <a href="thread.html#3985">[ thread ]</a>
+              <a href="subject.html#3985">[ subject ]</a>
+              <a href="author.html#3985">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

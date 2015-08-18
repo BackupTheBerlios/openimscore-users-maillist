@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] SIP2IMS and instant messaging
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SIP2IMS%20and%20instant%20messaging&In-Reply-To=%3CBAY108-F523D2E7617D55BB2CB65EF9820%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000950.html">
+   <LINK REL="Next"  HREF="000945.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] SIP2IMS and instant messaging</H1>
+    <B>Arnold Schwarz</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SIP2IMS%20and%20instant%20messaging&In-Reply-To=%3CBAY108-F523D2E7617D55BB2CB65EF9820%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] SIP2IMS and instant messaging">scharn333 at hotmail.com
+       </A><BR>
+    <I>Tue Feb 27 13:38:47 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000950.html">[OpenIMSCore-Users] 200  OK- ACK signal looping
+</A></li>
+        <LI>Next message: <A HREF="000945.html">[OpenIMSCore-Users] scscf_name becomes empty in hssdb
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#944">[ date ]</a>
+              <a href="thread.html#944">[ thread ]</a>
+              <a href="subject.html#944">[ subject ]</a>
+              <a href="author.html#944">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi!
+
+Does anyone have any experience with OSIMS and IM between two clients? Since 
+I seem to have a problem: When one client sends and IM to another, the 
+routing pattern goes like this:
+
+UE1 -&gt; SIP2IMS -&gt; PCSCF -&gt; SCSCF -&gt; SCSCF -&gt; PCSCF -&gt; SIP2IMS -&gt; PCSCF -&gt; 
+SCSCF -&gt; UE2
+
+so the originating path is ok, but on the terminating one the SIP2IMS GW 
+somehow bounces the message back to the core. I tried to corerct the routing 
+by modifiying the sip2ims.cfg line 123 into
+
+    if (method==&quot;ACK&quot;||method==&quot;BYE&quot;||method==&quot;NOTIFY&quot;||method=&quot;MESSAGE&quot;){
+
+now the routing goes
+
+UE1 -&gt; SIP2IMS -&gt; SCSCF -&gt; SCSCF -&gt; PCSCF -&gt; SIP2IMS -&gt; UE2
+
+so the terminating path is ok, but the originating path is complitely wrong. 
+Could someone help me how to change the .cfg -file so, that it would do the 
+both paths correctly?
+
+_________________________________________________________________
+Refi Now: Rates near 39yr lows!  $430,000 Mortgage for $1,399/mo - Calculate 
+new payment 
+<A HREF="http://www.lowermybills.com/lre/index.jsp?sourceid=lmb-9632-17727&amp;moid=7581">http://www.lowermybills.com/lre/index.jsp?sourceid=lmb-9632-17727&amp;moid=7581</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000950.html">[OpenIMSCore-Users] 200  OK- ACK signal looping
+</A></li>
+	<LI>Next message: <A HREF="000945.html">[OpenIMSCore-Users] scscf_name becomes empty in hssdb
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#944">[ date ]</a>
+              <a href="thread.html#944">[ thread ]</a>
+              <a href="subject.html#944">[ subject ]</a>
+              <a href="author.html#944">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

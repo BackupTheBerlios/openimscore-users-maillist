@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] List of Bindings
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20List%20of%20Bindings&In-Reply-To=%3C47C71310.3030308%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003520.html">
+   <LINK REL="Next"  HREF="003539.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] List of Bindings</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20List%20of%20Bindings&In-Reply-To=%3C47C71310.3030308%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] List of Bindings">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Feb 28 21:01:20 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003520.html">[OpenIMSCore-Users] List of Bindings
+</A></li>
+        <LI>Next message: <A HREF="003539.html">[OpenIMSCore-Users] List of Bindings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3521">[ date ]</a>
+              <a href="thread.html#3521">[ thread ]</a>
+              <a href="subject.html#3521">[ subject ]</a>
+              <a href="author.html#3521">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Jose, David, Nacho,
+
+Yes, I was also trying to fix the same issue as I needed a way to fetch
+the bindings without registering and then subscribing to reg.
+
+The P-CSCF also looks at contacts and saves them locally... There's
+probably a bug somewhere. Thanx for the S-SCSF function - I will add it
+at debug the P-CSCF.
+
+Cheers,
+-Dragos
+
+Jose Silva wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> The 3GPP  spec 24.229 also mentions that a list of bindings should be
+</I>&gt;<i> sent out on the 200 OK reply (5.4.1.2.2 Protected REGISTER 11(f )). We
+</I>&gt;<i> added a function S_fetch_bindings() which we export to the script and
+</I>&gt;<i> call it before sending a 200 OK to the REGISTER, but unfortunately if
+</I>&gt;<i> we use this the P-CSCF crashes when it receives the 200 OK response
+</I>&gt;<i> with multiple contacts. We haven't had time to look into this yet so
+</I>&gt;<i> we never posted this function on the list before, but if you want to
+</I>&gt;<i> try it out and correct the behavior on the P-CSCF please send us all
+</I>&gt;<i> the patch after.
+</I>&gt;<i>
+</I>&gt;<i> Best Regards,
+</I>&gt;<i> Jos&#233; Carlos Silva
+</I>&gt;<i>
+</I>&gt;<i> str contacthdr1={&quot;Contact: &lt;&quot;,10};
+</I>&gt;<i> str contacthdr2={&quot;\r\n&quot;,2};
+</I>&gt;<i> str contactparam={&quot;&gt;;expires=&quot;,10};
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> int S_fetch_bindings(struct sip_msg *msg,char *str1,char *str2 )
+</I>&gt;<i> {
+</I>&gt;<i>         str hdr={0,0};
+</I>&gt;<i>         struct hdr_field *h;
+</I>&gt;<i>         str t={0,0};
+</I>&gt;<i>         str msg_c={0,0};
+</I>&gt;<i>         str public_identity;
+</I>&gt;<i>         r_public *p;
+</I>&gt;<i>         r_contact *c=0;
+</I>&gt;<i>         contact_t *contact;
+</I>&gt;<i>         int expires;
+</I>&gt;<i>         str expire_ascii={0,0};
+</I>&gt;<i>
+</I>&gt;<i>         public_identity = cscf_get_public_identity(msg);
+</I>&gt;<i>         p= get_r_public(public_identity);
+</I>&gt;<i>         msg_c = cscf_get_contact(msg);
+</I>&gt;<i>         if(msg_c.len==0) goto error;
+</I>&gt;<i>
+</I>&gt;<i>         if (!p) goto error;
+</I>&gt;<i>
+</I>&gt;<i>         r_act_time();
+</I>&gt;<i>         c = p-&gt;head;
+</I>&gt;<i>         while(c){
+</I>&gt;<i>                 if (c-&gt;uri.len == msg_c.len &amp;&amp;
+</I>&gt;<i> strncasecmp(c-&gt;uri.s,msg_c.s,msg_c.len)==0) {
+</I>&gt;<i>                         c = c-&gt;next;
+</I>&gt;<i>                         continue;
+</I>&gt;<i>                 }
+</I>&gt;<i>                 expires=c-&gt;expires-time_now;
+</I>&gt;<i>                 expire_ascii.s = int2str(expires,&amp;(expire_ascii.len));
+</I>&gt;<i>                 hdr.len =
+</I>&gt;<i> contacthdr1.len+c-&gt;uri.len+contacthdr2.len+contactparam.len+expire_ascii.len;
+</I>&gt;<i>                 hdr.s = pkg_malloc(hdr.len);
+</I>&gt;<i>                 if (!hdr.s){
+</I>&gt;<i>                         LOG(L_ERR,&quot;ERR:&quot;M_NAME&quot;:S_fetch_bindings:
+</I>&gt;<i> Error allocating %d bytes.\n&quot;,
+</I>&gt;<i>                                 hdr.len);
+</I>&gt;<i>                         goto error;
+</I>&gt;<i>                 }else{
+</I>&gt;<i>                         hdr.len=0;
+</I>&gt;<i>                         STR_APPEND(hdr,contacthdr1);
+</I>&gt;<i>                         STR_APPEND(hdr,c-&gt;uri);
+</I>&gt;<i>                         STR_APPEND(hdr,contactparam);
+</I>&gt;<i>                         STR_APPEND(hdr,expire_ascii);
+</I>&gt;<i>                         STR_APPEND(hdr,contacthdr2);
+</I>&gt;<i>                         if(!cscf_add_header_rpl(msg,&amp;hdr)) goto error;
+</I>&gt;<i>                         pkg_free(hdr.s);
+</I>&gt;<i>                 }
+</I>&gt;<i>                 c = c-&gt;next;
+</I>&gt;<i>         }
+</I>&gt;<i>
+</I>&gt;<i>         r_unlock(p-&gt;hash);
+</I>&gt;<i>         return CSCF_RETURN_TRUE;
+</I>&gt;<i> error:
+</I>&gt;<i>         if(p) r_unlock(p-&gt;hash);
+</I>&gt;<i>         return CSCF_RETURN_FALSE;
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> 2008/2/28 Nacho Conde &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iconde at axpeconsulting.com</A>
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iconde at axpeconsulting.com</A>&gt;&gt;:
+</I>&gt;<i>
+</I>&gt;<i>     Hello,
+</I>&gt;<i>
+</I>&gt;<i>     We're testing the Franhofer FOKUS core, and we have seen the next
+</I>&gt;<i>     behaviour:
+</I>&gt;<i>
+</I>&gt;<i>       When a user is registered in the core, the success response contains
+</I>&gt;<i>     the Contact Header with the binding's infomation user.  But in a
+</I>&gt;<i>     second
+</I>&gt;<i>     register of the same user in the core with another IP:PORT, the core
+</I>&gt;<i>     stores the two contact bindings but the core doesn't send the list of
+</I>&gt;<i>     bindings in the success response.
+</I>&gt;<i>     The RFC 3261 said:
+</I>&gt;<i>
+</I>&gt;<i>     10.2.3 Fetching Bindings
+</I>&gt;<i>     &quot;A success response to any REGISTER request contains the complete list
+</I>&gt;<i>     of existing bindings, regardless of whether the request contained a
+</I>&gt;<i>     Contact header field. If no Contact header field is present in a
+</I>&gt;<i>     REGISTER request, the list of bindings is left unchanged.&quot;
+</I>&gt;<i>
+</I>&gt;<i>     Are there any posibility to force the core for send the list of
+</I>&gt;<i>     binding
+</I>&gt;<i>     in the success response?
+</I>&gt;<i>
+</I>&gt;<i>     Any help would be welcome.
+</I>&gt;<i>
+</I>&gt;<i>     Best regargs,
+</I>&gt;<i>
+</I>&gt;<i>     David &amp; Nacho
+</I>&gt;<i>     _______________________________________________
+</I>&gt;<i>     OpenIMSCore-Users mailing list
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003520.html">[OpenIMSCore-Users] List of Bindings
+</A></li>
+	<LI>Next message: <A HREF="003539.html">[OpenIMSCore-Users] List of Bindings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3521">[ date ]</a>
+              <a href="thread.html#3521">[ thread ]</a>
+              <a href="subject.html#3521">[ subject ]</a>
+              <a href="author.html#3521">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

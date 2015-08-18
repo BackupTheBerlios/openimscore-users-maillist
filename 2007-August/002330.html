@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] register over IPsec using sipp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20register%20over%20IPsec%20using%20sipp&In-Reply-To=%3C21393.6107.qm%40web27107.mail.ukl.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002365.html">
+   <LINK REL="Next"  HREF="002366.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] register over IPsec using sipp</H1>
+    <B>asma a</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20register%20over%20IPsec%20using%20sipp&In-Reply-To=%3C21393.6107.qm%40web27107.mail.ukl.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] register over IPsec using sipp">asmaa_a_m at yahoo.co.uk
+       </A><BR>
+    <I>Wed Aug  8 13:44:59 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002365.html">[OpenIMSCore-Users] Fwd: Inconsistent action
+</A></li>
+        <LI>Next message: <A HREF="002366.html">[OpenIMSCore-Users] register over IPsec using sipp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2330">[ date ]</a>
+              <a href="thread.html#2330">[ thread ]</a>
+              <a href="subject.html#2330">[ subject ]</a>
+              <a href="author.html#2330">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Klemens;
+
+SIPp is a free Open Source traffic generator for the
+SIP protocol. sipp can read different XML scenario files describing the
+call flows of desired.
+
+I had attached the xml scenario file I had used, it seems that the file need some modifications!
+
+did you make registration over IPsec using any other client, if yes; than which one?
+
+however, is there any xml scenario available to try for this registration ?
+
+
+thanks;
+
+Asma
+
+
+----- Original Message ----
+From: Klemens Schragel &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt;
+To: asma a &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">asmaa_a_m at yahoo.co.uk</A>&gt;; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+Sent: Wednesday, 8 August, 2007 11:00:10 AM
+Subject: Re: [OpenIMSCore-Users] register over IPsec using sipp
+
+Hi!
+
+I think there's something with your client...
+1. Register (UE-&gt;PCSCF), security-client header: port-c=12345, port-s=3062
+2. 401 (PCSCF-&gt;UE), security-server header: port-c=4060, port-s=4060
+
+so far so good... now the UE should sent an encrypted message from 12345-port to 4060... this is not the case, UE uses the usual ports (i think this is why the response from pcscf is 494).
+
+furthermore:
+3. 2nd Register (UE-&gt;PCSCF), security-client header: port-c=2468, port-s=7531, security-verify: port-c=8642, port-s=7531
+i.e. the 2nd Regisers security-header are completely different from the currently createt SAs... and somehow the ports of the second register remind me on the examples of tech-invite :-/
+
+how did you configure your client (unfortunately i haven't used sipp yet)?
+
+br, klemens
+
+-------- Original-Nachricht --------
+Datum: Wed, 8 Aug 2007 08:12:36 +0000 (GMT)
+Von: asma a &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">asmaa_a_m at yahoo.co.uk</A>&gt;
+An: openIMScore &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+Betreff: [OpenIMSCore-Users] register over IPsec using sipp
+
+&gt;<i> Hi all,
+</I>&gt;<i> 
+</I>&gt;<i> I am trying to register to the IMS core over IPSec using sipp, bit without
+</I>&gt;<i> success 
+</I>&gt;<i> 
+</I>&gt;<i> attached is the xml secnario I am using and the wireshark trace.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> note: I could not use the sipp patch mentioned at  the FAQ  of the OSIMS 
+</I>&gt;<i> web site, nor the xml scenarios.
+</I>&gt;<i>  
+</I>&gt;<i> any help will be appreciated.
+</I>&gt;<i> 
+</I>&gt;<i> Thanks;
+</I>&gt;<i> 
+</I>&gt;<i> Asma
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i>       ___________________________________________________________
+</I>&gt;<i> Yahoo! Answers - Got a question? Someone out there knows the answer. Try
+</I>&gt;<i> it
+</I>&gt;<i> now.
+</I>&gt;<i> <A HREF="http://uk.answers.yahoo.com/">http://uk.answers.yahoo.com/</A> 
+</I>
+-- 
+Der GMX SmartSurfer hilft bis zu 70% Ihrer Onlinekosten zu sparen! 
+Ideal f&#252;r Modem und ISDN: <A HREF="http://www.gmx.net/de/go/smartsurfer">http://www.gmx.net/de/go/smartsurfer</A>
+
+
+
+
+
+
+
+      ___________________________________________________________ 
+Yahoo! Mail is the world's favourite email. Don't settle for less, sign up for
+your free account today <A HREF="http://uk.rd.yahoo.com/evt=44106/*http://uk.docs.yahoo.com/mail/winter07.html">http://uk.rd.yahoo.com/evt=44106/*http://uk.docs.yahoo.com/mail/winter07.html</A> 
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070808/6dcc8daa/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070808/6dcc8daa/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002365.html">[OpenIMSCore-Users] Fwd: Inconsistent action
+</A></li>
+	<LI>Next message: <A HREF="002366.html">[OpenIMSCore-Users] register over IPsec using sipp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2330">[ date ]</a>
+              <a href="thread.html#2330">[ thread ]</a>
+              <a href="subject.html#2330">[ subject ]</a>
+              <a href="author.html#2330">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

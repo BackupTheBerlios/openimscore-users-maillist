@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Hss diameter traffic problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Hss%20diameter%20traffic%20problems&In-Reply-To=%3C4815ADF3.60808%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003840.html">
+   <LINK REL="Next"  HREF="003835.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Hss diameter traffic problems</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Hss%20diameter%20traffic%20problems&In-Reply-To=%3C4815ADF3.60808%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Hss diameter traffic problems">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Apr 28 12:58:59 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003840.html">[OpenIMSCore-Users] Hss diameter traffic problems
+</A></li>
+        <LI>Next message: <A HREF="003835.html">[OpenIMSCore-Users] Integration of OpenIMS with AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3845">[ date ]</a>
+              <a href="thread.html#3845">[ thread ]</a>
+              <a href="subject.html#3845">[ subject ]</a>
+              <a href="author.html#3845">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Arnaud,
+
+It's a matter of who connects first to who. In your case, it was the HSS 
+that did connect back to the I and S. Obviously, as we run all on the 
+same machines, there's a shortage of 3868 ports ;-). So try and do what 
+Enrique suggested, but for ports 3869 and 3870. Then wireshark will also 
+decode those ports as Diameter.
+
+Another trick is to start the HSS first...
+
+Cheers,
+-Dragos
+
+
+Arnaud Paulus wrote:
+&gt;<i> Thank you for the tip.
+</I>&gt;<i>
+</I>&gt;<i> But it still doesn't work. There is any flow on hss.open-ims.test:3868
+</I>&gt;<i>
+</I>&gt;<i> I have decided to see if the diameter peer on S-CSCF:3870 and I-CSCF:3869 work correctly. The S-CSCF and the I-CSCF have the right ports and send diameter request but not to the right port of HSS.
+</I>&gt;<i> The worst thing is that...the registration of users works.
+</I>&gt;<i>
+</I>&gt;<i> I have attached the wireshark file of the diameter flow between the S-CSCF:3870 and the HSS. As a matter of fact, this is not the right port of the hss.
+</I>&gt;<i> I have attached also the HSS configuration file DiameterPeerHSS.xml and the hss.properties, and the S-CSCF diameter configuration file s-cscf.xml
+</I>&gt;<i> Finally I have attached my DNS zone file for the open-ims.test subnetwork.
+</I>&gt;<i>
+</I>&gt;<i> The problem is the same on the diameter peer port of the I-CSCF!
+</I>&gt;<i>
+</I>&gt;<i> Any Idea?
+</I>&gt;<i>
+</I>&gt;<i> Regards.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -----Message d'origine-----
+</I>&gt;<i> De : Enrique de Meer [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">enrique.demeer at inycom.es</A>] 
+</I>&gt;<i> Envoy&#233; : lundi 28 avril 2008 09:01
+</I>&gt;<i> &#192; : Arnaud Paulus
+</I>&gt;<i> Cc : <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Objet : Re: [OpenIMSCore-Users] Hss diameter traffic problems
+</I>&gt;<i>
+</I>&gt;<i> Hi Arnaud,
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi all,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'm not able to monitor diameter traffic on the hss local port
+</I>&gt;&gt;<i> (diameter port of hss 3868)?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is anybody able to help me?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> I&#180;m not sure if I understand but I guess you mean you can't see the
+</I>&gt;<i> packets in wireshark as diameter ones.
+</I>&gt;<i>
+</I>&gt;<i> you should filter with &quot;tcp.port == 3868&quot;(for hss)...and click right in
+</I>&gt;<i> the packet...then &quot;decode as...&quot;, choose transport label and then
+</I>&gt;<i> DIAMETER and OK...Then you should see the diameter  messages...
+</I>&gt;<i>
+</I>&gt;<i> I hope it helps
+</I>&gt;<i>
+</I>&gt;<i> Regards, Enrique
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> AVISO LEGAL 
+</I>&gt;<i>
+</I>&gt;<i> Este mensaje y los archivos que en su caso lleve adjuntos son privados y confidenciales y se dirigen exclusivamente a su destinatario. Por ello, se informa a quien lo reciba por error que la informaci&#243;n contenida en el mismo es reservada y su utilizaci&#243;n, copia o distribuci&#243;n est&#225; prohibida, por lo que en tal caso le rogamos que nos lo comunique por esta misma v&#237;a o por tel&#233;fono (+34976013300) y proceda a borrarlo de inmediato. 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003840.html">[OpenIMSCore-Users] Hss diameter traffic problems
+</A></li>
+	<LI>Next message: <A HREF="003835.html">[OpenIMSCore-Users] Integration of OpenIMS with AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3845">[ date ]</a>
+              <a href="thread.html#3845">[ thread ]</a>
+              <a href="subject.html#3845">[ subject ]</a>
+              <a href="author.html#3845">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

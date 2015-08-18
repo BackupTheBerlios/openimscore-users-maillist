@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registeration over IPSec fails
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registeration%20over%20IPSec%20fails&In-Reply-To=%3C20070907093839.117100%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002580.html">
+   <LINK REL="Next"  HREF="002570.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registeration over IPSec fails</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registeration%20over%20IPSec%20fails&In-Reply-To=%3C20070907093839.117100%40gmx.net%3E"
+       TITLE="[OpenIMSCore-Users] Registeration over IPSec fails">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Fri Sep  7 11:38:39 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002580.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+        <LI>Next message: <A HREF="002570.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2565">[ date ]</a>
+              <a href="thread.html#2565">[ thread ]</a>
+              <a href="subject.html#2565">[ subject ]</a>
+              <a href="author.html#2565">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Divya,
+
+if client and pcscf have never met before (so no SA is established) it is not possible to send the 1st Register over IPSec.
+did you create the SAs by hand or where they created by the programms (IMS-communicator and pcscf)? for the latter case there might have been SAs still aktiv, which where created by a previous Register...
+
+br, Klemens
+
+-------- Original-Nachricht --------
+&gt;<i> Datum: Fri, 7 Sep 2007 13:17:34 +0530
+</I>&gt;<i> Von: Divya Singh &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">divya.singh at aricent.com</A>&gt;
+</I>&gt;<i> An: &quot;Purna Chandar M&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cmongusagusa at gmail.com</A>&gt;
+</I>&gt;<i> CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> Betreff: Re: [OpenIMSCore-Users] Registeration over IPSec fails
+</I>
+&gt;<i> I also read the same ( and expected the 2nd register to start using 
+</I>&gt;<i> ipsec). But I observed differently and brought it up. 
+</I>&gt;<i> I used IMS communicator as UE on windows. It provides the option of 
+</I>&gt;<i> filling in the security params including spi-c &amp; spi-s.
+</I>&gt;<i> Would be great if you can throw some more light on how to look for SA's on
+</I>&gt;<i> windows and should be set in UE config.
+</I>&gt;<i> 
+</I>&gt;<i> I tried registering 2 UEs and established call between them. Attached are 
+</I>&gt;<i> the requested logs. 
+</I>&gt;<i> IMS core is running on 138 and UE on 132.
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &quot;Purna Chandar M&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cmongusagusa at gmail.com</A>&gt; 
+</I>&gt;<i> 09/07/2007 12:55 PM
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> To
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> cc
+</I>&gt;<i> Divya Singh/<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">HSS at HSS</A>
+</I>&gt;<i> Subject
+</I>&gt;<i> Re: [OpenIMSCore-Users] Registeration over IPSec fails
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Typically, to create an ipsec tunnel, we need  a subset of these elements:
+</I>&gt;<i> port-c, port-s, spi-c, spi-s of UE end and also that of the other 
+</I>&gt;<i> end(pcscf) along with a pre-shared-key. UE would be aware of port-c/s and 
+</I>&gt;<i> spi-c/s of the pcscf only in the 401 authentication challenge. I was just 
+</I>&gt;<i> wondering how you were able to send your first REGISTER over ipsec tunnel.
+</I>&gt;<i> 
+</I>&gt;<i> Thats about the confusion I had in your setup.
+</I>&gt;<i> 
+</I>&gt;<i> Coming to my scenario, my UE creates 2 SAs, one for receiving and one for 
+</I>&gt;<i> sending SIP messages over the tunnel. While creating the receiving SA, I 
+</I>&gt;<i> used spi-c of UE end and while creating the sending SA, I used spi-s of 
+</I>&gt;<i> remote end. As I told you earlier, this setup worked perfectly with 
+</I>&gt;<i> revision number 312, but not with a later revision number. 
+</I>&gt;<i> 
+</I>&gt;<i> I would be grateful if you can send the ethereal capture and the results 
+</I>&gt;<i> of setkey -D and setkey -DP commands on your setup once the registration 
+</I>&gt;<i> went successfully.
+</I>&gt;<i> 
+</I>&gt;<i> On 9/6/07, Divya Singh &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">divya.singh at aricent.com</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;<i> I used code revision 419. 
+</I>&gt;<i> I did see Sanjeev's mail and the logs he sent. Theres a difference in what
+</I>&gt;<i> I observed though. 
+</I>&gt;<i> In my case the security tunnel was used right from the first register msg.
+</I>&gt;<i> 
+</I>&gt;<i> I used ESP with pre-shared-key. 
+</I>&gt;<i> How did you establish the ipsec connection ? 
+</I>&gt;<i> 
+</I>&gt;<i> Regards, 
+</I>&gt;<i> Divya 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &quot;Purna Chandar M&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cmongusagusa at gmail.com</A>&gt; 
+</I>&gt;<i> 09/06/2007 05:21 PM 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> To
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A> 
+</I>&gt;<i> cc
+</I>&gt;<i> Divya Singh/<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">HSS at HSS</A> 
+</I>&gt;<i> Subject
+</I>&gt;<i> Re: [OpenIMSCore-Users] Registeration over IPSec fails
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> What is revision number of the code that you are using?? Asking this 
+</I>&gt;<i> because with my UE, I was successfully able to REGISTER over IPSEC with 
+</I>&gt;<i> revision number 312 ( a month ago). With the later versions (I tried with 
+</I>&gt;<i> 397), I was not able to register over ipsec. Currently Im not looking into
+</I>&gt;<i> the problem but would get onto that in near future. So if you can let me 
+</I>&gt;<i> know the revision number, I think I would straight away try with that. ( 
+</I>&gt;<i> You might have seen Sanjeev's mail on the ipsec issue. We both are working
+</I>&gt;<i> on the same stuff). 
+</I>&gt;<i> 
+</I>&gt;<i> Thanks and regards,
+</I>&gt;<i> Purna Chandar M
+</I>&gt;<i> 
+</I>&gt;<i> On 9/6/07, Divya Singh &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">divya.singh at aricent.com</A> &gt; wrote: 
+</I>&gt;<i> 
+</I>&gt;<i> Hi, 
+</I>&gt;<i> I finally got my UE registered over IPsec using ESP. 
+</I>&gt;<i> Thanks for the support. 
+</I>&gt;<i> 
+</I>&gt;<i> Regards, 
+</I>&gt;<i> Divya 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i> Divya Singh/HSS 
+</I>&gt;<i> 09/05/2007 03:31 PM 
+</I>&gt;<i> Aricent-Unclassified 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> To
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A> 
+</I>&gt;<i> cc
+</I>&gt;<i> 
+</I>&gt;<i> Subject
+</I>&gt;<i> [OpenIMSCore-Users] Registeration over IPSec fails
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Hi Klemens, 
+</I>&gt;<i> The UE in my case is not not using ipsec to send the 2nd Register. The 
+</I>&gt;<i> ipsec connection is not properly setup since the tcpdump and ping results 
+</I>&gt;<i> are not in ah/esp! 
+</I>&gt;<i> I am not able to figure out whats going wrong in the configuration. 
+</I>&gt;<i> I have tried various thing I found googling around. Can you pls. suggest 
+</I>&gt;<i> any pointers on how to setup an ipsec connection between fedora 6 and 
+</I>&gt;<i> windows 2000. 
+</I>&gt;<i> Thanks &amp; regards, 
+</I>&gt;<i> Divya
+</I>&gt;<i> 
+</I>&gt;<i> ***********************  Aricent-Unclassified   *********************** 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> ***********************  Aricent-Unclassified   *********************** 
+</I>&gt;<i> &quot;DISCLAIMER: This message is proprietary to Aricent  and is intended 
+</I>&gt;<i> solely for the use of 
+</I>&gt;<i> the individual to whom it is addressed. It may contain privileged or 
+</I>&gt;<i> confidential information and should not be 
+</I>&gt;<i> 
+</I>&gt;<i> circulated or used for any purpose other than for what it is intended. If 
+</I>&gt;<i> you have received this message in error, 
+</I>&gt;<i> please notify the originator immediately. If you are not the intended 
+</I>&gt;<i> recipient, you are notified that you are strictly
+</I>&gt;<i> 
+</I>&gt;<i> prohibited from using, copying, altering, or disclosing the contents of 
+</I>&gt;<i> this message. Aricent accepts no responsibility for 
+</I>&gt;<i> loss or damage arising from the use of the information transmitted by this
+</I>&gt;<i> email including damage from virus.&quot;
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> ***********************  Aricent-Unclassified   *********************** 
+</I>&gt;<i> &quot;DISCLAIMER: This message is proprietary to Aricent  and is intended 
+</I>&gt;<i> solely for the use of 
+</I>&gt;<i> the individual to whom it is addressed. It may contain privileged or 
+</I>&gt;<i> confidential information and should not be 
+</I>&gt;<i> 
+</I>&gt;<i> circulated or used for any purpose other than for what it is intended. If 
+</I>&gt;<i> you have received this message in error, 
+</I>&gt;<i> please notify the originator immediately. If you are not the intended 
+</I>&gt;<i> recipient, you are notified that you are strictly
+</I>&gt;<i> 
+</I>&gt;<i> prohibited from using, copying, altering, or disclosing the contents of 
+</I>&gt;<i> this message. Aricent accepts no responsibility for 
+</I>&gt;<i> loss or damage arising from the use of the information transmitted by this
+</I>&gt;<i> email including damage from virus.&quot;
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> ***********************  Aricent-Unclassified   ***********************
+</I>&gt;<i> &quot;DISCLAIMER: This message is proprietary to Aricent  and is intended
+</I>&gt;<i> solely for the use of 
+</I>&gt;<i> the individual to whom it is addressed. It may contain privileged or
+</I>&gt;<i> confidential information and should not be 
+</I>&gt;<i> circulated or used for any purpose other than for what it is intended. If
+</I>&gt;<i> you have received this message in error, 
+</I>&gt;<i> please notify the originator immediately. If you are not the intended
+</I>&gt;<i> recipient, you are notified that you are strictly
+</I>&gt;<i> prohibited from using, copying, altering, or disclosing the contents of
+</I>&gt;<i> this message. Aricent accepts no responsibility for 
+</I>&gt;<i> loss or damage arising from the use of the information transmitted by this
+</I>&gt;<i> email including damage from virus.&quot;
+</I>
+-- 
+GMX FreeMail: 1 GB Postfach, 5 E-Mail-Adressen, 10 Free SMS.
+Alle Infos und kostenlose Anmeldung: <A HREF="http://www.gmx.net/de/go/freemail">http://www.gmx.net/de/go/freemail</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002580.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+	<LI>Next message: <A HREF="002570.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2565">[ date ]</a>
+              <a href="thread.html#2565">[ thread ]</a>
+              <a href="subject.html#2565">[ subject ]</a>
+              <a href="author.html#2565">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

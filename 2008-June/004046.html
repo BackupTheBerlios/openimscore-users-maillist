@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem while adding users
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20while%20adding%20users&In-Reply-To=%3C48465B02.4080900%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004053.html">
+   <LINK REL="Next"  HREF="004047.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem while adding users</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20while%20adding%20users&In-Reply-To=%3C48465B02.4080900%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Problem while adding users">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Jun  4 11:06:10 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004053.html">[OpenIMSCore-Users] Error when forwarding request to AS
+</A></li>
+        <LI>Next message: <A HREF="004047.html">[OpenIMSCore-Users] SCSCF Crash
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4046">[ date ]</a>
+              <a href="thread.html#4046">[ thread ]</a>
+              <a href="subject.html#4046">[ subject ]</a>
+              <a href="author.html#4046">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Sanjoy,
+
+If you look in add-user-707.sql, this line is generating the error:
+--add roaming network
+insert into hss_db.impu_visited_network(id_impu, id_visited_network) 
+values((select id from hss_db.impu where 
+hss_db.impu.identity='sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">707 at open-ims.test</A>'), (select id from 
+hss_db.visited_network where 
+hss_db.visited_network.identity='open-ims.test'));
+
+The issue is that you probably don't have yet a row in your 
+visited_network table for the &quot;open-ims.test&quot; visited network identity. 
+The add user scripts expect that you already have the basic db structure 
+and data, including this row.
+
+So add a row with your domain, or the default one. Here is the SQL from 
+the hss_db.sql that does that:
+
+INSERT INTO `visited_network` VALUES (1,'open-ims.test');
+
+
+Cheers,
+-Dragos
+
+
+
+Sanjoy Dey wrote:
+&gt;<i> Hi all,,
+</I>&gt;<i> I'm getting some error message while I was trying to add some users. 
+</I>&gt;<i> It's showing that *&quot;Column ID VISITED NETWORK cannot be null&quot;.  *The 
+</I>&gt;<i> message looks like this:
+</I>&gt;<i>
+</I>&gt;<i> openims1-linux{212}&gt; sudo ./add-imscore-user_newdb.sh -u 707 -a
+</I>&gt;<i> Successfully wrote add-user-707.sql
+</I>&gt;<i> Successfully wrote delete-user-707.sql
+</I>&gt;<i> Apply add-user-707.sql as user root...
+</I>&gt;<i> Enter password:
+</I>&gt;<i> *ERROR 1048 (23000) at line 31: Column 'id_visited_network' cannot be null
+</I>&gt;<i> ERROR: Failed to apply add-user-707.sql
+</I>&gt;<i>
+</I>&gt;<i> *Can anybody please help me out in this regard?
+</I>&gt;<i> Thanks.
+</I>&gt;<i> Sanjoy Dey
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004053.html">[OpenIMSCore-Users] Error when forwarding request to AS
+</A></li>
+	<LI>Next message: <A HREF="004047.html">[OpenIMSCore-Users] SCSCF Crash
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4046">[ date ]</a>
+              <a href="thread.html#4046">[ thread ]</a>
+              <a href="subject.html#4046">[ subject ]</a>
+              <a href="author.html#4046">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] OpenIMS on Loopback - Service Route problem in	making basic call
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMS%20on%20Loopback%20-%20Service%20Route%20problem%20in%0A%09making%20basic%20call&In-Reply-To=%3C18f4c6fd0811302340n59ef7a53u8136aa034051f3cd%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004883.html">
+   <LINK REL="Next"  HREF="004885.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] OpenIMS on Loopback - Service Route problem in	making basic call</H1>
+    <B>Raghu Narasimhan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMS%20on%20Loopback%20-%20Service%20Route%20problem%20in%0A%09making%20basic%20call&In-Reply-To=%3C18f4c6fd0811302340n59ef7a53u8136aa034051f3cd%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] OpenIMS on Loopback - Service Route problem in	making basic call">raghu.united at gmail.com
+       </A><BR>
+    <I>Mon Dec  1 08:40:22 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004883.html">[OpenIMSCore-Users] Open IMS core performance
+</A></li>
+        <LI>Next message: <A HREF="004885.html">[OpenIMSCore-Users] OpenIMS on Loopback - Service Route problem	in making basic call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4884">[ date ]</a>
+              <a href="thread.html#4884">[ thread ]</a>
+              <a href="subject.html#4884">[ subject ]</a>
+              <a href="author.html#4884">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm trying to make a call between two soft clients on the same Linux FC 5
+machine that has OpenIMS up and running - on loopback.
+
+The two users - alice and bob are registered to each soft phone - X Lite.
+The INVITE request gets a 400 Bad Request Response - Not using indicated
+Service Routes.
+
+Has anyone encountered this before? Do you have a reason for this?
+
+Soft phone - outbound proxy is pcscf.open-ims.test
+Outbound SIP proxy is also pcscf.open-ims.test
+
+One phone is listening on port 5065 and the other on port 5066
+
+Obviously missing in the INVITE is the service-route header - but with the
+soft client, how do we get that in the SIP message?
+
+These are the diagnostic logs from the soft client X-Lite
+
+SEND TIME: 4051623194
+SEND &gt;&gt; 127.0.0.1:4060
+INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> SIP/2.0
+Via: SIP/2.0/UDP 127.0.0.1:5066
+;rport;branch=z9hG4bK10893F62CBF4619EC7E4CD0256599842
+From: alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>:5066&gt;;tag=1790287918
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 127.0.0.1</A>:5066&gt;
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">55CF261C-7549-B1EE-B5A8-B8ECDC68FF02 at 127.0.0.1</A>
+CSeq: 50380 INVITE
+Max-Forwards: 70
+Content-Type: application/sdp
+User-Agent: X-Lite release 1105d
+Content-Length: 148
+
+v=0
+o=alice 4051623119 4051623194 IN IP4 127.0.0.1
+s=X-Lite
+c=IN IP4 127.0.0.1
+t=0 0
+m=audio 8000 RTP/AVP 0
+a=rtpmap:0 pcmu/8000
+a=sendrecv
+
+RECEIVE TIME: 4051623304
+RECEIVE &lt;&lt; 127.0.0.1:4060
+SIP/2.0 400 Bad Request - Not following indicated Service-Routes
+Via: SIP/2.0/UDP 127.0.0.1:5066
+;rport=5066;branch=z9hG4bK10893F62CBF4619EC7E4CD0256599842
+From: alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>:5066&gt;;tag=1790287918
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=8456b23699f06fdb908a4dfde0051a59.81a6
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">55CF261C-7549-B1EE-B5A8-B8ECDC68FF02 at 127.0.0.1</A>
+CSeq: 50380 INVITE
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+Content-Length: 0
+Warning: 392 127.0.0.1:4060 &quot;Noisy feedback tells:  pid=7478 req_src_ip=
+127.0.0.1 req_src_port=5066
+in_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.testout_uri</A>=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.testvia_cnt</A>==1&quot;
+
+
+SEND TIME: 4051623305
+SEND &gt;&gt; 127.0.0.1:4060
+ACK sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> SIP/2.0
+Via: SIP/2.0/UDP 127.0.0.1:5066
+;rport;branch=z9hG4bK10893F62CBF4619EC7E4CD0256599842
+From: alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>:5066&gt;;tag=1790287918
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=8456b23699f06fdb908a4dfde0051a59.81a6
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 127.0.0.1</A>:5066&gt;
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">55CF261C-7549-B1EE-B5A8-B8ECDC68FF02 at 127.0.0.1</A>
+CSeq: 50380 ACK
+Max-Forwards: 70
+Content-Length: 0*
+
+
+*
+
+Thanks for your help in advance.
+
+-- 
+--
+Raghu Narasimhan
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">raghu.united at gmail.com</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20081201/1fb3ed54/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20081201/1fb3ed54/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004883.html">[OpenIMSCore-Users] Open IMS core performance
+</A></li>
+	<LI>Next message: <A HREF="004885.html">[OpenIMSCore-Users] OpenIMS on Loopback - Service Route problem	in making basic call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4884">[ date ]</a>
+              <a href="thread.html#4884">[ thread ]</a>
+              <a href="subject.html#4884">[ subject ]</a>
+              <a href="author.html#4884">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

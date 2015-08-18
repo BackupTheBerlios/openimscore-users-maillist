@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Sh Interface Error 5102
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Sh%20Interface%20Error%205102&In-Reply-To=%3CAANLkTimgghLHM1RaYsF-YX65iVFR%3DDmCYabAi6XY0VWL%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006869.html">
+   <LINK REL="Next"  HREF="006870.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Sh Interface Error 5102</H1>
+    <B>Federico</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Sh%20Interface%20Error%205102&In-Reply-To=%3CAANLkTimgghLHM1RaYsF-YX65iVFR%3DDmCYabAi6XY0VWL%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Sh Interface Error 5102">puddux at gmail.com
+       </A><BR>
+    <I>Tue Feb  8 12:29:51 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006869.html">[OpenIMSCore-Users] Sh Interface Error 5102
+</A></li>
+        <LI>Next message: <A HREF="006870.html">[OpenIMSCore-Users] IPTV error(can't register)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6871">[ date ]</a>
+              <a href="thread.html#6871">[ thread ]</a>
+              <a href="subject.html#6871">[ subject ]</a>
+              <a href="author.html#6871">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>A little update:
+I set in the FHoSS management console the AS FQDN as &quot;localhost&quot; and this
+problem seems to be solved (although I still do not understand how to set a
+specific port for sending/receiving messages in a DiameterPeer configuration
+file).
+
+Now the HSS returns the error &quot;Diameter_User_Unknown&quot;: I set the AVP for
+IMS_USER_IDENTITY as follows:
+
+  a = new AVP(700,true,10415);
+  a.setData(&quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;);
+  udr.addAVP(a);
+
+but it still doesn't work.
+
+
+2011/2/7 Federico &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">puddux at gmail.com</A>&gt;
+
+&gt;<i> Hi,
+</I>&gt;<i> I'm trying to test a simple DIAMETER dialog between the HSS and another
+</I>&gt;<i> diameter peer which sends an UDR message: I added the required AVPs to the
+</I>&gt;<i> DIAMETER message, but I receive a &quot;DIAMETER_ERROR_USER_DATA_CANNOT_BE_READ&quot;
+</I>&gt;<i> in the UDA message.
+</I>&gt;<i>
+</I>&gt;<i> This is the configuration file that I use as input for the
+</I>&gt;<i> DiameterPeerTest.java:
+</I>&gt;<i>
+</I>&gt;<i> &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+</I>&gt;<i> &lt;DiameterPeer
+</I>&gt;<i>         FQDN=&quot;localhost&quot;
+</I>&gt;<i>         Realm=&quot;open-ims.test&quot;
+</I>&gt;<i>         Vendor_Id=&quot;10415&quot;
+</I>&gt;<i>         Product_Name=&quot;JavaDiameterPeer&quot;
+</I>&gt;<i>         AcceptUnknownPeers=&quot;1&quot;
+</I>&gt;<i>         DropUnknownOnDisconnect=&quot;1&quot;
+</I>&gt;<i>         Tc=&quot;10&quot;
+</I>&gt;<i>         Workers=&quot;8&quot;
+</I>&gt;<i>         QueueLength=&quot;32&quot;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &lt;!--    &lt;Peer FQDN=&quot;icscf.open-ims.test.&quot; Realm=&quot;open-ims.test&quot;
+</I>&gt;<i> port=&quot;3868&quot;/&gt; --&gt;
+</I>&gt;<i> &lt;!--    &lt;Peer FQDN=&quot;localhost&quot; Realm=&quot;open-ims.test&quot; port=&quot;3868&quot;/&gt; --&gt;
+</I>&gt;<i>         &lt;Peer FQDN=&quot;hss.open-ims.test&quot; Realm=&quot;open-ims.test&quot; port=&quot;3868&quot;/&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;!--&lt;Acceptor port=&quot;3875&quot; bind=&quot;127.0.0.1&quot; /&gt;--&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;
+</I>&gt;<i>         &lt;Auth id=&quot;16777216&quot; vendor=&quot;0&quot; /&gt;
+</I>&gt;<i>         &lt;Acct id=&quot;16777216&quot; vendor=&quot;0&quot; /&gt;
+</I>&gt;<i>
+</I>&gt;<i> &lt;!-- Realm Routing example
+</I>&gt;<i>         &lt;Realm name=&quot;my.open-ims.test&quot;&gt;
+</I>&gt;<i>                 &lt;Route FQDN=&quot;blackjack&quot; metric=&quot;2&quot;/&gt;
+</I>&gt;<i>                 &lt;Route FQDN=&quot;test1&quot; metric=&quot;3&quot;/&gt;
+</I>&gt;<i>                 &lt;Route FQDN=&quot;test2&quot; metric=&quot;5&quot;/&gt;
+</I>&gt;<i>         &lt;/Realm&gt;
+</I>&gt;<i>         &lt;Realm name=&quot;test1.open-ims.test&quot;&gt;
+</I>&gt;<i>                 &lt;Route FQDN=&quot;test3&quot; metric=&quot;7&quot;/&gt;
+</I>&gt;<i>                 &lt;Route FQDN=&quot;test4&quot; metric=&quot;11&quot;/&gt;
+</I>&gt;<i>         &lt;/Realm&gt;
+</I>&gt;<i>         &lt;Realm name=&quot;test2.open-ims.test&quot;&gt;
+</I>&gt;<i>                 &lt;Route FQDN=&quot;test5&quot; metric=&quot;13&quot;/&gt;
+</I>&gt;<i>         &lt;/Realm&gt;
+</I>&gt;<i>         &lt;DefaultRoute FQDN=&quot;test6&quot; metric=&quot;15&quot;/&gt;
+</I>&gt;<i>         &lt;DefaultRoute FQDN=&quot;test7&quot; metric=&quot;13&quot;/&gt;
+</I>&gt;<i>
+</I>&gt;<i> --&gt;
+</I>&gt;<i> &lt;/DiameterPeer&gt;
+</I>&gt;<i>
+</I>&gt;<i> Based on this configuration file, what do I have to set in the HSS
+</I>&gt;<i> Management Console to permit the communication between this entity and the
+</I>&gt;<i> HSS? Is it possible to force the above peer to use a particular port for
+</I>&gt;<i> sending/receiving messages?
+</I>&gt;<i>
+</I>&gt;<i> Thank you,
+</I>&gt;<i> Federico
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20110208/15e7728d/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20110208/15e7728d/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006869.html">[OpenIMSCore-Users] Sh Interface Error 5102
+</A></li>
+	<LI>Next message: <A HREF="006870.html">[OpenIMSCore-Users] IPTV error(can't register)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6871">[ date ]</a>
+              <a href="thread.html#6871">[ thread ]</a>
+              <a href="subject.html#6871">[ subject ]</a>
+              <a href="author.html#6871">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

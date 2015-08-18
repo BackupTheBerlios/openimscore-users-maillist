@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [SOLVED] All non REGISTER messages seem to	get stuck inSCSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BSOLVED%5D%20All%20non%20REGISTER%20messages%20seem%20to%0A%09get%20stuck%20inSCSCF&In-Reply-To=%3Cdaca1e090806111128o8cf311cue3dd851fdb83efc6%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004091.html">
+   <LINK REL="Next"  HREF="004095.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [SOLVED] All non REGISTER messages seem to	get stuck inSCSCF</H1>
+    <B>Louis Alexander</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BSOLVED%5D%20All%20non%20REGISTER%20messages%20seem%20to%0A%09get%20stuck%20inSCSCF&In-Reply-To=%3Cdaca1e090806111128o8cf311cue3dd851fdb83efc6%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] [SOLVED] All non REGISTER messages seem to	get stuck inSCSCF">panicked.kernel at gmail.com
+       </A><BR>
+    <I>Wed Jun 11 20:28:57 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004091.html">[OpenIMSCore-Users] All non REGISTER messages seem to get stuck	inSCSCF
+</A></li>
+        <LI>Next message: <A HREF="004095.html">[OpenIMSCore-Users] [SOLVED] All non REGISTER messages seem to	get stuck inSCSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4093">[ date ]</a>
+              <a href="thread.html#4093">[ thread ]</a>
+              <a href="subject.html#4093">[ subject ]</a>
+              <a href="author.html#4093">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The problem was caused by me using <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> as the authentication
+userid, but setting the user to be Alice (capital A) in the user field.  I
+noticed something was odd in frame 1184 which was the Server-Assignment
+request for <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at open-ims.test.</A>  In base SIP, user portions of the URI are
+case insensitive, arent they?  so <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at foo</A> == <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at foo.</A>
+
+Is this a bug in FHoSS?
+
+Thanks again
+
+On Wed, Jun 11, 2008 at 11:39 AM, Louis Alexander &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">panicked.kernel at gmail.com</A>&gt;
+wrote:
+
+&gt;<i> Franz,
+</I>&gt;<i> Please find attached a complete snoop with the following
+</I>&gt;<i>
+</I>&gt;<i> 1) alice registering
+</I>&gt;<i> 2) bob registering
+</I>&gt;<i> 3) alice calls bob
+</I>&gt;<i>
+</I>&gt;<i> Please let me know if you need anything else, and thanks in advance for
+</I>&gt;<i> your help.
+</I>&gt;<i>
+</I>&gt;<i> On Tue, Jun 10, 2008 at 4:53 PM, Louis Alexander &lt;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">panicked.kernel at gmail.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Franz,
+</I>&gt;&gt;<i> I would provide that information, except i blew away my current OpenIMS
+</I>&gt;&gt;<i> and grabbed new source and did a fresh install... now im unable to get my
+</I>&gt;&gt;<i> UEs to register.  I am positive that i am using the correct authentication
+</I>&gt;&gt;<i> scheme (configured MD5 in scscf) and that my UE is using the correct
+</I>&gt;&gt;<i> password (reset it to abcd in the FHoSS gui and verified with
+</I>&gt;&gt;<i> mysql-query-browser that the DB contains the binary representation of
+</I>&gt;&gt;<i> abcd)... the scscf is complaining that the returned authentication hash
+</I>&gt;&gt;<i> doesnt match what was expected... i wonder where i went wrong...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Ill update once i get it up and running again
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Tue, Jun 10, 2008 at 4:02 PM, Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&gt;
+</I>&gt;&gt;<i> wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hi Louis,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> &gt;  ... I haven't added any new services that would filter on an INVITE.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> To be sure that no trigger is active it would help to see the
+</I>&gt;&gt;&gt;<i> registration
+</I>&gt;&gt;&gt;<i> including diameter messages.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards
+</I>&gt;&gt;&gt;<i> Franz
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> Thanks,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Louis
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Thanks,
+</I>&gt;<i>
+</I>&gt;<i> Louis
+</I>
+
+
+
+-- 
+Thanks,
+
+Louis
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080611/18107919/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080611/18107919/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004091.html">[OpenIMSCore-Users] All non REGISTER messages seem to get stuck	inSCSCF
+</A></li>
+	<LI>Next message: <A HREF="004095.html">[OpenIMSCore-Users] [SOLVED] All non REGISTER messages seem to	get stuck inSCSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4093">[ date ]</a>
+              <a href="thread.html#4093">[ thread ]</a>
+              <a href="subject.html#4093">[ subject ]</a>
+              <a href="author.html#4093">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

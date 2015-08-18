@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Application Server as B2BUA
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Application%20Server%20as%20B2BUA&In-Reply-To=%3CBAY19-F1884C7F6466E0BCD105BDDF9B20%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000455.html">
+   <LINK REL="Next"  HREF="000458.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Application Server as B2BUA</H1>
+    <B>Arnold Schwarz</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Application%20Server%20as%20B2BUA&In-Reply-To=%3CBAY19-F1884C7F6466E0BCD105BDDF9B20%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] Application Server as B2BUA">scharn333 at hotmail.com
+       </A><BR>
+    <I>Wed Jan 10 14:30:41 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000455.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+        <LI>Next message: <A HREF="000458.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#456">[ date ]</a>
+              <a href="thread.html#456">[ thread ]</a>
+              <a href="subject.html#456">[ subject ]</a>
+              <a href="author.html#456">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The reason there wasn't any UEs mentioned was the fact the messages never 
+got that far... :D
+
+But the scenario in theory would be, that there is a session 1 with the 
+following signaling:
+
+UE1 -&gt; PCSCF -&gt; SCSCF -&gt; AS
+
+which triggers the AS to make the session 2
+
+AS -&gt; SCSCF -&gt; PCSCF -&gt; UE2
+
+and now the latter one from those sessions fails and goes like I wrote in 
+the previous message:
+
+AS -&gt; SCSCF -&gt; PCSCF -&gt; SCSCF -&gt; AS
+
+
+So could someone maybe provide me the basic difference between a message 
+(for instance a SIP MESSAGE) sent from a UE to a UE or from an AS to a UE. 
+How is the PCSCF suppose to know the difference, or does it have to? Is 
+there some field in the message, which should/shouldn't be present? Or why 
+does it in my case want to check if the registration to a SCSCF is done or 
+not.
+
+I know, this is more about IMS itself than the OpenSourceCore, but is there 
+a better forum somewhere to ask questions like this?
+
+Cheers,
+
+Arnold
+
+
+&gt;<i>From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>To: Arnold Schwarz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">scharn333 at hotmail.com</A>&gt;
+</I>&gt;<i>CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>Subject: Re: [OpenIMSCore-Users] Application Server as B2BUA
+</I>&gt;<i>Date: Wed, 10 Jan 2007 14:04:41 +0100
+</I>&gt;<i>
+</I>&gt;<i>Hi Arnold,
+</I>&gt;<i>
+</I>&gt;<i>The message flow that your are giving is quite odd. The P-CSCF is
+</I>&gt;<i>usually involved only when talking with a UE as that is its function in
+</I>&gt;<i>IMS. If you would detail a little bit more your scenario and provide
+</I>&gt;<i>some signaling flows, maybe we could understand better what you are
+</I>&gt;<i>actually trying to do.
+</I>&gt;<i>
+</I>&gt;<i>Regarding the AS trusting. Well, it's up to the service provider to
+</I>&gt;<i>create the policy. You have SER's script available to any kind of
+</I>&gt;<i>modifications like this one. You can from there create and enforce your
+</I>&gt;<i>own policy.In our examples, the core is pretty insecure and accepting
+</I>&gt;<i>all kinds of traffic, including any AS.
+</I>&gt;<i>
+</I>&gt;<i>In a normal flow, from the P-CSCF the message should go towards the
+</I>&gt;<i>client if it comes from a non-client node and it is not targeted to the
+</I>&gt;<i>P-CSCF itself. However, I think that you missed something,
+</I>&gt;<i>architecturally speaking. The P-CSCF behaves as it should and refuses
+</I>&gt;<i>messages that it does not recognize as coming from trusted UEs or as
+</I>&gt;<i>part of established registrations, towards the UEs.
+</I>&gt;<i>
+</I>&gt;<i>Also, you are talking about AS and UE, but I don't see any UE in your flow.
+</I>&gt;<i>
+</I>&gt;<i>-Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>Arnold Schwarz wrote:
+</I>&gt;<i> &gt; As I see it, the AS does not contact the P-CSCF directly, but it does
+</I>&gt;<i> &gt; it through the S-CSCF. But I still end up with the 403. :(
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The messages go respectively AS -&gt; S-CSCF -&gt; P-CSCF -&gt; S-CSCF -&gt; AS
+</I>&gt;<i> &gt; and both the AS and the UEs are connecting to the same S-CSCF
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; A couple of questions about the functionality: is it expected, that
+</I>&gt;<i> &gt; the ASs are trusted by the core networks, and can include a
+</I>&gt;<i> &gt; P-asserted-identity, or should there be some authentication mechanism
+</I>&gt;<i> &gt; implemented between the S-CSCF and the AS? And how do I tell the
+</I>&gt;<i> &gt; S-CSCF, that it is ok for it to let the AS send messages to a UE? Or
+</I>&gt;<i> &gt; should the UE first make a registration to a specific AS? (which is
+</I>&gt;<i> &gt; not needed at the moment for my AS implementation) Or what should the
+</I>&gt;<i> &gt; S-CSCF do to the message before sending it further to the P-CSCF so
+</I>&gt;<i> &gt; that it wouldn't end up as &quot;403 Forbidden - Not Registered! You must
+</I>&gt;<i> &gt; register first with a S-CSCF&quot; ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Cheers,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Arnold
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt;&gt; To: Arnold Schwarz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">scharn333 at hotmail.com</A>&gt;
+</I>&gt;<i> &gt;&gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; Subject: Re: [OpenIMSCore-Users] Application Server as B2BUA
+</I>&gt;<i> &gt;&gt; Date: Tue, 09 Jan 2007 17:05:21 +0100
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Hi Arnold,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Yes, this functionality was used and it works.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; However, if you get a 403, you get it from the P-CSCF. Then I might 
+</I>&gt;<i>ask:
+</I>&gt;<i> &gt;&gt; How come the AS contacts the P-CSCF directly?
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; If your AS does origination you should use the Route that you have seen
+</I>&gt;<i> &gt;&gt; in a 3rd party REGISTER in the Service-Route field:
+</I>&gt;<i> &gt;&gt; AS-&gt;S_orig-&gt;I_term-&gt;S_term-&gt;P_term-&gt;UE_term
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; If your AS does termination, just use the normal DNS. You will end-up 
+</I>&gt;<i>in
+</I>&gt;<i> &gt;&gt; the I-CSCF: AS-&gt;I_term-&gt;S_term-&gt;P_term-&gt;UE_term
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; As you can see, in neither case the AS should send a message to a 
+</I>&gt;<i>P-CSCF
+</I>&gt;<i> &gt;&gt; directly.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Arnold Schwarz wrote:
+</I>&gt;<i> &gt;&gt; &gt; Has anyone tested the OSIMS with an Application Server, which works
+</I>&gt;<i> &gt;&gt; as a
+</I>&gt;<i> &gt;&gt; &gt; Back-to-Back User Agent? And also succeeded with the tests?
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; At the moment my messages go:  UE1 --&gt; core --&gt; AS
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; But when the AS tries to create a new session and send a message
+</I>&gt;<i> &gt;&gt; via: AS --&gt;
+</I>&gt;<i> &gt;&gt; &gt; core --&gt; UE2
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; I get &quot;Status: 403 Forbidden - Not Registered! You must register
+</I>&gt;<i> &gt;&gt; first with
+</I>&gt;<i> &gt;&gt; &gt; a S-CSCF.
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; Should the AS be registered like the &quot;normal UE&quot;s? Or is that kind of
+</I>&gt;<i> &gt;&gt; &gt; functionality not supported? Or where should I add the information,
+</I>&gt;<i> &gt;&gt; that it
+</I>&gt;<i> &gt;&gt; &gt; is ok that the AS acts as the originator?
+</I>
+_________________________________________________________________
+Fixing up the home? Live Search can help 
+<A HREF="http://imagine-windowslive.com/search/kits/default.aspx?kit=improve&amp;locale=en-US&amp;source=hmemailtaglinenov06&amp;FORM=WLMTAG">http://imagine-windowslive.com/search/kits/default.aspx?kit=improve&amp;locale=en-US&amp;source=hmemailtaglinenov06&amp;FORM=WLMTAG</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000455.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+	<LI>Next message: <A HREF="000458.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#456">[ date ]</a>
+              <a href="thread.html#456">[ thread ]</a>
+              <a href="subject.html#456">[ subject ]</a>
+              <a href="author.html#456">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

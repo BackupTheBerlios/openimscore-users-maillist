@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Questions and problems about QoS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Questions%20and%20problems%20about%20QoS&In-Reply-To=%3C1dffcef30907160831j7b4a9e34xbd9f705a7f03d1d1%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005632.html">
+   <LINK REL="Next"  HREF="005608.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Questions and problems about QoS</H1>
+    <B>Sarah Sarette</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Questions%20and%20problems%20about%20QoS&In-Reply-To=%3C1dffcef30907160831j7b4a9e34xbd9f705a7f03d1d1%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Questions and problems about QoS">sarette2561 at gmail.com
+       </A><BR>
+    <I>Thu Jul 16 17:31:06 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005632.html">[OpenIMSCore-Users] R:  Basic question #3......
+</A></li>
+        <LI>Next message: <A HREF="005608.html">[OpenIMSCore-Users] Questions and problems about QoS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5607">[ date ]</a>
+              <a href="thread.html#5607">[ thread ]</a>
+              <a href="subject.html#5607">[ subject ]</a>
+              <a href="author.html#5607">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+Thanks for your response.
+
+PCSCF_qos uses QoS for call, but not for VoD (because my VoD server doesn't
+add SDP in SIP message). So it's normal.
+But I have a new problem with PCSCF_qos because when a call with QoS is
+created, PCSCF crashes (when bob accepts the call).
+Do you know this problem?? (It's after the QoS, so IP flows are created
+because PCSCF sends the AAR message).
+
+
+
+2009/7/10 Alberto Diez &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>&gt;
+
+&gt;<i> hi Sarette,
+</I>&gt;<i> answer to your questions follows
+</I>&gt;<i>
+</I>&gt;<i> &gt;With wireshark my SIP/SDP invite is normal.
+</I>&gt;<i> &gt;Have you the same problem?
+</I>&gt;<i>
+</I>&gt;<i> I have never had such a problem but it is possible that the SIP INVITE was
+</I>&gt;<i> badly parsed or that there is a bug in some or many of the functions
+</I>&gt;<i> involved in the AAR procedure
+</I>&gt;<i>
+</I>&gt;<i> the error you got comes from file sdp_util.c line 152
+</I>&gt;<i>
+</I>&gt;<i> try to investigate what is wrong with your SIP INVITE  / SDP or with the
+</I>&gt;<i> software as there are several known bugs in the P-CSCF with Rx support
+</I>&gt;<i> wehn you discover please notify me so i can add your patch to the branch
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &gt;Then I wants to know if PCSCF must send a diameter message to PCRF when
+</I>&gt;<i> &gt;he
+</I>&gt;<i> &gt;receives a SIP register? My PCSCF-qos sends only STR diameter message
+</I>&gt;<i> &gt;when
+</I>&gt;<i> &gt;the session is terminated.
+</I>&gt;<i>
+</I>&gt;<i> In current standards it is possible that the P-CSCF sends an AAR message on
+</I>&gt;<i> SIP register (to allow the PCRF to perform session binding etc.. ) but this
+</I>&gt;<i> is not supported nor tested.
+</I>&gt;<i>
+</I>&gt;<i> But you can give it a try by modifying the config file and the functions in
+</I>&gt;<i> policy_control.c, pcc.c and pcc_avp.c to support this
+</I>&gt;<i>
+</I>&gt;<i> the idea is you need to create a new P_AAR and PCC_AAR functions which also
+</I>&gt;<i> generates an AAR message on REGISTER (which has no SDP)
+</I>&gt;<i>
+</I>&gt;<i> For more details look at TS 29.213 Annex B  Section 1 (Release 8)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> good luck!
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> --------------------------------
+</I>&gt;<i> Alberto Diez Albaladejo
+</I>&gt;<i> Fraunhofer FOKUS
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alberto.diez at fokus.fraunhofer.de</A>
+</I>&gt;<i> tel:00493034637307
+</I>&gt;<i> --------------------------------
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090716/4eb768be/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090716/4eb768be/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005632.html">[OpenIMSCore-Users] R:  Basic question #3......
+</A></li>
+	<LI>Next message: <A HREF="005608.html">[OpenIMSCore-Users] Questions and problems about QoS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5607">[ date ]</a>
+              <a href="thread.html#5607">[ thread ]</a>
+              <a href="subject.html#5607">[ subject ]</a>
+              <a href="author.html#5607">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

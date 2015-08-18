@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] OpenIMSCore and SoftX3000-600 Busy Everywhere -Forwarding to S-CSCF failed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore%20and%20SoftX3000-600%20Busy%20Everywhere%0A%20-Forwarding%20to%20S-CSCF%20failed&In-Reply-To=%3C49770.180.210.191.2.1333347577.squirrel%40mail.banglaphone.net.bd%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007305.html">
+   <LINK REL="Next"  HREF="007307.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] OpenIMSCore and SoftX3000-600 Busy Everywhere -Forwarding to S-CSCF failed</H1>
+    <B>saifullah at banglaphone.net.bd</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore%20and%20SoftX3000-600%20Busy%20Everywhere%0A%20-Forwarding%20to%20S-CSCF%20failed&In-Reply-To=%3C49770.180.210.191.2.1333347577.squirrel%40mail.banglaphone.net.bd%3E"
+       TITLE="[OpenIMSCore-Users] OpenIMSCore and SoftX3000-600 Busy Everywhere -Forwarding to S-CSCF failed">saifullah at banglaphone.net.bd
+       </A><BR>
+    <I>Mon Apr  2 08:19:37 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007305.html">[OpenIMSCore-Users] Number add in HSS
+</A></li>
+        <LI>Next message: <A HREF="007307.html">[OpenIMSCore-Users] (no subject)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7306">[ date ]</a>
+              <a href="thread.html#7306">[ thread ]</a>
+              <a href="subject.html#7306">[ subject ]</a>
+              <a href="author.html#7306">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Experts
+
+Part1.
+
+I am working on OpenIMSCore. I wanted to interconnect OpenIMScore  with
+SoftX3000 which is a IP Based PSTN softswitch and uses SIP.I have
+interconnected OpenIMSCore and SoftX3000. For this I have created a SIP
+Trunk on SoftX3000 side using the prefix of OpenIMSCore and change the
+scscf.cfg file as follow
+
+route[PSTN_handling]
+{
+    #PSTN gateway handling
+    if (uri=~&quot;tel:\+(.*) || uri=~&quot;sip:0359(.*)<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+ at 172.16.5.5</A>(.*)&quot;){
+        if(!enum_query()){
+            route(PSTN);
+            break;
+................
+and
+route[PSTN]
+{
+    t_on_reply(&quot;PSTN_reply&quot;);
+    t_relay_to_udp(&quot;10.0.4.4&quot;, &quot;5060&quot;);
+    exit;
+}
+After this changing if I dial 03593451174 in OpenIMSCore client the call
+is routed to IP based PSTN SoftX3000 and the call is okay.
+ 1. The problem is that the number is not shown on SoftX3000's phone
+display. It is shown as private number.
+ 2. Another problem is that if I dial IMS number on SoftX3000's phone IMS
+show error 600 Busy Everywhere Forwarding to S-CSCF Failed.
+
+Part2.
+
+Now I want SS7 interconnection with OpenIMSCore. For this I was suggested
+to use YATE SIP to SS7 gateway and Sangoma card. My question is that how I
+will route call to this gateway ?? Do I need to add another route on
+scscf.cfg or icscf.cfg ?? If I need to add another route on icscf.cfg or
+scscf.cfg how would I add it because I have already one route.
+
+
+
+
+Thanks &amp; Regards,
+Abu Nasar Md. Saifullah
+System Engineer, P&amp;D
+Banglaphone Limited
+Mobile:+8801722817250
+Phone: +8803593451174
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: softx3000-to-ims-600-Busy-Everywhere-Forwarding-to      -scscf-failed.7z
+Type: application/octet-stream
+Size: 336686 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120402/1f63ce7b/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120402/1f63ce7b/attachment-0001.obj</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007305.html">[OpenIMSCore-Users] Number add in HSS
+</A></li>
+	<LI>Next message: <A HREF="007307.html">[OpenIMSCore-Users] (no subject)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7306">[ date ]</a>
+              <a href="thread.html#7306">[ thread ]</a>
+              <a href="subject.html#7306">[ subject ]</a>
+              <a href="author.html#7306">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

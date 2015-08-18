@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Open IC lite and problems with audio
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Open%20IC%20lite%20and%20problems%20with%20audio&In-Reply-To=%3C475552EC.4090502%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003057.html">
+   <LINK REL="Next"  HREF="003059.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Open IC lite and problems with audio</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Open%20IC%20lite%20and%20problems%20with%20audio&In-Reply-To=%3C475552EC.4090502%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Open IC lite and problems with audio">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Dec  4 14:15:24 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003057.html">[OpenIMSCore-Users] REFER is missing as possible Trigger Point
+</A></li>
+        <LI>Next message: <A HREF="003059.html">[OpenIMSCore-Users] Implementing many HSSs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3058">[ date ]</a>
+              <a href="thread.html#3058">[ thread ]</a>
+              <a href="subject.html#3058">[ subject ]</a>
+              <a href="author.html#3058">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Andrej,
+
+The lite version of OpenIC only supports G.711 and the audio quality is
+not that good either, unless used in a lab environment, I would say.
+Yet, we think that it is good enough for the testing purposes that it
+was meant for - mainly signaling that is.
+
+Sorry, but the better RTP stacks and codecs only are available on the
+non-free version.
+
+Cheers,
+-Dragos
+
+Andrej Vrabel wrote:
+&gt;<i> Hi,
+</I>&gt;<i> yes attached RTP stream was  plain, but because my microphone layed on
+</I>&gt;<i> the table :). But also in the case, I was speaking, and the RTP was
+</I>&gt;<i> not plain, I was not able to hear anything. The problem disappeared
+</I>&gt;<i> after restarting both computers, running OpenIC. I think, there might
+</I>&gt;<i> be some problems with concurrent access of more applications to audio
+</I>&gt;<i> devices. One direction of RTP stream was caused by the incorrect
+</I>&gt;<i> firewall settings, while routing between two networks. Now everything
+</I>&gt;<i> works fine.
+</I>&gt;<i>
+</I>&gt;<i> I have one more questions:
+</I>&gt;<i> 1) How can I set the preferred audio codec in OpenIC? The bandwidth of
+</I>&gt;<i> G.711 (approx. 83kbps over RTP) is too wide. I would like to use a
+</I>&gt;<i> codec with wider bandwidth. 
+</I>&gt;<i> 2) However using G.711 (Mean opinion score &gt; 4) the the audio quality
+</I>&gt;<i> is poor. Does someone have the same experience?
+</I>&gt;<i> 3) Was OpenIC tested for interoperability with other IMS or SIP clients?
+</I>&gt;<i>
+</I>&gt;<i> Thanx for comments in advance.
+</I>&gt;<i> Andrej 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Eduardo Moreno wrote:
+</I>&gt;&gt;<i> Hi.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> You can see the audio graph with Wireshark. Go to:
+</I>&gt;&gt;<i> Statistics / VoIP Calls / (Select the call) / Player / Decode
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> As you can see, the audio wave is totally plain. So, as well as the
+</I>&gt;&gt;<i> problems Dragos has mentioned, you should review the sound capture
+</I>&gt;&gt;<i> settings of your system.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> El mar, 27-11-2007 a las 19:11 +0100, Dragos Vingarzan escribi&#243;:
+</I>&gt;&gt;&gt;<i> well... the stream is there (I can here you ;-) )... so the audio
+</I>&gt;&gt;&gt;<i> capture on at least one of the endpoints works. But looks like the
+</I>&gt;&gt;&gt;<i> stream goes just in one direction.... Some NAT problems? Try and use a
+</I>&gt;&gt;&gt;<i> RTP Proxy - install it and then see the pcscf.cfg for configuration.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Andrej Vrabel wrote:
+</I>&gt;&gt;&gt;<i> &gt; Hi,
+</I>&gt;&gt;&gt;<i> &gt; I have tested call between two OpenIC 1.1 clients on Windows XP
+</I>&gt;&gt;&gt;<i> &gt; machines with JRE 1.6.0. Singaling have passed and I see RTP stream in
+</I>&gt;&gt;&gt;<i> &gt; wireshark. But I do not hear anything (neither in calling client, nor
+</I>&gt;&gt;&gt;<i> &gt; in called client).  There are no problems with soundcards, because
+</I>&gt;&gt;&gt;<i> &gt; other IMS clients  works properly, although they use Java Media
+</I>&gt;&gt;&gt;<i> &gt; Framework. Any suggestion, where might be the problem?
+</I>&gt;&gt;&gt;<i> &gt; Andrej
+</I>&gt;&gt;&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i> &gt;
+</I>&gt;&gt;&gt;<i> &gt; _______________________________________________
+</I>&gt;&gt;&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;&gt;&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> AVISO LEGAL
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Este mensaje y los archivos que en su caso lleve adjuntos son
+</I>&gt;&gt;<i> privados y confidenciales y se dirigen exclusivamente a su
+</I>&gt;&gt;<i> destinatario. Por ello, se informa a quien lo reciba por error que la
+</I>&gt;&gt;<i> informaci&#243;n contenida en el mismo es reservada y su utilizaci&#243;n,
+</I>&gt;&gt;<i> copia o distribuci&#243;n est&#225; prohibida, por lo que en tal caso le
+</I>&gt;&gt;<i> rogamos que nos lo comunique por esta misma v&#237;a o por tel&#233;fono
+</I>&gt;&gt;<i> (+34976013300) y proceda a borrarlo de inmediato.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> En cumplimiento del Art. 5 de la Ley Org&#225;nica 15/1999, de 13 de
+</I>&gt;&gt;<i> diciembre, de Protecci&#243;n de Datos de Car&#225;cter Personal, se le informa
+</I>&gt;&gt;<i> que sus datos personales forman parte de un fichero propiedad de
+</I>&gt;&gt;<i> INSTRUMENTACI&#211;N Y COMPONENTES, S.A.  En cualquier momento podr&#225;
+</I>&gt;&gt;<i> ejercitar sus derechos de acceso, cancelaci&#243;n, rectificaci&#243;n y
+</I>&gt;&gt;<i> oposici&#243;n RESPONDIENDO a este correo.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003057.html">[OpenIMSCore-Users] REFER is missing as possible Trigger Point
+</A></li>
+	<LI>Next message: <A HREF="003059.html">[OpenIMSCore-Users] Implementing many HSSs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3058">[ date ]</a>
+              <a href="thread.html#3058">[ thread ]</a>
+              <a href="subject.html#3058">[ subject ]</a>
+              <a href="author.html#3058">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

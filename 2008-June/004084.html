@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] 401 unauthorized message
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20401%20unauthorized%20message&In-Reply-To=%3CBAY114-W5244BF68C10054CAB077E2ADB30%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004083.html">
+   <LINK REL="Next"  HREF="004085.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] 401 unauthorized message</H1>
+    <B>Wathana Hak</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20401%20unauthorized%20message&In-Reply-To=%3CBAY114-W5244BF68C10054CAB077E2ADB30%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] 401 unauthorized message">wathana35 at hotmail.com
+       </A><BR>
+    <I>Tue Jun 10 14:51:45 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004083.html">[OpenIMSCore-Users] 401 unauthorized message
+</A></li>
+        <LI>Next message: <A HREF="004085.html">[OpenIMSCore-Users] 401 unauthorized message
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4084">[ date ]</a>
+              <a href="thread.html#4084">[ thread ]</a>
+              <a href="subject.html#4084">[ subject ]</a>
+              <a href="author.html#4084">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Thanks for ur answer Andreas,
+
+in the 401 response there is a WWW-Authenticate header as you say with :
+-Authentification Scheme : Digest
+-realm : &quot;open.-ims.test&quot;
+-Nonce Value : &quot;...&quot;
+Algorithm : AKAv1-MD5
+
+I understand i must use the WWW-Authenticate header but how does it work?
+Can u give me an exemple of how u set the WWW-Authenticate header and how u send the new register to P-cscf
+
+It's my code :
+
+#include  
+#include  
+#include  
+#include  
+#include  
+#include  
+#include  
+
+int main ()
+{
+  osip_message_t *reg=NULL;
+  int i;
+  int id;
+  int port = 5060;
+
+char *imsua_add_lr_to_route(char *route){
+
+  char *response = (char*)malloc(128);
+
+        osip_route_t *rt;
+        osip_route_init(&amp;rt);
+
+        if (osip_route_parse(rt,route) != 0)
+        {
+                printf(&quot;Route does not parse!\n&quot;);
+                return NULL;
+        }
+        else
+        {
+                osip_uri_uparam_add(rt-&gt;url,osip_strdup(&quot;lr&quot;),NULL);
+                osip_route_to_str(rt,&amp;response);
+                printf(&quot;Route ok\n&quot;);
+        }
+
+        osip_route_free(rt);
+
+        return response;
+}
+
+
+  if (eXosip_init ()) {
+       printf(&quot;eXosip_init failed\n&quot;);
+       exit (1);
+  }
+
+  i = eXosip_listen_addr (IPPROTO_UDP, NULL, port, AF_INET, 0);
+       printf(&quot;i vaut %u\n&quot;,i);
+  if (i!=0) {
+       eXosip_quit();
+       printf(&quot;Could not initialize transport layer\n&quot;);
+       exit (1);
+  }
+
+  printf(&quot;ok1 : initialisation de la pile\n&quot;);
+
+  //eXosip_force_masquerade_contact (&quot;localhost&quot;);
+  eXosip_force_masquerade_contact (&quot;10.50.2.87&quot;);
+  printf(&quot;ok2 : le protocol SIP est initialis&#233; avec l'adresse IP du client\n&quot;);
+  eXosip_lock ();
+  printf(&quot;ok3\n&quot;);
+
+  /*Ne pas mettre de &lt;&gt; */
+   id=eXosip_register_build_initial_register(&quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;, &quot;sip:open-ims.test&quot;,NULL,1800,&#174;);
+   printf(&quot;ok4 : requ&#234;te REGISTER construite \n&quot;);
+
+
+  if (id 500) {
+         printf(&quot;counter reached limit\n&quot;);
+         exit(1);
+       }
+       printf(&quot;ahah\n&quot;);
+       continue;
+     }
+
+     printf(&quot;Event '%s' received...\n&quot;,je-&gt;textinfo);
+     printf(&quot;response = '%i'\n&quot;,je-&gt;response-&gt;status_code);
+
+     if(je-&gt;response-&gt;status_code ==401)
+        {
+
+
+        }
+
+   }
+     eXosip_quit();
+
+return i;
+
+Thanks for ur help andreas
+________________________________
+&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">andreas.haber at uia.no</A>
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wathana35 at hotmail.com</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Date: Tue, 10 Jun 2008 13:03:01 +0200
+</I>&gt;<i> Subject: RE: [OpenIMSCore-Users] 401 unauthorized message
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The PCSCF requires that the client authenticates and authorizes itself. To  accomplish that you should reply with a new REGISTER-request (in the same dialog!) that has a WWW-Authenticate header.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> If you look at the 401 response there should be a WWW-Authenticate header as well. The header included in this new REGISTER-request should answer that one.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> See section 5.2 of 3GPP TS 23.228 for an overview (stage 2) and also 3GPP TS 24.229 section 5.1.1 for the details (stage 3).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Btw: I wonder why you choose to develop your own SIP stack from scratch instead of reusing an existing one (e.g., Sofia-SIP Library (<A HREF="http://sofia-sip.sourceforge.net/">http://sofia-sip.sourceforge.net/</A>) and others available at <A HREF="http://www.pernau.at/kd/voip/bookmarks-sip-stacks.html">http://www.pernau.at/kd/voip/bookmarks-sip-stacks.html</A>) ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i>
+</I>&gt;<i> Andreas
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Wathana Hak
+</I>&gt;<i> Sent: 10. juni 2008 11:55
+</I>&gt;<i> To: ims mailing list
+</I>&gt;<i> Subject: [OpenIMSCore-Users] 401 unauthorized message
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I'm trying to send a register request to the P-cscf and it send me back a 401 unauthorized message : challenging the UE.
+</I>&gt;<i> I wonder what i have to do in my code (C) to register with success.
+</I>&gt;<i> I'll be happy if somebody could help me.
+</I>&gt;<i>
+</I>&gt;<i> Thanks
+</I>&gt;<i>
+</I>&gt;<i> ________________________________
+</I>&gt;<i>
+</I>&gt;<i> Tous vos amis discutent sur Messenger, et vous ? T&#233;l&#233;chargez Messenger, c'est gratuit !
+</I>
+_________________________________________________________________
+Votre contact a choisi Hotmail, l'e-mail ultra s&#233;curis&#233;. Cr&#233;ez un compte gratuitement !
+<A HREF="http://www.windowslive.fr/hotmail/default.asp">http://www.windowslive.fr/hotmail/default.asp</A>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004083.html">[OpenIMSCore-Users] 401 unauthorized message
+</A></li>
+	<LI>Next message: <A HREF="004085.html">[OpenIMSCore-Users] 401 unauthorized message
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4084">[ date ]</a>
+              <a href="thread.html#4084">[ thread ]</a>
+              <a href="subject.html#4084">[ subject ]</a>
+              <a href="author.html#4084">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

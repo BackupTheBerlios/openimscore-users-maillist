@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Debian Packages
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Debian%20Packages&In-Reply-To=%3C2e66ff2b0909170145s38f341b5l42ba719548e518de%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005779.html">
+   <LINK REL="Next"  HREF="005780.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Debian Packages</H1>
+    <B>Arnaud MORIN</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Debian%20Packages&In-Reply-To=%3C2e66ff2b0909170145s38f341b5l42ba719548e518de%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Debian Packages">arnaud.morin at gmail.com
+       </A><BR>
+    <I>Thu Sep 17 10:45:35 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005779.html">[OpenIMSCore-Users] IMS server running IPv6 and IPv4
+</A></li>
+        <LI>Next message: <A HREF="005780.html">[OpenIMSCore-Users] Debian Packages
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5773">[ date ]</a>
+              <a href="thread.html#5773">[ thread ]</a>
+              <a href="subject.html#5773">[ subject ]</a>
+              <a href="author.html#5773">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+Few month ago, I was working on Debian Packages for OpenIMSCore. I forgot to
+give the patches to the mailing list. So here is the files needed to build
+the packages (see enclosed files).
+
+How to build packages :
+-Install debian utilities :
+*sudo apt-get install debhelper cdbs lintian build-essential fakeroot
+devscripts pbuilder dh-make debootstrap dpatch
+*
+
+-Get openimscore sources :
+*mkdir openimscore*
+*svn checkout <A HREF="http://svn.berlios.de/svnroot/repos/openimscore/ser_ims/trunkopenimscore">http://svn.berlios.de/svnroot/repos/openimscore/ser_ims/trunkopenimscore</A>
+*
+*mkdir openimscore-fhoss*
+*svn checkout <A HREF="http://svn.berlios.de/svnroot/repos/openimscore/FHoSS/trunkopenimscore-fhoss">http://svn.berlios.de/svnroot/repos/openimscore/FHoSS/trunkopenimscore-fhoss</A>
+*
+
+-Copy debian folder into openimscore or openimscore-fhoss folder.
+
+-Browse to openimscore or openimscore-fhoss folder with a terminal.
+
+-Modification have to be done to files into this debian folder. When you are
+in openimscore folder, use terminal to enter :
+*dch -v svnversion &quot;**Comments ...&quot; *
+(change svnversion and comments with corrects values)
+This command will add the svnversion and comments into changelog file.
+You can also change by hand the distribution into this file. In my example,
+I build package for Debian Lenny, but you can do it for Ubuntu Intrepid,
+Jaunty, etc. To change de distribution, you will have to browse to debian
+folder and change by hand the distribution.
+
+-Now we have to build deb packages from this dsc files :
+*dpkg-buildpackage -rfakeroot *
+
+And you should find 5 packages into parent folder :
+openimscore_xxx.deb
+openimscore-dnsconf_xxx.deb
+openimscore-icscf_xxx.deb
+openimscore-pcscf_xxx.deb
+openimscore-scscf_xxx.deb
+
+-The main package is openimcore_xxx.deb. Every package depends on this one
+except for openimscore-dnsconf. -While installing a package, some questions
+will be asked in order to configure your IMS.
+-Configuration files are located in /etc/openimscore folder.
+-Log files are located in /var/log/OpenIMSCore folder if you choose to use
+syslog.
+-Start scripts are located into /etc/init.d/ (System V). Each IMS component
+(CSCF or HSS) starts automatically with computer by default. You can
+restart, stop, etc., system with command like :
+*sudo /etc/init.d/openimscore-pcscf start|stop|restart|kill|status*
+-Launch scripts are located in /usr/sbin/ (xcscf.sh and fhoss.sh)
+-openimscore-dnsconf will install and configure bind for your IMS.
+
+Questions and critics are welcome.
+Have fun !
+
+Arnaud Morin.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090917/82a3769b/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090917/82a3769b/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: openimscore_debian.zip
+Type: application/zip
+Size: 53646 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090917/82a3769b/attachment.zip">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090917/82a3769b/attachment.zip</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005779.html">[OpenIMSCore-Users] IMS server running IPv6 and IPv4
+</A></li>
+	<LI>Next message: <A HREF="005780.html">[OpenIMSCore-Users] Debian Packages
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5773">[ date ]</a>
+              <a href="thread.html#5773">[ thread ]</a>
+              <a href="subject.html#5773">[ subject ]</a>
+              <a href="author.html#5773">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

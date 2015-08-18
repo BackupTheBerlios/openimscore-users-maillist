@@ -1,0 +1,237 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Basic question #2
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Basic%20question%20%232&In-Reply-To=%3C4A313599.4070208%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005507.html">
+   <LINK REL="Next"  HREF="005516.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Basic question #2</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Basic%20question%20%232&In-Reply-To=%3C4A313599.4070208%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Basic question #2">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Jun 11 18:49:29 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005507.html">[OpenIMSCore-Users] Basic question #2
+</A></li>
+        <LI>Next message: <A HREF="005516.html">[OpenIMSCore-Users] R:  Basic question #2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5509">[ date ]</a>
+              <a href="thread.html#5509">[ thread ]</a>
+              <a href="subject.html#5509">[ subject ]</a>
+              <a href="author.html#5509">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi again,
+
+no problem. We're recognizing that we're lacking the power to update our 
+website, so you are absolutely right. I hope at least that our 
+discussions would stay in Google's memory and help in the future.
+
+1. NASS-Bundled is from TISPAN, so no, not 3GPP. We implemented it when 
+it appeared there... Is it now also in 3GPP?
+2. We started way before Common-IMS. Then really, we got bored waiting 
+for them to converge. Now I am a bit confused about this convergence - 
+there's yet another MD5 - I think that they like to play with the 
+developer's time. And even if they'd drop some, we won't, cause we'll 
+break backwards compatibility.
+3. v2 is better from a security point of view. It's basically some 
+better way to derive some keys at the end of the procedures. I ain't a 
+security guru, so it would be better if you look at RFC4169 (v2) which 
+highlights exactly the differences from RFC3310 (v1).
+4. The difference is in who specified it, so who gets to claim the 
+vendor id (which is quite a stupid thing, but hey, let's not discuss 
+standardization). So the 3GPP one is the new one that just appeared in 
+R8, while the ETSI one is the one from the ETSI/TISPAN specs. Now I am 
+guessing that they are the same... yet I don't think that removing it is 
+a good idea. There might be some HSS implementations out there which 
+would be implemented in that standardization gap, so we'd break 
+compatibility. And well, the huge number of options should remain as a 
+proof of what parallel standardization does :-p.
+5. With so many schemes in parallel and also from personal experience, I 
+think that coexistence is quite hard and even impossible with just one 
+S-CSCF doing all in parallel. Not to mention auto-detection. Well we 
+tried our best and I also studied the problem in the past but for some 
+it's impossible to decide which one can the client take, so that is why 
+we added in the HSS a &quot;preferred&quot; option per user. If you are interested 
+in opening the discussion on coexistence, with all the last updates, 
+just let me know.
+And supporting additional (or legacy if you want) schemes I see more as 
+a step forward towards coexistence and not back.
+
+(6). BTW - the FOKUS MD5 is actually AKA-MD5 without the AKA part. It 
+really was just 3-4 lines of code to add it. And it works like others, 
+just that it can be argued that it is marginally insecure. So I find 
+quite amusing (if not tragic) that the standardization bodies needed 3 
+tries to put in something that was actually there. And if you don't like 
+the hack, then anyway, RFC4740 specified this the first it seems.
+
+You see, we don't want to take sides for the standardization bodies, 
+because all have their issues/bias and anyway, our targets are to 
+provide to the community a way to test the technology, not to lock 
+people into what some segment of the involved organizations have on 
+their agenda at the top. Then we'll always have only what is useful, 
+make sense, but not what some standard says, because we don't have 
+resources to spend on useless features, but every feature is implemented 
+from a requirement. If the requirement meets the standard it is great, 
+but it can be otherwise. So many things are missing and many are not 
+aligned with specs, but I hope that at the end of the day, anyone can 
+use the parts that they are interested in, while also not splitting the 
+benefits of a larger community.
+
+
+Cheers,
+-Dragos
+
+
+Castagno Mauro wrote:
+&gt;<i>
+</I>&gt;<i> Hi!
+</I>&gt;<i>
+</I>&gt;<i> I am trying to get into the www.openimscore.org website to better 
+</I>&gt;<i> understand what it really contains/not contain so I apologize for the 
+</I>&gt;<i> following very basic doubts.
+</I>&gt;<i>
+</I>&gt;<i> In order to avoid possible misunderstandings, please note that I do 
+</I>&gt;<i> not want to criticize the openimscore.org website, but just to 
+</I>&gt;<i> understand &#8220;how it works&#8221;.
+</I>&gt;<i>
+</I>&gt;<i> Sorry for raising this kind of questions on the mailing list, but I 
+</I>&gt;<i> did not find replies on the website (at least not yet).
+</I>&gt;<i>
+</I>&gt;<i> Many thanks in advance for possible replies.
+</I>&gt;<i>
+</I>&gt;<i> For each individual user, the HSS allows /hssAdmin /to select one or 
+</I>&gt;<i> more (up to &#8220;all&#8221;) IMS Authentication Schemes:
+</I>&gt;<i>
+</I>&gt;<i>     * Digest-AKAv1 (3GPP)
+</I>&gt;<i>     * Digest-AKAv2 (3GPP)
+</I>&gt;<i>     * Digest-MD5 (FOKUS)
+</I>&gt;<i>     * Digest (CableLabs)
+</I>&gt;<i>     * SIP Digest (3GPP)
+</I>&gt;<i>     * HTTP Digest (ETSI)
+</I>&gt;<i>     * Early-IMS (3GPP)
+</I>&gt;<i>     * NASS Bundled (ETSI),
+</I>&gt;<i>
+</I>&gt;<i> However:
+</I>&gt;<i>
+</I>&gt;<i>          1. Since several IMS Authentication Mechanisms listed above
+</I>&gt;<i>             have been introduced in the 3GPP standard from Rel-8
+</I>&gt;<i>             onwards, whereas
+</I>&gt;<i>             <A HREF="http://163.162.61.160:8080/hss.web.console/index.jsp">http://163.162.61.160:8080/hss.web.console/index.jsp</A> says
+</I>&gt;<i>             /FHoSS - The FOKUS Home Subscriber Server (/*/Rel. 7/*/)/,
+</I>&gt;<i>             I assume that this Rel-7 is NOT intended to be the &#8220;3GPP
+</I>&gt;<i>             Release&#8221; (for instance because NAS Bundled was not
+</I>&gt;<i>             inlcuded in the IMS 3GPP Rel-7). Is my assumption correct?
+</I>&gt;<i>          2. A part from Early-IMS and NASS Bundled, I cannot map the
+</I>&gt;<i>             other IMS authentication schemes listed above with those
+</I>&gt;<i>             specified within 3GPP TS 33.203 (and thanks to the &#8220;Common
+</I>&gt;<i>             IMS&#8221; process, 3GPP tooks the whole responsibility of
+</I>&gt;<i>             specifying IMS). For instance, among the n.8
+</I>&gt;<i>             authentication schemes listed above, which one is supposed
+</I>&gt;<i>             to be the &#8220;IMS AKA&#8221; (I mean the very first one IMS
+</I>&gt;<i>             authentication scheme, specified since 3GPP Rel-5)?
+</I>&gt;<i>          3. Which is the difference between Digest-AKAv1 (3GPP) and
+</I>&gt;<i>             Digest-AKAv2 (3GPP)?
+</I>&gt;<i>          4. Which is the difference between SIP Digest (3GPP) and HTTP
+</I>&gt;<i>             Digest (ETSI)? Since 3GPP TS 33.203 does not contain both
+</I>&gt;<i>             options, I am wondering why they are both considered by
+</I>&gt;<i>             the openimscore.org implementation.
+</I>&gt;<i>          5. Beside some individual IMS authentication schemes (i.e.
+</I>&gt;<i>             IMS AKA, SIP Digest, NASS Bundled and Early IMS) TS 33.203
+</I>&gt;<i>             Rel-8 (see Annex &#8220;P&#8221;) also specifies their &#8220;coexistance&#8221;.
+</I>&gt;<i>             I am wondering if the TS 33.203 &#8220;Annex P&#8221; is already taken
+</I>&gt;<i>             into account by the openimscore.org implementation or not.
+</I>&gt;<i>             Since /hssAdmin/ is allowed to flag multiple IMS
+</I>&gt;<i>             Authentication schemes, I would say that the &#8220;coexistance&#8221;
+</I>&gt;<i>             is already implemented, but since /hssAdmin/ is also
+</I>&gt;<i>             allowed to flag IMS Authentication schemes that do not
+</I>&gt;<i>             exist within TS 33.203 I would say that the &#8220;coexistance&#8221;
+</I>&gt;<i>             is NOT implemented yet&#8230;
+</I>&gt;<i>
+</I>&gt;<i> Sorry for being so confused.
+</I>&gt;<i>
+</I>&gt;<i> Thanks.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Mauro
+</I>&gt;<i>
+</I>&gt;<i> Questo messaggio e i suoi allegati sono indirizzati esclusivamente 
+</I>&gt;<i> alle persone indicate. La diffusione, copia o qualsiasi altra azione 
+</I>&gt;<i> derivante dalla conoscenza di queste informazioni sono rigorosamente 
+</I>&gt;<i> vietate. Qualora abbiate ricevuto questo documento per errore siete 
+</I>&gt;<i> cortesemente pregati di darne immediata comunicazione al mittente e di 
+</I>&gt;<i> provvedere alla sua distruzione, Grazie.
+</I>&gt;<i>
+</I>&gt;<i> /This e-mail and any attachments// is //confidential and may contain 
+</I>&gt;<i> privileged information intended for the addressee(s) only. 
+</I>&gt;<i> Dissemination, copying, printing or use by anybody else is 
+</I>&gt;<i> unauthorised. If you are not the intended recipient, please delete 
+</I>&gt;<i> this message and any attachments and advise the sender by return 
+</I>&gt;<i> e-mail, Thanks./
+</I>&gt;<i>
+</I>&gt;<i> *rispetta l'ambienteRispetta l'ambiente. Non stampare questa mail se 
+</I>&gt;<i> non &#232; necessario.*
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005507.html">[OpenIMSCore-Users] Basic question #2
+</A></li>
+	<LI>Next message: <A HREF="005516.html">[OpenIMSCore-Users] R:  Basic question #2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5509">[ date ]</a>
+              <a href="thread.html#5509">[ thread ]</a>
+              <a href="subject.html#5509">[ subject ]</a>
+              <a href="author.html#5509">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Connect between OpenIMSCore and Mobicents AS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Connect%20between%20OpenIMSCore%20and%20Mobicents%20AS&In-Reply-To=%3CAANLkTil6nNb24IU9CUJ5M19ZQy8cZS6gvjWYv6mPdTrM%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006301.html">
+   <LINK REL="Next"  HREF="006299.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Connect between OpenIMSCore and Mobicents AS</H1>
+    <B>tran quoc tuan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Connect%20between%20OpenIMSCore%20and%20Mobicents%20AS&In-Reply-To=%3CAANLkTil6nNb24IU9CUJ5M19ZQy8cZS6gvjWYv6mPdTrM%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Connect between OpenIMSCore and Mobicents AS">tuantq84 at gmail.com
+       </A><BR>
+    <I>Mon Jul  5 16:24:43 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006301.html">[OpenIMSCore-Users] 3rd party registration
+</A></li>
+        <LI>Next message: <A HREF="006299.html">[OpenIMSCore-Users] Connect between OpenIMSCore and Mobicents AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6298">[ date ]</a>
+              <a href="thread.html#6298">[ thread ]</a>
+              <a href="subject.html#6298">[ subject ]</a>
+              <a href="author.html#6298">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+To connect OpenIMSCore and Mobicents in one computer, I have configured some
+steps following :
+- I created &quot;Application Servers&quot; with a lot of parameters :
+   +  Name : MSS
+   +  Server Name : sip : [iplocal]:5080
+   + Diameter FQDN : mobicents.open-ims.test
+   + Default Handling : Session Terminated
+   + Service Info : empty
+   + Rep-Data Limit : 1024
+   + Check all Allowed Request: UDR| PUR | SNR
+
+- I created &quot;Trigger Points&quot; with a lots of parameters :
+   + Name : MSS TP
+   + Conjunction Type CNF : Disjunctive Normal Format
+   + Add SPTs to the Trigger point, SIP Method : REGISTER AND INVITE AND
+Session Case : Origin - Session
+
+- I created &quot;Initial Filter Criteria&quot; (iFC) with some parameters :
+   + Name : MSS iFC
+   + Trigger Point : MSS TP
+   + Application Server : MSS
+   + Profile Part Indicator : Any
+
+- I created &quot;Service Profile&quot; :
+   + Name : MSS SP
+   + Core Network Service Auth  : 0
+   + Attached iFCs : MSS iFC
+
+And I have created a scenario to test connect Mobicent AS and OpenIMSCore
+with client Sipp but OpenIMSCore didn't forwarded message REGISTER from
+client to Mobicents AS.
+This is error of Sipp:
+2010-07-05    15:30:13:855    1278336613.855996: Aborting call on unexpected
+message for Call-Id '<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-8755 at 157.159.16.91</A>': while expecting '200' (index 3),
+received 'SIP/2.0 401 Unauthorized - Challenging the UE
+Via: SIP/2.0/UDP 157.159.16.91:7682;rport=7682;
+branch=z9hG4bK-8755-1-2
+From: &quot;tran&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>&gt;;tag=1
+To: &quot;tran&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>
+&gt;<i>;tag=cafb408f4106b91f321a940503e3d367-25f6
+</I>Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-8755 at 157.159.16.91</A>
+CSeq: 1 REGISTER
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, PUBLISH,
+MESSAGE, INFO
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+Content-Length: 0
+Warning: 392 157.159.16.91:6060 &quot;Noisy feedback tells:  pid=8355
+req_src_ip=157.159.16.91 req_src_port=5060
+in_uri=sip:scscf.open-ims.test:6060 out_uri=sip:scscf.open-ims.test:6060
+via_cnt==3&quot;
+WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,
+nonce=&quot;VsjPIfYhr7t7Fr0+eVF9wYgPbTza3AAAFqtl4F9r+5Y=&quot;, algorithm=AKAv1-MD5,
+qop=&quot;auth,auth-int&quot;
+
+What are  additives parameters that I must configure OpenIMSCore and
+Mobicents AS ?
+
+Thank in advance for all your helps!
+T.Q.Tuan
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100705/f2ea57f6/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100705/f2ea57f6/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: uac-tran.xml
+Type: text/xml
+Size: 3190 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100705/f2ea57f6/attachment.xml">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100705/f2ea57f6/attachment.xml</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006301.html">[OpenIMSCore-Users] 3rd party registration
+</A></li>
+	<LI>Next message: <A HREF="006299.html">[OpenIMSCore-Users] Connect between OpenIMSCore and Mobicents AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6298">[ date ]</a>
+              <a href="thread.html#6298">[ thread ]</a>
+              <a href="subject.html#6298">[ subject ]</a>
+              <a href="author.html#6298">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

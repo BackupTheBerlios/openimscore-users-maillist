@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to test IPSec in Open IMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20test%20IPSec%20in%20Open%20IMS&In-Reply-To=%3Cde593f410801240704u6a8a5dddwd41f71de72fff692%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003237.html">
+   <LINK REL="Next"  HREF="003241.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to test IPSec in Open IMS</H1>
+    <B>Sabyasachi Samal</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20test%20IPSec%20in%20Open%20IMS&In-Reply-To=%3Cde593f410801240704u6a8a5dddwd41f71de72fff692%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] How to test IPSec in Open IMS">sabyasachisamal at gmail.com
+       </A><BR>
+    <I>Thu Jan 24 16:04:05 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003237.html">[OpenIMSCore-Users] How to test IPSec in Open IMS
+</A></li>
+        <LI>Next message: <A HREF="003241.html">[OpenIMSCore-Users] How to test IPSec in Open IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3238">[ date ]</a>
+              <a href="thread.html#3238">[ thread ]</a>
+              <a href="subject.html#3238">[ subject ]</a>
+              <a href="author.html#3238">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I want to do a Register over IPSec but pcscf gives one error like below.
+ERR:P-CSCF:P_security_relay: we cannot find the contact or its
+IPSec/TLS SAs for &lt;1://10.21.21.149:6070&gt;.
+
+Here is my testbed:::
+I am using Xpresent stack for IPSec at client ip 10.21.21.149
+Open IMS in ip 10.21.21.147
+
+While sending the first REGISTER it is okay but while sending the
+encrypted REG over IPSec (esp) it does not handled by Open IMS. The
+2nd REG does not reach at pcscf.
+
+Sending the ethereal trace for both client and server, output of
+setkey, pcscf logs and pcscf.cfg for your reference.
+
+Pl have a look and let me know if i did something wrong.
+
+Also pl let me know how to handle logging info for servers like
+p/s/icscf. Like suppose i want to dump the logs only for DEBUG and ERR
+what should be the log level in cfg files.
+
+Regards,
+Sabyasachi
+
+
+
+On 1/24/08, Klemens Schragel &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> try
+</I>&gt;<i>
+</I>&gt;<i> setkey -c &lt;&lt; EOF
+</I>&gt;<i> spdadd 192.168.0.7/32[5060] 192.168.0.5/32[5060] tcp -P out ipsec esp/transport//unique:1 ;
+</I>&gt;<i> EOF
+</I>&gt;<i>
+</I>&gt;<i> then setkey -DP should response:
+</I>&gt;<i>
+</I>&gt;<i> 192.168.0.7[5060] 192.168.0.5[5060] tcp
+</I>&gt;<i>        out prio def ipsec
+</I>&gt;<i>        esp/transport//unique:1
+</I>&gt;<i>        created: Jan 24 06:43:35 2008  lastused:
+</I>&gt;<i>        lifetime: 0(s) validtime: 0(s)
+</I>&gt;<i>        spid=1 seq=0 pid=2041
+</I>&gt;<i>        refcnt=1
+</I>&gt;<i>
+</I>&gt;<i> br, Klemens
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Sabyasachi Samal [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>]
+</I>&gt;<i> Sent: Mittwoch, 23. J&#228;nner 2008 16:51
+</I>&gt;<i> To: Klemens Schragel
+</I>&gt;<i> Subject: Re: How to test IPSec in Open IMS
+</I>&gt;<i>
+</I>&gt;<i> Hey,
+</I>&gt;<i>
+</I>&gt;<i> I have already tried setkey -DP command but it is showing No SPD entries.
+</I>&gt;<i>
+</I>&gt;<i> Can you pl give one sample command to add one entry and how to dump that.
+</I>&gt;<i>
+</I>&gt;<i> I think there is some problem in the installation.
+</I>&gt;<i>
+</I>&gt;<i> after installing the ipsec-tools in my /etc there is no ipsec.conf and
+</I>&gt;<i> /etc/init.d there is no ipsec to start.
+</I>&gt;<i>
+</I>&gt;<i> BR,
+</I>&gt;<i> Sabyasachi
+</I>&gt;<i>
+</I>&gt;<i> On 1/23/08, Klemens Schragel &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt; wrote:
+</I>&gt;<i> &gt; Yes, actually this command should show the DB entries...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Although I don't understand why you start setkey with a end of file
+</I>&gt;<i> entry...
+</I>&gt;<i> [Hide Quoted Text]
+</I>&gt;<i> &gt; I think you'll need the EOF also after adding spddump...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; But also for the dump you can start directly from the command line with
+</I>&gt;<i> &gt; setkey -DP
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; br
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; -----Original Message-----
+</I>&gt;<i> &gt; &gt; From: Sabyasachi Samal [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>]
+</I>&gt;<i> &gt; &gt; Sent: Mittwoch, 23. J&#228;nner 2008 16:27
+</I>&gt;<i> &gt; &gt; To: Klemens Schragel
+</I>&gt;<i> &gt; &gt; Subject: Re: How to test IPSec in Open IMS
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Thanks, Now it is not showing any error. but while adding a spd using
+</I>&gt;<i> &gt; &gt; below commad, i think it is not storing the data.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; # setkey -c &lt;&lt; EOF
+</I>&gt;<i> &gt; &gt; &gt; spdadd 10.21.21.147 10.21.21.149 any -P out ipsec
+</I>&gt;<i> &gt; &gt; &gt;EOF
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; then i am using setkey -c &lt;&lt; spddump to show those value. It is not
+</I>&gt;<i> &gt; &gt; showing anything.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Is there any database ipsec stores the data?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Regards,
+</I>&gt;<i> &gt; &gt; Sabyasachi
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; On 1/23/08, Klemens Schragel &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt; wrote:
+</I>&gt;<i> &gt; &gt; &gt; Hi Sabyasachi,
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; Try it with &quot;setkey -c &lt;&lt; spdflush&quot;
+</I>&gt;<i> &gt; &gt; &gt; And you can have the same effect by just entering setkey -FP (see also
+</I>&gt;<i> &gt; &gt; &gt; man-pages of setkey)
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; br
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; -----Original Message-----
+</I>&gt;<i> &gt; &gt; &gt; &gt; From: Sabyasachi Samal [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>]
+</I>&gt;<i> &gt; &gt; &gt; &gt; Sent: Mittwoch, 23. J&#228;nner 2008 15:54
+</I>&gt;<i> &gt; &gt; &gt; &gt; To: Klemens Schragel
+</I>&gt;<i> &gt; &gt; &gt; &gt; Subject: Re: How to test IPSec in Open IMS
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; Hello Klemens,
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; I am using # setkey -c spdflush the output is setkey: spdflush: no
+</I>&gt;<i> &gt; &gt; &gt; &gt; such file or directory.
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; Pl let me know how to overcome this.
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; Regards,
+</I>&gt;<i> &gt; &gt; &gt; &gt; Sabyasachi
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; On 1/23/08, Klemens Schragel &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt; wrote:
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; Hi Sabyasachi,
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; Could you send me the whole command you entered with output?
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; First: as far as I know its spdadd =&gt; security policy database
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; Second: the way you describe it sounds like you entered the
+</I>&gt;<i> command
+</I>&gt;<i> [Hide Quoted Text]
+</I>&gt;<i> &gt; &gt; &gt; &gt; direct
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; in your shell.. but sdpadd is a command of setkey so you fist have
+</I>&gt;<i> &gt; &gt; to
+</I>&gt;<i> &gt; &gt; &gt; &gt; start
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; setkey...
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; br, Klemens
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; -----Original Message-----
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; From: Sabyasachi Samal [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>]
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; Sent: Mittwoch, 23. J&#228;nner 2008 13:53
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; To: Dragos Vingarzan
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; Cc: Klemens Schragel; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; Subject: How to test IPSec in Open IMS
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; Hello Guys,
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; I am having problem while testing the stuffs using IPSec. I am
+</I>&gt;<i> &gt; &gt; using
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; 2.6.9-22.ELsmp kernel and install ipsec-tools 0.6.7. But while i
+</I>&gt;<i> &gt; &gt; am
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; using &quot;sdpadd&quot; it is showing command not found.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; So can you pl help me how to over come this issue. For this the
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; scripts related to ipsec inside /ser_ims/modules/pcscf did not
+</I>&gt;<i> &gt; &gt; work.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; whether i need some extra module for the same, pl advise
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; Regards,
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; Sabyasachi
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> GMX FreeMail: 1 GB Postfach, 5 E-Mail-Adressen, 10 Free SMS.
+</I>&gt;<i> Alle Infos und kostenlose Anmeldung: <A HREF="http://www.gmx.net/de/go/freemail">http://www.gmx.net/de/go/freemail</A>
+</I>&gt;<i>
+</I>-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: Ipsec_OpenIMS.zip
+Type: application/zip
+Size: 10367 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080124/e8de7b58/attachment.zip">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080124/e8de7b58/attachment.zip</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003237.html">[OpenIMSCore-Users] How to test IPSec in Open IMS
+</A></li>
+	<LI>Next message: <A HREF="003241.html">[OpenIMSCore-Users] How to test IPSec in Open IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3238">[ date ]</a>
+              <a href="thread.html#3238">[ thread ]</a>
+              <a href="subject.html#3238">[ subject ]</a>
+              <a href="author.html#3238">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Authorization-header in registration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Authorization-header%20in%20registration&In-Reply-To=%3C45F7B7C6.5000108%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001171.html">
+   <LINK REL="Next"  HREF="001187.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Authorization-header in registration</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Authorization-header%20in%20registration&In-Reply-To=%3C45F7B7C6.5000108%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Authorization-header in registration">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Mar 14 09:52:22 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001171.html">[OpenIMSCore-Users] Authorization-header in registration
+</A></li>
+        <LI>Next message: <A HREF="001187.html">[OpenIMSCore-Users] Authorization-header in registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1170">[ date ]</a>
+              <a href="thread.html#1170">[ thread ]</a>
+              <a href="subject.html#1170">[ subject ]</a>
+              <a href="author.html#1170">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Arnold,
+
+It depends on what type of authentication would you like to use. For
+MD5, look at RFC 2617. For AKA look at RFC 3310.
+
+The Authorization header must be present for AKA authorization. It does
+work without, but the Authorization header is the only method of
+informing the core what private identity (authentication identity) would
+you like to use. Now we do have a fallback (which should actually be
+used only for MD5 and Early-IMS and not AKA) that in case there is no
+Authorization header present, then it extracts the private identity as
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">user at hostname</A> from the public identity. This is why with the Alice or
+Bob accounts it works. Because we have public identity
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-imst.test</A> and private identity <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test.</A> But
+if private would be <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice_impi at open-ims.test</A> it won't work anymore.
+
+So, if you can produce an Authorization header in every REGISTER, great.
+If not, make sure that the private and public identities are the same,
+except that the public can have extra scheme and parameters.
+
+-Dragos
+
+Arnold Schwarz wrote:
+&gt;<i> Hi!
+</I>&gt;<i>
+</I>&gt;<i> Could someone point out a nice source, where I could study about the
+</I>&gt;<i> content of an authorization header, when I do a registration?
+</I>&gt;<i>
+</I>&gt;<i> For instance, what should it include for a user with the URI
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>, using MD5, in the four messages (REGISTER, 401
+</I>&gt;<i> Unauthorized, REGISTER, 200 OK)?
+</I>&gt;<i>
+</I>&gt;<i> And should there be an Authorization message in the very first
+</I>&gt;<i> REGISTER message?
+</I>&gt;<i>
+</I>&gt;<i> _________________________________________________________________
+</I>&gt;<i> Find a local pizza place, movie theater, and more&#8230;.then map the best
+</I>&gt;<i> route! <A HREF="http://maps.live.com/?icid=hmtag1&amp;FORM=MGAC01">http://maps.live.com/?icid=hmtag1&amp;FORM=MGAC01</A>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001171.html">[OpenIMSCore-Users] Authorization-header in registration
+</A></li>
+	<LI>Next message: <A HREF="001187.html">[OpenIMSCore-Users] Authorization-header in registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1170">[ date ]</a>
+              <a href="thread.html#1170">[ thread ]</a>
+              <a href="subject.html#1170">[ subject ]</a>
+              <a href="author.html#1170">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

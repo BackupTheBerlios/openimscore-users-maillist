@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Building Debian Package
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Building%20Debian%20Package&In-Reply-To=%3C47FF1901.9090802%40nw.neclab.eu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003763.html">
+   <LINK REL="Next"  HREF="003766.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Building Debian Package</H1>
+    <B>Sebastian Felis</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Building%20Debian%20Package&In-Reply-To=%3C47FF1901.9090802%40nw.neclab.eu%3E"
+       TITLE="[OpenIMSCore-Users] Building Debian Package">felis at nw.neclab.eu
+       </A><BR>
+    <I>Fri Apr 11 09:53:37 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003763.html">[OpenIMSCore-Users] Building Debian Package
+</A></li>
+        <LI>Next message: <A HREF="003766.html">[OpenIMSCore-Users] 403 Forbidden - HSS roaming not allowed on new	account
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3764">[ date ]</a>
+              <a href="thread.html#3764">[ thread ]</a>
+              <a href="subject.html#3764">[ subject ]</a>
+              <a href="author.html#3764">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+Hi all
+
+@Dragos: Regarding the SVN building: I would say that debian replaces 
+the package if you build and install it twice. So I guess it could be 
+pulled to the latest SVN version.
+
+I have tried to fix the debian package build and have some success while 
+some topics could be improved. With the provided patch the almost up to 
+date SVN trunk, the CSCFs of the Open IMS Core could be build via &quot;make 
+deb&quot; to debian packages. It is my first dry of building/fixing debian 
+packaging, so improvements and comments are more than welcome.
+
+With the patch, an additional package for the CSCF modules is build. 
+After building debian packages, it could be installed via
+
+dpkg -i ser-cscf-module_0.9.4-0.2openimssvn_i386.deb \
+    ser-mysql-module_0.9.4-0.2openimssvn_i386.deb \
+    ser-presence-module_0.9.4-0.2openimssvn_i386.deb \
+    ser-xmlrpc-module_0.9.4-0.2openimssvn_i386.deb \
+    ser_0.9.4-0.2openimssvn_i386.deb
+
+(The order is important: ser has to be installed after cscf modules)
+
+
+The configurations are stored in /etc/ser. The modules are in 
+/usr/lib/ser/modules
+
+What is working:
+- Building of debian packages
+- Creation of sample configuration files for P/I/S-CSCF
+- Installing daemon scripts in /etc/init.d/[pis]cscf
+
+What is still missing
+- CSCF helper scripts are not included: e.g. configurator.sh, 
+add-imscore-user_newdb.sh
+- I-CSCF THIG is missing
+- Example SQL tables are missing: e.g. icscf.sql, icscf_pg.sql, 
+persist_my.sql, persist_pg.sql
+- Example DNS zone is missing
+
+Improvements:
+- Creation of init scripts within the ser-cscf-module and not with the 
+ser package. Until now the ser package has to be installed after the 
+ser-cscf-module package.
+- Debianize FHoSS
+- Init scripts checks the configuration files with option '-c', which 
+produces a segmentation fault: 
+<A HREF="http://lists.berlios.de/pipermail/openimscore-cscf/2008-April/001718.html.">http://lists.berlios.de/pipermail/openimscore-cscf/2008-April/001718.html.</A> 
+but the scripts starts
+
+
+Additional notes:
+- Each [pis]-cscf has its own init script and was added to 
+pkg/debian/ser.[pis]cscf.init
+- I changed the configuration files and removed the local IP adresses 
+127.0.0.1 to the appropriate DNS names like pcscf.open-ims.test because 
+a DNS server is required anyway and could resolve the DNS name. 
+Therefore IP assignments have to be changed only within the DNS server 
+and the configuration file could be untouched. I also add 
+pbx.open-ims.test for the PSTN destination to the example DNS zone.
+- modules/avp_radius/avp_radius.c defines uri_type_to_str which is 
+already defined in parser/parser_uri.c. I comment out the definition in 
+avp_radius.c.
+
+
+It would be great if the patch could be checked by others before 
+committing it to the SVN tree. Results are welcome.
+
+
+Best regards
+
+Sebastian
+
+
+Dragos Vingarzan wrote:
+&gt;<i> Hi Sebastian,
+</I>&gt;<i>
+</I>&gt;<i> Interesting idea... I mainly use gentoo, so excuse by debian lack of 
+</I>&gt;<i> knowledge... but considering that we don't have releases (cause we 
+</I>&gt;<i> lack the support resources for them), is it possible to have a debian 
+</I>&gt;<i> package that pulls the latest svn revision always?
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Sebastian Felis wrote:
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Open IMS core is a great program and I am using it frequently and 
+</I>&gt;&gt;<i> maintain different setups on Debian based systems. Therefore, I would 
+</I>&gt;&gt;<i> like to build debian packages out of the Open IMS Core to simplify 
+</I>&gt;&gt;<i> the maintaining. FHoSS is not debianized and the CSCF modules are not 
+</I>&gt;&gt;<i> included withing the current Debian build process.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Currently I am sticking a bit of debianize the CSCFs. Before I 
+</I>&gt;&gt;<i> continue with this work I would like to know if anyone has debianized 
+</I>&gt;&gt;<i> the FHoSS and CSCFs already and might contribute the patch to the 
+</I>&gt;&gt;<i> list? Or are there any unofficial nightly debian snapshots in the 
+</I>&gt;&gt;<i> wild? Any other solution by converting other working packages 
+</I>&gt;&gt;<i> architectures?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> BR
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Sebastian Felis
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+Sebastian Felis
+Research Scientist
+NEC Europe Ltd.
+Kurf&#252;rsten-Anlage 36		
+69115 Heidelberg
+Germany
+		
+Phone:  +49 6221 4342 166
+Fax:    +49 6221 4342 155
+E-Mail: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sebastian.felis at nw.neclab.eu</A>
+
+NEC Europe Limited | Registered Office: NEC House, 1 Victoria Road, London W3 6BL | Registered in England 2832014 
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: svn549.debian-build.patch.gz
+Type: application/x-gzip
+Size: 5571 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080411/fb0f3b1d/attachment.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080411/fb0f3b1d/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003763.html">[OpenIMSCore-Users] Building Debian Package
+</A></li>
+	<LI>Next message: <A HREF="003766.html">[OpenIMSCore-Users] 403 Forbidden - HSS roaming not allowed on new	account
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3764">[ date ]</a>
+              <a href="thread.html#3764">[ thread ]</a>
+              <a href="subject.html#3764">[ subject ]</a>
+              <a href="author.html#3764">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

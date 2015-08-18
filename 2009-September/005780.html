@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Debian Packages
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Debian%20Packages&In-Reply-To=%3C4ABB45EC.5010007%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005773.html">
+   <LINK REL="Next"  HREF="005774.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Debian Packages</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Debian%20Packages&In-Reply-To=%3C4ABB45EC.5010007%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Debian Packages">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Sep 24 12:11:56 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005773.html">[OpenIMSCore-Users] Debian Packages
+</A></li>
+        <LI>Next message: <A HREF="005774.html">[OpenIMSCore-Users] Create user
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5780">[ date ]</a>
+              <a href="thread.html#5780">[ thread ]</a>
+              <a href="subject.html#5780">[ subject ]</a>
+              <a href="author.html#5780">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Arnaud,
+
+I think these are great contributions. Could you maybe also add this to 
+our website? (if your account there is not yet activated or do not have 
+editor permissions yet, just let me know on private).
+
+Also if there are files to be added to the project to make this easier, 
+just let me know...
+
+Cheers,
+-Dragos
+
+Arnaud MORIN wrote:
+&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i> Few month ago, I was working on Debian Packages for OpenIMSCore. I 
+</I>&gt;<i> forgot to give the patches to the mailing list. So here is the files 
+</I>&gt;<i> needed to build the packages (see enclosed files).
+</I>&gt;<i>
+</I>&gt;<i> How to build packages :
+</I>&gt;<i> -Install debian utilities :
+</I>&gt;<i> /sudo apt-get install debhelper cdbs lintian build-essential fakeroot 
+</I>&gt;<i> devscripts pbuilder dh-make debootstrap dpatch
+</I>&gt;<i> /
+</I>&gt;<i>
+</I>&gt;<i> -Get openimscore sources :
+</I>&gt;<i> /mkdir openimscore/
+</I>&gt;<i> /svn checkout 
+</I>&gt;<i> <A HREF="http://svn.berlios.de/svnroot/repos/openimscore/ser_ims/trunk">http://svn.berlios.de/svnroot/repos/openimscore/ser_ims/trunk</A> openimscore/
+</I>&gt;<i> /mkdir openimscore-fhoss/
+</I>&gt;<i> /svn checkout 
+</I>&gt;<i> <A HREF="http://svn.berlios.de/svnroot/repos/openimscore/FHoSS/trunk">http://svn.berlios.de/svnroot/repos/openimscore/FHoSS/trunk</A> 
+</I>&gt;<i> openimscore-fhoss/
+</I>&gt;<i>
+</I>&gt;<i> -Copy debian folder into openimscore or openimscore-fhoss folder.
+</I>&gt;<i>
+</I>&gt;<i> -Browse to openimscore or openimscore-fhoss folder with a terminal.
+</I>&gt;<i>
+</I>&gt;<i> -Modification have to be done to files into this debian folder. When 
+</I>&gt;<i> you are in openimscore folder, use terminal to enter :
+</I>&gt;<i> /dch -v svnversion &quot;//Comments ...&quot; /
+</I>&gt;<i> (change svnversion and comments with corrects values)
+</I>&gt;<i> This command will add the svnversion and comments into changelog file.
+</I>&gt;<i> You can also change by hand the distribution into this file. In my 
+</I>&gt;<i> example, I build package for Debian Lenny, but you can do it for 
+</I>&gt;<i> Ubuntu Intrepid, Jaunty, etc. To change de distribution, you will have 
+</I>&gt;<i> to browse to debian folder and change by hand the distribution.
+</I>&gt;<i>
+</I>&gt;<i> -Now we have to build deb packages from this dsc files :
+</I>&gt;<i> /dpkg-buildpackage -rfakeroot /
+</I>&gt;<i>
+</I>&gt;<i> And you should find 5 packages into parent folder :
+</I>&gt;<i> openimscore_xxx.deb
+</I>&gt;<i> openimscore-dnsconf_xxx.deb
+</I>&gt;<i> openimscore-icscf_xxx.deb
+</I>&gt;<i> openimscore-pcscf_xxx.deb
+</I>&gt;<i> openimscore-scscf_xxx.deb
+</I>&gt;<i>
+</I>&gt;<i> -The main package is openimcore_xxx.deb. Every package depends on this 
+</I>&gt;<i> one except for openimscore-dnsconf. -While installing a package, some 
+</I>&gt;<i> questions will be asked in order to configure your IMS.
+</I>&gt;<i> -Configuration files are located in /etc/openimscore folder.
+</I>&gt;<i> -Log files are located in /var/log/OpenIMSCore folder if you choose to 
+</I>&gt;<i> use syslog.
+</I>&gt;<i> -Start scripts are located into /etc/init.d/ (System V). Each IMS 
+</I>&gt;<i> component (CSCF or HSS) starts automatically with computer by default. 
+</I>&gt;<i> You can restart, stop, etc., system with command like :
+</I>&gt;<i> /sudo /etc/init.d/openimscore-pcscf start|stop|restart|kill|status/
+</I>&gt;<i> -Launch scripts are located in /usr/sbin/ (xcscf.sh and fhoss.sh)
+</I>&gt;<i> -openimscore-dnsconf will install and configure bind for your IMS.
+</I>&gt;<i>
+</I>&gt;<i> Questions and critics are welcome.
+</I>&gt;<i> Have fun !
+</I>&gt;<i>
+</I>&gt;<i> Arnaud Morin.
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005773.html">[OpenIMSCore-Users] Debian Packages
+</A></li>
+	<LI>Next message: <A HREF="005774.html">[OpenIMSCore-Users] Create user
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5780">[ date ]</a>
+              <a href="thread.html#5780">[ thread ]</a>
+              <a href="subject.html#5780">[ subject ]</a>
+              <a href="author.html#5780">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

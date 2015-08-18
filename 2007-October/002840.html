@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem with Aplication Service
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20Aplication%20Service&In-Reply-To=%3C1193734280.5797.10.camel%40walqa0003%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002819.html">
+   <LINK REL="Next"  HREF="002785.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem with Aplication Service</H1>
+    <B>Eduardo Moreno</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20Aplication%20Service&In-Reply-To=%3C1193734280.5797.10.camel%40walqa0003%3E"
+       TITLE="[OpenIMSCore-Users] Problem with Aplication Service">eduardo.moreno at inycom.es
+       </A><BR>
+    <I>Tue Oct 30 09:51:20 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002819.html">[OpenIMSCore-Users] Problem with Aplication Service
+</A></li>
+        <LI>Next message: <A HREF="002785.html">[OpenIMSCore-Users] OpenIMSCore + OpenSER as Presence AS: got 405	&quot;Invalid Method&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2840">[ date ]</a>
+              <a href="thread.html#2840">[ thread ]</a>
+              <a href="subject.html#2840">[ subject ]</a>
+              <a href="author.html#2840">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Nacho.
+
+Can I ask you what framework are you using for coding your answering
+machine service?
+We are analyzing the application server market and then we are
+interested in your experience.
+
+Regards...
+
+El mar, 23-10-2007 a las 18:15 +0200, Nacho Conde escribi&#243;:
+
+&gt;<i> Thanks you  Dragos
+</I>&gt;<i> 
+</I>&gt;<i> That  cleared a lot of things 
+</I>&gt;<i> 
+</I>&gt;<i> Nacho.
+</I>&gt;<i> 
+</I>&gt;<i> Dragos Vingarzan escribi&#243;: 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; The SessionCase is a Service Point Trigger that matches on the current
+</I>&gt;<i> &gt; processing status of the message. The values could be:
+</I>&gt;<i> &gt; - originating - the message is being processed in the S-CSCF for the
+</I>&gt;<i> &gt; originating user (the caller)
+</I>&gt;<i> &gt; - terminating - the message is being processed in the S-CSCF for the
+</I>&gt;<i> &gt; terminating user (the called)
+</I>&gt;<i> &gt; - terminating unregistered - same as for terminating, but the
+</I>&gt;<i> &gt; terminating user is not &quot;online&quot;, yet it might have a service that could
+</I>&gt;<i> &gt; handle the termination process (like a voice-mail).
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; You had 2 IFCs. One was matching the terminating case and another the
+</I>&gt;<i> &gt; terminating unregistered. A simpler IFC would have been to combine the 2
+</I>&gt;<i> &gt; into one, as I suggested.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; So for your case, you want to practically tell the S-CSCF: when there is
+</I>&gt;<i> &gt; an INVITE that needs to be terminated by bob (alice calls bob would be
+</I>&gt;<i> &gt; the classic scenario), then forward it to to the AS.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I do not know what you understand what do you want to do exactly if you
+</I>&gt;<i> &gt; say that you want to catch all INVITES. If you eliminate the session
+</I>&gt;<i> &gt; case from the IFC, then you will tell the S-CSCF to forward any INVITE
+</I>&gt;<i> &gt; to the AS if bob is either calling or being called. In this case make
+</I>&gt;<i> &gt; sure that you do not call the AS twice.... or better, decide whether you
+</I>&gt;<i> &gt; want to trigger on the originating or the terminating side of the call....
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; -Dragos
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Nacho Conde wrote:
+</I>&gt;<i> &gt;   
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &gt; Hi Dragos,
+</I>&gt;<i> &gt; &gt;     This way make the AS part of the flow of all the INVITES&#180;s??.
+</I>&gt;<i> &gt; &gt; I don&#180;t understand the meaning of this seassion case.....
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; Dragos Vingarzan escribi&#243;:
+</I>&gt;<i> &gt; &gt;     
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; The given IFCs would catch the INVITEs on the terminating side. A
+</I>&gt;<i> &gt; &gt; &gt; simpler and more efficient IFC would've been to put just one IFC instead
+</I>&gt;<i> &gt; &gt; &gt; of two and trigger for method=INVITE and SessionCase not Originating.
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; -Dragos
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; Nacho Conde wrote:
+</I>&gt;<i> &gt; &gt; &gt;   
+</I>&gt;<i> &gt; &gt; &gt;       
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; Hello,
+</I>&gt;<i> &gt; &gt; &gt; &gt;         I dont know if i understand it fine. You mean a IFC like this
+</I>&gt;<i> &gt; &gt; &gt; &gt; (see attach)? This way all the Invites are forward to the AS. Right?
+</I>&gt;<i> &gt; &gt; &gt; &gt; Thanks!
+</I>&gt;<i> &gt; &gt; &gt; &gt; Nacho.
+</I>&gt;<i> &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; Dragos Vingarzan escribi&#243;:
+</I>&gt;<i> &gt; &gt; &gt; &gt;     
+</I>&gt;<i> &gt; &gt; &gt; &gt;         
+</I>&gt;<i> &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; Yes. You can just create a new IFC that will catch the INVITE and
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; assigning it to a service profile assigned to one of the users involved
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; in the call. Then you will also see the 486 in case there will be one in
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; the flow. There is no way of seeing just the 486. If you also want to
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; see the BYE, then in the INVITE your AS will need to record-route.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; Cheers,
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; -Dragos
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; Nacho Conde wrote:
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt;   
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt;       
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt;           
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; OK, Thanks both for the information. I will check the correct conf of
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; the AppServer.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; And another question,   I need forward the message to the AppServer
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; when the user reject the incoming call, but the OpenIC client sends a
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; only a status 486 Busy here, Is this posible forward this?? Any idea
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; if not?
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; Thanks in advance.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; Nacho
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; Dragos Vingarzan escribi&#243;:
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt;     
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt;         
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt;             
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; And the reason for the CANCEL is that maybe the AS received the INVITE
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; but just did not respond yet, so a CANCEL is sent to inform it that the
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; request is terminated and it should not bother to answer anymore to it.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; -Dragos
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; Verbeiren, David wrote:
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt;   
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt;       
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt;           
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt;               
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Hi Nacho,
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Those 4 INVITES are retransmits. Since there is no response from the App
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Server, the S-CSCF retransmits the INVITE after 0.5s, 1s and 2s before
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; declaring timeout.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Then - quite expectedly - the App Server also does not respond to the
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; CANCEL which also gets retransmitted.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Did you check that you receive the SIP messages from the S-CSCF on the
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; App Server?
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Regards,
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; -David
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; -----Original Message-----
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Nacho
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Conde
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Sent: 19 October 2007 11:09
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; To: OpenImsList
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Cc: David Iscar
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Subject: [OpenIMSCore-Users] Problem with Aplication Service
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Hello,
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;        We are trying to integrate  a new service in the HSS, an 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; answering machine service.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;         We have a trigger (see attach) that should  forward  the INVITES
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; when the callee is unregister( SessionCase 2), the result is that the 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; scscf sends 4 INVITES and then 4 CANCEL.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Wich is the reason of that?  I think the scscf should sends only one 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; INVITE and any CANCELs.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Thanks in advance.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Nacho.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Attachs:
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;        SP.xml: The user info that the hss sends to scscf.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;        LogSCSCF.txt: The logs of the scscf checking the filter.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;        Snoop_Invite_SessioCase2: The snoop of the scscf sending packets 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; to the AS.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; ---------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Intel Corporation NV/SA
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Rond point Schuman 6, B-1040 Brussels
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; RPM (Bruxelles) 0415.497.718. 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Citibank, Brussels, account 570/1031255/09
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; This e-mail and any attachments may contain confidential material for
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; the sole use of the intended recipient(s). Any review or distribution
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; by others is strictly prohibited. If you are not the intended
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; recipient, please contact the sender and delete all copies.
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; _______________________________________________
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;   
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;     
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;         
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;             
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;                 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt;           
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; &gt;               
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; _______________________________________________
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt;   
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt;     
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt;         
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; &gt;             
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; &gt; &gt;           
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt; 
+</I>&gt;<i> &gt; &gt; &gt;       
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;   
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+---
+Eduardo Moreno Lamana
+Inycom, S.A.
+
+AVISO LEGAL 
+
+Este mensaje y los archivos que en su caso lleve adjuntos son privados y confidenciales y se dirigen exclusivamente a su destinatario. Por ello, se informa a quien lo reciba por error que la informaci&#243;n contenida en el mismo es reservada y su utilizaci&#243;n, copia o distribuci&#243;n est&#225; prohibida, por lo que en tal caso le rogamos que nos lo comunique por esta misma v&#237;a o por tel&#233;fono (+34976013300) y proceda a borrarlo de inmediato. 
+
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071030/0123ae36/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071030/0123ae36/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002819.html">[OpenIMSCore-Users] Problem with Aplication Service
+</A></li>
+	<LI>Next message: <A HREF="002785.html">[OpenIMSCore-Users] OpenIMSCore + OpenSER as Presence AS: got 405	&quot;Invalid Method&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2840">[ date ]</a>
+              <a href="thread.html#2840">[ thread ]</a>
+              <a href="subject.html#2840">[ subject ]</a>
+              <a href="author.html#2840">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

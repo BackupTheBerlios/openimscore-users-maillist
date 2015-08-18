@@ -1,0 +1,385 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] need help on IMS Core install
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20need%20help%20on%20IMS%20Core%20install&In-Reply-To=%3C47187E4C.70707%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002776.html">
+   <LINK REL="Next"  HREF="002777.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] need help on IMS Core install</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20need%20help%20on%20IMS%20Core%20install&In-Reply-To=%3C47187E4C.70707%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] need help on IMS Core install">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Oct 19 11:52:12 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002776.html">[OpenIMSCore-Users] need help on IMS Core install
+</A></li>
+        <LI>Next message: <A HREF="002777.html">[OpenIMSCore-Users] Problem with Aplication Service
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2779">[ date ]</a>
+              <a href="thread.html#2779">[ thread ]</a>
+              <a href="subject.html#2779">[ subject ]</a>
+              <a href="author.html#2779">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Jingyi,
+
+You can not access the local loopback interface of another machine, so
+yes, you need to change the P-CSCF. Also, you would better change the
+I-CSCF and S-CSCF to this address and also update your DNS entries to
+the new IP address from 127.0.0.1.
+
+On the client, why not use the same DNS? Then you won't have any issues.
+Anyway, even if you don't, it is safe to use the real realm name and not
+the IP as all the communication will be done through the P-CSCF that you
+have configured as IP address.
+
+-Dragos
+
+Jingyi Hu wrote:
+&gt;<i>  
+</I>&gt;<i> Hi Dragos,
+</I>&gt;<i>  
+</I>&gt;<i> Thank you for the email.
+</I>&gt;<i>  
+</I>&gt;<i> The CSCF are configured as open-ims.test at 127.0.0.1 and P-CSCF is
+</I>&gt;<i> use port 4060. Do I need reconfigured all CSCFs to 10.1.41.100?
+</I>&gt;<i> Could I use realm name as 10.1.41.100 instead of hostname since the
+</I>&gt;<i> hostname suppose in DNS server which located in IMS core server
+</I>&gt;<i> (open-ims.test).
+</I>&gt;<i>  
+</I>&gt;<i> Thanks.
+</I>&gt;<i>  
+</I>&gt;<i> Jingyi Hu
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &gt; Date: Thu, 18 Oct 2007 21:12:40 +0200
+</I>&gt;<i> &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">jhu2000 at hotmail.com</A>
+</I>&gt;<i> &gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">rudholm at kth.se</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; Subject: Re: [OpenIMSCore-Users] need help on IMS Core install
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hello Jingyi Hu,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; the realm should be configured as open-ims.test, but not this is the
+</I>&gt;<i> &gt; cause of your trouble.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Are your CSCF configured to run on 127.0.0.1 or an IP address that is
+</I>&gt;<i> &gt; actually reachable from where the client is running? Can you check that
+</I>&gt;<i> &gt; you can for example open a TCP connection from the UE machine to the
+</I>&gt;<i> &gt; P-CSCF machine on port 4060 where the P-CSCF should be?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; -Dragos
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Jingyi Hu wrote:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Hi Mikael and David,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Thank you helps and emails. It is problem is DNS Server named.conf;
+</I>&gt;<i> &gt; &gt; the forwarders need point to: 127.0.0.1 instead of outside DNS server
+</I>&gt;<i> &gt; &gt; IP address. I can access FHoSS web interface at: <A HREF="http://127.0.0.1:8080">http://127.0.0.1:8080</A>
+</I>&gt;<i> &gt; &gt; &lt;<A HREF="http://127.0.0.1:8080/">http://127.0.0.1:8080/</A>&gt; and see alice's and bob's profile.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Right now, I have another problem with OpenIC_Lite. I set Public
+</I>&gt;<i> &gt; &gt; Identity=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>, Private Identity=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> &gt; &gt; &lt;mailto:Identity=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;, Secret key=bob, Display name=Bob
+</I>&gt;<i> &gt; &gt; Hu, Realm=10.1.41.100, Proxy Server=10.1.41.100:4060/UDP, Default
+</I>&gt;<i> &gt; &gt; Algorithm=AKA, EarlyIMS=checked, Auto Answer Call=unchecked, Auto Sign
+</I>&gt;<i> &gt; &gt; In=checked and Alert Message=checked. After it launched, I got message
+</I>&gt;<i> &gt; &gt; say: &quot;No network connection. Check profile!&quot; Did I do something wrong
+</I>&gt;<i> &gt; &gt; here? or I need use Realm as host name instead of IP address?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Please help.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Best regards,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Jingyi Hu
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">rudholm at kth.se</A>
+</I>&gt;<i> &gt; &gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">jhu2000 at hotmail.com</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; Subject: RE: [OpenIMSCore-Users] need help on IMS Core install
+</I>&gt;<i> &gt; &gt; Date: Mon, 15 Oct 2007 09:49:49 +0200
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Hi Jingyi,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; The errors below tell that icscf.open-ims.test and
+</I>&gt;<i> &gt; &gt; scscf.open-ims.test can not be reached on the port specified to
+</I>&gt;<i> &gt; &gt; use Diameter.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:24,032 ERROR
+</I>&gt;<i> &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+</I>&gt;<i> &gt; &gt; I_Snd_Conn_Req StateMachine: Peer icscf.open-ims.test not
+</I>&gt;<i> &gt; &gt; responding to connection attempt
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:24,339 ERROR
+</I>&gt;<i> &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+</I>&gt;<i> &gt; &gt; I_Snd_Conn_Req StateMachine: Peer scscf.open-ims.test not
+</I>&gt;<i> &gt; &gt; responding to connection attempt
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; The HSS (FHoSS) contains the user database and speaks the Diameter
+</I>&gt;<i> &gt; &gt; protocol to talk to the I-CSCF and S-CSCF. The CSCF&#8217;s use the
+</I>&gt;<i> &gt; &gt; Diameter protocol to ask the HSS for user credentials.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; When the HSS and the CSCF&#8217;s start they immediately try to contact
+</I>&gt;<i> &gt; &gt; each other and if not all of them are started they will not be
+</I>&gt;<i> &gt; &gt; able to talk. The error above are most likely because you have
+</I>&gt;<i> &gt; &gt; only started the HSS and not the icscf or the scscf.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; The configuration files for Diameter for the FHoSS is normaly
+</I>&gt;<i> &gt; &gt; located at
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; /opt/OpenIMSCore/FHoSS/deploy/DiameterPeerHSS.xml
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; And for the CSCF&#8217;s:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; /opt/OpenIMSCore/icscf.xml
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; /opt/OpenIMSCore/scscf.xml
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; These files contain information about what IP address and port
+</I>&gt;<i> &gt; &gt; number to listen on and what address and port the peers have.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; You don&#8217;t need to have httpd running. The FHoSS containts Tomcat
+</I>&gt;<i> &gt; &gt; and its own web server.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Are you using httpd on port 8080?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Hope it helps!
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; /Mikael
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; *From:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] *On Behalf Of
+</I>&gt;<i> &gt; &gt; *Jingyi Hu
+</I>&gt;<i> &gt; &gt; *Sent:* den 12 oktober 2007 18:54
+</I>&gt;<i> &gt; &gt; *To:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; *Subject:* [OpenIMSCore-Users] need help on IMS Core install
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Hi All,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; I have installed IMS Core from ground up. I have installed Fedora
+</I>&gt;<i> &gt; &gt; 7, java 1.5.0_13 and DNS server. I start the CSCFs, it seems fine.
+</I>&gt;<i> &gt; &gt; Then I start FHoSS, I got thoese error messages:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at VoIPIMS</A> deploy]# ./startup.sh
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Building Classpath
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Classpath is
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> lib/xml-apis.jar:lib/xercesImpl.jar:lib/xerces-2.4.0.jar:lib/xalan-2.4.0.jar:lib/tomcat-util.jar:lib/tomcat-http.jar:lib/tomcat-coyote.jar:lib/struts.jar:lib/servlets-default.jar:lib/servlet-api.jar:lib/naming-resources.jar:lib/naming-factory.jar:lib/mysql-connector-java-3.1.12-bin.jar:lib/mx4j-3.0.1.jar:lib/log4j.jar:lib/junit.jar:lib/junitee.jar:lib/jta.jar:lib/jsp-api.jar:lib/jmx.jar:lib/jdp.jar:lib/jasper-runtime.jar:lib/jasper-compiler-jdt.jar:lib/jasper-compiler.jar:lib/hibernate3.jar:lib/FHoSS.jar:lib/ehcache-1.1.jar:lib/dom4j-1.6.1.jar:lib/commons-validator.jar:lib/commons-modeler.jar:lib/commons-logging.jar:lib/commons-logging-1.0.4.jar:lib/commons-lang.jar:lib/commons-fileupload.jar:lib/commons-el.jar:lib/commons-digester.jar:lib/commons-collections-3.1.jar:lib/commons-beanutils.jar:lib/cglib-2.1.3.jar:lib/catalina-optional.jar:lib/catalina.jar:lib/c3p0-0.9.1.jar:lib/base64.jar:lib/asm.jar:lib/asm-attrs.jar:lib/antlr-2.7.6.jar::log4j.properties:..
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:19,450 INFO de.fhg.fokus.hss.main.TomcatServer -
+</I>&gt;<i> &gt; &gt; startTomcat Tomcat-Server is started.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:20,136 WARN
+</I>&gt;<i> &gt; &gt; org.apache.catalina.connector.MapperListener - registerEngine
+</I>&gt;<i> &gt; &gt; Unknown default host: 127.0.0.1
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:20,947 INFO
+</I>&gt;<i> &gt; &gt; de.fhg.fokus.hss.web.servlet.ResponseFilter - init Response Filter
+</I>&gt;<i> &gt; &gt; Initialisation!
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:21,437 INFO de.fhg.fokus.hss.main.TomcatServer -
+</I>&gt;<i> &gt; &gt; startTomcat WebConsole of FHoSS was started !
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:23,797 WARN
+</I>&gt;<i> &gt; &gt; org.hibernate.impl.SessionFactoryObjectFactory - addInstance
+</I>&gt;<i> &gt; &gt; InitialContext did not implement EventContext
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:23,836 INFO
+</I>&gt;<i> &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; FQDN:
+</I>&gt;<i> &gt; &gt; hss.open-ims.test
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:23,836 INFO
+</I>&gt;<i> &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Realm:
+</I>&gt;<i> &gt; &gt; open-ims.test
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:23,837 INFO
+</I>&gt;<i> &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Vendor_ID
+</I>&gt;<i> &gt; &gt; : 10415
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:23,837 INFO
+</I>&gt;<i> &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Product
+</I>&gt;<i> &gt; &gt; Name: JavaDiameterPeer
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:23,837 INFO
+</I>&gt;<i> &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+</I>&gt;<i> &gt; &gt; AcceptUnknwonPeers: true
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:23,838 INFO
+</I>&gt;<i> &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+</I>&gt;<i> &gt; &gt; DropUnknownOnDisconnect: true
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:23,851 INFO de.fhg.fokus.hss.main.HSSContainer -
+</I>&gt;<i> &gt; &gt; waitForExit
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Type &quot;exit&quot; to stop FHoSS!
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:24,032 ERROR
+</I>&gt;<i> &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+</I>&gt;<i> &gt; &gt; I_Snd_Conn_Req StateMachine: Peer icscf.open-ims.test not
+</I>&gt;<i> &gt; &gt; responding to connection attempt
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:24,339 ERROR
+</I>&gt;<i> &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+</I>&gt;<i> &gt; &gt; I_Snd_Conn_Req StateMachine: Peer scscf.open-ims.test not
+</I>&gt;<i> &gt; &gt; responding to connection attempt
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2007-10-12 09:36:54,428 ERROR
+</I>&gt;<i> &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+</I>&gt;<i> &gt; &gt; I_Snd_Conn_Req StateMachine: Peer icscf.open-ims.test not
+</I>&gt;<i> &gt; &gt; responding to connection attempt
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Do you know what I doing wrong? Also When I try to use
+</I>&gt;<i> &gt; &gt; <A HREF="http://localhost:8080/">http://localhost:8080/</A> nothing happen. I have httpd running.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Thank you for the help.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Best regards,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Jingyi Hu
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Peek-a-boo FREE Tricks &amp; Treats for You! Get 'em!
+</I>&gt;<i> &gt; &gt; &lt;<A HREF="http://www.reallivemoms.com/?ocid=TXT_TAGHM&amp;loc=us">http://www.reallivemoms.com/?ocid=TXT_TAGHM&amp;loc=us</A>&gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt; Boo! Scare away worms, viruses and so much more! Try Windows Live
+</I>&gt;<i> &gt; &gt; OneCare! Try now!
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &lt;<A HREF="http://onecare.live.com/standard/en-us/purchase/trial.aspx?s_cid=wl_hotmailnews">http://onecare.live.com/standard/en-us/purchase/trial.aspx?s_cid=wl_hotmailnews</A>&gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; _______________________________________________
+</I>&gt;<i> &gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt; -----------------------------------------
+</I>&gt;<i> &gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt; Fraunhofer FOKUS/NGNI
+</I>&gt;<i> &gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt; Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> &gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Help yourself to FREE treats served up daily at the Messenger Caf&#233;.
+</I>&gt;<i> Stop by today!
+</I>&gt;<i> &lt;<A HREF="http://www.cafemessenger.com/info/info_sweetstuff2.html?ocid=TXT_TAGLM_OctWLtagline">http://www.cafemessenger.com/info/info_sweetstuff2.html?ocid=TXT_TAGLM_OctWLtagline</A>&gt;
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002776.html">[OpenIMSCore-Users] need help on IMS Core install
+</A></li>
+	<LI>Next message: <A HREF="002777.html">[OpenIMSCore-Users] Problem with Aplication Service
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2779">[ date ]</a>
+              <a href="thread.html#2779">[ thread ]</a>
+              <a href="subject.html#2779">[ subject ]</a>
+              <a href="author.html#2779">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

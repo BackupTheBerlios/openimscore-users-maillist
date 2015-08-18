@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Executing FHoSS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Executing%20FHoSS&In-Reply-To=%3C1206347196.6336.17.camel%40walqa347%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003633.html">
+   <LINK REL="Next"  HREF="003616.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Executing FHoSS</H1>
+    <B>Eduardo Moreno</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Executing%20FHoSS&In-Reply-To=%3C1206347196.6336.17.camel%40walqa347%3E"
+       TITLE="[OpenIMSCore-Users] Executing FHoSS">eduardo.moreno at inycom.es
+       </A><BR>
+    <I>Mon Mar 24 09:26:36 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003633.html">[OpenIMSCore-Users] Executing FHoSS
+</A></li>
+        <LI>Next message: <A HREF="003616.html">[OpenIMSCore-Users] How to configure Application server
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3663">[ date ]</a>
+              <a href="thread.html#3663">[ thread ]</a>
+              <a href="subject.html#3663">[ subject ]</a>
+              <a href="author.html#3663">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gray.
+
+I'd see one problem. It seems that JAVA_HOME environment variable is
+pointing to java executable. It should point to a directory. For example
+in my system:
+
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">edumoreno at walqa347</A>:~$ echo $JAVA_HOME
+        /usr/lib/jvm/java-6-sun/jre
+
+Change the JAVA_HOME variable until you see:
+
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at orion</A>:/usr/lib/jvm/java-7-icedtea/jre/bin# echo $JAVA_HOME
+        /usr/lib/jvm/java-7-icedtea/jre
+
+By the other hand, FHoSS must be executed from deploy directory,
+specifically from
+
+        /opt/OpenIMSCore/FHoSS/deploy
+
+So, you should see in your console something like this:
+
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at orion</A>:/opt/OpenIMSCore/FHoSS/deploy# ./startup.sh
+
+
+Regards...
+
+El jue, 20-03-2008 a las 03:14 +0000, Gray Satriya escribi&#243;:
+
+&gt;<i> --- Eduardo Moreno &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">eduardo.moreno at inycom.es</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Hi Gray.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I'm afraid that you did copy/paste too much text
+</I>&gt;<i> &gt; from the example that I
+</I>&gt;<i> &gt; showed you in my former mail.
+</I>&gt;<i> &gt; The commands that I would like to execute are:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;         echo $JAVA_HOME
+</I>&gt;<i> &gt;         ls -l $JAVA_HOME
+</I>&gt;<i> &gt;         ls -l $JAVA_HOME/..
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Try this and paste the output.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> Yeah, sorry it. Tried it again. Now i retried of using
+</I>&gt;<i> another application (java-7-iced.tea) still doesn't
+</I>&gt;<i> work.
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at orion</A>:/usr/lib/jvm/java-7-icedtea/jre/bin# cd
+</I>&gt;<i> java
+</I>&gt;<i> bash: cd: java: Not a directory
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at orion</A>:/usr/lib/jvm/java-7-icedtea/jre/bin#
+</I>&gt;<i> /opt/OpenIMSCore/FHoSS/deploy/./                      
+</I>&gt;<i>                       startup.sh
+</I>&gt;<i> Building Classpath
+</I>&gt;<i> Classpath is lib/*.jar::log4j.properties:..
+</I>&gt;<i> Exception in thread &quot;main&quot;
+</I>&gt;<i> java.lang.NoClassDefFoundError: /usr/lib/jvm/java-7-i 
+</I>&gt;<i>                                           
+</I>&gt;<i> cedtea/jre/bin/java
+</I>&gt;<i> Caused by: java.lang.ClassNotFoundException:
+</I>&gt;<i> ..usr.lib.jvm.java-7-icedtea.jre.bin                   
+</I>&gt;<i>                          .java
+</I>&gt;<i>         at
+</I>&gt;<i> java.net.URLClassLoader$1.run(URLClassLoader.java:221)
+</I>&gt;<i>         at
+</I>&gt;<i> java.security.AccessController.doPrivileged(Native
+</I>&gt;<i> Method)
+</I>&gt;<i>         at
+</I>&gt;<i> java.net.URLClassLoader.findClass(URLClassLoader.java:209)
+</I>&gt;<i>         at
+</I>&gt;<i> java.lang.ClassLoader.loadClass(ClassLoader.java:324)
+</I>&gt;<i>         at
+</I>&gt;<i> sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:294)
+</I>&gt;<i>         at
+</I>&gt;<i> java.lang.ClassLoader.loadClass(ClassLoader.java:269)
+</I>&gt;<i>         at
+</I>&gt;<i> java.lang.ClassLoader.loadClassInternal(ClassLoader.java:337)
+</I>&gt;<i> Error: Could not find the main class.
+</I>&gt;<i> Error: A JNI error has occurred, please check your
+</I>&gt;<i> installation and try again
+</I>&gt;<i> 
+</I>&gt;<i> and what u have told me to execute :
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at orion</A>:/usr/lib/jvm/java-7-icedtea/jre/bin# echo
+</I>&gt;<i> $JAVA_HOME
+</I>&gt;<i> /usr/lib/jvm/java-7-icedtea/jre/bin/java
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at orion</A>:/usr/lib/jvm/java-7-icedtea/jre/bin# ls -l
+</I>&gt;<i> $JAVA_HOME
+</I>&gt;<i> -rwxr-xr-x 1 root root 3252 2007-10-16 06:37
+</I>&gt;<i> /usr/lib/jvm/java-7-icedtea/jre/bin                   
+</I>&gt;<i>                          /java
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at orion</A>:/usr/lib/jvm/java-7-icedtea/jre/bin# ls -l
+</I>&gt;<i> $JAVA_HOME
+</I>&gt;<i> -rwxr-xr-x 1 root root 3252 2007-10-16 06:37
+</I>&gt;<i> /usr/lib/jvm/java-7-icedtea/jre/bin                   
+</I>&gt;<i>                          /java
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> BR//Gray.Satriya
+</I>&gt;<i> 
+</I>&gt;<i> Send instant messages to your online friends <A HREF="http://uk.messenger.yahoo.com">http://uk.messenger.yahoo.com</A> 
+</I>&gt;<i> 
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080324/d23d37db/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080324/d23d37db/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003633.html">[OpenIMSCore-Users] Executing FHoSS
+</A></li>
+	<LI>Next message: <A HREF="003616.html">[OpenIMSCore-Users] How to configure Application server
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3663">[ date ]</a>
+              <a href="thread.html#3663">[ thread ]</a>
+              <a href="subject.html#3663">[ subject ]</a>
+              <a href="author.html#3663">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

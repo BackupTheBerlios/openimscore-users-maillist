@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P-Preferred-Identity with display name
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-Preferred-Identity%20with%20display%20name&In-Reply-To=%3C0AE2132CE51D1943A20F450AA7258E5C01397348%40INOAVREX05.ptin.corpPT.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000128.html">
+   <LINK REL="Next"  HREF="000131.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P-Preferred-Identity with display name</H1>
+    <B>Jos&#233; Carlos Amorim</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-Preferred-Identity%20with%20display%20name&In-Reply-To=%3C0AE2132CE51D1943A20F450AA7258E5C01397348%40INOAVREX05.ptin.corpPT.com%3E"
+       TITLE="[OpenIMSCore-Users] P-Preferred-Identity with display name">jose-c-amorim at ptinovacao.pt
+       </A><BR>
+    <I>Wed Nov 29 13:06:41 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000128.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 1, Issue 32
+</A></li>
+        <LI>Next message: <A HREF="000131.html">[OpenIMSCore-Users] P-Preferred-Identity with display name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#129">[ date ]</a>
+              <a href="thread.html#129">[ thread ]</a>
+              <a href="subject.html#129">[ subject ]</a>
+              <a href="author.html#129">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+ 
+
+We started testing our IMS client and found that when we try to establish a call if the P-Preferred-Identity contains a displayname the call is not established. This happens because the cscf_get_preferred_identity() returns something like this &quot;alice&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> which results in P_Assert_Identity() returning False and the script returning a 403 Forbidden back to the client.
+
+ 
+
+We altered the code in the modules/pcscf/sip.c file and added the following lines that let us send P-Preferred-Identities with displaynames:
+
+ 
+
+--- sip.c  2006-11-29 19:35:56.683996320 +0000
+
++++ sip.c_patch       2006-11-29 19:02:24.120952408 +0000
+
+@@ -1778,6 +1778,23 @@
+
+                        strncasecmp(h-&gt;name.s,s_preferred_id.s,s_preferred_id.len)==0)
+
+                {
+
+                        id = h-&gt;body;
+
++                       /*Display Name*/
+
++                       while(id.len &amp;&amp; (id.s[0]==' ' || id.s[0]=='\t')){
+
++                               id.s = id.s+1;
+
++                               id.len --;
+
++                       }
+
++
+
++                       if(id.len &amp;&amp; id.s[0]=='&quot;'){
+
++                               id.s = id.s+1;
+
++                               id.len --;
+
++                               while(id.len &amp;&amp; (id.s[0]!='&quot;')){
+
++                                       id.s = id.s+1;
+
++                                       id.len --;
+
++                               }
+
++                               id.s = id.s+1;
+
++                               id.len --;
+
++                       }
+
++                       /*-----------*/
+
+                        while(id.len &amp;&amp; (id.s[0]==' ' || id.s[0]=='\t' || id.s[0]=='&lt;')){
+
+                                id.s = id.s+1;
+
+                                id.len --;
+
+ 
+
+Regards,
+
+Jose Carlos Silva
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20061129/6d040c89/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20061129/6d040c89/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000128.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 1, Issue 32
+</A></li>
+	<LI>Next message: <A HREF="000131.html">[OpenIMSCore-Users] P-Preferred-Identity with display name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#129">[ date ]</a>
+              <a href="thread.html#129">[ thread ]</a>
+              <a href="subject.html#129">[ subject ]</a>
+              <a href="author.html#129">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

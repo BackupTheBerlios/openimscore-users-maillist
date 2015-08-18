@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] reg:adding a new user
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20reg%3Aadding%20a%20new%20user&In-Reply-To=%3C45EFE441.6040005%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001132.html">
+   <LINK REL="Next"  HREF="001136.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] reg:adding a new user</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20reg%3Aadding%20a%20new%20user&In-Reply-To=%3C45EFE441.6040005%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] reg:adding a new user">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Mar  8 11:24:01 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001132.html">[OpenIMSCore-Users] reg:adding a new user
+</A></li>
+        <LI>Next message: <A HREF="001136.html">[OpenIMSCore-Users] reg: generating ha1 and ha1b for new users
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1134">[ date ]</a>
+              <a href="thread.html#1134">[ thread ]</a>
+              <a href="subject.html#1134">[ subject ]</a>
+              <a href="author.html#1134">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The error comes from the HSS because you probably forgot to add the
+private &amp; public identities there.
+
+The SIP2IMS will be deleted maybe today because it seems to be causing
+WAY more trouble than benefits. The S-CSCF supports MD5 even without it.
+All you need to do is either:
+- change the scscf.cfg file to perform MD5 by default
+- add an Authorization header with algorithm=MD5 in the first REGISTER
+request to indicate your preference for MD5.
+
+-Dragos
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Rajeswari.Routhu at cognizant.com</A> wrote:
+&gt;<i>
+</I>&gt;<i> Hi all ,
+</I>&gt;<i>
+</I>&gt;<i> I want to add a new user.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> While adding a public identity for the new user like
+</I>&gt;<i> sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cathy at open-ims.test</A> ,it is not getting updated.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> For this can I give any values for ha1  and ha1b
+</I>&gt;<i>
+</I>&gt;<i> mysql&gt; select * from credentials;
+</I>&gt;<i>
+</I>&gt;<i> +---------------+-------+---------------+----------+-------+----------------------------------+----------------------------------+-----+
+</I>&gt;<i>
+</I>&gt;<i> | auth_username | did   | realm         | password | flags |
+</I>&gt;<i> ha1                              | ha1b                             |
+</I>&gt;<i> uid |
+</I>&gt;<i>
+</I>&gt;<i> +---------------+-------+---------------+----------+-------+----------------------------------+----------------------------------+-----+
+</I>&gt;<i>
+</I>&gt;<i> | alice         | _none | open-ims.test | alice    |     1 |
+</I>&gt;<i> 012d7aeb444b8c77be2756591f90accb | a3da98c9b36dde1f17e3f713225dc4d1 |
+</I>&gt;<i> 1   |
+</I>&gt;<i>
+</I>&gt;<i> | bob           | _none | open-ims.test | bob      |     1 |
+</I>&gt;<i> d7404d478d7ea2d230739464f0314fbb | b0342795e048d7e9f4e2432285776dd3 |
+</I>&gt;<i> 2   |
+</I>&gt;<i>
+</I>&gt;<i> | *cathy         | _none | open-ims.test | cathy    |     1 |
+</I>&gt;<i> 333                              | 333333                           |
+</I>&gt;<i> 3   |*
+</I>&gt;<i>
+</I>&gt;<i> +---------------+-------+---------------+----------+-------+----------------------------------+----------------------------------+-----+
+</I>&gt;<i>
+</I>&gt;<i> 3 rows in set (0.00 sec)
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> With these settings iam getting
+</I>&gt;<i>
+</I>&gt;<i> Registration error : Forbidden &#8211;HSS identities don&#8217;t match
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Is it the right way to add a new user.If any corrections please suggest.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Thanks in advance
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> *Thanks &amp; Regards*
+</I>&gt;<i>
+</I>&gt;<i> *Rajeswari.R*
+</I>&gt;<i>
+</I>&gt;<i> *Programmer Analyst *
+</I>&gt;<i>
+</I>&gt;<i> *Cognizant Technology Solutions*
+</I>&gt;<i>
+</I>&gt;<i> *Hyderabad***
+</I>&gt;<i>
+</I>&gt;<i> *V-net:63149 | Ph.no.:40122721 | mobile:9247747498*
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> This e-mail and any files transmitted with it are for the sole use of
+</I>&gt;<i> the intended recipient(s) and may contain confidential and privileged
+</I>&gt;<i> information.
+</I>&gt;<i> If you are not the intended recipient, please contact the sender by
+</I>&gt;<i> reply e-mail and destroy all copies of the original message.
+</I>&gt;<i> Any unauthorised review, use, disclosure, dissemination, forwarding,
+</I>&gt;<i> printing or copying of this email or any action taken in reliance on
+</I>&gt;<i> this e-mail is strictly
+</I>&gt;<i> prohibited and may be unlawful.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001132.html">[OpenIMSCore-Users] reg:adding a new user
+</A></li>
+	<LI>Next message: <A HREF="001136.html">[OpenIMSCore-Users] reg: generating ha1 and ha1b for new users
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1134">[ date ]</a>
+              <a href="thread.html#1134">[ thread ]</a>
+              <a href="subject.html#1134">[ subject ]</a>
+              <a href="author.html#1134">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

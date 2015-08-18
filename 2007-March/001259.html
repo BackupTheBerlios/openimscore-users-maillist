@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] scscf_name becomes empty in hssdb
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20scscf_name%20becomes%20empty%20in%20hssdb&In-Reply-To=%3C42F3BE57026C6E49B09E267EEF639D560206411F%40ms-dt01thalia.tsn.tno.nl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001044.html">
+   <LINK REL="Next"  HREF="001266.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] scscf_name becomes empty in hssdb</H1>
+    <B>Cramer, E.R. (Eelco)</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20scscf_name%20becomes%20empty%20in%20hssdb&In-Reply-To=%3C42F3BE57026C6E49B09E267EEF639D560206411F%40ms-dt01thalia.tsn.tno.nl%3E"
+       TITLE="[OpenIMSCore-Users] scscf_name becomes empty in hssdb">Eelco.Cramer at tno.nl
+       </A><BR>
+    <I>Wed Mar 21 10:45:45 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001044.html">[OpenIMSCore-Users] scscf_name becomes empty in hssdb
+</A></li>
+        <LI>Next message: <A HREF="001266.html">[OpenIMSCore-Users] scscf_name becomes empty in hssdb
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1259">[ date ]</a>
+              <a href="thread.html#1259">[ thread ]</a>
+              <a href="subject.html#1259">[ subject ]</a>
+              <a href="author.html#1259">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+
+Thanks for your answer. I have look into the S-CSCF selection built into
+the I-CSCF and found the following:
+
+- The I-CSCF sends a UAR command to the HSS
+- The HSS does not return a S-CSCF in the answer for the UAR command.
+
+I digged in a bit deeper, and noticed in the source code of the HSS
+(QueryCxOperation.java) that if the scscf_name in the user's impi record
+is an empty string the HSS does not return a default S-CSCF name. It
+only does this when the scscf_name has a NULL value. The source code
+says something like this:
+
+&gt;<i> if (userProfil.getImpi().getScscfName() != null){
+</I>&gt;<i>
+</I>registrationStatusResponse.setAssignedSCSCFName(userProfil.getImpi().get
+ScscfName());
+&gt;<i> } else{
+</I>&gt;<i>   registrationStatusResponse.setAssignedSCSCFName(DEFAULT_SCSCF_NAME);
+</I>&gt;<i> }
+</I>
+On session timeout the scscf_name in the user's impi record is set to an
+empty string in PullCxOperation.java rev 154 line 199. So according to
+the above code fragment the HSS will return an empty string as the
+assigned scscf name when a user is registering with no scscf assigned in
+the impi record.
+
+To test this I changed the scscf_name for my test user in the impi table
+to NULL but this resulted in a null pointer exception in the HSS. The
+reason for this is that the scscf_name from the database is compared
+with the scscf_name found in the AVP of the MAR command. Since the
+database value was NULL is threw a null pointer exception. I changed the
+code to marValue.eq(databaseValue) to fix the null pointer exception,
+and tested once again.
+
+This time I noticed that the default scscf name returned in the UAR
+response was not the scscf that is configured in the database (in the
+diam_servers table) what I sort of excepted. I am not sure I am right
+about this though... In stead of using the database value the default
+scscf was taken from a hard coded constant in QueryCxOperation:
+
+&gt;<i> public static final String DEFAULT_SCSCF_NAME =
+</I>&quot;lupine.umts-at-fokus.de&quot;;
+
+I changed this value to reflect the scsf name of our own server:
+&quot;scscf.ims.telecom.tno.nl&quot; but this time the icscf returned a parsing
+error on this string value, so I changed the constant to a valid SIP URI
+for our scscf: &quot;sip:scscf.ims.telecom.tno.nl:6060&quot;. After this change
+the registration worked fine.
+
+I made a final change in QueryCxOperation to see that the default scscf
+is also returned when the scscf_name in the user's impi record is an
+empty string and this is the HSS what we are currently using for our
+setup.
+
+I am wondering if I am using a wrong version of the HSS or made some
+configuration error somewhere because I do not believe that returning
+the hard coded default scscf is really the correct behaviour. Can you
+comment on this?
+
+I have attached a SVN diff patch with the changes I made to the HSS code
+base. Please note that this patch has our default scscf hard coded.
+
+Thanks,
+Eelco
+
+
+-----Original Message-----
+From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+Sent: maandag 5 maart 2007 10:59
+To: Cramer, E.R. (Eelco)
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Re: [OpenIMSCore-Users] scscf_name becomes empty in hssdb
+
+This is the normal behavior. For electing a S-CSCF name when there is
+none assigned, there are other mechanisms, like capabilities selection
+in the I-CSCF.
+
+-Dragos
+
+Cramer, E.R. (Eelco) wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> I was assuming that the scscf_name should always exists in the 
+</I>&gt;<i> hssdb.impi table? If it is removed how should the system know to which
+</I>
+&gt;<i> scscf the user should be registering?
+</I>&gt;<i>
+</I>&gt;<i> I have used the add-imscore-user.sh script to create the users. The 
+</I>&gt;<i> scscf_name is only removed from the impi table for users that have 
+</I>&gt;<i> been registered to the IMS. So you are probably right: they are 
+</I>&gt;<i> removed from the table when the registration period expires. Any hints
+</I>
+&gt;<i> on how this can be fixed?
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Eelco
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;<i> Sent: vrijdag 2 maart 2007 21:29
+</I>&gt;<i> To: Cramer, E.R. (Eelco)
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] scscf_name becomes empty in hssdb
+</I>&gt;<i>
+</I>&gt;<i> Is it the case that the registration period expires? Then the S-CSCF 
+</I>&gt;<i> would send a SAR that would delete that value.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Cramer, E.R. (Eelco) wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have a problem with the HSSDB. I have 2 users in the database that 
+</I>&gt;&gt;<i> I
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> use actively. Once in a while, after a period of testing, the 
+</I>&gt;&gt;<i> 'scscf_name' attribute in the table 'impi' is made empty (empty
+</I>&gt;&gt;<i>     
+</I>&gt;<i> string).
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Is this a known problem? Any idea about a fix?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks,
+</I>&gt;&gt;<i> Eelco
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This e-mail and its contents are subject to the DISCLAIMER at 
+</I>&gt;&gt;<i> <A HREF="http://www.tno.nl/disclaimer/email.html">http://www.tno.nl/disclaimer/email.html</A>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> This e-mail and its contents are subject to the DISCLAIMER at 
+</I>&gt;<i> <A HREF="http://www.tno.nl/disclaimer/email.html">http://www.tno.nl/disclaimer/email.html</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+--
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+This e-mail and its contents are subject to the DISCLAIMER at <A HREF="http://www.tno.nl/disclaimer/email.html">http://www.tno.nl/disclaimer/email.html</A>
+-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: scscf-selection-patch.txt
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070321/4a9d8023/attachment.txt">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070321/4a9d8023/attachment.txt</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001044.html">[OpenIMSCore-Users] scscf_name becomes empty in hssdb
+</A></li>
+	<LI>Next message: <A HREF="001266.html">[OpenIMSCore-Users] scscf_name becomes empty in hssdb
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1259">[ date ]</a>
+              <a href="thread.html#1259">[ thread ]</a>
+              <a href="subject.html#1259">[ subject ]</a>
+              <a href="author.html#1259">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

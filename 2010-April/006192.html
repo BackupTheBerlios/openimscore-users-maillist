@@ -1,0 +1,512 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registration failed with Ipsec enabled
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20failed%20with%20Ipsec%20enabled&In-Reply-To=%3C4BBDD440.6060303%40globaledgesoft.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006191.html">
+   <LINK REL="Next"  HREF="006185.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registration failed with Ipsec enabled</H1>
+    <B>prashanth.me</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20failed%20with%20Ipsec%20enabled&In-Reply-To=%3C4BBDD440.6060303%40globaledgesoft.com%3E"
+       TITLE="[OpenIMSCore-Users] Registration failed with Ipsec enabled">prashanth.me at globaledgesoft.com
+       </A><BR>
+    <I>Thu Apr  8 15:04:00 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006191.html">[OpenIMSCore-Users] Registration failed with Ipsec enabled
+</A></li>
+        <LI>Next message: <A HREF="006185.html">[OpenIMSCore-Users] OpenIMSCore and Sailfin - 488 Not Acceptable	here
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6192">[ date ]</a>
+              <a href="thread.html#6192">[ thread ]</a>
+              <a href="subject.html#6192">[ subject ]</a>
+              <a href="author.html#6192">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Sunil,
+As per the RFC 3329, reRegister Request (REGISTER Request after 401 
+response) MUST contain a Security-Verify header field that mirrors the
+server's list received previously in the Security- Server header field.
+
+It looks the client missed the &quot;mod=trans;&quot; parameter in Security-Verify 
+Header.
+Please add this parameter and try once.
+
+Thanks,
+Prashanth M E
+
+Sunil Suraj-a22975 wrote:
+&gt;<i> Hi Naveen,
+</I>&gt;<i>
+</I>&gt;<i>    But Server has sent Security Server header as follows
+</I>&gt;<i>
+</I>&gt;<i> Security-Server: ipsec-3gpp; ealg=des-ede3-cbc; alg=hmac-md5-96;
+</I>&gt;<i> spi-c=5006; spi-s=5007; port-c=4060; port-s=4060; prot=esp; mod=trans;
+</I>&gt;<i> q=0.1
+</I>&gt;<i>
+</I>&gt;<i> So this looks like a issue in openIms side right..
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Suraj 
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Naveen BN [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naveen.bn at globaledgesoft.com</A>] 
+</I>&gt;<i> Sent: Thursday, April 08, 2010 2:56 PM
+</I>&gt;<i> To: Sunil Suraj-a22975
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>; P Sudarshanakrishnan-A14377;
+</I>&gt;<i> hanifa.mohammed; Vavilapalli Srikanth-A19563
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] Registration failed with Ipsec enabled
+</I>&gt;<i>
+</I>&gt;<i> Hi Sunil,
+</I>&gt;<i> The server has created an SA with the SPI=5003(0x0000138b), which mean
+</I>&gt;<i> the server is expecting the secured register message to use SPI=5003,
+</I>&gt;<i> but the ESP packet from client is using spi=5007 . Hence at the server
+</I>&gt;<i> side the there is no SA to process the secured message. 
+</I>&gt;<i>
+</I>&gt;<i> *Note: Assuming the provided SA contents are correct at server side.*
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at micslin14</A> ~]# setkey -D
+</I>&gt;<i> 10.232.14.119 10.232.15.41
+</I>&gt;<i>         esp mode=transport spi=5003(0x0000138b) reqid=0(0x00000000)
+</I>&gt;<i>         E: 3des-cbc  6207d061 a4ece1f7 7d3a73f9 c1362308 6207d061
+</I>&gt;<i> a4ece1f7
+</I>&gt;<i>         A: hmac-md5  c18f88d2 02b29555 cd9ba75d 20272697
+</I>&gt;<i>         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;<i>         created: Apr  8 12:03:31 2010   current: Apr  8 12:04:13 2010
+</I>&gt;<i>         diff: 42(s)     hard: 0(s)      soft: 0(s)
+</I>&gt;<i>         last: Apr  8 12:03:31 2010      hard: 0(s)      soft: 0(s)
+</I>&gt;<i>         current: 18629(bytes)   hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;<i>         allocated: 13   hard: 0 soft: 0
+</I>&gt;<i>         sadb_seq=0 pid=18686 refcnt=0
+</I>&gt;<i>
+</I>&gt;<i> Thanks and Regards
+</I>&gt;<i> Naveen
+</I>&gt;<i>
+</I>&gt;<i> Sunil Suraj-a22975 wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi Naveen,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>    Please find the ethereal logs for both server and client side.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In client side SAD and SPD as follows
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 10.232.15.41 10.232.14.119
+</I>&gt;&gt;<i>         esp mode=transport spi=3030(0x00000bd6) reqid=0(0x00000000)
+</I>&gt;&gt;<i>         E: 3des-cbc  63f03b9f e27b336b 568afa66 0de65f52 63f03b9f 
+</I>&gt;&gt;<i> e27b336b
+</I>&gt;&gt;<i>         A: hmac-md5  9c282310 c117e3e1 b25efd77 b035d70d
+</I>&gt;&gt;<i>         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;&gt;<i>         created: Apr  8 17:38:53 2010   current: Apr  8 17:39:39 2010
+</I>&gt;&gt;<i>         diff: 46(s)     hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;<i>         last:                           hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;<i>         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;&gt;<i>         allocated: 0    hard: 0 soft: 0
+</I>&gt;&gt;<i>         sadb_seq=3 pid=14309 refcnt=0
+</I>&gt;&gt;<i> 10.232.15.41 10.232.14.119
+</I>&gt;&gt;<i>         esp mode=transport spi=3031(0x00000bd7) reqid=0(0x00000000)
+</I>&gt;&gt;<i>         E: 3des-cbc  63f03b9f e27b336b 568afa66 0de65f52 63f03b9f 
+</I>&gt;&gt;<i> e27b336b
+</I>&gt;&gt;<i>         A: hmac-md5  9c282310 c117e3e1 b25efd77 b035d70d
+</I>&gt;&gt;<i>         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;&gt;<i>         created: Apr  8 17:38:53 2010   current: Apr  8 17:39:39 2010
+</I>&gt;&gt;<i>         diff: 46(s)     hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;<i>         last:                           hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;<i>         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;&gt;<i>         allocated: 0    hard: 0 soft: 0
+</I>&gt;&gt;<i>         sadb_seq=2 pid=14309 refcnt=0
+</I>&gt;&gt;<i> 10.232.14.119 10.232.15.41
+</I>&gt;&gt;<i>         esp mode=transport spi=5006(0x0000138e) reqid=2(0x00000002)
+</I>&gt;&gt;<i>         E: 3des-cbc  63f03b9f e27b336b 568afa66 0de65f52 63f03b9f 
+</I>&gt;&gt;<i> e27b336b
+</I>&gt;&gt;<i>         A: hmac-md5  9c282310 c117e3e1 b25efd77 b035d70d
+</I>&gt;&gt;<i>         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;&gt;<i>         created: Apr  8 17:38:53 2010   current: Apr  8 17:39:39 2010
+</I>&gt;&gt;<i>         diff: 46(s)     hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;<i>         last:                           hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;<i>         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;&gt;<i>         allocated: 0    hard: 0 soft: 0
+</I>&gt;&gt;<i>         sadb_seq=1 pid=14309 refcnt=0
+</I>&gt;&gt;<i> 10.232.14.119 10.232.15.41
+</I>&gt;&gt;<i>         esp mode=transport spi=5007(0x0000138f) reqid=1(0x00000001)
+</I>&gt;&gt;<i>         E: 3des-cbc  63f03b9f e27b336b 568afa66 0de65f52 63f03b9f 
+</I>&gt;&gt;<i> e27b336b
+</I>&gt;&gt;<i>         A: hmac-md5  9c282310 c117e3e1 b25efd77 b035d70d
+</I>&gt;&gt;<i>         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;&gt;<i>         created: Apr  8 17:38:53 2010   current: Apr  8 17:39:39 2010
+</I>&gt;&gt;<i>         diff: 46(s)     hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;<i>         last: Apr  8 17:38:53 2010      hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;<i>         current: 20832(bytes)   hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;&gt;<i>         allocated: 14   hard: 0 soft: 0
+</I>&gt;&gt;<i>         sadb_seq=0 pid=14309 refcnt=0
+</I>&gt;&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at pcwks182</A> ~]# setkey -DP
+</I>&gt;&gt;<i> 10.232.15.41[4060] 10.232.14.119[7072] any
+</I>&gt;&gt;<i>         in prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;<i>         created: Apr  8 17:38:53 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=224 seq=15 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> 10.232.15.41[4060] 10.232.14.119[7071] any
+</I>&gt;&gt;<i>         in prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;<i>         created: Apr  8 17:38:53 2010  lastused: Apr  8 17:39:40 2010
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=240 seq=14 pid=14310
+</I>&gt;&gt;<i>         refcnt=2
+</I>&gt;&gt;<i> 10.232.14.119[7071] 10.232.15.41[4060] any
+</I>&gt;&gt;<i>         out prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//unique:1
+</I>&gt;&gt;<i>         created: Apr  8 17:38:53 2010  lastused: Apr  8 17:39:40 2010
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=257 seq=13 pid=14310
+</I>&gt;&gt;<i>         refcnt=2
+</I>&gt;&gt;<i> 10.232.14.119[7072] 10.232.15.41[4060] any
+</I>&gt;&gt;<i>         out prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//unique:2
+</I>&gt;&gt;<i>         created: Apr  8 17:38:53 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=265 seq=12 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> 10.232.15.41[4060] 10.232.14.119[7072] any
+</I>&gt;&gt;<i>         fwd prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;<i>         created: Apr  8 17:38:53 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=234 seq=11 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> 10.232.15.41[4060] 10.232.14.119[7071] any
+</I>&gt;&gt;<i>         fwd prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;<i>         created: Apr  8 17:38:53 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=250 seq=10 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> (per-socket policy)
+</I>&gt;&gt;<i>         in none
+</I>&gt;&gt;<i>         created: Mar 30 22:10:44 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=67 seq=9 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> (per-socket policy)
+</I>&gt;&gt;<i>         in none
+</I>&gt;&gt;<i>         created: Mar 30 22:10:44 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=51 seq=8 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> (per-socket policy)
+</I>&gt;&gt;<i>         in none
+</I>&gt;&gt;<i>         created: Mar 30 22:10:44 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=35 seq=7 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> (per-socket policy)
+</I>&gt;&gt;<i>         in none
+</I>&gt;&gt;<i>         created: Mar 30 22:10:44 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=19 seq=6 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> (per-socket policy)
+</I>&gt;&gt;<i>         in none
+</I>&gt;&gt;<i>         created: Mar 30 22:10:44 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=3 seq=5 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> (per-socket policy)
+</I>&gt;&gt;<i>         out none
+</I>&gt;&gt;<i>         created: Mar 30 22:10:44 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=76 seq=4 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> (per-socket policy)
+</I>&gt;&gt;<i>         out none
+</I>&gt;&gt;<i>         created: Mar 30 22:10:44 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=60 seq=3 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> (per-socket policy)
+</I>&gt;&gt;<i>         out none
+</I>&gt;&gt;<i>         created: Mar 30 22:10:44 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=44 seq=2 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> (per-socket policy)
+</I>&gt;&gt;<i>         out none
+</I>&gt;&gt;<i>         created: Mar 30 22:10:44 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=28 seq=1 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> (per-socket policy)
+</I>&gt;&gt;<i>         out none
+</I>&gt;&gt;<i>         created: Mar 30 22:10:44 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=12 seq=0 pid=14310
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In server side SAD and SPD as follows
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at micslin14</A> ~]# setkey -D
+</I>&gt;&gt;<i> 10.232.14.119 10.232.15.41
+</I>&gt;&gt;<i>         esp mode=transport spi=5003(0x0000138b) reqid=0(0x00000000)
+</I>&gt;&gt;<i>         E: 3des-cbc  6207d061 a4ece1f7 7d3a73f9 c1362308 6207d061
+</I>&gt;&gt;<i> a4ece1f7
+</I>&gt;&gt;<i>         A: hmac-md5  c18f88d2 02b29555 cd9ba75d 20272697
+</I>&gt;&gt;<i>         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;&gt;<i>         created: Apr  8 12:03:31 2010   current: Apr  8 12:03:39 2010
+</I>&gt;&gt;<i>         diff: 8(s)      hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;<i>         last: Apr  8 12:03:31 2010      hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;<i>         current: 7165(bytes)    hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;&gt;<i>         allocated: 5    hard: 0 soft: 0
+</I>&gt;&gt;<i>         sadb_seq=0 pid=18683 refcnt=0
+</I>&gt;&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at micslin14</A> ~]# setkey -DP
+</I>&gt;&gt;<i> 10.232.14.119[7071] 10.232.15.41[4060] tcp
+</I>&gt;&gt;<i>         in prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;<i>         created: Apr  8 12:03:31 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=1376 seq=1 pid=18685
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> 10.232.14.119[7071] 10.232.15.41[4060] udp
+</I>&gt;&gt;<i>         in prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;<i>         created: Apr  8 12:03:31 2010  lastused: Apr  8 12:03:39 2010
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=1392 seq=2 pid=18685
+</I>&gt;&gt;<i>         refcnt=2
+</I>&gt;&gt;<i> 10.232.14.119[7071] 10.232.15.41[4060] tcp
+</I>&gt;&gt;<i>         fwd prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;<i>         created: Apr  8 12:03:31 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=1386 seq=3 pid=18685
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> 10.232.14.119[7071] 10.232.15.41[4060] udp
+</I>&gt;&gt;<i>         fwd prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;<i>         created: Apr  8 12:03:31 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=1402 seq=0 pid=18685
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at micslin14</A> ~]# setkey -D
+</I>&gt;&gt;<i> 10.232.14.119 10.232.15.41
+</I>&gt;&gt;<i>         esp mode=transport spi=5003(0x0000138b) reqid=0(0x00000000)
+</I>&gt;&gt;<i>         E: 3des-cbc  6207d061 a4ece1f7 7d3a73f9 c1362308 6207d061
+</I>&gt;&gt;<i> a4ece1f7
+</I>&gt;&gt;<i>         A: hmac-md5  c18f88d2 02b29555 cd9ba75d 20272697
+</I>&gt;&gt;<i>         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;&gt;<i>         created: Apr  8 12:03:31 2010   current: Apr  8 12:04:13 2010
+</I>&gt;&gt;<i>         diff: 42(s)     hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;<i>         last: Apr  8 12:03:31 2010      hard: 0(s)      soft: 0(s)
+</I>&gt;&gt;<i>         current: 18629(bytes)   hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;&gt;<i>         allocated: 13   hard: 0 soft: 0
+</I>&gt;&gt;<i>         sadb_seq=0 pid=18686 refcnt=0
+</I>&gt;&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at micslin14</A> ~]# setkey -DP
+</I>&gt;&gt;<i> 10.232.14.119[7071] 10.232.15.41[4060] tcp
+</I>&gt;&gt;<i>         in prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;<i>         created: Apr  8 12:03:31 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=1376 seq=1 pid=18687
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> 10.232.14.119[7071] 10.232.15.41[4060] udp
+</I>&gt;&gt;<i>         in prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;<i>         created: Apr  8 12:03:31 2010  lastused: Apr  8 12:04:19 2010
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=1392 seq=2 pid=18687
+</I>&gt;&gt;<i>         refcnt=2
+</I>&gt;&gt;<i> 10.232.14.119[7071] 10.232.15.41[4060] tcp
+</I>&gt;&gt;<i>         fwd prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;<i>         created: Apr  8 12:03:31 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=1386 seq=3 pid=18687
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i> 10.232.14.119[7071] 10.232.15.41[4060] udp
+</I>&gt;&gt;<i>         fwd prio def ipsec
+</I>&gt;&gt;<i>         esp/transport//require
+</I>&gt;&gt;<i>         created: Apr  8 12:03:31 2010  lastused:
+</I>&gt;&gt;<i>         lifetime: 0(s) validtime: 0(s)
+</I>&gt;&gt;<i>         spid=1402 seq=0 pid=18687
+</I>&gt;&gt;<i>         refcnt=1
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i> Suraj
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: Naveen BN [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naveen.bn at globaledgesoft.com</A>]
+</I>&gt;&gt;<i> Sent: Thursday, April 08, 2010 10:39 AM
+</I>&gt;&gt;<i> To: Sunil Suraj-a22975
+</I>&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>; P Sudarshanakrishnan-A14377; 
+</I>&gt;&gt;<i> hanifa.mohammed
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Registration failed with Ipsec 
+</I>&gt;&gt;<i> enabled
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi Sunil,
+</I>&gt;&gt;<i> Is the second secure register message reaching the server application(
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> pcscf ).
+</I>&gt;&gt;<i> Please share the SADB and SPD contents at the server and client.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards
+</I>&gt;&gt;<i> Naveen
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Sunil Suraj-a22975 wrote:
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi All,
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>        Following behaviour is observed while testing the Registration
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> with IPsec Secuirity agreement
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>        First REGISTER message sent with security client header
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>       Security-Client: 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> ipsec-3gpp;alg=hmac-md5-96;prot=esp;ealg=des-ede3-cbc;spi-c=3030;spi-s
+</I>&gt;&gt;<i> =3
+</I>&gt;&gt;<i> 031;port-c=7071;port-s=7072
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       Server challenges the request with 401 with Security server 
+</I>&gt;&gt;&gt;<i> header
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>       Security-Server: ipsec-3gpp; ealg=des-ede3-cbc; 
+</I>&gt;&gt;&gt;<i> alg=hmac-md5-96;
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> spi-c=5000; spi-s=5001; port-c=4060; port-s=4060; prot=esp; 
+</I>&gt;&gt;&gt;<i> mod=trans;
+</I>&gt;&gt;&gt;<i> q=0.1
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>       Our client sends reRegister with Security verify header with 
+</I>&gt;&gt;&gt;<i> local port 7071 to remote port 4060. Message is as follows
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;&gt;&gt;<i> To: Satya &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kaushik at open-ims.test</A>&gt;
+</I>&gt;&gt;&gt;<i> From: Satya
+</I>&gt;&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kaushik at open-ims.test</A>&gt;;tag=18-161236328-0-d7d614b7-00000001
+</I>&gt;&gt;&gt;<i> Route: &lt;sip:10.232.15.41:4060;lr&gt;
+</I>&gt;&gt;&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d7d614b7099d64081 at 3621131447</A> 
+</I>&gt;&gt;&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d7d614b7099d64081 at 3621131447</A>&gt;
+</I>&gt;&gt;&gt;<i> Expires: 3600
+</I>&gt;&gt;&gt;<i> CSeq: 2 REGISTER
+</I>&gt;&gt;&gt;<i> Via: SIP/2.0/UDP 
+</I>&gt;&gt;&gt;<i> 10.232.14.119:7072;rport;branch=z9hG4bK7042b057ef1f66
+</I>&gt;&gt;&gt;<i> Supported: timer,timer,path,sec-agree
+</I>&gt;&gt;&gt;<i> Allow: 
+</I>&gt;&gt;&gt;<i> ACK,BYE,CANCEL,INVITE,OPTIONS,REGISTER,INFO,PRACK,SUBSCRIBE,NOTIFY,UP
+</I>&gt;&gt;&gt;<i> D
+</I>&gt;&gt;&gt;<i> ATE,MESSAGE,REFER,PUBLISH
+</I>&gt;&gt;&gt;<i> Accept-Encoding: identity
+</I>&gt;&gt;&gt;<i> Accept: 
+</I>&gt;&gt;&gt;<i> application/sdp,multipart/mixed,application/reginfo+xml,message/sipfr
+</I>&gt;&gt;&gt;<i> a 
+</I>&gt;&gt;&gt;<i> g,application/simple-message-summary,application/dialog-info+xml,appl
+</I>&gt;&gt;&gt;<i> i cation/server-call-feature-status+xml,application/xml
+</I>&gt;&gt;&gt;<i> Content-Length: 0
+</I>&gt;&gt;&gt;<i> Max-Forwards: 70
+</I>&gt;&gt;&gt;<i> P-Access-Network-Info: LAN
+</I>&gt;&gt;&gt;<i> User-Agent: Symphony UA
+</I>&gt;&gt;&gt;<i> History-Info: sip:open-ims.test;index=1
+</I>&gt;&gt;&gt;<i> Require: sec-agree
+</I>&gt;&gt;&gt;<i> Proxy-Require: sec-agree
+</I>&gt;&gt;&gt;<i> Authorization: Digest
+</I>&gt;&gt;&gt;<i> algorithm=AKAv1-MD5,cnonce=&quot;d7d61596&quot;,nc=00000001,nonce=&quot;kSOd4x/87l2A
+</I>&gt;&gt;&gt;<i> f 
+</I>&gt;&gt;&gt;<i> Lxkpnyfg4jcucuJHAAASZEB5wJsBMQ=&quot;,qop=auth,realm=&quot;open-ims.test&quot;,respo
+</I>&gt;&gt;&gt;<i> n 
+</I>&gt;&gt;&gt;<i> se=&quot;93b8abc08d7e4e403e231616bcfa8794&quot;,uri=&quot;sip:open-ims.test&quot;,usernam
+</I>&gt;&gt;&gt;<i> e
+</I>&gt;&gt;&gt;<i> =&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kaushik at open-ims.test</A>
+</I>&gt;&gt;&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kaushik at open-ims.test</A>&gt;&quot;
+</I>&gt;&gt;&gt;<i> Security-Client: 
+</I>&gt;&gt;&gt;<i> ipsec-3gpp;alg=hmac-md5-96;prot=esp;ealg=des-ede3-cbc;spi-c=3030;spi-
+</I>&gt;&gt;&gt;<i> s
+</I>&gt;&gt;&gt;<i> =3031;port-c=7071;port-s=7072
+</I>&gt;&gt;&gt;<i> Security-Verify: 
+</I>&gt;&gt;&gt;<i> ipsec-3gpp;q=0.1;alg=hmac-md5-96;prot=esp;ealg=des-ede3-cbc;spi-c=500
+</I>&gt;&gt;&gt;<i> 0
+</I>&gt;&gt;&gt;<i> ;spi-s=5001;port-c=4060;port-s=4060
+</I>&gt;&gt;&gt;<i> Contact: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kaushik at 10.232.14.119</A>:7072
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>      Server sends 494 Security Agreement Required.
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>   Please anyone let me know the reason for this.
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> Attached ethereal logs from OpenIms side.
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;<i> Suraj
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>    
+</I>&gt;&gt;&gt;<i> ---------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i> -
+</I>&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100408/33a07c06/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100408/33a07c06/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006191.html">[OpenIMSCore-Users] Registration failed with Ipsec enabled
+</A></li>
+	<LI>Next message: <A HREF="006185.html">[OpenIMSCore-Users] OpenIMSCore and Sailfin - 488 Not Acceptable	here
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6192">[ date ]</a>
+              <a href="thread.html#6192">[ thread ]</a>
+              <a href="subject.html#6192">[ subject ]</a>
+              <a href="author.html#6192">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

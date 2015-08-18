@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] 3rd Party Registration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%203rd%20Party%20Registration&In-Reply-To=%3CCAEXSeroH3cyMucU3prys5Dou6Wt1hh0hDCL4%3DNZN34UQYmwsHQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007457.html">
+   <LINK REL="Next"  HREF="007467.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] 3rd Party Registration</H1>
+    <B>Mosiuoa Tsietsi</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%203rd%20Party%20Registration&In-Reply-To=%3CCAEXSeroH3cyMucU3prys5Dou6Wt1hh0hDCL4%3DNZN34UQYmwsHQ%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] 3rd Party Registration">mosiuoat at gmail.com
+       </A><BR>
+    <I>Fri Aug 10 17:43:02 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007457.html">[OpenIMSCore-Users] 3rd Party Registration
+</A></li>
+        <LI>Next message: <A HREF="007467.html">[OpenIMSCore-Users] 3rd Party Registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7458">[ date ]</a>
+              <a href="thread.html#7458">[ thread ]</a>
+              <a href="subject.html#7458">[ subject ]</a>
+              <a href="author.html#7458">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Kwon,
+
+Regarding (1), the call model for SIP REGISTER handling is described in TS
+23.218. It shows that the S-CSCF should handle the REGISTER according to
+default SIP rules before doing the filter criteria checking (see Fig
+6.3.1). The problem you are experiencing is obviously because this is not
+being done, and the INVITE is being received before the registration has
+been processed by the S-CSCF.
+
+As a work-around, you may opt to use the Reg-event package instead of  a
+third party registration as this can be done out of band. You will receive
+NOTIF(Y)cations and you won't have this problem in that case, which looks
+like a race condition.
+
+Regarding (2), the spec recommends that a 4xx response be sent back in
+those cases, so the use of 404 instead of 480 is probably just an
+implementation decision.
+
+Mos
+
+On 10 August 2012 16:36, Kwon, Alan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alan.Kwon at interoptechnologies.com</A>&gt;wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Got couple of questions.
+</I>&gt;<i>
+</I>&gt;<i> 1. I have set a trigger point in HSS to send me a registration event. So,
+</I>&gt;<i> when the user registers I receive SIP REGISTER with the proper event.
+</I>&gt;<i> Problem is that when I send an INVITE to the user who just registered,
+</I>&gt;<i> SCSCF returns &quot;404 Not Found &#8211; destination user not found on this S-CSCF&quot;.
+</I>&gt;<i> I noticed that SCSCF sends the registration event to my application server
+</I>&gt;<i> before it responds with 200 OK back to the client. If I goto sleep for 100
+</I>&gt;<i> milliseconds (could be smaller, I just tried this) then send an INVITE, it
+</I>&gt;<i> always gets delivered successfully. Is this a bug in the core or are third
+</I>&gt;<i> party registrations expected to have some delays?
+</I>&gt;<i>
+</I>&gt;<i> 2. Regarding that &quot;404 Not Found&quot; error&#8230; I expected to receive 404 only
+</I>&gt;<i> when the user does not exist in the HSS. If the user exists, but is not
+</I>&gt;<i> available, I expected to receive &quot;480 Temporarily Unavailable&quot;. I need to
+</I>&gt;<i> made a distinction between a user that doesn't exist in HSS vs one who's
+</I>&gt;<i> not registered at the moment. Is this correct assumption?
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> &lt;<A HREF="http://www.interoptechnologies.com">http://www.interoptechnologies.com</A>&gt;
+</I>&gt;<i> &lt;<A HREF="http://www.facebook.com/pages/Interop-Technologies/166558410115178">http://www.facebook.com/pages/Interop-Technologies/166558410115178</A>&gt;&lt;<A HREF="https://twitter.com/#%21/InteropTechnolo">https://twitter.com/#%21/InteropTechnolo</A>&gt;&lt;<A HREF="http://www.linkedin.com/company/interop-technologies">http://www.linkedin.com/company/interop-technologies</A>&gt;&lt;<A HREF="http://www.youtube.com/user/InteropTechnologies/">http://www.youtube.com/user/InteropTechnologies/</A>&gt;
+</I>&gt;<i> * Alan Kwon *
+</I>&gt;<i> Senior Software Engineer *T:* +1 972-753-1865 (Texas )   *F:*
+</I>&gt;<i> +1 239-425-6845   *M:* +1 469-767-8988Confidentiality Notice: The
+</I>&gt;<i> information in this e-mail and in any attachment may contain information
+</I>&gt;<i> which is legally privileged. It is intended only for the attention and use
+</I>&gt;<i> of the named recipient. If you are not the intended recipient, you are not
+</I>&gt;<i> authorized to retain, disclose, copy or distribute the message and/or any
+</I>&gt;<i> of its attachments. If you received this e-mail in error, please notify me
+</I>&gt;<i> and delete this message. Thank you.
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0001.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0001.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 297C73BC-1686-4165-8347-A42A65935C9C[11].png
+Type: image/png
+Size: 470 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0009.png">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0009.png</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 93472075-13C1-4B30-B02E-880433E49BCB[11].png
+Type: image/png
+Size: 70 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0010.png">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0010.png</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 8DC776EF-BDDC-42B7-AE6A-3A40C817C840[11].png
+Type: image/png
+Size: 70 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0011.png">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0011.png</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: AA9284BE-1535-4E90-B1F3-A15A117185E4[11].png
+Type: image/png
+Size: 712 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0012.png">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0012.png</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: F1082BF8-1083-4460-8A86-8BB0A4E2B810[11].png
+Type: image/png
+Size: 473 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0013.png">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0013.png</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 206F8301-21F9-423B-AE1B-8F6A88E5073F[11].png
+Type: image/png
+Size: 344 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0014.png">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0014.png</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: F0F7A489-9E7D-4683-9EC2-DF93C72EF70D[11].png
+Type: image/png
+Size: 70 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0015.png">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0015.png</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 5331E2FA-1E5B-49B5-AEA6-964D1E0357C0[11].png
+Type: image/png
+Size: 5801 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0016.png">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0016.png</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 3A00B4F7-3806-4AB8-8695-A52B82D97116[11].png
+Type: image/png
+Size: 70 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0017.png">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/364ad94c/attachment-0017.png</A>&gt;
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007457.html">[OpenIMSCore-Users] 3rd Party Registration
+</A></li>
+	<LI>Next message: <A HREF="007467.html">[OpenIMSCore-Users] 3rd Party Registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7458">[ date ]</a>
+              <a href="thread.html#7458">[ thread ]</a>
+              <a href="subject.html#7458">[ subject ]</a>
+              <a href="author.html#7458">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

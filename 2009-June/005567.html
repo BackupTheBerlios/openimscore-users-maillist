@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Debian &amp; Ubuntu Package
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Debian%20%26%20Ubuntu%20Package&In-Reply-To=%3C4A4A5CD2.7040708%40netscape.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005556.html">
+   <LINK REL="Next"  HREF="005557.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Debian &amp; Ubuntu Package</H1>
+    <B>Arock</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Debian%20%26%20Ubuntu%20Package&In-Reply-To=%3C4A4A5CD2.7040708%40netscape.net%3E"
+       TITLE="[OpenIMSCore-Users] Debian &amp; Ubuntu Package">arockbugs at netscape.net
+       </A><BR>
+    <I>Tue Jun 30 20:43:30 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005556.html">[OpenIMSCore-Users] Debian &amp; Ubuntu Package
+</A></li>
+        <LI>Next message: <A HREF="005557.html">[OpenIMSCore-Users] SIPp register-invite scenario
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5567">[ date ]</a>
+              <a href="thread.html#5567">[ thread ]</a>
+              <a href="subject.html#5567">[ subject ]</a>
+              <a href="author.html#5567">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Arnaud,
+
+finally, it is working.
+I don&#180;t really know why it&#180;s now working, but the following is how i 
+proceded:
+
+   1. uninstall anything related with ser using aptitude
+   2. then in terminal:
+
+    get OpenIMSCore and try the installation as in the installation guide
+
+        mkdir /opt/OpenIMSCore
+        cd /opt/OpenIMSCore
+        mkdir ser_ims
+        svn checkout
+        <A HREF="http://svn.berlios.de/svnroot/repos/openimscore/ser_ims/trunk">http://svn.berlios.de/svnroot/repos/openimscore/ser_ims/trunk</A>
+        ser_ims
+        cd ser_ims
+        make install-libs all
+        cd ..
+
+    after configuration, i tried to start icscf but got several error
+    messages about missing libraries, so i retry the compilation of
+    debian packages
+
+        mv ser_ims /usr/local/src
+        cd /usr/local/src/ser_ims
+        make deb
+        cd ..
+
+    install the resulting debian packages of ser and all modules
+
+        dpkg -i ser_0.9.4-0.2-svn680_i386.deb
+        ser-cpl-module_0.9.4-0.2-svn680_i386.deb
+        ser-jabber-module_0.9.4-0.2-svn680_i386.deb
+        ser-presence-module_0.9.4-0.2-svn680_i386.deb
+        ser-radius-modules_0.9.4-0.2-svn680_i386.deb
+        ser-xmlrpc-module_0.9.4-0.2-svn680_i386.deb
+        ser-mysql-module_0.9.4-0.2-svn680_i386.deb
+        ser-postgres-module_0.9.4-0.2-svn680_i386.deb
+
+    Because of my previous tryouts which resulted in not finding ser in
+    &quot;/usr/sbin&quot;, i omitt removing the ser service as advised by Sebastian
+    # Remove ser service
+    /etc/init.d/ser stop
+    update-rc.d ser remove
+    Install Open IMS core pcscf, icscf, scscf
+
+        dpkg -i ser-scscf_0.9.4-0.2-svn680_i386.deb
+        ser-pcscf_0.9.4-0.2-svn680_i386.deb
+        ser-icscf_0.9.4-0.2-svn680_i386.deb
+        ser-cscf_0.9.4-0.2-svn680_i386.deb
+
+    stopped the ser service and change the the execution bit
+
+        /etc/init.d/ser stop
+        chmod 644 /etc/init.d/ser
+
+for the installation of FHoSS:
+
+        cd /opt/OpenIMSCore
+        mkdir FHoSS
+        svn checkout
+        <A HREF="http://svn.berlios.de/svnroot/repos/openimscore/FHoSS/trunk">http://svn.berlios.de/svnroot/repos/openimscore/FHoSS/trunk</A> FHoSS
+        cd FHoSS
+
+edit /debian/fhoss.init
+
+    #JAVA_HOME=/usr/lib/jvm/java-6-sun (because i have java-6-sun)
+
+edit /debian/control
+
+    removed from &quot;Package: fhoss&quot; --&gt; &quot;Depends:&quot; the entry
+    &quot;sun-java5-jre (&gt;= 1.5.0),&quot;
+    #orignal entry : Depends: sun-java5-jre (&gt;= 1.5.0), debconf,
+    mysql-server, mysql-client
+    #edited entry  : Depends: debconf, mysql-server, mysql-client
+
+        ant compile deploy
+        ant deb
+
+    populate the database
+
+        mysql -u root -p -h localhost &lt; scripts/hss_db.sql
+        mysql -u root -p -h localhost &lt; scripts/userdata.sql
+        dpkg -i dpkg -i fhoss_0.2-svn680_i386.deb
+
+    when asked if the database should be installed, select  &quot;NO&quot; (the
+    referenced /usr/share/doc/fhoss/examples/hss_db.sql.gz and
+    /usr/share/doc/fhoss/examples/userdata.sql.gz cannot be found)
+
+
+Thanks again and cheers
+
+Auguste
+   
+
+Arnaud MORIN schrieb:
+&gt;<i> Hi Auguste,
+</I>&gt;<i>
+</I>&gt;<i> The pkg/debian available in trunk are not up to date and cannot be 
+</I>&gt;<i> used as it.
+</I>&gt;<i> But you still can build the binaries by hand : follow instructions 
+</I>&gt;<i> from  openimscore.org &lt;<A HREF="http://openimscore.org">http://openimscore.org</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> If you really want packages for Debian, contact me again.
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> Arnaud.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Mon, Jun 29, 2009 at 12:05 AM, Arock &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">arockbugs at netscape.net</A> 
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">arockbugs at netscape.net</A>&gt;&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>     Hi Arnaud,
+</I>&gt;<i>
+</I>&gt;<i>     I am trying to get the revision 680 of OpenIMSCore run on a Debian
+</I>&gt;<i>     Lenny system.
+</I>&gt;<i>     I managed to get the FhoSS up and running but not the CFCSs.
+</I>&gt;<i>     After compilation and installation, the ser binary can&#180;t be found
+</I>&gt;<i>     in any location on the system (/usr/sbin/,
+</I>&gt;<i>     /opt/OpenIMSCore/ser_ims/, ...)
+</I>&gt;<i>
+</I>&gt;<i>     Can you please help me with your &quot;pkg/debian&quot; and your Makefile
+</I>&gt;<i>     for ser_ims?
+</I>&gt;<i>
+</I>&gt;<i>     Thanks and cheers,
+</I>&gt;<i>     Auguste
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     _______________________________________________
+</I>&gt;<i>     OpenIMSCore-Users mailing list
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090630/fec6f46f/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090630/fec6f46f/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005556.html">[OpenIMSCore-Users] Debian &amp; Ubuntu Package
+</A></li>
+	<LI>Next message: <A HREF="005557.html">[OpenIMSCore-Users] SIPp register-invite scenario
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5567">[ date ]</a>
+              <a href="thread.html#5567">[ thread ]</a>
+              <a href="subject.html#5567">[ subject ]</a>
+              <a href="author.html#5567">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

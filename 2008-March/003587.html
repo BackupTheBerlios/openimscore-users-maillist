@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Bug in routing REGISTER request
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Bug%20in%20routing%20REGISTER%20request&In-Reply-To=%3CC79E0D5D77634942944E974D9AC6AC8D11D3E0%40EXCHANGE-VG.vegacom%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003586.html">
+   <LINK REL="Next"  HREF="003639.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Bug in routing REGISTER request</H1>
+    <B>Sluchevskiy Roman</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Bug%20in%20routing%20REGISTER%20request&In-Reply-To=%3CC79E0D5D77634942944E974D9AC6AC8D11D3E0%40EXCHANGE-VG.vegacom%3E"
+       TITLE="[OpenIMSCore-Users] Bug in routing REGISTER request">RSluchevskiy at scartel.ru
+       </A><BR>
+    <I>Fri Mar  7 12:19:58 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003586.html">[OpenIMSCore-Users] List of Bindings
+</A></li>
+        <LI>Next message: <A HREF="003639.html">[OpenIMSCore-Users] Bug in routing REGISTER request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3587">[ date ]</a>
+              <a href="thread.html#3587">[ thread ]</a>
+              <a href="subject.html#3587">[ subject ]</a>
+              <a href="author.html#3587">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all!
+
+We found following issue: 
+  - Set up a trigger point for your AS to handle all REGISTER request
+types (Reg, ReReg, DeReg)
+  - Try to register -- you will receive 500 Internal server error
+
+This error is caused by wrong XML schema in
+modules/scscf/CxDataType_Rel7.xsd. tRegistrationType defines 3 element
+while everywhere whithin the file where this type is used maxOccurs for
+it is set to 2. So to fix this problem we should change maxOccurs from 2
+to 3.
+I attached an error log.
+
+I'm sure it's easy-to-fix issue :)
+
+Roman Sluchevskiy
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: ims_log.JPG
+Type: image/jpeg
+Size: 251825 bytes
+Desc: ims_log.JPG
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080307/6b276c4a/attachment.jpe">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080307/6b276c4a/attachment.jpe</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003586.html">[OpenIMSCore-Users] List of Bindings
+</A></li>
+	<LI>Next message: <A HREF="003639.html">[OpenIMSCore-Users] Bug in routing REGISTER request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3587">[ date ]</a>
+              <a href="thread.html#3587">[ thread ]</a>
+              <a href="subject.html#3587">[ subject ]</a>
+              <a href="author.html#3587">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

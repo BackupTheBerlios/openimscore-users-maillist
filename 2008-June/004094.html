@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to correctly route NOTIFY to UE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20correctly%20route%20NOTIFY%20to%20UE&In-Reply-To=%3Cdaca1e090806111330l3e2432cdlca73f4361cc0feb1%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004106.html">
+   <LINK REL="Next"  HREF="004096.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to correctly route NOTIFY to UE</H1>
+    <B>Louis Alexander</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20correctly%20route%20NOTIFY%20to%20UE&In-Reply-To=%3Cdaca1e090806111330l3e2432cdlca73f4361cc0feb1%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] How to correctly route NOTIFY to UE">panicked.kernel at gmail.com
+       </A><BR>
+    <I>Wed Jun 11 22:30:47 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004106.html">[OpenIMSCore-Users] logs
+</A></li>
+        <LI>Next message: <A HREF="004096.html">[OpenIMSCore-Users] How to correctly route NOTIFY to UE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4094">[ date ]</a>
+              <a href="thread.html#4094">[ thread ]</a>
+              <a href="subject.html#4094">[ subject ]</a>
+              <a href="author.html#4094">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>So i have successfully got my OpenIMSCore working (except for MD5, still
+waiting for help on that one), and so i installed a fresh copy of OpenSER
+1.3.x and am using it as a stand alone presence server.  Its working great,
+the UE sends a SUBSCRIBE with RURI:
+
+SUBSCRIBE <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+
+and that works great, except for the fact that in the SUBSCRIBE from my UE,
+it uses the Contact header:
+
+Contact: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at a.b.c.d</A>:123456
+
+So when the presence server authors the NOTFY to alice, the RURI is:
+
+NOTIFY <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at a.b.c.d</A>:123456
+
+First it hits the S-CSCF as a result of the record route, and then correctly
+so the P-CSCF (according to
+<A HREF="http://www.eventhelix.com/ims/presence/ims-presence-subscribe-notify-flow.pdf">http://www.eventhelix.com/ims/presence/ims-presence-subscribe-notify-flow.pdf</A>)
+and then to the UE, but since the RURI is to a.b.c.d:123456 instead of
+open-ims.test, the P-CSCF sends it to the I-CSCF, and the I-CSCF complains:
+
+&quot;406 Initial Request Method Not Allowed At I-CSCF&quot;
+
+my guess is that the P-CSCF in this flow is expecting the RURI, NOTIFY
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>, and since it is not (i.e. thinks the NOTIFY is not for
+the local domain), it gets routed to the I-CSCF, is this correct?
+
+It seems this would be a common problem as the UE is doing the &quot;right thing&quot;
+by putting its IP in the Contact: header.
+
+Does the problem lie in my configuration of the OpenIMSCore, my UE, or my
+presence server?
+
+Capture attached :)
+
+-- 
+Thanks,
+
+Louis
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080611/6e8cd1c0/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080611/6e8cd1c0/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: presence.filtered.cap
+Type: application/octet-stream
+Size: 25668 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080611/6e8cd1c0/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080611/6e8cd1c0/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004106.html">[OpenIMSCore-Users] logs
+</A></li>
+	<LI>Next message: <A HREF="004096.html">[OpenIMSCore-Users] How to correctly route NOTIFY to UE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4094">[ date ]</a>
+              <a href="thread.html#4094">[ thread ]</a>
+              <a href="subject.html#4094">[ subject ]</a>
+              <a href="author.html#4094">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Regarding SUBSCRIBE to reg event
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Regarding%20SUBSCRIBE%20to%20reg%20event&In-Reply-To=%3Ccdbda6820707030600p39778201had91369833a3ae8a%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002076.html">
+   <LINK REL="Next"  HREF="002087.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Regarding SUBSCRIBE to reg event</H1>
+    <B>sanjeev mudholkar</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Regarding%20SUBSCRIBE%20to%20reg%20event&In-Reply-To=%3Ccdbda6820707030600p39778201had91369833a3ae8a%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Regarding SUBSCRIBE to reg event">sanjeev.mudholkar at gmail.com
+       </A><BR>
+    <I>Tue Jul  3 15:00:32 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002076.html">[OpenIMSCore-Users] B2BUA best practice
+</A></li>
+        <LI>Next message: <A HREF="002087.html">[OpenIMSCore-Users] Regarding SUBSCRIBE to reg event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2068">[ date ]</a>
+              <a href="thread.html#2068">[ thread ]</a>
+              <a href="subject.html#2068">[ subject ]</a>
+              <a href="author.html#2068">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+  I am facing a issue after successful subscription for registration event.
+   The s-cscf is rejecting the SUBSCRIBE refresh request.
+Attached is the ethereal capture for your reference.
+
+Here is a small section from 24.229
+5.4.2.1.1
+&quot;The S-CSCF may set the Contact header to an identifier uniquely associated
+to the SUBSCRIBE request and generated within the S-CSCF, that may help the
+S-CSCF to correlate refreshes for the SUBSCRIBE&quot;
+
+Accordingly the SUBSCRIBE request (request) contains the 's-cscf contact sip
+uri' received in
+&quot;200 OK&quot;  for the first SUBSCRIBE. But for some reason the S-CSCF rejects
+the
+refresh request.
+
+Can somebody point what could be issue.
+
+Appreciate your help.
+-Sanjeev
+
+On 6/27/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Hello Sanjeev,
+</I>&gt;<i>
+</I>&gt;<i> You are right, the Contact was missing in SUBSCRIBE. Looks like it went
+</I>&gt;<i> unnoticed as there is no other practical use for it than to unsubscribe
+</I>&gt;<i> and that would be still be routed even without a Contact in the
+</I>&gt;<i> Request-URI.
+</I>&gt;<i>
+</I>&gt;<i> Anyway, fixed since r346. Thanx for the report!
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> sanjeev mudholkar wrote:
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt;   When a SUBSCRIBE (with reg event) is sent to P-CSCF, it is
+</I>&gt;<i> &gt; responding with
+</I>&gt;<i> &gt; '200 OK' and then with a NOTIFY. My client is a not able to process
+</I>&gt;<i> &gt; the '200 OK'
+</I>&gt;<i> &gt; response as Contact field is missing. Is this not incorrect ?
+</I>&gt;<i> &gt; As per RFC3265 the Contact field is mandatory in the response.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I looked through the trace of S-CSCF and P-CSCF and found that the
+</I>&gt;<i> &gt; response from S-CSF  does not contain the Contact.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Attached is the ethereal capture for your reference.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Appreciate your help
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks
+</I>&gt;<i> &gt; -Sanjeev
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+OneConvergence
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070703/ae900063/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070703/ae900063/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: sub_refresh.cap
+Type: application/cap
+Size: 56967 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070703/ae900063/attachment.cap">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070703/ae900063/attachment.cap</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002076.html">[OpenIMSCore-Users] B2BUA best practice
+</A></li>
+	<LI>Next message: <A HREF="002087.html">[OpenIMSCore-Users] Regarding SUBSCRIBE to reg event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2068">[ date ]</a>
+              <a href="thread.html#2068">[ thread ]</a>
+              <a href="subject.html#2068">[ subject ]</a>
+              <a href="author.html#2068">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

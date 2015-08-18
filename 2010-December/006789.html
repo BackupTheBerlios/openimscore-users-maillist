@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] monster registration problem related	to	Ipv6 [part2]
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20monster%20registration%20problem%20related%0A%09to%09Ipv6%20%5Bpart2%5D&In-Reply-To=%3C065f01cb9619%24e038aab0%24a0aa0010%24%40knu.ac.kr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006788.html">
+   <LINK REL="Next"  HREF="006793.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] monster registration problem related	to	Ipv6 [part2]</H1>
+    <B>Jong Tae Park</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20monster%20registration%20problem%20related%0A%09to%09Ipv6%20%5Bpart2%5D&In-Reply-To=%3C065f01cb9619%24e038aab0%24a0aa0010%24%40knu.ac.kr%3E"
+       TITLE="[OpenIMSCore-Users] monster registration problem related	to	Ipv6 [part2]">jtpark at ee.knu.ac.kr
+       </A><BR>
+    <I>Tue Dec  7 15:20:18 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006788.html">[OpenIMSCore-Users] monster registration problem related to	Ipv6 [part2]
+</A></li>
+        <LI>Next message: <A HREF="006793.html">[OpenIMSCore-Users] monster registration problem related	to	Ipv6 [part2]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6789">[ date ]</a>
+              <a href="thread.html#6789">[ thread ]</a>
+              <a href="subject.html#6789">[ subject ]</a>
+              <a href="author.html#6789">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Please unsubscribe me to this mail-exploder.
+
+ 
+
+JT Park
+
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Gerg?
+Somogyi
+Sent: Tuesday, December 07, 2010 11:17 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Re: [OpenIMSCore-Users] monster registration problem related to
+Ipv6 [part2]
+
+ 
+
+Hello All!
+
+Franz, not exactly.
+
+The issue occured always, when I use Monster client. Of course I tried other
+local ports, but the problem came forward in every case.
+
+For example, with local port 27752, I got:
+
+5(8366) INF:P-CSCF:----------  Registrar Contents begin --------
+ 5(8366) INF:P-CSCF:[ 248] C:
+&lt;0://[2001:738:2001:20a0:2e0:ff:fe9b:32b0:27752]:5060&gt; Exp:[3548] R:[ 1]
+SOS:[ ] &lt;sip:test4@[2001:738:2001:20a0:2e0:ff:fe9b:32b0:27752]&gt;
+
+So the client added the local port to the end of the ipv6 address of the
+client and it can be seen in the Contact field of the SIP message, too (you
+can see it in the attached capture file).
+
+
+But in the meantime, I wrote a mail directly to the Monster developer team
+with this issue, and they found a mistake in creating the contact header (in
+the Monster). I got a fixed jar file, which solves the problem. Of course,
+it will be in the next release of the client.
+
+Best regards:
+Gerg&#337;
+
+
+
+2010/12/6 Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+
+Gerg&#246;,
+
+ 
+
+please explain the issue you had (and add a wireshark or tcpdump capture
+file). 
+
+As far as I remember the issue occurred when your client used the default
+port 5060 and did not add this port explicitly  to the Contact header
+because it is the default port number.
+
+ 
+
+Is this correct?
+
+ 
+
+BR
+
+Franz
+
+ 
+
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Onofrei,
+Andreea Ancuta
+Sent: Monday, December 06, 2010 3:26 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: [OpenIMSCore-Users] monster registration problem related to Ipv6
+[part2]
+
+ 
+
+Dear all,
+
+I have done some tests with Ipv6 and for the contact displayed in:
+DBG:P-CSCF:update_contact:
+&lt;sip:alice@[2001:638:806:65:21d:9ff:fe22:cb88]:3061&gt;
+
+It shows the stored contact:
+INF:P-CSCF:----------  Registrar Contents begin --------
+ 1(31642) INF:P-CSCF:[ 158] C:
+&lt;0://[2001:638:806:65:21d:9ff:fe22:cb88]:3061&gt; Exp:[ 300] R:[ 1] SOS:[ ]
+&lt;sip:alice@[2001:638:806:65:21d:9ff:fe22:cb88]:3061&gt;
+ 1(31642) INF:P-CSCF:----------  Registrar Contents end ----------
+
+Please check that the request contains a Contact header like:
+sip:alice@[2001:638:806:65:21d:9ff:fe22:cb88]:3061
+
+and if you still have problems please send an e-mail with the wireshark/pcap
+capture.
+
+Best regards,
+Ancuta
+
+
+
+ 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20101207/826b7cd6/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20101207/826b7cd6/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006788.html">[OpenIMSCore-Users] monster registration problem related to	Ipv6 [part2]
+</A></li>
+	<LI>Next message: <A HREF="006793.html">[OpenIMSCore-Users] monster registration problem related	to	Ipv6 [part2]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6789">[ date ]</a>
+              <a href="thread.html#6789">[ thread ]</a>
+              <a href="subject.html#6789">[ subject ]</a>
+              <a href="author.html#6789">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

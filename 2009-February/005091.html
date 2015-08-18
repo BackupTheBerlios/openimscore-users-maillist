@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] iFC for  REFER
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20iFC%20for%20%20REFER&In-Reply-To=%3CBAFEA16E8D474044A05D96ACEBB612CE%40LIONKING.COM%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005090.html">
+   <LINK REL="Next"  HREF="005124.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] iFC for  REFER</H1>
+    <B>Sireesha Jakku</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20iFC%20for%20%20REFER&In-Reply-To=%3CBAFEA16E8D474044A05D96ACEBB612CE%40LIONKING.COM%3E"
+       TITLE="[OpenIMSCore-Users] iFC for  REFER">sireesha.jakku at info-spectrum.com
+       </A><BR>
+    <I>Thu Feb 19 12:01:27 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005090.html">[OpenIMSCore-Users] iFC for  REFER
+</A></li>
+        <LI>Next message: <A HREF="005124.html">[OpenIMSCore-Users] iFC for  REFER
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5091">[ date ]</a>
+              <a href="thread.html#5091">[ thread ]</a>
+              <a href="subject.html#5091">[ subject ]</a>
+              <a href="author.html#5091">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Franz,
+
+I am sending REFER within the INVITE dialog only.. but I want to have my AS to receive both INVITE and REFER messages..
+
+As I can observe, in SCSCF, routing for the REFER method is being handled in orig_subsequent part only..
+
+route[Orig_Subsequent]
+{
+        log(1,&quot;&gt;&gt;       Orig_Subsequent\n&quot;);
+        :
+        :
+} 
+
+&gt;<i>&quot;If you want to do some action on a REFER request within an INVITE initiated dialog you have to trigger on INVITE and pass-through alls other requests in your &gt;application except the REFER&quot;
+</I>
+But how can I forward it to the AS from SCSCF, without specifying iFC for REFER?? (sorry for my ignorance..I started with SER very recently! )
+can I directly forward it using functions like t_relay()??
+
+If the answer is too long, please let me know where can I find the related information..
+
+Thankyou so much for your support !!! 
+
+Regards,
+Sireesha 
+  ----- Original Message ----- 
+  From: Franz Edler 
+  To: Sireesha Jakku ; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A> 
+  Sent: Thursday, February 19, 2009 4:12 PM
+  Subject: RE: [OpenIMSCore-Users] iFC for REFER
+
+
+  Hi Sireesha,
+
+
+  &gt; I want to forward the &quot;REFER&quot; message to be sent to AS from SCSCF..
+
+
+  I want to stress the fact that iFCs are only allowed to be used at &quot;initial&quot; SIP requests (see TS 23.218 6.2.9). 
+  Initial SIP requests are dialog initiating requests or standalone requests (see the definition in TS 23.3218: Initial Request: a SIP request that either initiates the creation of a new dialog or is part of a standalone transaction.)
+
+  REFER may be a standalone request or part of a dialog. In the latter case you are violating SIP standards when you modify the route during a dialog by setting a trigger on it.
+  If you want to do some action on a REFER request within an INVITE initiated dialog you have to trigger on INVITE and pass-through alls other requests in your application except the REFER, where you act upon. This is because REFER within a dialog is not an initial SIP request.
+
+  regards
+  Franz
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090219/99d5843b/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090219/99d5843b/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005090.html">[OpenIMSCore-Users] iFC for  REFER
+</A></li>
+	<LI>Next message: <A HREF="005124.html">[OpenIMSCore-Users] iFC for  REFER
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5091">[ date ]</a>
+              <a href="thread.html#5091">[ thread ]</a>
+              <a href="subject.html#5091">[ subject ]</a>
+              <a href="author.html#5091">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

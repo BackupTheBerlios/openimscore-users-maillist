@@ -1,0 +1,525 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [OpenIMSCore-CSCF] S-CSCF crash
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BOpenIMSCore-CSCF%5D%20S-CSCF%20crash&In-Reply-To=%3Cb33002040706251017g6231074scc9dc752faf372c6%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002012.html">
+   <LINK REL="Next"  HREF="001941.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [OpenIMSCore-CSCF] S-CSCF crash</H1>
+    <B>JF</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BOpenIMSCore-CSCF%5D%20S-CSCF%20crash&In-Reply-To=%3Cb33002040706251017g6231074scc9dc752faf372c6%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] [OpenIMSCore-CSCF] S-CSCF crash">jfkavaka at gmail.com
+       </A><BR>
+    <I>Mon Jun 25 19:17:43 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002012.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] S-CSCF crash
+</A></li>
+        <LI>Next message: <A HREF="001941.html">[OpenIMSCore-Users] R&#233;f. : Re:  Problem during re-registration :	401	response ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2019">[ date ]</a>
+              <a href="thread.html#2019">[ thread ]</a>
+              <a href="subject.html#2019">[ subject ]</a>
+              <a href="author.html#2019">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The issue comes from registering isc_failure both for TMCB_RESPONSE_IN
+and TMCB_ON_FAILURE.
+
+TMCB_RESPONSE_IN callbacks execute in MODE_ONREPLY.
+TMCB_ON_FAILURE callbacks execute in MODE_ONFAILURE.
+
+Instead of directly calling isc_bootstrap from isc_failure I think we
+have to register (inside isc_failure) isc_bootstrap as a
+TMCB_ON_FAILURE callback. This way it will run in MODE_ONFAILURE.
+
+JF
+
+On 6/22/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i> I'm getting the same thing... will have to dig deeper to find how to
+</I>&gt;<i> change the response from the AS...
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> JF wrote:
+</I>&gt;<i> &gt; Well,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Now I'm getting
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 3(728) INFO:ISC:isc_mark_set: NEW mark
+</I>&gt;<i> &gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf3.ptinovacao.pt</A>:6060;lr;s=2;h=0;d=0&gt;
+</I>&gt;<i> &gt; 3(728) qm_malloc(0x812ffc0, 29) called from isc.c: isc_bootstrap(255)
+</I>&gt;<i> &gt; 3(728) qm_malloc(0x812ffc0, 32) returns address 0x8184608 frag.
+</I>&gt;<i> &gt; 0x81845f0 (size=32) on 1 -th hit
+</I>&gt;<i> &gt; 3(728) ERROR: w_t_relay_to: unsupported mode: 2
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; when the S-CSCF receives (or fakes?) a 408 Timeout, which means in
+</I>&gt;<i> &gt; isc_bootstrap() t_relay is getting called for MODE_ONREPLY.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Strange, because a 408 reply should enter failure mode... I'll try to
+</I>&gt;<i> &gt; dig deeper into it.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; JF
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On 6/21/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt; Hello again,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; I have discovered that the msg-&gt;dst_uri.s in isc_bootstrap() was
+</I>&gt;<i> &gt;&gt; actually a ptr in shm. Looking at sip_msg.c:455 it looks like the msg is
+</I>&gt;<i> &gt;&gt; dupped in shm when it is copied in the transaction tables.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; In the end, I don't think that there is any need to reset the
+</I>&gt;<i> &gt;&gt; msg-&gt;dst_uri as append_branch() seems to do the job of redirecting the
+</I>&gt;<i> &gt;&gt; message. Well, the issue is solved, but I just wish that I did not broke
+</I>&gt;<i> &gt;&gt; anything else :).
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Dragos Vingarzan wrote:
+</I>&gt;<i> &gt;&gt; &gt; Hi Joao,
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; theoretically we could, but then, if it is not null, then something
+</I>&gt;<i> &gt;&gt; must
+</I>&gt;<i> &gt;&gt; &gt; be there... Where did you say that it was freed the first time and not
+</I>&gt;<i> &gt;&gt; &gt; reset (which line?)?
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; It could be, oddly enough, that we are using the wrong request message
+</I>&gt;<i> &gt;&gt; &gt; (one that was previously freed...).
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; -Dragos
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; JF wrote:
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt; A more detailed analysis of the log and capture:
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt; A) INVITE reaches S-CSCF (from itself) for terminating trigger.
+</I>&gt;<i> &gt;&gt; &gt;&gt; Trigger matches and isc_forward() is called. Treated by process
+</I>&gt;<i> &gt;&gt; 28770.
+</I>&gt;<i> &gt;&gt; &gt;&gt; Address 0x816753c is allocated some bytes.
+</I>&gt;<i> &gt;&gt; &gt;&gt; 1(28770) qm_malloc(0x81126a0, 21) called from isc.c: isc_forward(92)
+</I>&gt;<i> &gt;&gt; &gt;&gt; 1(28770) qm_malloc(0x81126a0, 24) returns address 0x816753c frag.
+</I>&gt;<i> &gt;&gt; &gt;&gt; 0x8167524 (size=72) on 1 -th hit
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt; B) In the meantime, before sending out the INVITE, 100 Trying comes
+</I>&gt;<i> &gt;&gt; &gt;&gt; from the terminating CSCF (same as originating) and is treated by
+</I>&gt;<i> &gt;&gt; &gt;&gt; process 28772. OK.
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt; C) While cleaning up after processing the INVITE, address
+</I>&gt;<i> &gt;&gt; 0x816753c is
+</I>&gt;<i> &gt;&gt; &gt;&gt; freed by parser/msg_parser.c.
+</I>&gt;<i> &gt;&gt; &gt;&gt; 1(28770) receive_msg: cleaning up
+</I>&gt;<i> &gt;&gt; &gt;&gt; 1(28770) qm_free(0x81126a0, 0x816753c), called from
+</I>&gt;<i> &gt;&gt; &gt;&gt; parser/msg_parser.c: free_sip_msg(651)
+</I>&gt;<i> &gt;&gt; &gt;&gt; 1(28770) qm_free: freeing frag. 0x8167524 alloc'ed from isc.c:
+</I>&gt;<i> &gt;&gt; &gt;&gt; isc_forward(92)
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt; D) The INVITE is sent to the AS and then comes 100 Trying from the
+</I>&gt;<i> &gt;&gt; AS.
+</I>&gt;<i> &gt;&gt; &gt;&gt; Treated by process 28773. isc_failure is called but does nothing.
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt; E) AS sends 503 Service Unavailable. Treated by process 28771.
+</I>&gt;<i> &gt;&gt; &gt;&gt; isc_forward is called. Inside isc_bootstrap, there is an attempt to
+</I>&gt;<i> &gt;&gt; &gt;&gt; free address 0xb6156424.
+</I>&gt;<i> &gt;&gt; &gt;&gt; 2(28771) INFO:ISC:isc_failure: reached with s=1;h=0;d=1
+</I>&gt;<i> &gt;&gt; &gt;&gt; 2(28771) DBG:ISC:isc_bootstrap(): marking for bootstrap
+</I>&gt;<i> &gt;&gt; &gt;&gt; 2(28771) qm_free(0x81126a0, 0xb6156424), called from isc.c:
+</I>&gt;<i> &gt;&gt; &gt;&gt; isc_bootstrap(253)
+</I>&gt;<i> &gt;&gt; &gt;&gt; 2(28771) BUG: qm_free: bad pointer 0xb6156424 (out of memory
+</I>&gt;<i> &gt;&gt; block!) -
+</I>&gt;<i> &gt;&gt; &gt;&gt; aborting
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt; So, it seems that receive.c::receive_msg() is freeing the dst_uri and
+</I>&gt;<i> &gt;&gt; &gt;&gt; then isc_bootstrap tries to free it again, but when it does the
+</I>&gt;<i> &gt;&gt; &gt;&gt; pointer is not valid anymore...
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt; If I'm correct, we can ditch the pkg_free in isc_bootstrap(), line
+</I>&gt;<i> &gt;&gt; 253:
+</I>&gt;<i> &gt;&gt; &gt;&gt;   if (msg-&gt;dst_uri.s) pkg_free(msg-&gt;dst_uri.s);
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt; Would be great also if pkg_free would zero the pointer when it frees
+</I>&gt;<i> &gt;&gt; &gt;&gt; the mem, but as it doesn't (?) the previous if cannot be used...
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt; Does this make sense?
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt; Jo&#227;o Filipe Pl&#225;cido
+</I>&gt;<i> &gt;&gt; &gt;&gt; --
+</I>&gt;<i> &gt;&gt; &gt;&gt; PT Inova&#231;&#227;o
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt; On 6/8/07, JF &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">jfkavaka at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt; &gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; Hi all,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; Has anyone else been able to replicate this crash using the provided
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; sipp scripts?
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; We have tried to analyse the code and the backtraces but haven't yet
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; figured out what is causing this.
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; Thanks,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; JF
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; On 5/30/07, Jos&#233; Carlos Amorim &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">jose-c-amorim at ptinovacao.pt</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Hi Dragos,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; I send in annex the sipp scripts to replicate this scenario, I send
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; one for each user and one for the AS. We used revision 287 for
+</I>&gt;<i> &gt;&gt; the test.
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; User testes31 registers first using testes31.xml, this user has
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; triggers and are as follows :
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;IMSSubscription&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;PrivateID&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">testes31 at ptinovacao.pt</A>&lt;/PrivateID&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;ServiceProfile&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;PublicIdentity&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;BarringIndication&gt;0&lt;/BarringIndication&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;Identity&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">testes31 at ptinovacao.pt</A>&lt;/Identity&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;/PublicIdentity&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;InitialFilterCriteria&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;Priority&gt;1&lt;/Priority&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;TriggerPoint&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;ConditionTypeCNF&gt;0&lt;/ConditionTypeCNF&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;SPT&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;SessionCase&gt;1&lt;/SessionCase&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;/SPT&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;SPT&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;ConditionNegated&gt;1&lt;/ConditionNegated&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;SIPHeader&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;Header&gt;Contact&lt;/Header&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;Content&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">SwitchboardService_v1.0 at 192.168.21.4</A>:5070&lt;/Content&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;/SIPHeader&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;/SPT&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;/TriggerPoint&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;ApplicationServer&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &lt;ServerName&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">switchboardservice_v1.0 at 192.168.21.4</A>:5070&lt;/ServerName&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;DefaultHandling&gt;0&lt;/DefaultHandling&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;/ApplicationServer&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;/InitialFilterCriteria&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;/ServiceProfile&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; &lt;/IMSSubscription&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Then user testes30 tries making a call to testes31 (using
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; testes30.xml), the AS (script as.xml) gets the Invite and replies
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; with a 503 and the S-CSCF crashes.
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Regards,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Jos&#233; Carlos Silva
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; -----Mensagem original-----
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; De: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Enviada: ter&#231;a-feira, 29 de Maio de 2007 12:59
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Para: JF
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Cc: Jos&#233; Carlos Amorim; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-cscf at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Assunto: Re: [OpenIMSCore-CSCF] S-CSCF crash
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; No, it's pkg :(... That is the immediate destination of the message
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; and
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; to prevent a memory leak, before overwriting it, I free it.
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; JF wrote:
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt; Hi,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt; According to the trace the crash is actually at &quot;isc_bootstrap&quot;,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt; line=253 of isc.c, when doing pkg_free of msg-&gt;dst_uri...
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt; The log says:
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;  [00m 2(28771)  [01;31mBUG: qm_free: bad pointer 0xb6156424
+</I>&gt;<i> &gt;&gt; (out of
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt; memory block!) - aborting
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt; Maybe shm memory should be used here?
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt; JF
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt; On 5/29/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt;&gt; wrote:
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; Hello Jose,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; I tried to replicate the issue, but I couldn't I tried sending a
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; publish
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; and the AS responding with 503, with the default handling on the
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; AS on
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; both session continued or terminated and no problems. Could you
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; please
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; detail a little more your scenario? SIPp scripts to replicate
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; the issue
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; would be great!
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; Also, what revision are you using? Because in r289 at isc.c:275
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; there is
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; nothing that could cause a crash, just a return statement.
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; Jos&#233; Carlos Amorim wrote:
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; Here is some more information about the problem,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; (gdb) bt
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #0  0x00d0b7a2 in _dl_sysinfo_int80 () from /lib/ld-linux.so.2
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #1  0x0098e7a5 in raise () from /lib/tls/libc.so.6
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #2  0x00990209 in abort () from /lib/tls/libc.so.6
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #3  0x080aa8db in qm_free (qm=0x81126a0, p=0xb6156424, file=0x0,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; func=0x171367 &quot;isc_bootstrap&quot;, line=253) at mem/q_malloc.c:452
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #4  0x0016a7f0 in isc_bootstrap (msg=0xb6156100, mark=0x0) at
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; isc.c:275
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #5  0x0016a335 in isc_failure (t=0xb6153808, type=2,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; ps=0x146848) at
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; isc.c:179
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #6  0x001291c6 in run_trans_callbacks (type=2, trans=0xb6153808,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; req=0x0, rpl=0x0, code=0) at t_hooks.c:195
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #7  0x0012b8fd in t_reply_matching (p_msg=0x81660b0,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; p_branch=0xbfedd344) at t_lookup.c:898
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #8  0x0012be8b in t_check (p_msg=0x81660b0,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; param_branch=0xbfedd344)
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; at t_lookup.c:988
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #9  0x00138076 in reply_received (p_msg=0x81660b0) at
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; t_reply.c:1556
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #10 0x0806570b in forward_reply (msg=0x81660b0) at forward.c:573
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #11 0x0807d822 in receive_msg (
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;    buf=0x80ff6e0 &quot;SIP/2.0 503 Service unavailable\r\nVia:
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; SIP/2.0/UDP
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; 192.168.20.5:6060;branch=z9hG4bKcd4f.1c108876.0\r\nVia:
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; SIP/2.0/UDP
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; 192.168.20.5:6060;branch=z9hG4bKcd4f.0c108876.0\r\nVia:
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; SIP/2.0/UDP
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; 192.168.21.2:4060;&quot;..., len=683, rcv_info=0xbfedd450) at
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; receive.c:221
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #12 0x080a4ece in udp_rcv_loop () at udp_server.c:495
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #13 0x0806b796 in main_loop () at main.c:1025
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; #14 0x0806c955 in main (argc=0, argv=0x0) at main.c:1614
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; Regards,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; Jos&#233; Silva
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; *De:* Jos&#233; Carlos Amorim
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; *Enviada:* quinta-feira, 24 de Maio de 2007 18:31
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; *Para:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-cscf at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; *Assunto:* FW: S-CSCF crash
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; Hi,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; I found a problem with SCSCF, every time I try to contact an
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; AS and
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; get 5xx message the SCSCF crashes. I tested with the latest
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; version of
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; OpenIMSCore and the problem still persists.
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; Is this a known problem? Any idea what the problem is?
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; I send in annex, the log and a sequence of messages that makes
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; the
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; SCSCF crash.
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; If the core dump is necessary I will send it on another mail
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt; because
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; it exceeds email body limit on the list.
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; Regards,
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; Jos&#233; Carlos Silva
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; _______________________________________________
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; OpenIMSCore-CSCF mailing list
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-CSCF at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-cscf">https://lists.berlios.de/mailman/listinfo/openimscore-cscf</A>
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; --
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; -----------------------------------------
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; Fraunhofer FOKUS/NGNI
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; _______________________________________________
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; OpenIMSCore-CSCF mailing list
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-CSCF at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-cscf">https://lists.berlios.de/mailman/listinfo/openimscore-cscf</A>
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; --
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; -----------------------------------------
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Fraunhofer FOKUS/NGNI
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; --
+</I>&gt;<i> &gt;&gt; -----------------------------------------
+</I>&gt;<i> &gt;&gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt;&gt; Fraunhofer FOKUS/NGNI
+</I>&gt;<i> &gt;&gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt;&gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt;&gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt;&gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt;&gt; Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> &gt;&gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt;&gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002012.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] S-CSCF crash
+</A></li>
+	<LI>Next message: <A HREF="001941.html">[OpenIMSCore-Users] R&#233;f. : Re:  Problem during re-registration :	401	response ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2019">[ date ]</a>
+              <a href="thread.html#2019">[ thread ]</a>
+              <a href="subject.html#2019">[ subject ]</a>
+              <a href="author.html#2019">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

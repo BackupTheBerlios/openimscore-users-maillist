@@ -1,0 +1,326 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registeration over IPSec fails
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registeration%20over%20IPSec%20fails&In-Reply-To=%3C20070910214136.3A1AEFDBA0%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002620.html">
+   <LINK REL="Next"  HREF="002626.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registeration over IPSec fails</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registeration%20over%20IPSec%20fails&In-Reply-To=%3C20070910214136.3A1AEFDBA0%40mail.berlios.de%3E"
+       TITLE="[OpenIMSCore-Users] Registeration over IPSec fails">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Mon Sep 10 23:40:26 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002620.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+        <LI>Next message: <A HREF="002626.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2625">[ date ]</a>
+              <a href="thread.html#2625">[ thread ]</a>
+              <a href="subject.html#2625">[ subject ]</a>
+              <a href="author.html#2625">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+
+I don't think so, because if someone generates various (random)
+security-client headers he still needs different, valid pairs of public and
+private user IDs... before the user IDs are not confirmed by i/s-cscf (I
+think i-cscf should return an error message if public and private-user-id
+pair doesn't match) no SA will be created by p-cscf and thus it wouldn't be
+the cipher bringing the p-cscf down...
+In the current scenario by divya someone could easily build several SAs and
+even send &quot;nonsense&quot; register requests. Although these would be terminated
+soon, it would still require a whole lot of resources (as far as I can
+imagine.. unfortunately my knowledge of the practical performance issue in
+ciphering is quite humble)
+
+Br, Klemens
+
+&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;<i> Sent: Montag, 10. September 2007 15:05
+</I>&gt;<i> To: Klemens Schragel
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">divya.singh at aricent.com</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] Registeration over IPSec fails
+</I>&gt;<i> 
+</I>&gt;<i> Well, of course, I also favor the 3GPP way.
+</I>&gt;<i> 
+</I>&gt;<i> For 2nd, there is the DoS issue anyway... random Security-Client headers
+</I>&gt;<i> would surely bring the P-CSCF down. There is a reg-await-timer though...
+</I>&gt;<i> I don't remember the value exactly, about 60 seconds... so in 60 seconds
+</I>&gt;<i> until the SAs would be dropped, a 1000 req/sec could probably overload
+</I>&gt;<i> the kernel...
+</I>&gt;<i> 
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> Klemens Schragel wrote:
+</I>&gt;<i> &gt; I can think of two main reasons for acting like 3GPP recommends:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 1st the sight of UE: only the p-cscf can have the ik,ck pair, a mitm
+</I>&gt;<i> can't know them. with ISAKMP you have no verification if the server is
+</I>&gt;<i> realy the p-cscf (and not a mitm).
+</I>&gt;<i> &gt; 2nd the sight of pcscf: ipsec consumes ressources, ISAKMP consumes even
+</I>&gt;<i> a lot more ressources (asymmetric ciphering). if the first contact with
+</I>&gt;<i> IMS would be the building of SAs before any verification of the UE
+</I>&gt;<i> (existing private and public user ID) the pcscf would be quite vulnerable
+</I>&gt;<i> for DoS-attacks.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; br, Klemens
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; -------- Original-Nachricht --------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Datum: Mon, 10 Sep 2007 12:05:42 +0200
+</I>&gt;<i> &gt;&gt; Von: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt;&gt; An: Divya Singh &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">divya.singh at aricent.com</A>&gt;
+</I>&gt;<i> &gt;&gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; Betreff: Re: [OpenIMSCore-Users] Registeration over IPSec fails
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Guys, I think that a little bit of clarification is needed here.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; So, you could do IPSec in many ways (I am not an IPSec specialist, but
+</I>&gt;<i> &gt;&gt; I'll try and explain it in my understanding).
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; First option would be to use it in tunnel mode - then you have a
+</I>&gt;<i> virtual
+</I>&gt;<i> &gt;&gt; interface that you use as a normal one, yet all traffic would be
+</I>&gt;<i> &gt;&gt; encrypted when sent over the real network interface. This method has
+</I>&gt;<i> the
+</I>&gt;<i> &gt;&gt; advantage that it is completely transparent.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; The second option is to use it in transport mode. Then you can indicate
+</I>&gt;<i> &gt;&gt; on the originator that all packet that follow a rule (source ip/port,
+</I>&gt;<i> &gt;&gt; destination ip/port, protocol, etc) must be encrypted with a key. On
+</I>&gt;<i> the
+</I>&gt;<i> &gt;&gt; terminating side, you indicate that everything that matches a rule must
+</I>&gt;<i> &gt;&gt; be successfully decrypted with a key and all other traffic is to be
+</I>&gt;<i> &gt;&gt; discarded.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; On the Gm interface we use the 2nd option, transport mode. For securing
+</I>&gt;<i> &gt;&gt; the other interfaces you can use very well the first option.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Then about key sharing. ISAKMP is good, but it is not the standard IMS
+</I>&gt;<i> &gt;&gt; method. As 3GPP recommends, the keys are practically shared through AKA
+</I>&gt;<i> &gt;&gt; in the first REGISTER message, which is unencrypted. In practice, the
+</I>&gt;<i> &gt;&gt; HSS computes a couple of CK, IK keys based on a random, the network
+</I>&gt;<i> &gt;&gt; secret and a user secret. The random is in the challenge nonce and the
+</I>&gt;<i> &gt;&gt; CK and IK are sent until the P-CSCF, which removes and uses them for
+</I>&gt;<i> the
+</I>&gt;<i> &gt;&gt; IPSec SAs. The client would use the AKA in a ISIM card (or a simulation
+</I>&gt;<i> &gt;&gt; of a card, like SIPp does) to compute the CK and IK based on the random
+</I>&gt;<i> &gt;&gt; and secrets that it knows. The CK and IK and not sent over the Gm
+</I>&gt;<i> &gt;&gt; interface for obvious security issues.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; After the first REGISTER message, if both the UE and the network have
+</I>&gt;<i> &gt;&gt; the right credentials, the SA can be set and the new SA can be
+</I>&gt;<i> &gt;&gt; successfully used.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Divya Singh wrote:
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; I am using automatic keying for ipsec and did not add any SA's
+</I>&gt;<i> &gt;&gt;&gt; manually. I defined only the security policies.
+</I>&gt;<i> &gt;&gt;&gt; I observed that the windows and linux m/c exchange ISAKMP packets on
+</I>&gt;<i> &gt;&gt;&gt; the defaulted port (500).
+</I>&gt;<i> &gt;&gt;&gt; This establishes SA between the 2 m/cs. Thus Register msg is not the
+</I>&gt;<i> &gt;&gt;&gt; first msg exchanged between them
+</I>&gt;<i> &gt;&gt;&gt; and thus is sent as an ESP packet. Once the security handshake is done
+</I>&gt;<i> &gt;&gt;&gt; over SIP using the 1st register and the 401
+</I>&gt;<i> &gt;&gt;&gt; new SAs are created.
+</I>&gt;<i> &gt;&gt;&gt; Unfortunately the call logs I last shared do not have it captured. I
+</I>&gt;<i> &gt;&gt;&gt; am sending the registration logs again.
+</I>&gt;<i> &gt;&gt;&gt; This should make things more clear.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Jamal,
+</I>&gt;<i> &gt;&gt;&gt;  if you look at the logs that i sent to the group when ipsec was not
+</I>&gt;<i> &gt;&gt;&gt; working and all msgs were exchanged in
+</I>&gt;<i> &gt;&gt;&gt; plain text... u will observe that the
+</I>&gt;<i> &gt;&gt;&gt; UE does send the 1st Register msg with a security-client header
+</I>&gt;<i> &gt;&gt;&gt; P-CSCF inserting a security-server header in 401
+</I>&gt;<i> &gt;&gt;&gt; the 2nd Register msg with security-verify header ( constructed from
+</I>&gt;<i> &gt;&gt;&gt; the security-server header of 401).
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; /(24.229)The P-CSCF shall remove and store the Security-Client header
+</I>&gt;<i> &gt;&gt;&gt; before forwarding the request to the S-CSCF; /
+</I>&gt;<i> &gt;&gt;&gt; Due to which the security headers cannot be seen in the logs.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; *Jamal Hadi Salim &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">hadi at znyx.com</A>&gt;*
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; 09/07/2007 06:01 PM
+</I>&gt;<i> &gt;&gt;&gt; Please respond to
+</I>&gt;<i> &gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">hadi at znyx.com</A>
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; To
+</I>&gt;<i> &gt;&gt;&gt; 	Divya Singh/<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">HSS at HSS</A>
+</I>&gt;<i> &gt;&gt;&gt; cc
+</I>&gt;<i> &gt;&gt;&gt; 	Purna Chandar M &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cmongusagusa at gmail.com</A>&gt;,
+</I>&gt;<i> &gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt;&gt; Subject
+</I>&gt;<i> &gt;&gt;&gt; 	Re: [OpenIMSCore-Users] Registeration over IPSec fails
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; On Fri, 2007-07-09 at 13:17 +0530, Divya Singh wrote:
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; I also read the same ( and expected the 2nd register to start using
+</I>&gt;<i> &gt;&gt;&gt;&gt; ipsec). But I observed differently and brought it up.
+</I>&gt;<i> &gt;&gt;&gt;&gt; I used IMS communicator as UE on windows. It provides the option of
+</I>&gt;<i> &gt;&gt;&gt;&gt; filling in the security params including spi-c &amp; spi-s.
+</I>&gt;<i> &gt;&gt;&gt;&gt; Would be great if you can throw some more light on how to look for
+</I>&gt;<i> &gt;&gt;&gt;&gt; SA's on windows and should be set in UE config.
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; I tried registering 2 UEs and established call between them. Attached
+</I>&gt;<i> &gt;&gt;&gt;&gt; are the requested logs.
+</I>&gt;<i> &gt;&gt;&gt;&gt; IMS core is running on 138 and UE on 132.
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Hi Divya,
+</I>&gt;<i> &gt;&gt;&gt; Looking at your pcap traces, it does not seem possible that the tunnel
+</I>&gt;<i> &gt;&gt;&gt; was created by SIP; the setup on the PCSCF side appears to have the
+</I>&gt;<i> &gt;&gt;&gt; correct SA/SP values - so somehow the IPSEC scripts got run there. Did
+</I>&gt;<i> &gt;&gt;&gt; you do that manually?
+</I>&gt;<i> &gt;&gt;&gt; &gt;From the UE side, it seems the tunnel was created by hand first then
+</I>&gt;<i> a
+</I>&gt;<i> &gt;&gt;&gt; session was run across? The SIP messages are visible in clear text and
+</I>&gt;<i> &gt;&gt;&gt; neither does any side advertise their ipsec properties via sip
+</I>&gt;<i> &gt;&gt;&gt; security-* headers.
+</I>&gt;<i> &gt;&gt;&gt; Lastly: I dont think that the UE client you used is capable of IPSEC;
+</I>&gt;<i> &gt;&gt;&gt; you said it can take ipsec parameters - it just doesnt seem to use
+</I>&gt;<i> them
+</I>&gt;<i> &gt;&gt;&gt; on SIP.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; cheers,
+</I>&gt;<i> &gt;&gt;&gt; jamal
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; ***********************  Aricent-Unclassified
+</I>&gt;<i> ***********************
+</I>&gt;<i> &gt;&gt;&gt; &quot;DISCLAIMER: This message is proprietary to Aricent  and is intended
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; solely for the use of
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; the individual to whom it is addressed. It may contain privileged or
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; confidential information and should not be
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; circulated or used for any purpose other than for what it is intended.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; If you have received this message in error,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; please notify the originator immediately. If you are not the intended
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; recipient, you are notified that you are strictly
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; prohibited from using, copying, altering, or disclosing the contents
+</I>&gt;<i> of
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; this message. Aricent accepts no responsibility for
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; loss or damage arising from the use of the information transmitted by
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; this email including damage from virus.&quot;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; ----------------------------------------------------------------------
+</I>&gt;<i> --
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; _______________________________________________
+</I>&gt;<i> &gt;&gt;&gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; --
+</I>&gt;<i> &gt;&gt; -----------------------------------------
+</I>&gt;<i> &gt;&gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt;&gt; Fraunhofer FOKUS/NGNI
+</I>&gt;<i> &gt;&gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt;&gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt;&gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt;&gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt;&gt; Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> &gt;&gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt;&gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; _______________________________________________
+</I>&gt;<i> &gt;&gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002620.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+	<LI>Next message: <A HREF="002626.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2625">[ date ]</a>
+              <a href="thread.html#2625">[ thread ]</a>
+              <a href="subject.html#2625">[ subject ]</a>
+              <a href="author.html#2625">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

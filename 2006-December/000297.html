@@ -1,0 +1,446 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Route header is not properly framed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Route%20header%20is%20not%20properly%20framed&In-Reply-To=%3C45812470.6050302%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000296.html">
+   <LINK REL="Next"  HREF="000250.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Route header is not properly framed</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Route%20header%20is%20not%20properly%20framed&In-Reply-To=%3C45812470.6050302%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Route header is not properly framed">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Dec 14 11:16:16 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000296.html">[OpenIMSCore-Users] Route header is not properly framed
+</A></li>
+        <LI>Next message: <A HREF="000250.html">[OpenIMSCore-Users] After REGISTER success,	INVITE failed at 403 Forbidden
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#297">[ date ]</a>
+              <a href="thread.html#297">[ thread ]</a>
+              <a href="subject.html#297">[ subject ]</a>
+              <a href="author.html#297">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Go into /opt/OpenIMSCore/ser_ims/
+
+1. svn info
+2. svn update
+
+For 2, the cfg files in /opt/OpenIMSCore will not be updated, only what
+is inside ser_ims will be
+
+-Dragos
+
+Babu George wrote:
+&gt;<i> Dragos,
+</I>&gt;<i>  Some basic questions.
+</I>&gt;<i>  1.How do I get the version I am using now?
+</I>&gt;<i>  2.How do I upgrade the version to r72, by retaining my present configuration(IP Addresses port no etc)?
+</I>&gt;<i> Thanks
+</I>&gt;<i> Babu
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;<i> Sent: Thursday, December 14, 2006 2:08 PM
+</I>&gt;<i> To: Babu George
+</I>&gt;<i> Cc: weik; openimscore-users
+</I>&gt;<i> Subject: Re: Route header is not properly framed
+</I>&gt;<i>
+</I>&gt;<i> Hi George,
+</I>&gt;<i>
+</I>&gt;<i> Thanx for the report - fixed since r72. Strange that this worked with so
+</I>&gt;<i> many other SIP stacks that we never observed it.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Babu George wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> All,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  Looks like when SCSCF is adding a route header, it is not adding the
+</I>&gt;&gt;<i> control character ^M at the end.So SIP application server will be
+</I>&gt;&gt;<i> having trouble in deciphering this message.Can someone help me in
+</I>&gt;&gt;<i> resolving this?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>;APP=swis.aylus.com SIP/2.0^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> *Route: &lt;sip:192.168.41.54:5060;lr&gt;,
+</I>&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=0;d=1&gt;*
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:5060;lr&gt;^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP 192.168.20.13:6060;branch=z9hG4bKd87a.53ddaec1.0^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP 192.168.20.13:6060;branch=z9hG4bKd87a.43ddaec1.0^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP 192.168.20.13:6060;branch=z9hG4bKd87a.33ddaec1.1^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP 192.168.20.13;branch=z9hG4bKd87a.c93fceb3.0^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP
+</I>&gt;&gt;<i> 192.168.20.13:5054;rport=5054;branch=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">z9hG4bK-1-01-9161 at 192.168.20.13</A>^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> From: alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> To: sut &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-9161 at 192.168.20.13</A>^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> CSeq: 1 INVITE^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Contact: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> P-Access-Network-Info: 3GPP-UTRAN-FDD; utran-cell-id-3gpp=234151D0FCE11^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Max-Forwards: 13^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Subject: Performance Test^M
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Babu
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">weik at fokus.fraunhofer.de</A> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">weik at fokus.fraunhofer.de</A>]
+</I>&gt;&gt;<i> Sent: Monday, December 11, 2006 11:09 PM
+</I>&gt;&gt;<i> To: Babu George
+</I>&gt;&gt;<i> Cc: vingarzan; openimscore-users
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Initiating 3rd party Registration
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi Babu,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> it is supported. Please modify an iFC (as combination of Trigger Point
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> and Application Server to contact) in the HSS Web console to point to
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> the application server and then add this iFC to the user's service
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> profile (e.g. default_sp).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Peter
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Mon, 2006-12-11 at 21:31 +0530, Babu George wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Dragos,
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i>   I would like to know whether routing an INVITE message towards an
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> application server from SCSCF based on IFC is supported?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Thanks
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> Babu
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> Sent: Monday, December 11, 2006 2:55 PM
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> To: Babu George
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> Cc: franz.edler; openimscore-users
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> Subject: Re: Initiating 3rd party Registration
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> Hi George,
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> 3rd party registration is not yet implemented. Please see this thread:
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> <A HREF="000183.html">http://lists.berlios.de/pipermail/openimscore-users/2006-December/000183.html</A>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> Babu George wrote:
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Dragos,
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i>  Can I know what I need to do for getting a third party
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> registration done by scscf towards my application server.If I assign
+</I>&gt;&gt;<i> the IP Address of my application server to 'defult_as'(through HSS
+</I>&gt;&gt;<i> Gui), would that work?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> Thanks
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> Babu
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> Sent: Monday, December 11, 2006 5:12 AM
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> To: Babu George
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> Cc: franz.edler; openimscore-users
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Call not getting through
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> Hi Babu,
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> It seems that you have only partially changed the IP address. Please
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> change ALL occurences in pcscf.cfg, icscf.cfg and scscf.cfg. There are
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> more than just the first listen lines. That is why the S-CSCF fails to
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> loop the message to itself - you moved it from 127.0.0.1, yet when
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> looping it is still sending there - this is configured somewhere at
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> bottom of the routing script.
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> Well... I suggest that you do a replace all. Don't forget to update
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> open-ims.dnszone!
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> If you have all 3 diameter peers on the same machine (I-CSCF,
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> S-CSCF and
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> HSS) than you can leave the icscf.xml, scscf.xml and
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> DiametePeerHSS.xml
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> with the 127.0.0.1. However, as the DNS names are the same, once you
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> change the open-ims.dnszone, you will have to change this too, as
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> Franz
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> replied, or the peers won't connect. I usually just drop the bind
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> parameter from the Acceptor tag - then it will listen on all available
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> interfaces (be aware then that other people can connect to your
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> Diameter
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> Peers if you also have this parameter AcceptUnknownPeers=&quot;1&quot; and do
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> bad
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> things).
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i> Babu George wrote:
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> All,
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i>  I changed the IP Address of SCSCF from 127.0.0.1 to the machine
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> IP 192.168.20.13(Changed in scscf.cfg and
+</I>&gt;&gt;<i> /etc/bind/open-ims.dnszone).Registartion is getting through with the
+</I>&gt;&gt;<i> change, but not call.Looks like in the termination leg system uses the
+</I>&gt;&gt;<i> loopback address(127.0.0.1) instead of the assigned IP
+</I>&gt;&gt;<i> Address(192.68.20.13).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i> Is there anything I am missing here?
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> Thanks
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> Babu
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> Sent: Saturday, December 09, 2006 4:33 PM
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> Cc: Babu George; 'openimscore-users'
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Call not getting through
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> Yes, that is the cause. So please use the Contact in the 200 OK,
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 192.168.20.13</A>:5055;transport=UDP as Request-URI for the ACK.
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> Then all will be fine.
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> However, I see a bug there in the P-CSCF in packet 25 - the Route
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> header
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i> should've been removed... investigating.
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> Franz Edler wrote:
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i>    
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>   I corrected it. Now ACK takes the following path.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>   Alice--PCSCF-SCSCF-SCSCF-PCSCF-ICSCF-PCCSF and then getting
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;<i> looped.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>   Not sure why PCSCF is sending message to ICSCF instead of
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;<i> sending to bob
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>    
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>      
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>        
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> It is, because your ACK is addressed to BoB's AoR and not towards its
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Contact received in 200 OK.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Cheers
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Franz
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>    
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>      
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i>    
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000296.html">[OpenIMSCore-Users] Route header is not properly framed
+</A></li>
+	<LI>Next message: <A HREF="000250.html">[OpenIMSCore-Users] After REGISTER success,	INVITE failed at 403 Forbidden
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#297">[ date ]</a>
+              <a href="thread.html#297">[ thread ]</a>
+              <a href="subject.html#297">[ subject ]</a>
+              <a href="author.html#297">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

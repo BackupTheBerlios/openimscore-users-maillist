@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] SIP/2.0 403 Forbidden - HSS returned no	authentication vectors
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SIP/2.0%20403%20Forbidden%20-%20HSS%20returned%0A%20no%09authentication%20vectors&In-Reply-To=%3C46050E2D.3010903%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001241.html">
+   <LINK REL="Next"  HREF="001213.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] SIP/2.0 403 Forbidden - HSS returned no	authentication vectors</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SIP/2.0%20403%20Forbidden%20-%20HSS%20returned%0A%20no%09authentication%20vectors&In-Reply-To=%3C46050E2D.3010903%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] SIP/2.0 403 Forbidden - HSS returned no	authentication vectors">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Sat Mar 24 12:40:29 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001241.html">[OpenIMSCore-Users] SIP/2.0 403 Forbidden - HSS returned no	authentication vectors
+</A></li>
+        <LI>Next message: <A HREF="001213.html">[OpenIMSCore-Users] 403 Forbidden
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1285">[ date ]</a>
+              <a href="thread.html#1285">[ thread ]</a>
+              <a href="subject.html#1285">[ subject ]</a>
+              <a href="author.html#1285">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Vignesh,
+
+The problem is that the S-CSCF, as configured by you, would request an
+MD5 auth vector, but you have configured the HSS to allow only AKA for
+that client. You will have to solve this conflict.
+
+-Dragos
+
+Vignesh wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Authentication scheme for one of the impi has been set
+</I>&gt;<i> to Digest-AKAv1-MD5.  When the client tries to
+</I>&gt;<i> register with openimscore, I get a response SIP/2.0
+</I>&gt;<i> 403 Forbidden - HSS returned no authentication
+</I>&gt;<i> vectors.
+</I>&gt;<i>
+</I>&gt;<i> The impu has been rightly mapped with the impi.  The
+</I>&gt;<i> REGISTER message also carries Authenticate header as
+</I>&gt;<i> follows:
+</I>&gt;<i>
+</I>&gt;<i> REGISTER sip:ims.cingularme.com SIP/2.0
+</I>&gt;<i> From:
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">18476913281 at ims.cingularme.com</A>&gt;;tag=8a4c0-0-1784-40023-1e-3c8e02b5-1e
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">18476913281 at ims.cingularme.com</A>&gt;
+</I>&gt;<i> Call-ID: 91b58-0-1784-40023-1e-1fbf6a9f-1e
+</I>&gt;<i> CSeq: 1 REGISTER
+</I>&gt;<i> Via: SIP/2.0/UDP
+</I>&gt;<i> 166.217.184.191:5060;branch=z9hG4bK-1e-7711-5c0eb39a;profile=1;mok=2;st=0
+</I>&gt;<i> Supported: path
+</I>&gt;<i> Max-Forwards: 70
+</I>&gt;<i> Authorization: Digest
+</I>&gt;<i> username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">310410109277961 at ims.cingularme.com</A>&quot;,realm=&quot;ims.cingularme.com&quot;,nonce=&quot;&quot;,uri=&quot;sip:ims.cingularme.com&quot;,response=&quot;&quot;
+</I>&gt;<i> Contact:
+</I>&gt;<i> &lt;sip:166.217.184.191:5060&gt;;expires=70;VideoCall
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i>
+</I>&gt;<i> Response:
+</I>&gt;<i> SIP/2.0 403 Forbidden - HSS returned no authentication
+</I>&gt;<i> vectors
+</I>&gt;<i> From:
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">18476913281 at ims.cingularme.com</A>&gt;;tag=8a4c0-0-1784-40023-1e-3c8e02b5-1e
+</I>&gt;<i> To:
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">18476913281 at ims.cingularme.com</A>&gt;;tag=bc63d7648e803356c884bdd5f8829695-745a
+</I>&gt;<i> Call-ID: 91b58-0-1784-40023-1e-1fbf6a9f-1e
+</I>&gt;<i> CSeq: 1 REGISTER
+</I>&gt;<i> Via: SIP/2.0/UDP
+</I>&gt;<i> 166.217.184.191:5060;rport=5060;branch=z9hG4bK-1e-7711-5c0eb39a;profile=1;mok=2;st=0
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.ims.cingularme.com</A>:4060;lr&gt;
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1-OpenIMSCore
+</I>&gt;<i> (x86_64/linux))
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i>
+</I>&gt;<i> The iscscf log shows:
+</I>&gt;<i> 18(20638) DBG:sm_process(): Peer
+</I>&gt;<i> hss.ims.cingularme.com         State R_Open   Event
+</I>&gt;<i> R_Rcv_Message
+</I>&gt;<i>  1(20620) INFO:I-CSCF:Cx_get_result_code: Failed
+</I>&gt;<i> finding avp
+</I>&gt;<i>  1(20620) INFO:I-CSCF:Cx_get_capabilities: Failed
+</I>&gt;<i> finding avp
+</I>&gt;<i> 18(20638) DBG:sm_process(): Peer
+</I>&gt;<i> hss.ims.cingularme.com         State R_Open   Event
+</I>&gt;<i> R_Rcv_Message
+</I>&gt;<i>  1(20620) INFO:I-CSCF:Cx_get_result_code: Failed
+</I>&gt;<i> finding avp
+</I>&gt;<i>  1(20620) INFO:I-CSCF:Cx_get_capabilities: Failed
+</I>&gt;<i> finding avp
+</I>&gt;<i>
+</I>&gt;<i> After getting the above result, I changed in scscf.cfg
+</I>&gt;<i> the following lines from
+</I>&gt;<i> #modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;AKAv1-MD5&quot;)
+</I>&gt;<i> #modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;AKAv2-MD5&quot;)
+</I>&gt;<i> modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;MD5&quot;)
+</I>&gt;<i> TO:
+</I>&gt;<i> modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;AKAv1-MD5&quot;)
+</I>&gt;<i> #modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;AKAv2-MD5&quot;)
+</I>&gt;<i> #modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;MD5&quot;)
+</I>&gt;<i>
+</I>&gt;<i> Does this mean that for each algorithm I have to
+</I>&gt;<i> restart scscf?  What is the significance of
+</I>&gt;<i> registration_default_algorithm?
+</I>&gt;<i>
+</I>&gt;<i> Please let me know.
+</I>&gt;<i>
+</I>&gt;<i> Thanking in advance,
+</I>&gt;<i> Vignesh
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 		
+</I>&gt;<i> ___________________________________________________________ 
+</I>&gt;<i> Copy addresses and emails from any email account to Yahoo! Mail - quick, easy and free. <A HREF="http://uk.docs.yahoo.com/trueswitch2.html">http://uk.docs.yahoo.com/trueswitch2.html</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001241.html">[OpenIMSCore-Users] SIP/2.0 403 Forbidden - HSS returned no	authentication vectors
+</A></li>
+	<LI>Next message: <A HREF="001213.html">[OpenIMSCore-Users] 403 Forbidden
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1285">[ date ]</a>
+              <a href="thread.html#1285">[ thread ]</a>
+              <a href="subject.html#1285">[ subject ]</a>
+              <a href="author.html#1285">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

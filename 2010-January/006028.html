@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ask about rtpproxy and OpenIMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ask%20about%20rtpproxy%20and%20OpenIMS&In-Reply-To=%3C4B5ED8CC.4050901%40netscape.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006027.html">
+   <LINK REL="Next"  HREF="006031.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ask about rtpproxy and OpenIMS</H1>
+    <B>tgilber1 at netscape.net</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ask%20about%20rtpproxy%20and%20OpenIMS&In-Reply-To=%3C4B5ED8CC.4050901%40netscape.net%3E"
+       TITLE="[OpenIMSCore-Users] ask about rtpproxy and OpenIMS">tgilber1 at netscape.net
+       </A><BR>
+    <I>Tue Jan 26 12:58:04 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006027.html">[OpenIMSCore-Users] ask about rtpproxy and OpenIMS
+</A></li>
+        <LI>Next message: <A HREF="006031.html">[OpenIMSCore-Users] ask about rtpproxy and OpenIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6028">[ date ]</a>
+              <a href="thread.html#6028">[ thread ]</a>
+              <a href="subject.html#6028">[ subject ]</a>
+              <a href="author.html#6028">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Apologize for the error on the previous e-mail, I changed the module 
+name in the modparam setting below
+
+In regards to the rtpproxy, a couple of things you can check are the 
+following:
+
+   1. Make sure that you have rtpproxy installed, running and configured
+      for the same socket as in the pcscf.cfg
+   2. Because the pcscf and the nathelper both have same namespace in
+      relation to the rtpproxy, make sure that you are not calling
+      functions between the two modules.
+
+refer to the excerpt from a config below
+
+_pcscf.cfg_
+####################begin################
+##disabled rtpproxy in pcscf.cfg file
+modparam(&quot;pcscf&quot;,&quot;NAT_enable&quot;, 0)
+modparam(&quot;pcscf&quot;,&quot;ping&quot;, 0)
+modparam(&quot;pcscf&quot;,&quot;ping_all&quot;, 0)
+modparam(&quot;pcscf&quot;,&quot;nat_detection_type&quot;, 0x17)
+modparam(&quot;pcscf&quot;,&quot;rtpproxy_socket&quot;, &quot; udp:74.75.139.1:38999&quot;)
+modparam(&quot;pcscf&quot;,&quot;rtpproxy_enable&quot;, 0)
+modparam(&quot;pcscf&quot;,&quot;rtpproxy_disable_tout&quot;, 60)
+modparam(&quot;pcscf&quot;,&quot;rtpproxy_retr&quot;, 5)
+modparam(&quot;pcscf&quot;,&quot;rtpproxy_tout&quot;, 1)
+
+##enabled rtpproxy from nathelper module
+##nathelper rtpproxy.sock vs. rtpproxy.socket namespace is slightly 
+different than pcscf module
+##if rtpproxy is installed on same server as pcscf, then you can set rtp 
+socket to an unix socket
+#modparam(&quot;nathelper&quot;, &quot;rtpproxy_sock&quot;, &quot;unix:/var/run/rtpproxy.sock&quot;)
+modparam(&quot;nathelper&quot;,&quot;rtpproxy_sock&quot;, &quot; udp:74.75.139.1:38999&quot;)
+##nathelper enable rtpproxy is different than pcscf module - disable 
+rather than enable
+modparam(&quot;nathelper&quot;,&quot;rtpproxy_disable&quot;, 0)
+modparam(&quot;nathelper&quot;,&quot;rtpproxy_disable_tout&quot;, 60)
+modparam(&quot;nathelper&quot;,&quot;rtpproxy_retr&quot;, 5)
+modparam(&quot;nathelper&quot;,&quot;rtpproxy_tout&quot;, 1)
+##################end########################
+
+Lastly, as a reminder, make sure that rtproxy server is installed, 
+running, and configure for same socket as pcscf server.
+
+Thanks,
+
+
+On 01/26/2010 03:40 AM, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tgilber1 at netscape.net</A> wrote:
+&gt;<i> In regards to the rtpproxy, a couple of things you can check are the 
+</I>&gt;<i> following:
+</I>&gt;<i>
+</I>&gt;<i>    1. Make sure that you have rtpproxy installed, running and
+</I>&gt;<i>       configured for the same socket as in the pcscf.cfg
+</I>&gt;<i>    2. Because the pcscf and the nathelper both have same namespace in
+</I>&gt;<i>       relation to the rtpproxy, make sure that you are not calling
+</I>&gt;<i>       functions between the two modules.
+</I>&gt;<i>
+</I>&gt;<i> refer to the excerpt from a config below
+</I>&gt;<i>
+</I>&gt;<i> _pcscf.cfg_
+</I>&gt;<i> ####################begin################
+</I>&gt;<i> ##disabled rtpproxy in pcscf.cfg file
+</I>&gt;<i> modparam(&quot;pcscf&quot;,&quot;NAT_enable&quot;, 0)
+</I>&gt;<i> modparam(&quot;pcscf&quot;,&quot;ping&quot;, 0)
+</I>&gt;<i> modparam(&quot;pcscf&quot;,&quot;ping_all&quot;, 0)
+</I>&gt;<i> modparam(&quot;pcscf&quot;,&quot;nat_detection_type&quot;, 0x17)
+</I>&gt;<i> modparam(&quot;pcscf&quot;,&quot;rtpproxy_socket&quot;, &quot; udp:74.75.139.1:38999&quot;)
+</I>&gt;<i> modparam(&quot;pcscf&quot;,&quot;rtpproxy_enable&quot;, 0)
+</I>&gt;<i> modparam(&quot;pcscf&quot;,&quot;rtpproxy_disable_tout&quot;, 60)
+</I>&gt;<i> modparam(&quot;pcscf&quot;,&quot;rtpproxy_retr&quot;, 5)
+</I>&gt;<i> modparam(&quot;pcscf&quot;,&quot;rtpproxy_tout&quot;, 1)
+</I>&gt;<i>
+</I>&gt;<i> ##enabled rtpproxy from nathelper module
+</I>&gt;<i> ##nathelper rtpproxy.sock vs. rtpproxy.socket namespace is slightly 
+</I>&gt;<i> different than pcscf module
+</I>&gt;<i> ##if rtpproxy is installed on same server as pcscf, then you can set 
+</I>&gt;<i> rtp socket to an unix socket
+</I>&gt;<i> #modparam(&quot;nathelper&quot;, &quot;rtpproxy_sock&quot;, &quot;unix:/var/run/rtpproxy.sock&quot;)
+</I>&gt;<i> modparam(&quot;nathelper&quot;,&quot;rtpproxy_sock&quot;, &quot; udp:74.75.139.1:38999&quot;)
+</I>&gt;<i> ##nathelper enable rtpproxy is different than pcscf module - disable 
+</I>&gt;<i> rather than enable
+</I>&gt;<i> modparam(&quot;pcscf&quot;,&quot;rtpproxy_disable&quot;, 0)
+</I>&gt;<i> modparam(&quot;pcscf&quot;,&quot;rtpproxy_disable_tout&quot;, 60)
+</I>&gt;<i> modparam(&quot;pcscf&quot;,&quot;rtpproxy_retr&quot;, 5)
+</I>&gt;<i> modparam(&quot;pcscf&quot;,&quot;rtpproxy_tout&quot;, 1)
+</I>&gt;<i> ##################end########################
+</I>&gt;<i>
+</I>&gt;<i> Lastly, as a reminder, make sure that rtproxy server is installed, 
+</I>&gt;<i> running, and configure for same socket as pcscf server.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On 01/25/2010 11:16 PM, agung nugroho wrote:
+</I>&gt;&gt;<i> Hii all,,,
+</I>&gt;&gt;<i> I want to ask about rtpproxy and OpenIMS server. Actually I want to 
+</I>&gt;&gt;<i> make IMS running like this:
+</I>&gt;&gt;<i> client IPv4 -- &gt; OpenIMS &lt;-- client IPv6
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have successful to connect both client using monster,but only in 
+</I>&gt;&gt;<i> case that as a caller IPv6-client and a callee IPv4-client. If I call 
+</I>&gt;&gt;<i> from IPv4 to IPv6 it doesn't successful.
+</I>&gt;&gt;<i> And also if I running video call and voice call i got this error on 
+</I>&gt;&gt;<i> pcscf:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  4(8694) ERROR: send_rtpp_command: can't connect to RTP proxy
+</I>&gt;&gt;<i>  4(8694) send_rtpp_command(): proxy &lt;unix:/var/run/rtpproxy.sock&gt; 
+</I>&gt;&gt;<i> does not responding, disable it
+</I>&gt;&gt;<i>  4(8694) WARNING: rtpp_test: can't get version of the RTP proxy
+</I>&gt;&gt;<i>  4(8694) WARNING: rtpp_test: support for RTP proxy 
+</I>&gt;&gt;<i> &lt;unix:/var/run/rtpproxy.sock&gt;
+</I>&gt;&gt;<i> has been disabled temporarily
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  4(8694) ERROR: force_rtp_proxy2: no available proxies
+</I>&gt;&gt;<i>  2(8692) ERROR: send_rtpp_command: can't connect to RTP proxy
+</I>&gt;&gt;<i>  2(8692) send_rtpp_command(): proxy &lt;unix:/var/run/rtpproxy.sock&gt; 
+</I>&gt;&gt;<i> does not responding, disable it
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  5(8695) ERROR: force_rtp_proxy2: can't extract media port from the 
+</I>&gt;&gt;<i> message
+</I>&gt;&gt;<i>  5(8695) ERROR: force_rtp_proxy2: can't extract media port from the 
+</I>&gt;&gt;<i> message
+</I>&gt;&gt;<i>  8(8698) ERROR: force_rtp_proxy2: can't extract media port from the 
+</I>&gt;&gt;<i> message
+</I>&gt;&gt;<i>  8(8698) ERROR: force_rtp_proxy2: can't extract media port from the 
+</I>&gt;&gt;<i> message
+</I>&gt;&gt;<i>  5(8695) ERROR: force_rtp_proxy2: can't extract media port from the 
+</I>&gt;&gt;<i> message
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> can somebody help me??
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> thanks..
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>    
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>    
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100126/97583355/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100126/97583355/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006027.html">[OpenIMSCore-Users] ask about rtpproxy and OpenIMS
+</A></li>
+	<LI>Next message: <A HREF="006031.html">[OpenIMSCore-Users] ask about rtpproxy and OpenIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6028">[ date ]</a>
+              <a href="thread.html#6028">[ thread ]</a>
+              <a href="subject.html#6028">[ subject ]</a>
+              <a href="author.html#6028">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

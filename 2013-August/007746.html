@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] &quot;403 Forbidden - Not Registered! You must	register first with a S-CSCF&quot; when behind NAT
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2013-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%22403%20Forbidden%20-%20Not%20Registered%21%20You%20must%0A%09register%20first%20with%20a%20S-CSCF%22%20when%20behind%20NAT&In-Reply-To=%3C001701cea195%2419d6f540%244d84dfc0%24%40technikum-wien.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007740.html">
+   <LINK REL="Next"  HREF="007747.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] &quot;403 Forbidden - Not Registered! You must	register first with a S-CSCF&quot; when behind NAT</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%22403%20Forbidden%20-%20Not%20Registered%21%20You%20must%0A%09register%20first%20with%20a%20S-CSCF%22%20when%20behind%20NAT&In-Reply-To=%3C001701cea195%2419d6f540%244d84dfc0%24%40technikum-wien.at%3E"
+       TITLE="[OpenIMSCore-Users] &quot;403 Forbidden - Not Registered! You must	register first with a S-CSCF&quot; when behind NAT">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Sun Aug 25 15:14:59 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007740.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 82, Issue 12
+</A></li>
+        <LI>Next message: <A HREF="007747.html">[OpenIMSCore-Users] &quot;403 Forbidden - Not Registered! You must register first with a S-CSCF&quot; when behind NAT
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7746">[ date ]</a>
+              <a href="thread.html#7746">[ thread ]</a>
+              <a href="subject.html#7746">[ subject ]</a>
+              <a href="author.html#7746">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Radek,
+
+Sorry for  my late answer.
+
+&gt;<i> Just to make it clear:
+</I>&gt;<i> &#8226; The user a10 is fully provisioned on OpenIMSCore.
+</I>&gt;<i> &#8226; Machine's local IP address: 172.16.175.74.
+</I>&gt;<i> &#8226; External IP address: 150.254.41.175.
+</I>
+
+Yes, I see. The problem is clear.
+For each new request the P-CSCF checks if the sender is a registered user, using the IP-address and -port provided in the Via header field during registration.
+For REGISTER your client uses the local IP address:
+	REGISTER sip:open-ims.test SIP/2.0 
+	Via: SIP/2.0/UDP 172.16.175.74:5080
+
+For SUBSCRIBE your client uses the external IP address:
+	SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">servlet at open-ims.test</A> SIP/2.0 
+	Via: SIP/2.0/UDP 150.254.41.175:5080
+
+P-CSCF does not recognize this as the valid IP address of the user.
+What is the motivation of your client to change from local IP to external IP address?
+
+BR Franz
+
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007740.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 82, Issue 12
+</A></li>
+	<LI>Next message: <A HREF="007747.html">[OpenIMSCore-Users] &quot;403 Forbidden - Not Registered! You must register first with a S-CSCF&quot; when behind NAT
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7746">[ date ]</a>
+              <a href="thread.html#7746">[ thread ]</a>
+              <a href="subject.html#7746">[ subject ]</a>
+              <a href="author.html#7746">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

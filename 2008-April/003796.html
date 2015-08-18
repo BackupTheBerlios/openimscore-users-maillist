@@ -1,0 +1,2884 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] separate FHoSS and cscf
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20separate%20FHoSS%20and%20cscf&In-Reply-To=%3C480B2031.9040008%40info.fundp.ac.be%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003750.html">
+   <LINK REL="Next"  HREF="003737.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] separate FHoSS and cscf</H1>
+    <B>ggomand</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20separate%20FHoSS%20and%20cscf&In-Reply-To=%3C480B2031.9040008%40info.fundp.ac.be%3E"
+       TITLE="[OpenIMSCore-Users] separate FHoSS and cscf">ggomand at info.fundp.ac.be
+       </A><BR>
+    <I>Sun Apr 20 12:51:29 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003750.html">[OpenIMSCore-Users] separate FHoSS and cscf
+</A></li>
+        <LI>Next message: <A HREF="003737.html">[OpenIMSCore-Users] Guide to integrate ASTERISK as Application	Server on Open IMS Core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3796">[ date ]</a>
+              <a href="thread.html#3796">[ thread ]</a>
+              <a href="subject.html#3796">[ subject ]</a>
+              <a href="author.html#3796">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Dragos,
+
+Thanks for your reply but the FAQ and the mailing lists didn't help me 
+very much for my problem.
+
+Anyway, I found the solution. I've made a mistake the first time I edit 
+the diameter xml file. That's why it didn't work.
+
+Now it's ok.
+
+Gille
+
+
+Dragos Vingarzan wrote:
+&gt;<i> Hi Gille,
+</I>&gt;<i> 
+</I>&gt;<i> please read the FAQ entries on this... we have discussed this many many 
+</I>&gt;<i> times before, also on the mailing lists.
+</I>&gt;<i> 
+</I>&gt;<i> Now look at the xml configuration files for the Diameter Peers ;-).
+</I>&gt;<i> 
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> ggomand wrote:
+</I>&gt;&gt;<i> Hello Louis,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thank you for your reply but it seems it's not the solution.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I had already tested your solution with two dns server (each computer 
+</I>&gt;&gt;<i> has own).
+</I>&gt;&gt;<i> I had replaced the loopback address 127.0.0.1 by the local ip of the 
+</I>&gt;&gt;<i> machine (192.168.1.2 , 192.168.1.10) without success...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've done the test with only one dns server and the result is the same :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Peer icscf.open-ims.test not responding to connection attempt
+</I>&gt;&gt;<i> Peer scscf.open-ims.test not responding to connection attempt
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 12(6157) INFO:peer_connect(): Trying to connect to 192.168.1.2 port 3868
+</I>&gt;&gt;<i> 12(6157) WARNING:peer_connect(): Error opening connection to to
+</I>&gt;&gt;<i> 192.168.1.2 port 3868 &gt;Connection refused
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I really don't understand what's the problem...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Another idea? :)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Gille
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ketzal devims wrote:
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> Hello gille
+</I>&gt;&gt;&gt;<i> There is an error in your DNS configuration file:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> You can't tell the CSCF that HSS is in *MailScanner has detected a 
+</I>&gt;&gt;&gt;<i> possible fraud attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1 
+</I>&gt;&gt;&gt;<i> &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt; in &quot;PC1 : open-ims.dnszone&quot;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The best is to have only one DNS Server, fill it with the 
+</I>&gt;&gt;&gt;<i> configuration below:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> ----------------------------------------------------------------------------------------- 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> PC (1 or 2) : open-ims.dnszone :
+</I>&gt;&gt;&gt;<i> ************************
+</I>&gt;&gt;&gt;<i> ...
+</I>&gt;&gt;&gt;<i>                         1D IN NS        ns
+</I>&gt;&gt;&gt;<i> ns                      1D IN A         *MailScanner warning: 
+</I>&gt;&gt;&gt;<i> numerical links are often malicious:* 192.168.1.10 &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i> pcscf                   1D IN A         *MailScanner warning: 
+</I>&gt;&gt;&gt;<i> numerical links are often malicious:* 192.168.1.10 &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i> scscf                   1D IN A         *MailScanner warning: 
+</I>&gt;&gt;&gt;<i> numerical links are often malicious:* 192.168.1.10 &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i> icscf                   1D IN A         *MailScanner warning: 
+</I>&gt;&gt;&gt;<i> numerical links are often malicious:* 192.168.1.10 &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i> hss                     1D IN A         *MailScanner has detected a 
+</I>&gt;&gt;&gt;<i> possible fraud attempt from &quot;192.168.1.2&quot; claiming to be* 192.168.1.2 
+</I>&gt;&gt;&gt;<i> &lt;<A HREF="http://192.168.1.2">http://192.168.1.2</A>&gt;
+</I>&gt;&gt;&gt;<i> open-ims.test.          1D IN A         *MailScanner warning: 
+</I>&gt;&gt;&gt;<i> numerical links are often malicious:* 192.168.1.10 &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i> ue                      1D IN A         *MailScanner warning: 
+</I>&gt;&gt;&gt;<i> numerical links are often malicious:* 192.168.1.10 &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i> presence                1D IN A         *MailScanner warning: 
+</I>&gt;&gt;&gt;<i> numerical links are often malicious:* 192.168.1.10 &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _sip                    1D SRV 0 0 5060 icscf
+</I>&gt;&gt;&gt;<i> _sip._udp               1D SRV 0 0 5060 icscf
+</I>&gt;&gt;&gt;<i> _sip._tcp               1D SRV 0 0 5060 icscf
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> open-ims.test.          1D IN NAPTR 10 50 &quot;s&quot; &quot;SIP+D2U&quot; &quot;&quot;      
+</I>&gt;&gt;&gt;<i> _sip._udp.open-ims.test.
+</I>&gt;&gt;&gt;<i> open-ims.test.          1D IN NAPTR 20 50 &quot;s&quot; &quot;SIP+D2T&quot; &quot;&quot;      
+</I>&gt;&gt;&gt;<i> _sip._tcp.open-ims.test.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> In the two machines, edit the file /etc/resolv.conf and tell the IP 
+</I>&gt;&gt;&gt;<i> Address of the DNS server :
+</I>&gt;&gt;&gt;<i> search open-ims.test
+</I>&gt;&gt;&gt;<i> nameserver 192.168.1.(10 or 2)  &lt;--- your DNS Server IP @
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Louis
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> 2008/4/5, ggomand &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ggomand at info.fundp.ac.be</A> 
+</I>&gt;&gt;&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ggomand at info.fundp.ac.be</A>&gt;&gt;:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     Hello,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     I installed the Open IMS Core solution on my two computers.
+</I>&gt;&gt;&gt;<i>     On each of them, it's work perfectly.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     Now, I'm trying to separate the FHoSS of the other components 
+</I>&gt;&gt;&gt;<i> (p-cscf,
+</I>&gt;&gt;&gt;<i>     i-cscf, s-cscf) and it doesn't work.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     Each computer has its own DNS server (on *MailScanner has detected a
+</I>&gt;&gt;&gt;<i>     possible fraud attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     Here is the configuration :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     IP of PC1 = *MailScanner has detected a possible fraud attempt from
+</I>&gt;&gt;&gt;<i>     &quot;192.168.1.2&quot; claiming to be* 192.168.1.2 &lt;<A HREF="http://192.168.1.2">http://192.168.1.2</A>&gt;
+</I>&gt;&gt;&gt;<i>     IP of PC2 = *MailScanner warning: numerical links are often
+</I>&gt;&gt;&gt;<i>     malicious:* 192.168.1.10 &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     PC1 = FHoSS
+</I>&gt;&gt;&gt;<i>     PC2 = p-cscf, i-cscf, s-cscf
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------------------------ 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     PC1 : open-ims.dnszone :
+</I>&gt;&gt;&gt;<i>     ************************
+</I>&gt;&gt;&gt;<i>     $ORIGIN open-ims.test.
+</I>&gt;&gt;&gt;<i>     $TTL 1W
+</I>&gt;&gt;&gt;<i>     @                       1D IN SOA       localhost. root.localhost. (
+</I>&gt;&gt;&gt;<i>                                              2006101001      ; serial
+</I>&gt;&gt;&gt;<i>                                              3H              ; refresh
+</I>&gt;&gt;&gt;<i>                                              15M             ; retry
+</I>&gt;&gt;&gt;<i>                                              1W              ; expiry
+</I>&gt;&gt;&gt;<i>                                              1D )            ; minimum
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>                              1D IN NS        ns
+</I>&gt;&gt;&gt;<i>     ns                      1D IN A         *MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 192.168.1.10 
+</I>&gt;&gt;&gt;<i> &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     pcscf                   1D IN A         *MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 192.168.1.10 
+</I>&gt;&gt;&gt;<i> &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     open-ims.test.          1D IN A         *MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 192.168.1.10 
+</I>&gt;&gt;&gt;<i> &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i>     icscf                   1D IN A         *MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 192.168.1.10 
+</I>&gt;&gt;&gt;<i> &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i>     _sip                    1D SRV 0 0 5060 icscf
+</I>&gt;&gt;&gt;<i>     _sip._udp               1D SRV 0 0 5060 icscf
+</I>&gt;&gt;&gt;<i>     _sip._tcp               1D SRV 0 0 5060 icscf
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     open-ims.test.          1D IN NAPTR 10 50 &quot;s&quot; &quot;SIP+D2U&quot;
+</I>&gt;&gt;&gt;<i>     &quot;&quot;      _sip._udp.open-ims.test.
+</I>&gt;&gt;&gt;<i>     open-ims.test.          1D IN NAPTR 20 50 &quot;s&quot; &quot;SIP+D2T&quot;
+</I>&gt;&gt;&gt;<i>     &quot;&quot;      _sip._tcp.open-ims.test.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     scscf                   1D IN A         *MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 192.168.1.10 
+</I>&gt;&gt;&gt;<i> &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     hss                     1D IN A         *MailScanner has detected a
+</I>&gt;&gt;&gt;<i>     possible fraud attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     ue                      1D IN A         *MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 192.168.1.10 
+</I>&gt;&gt;&gt;<i> &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     presence                                1D IN A                
+</I>&gt;&gt;&gt;<i>     *MailScanner warning: numerical links are often malicious:*
+</I>&gt;&gt;&gt;<i>     192.168.1.10 &lt;<A HREF="http://192.168.1.10">http://192.168.1.10</A>&gt;
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------------------------ 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------------------------ 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     PC2 : open-ims.dnszone :
+</I>&gt;&gt;&gt;<i>     ************************
+</I>&gt;&gt;&gt;<i>     $ORIGIN open-ims.test.
+</I>&gt;&gt;&gt;<i>     $TTL 1W
+</I>&gt;&gt;&gt;<i>     @                       1D IN SOA       localhost. root.localhost. (
+</I>&gt;&gt;&gt;<i>                                              2006101001      ; serial
+</I>&gt;&gt;&gt;<i>                                              3H              ; refresh
+</I>&gt;&gt;&gt;<i>                                              15M             ; retry
+</I>&gt;&gt;&gt;<i>                                              1W              ; expiry
+</I>&gt;&gt;&gt;<i>                                              1D )            ; minimum
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>                              1D IN NS        ns
+</I>&gt;&gt;&gt;<i>     ns                      1D IN A         *MailScanner has detected a
+</I>&gt;&gt;&gt;<i>     possible fraud attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     pcscf                   1D IN A         *MailScanner has detected a
+</I>&gt;&gt;&gt;<i>     possible fraud attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     open-ims.test.          1D IN A         *MailScanner has detected a
+</I>&gt;&gt;&gt;<i>     possible fraud attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;
+</I>&gt;&gt;&gt;<i>     icscf                   1D IN A         *MailScanner has detected a
+</I>&gt;&gt;&gt;<i>     possible fraud attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;
+</I>&gt;&gt;&gt;<i>     _sip                    1D SRV 0 0 5060 icscf
+</I>&gt;&gt;&gt;<i>     _sip._udp               1D SRV 0 0 5060 icscf
+</I>&gt;&gt;&gt;<i>     _sip._tcp               1D SRV 0 0 5060 icscf
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     open-ims.test.          1D IN NAPTR 10 50 &quot;s&quot; &quot;SIP+D2U&quot;
+</I>&gt;&gt;&gt;<i>     &quot;&quot;      _sip._udp.open-ims.test.
+</I>&gt;&gt;&gt;<i>     open-ims.test.          1D IN NAPTR 20 50 &quot;s&quot; &quot;SIP+D2T&quot;
+</I>&gt;&gt;&gt;<i>     &quot;&quot;      _sip._tcp.open-ims.test.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     scscf                   1D IN A         *MailScanner has detected a
+</I>&gt;&gt;&gt;<i>     possible fraud attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     hss                     1D IN A         *MailScanner has detected a
+</I>&gt;&gt;&gt;<i>     possible fraud attempt from &quot;192.168.1.2&quot; claiming to be*
+</I>&gt;&gt;&gt;<i>     192.168.1.2 &lt;<A HREF="http://192.168.1.2">http://192.168.1.2</A>&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     ue                      1D IN A         *MailScanner has detected a
+</I>&gt;&gt;&gt;<i>     possible fraud attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     presence                                1D IN A                
+</I>&gt;&gt;&gt;<i>     *MailScanner has detected a possible fraud attempt from &quot;127.0.0.1&quot;
+</I>&gt;&gt;&gt;<i>     claiming to be* 127.0.0.1 &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------------------------ 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     All the other files are config by default.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     The Mysql server listen on port 3306.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     The result of the test :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     FHoSS:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:44,340 ERROR
+</I>&gt;&gt;&gt;<i>     de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - 
+</I>&gt;&gt;&gt;<i> I_Snd_Conn_Req
+</I>&gt;&gt;&gt;<i>     StateMachine: Peer icscf.open-ims.test not responding to connection
+</I>&gt;&gt;&gt;<i>     attempt
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:44,540 ERROR
+</I>&gt;&gt;&gt;<i>     de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - 
+</I>&gt;&gt;&gt;<i> I_Snd_Conn_Req
+</I>&gt;&gt;&gt;<i>     StateMachine: Peer scscf.open-ims.test not responding to connection
+</I>&gt;&gt;&gt;<i>     attempt
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     i &amp; s-cscf :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     12(6157) INFO:peer_connect(): Trying to connect to *MailScanner has
+</I>&gt;&gt;&gt;<i>     detected a possible fraud attempt from &quot;192.168.1.2&quot; claiming to be*
+</I>&gt;&gt;&gt;<i>     192.168.1.2 &lt;<A HREF="http://192.168.1.2">http://192.168.1.2</A>&gt; port 3868
+</I>&gt;&gt;&gt;<i>     12(6157) WARNING:peer_connect(): Error opening connection to to
+</I>&gt;&gt;&gt;<i>     *MailScanner has detected a possible fraud attempt from
+</I>&gt;&gt;&gt;<i>     &quot;192.168.1.2&quot; claiming to be* 192.168.1.2 &lt;<A HREF="http://192.168.1.2">http://192.168.1.2</A>&gt; port
+</I>&gt;&gt;&gt;<i>     3868 &gt;Connection refused
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     The firewalls are disabled on each computer.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     Is there something I missed ? Or something wrong in the config ?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     Thank you for your help.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     Gille
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     (My final goal is to separate all the components (FHoSS, p-cscf, 
+</I>&gt;&gt;&gt;<i> i-cscf,
+</I>&gt;&gt;&gt;<i>     s-cscf) and create two realms for testing roaming, etc)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     Here are the logs :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------------------------ 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     PC1 : FHoSS :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at PC1</A> deploy]# ./startup.sh
+</I>&gt;&gt;&gt;<i>     Building Classpath
+</I>&gt;&gt;&gt;<i>     Classpath is
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> lib/xml-apis.jar:lib/xercesImpl.jar:lib/xerces-2.4.0.jar:lib/xalan-2.4.0.jar:lib/tomcat-util.jar:lib/tomcat-http.jar:lib/tomcat-coyote.jar:lib/struts.jar:lib/servlets-default.jar:lib/servlet-api.jar:lib/naming-resources.jar:lib/naming-factory.jar:lib/mysql-connector-java-3.1.12-bin.jar:lib/mx4j-3.0.1.jar:lib/log4j.jar:lib/junit.jar:lib/junitee.jar:lib/jta.jar:lib/jsp-api.jar:lib/jmx.jar:lib/jdp.jar:lib/jasper-runtime.jar:lib/jasper-compiler-jdt.jar:lib/jasper-compiler.jar:lib/hibernate3.jar:lib/FHoSS.jar:lib/ehcache-1.1.jar:lib/dom4j-1.6.1.jar:lib/commons-validator.jar:lib/commons-modeler.jar:lib/commons-logging.jar:lib/commons-logging-1.0.4.jar:lib/commons-lang.jar:lib/commons-fileupload.jar:lib/commons-el.jar:lib/commons-digester.jar:lib/commons-collections-3.1.jar:lib/commons-beanutils.jar:lib/cglib-2.1.3.jar:lib/catalina-optional.jar:lib/catalina.jar:lib/c3p0-0.9.1.jar:lib/base64.jar:lib/asm.jar:lib/asm-attrs.jar:lib/antlr-2.7.6.jar::log4j.properties:.. 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:36,064 INFO  de.fhg.fokus.hss.main.TomcatServer -
+</I>&gt;&gt;&gt;<i>     startTomcat Tomcat-Server is started.
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:37,801 WARN
+</I>&gt;&gt;&gt;<i>     org.apache.catalina.connector.MapperListener - registerEngine 
+</I>&gt;&gt;&gt;<i> Unknown
+</I>&gt;&gt;&gt;<i>     default host: *MailScanner has detected a possible fraud attempt
+</I>&gt;&gt;&gt;<i>     from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1 &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:39,170 INFO
+</I>&gt;&gt;&gt;<i>     de.fhg.fokus.hss.web.servlet.ResponseFilter - init Response Filter
+</I>&gt;&gt;&gt;<i>     Initialisation!
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:40,046 INFO  de.fhg.fokus.hss.main.TomcatServer -
+</I>&gt;&gt;&gt;<i>     startTomcat WebConsole of FHoSS was started !
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:43,945 WARN
+</I>&gt;&gt;&gt;<i>     org.hibernate.impl.SessionFactoryObjectFactory - addInstance
+</I>&gt;&gt;&gt;<i>     InitialContext did not implement EventContext
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:44,072 INFO
+</I>&gt;&gt;&gt;<i>     de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; FQDN:
+</I>&gt;&gt;&gt;<i>     hss.open-ims.test
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:44,073 INFO
+</I>&gt;&gt;&gt;<i>     de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Realm:
+</I>&gt;&gt;&gt;<i>     open-ims.test
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:44,073 INFO
+</I>&gt;&gt;&gt;<i>     de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Vendor_ID :
+</I>&gt;&gt;&gt;<i>     10415
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:44,073 INFO
+</I>&gt;&gt;&gt;<i>     de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Product 
+</I>&gt;&gt;&gt;<i> Name:
+</I>&gt;&gt;&gt;<i>     JavaDiameterPeer
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:44,074 INFO
+</I>&gt;&gt;&gt;<i>     de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+</I>&gt;&gt;&gt;<i>     AcceptUnknwonPeers: true
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:44,074 INFO
+</I>&gt;&gt;&gt;<i>     de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+</I>&gt;&gt;&gt;<i>     DropUnknownOnDisconnect: true
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:44,154 INFO  de.fhg.fokus.hss.main.HSSContainer -
+</I>&gt;&gt;&gt;<i>     waitForExit
+</I>&gt;&gt;&gt;<i>     Type &quot;exit&quot; to stop FHoSS!
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:44,340 ERROR
+</I>&gt;&gt;&gt;<i>     de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - 
+</I>&gt;&gt;&gt;<i> I_Snd_Conn_Req
+</I>&gt;&gt;&gt;<i>     StateMachine: Peer icscf.open-ims.test not responding to connection
+</I>&gt;&gt;&gt;<i>     attempt
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:19:44,540 ERROR
+</I>&gt;&gt;&gt;<i>     de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine - 
+</I>&gt;&gt;&gt;<i> I_Snd_Conn_Req
+</I>&gt;&gt;&gt;<i>     StateMachine: Peer scscf.open-ims.test not responding to connection
+</I>&gt;&gt;&gt;<i>     attempt
+</I>&gt;&gt;&gt;<i>     exit
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:20:13,925 INFO
+</I>&gt;&gt;&gt;<i>     de.fhg.fokus.hss.web.servlet.ResponseFilter - destroy Response 
+</I>&gt;&gt;&gt;<i> Filter
+</I>&gt;&gt;&gt;<i>     was destroyed!
+</I>&gt;&gt;&gt;<i>     2008-04-05 14:20:13,929 INFO  de.fhg.fokus.hss.main.TomcatServer -
+</I>&gt;&gt;&gt;<i>     stopTomcat Tomcat was stoped !
+</I>&gt;&gt;&gt;<i>     [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at PC1</A> deploy]#
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------------------------ 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------------------------ 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     PC2 : p-cscf :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at PC2</A> OpenIMSCore]# ./pcscf.sh
+</I>&gt;&gt;&gt;<i>     Listening on
+</I>&gt;&gt;&gt;<i>                   udp: *MailScanner has detected a possible fraud
+</I>&gt;&gt;&gt;<i>     attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt; [127.0.0.1]:4060
+</I>&gt;&gt;&gt;<i>                   tcp: *MailScanner has detected a possible fraud
+</I>&gt;&gt;&gt;<i>     attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt; [127.0.0.1]:4060
+</I>&gt;&gt;&gt;<i>     Aliases:
+</I>&gt;&gt;&gt;<i>                   tcp: localhost:4060
+</I>&gt;&gt;&gt;<i>                   tcp: localhost.localdomain:4060
+</I>&gt;&gt;&gt;<i>                   tcp: Mandos:4060
+</I>&gt;&gt;&gt;<i>                   udp: localhost:4060
+</I>&gt;&gt;&gt;<i>                   udp: localhost.localdomain:4060
+</I>&gt;&gt;&gt;<i>                   udp: Mandos:4060
+</I>&gt;&gt;&gt;<i>                   *: pcscf.open-ims.test:4060
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       0(6122) init_tcp: using epoll_lt as the io watch method (auto
+</I>&gt;&gt;&gt;<i>     detected)
+</I>&gt;&gt;&gt;<i>       0(6122) Maxfwd module- initializing
+</I>&gt;&gt;&gt;<i>       0(6122) INFO:P-CSCF:mod_init: Initialization of module
+</I>&gt;&gt;&gt;<i>       0(6122) INFO: udp_init: SO_RCVBUF is initially 110592
+</I>&gt;&gt;&gt;<i>       0(6122) INFO: udp_init: SO_RCVBUF is finally 262142
+</I>&gt;&gt;&gt;<i>       1(6123) INFO:P-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [1]
+</I>&gt;&gt;&gt;<i>       2(6124) INFO:P-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [2]
+</I>&gt;&gt;&gt;<i>       3(6125) INFO:P-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [3]
+</I>&gt;&gt;&gt;<i>       4(6126) INFO:P-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [4]
+</I>&gt;&gt;&gt;<i>       5(6127) INFO:P-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [-1]
+</I>&gt;&gt;&gt;<i>       6(6128) INFO:P-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [-1]
+</I>&gt;&gt;&gt;<i>       0(6122) INFO:P-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [0]
+</I>&gt;&gt;&gt;<i>       7(6129) INFO:P-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [5]
+</I>&gt;&gt;&gt;<i>       8(6130) INFO:P-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [6]
+</I>&gt;&gt;&gt;<i>       9(6131) INFO:P-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [7]
+</I>&gt;&gt;&gt;<i>     10(6132) INFO:P-CSCF:mod_init: Initialization of module in child [8]
+</I>&gt;&gt;&gt;<i>     11(6133) INFO:P-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [-4]
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;&gt;&gt;<i>       5(6127) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;&gt;&gt;<i>     10(6132) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     11(6133) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     11(6133) qm_sums (0x815cfc0): PKG[tcp main process]
+</I>&gt;&gt;&gt;<i>       9(6131) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       0(6122) Process Table:
+</I>&gt;&gt;&gt;<i>       0(6122)  0. (6122) &gt; attendant
+</I>&gt;&gt;&gt;<i>       0(6122)  1. (6123) &gt; receiver child=0 sock=*MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 127.0.0.1:4060
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1:4060">http://127.0.0.1:4060</A>&gt;
+</I>&gt;&gt;&gt;<i>       0(6122)  2. (6124) &gt; receiver child=1 sock=*MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 127.0.0.1:4060
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1:4060">http://127.0.0.1:4060</A>&gt;
+</I>&gt;&gt;&gt;<i>       0(6122)  3. (6125) &gt; receiver child=2 sock=*MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 127.0.0.1:4060
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1:4060">http://127.0.0.1:4060</A>&gt;
+</I>&gt;&gt;&gt;<i>       0(6122)  4. (6126) &gt; receiver child=3 sock=*MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 127.0.0.1:4060
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1:4060">http://127.0.0.1:4060</A>&gt;
+</I>&gt;&gt;&gt;<i>       0(6122)  5. (6127) &gt; slow timer
+</I>&gt;&gt;&gt;<i>       0(6122)  6. (6128) &gt; timer
+</I>&gt;&gt;&gt;<i>       0(6122)  7. (6129) &gt; tcp receiver child=0
+</I>&gt;&gt;&gt;<i>       0(6122)  8. (6130) &gt; tcp receiver child=1
+</I>&gt;&gt;&gt;<i>       5(6127) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       6(6128) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       5(6127) qm_sums (0x815cfc0): PKG[slow timer]
+</I>&gt;&gt;&gt;<i>       5(6127) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       6(6128) qm_sums (0x815cfc0): PKG[timer]
+</I>&gt;&gt;&gt;<i>       6(6128) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       5(6127)  count=    19 size=       608 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       6(6128)  5(6127)  count=    19 size=       608 bytes from 
+</I>&gt;&gt;&gt;<i> sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        12 bytes from textops.c: 
+</I>&gt;&gt;&gt;<i> fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       6(6128)  5(6127) 10(6132) qm_sums (0x815cfc0): PKG[tcp receiver
+</I>&gt;&gt;&gt;<i>     child=3]
+</I>&gt;&gt;&gt;<i>     10(6132) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       3(6125) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     10(6132)  count=     1 size=     25032 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(573)
+</I>&gt;&gt;&gt;<i>     10(6132)  2(6124) 11(6133) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       1(6123) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     11(6133)  9(6131)  count=     1 size=     25032 bytes from 
+</I>&gt;&gt;&gt;<i> io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(573)
+</I>&gt;&gt;&gt;<i>     qm_sums (0x815cfc0): PKG[tcp receiver child=2]
+</I>&gt;&gt;&gt;<i>       9(6131) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       8(6130) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=     25032 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(573)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=     25032 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(522)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        80 bytes from tcp_main.c:
+</I>&gt;&gt;&gt;<i>     tcp_init_children(1996)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=    19 size=       608 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        12 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(548)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(542)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        48 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(516)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        36 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(504)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=    73 size=      1840 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     3 size=       128 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=    63 size=      2016 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=    92 size=      2944 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=   354 size=     21240 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=    13 size=       468 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     7 size=       112 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=   488 size=     62464 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        20 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        60 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        20 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        64 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     2 size=        32 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        24 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(926)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     1 size=        12 bytes from nonsip_hooks.c:
+</I>&gt;&gt;&gt;<i>     init_nonsip_hooks(50)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     2 size=        12 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     init_rlist(150)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     6 size=        88 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=    30 size=       728 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_add(129)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     5 size=       320 bytes from str_hash.h:
+</I>&gt;&gt;&gt;<i>     str_hash_alloc(69)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=     2 size=        16 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(565)
+</I>&gt;&gt;&gt;<i>       9(6131)  count=  1194 size=    144456 bytes in total
+</I>&gt;&gt;&gt;<i>       9(6131) -----------------------------
+</I>&gt;&gt;&gt;<i>       7(6129) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       0(6122)  9. (6131) &gt; tcp receiver child=2
+</I>&gt;&gt;&gt;<i>       0(6122) 10. (6132) &gt; tcp receiver child=3
+</I>&gt;&gt;&gt;<i>       0(6122) 11. (6133) &gt; tcp main process
+</I>&gt;&gt;&gt;<i>       7(6129) INFO: signal 15 received
+</I>&gt;&gt;&gt;<i>       7(6129) qm_sums (0x815cfc0): PKG[tcp receiver child=0]
+</I>&gt;&gt;&gt;<i>       7(6129) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=     25032 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(573)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=     25032 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(522)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        80 bytes from tcp_main.c:
+</I>&gt;&gt;&gt;<i>     tcp_init_children(1996)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=    19 size=       608 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        12 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(548)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(542)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        48 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(516)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        36 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(504)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=    73 size=      1840 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     3 size=       128 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=    63 size=      2016 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=    92 size=      2944 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=   354 size=     21240 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=    13 size=       468 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     7 size=       112 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=   488 size=     62464 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        20 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        60 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        20 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        64 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     2 size=        32 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        24 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(926)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     1 size=        12 bytes from nonsip_hooks.c:
+</I>&gt;&gt;&gt;<i>     init_nonsip_hooks(50)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     2 size=        12 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     init_rlist(150)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     6 size=        88 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=    30 size=       728 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_add(129)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     5 size=       320 bytes from str_hash.h:
+</I>&gt;&gt;&gt;<i>     str_hash_alloc(69)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=     2 size=        16 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(565)
+</I>&gt;&gt;&gt;<i>       7(6129)  count=  1194 size=    144456 bytes in total
+</I>&gt;&gt;&gt;<i>       7(6129) -----------------------------
+</I>&gt;&gt;&gt;<i>       0(6122) INFO:P-CSCF:mod_destroy: child exit
+</I>&gt;&gt;&gt;<i>       0(6122) qm_sums (0x815cfc0): PKG[0]/SHM
+</I>&gt;&gt;&gt;<i>       0(6122) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       0(6122)  count=    19 size=       608 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=        12 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(548)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(542)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=        48 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(516)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=        36 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(504)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=    73 size=      1840 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=    63 size=      2016 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=    92 size=      2944 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=   354 size=     21240 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=    13 size=       468 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=   488 size=     62464 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=        20 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=        60 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=        20 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=        64 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     2 size=        32 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=        24 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(926)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=        64 bytes from str_hash.h:
+</I>&gt;&gt;&gt;<i>     str_hash_alloc(69)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=         4 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     init_rlist(150)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     6 size=        88 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=    27 size=       656 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_add(129)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     2 size=        16 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(565)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=  1169 size=     93676 bytes in total
+</I>&gt;&gt;&gt;<i>       0(6122) -----------------------------
+</I>&gt;&gt;&gt;<i>       0(6122) qm_sums (0xb5f3b000): PKG[0]/SHM
+</I>&gt;&gt;&gt;<i>       0(6122) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=         4 bytes from pt.c: init_pt(79)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=         4 bytes from pt.c: init_pt(74)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=         4 bytes from mod.c: 
+</I>&gt;&gt;&gt;<i> mod_init(766)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     3 size=       120 bytes from timer.c:
+</I>&gt;&gt;&gt;<i>     register_timer(931)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=         4 bytes from mod.c: 
+</I>&gt;&gt;&gt;<i> mod_init(623)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=         4 bytes from mod.c: 
+</I>&gt;&gt;&gt;<i> mod_init(621)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=         4 bytes from mod.c: 
+</I>&gt;&gt;&gt;<i> mod_init(609)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=         4 bytes from usr_avp.c:
+</I>&gt;&gt;&gt;<i>     init_avps(97)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=         4 bytes from usr_avp.c:
+</I>&gt;&gt;&gt;<i>     init_avps(96)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=     1 size=         4 bytes from mem/shm_mem.c:
+</I>&gt;&gt;&gt;<i>     shm_mem_init_mallocs(195)
+</I>&gt;&gt;&gt;<i>       0(6122)  count=    12 size=       156 bytes in total
+</I>&gt;&gt;&gt;<i>       0(6122) -----------------------------
+</I>&gt;&gt;&gt;<i>       0(6122) Thank you for flying ser
+</I>&gt;&gt;&gt;<i>     [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at PC2</A> OpenIMSCore]#
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------------------------ 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------------------------ 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     PC2 : i-cscf :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at PC2</A> OpenIMSCore]# ./icscf.sh
+</I>&gt;&gt;&gt;<i>     Listening on
+</I>&gt;&gt;&gt;<i>                   udp: *MailScanner has detected a possible fraud
+</I>&gt;&gt;&gt;<i>     attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt; [127.0.0.1]:5060
+</I>&gt;&gt;&gt;<i>                   tcp: *MailScanner has detected a possible fraud
+</I>&gt;&gt;&gt;<i>     attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt; [127.0.0.1]:5060
+</I>&gt;&gt;&gt;<i>     Aliases:
+</I>&gt;&gt;&gt;<i>                   tcp: localhost:5060
+</I>&gt;&gt;&gt;<i>                   tcp: localhost.localdomain:5060
+</I>&gt;&gt;&gt;<i>                   tcp: Mandos:5060
+</I>&gt;&gt;&gt;<i>                   udp: localhost:5060
+</I>&gt;&gt;&gt;<i>                   udp: localhost.localdomain:5060
+</I>&gt;&gt;&gt;<i>                   udp: Mandos:5060
+</I>&gt;&gt;&gt;<i>                   *: open-ims.test:*
+</I>&gt;&gt;&gt;<i>                   *: icscf.open-ims.test:*
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       0(6144) init_tcp: using epoll_lt as the io watch method (auto
+</I>&gt;&gt;&gt;<i>     detected)
+</I>&gt;&gt;&gt;<i>       0(6144) Maxfwd module- initializing
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:I-CSCF:mod_init: Initialization of module
+</I>&gt;&gt;&gt;<i>       0(6144) INF:I-CSCF:icscf_db_get_nds: Loaded 1 trusted domains
+</I>&gt;&gt;&gt;<i>       0(6144) INF:I-CSCF:icscf_db_get_capabilities: Loaded 2 
+</I>&gt;&gt;&gt;<i> capabilities
+</I>&gt;&gt;&gt;<i>     for 1 S-CSCFs (0 invalid entries in db)
+</I>&gt;&gt;&gt;<i>       0(6144) Twofish encryption ready
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:cdp:cdp_init(): CDiameterPeer initializing
+</I>&gt;&gt;&gt;<i>       0(6144) Diameter Peer Config:
+</I>&gt;&gt;&gt;<i>       0(6144)        FQDN    : icscf.open-ims.test
+</I>&gt;&gt;&gt;<i>       0(6144)        Realm   : open-ims.test
+</I>&gt;&gt;&gt;<i>       0(6144)        VendorID: 10415
+</I>&gt;&gt;&gt;<i>       0(6144)        ProdName: CDiameterPeer
+</I>&gt;&gt;&gt;<i>       0(6144)        AcceptUn: [X]
+</I>&gt;&gt;&gt;<i>       0(6144)        DropUnkn: [X]
+</I>&gt;&gt;&gt;<i>       0(6144)        Tc      : 30
+</I>&gt;&gt;&gt;<i>       0(6144)        Workers : 4
+</I>&gt;&gt;&gt;<i>       0(6144)        QueueLen: 8
+</I>&gt;&gt;&gt;<i>       0(6144)        Peers : 1
+</I>&gt;&gt;&gt;<i>       0(6144)                FQDN:  hss.open-ims.test         Realm:
+</I>&gt;&gt;&gt;<i>     open-ims.test    Port: 3868
+</I>&gt;&gt;&gt;<i>       0(6144)        Acceptors : 1
+</I>&gt;&gt;&gt;<i>       0(6144)                Port:  3869      Bind: *MailScanner has
+</I>&gt;&gt;&gt;<i>     detected a possible fraud attempt from &quot;127.0.0.1&quot; claiming to be*
+</I>&gt;&gt;&gt;<i>     127.0.0.1 &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;
+</I>&gt;&gt;&gt;<i>       0(6144)        Applications : 3
+</I>&gt;&gt;&gt;<i>       0(6144)                Auth ID:  16777216       Vendor: 10415
+</I>&gt;&gt;&gt;<i>       0(6144)                Auth ID:  16777216       Vendor: 4491
+</I>&gt;&gt;&gt;<i>       0(6144)                Auth ID:  16777216       Vendor: 13019
+</I>&gt;&gt;&gt;<i>       0(6144)        Routing Table :
+</I>&gt;&gt;&gt;<i>       0(6144)                DefaultRoute: [  10] hss.open-ims.test
+</I>&gt;&gt;&gt;<i>       0(6144) INFO: udp_init: SO_RCVBUF is initially 110592
+</I>&gt;&gt;&gt;<i>       0(6144) INFO: udp_init: SO_RCVBUF is finally 262142
+</I>&gt;&gt;&gt;<i>       1(6146) INFO:I-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [1]
+</I>&gt;&gt;&gt;<i>       2(6147) INFO:I-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [2]
+</I>&gt;&gt;&gt;<i>       3(6148) INFO:I-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [3]
+</I>&gt;&gt;&gt;<i>       4(6149) INFO:I-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [4]
+</I>&gt;&gt;&gt;<i>       5(6150) INFO:I-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [-1]
+</I>&gt;&gt;&gt;<i>       6(6151) INFO:I-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [-1]
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:I-CSCF:mod_init: Initialization of module in child
+</I>&gt;&gt;&gt;<i>     [0] main
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:cdp:cdp_child_init(): CDiameterPeer starting ...
+</I>&gt;&gt;&gt;<i>       7(6152) INFO:I-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [1000]
+</I>&gt;&gt;&gt;<i>       7(6152) INFO:Acceptor process starting up...
+</I>&gt;&gt;&gt;<i>       7(6152) INFO:create_socket(): Trying to open/bind/listen on
+</I>&gt;&gt;&gt;<i>     *MailScanner has detected a possible fraud attempt from &quot;127.0.0.1&quot;
+</I>&gt;&gt;&gt;<i>     claiming to be* 127.0.0.1 &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;
+</I>&gt;&gt;&gt;<i>     port 3869
+</I>&gt;&gt;&gt;<i>       7(6152) INFO:create_socket(): Successful socket 
+</I>&gt;&gt;&gt;<i> open/bind/listen on
+</I>&gt;&gt;&gt;<i>     *MailScanner has detected a possible fraud attempt from &quot;127.0.0.1&quot;
+</I>&gt;&gt;&gt;<i>     claiming to be* 127.0.0.1 &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt; port 3869
+</I>&gt;&gt;&gt;<i>       7(6152) INFO:... Acceptor opened sockets. Entering accept loop ...
+</I>&gt;&gt;&gt;<i>       8(6153) INFO:I-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [1001]
+</I>&gt;&gt;&gt;<i>       8(6153) INFO:[0] Worker process started...
+</I>&gt;&gt;&gt;<i>       9(6154) INFO:I-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [1002]
+</I>&gt;&gt;&gt;<i>       9(6154) INFO:[1] Worker process started...
+</I>&gt;&gt;&gt;<i>     10(6155) INFO:I-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [1003]
+</I>&gt;&gt;&gt;<i>     10(6155) INFO:[2] Worker process started...
+</I>&gt;&gt;&gt;<i>     11(6156) INFO:I-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [1004]
+</I>&gt;&gt;&gt;<i>     11(6156) INFO:[3] Worker process started...
+</I>&gt;&gt;&gt;<i>     12(6157) INFO:I-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [1001]
+</I>&gt;&gt;&gt;<i>     12(6157) INFO:Timer process starting up...
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:cdp:cdp_child_init(): ... CDiameterPeer started
+</I>&gt;&gt;&gt;<i>     13(6158) INFO:I-CSCF:mod_init: Initialization of module in child [5]
+</I>&gt;&gt;&gt;<i>     14(6159) INFO:I-CSCF:mod_init: Initialization of module in child [6]
+</I>&gt;&gt;&gt;<i>     15(6160) INFO:I-CSCF:mod_init: Initialization of module in child [7]
+</I>&gt;&gt;&gt;<i>     16(6161) INFO:I-CSCF:mod_init: Initialization of module in child [8]
+</I>&gt;&gt;&gt;<i>     17(6162) INFO:I-CSCF:mod_init: Initialization of module in child 
+</I>&gt;&gt;&gt;<i> [-4]
+</I>&gt;&gt;&gt;<i>     12(6157) DBG:peer_timer(): Peer hss.open-ims.test       State 0
+</I>&gt;&gt;&gt;<i>     12(6157) DBG:sm_process(): Peer hss.open-ims.test       State Closed
+</I>&gt;&gt;&gt;<i>     Event Start
+</I>&gt;&gt;&gt;<i>     12(6157) DBG:I_Snd_Conn_Req(): Peer hss.open-ims.test
+</I>&gt;&gt;&gt;<i>     12(6157) INFO:peer_connect(): Trying to connect to *MailScanner has
+</I>&gt;&gt;&gt;<i>     detected a possible fraud attempt from &quot;192.168.1.2&quot; claiming to be*
+</I>&gt;&gt;&gt;<i>     192.168.1.2 &lt;<A HREF="http://192.168.1.2">http://192.168.1.2</A>&gt; port 3868
+</I>&gt;&gt;&gt;<i>     12(6157) WARNING:peer_connect(): Error opening connection to to
+</I>&gt;&gt;&gt;<i>     *MailScanner has detected a possible fraud attempt from
+</I>&gt;&gt;&gt;<i>     &quot;192.168.1.2&quot; claiming to be* 192.168.1.2 &lt;<A HREF="http://192.168.1.2">http://192.168.1.2</A>&gt; port
+</I>&gt;&gt;&gt;<i>     3868 &gt;Connection refused
+</I>&gt;&gt;&gt;<i>     12(6157) DBG:sm_process(): Peer hss.open-ims.test       State
+</I>&gt;&gt;&gt;<i>     Wait_Conn_Ack     Event I_Rcv_Conn_NAck
+</I>&gt;&gt;&gt;<i>     12(6157) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6157)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6157) ------------------
+</I>&gt;&gt;&gt;<i>     12(6157) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6157)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6157) ------------------
+</I>&gt;&gt;&gt;<i>     12(6157) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6157)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6157) ------------------
+</I>&gt;&gt;&gt;<i>     12(6157) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6157)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6157) ------------------
+</I>&gt;&gt;&gt;<i>     12(6157) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6157)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6157) ------------------
+</I>&gt;&gt;&gt;<i>     12(6157) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6157)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6157) ------------------
+</I>&gt;&gt;&gt;<i>     12(6157) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6157)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6157) ------------------
+</I>&gt;&gt;&gt;<i>     12(6157) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6157)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6157) ------------------
+</I>&gt;&gt;&gt;<i>     12(6157) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6157)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6157) ------------------
+</I>&gt;&gt;&gt;<i>     12(6157) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6157)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6157) ------------------
+</I>&gt;&gt;&gt;<i>     12(6157) DBG:peer_timer(): Peer hss.open-ims.test       State 0
+</I>&gt;&gt;&gt;<i>     12(6157) DBG:sm_process(): Peer hss.open-ims.test       State Closed
+</I>&gt;&gt;&gt;<i>     Event Start
+</I>&gt;&gt;&gt;<i>     12(6157) DBG:I_Snd_Conn_Req(): Peer hss.open-ims.test
+</I>&gt;&gt;&gt;<i>     12(6157) INFO:peer_connect(): Trying to connect to *MailScanner has
+</I>&gt;&gt;&gt;<i>     detected a possible fraud attempt from &quot;192.168.1.2&quot; claiming to be*
+</I>&gt;&gt;&gt;<i>     192.168.1.2 &lt;<A HREF="http://192.168.1.2">http://192.168.1.2</A>&gt; port 3868
+</I>&gt;&gt;&gt;<i>     12(6157) WARNING:peer_connect(): Error opening connection to to
+</I>&gt;&gt;&gt;<i>     *MailScanner has detected a possible fraud attempt from
+</I>&gt;&gt;&gt;<i>     &quot;192.168.1.2&quot; claiming to be* 192.168.1.2 &lt;<A HREF="http://192.168.1.2">http://192.168.1.2</A>&gt; port
+</I>&gt;&gt;&gt;<i>     3868 &gt;Connection refused
+</I>&gt;&gt;&gt;<i>     12(6157) DBG:sm_process(): Peer hss.open-ims.test       State
+</I>&gt;&gt;&gt;<i>     Wait_Conn_Ack     Event I_Rcv_Conn_NAck
+</I>&gt;&gt;&gt;<i>     12(6157) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6157)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6157) ------------------
+</I>&gt;&gt;&gt;<i>     15(6160) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     17(6162) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     17(6162) qm_sums (0x815cfc0): PKG[tcp main process]
+</I>&gt;&gt;&gt;<i>     11(6156) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     16(6161) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     11(6156) qm_sums (0x815cfc0): PKG[cdp_worker]
+</I>&gt;&gt;&gt;<i>     11(6156) 16(6161) qm_sums (0x815cfc0): PKG[tcp receiver child=3]
+</I>&gt;&gt;&gt;<i>     16(6161) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       9(6154) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     16(6161)  9(6154)  count=     1 size=     25320 bytes from 
+</I>&gt;&gt;&gt;<i> io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(573)
+</I>&gt;&gt;&gt;<i>       8(6153) 16(6161)  count=     1 size=     25320 bytes from 
+</I>&gt;&gt;&gt;<i> io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(522)
+</I>&gt;&gt;&gt;<i>     16(6161)  5(6150)  count=     1 size=        80 bytes from 
+</I>&gt;&gt;&gt;<i> tcp_main.c:
+</I>&gt;&gt;&gt;<i>     tcp_init_children(1996)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=     1 size=        60 bytes from proxy.c: 
+</I>&gt;&gt;&gt;<i> mk_proxy(208)
+</I>&gt;&gt;&gt;<i>       3(6148) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     12(6157) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       3(6148) qm_sums (0x815cfc0): PKG[receiver child=2
+</I>&gt;&gt;&gt;<i>     sock=*MailScanner warning: numerical links are often malicious:*
+</I>&gt;&gt;&gt;<i>     127.0.0.1:5060 &lt;<A HREF="http://127.0.0.1:5060">http://127.0.0.1:5060</A>&gt;]
+</I>&gt;&gt;&gt;<i>       3(6148) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>     12(6157) qm_sums (0x815cfc0): PKG[cdp_timer]
+</I>&gt;&gt;&gt;<i>     12(6157) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       3(6148) 12(6157)  2(6147) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       0(6144) Process Table:
+</I>&gt;&gt;&gt;<i>       0(6144)  0. (6144) &gt; attendant
+</I>&gt;&gt;&gt;<i>       0(6144)  1. (6146) &gt; receiver child=0 sock=*MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 127.0.0.1:5060
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1:5060">http://127.0.0.1:5060</A>&gt;
+</I>&gt;&gt;&gt;<i>       0(6144)  2. (6147) &gt; receiver child=1 sock=*MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 127.0.0.1:5060
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1:5060">http://127.0.0.1:5060</A>&gt;
+</I>&gt;&gt;&gt;<i>       0(6144)  3. (6148) &gt; receiver child=2 sock=*MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 127.0.0.1:5060
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1:5060">http://127.0.0.1:5060</A>&gt;
+</I>&gt;&gt;&gt;<i>       0(6144)  4. (6149) &gt; receiver child=3 sock=*MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 127.0.0.1:5060
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1:5060">http://127.0.0.1:5060</A>&gt;
+</I>&gt;&gt;&gt;<i>       0(6144)  5. (6150) &gt; slow timer
+</I>&gt;&gt;&gt;<i>       1(6146)  0(6144)  6. (6151) &gt; timer
+</I>&gt;&gt;&gt;<i>       0(6144)  7. (6152) &gt; cdp_acceptor
+</I>&gt;&gt;&gt;<i>     14(6159) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     14(6159) qm_sums (0x815cfc0): PKG[tcp receiver child=1]
+</I>&gt;&gt;&gt;<i>     14(6159) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>     13(6158) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=     25320 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(573)
+</I>&gt;&gt;&gt;<i>       6(6151) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       7(6152) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       7(6152) qm_sums (0x815cfc0): PKG[cdp_acceptor]
+</I>&gt;&gt;&gt;<i>       7(6152) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       7(6152)  count=     1 size=         8 bytes from acceptor.c:
+</I>&gt;&gt;&gt;<i>     acceptor_process(92)
+</I>&gt;&gt;&gt;<i>       7(6152)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>       7(6152)  count=     1 size=        60 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     mk_proxy(208)
+</I>&gt;&gt;&gt;<i>     15(6160) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>     10(6155) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     11(6156)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>     10(6155) qm_sums (0x815cfc0): PKG[cdp_worker]
+</I>&gt;&gt;&gt;<i>     10(6155) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>     11(6156)  count=     1 size=        60 bytes from proxy.c: 
+</I>&gt;&gt;&gt;<i> mk_proxy(208)
+</I>&gt;&gt;&gt;<i>     11(6156)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>     11(6156)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>     11(6156)  count=     2 size=        48 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>     11(6156)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>     11(6156) qm_sums (0x815cfc0): PKG[cdp_worker]
+</I>&gt;&gt;&gt;<i>     INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       8(6153) qm_sums (0x815cfc0): PKG[cdp_worker]
+</I>&gt;&gt;&gt;<i>       8(6153) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=        60 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     mk_proxy(208)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     2 size=        48 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=         8 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>     INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       8(6153)  4(6149) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       5(6150) qm_sums (0x815cfc0): PKG[slow timer]
+</I>&gt;&gt;&gt;<i>       5(6150) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       4(6149) qm_sums (0x815cfc0): PKG[receiver child=3
+</I>&gt;&gt;&gt;<i>     sock=*MailScanner warning: numerical links are often malicious:*
+</I>&gt;&gt;&gt;<i>     127.0.0.1:5060 &lt;<A HREF="http://127.0.0.1:5060">http://127.0.0.1:5060</A>&gt;]
+</I>&gt;&gt;&gt;<i>       4(6149) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>       5(6150)  4(6149) 16(6161)  count=     1 size=        32 bytes from
+</I>&gt;&gt;&gt;<i>     textops.c: sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=     2 size=        48 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        12 bytes from proxy.c: hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     1 size=        60 bytes from proxy.c: 
+</I>&gt;&gt;&gt;<i> mk_proxy(208)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       2(6147) qm_sums (0x815cfc0): PKG[receiver child=1
+</I>&gt;&gt;&gt;<i>     sock=*MailScanner warning: numerical links are often malicious:*
+</I>&gt;&gt;&gt;<i>     127.0.0.1:5060 &lt;<A HREF="http://127.0.0.1:5060">http://127.0.0.1:5060</A>&gt;]
+</I>&gt;&gt;&gt;<i>     INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       0(6144)  8. (6153) &gt; cdp_worker
+</I>&gt;&gt;&gt;<i>       0(6144)  9. (6154) &gt; cdp_worker
+</I>&gt;&gt;&gt;<i>       0(6144) 10. (6155) &gt; cdp_worker
+</I>&gt;&gt;&gt;<i>       0(6144) 11. (6156) &gt; cdp_worker
+</I>&gt;&gt;&gt;<i>       0(6144) 12. (6157) &gt; cdp_timer
+</I>&gt;&gt;&gt;<i>       0(6144) 13. (6158) &gt; tcp receiver child=0
+</I>&gt;&gt;&gt;<i>       1(6146)  0(6144) qm_sums (0x815cfc0): PKG[receiver child=0
+</I>&gt;&gt;&gt;<i>     sock=*MailScanner warning: numerical links are often malicious:*
+</I>&gt;&gt;&gt;<i>     127.0.0.1:5060 &lt;<A HREF="http://127.0.0.1:5060">http://127.0.0.1:5060</A>&gt;]
+</I>&gt;&gt;&gt;<i>     13(6158)  1(6146) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>     qm_sums (0x815cfc0): PKG[tcp receiver child=0]
+</I>&gt;&gt;&gt;<i>     13(6158) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       1(6146)  count=     1 size=        28 bytes from udp_server.c:
+</I>&gt;&gt;&gt;<i>     udp_rcv_loop(407)
+</I>&gt;&gt;&gt;<i>     13(6158)  1(6146)  count=     1 size=     25320 bytes from 
+</I>&gt;&gt;&gt;<i> io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(573)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=     25320 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(522)
+</I>&gt;&gt;&gt;<i>     14(6159) 13(6158)  count=     1 size=     25320 bytes from 
+</I>&gt;&gt;&gt;<i> io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(522)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        80 bytes from tcp_main.c:
+</I>&gt;&gt;&gt;<i>     tcp_init_children(1996)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=        60 bytes from proxy.c: 
+</I>&gt;&gt;&gt;<i> mk_proxy(208)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     2 size=        48 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=         8 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=      1284 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(59)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=        20 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(50)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=    30 size=       264 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     dupl_string(43)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     6 size=       144 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     new_db_id(224)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     6 size=        72 bytes from dbase.c: 
+</I>&gt;&gt;&gt;<i> db_init(271)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=         8 bytes from db/db.c:
+</I>&gt;&gt;&gt;<i>     bind_dbmod(69)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=        52 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(301)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=        44 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(290)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=        12 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(277)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     3 size=        96 bytes from route.c: 
+</I>&gt;&gt;&gt;<i> fix_expr(312)
+</I>&gt;&gt;&gt;<i>     14(6159)  6(6151)  7(6152) qm_sums (0x815cfc0): PKG[timer]
+</I>&gt;&gt;&gt;<i>       count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       7(6152)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>     17(6162)  7(6152) 10(6155)  count=     2 size=        48 bytes from
+</I>&gt;&gt;&gt;<i>     textops.c: fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>     summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>     11(6156)  count=     1 size=         8 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>     11(6156)  count=     1 size=      1284 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(59)
+</I>&gt;&gt;&gt;<i>     11(6156)  count=     1 size=        20 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(50)
+</I>&gt;&gt;&gt;<i>     11(6156)  count=    30 size=       264 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     dupl_string(43)
+</I>&gt;&gt;&gt;<i>     11(6156)  count=     6 size=       144 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     new_db_id(224)
+</I>&gt;&gt;&gt;<i>     11(6156)  count=     6 size=        72 bytes from dbase.c: 
+</I>&gt;&gt;&gt;<i> db_init(271)
+</I>&gt;&gt;&gt;<i>     11(6156)  count=     1 size=         8 bytes from db/db.c:
+</I>&gt;&gt;&gt;<i>     bind_dbmod(69)
+</I>&gt;&gt;&gt;<i>     11(6156)  count=     1 size=      1284 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(59)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=        60 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     mk_proxy(208)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        20 bytes from my_con.c: 
+</I>&gt;&gt;&gt;<i> new_connection(50)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=     1 size=        28 bytes from udp_server.c:
+</I>&gt;&gt;&gt;<i>     udp_rcv_loop(407)
+</I>&gt;&gt;&gt;<i>       count=     1 size=         4 bytes from proxy.c: hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>     16(6161)  3(6148)  count=     1 size=         8 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>       2(6147) 12(6157) 14. (6159) &gt; tcp receiver child=1
+</I>&gt;&gt;&gt;<i>       count=     1 size=        12 bytes from proxy.c: hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>       1(6146)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=    45 size=      1200 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>       6(6151) 14(6159) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       count=    33 size=      1056 bytes from route_struct.c: mk_exp(58)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     3 size=        64 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=    50 size=      1600 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=   177 size=     10620 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=    12 size=       232 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     9 size=       144 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=   234 size=     29952 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     2 size=        36 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     2 size=       124 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     2 size=        84 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     2 size=        80 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     3 size=        48 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=        24 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(926)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     1 size=        12 bytes from nonsip_hooks.c:
+</I>&gt;&gt;&gt;<i>     init_nonsip_hooks(50)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     2 size=        12 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     init_rlist(150)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     6 size=        88 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=    16 size=       384 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_add(129)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     5 size=       320 bytes from str_hash.h:
+</I>&gt;&gt;&gt;<i>     str_hash_alloc(69)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=     2 size=        16 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(565)
+</I>&gt;&gt;&gt;<i>     14(6159)  count=   698 size=    100124 bytes in total
+</I>&gt;&gt;&gt;<i>     14(6159) -----------------------------
+</I>&gt;&gt;&gt;<i>     qm_sums (0x815cfc0): PKG[tcp receiver child=2]
+</I>&gt;&gt;&gt;<i>     15(6160) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>     summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=     25320 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(573)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=     25320 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(522)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=        80 bytes from tcp_main.c:
+</I>&gt;&gt;&gt;<i>     tcp_init_children(1996)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>     17(6162)  0(6144)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>       7(6152)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>       7(6152)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       7(6152)  count=     1 size=         8 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>       7(6152)  count=     1 size=      1284 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(59)
+</I>&gt;&gt;&gt;<i>       7(6152) 10(6155)  9(6154)  count=     1 size=        60 bytes from
+</I>&gt;&gt;&gt;<i>     proxy.c: mk_proxy(208)
+</I>&gt;&gt;&gt;<i>     10(6155)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=        52 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(301)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        28 bytes from udp_server.c:
+</I>&gt;&gt;&gt;<i>     udp_rcv_loop(407)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     2 size=        48 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>       count=     1 size=      1284 bytes from my_con.c: 
+</I>&gt;&gt;&gt;<i> new_connection(59)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=     1 size=        20 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(50)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=    30 size=       264 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     dupl_string(43)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=     6 size=       144 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     new_db_id(224)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=     6 size=        72 bytes from dbase.c: 
+</I>&gt;&gt;&gt;<i> db_init(271)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=     1 size=         8 bytes from db/db.c:
+</I>&gt;&gt;&gt;<i>     bind_dbmod(69)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     2 size=        48 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     1 size=         8 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     1 size=      1284 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(59)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     1 size=        20 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(50)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=    30 size=       264 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     dupl_string(43)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     6 size=       144 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     new_db_id(224)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     6 size=        72 bytes from dbase.c: 
+</I>&gt;&gt;&gt;<i> db_init(271)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     1 size=         8 bytes from db/db.c:
+</I>&gt;&gt;&gt;<i>     bind_dbmod(69)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     1 size=        52 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(301)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     1 size=        44 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(290)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     1 size=        12 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(277)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     3 size=        96 bytes from route.c: 
+</I>&gt;&gt;&gt;<i> fix_expr(312)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=    45 size=      1200 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=    33 size=      1056 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     3 size=        64 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=    50 size=      1600 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=   177 size=     10620 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=    12 size=       232 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=     9 size=       144 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>     12(6157)  count=   234 size=     29952 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>     12(6157) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>     13(6158)  count=     1 size=        80 bytes from tcp_main.c:
+</I>&gt;&gt;&gt;<i>     tcp_init_children(1996)
+</I>&gt;&gt;&gt;<i>     13(6158)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>     13(6158)  count=     1 size=        60 bytes from proxy.c: 
+</I>&gt;&gt;&gt;<i> mk_proxy(208)
+</I>&gt;&gt;&gt;<i>     13(6158)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>     13(6158)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>     13(6158)  count=     1 size=        60 bytes from proxy.c: 
+</I>&gt;&gt;&gt;<i> mk_proxy(208)
+</I>&gt;&gt;&gt;<i>       1(6146)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       1(6146)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       1(6146)  count=     2 size=        48 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       1(6146)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>       1(6146)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       1(6146)  count=     1 size=         8 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>       6(6151) 15(6160)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>       count=     1 size=     25320 bytes from io_wait.c: 
+</I>&gt;&gt;&gt;<i> init_io_wait(573)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=        60 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     mk_proxy(208)
+</I>&gt;&gt;&gt;<i>       6(6151) 15. (6160) &gt; tcp receiver child=2
+</I>&gt;&gt;&gt;<i>       count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        20 bytes from my_con.c: 
+</I>&gt;&gt;&gt;<i> new_connection(50)
+</I>&gt;&gt;&gt;<i>       7(6152)  count=    30 size=       264 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     dupl_string(43)
+</I>&gt;&gt;&gt;<i>       7(6152)  count=     6 size=       144 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     new_db_id(224)
+</I>&gt;&gt;&gt;<i>       7(6152)  count=     6 size=        72 bytes from dbase.c: 
+</I>&gt;&gt;&gt;<i> db_init(271)
+</I>&gt;&gt;&gt;<i>       7(6152)  count=     1 size=         8 bytes from db/db.c:
+</I>&gt;&gt;&gt;<i>     bind_dbmod(69)
+</I>&gt;&gt;&gt;<i>       7(6152)  count=     1 size=        52 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(301)
+</I>&gt;&gt;&gt;<i>       7(6152)  count=     1 size=        44 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(290)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     1 size=        60 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     mk_proxy(208)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     2 size=        48 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     1 size=         8 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     1 size=      1284 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(59)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     1 size=        20 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(50)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=    30 size=       264 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     dupl_string(43)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     6 size=       144 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     new_db_id(224)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     6 size=        72 bytes from dbase.c: 
+</I>&gt;&gt;&gt;<i> db_init(271)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     1 size=         8 bytes from db/db.c:
+</I>&gt;&gt;&gt;<i>     bind_dbmod(69)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     1 size=        52 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(301)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     1 size=        44 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(290)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     1 size=        12 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(277)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=    30 size=       264 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     dupl_string(43)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     6 size=       144 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     new_db_id(224)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     6 size=        72 bytes from dbase.c: 
+</I>&gt;&gt;&gt;<i> db_init(271)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=         8 bytes from db/db.c:
+</I>&gt;&gt;&gt;<i>     bind_dbmod(69)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=        52 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(301)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=        44 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(290)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=        12 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(277)
+</I>&gt;&gt;&gt;<i>       8(6153) 11(6156)  4(6149)  count=     1 size=        12 bytes from
+</I>&gt;&gt;&gt;<i>     proxy.c: hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>       4(6149)  count=     1 size=        60 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     mk_proxy(208)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     1 size=         8 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     1 size=      1284 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(59)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     1 size=        20 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(50)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=    30 size=       264 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     dupl_string(43)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     6 size=       144 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     new_db_id(224)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     6 size=        72 bytes from dbase.c: 
+</I>&gt;&gt;&gt;<i> db_init(271)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     1 size=         8 bytes from db/db.c:
+</I>&gt;&gt;&gt;<i>     bind_dbmod(69)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     1 size=        52 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(301)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     1 size=        44 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(290)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     1 size=        12 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(277)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     3 size=        96 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_expr(312)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=    45 size=      1200 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=    33 size=      1056 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     3 size=        64 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=    50 size=      1600 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=   177 size=     10620 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=    12 size=       232 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     9 size=       144 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=   234 size=     29952 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     2 size=        36 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     2 size=       124 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     2 size=        84 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     2 size=        80 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     3 size=        48 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>       5(6150)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>       3(6148)  count=     1 size=        60 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     mk_proxy(208)
+</I>&gt;&gt;&gt;<i>       3(6148)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       3(6148)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        52 bytes from mod.c: fix_parameters(301)
+</I>&gt;&gt;&gt;<i>     16(6161)  count=     2 size=        36 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        44 bytes from mod.c: fix_parameters(290)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=        28 bytes from udp_server.c:
+</I>&gt;&gt;&gt;<i>     udp_rcv_loop(407)
+</I>&gt;&gt;&gt;<i>       1(6146)  2(6147)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=        60 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     mk_proxy(208)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     2 size=        48 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        60 bytes from proxy.c: mk_proxy(208)
+</I>&gt;&gt;&gt;<i>     17(6162)  count=     1 size=     25320 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(522)
+</I>&gt;&gt;&gt;<i>       0(6144)  6(6151)  count=     1 size=        32 bytes from 
+</I>&gt;&gt;&gt;<i> textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       count=     9 size=       288 bytes from sr_module.c: 
+</I>&gt;&gt;&gt;<i> fix_param(660)
+</I>&gt;&gt;&gt;<i>       6(6151)  7(6152)  count=     3 size=        24 bytes from 
+</I>&gt;&gt;&gt;<i> select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>       9(6154)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     3 size=        96 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_expr(312)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=    45 size=      1200 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=    33 size=      1056 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     3 size=        64 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=    50 size=      1600 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=   177 size=     10620 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=    12 size=       232 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     9 size=       144 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=   234 size=     29952 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     2 size=        36 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     2 size=       124 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     2 size=        84 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     2 size=        80 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     3 size=        48 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>       8(6153)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        44 bytes from mod.c: fix_parameters(290)
+</I>&gt;&gt;&gt;<i>     11(6156)  4(6149)  5(6150)  3(6148) 16(6161) 12(6157)  count=     2
+</I>&gt;&gt;&gt;<i>     size=        48 bytes from textops.c: fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        12 bytes from mod.c: fix_parameters(277)
+</I>&gt;&gt;&gt;<i>       count=     1 size=      1284 bytes from my_con.c: 
+</I>&gt;&gt;&gt;<i> new_connection(59)
+</I>&gt;&gt;&gt;<i>       1(6146)  2(6147)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=         8 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=      1284 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(59)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=        20 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(50)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=    30 size=       264 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     dupl_string(43)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     6 size=       144 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     new_db_id(224)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     6 size=        72 bytes from dbase.c: 
+</I>&gt;&gt;&gt;<i> db_init(271)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=         8 bytes from db/db.c:
+</I>&gt;&gt;&gt;<i>     bind_dbmod(69)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=        52 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(301)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=        44 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(290)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=        12 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(277)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     3 size=        96 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_expr(312)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=    45 size=      1200 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=    33 size=      1056 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     3 size=        64 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=    50 size=      1600 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=   177 size=     10620 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=    12 size=       232 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     9 size=       144 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=   234 size=     29952 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     2 size=        36 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     2 size=       124 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     2 size=        84 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     2 size=        80 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     3 size=        48 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=        24 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(926)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     1 size=        12 bytes from nonsip_hooks.c:
+</I>&gt;&gt;&gt;<i>     init_nonsip_hooks(50)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     2 size=        12 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     init_rlist(150)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     6 size=        88 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=    16 size=       384 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_add(129)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     5 size=       320 bytes from str_hash.h:
+</I>&gt;&gt;&gt;<i>     str_hash_alloc(69)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=     2 size=        16 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(565)
+</I>&gt;&gt;&gt;<i>       2(6147)  count=   696 size=     49432 bytes in total
+</I>&gt;&gt;&gt;<i>       2(6147) -----------------------------
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     2 size=        48 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=         8 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=      1284 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(59)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=        20 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(50)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=    30 size=       264 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     dupl_string(43)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     6 size=       144 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     new_db_id(224)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     6 size=        72 bytes from dbase.c: 
+</I>&gt;&gt;&gt;<i> db_init(271)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=         8 bytes from db/db.c:
+</I>&gt;&gt;&gt;<i>     bind_dbmod(69)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=        52 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(301)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=        44 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(290)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=        12 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(277)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     3 size=        96 bytes from route.c: 
+</I>&gt;&gt;&gt;<i> fix_expr(312)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=    45 size=      1200 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=    33 size=      1056 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     3 size=        64 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=    50 size=      1600 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=   177 size=     10620 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=    12 size=       232 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     9 size=       144 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=   234 size=     29952 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     2 size=        36 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     2 size=       124 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     2 size=        84 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     2 size=        80 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     3 size=        48 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=        24 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(926)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     1 size=        12 bytes from nonsip_hooks.c:
+</I>&gt;&gt;&gt;<i>     init_nonsip_hooks(50)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     2 size=        12 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     init_rlist(150)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     6 size=        88 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=    16 size=       384 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_add(129)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     5 size=       320 bytes from str_hash.h:
+</I>&gt;&gt;&gt;<i>     str_hash_alloc(69)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=     2 size=        16 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(565)
+</I>&gt;&gt;&gt;<i>     15(6160)  count=   698 size=    100124 bytes in total
+</I>&gt;&gt;&gt;<i>     15(6160) -----------------------------
+</I>&gt;&gt;&gt;<i>     17(6162)  count=     1 size=      2048 bytes from tcp_main.c:
+</I>&gt;&gt;&gt;<i>     send_fd_queue_init(1006)
+</I>&gt;&gt;&gt;<i>     17(6162) 16. (6161) &gt; tcp receiver child=3
+</I>&gt;&gt;&gt;<i>       count=     1 size=        80 bytes from tcp_main.c:
+</I>&gt;&gt;&gt;<i>     tcp_init_children(1996)
+</I>&gt;&gt;&gt;<i>     17(6162) 10(6155)  count=     9 size=       288 bytes from 
+</I>&gt;&gt;&gt;<i> sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        12 bytes from mod.c: fix_parameters(277)
+</I>&gt;&gt;&gt;<i>       count=     2 size=        48 bytes from textops.c: 
+</I>&gt;&gt;&gt;<i> fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=         8 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=      1284 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(59)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=        20 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(50)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=    30 size=       264 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     dupl_string(43)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     6 size=       144 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     new_db_id(224)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     6 size=        72 bytes from dbase.c: 
+</I>&gt;&gt;&gt;<i> db_init(271)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=         8 bytes from db/db.c:
+</I>&gt;&gt;&gt;<i>     bind_dbmod(69)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=        52 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(301)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=        44 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(290)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=        12 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(277)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     3 size=        96 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_expr(312)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=    45 size=      1200 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=    33 size=      1056 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     3 size=        64 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=    50 size=      1600 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=   177 size=     10620 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=    12 size=       232 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     9 size=       144 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=   234 size=     29952 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     2 size=        36 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     2 size=       124 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     2 size=        84 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     2 size=        80 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     3 size=        48 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=        24 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(926)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     1 size=        12 bytes from nonsip_hooks.c:
+</I>&gt;&gt;&gt;<i>     init_nonsip_hooks(50)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     2 size=        12 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     init_rlist(150)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     6 size=        88 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=    16 size=       384 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_add(129)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     5 size=       320 bytes from str_hash.h:
+</I>&gt;&gt;&gt;<i>     str_hash_alloc(69)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=     2 size=        16 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(565)
+</I>&gt;&gt;&gt;<i>       6(6151)  count=   695 size=     49404 bytes in total
+</I>&gt;&gt;&gt;<i>       6(6151) -----------------------------
+</I>&gt;&gt;&gt;<i>       count=     3 size=        48 bytes from script_cb.c: 
+</I>&gt;&gt;&gt;<i> add_callback(60)
+</I>&gt;&gt;&gt;<i>       0(6144) 17. (6162) &gt; tcp main process
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:cdp:cdp_exit(): CDiameterPeer stoping ...
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:destroy_diameter_peer(): Terminating all childs...
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:destroy_diameter_peer(): Waiting for child [6157] to
+</I>&gt;&gt;&gt;<i>     terminate...
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:destroy_diameter_peer(): Waiting for child [6156] to
+</I>&gt;&gt;&gt;<i>     terminate...
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:destroy_diameter_peer(): Waiting for child [6155] to
+</I>&gt;&gt;&gt;<i>     terminate...
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:destroy_diameter_peer(): Waiting for child [6154] to
+</I>&gt;&gt;&gt;<i>     terminate...
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:destroy_diameter_peer(): Waiting for child [6153] to
+</I>&gt;&gt;&gt;<i>     terminate...
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:destroy_diameter_peer(): Waiting for child [6152] to
+</I>&gt;&gt;&gt;<i>     terminate...
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:destroy_diameter_peer(): All processes terminated.
+</I>&gt;&gt;&gt;<i>     Cleaning up.
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:destroy_diameter_peer(): Bye Bye from C Diameter Peer
+</I>&gt;&gt;&gt;<i>     test
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:cdp:cdp_exit(): ... CDiameterPeer stoped
+</I>&gt;&gt;&gt;<i>       0(6144) INFO:I-CSCF:mod_destroy: child exit
+</I>&gt;&gt;&gt;<i>       0(6144) qm_sums (0x815cfc0): PKG[0]/SHM
+</I>&gt;&gt;&gt;<i>       0(6144) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        60 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     mk_proxy(208)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     9 size=       288 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     2 size=        48 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     fixup_xlstr(228)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         4 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         8 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=      1284 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(59)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        20 bytes from my_con.c:
+</I>&gt;&gt;&gt;<i>     new_connection(50)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=    15 size=       132 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     dupl_string(43)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     3 size=        72 bytes from db/db_id.c:
+</I>&gt;&gt;&gt;<i>     new_db_id(224)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     3 size=        36 bytes from dbase.c: 
+</I>&gt;&gt;&gt;<i> db_init(271)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         8 bytes from db/db.c:
+</I>&gt;&gt;&gt;<i>     bind_dbmod(69)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        52 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(301)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        44 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(290)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        12 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     fix_parameters(277)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     3 size=        96 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_expr(312)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=    45 size=      1200 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=    33 size=      1056 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=    50 size=      1600 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=   177 size=     10620 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=    12 size=       232 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=   234 size=     29952 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     2 size=        36 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     2 size=       124 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     2 size=        84 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     2 size=        80 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     3 size=        48 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        24 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(926)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        64 bytes from str_hash.h:
+</I>&gt;&gt;&gt;<i>     str_hash_alloc(69)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         4 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     init_rlist(150)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     6 size=        88 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=    15 size=       360 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_add(129)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     2 size=        16 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(565)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=   652 size=     48608 bytes in total
+</I>&gt;&gt;&gt;<i>       0(6144) -----------------------------
+</I>&gt;&gt;&gt;<i>       0(6144) qm_sums (0xb5f25000): PKG[0]/SHM
+</I>&gt;&gt;&gt;<i>       0(6144) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         4 bytes from pt.c: init_pt(79)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         4 bytes from pt.c: init_pt(74)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         4 bytes from transaction.c:
+</I>&gt;&gt;&gt;<i>     trans_init(78)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        12 bytes from transaction.c:
+</I>&gt;&gt;&gt;<i>     trans_init(71)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         8 bytes from db.c:
+</I>&gt;&gt;&gt;<i>     icscf_db_get_capabilities(359)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        28 bytes from db.c:
+</I>&gt;&gt;&gt;<i>     icscf_db_get_scscf(299)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        20 bytes from db.c:
+</I>&gt;&gt;&gt;<i>     icscf_db_get_scscf(289)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        16 bytes from db.c:
+</I>&gt;&gt;&gt;<i>     icscf_db_get_nds(227)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=        16 bytes from db.c:
+</I>&gt;&gt;&gt;<i>     icscf_db_get_nds(218)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         4 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     icscf_mod_init(347)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         4 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     icscf_mod_init(345)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         4 bytes from usr_avp.c:
+</I>&gt;&gt;&gt;<i>     init_avps(97)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         4 bytes from usr_avp.c:
+</I>&gt;&gt;&gt;<i>     init_avps(96)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=     1 size=         4 bytes from mem/shm_mem.c:
+</I>&gt;&gt;&gt;<i>     shm_mem_init_mallocs(195)
+</I>&gt;&gt;&gt;<i>       0(6144)  count=    14 size=       132 bytes in total
+</I>&gt;&gt;&gt;<i>       0(6144) -----------------------------
+</I>&gt;&gt;&gt;<i>       0(6144) Thank you for flying ser
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     ------ Semaphore Arrays --------
+</I>&gt;&gt;&gt;<i>     key        semid      owner      perms      nsems
+</I>&gt;&gt;&gt;<i>     0x000000a7 0          root      600        1
+</I>&gt;&gt;&gt;<i>     0x00000000 98307      iluvatar  666        1
+</I>&gt;&gt;&gt;<i>     0x00000000 131076     iluvatar  666        1
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at PC2</A> OpenIMSCore]#
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------------------------ 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------------------------ 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     PC2 : s-cscf :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at PC2</A> OpenIMSCore]$ ./scscf.sh
+</I>&gt;&gt;&gt;<i>     Listening on
+</I>&gt;&gt;&gt;<i>                   udp: *MailScanner has detected a possible fraud
+</I>&gt;&gt;&gt;<i>     attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt; [127.0.0.1]:6060
+</I>&gt;&gt;&gt;<i>                   tcp: *MailScanner has detected a possible fraud
+</I>&gt;&gt;&gt;<i>     attempt from &quot;127.0.0.1&quot; claiming to be* 127.0.0.1
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt; [127.0.0.1]:6060
+</I>&gt;&gt;&gt;<i>     Aliases:
+</I>&gt;&gt;&gt;<i>                   tcp: localhost:6060
+</I>&gt;&gt;&gt;<i>                   tcp: localhost.localdomain:6060
+</I>&gt;&gt;&gt;<i>                   tcp: Mandos:6060
+</I>&gt;&gt;&gt;<i>                   udp: localhost:6060
+</I>&gt;&gt;&gt;<i>                   udp: localhost.localdomain:6060
+</I>&gt;&gt;&gt;<i>                   udp: Mandos:6060
+</I>&gt;&gt;&gt;<i>                   *: scscf.open-ims.test:6060
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       0(6173) init_tcp: using epoll_lt as the io watch method (auto
+</I>&gt;&gt;&gt;<i>     detected)
+</I>&gt;&gt;&gt;<i>       0(6173) Maxfwd module- initializing
+</I>&gt;&gt;&gt;<i>       0(6173) INFO:S-CSCF:mod_init: Initialization of module
+</I>&gt;&gt;&gt;<i>       0(6173) INFO:ISC: - init
+</I>&gt;&gt;&gt;<i>       0(6173) INFO:cdp:cdp_init(): CDiameterPeer initializing
+</I>&gt;&gt;&gt;<i>       0(6173) Diameter Peer Config:
+</I>&gt;&gt;&gt;<i>       0(6173)        FQDN    : scscf.open-ims.test
+</I>&gt;&gt;&gt;<i>       0(6173)        Realm   : open-ims.test
+</I>&gt;&gt;&gt;<i>       0(6173)        VendorID: 10415
+</I>&gt;&gt;&gt;<i>       0(6173)        ProdName: CDiameterPeer
+</I>&gt;&gt;&gt;<i>       0(6173)        AcceptUn: [X]
+</I>&gt;&gt;&gt;<i>       0(6173)        DropUnkn: [X]
+</I>&gt;&gt;&gt;<i>       0(6173)        Tc      : 30
+</I>&gt;&gt;&gt;<i>       0(6173)        Workers : 4
+</I>&gt;&gt;&gt;<i>       0(6173)        QueueLen: 8
+</I>&gt;&gt;&gt;<i>       0(6173)        Peers : 1
+</I>&gt;&gt;&gt;<i>       0(6173)                FQDN:  hss.open-ims.test         Realm:
+</I>&gt;&gt;&gt;<i>     open-ims.test    Port: 3868
+</I>&gt;&gt;&gt;<i>       0(6173)        Acceptors : 1
+</I>&gt;&gt;&gt;<i>       0(6173)                Port:  3870      Bind: *MailScanner has
+</I>&gt;&gt;&gt;<i>     detected a possible fraud attempt from &quot;127.0.0.1&quot; claiming to be*
+</I>&gt;&gt;&gt;<i>     127.0.0.1 &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;
+</I>&gt;&gt;&gt;<i>       0(6173)        Applications : 3
+</I>&gt;&gt;&gt;<i>       0(6173)                Auth ID:  16777216       Vendor: 10415
+</I>&gt;&gt;&gt;<i>       0(6173)                Auth ID:  16777216       Vendor: 4491
+</I>&gt;&gt;&gt;<i>       0(6173)                Auth ID:  16777216       Vendor: 13019
+</I>&gt;&gt;&gt;<i>       0(6173)        Routing Table :
+</I>&gt;&gt;&gt;<i>       0(6173)                DefaultRoute: [  10] hss.open-ims.test
+</I>&gt;&gt;&gt;<i>       0(6173) INFO: udp_init: SO_RCVBUF is initially 110592
+</I>&gt;&gt;&gt;<i>       0(6173) INFO: udp_init: SO_RCVBUF is finally 262142
+</I>&gt;&gt;&gt;<i>       1(6174) INFO:S-CSCF:mod_child_init: Initialization of module in
+</I>&gt;&gt;&gt;<i>     child [1]
+</I>&gt;&gt;&gt;<i>       2(6175) INFO:S-CSCF:mod_child_init: Initialization of module in
+</I>&gt;&gt;&gt;<i>     child [2]
+</I>&gt;&gt;&gt;<i>       3(6176) INFO:S-CSCF:mod_child_init: Initialization of module in
+</I>&gt;&gt;&gt;<i>     child [3]
+</I>&gt;&gt;&gt;<i>       4(6177) INFO:S-CSCF:mod_child_init: Initialization of module in
+</I>&gt;&gt;&gt;<i>     child [4]
+</I>&gt;&gt;&gt;<i>       2(6175) INFO:ISC: - child init [2]
+</I>&gt;&gt;&gt;<i>       1(6174) INFO:ISC: - child init [1]
+</I>&gt;&gt;&gt;<i>       5(6178) INFO:S-CSCF:mod_child_init: Initialization of module in 
+</I>&gt;&gt;&gt;<i> child
+</I>&gt;&gt;&gt;<i>     [-1]
+</I>&gt;&gt;&gt;<i>       3(6176) INFO:ISC: - child init [3]
+</I>&gt;&gt;&gt;<i>       6(6179) INFO:S-CSCF:mod_child_init: Initialization of module in 
+</I>&gt;&gt;&gt;<i> child
+</I>&gt;&gt;&gt;<i>     [-1]
+</I>&gt;&gt;&gt;<i>       4(6177) INFO:ISC: - child init [4]
+</I>&gt;&gt;&gt;<i>       0(6173)  5(6178) INFO:ISC: - child init [-1]
+</I>&gt;&gt;&gt;<i>       6(6179) INFO:ISC: - child init [-1]
+</I>&gt;&gt;&gt;<i>     INFO:S-CSCF:mod_child_init: Initialization of module in child [0]
+</I>&gt;&gt;&gt;<i>       0(6173) INFO:ISC: - child init [0]
+</I>&gt;&gt;&gt;<i>       0(6173) INFO:cdp:cdp_child_init(): CDiameterPeer starting ...
+</I>&gt;&gt;&gt;<i>       7(6180) INFO:S-CSCF:mod_child_init: Initialization of module in 
+</I>&gt;&gt;&gt;<i> child
+</I>&gt;&gt;&gt;<i>     [1000]
+</I>&gt;&gt;&gt;<i>       8(6181) INFO:S-CSCF:mod_child_init: Initialization of module in 
+</I>&gt;&gt;&gt;<i> child
+</I>&gt;&gt;&gt;<i>     [1001]
+</I>&gt;&gt;&gt;<i>       9(6182) INFO:S-CSCF:mod_child_init: Initialization of module in 
+</I>&gt;&gt;&gt;<i> child
+</I>&gt;&gt;&gt;<i>     [1002]
+</I>&gt;&gt;&gt;<i>       8(6181) INFO:ISC: - child init [1001]
+</I>&gt;&gt;&gt;<i>       8(6181) INFO:[0] Worker process started...
+</I>&gt;&gt;&gt;<i>     10(6183) INFO:S-CSCF:mod_child_init: Initialization of module in 
+</I>&gt;&gt;&gt;<i> child
+</I>&gt;&gt;&gt;<i>     [1003]
+</I>&gt;&gt;&gt;<i>       7(6180) INFO:ISC: - child init [1000]
+</I>&gt;&gt;&gt;<i>       7(6180) INFO:Acceptor process starting up...
+</I>&gt;&gt;&gt;<i>       7(6180) INFO:create_socket(): Trying to open/bind/listen on
+</I>&gt;&gt;&gt;<i>     *MailScanner has detected a possible fraud attempt from &quot;127.0.0.1&quot;
+</I>&gt;&gt;&gt;<i>     claiming to be* 127.0.0.1 &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt;
+</I>&gt;&gt;&gt;<i>     port 3870
+</I>&gt;&gt;&gt;<i>       7(6180) INFO:create_socket(): Successful socket 
+</I>&gt;&gt;&gt;<i> open/bind/listen on
+</I>&gt;&gt;&gt;<i>     *MailScanner has detected a possible fraud attempt from &quot;127.0.0.1&quot;
+</I>&gt;&gt;&gt;<i>     claiming to be* 127.0.0.1 &lt;<A HREF="http://127.0.0.1">http://127.0.0.1</A>&gt; port 3870
+</I>&gt;&gt;&gt;<i>       7(6180) INFO:... Acceptor opened sockets. Entering accept loop ...
+</I>&gt;&gt;&gt;<i>     11(6184) INFO:S-CSCF:mod_child_init: Initialization of module in 
+</I>&gt;&gt;&gt;<i> child
+</I>&gt;&gt;&gt;<i>     [1004]
+</I>&gt;&gt;&gt;<i>       9(6182) INFO:ISC: - child init [1002]
+</I>&gt;&gt;&gt;<i>       9(6182) INFO:[1] Worker process started...
+</I>&gt;&gt;&gt;<i>     12(6185) INFO:S-CSCF:mod_child_init: Initialization of module in 
+</I>&gt;&gt;&gt;<i> child
+</I>&gt;&gt;&gt;<i>     [1001]
+</I>&gt;&gt;&gt;<i>     10(6183) INFO:ISC: - child init [1003]
+</I>&gt;&gt;&gt;<i>     10(6183) INFO:[2] Worker process started...
+</I>&gt;&gt;&gt;<i>       0(6173) INFO:cdp:cdp_child_init(): ... CDiameterPeer started
+</I>&gt;&gt;&gt;<i>     13(6186) INFO:S-CSCF:mod_child_init: Initialization of module in
+</I>&gt;&gt;&gt;<i>     child [5]
+</I>&gt;&gt;&gt;<i>     12(6185) INFO:ISC: - child init [1001]
+</I>&gt;&gt;&gt;<i>     12(6185) INFO:Timer process starting up...
+</I>&gt;&gt;&gt;<i>     14(6187) INFO:S-CSCF:mod_child_init: Initialization of module in
+</I>&gt;&gt;&gt;<i>     child [6]
+</I>&gt;&gt;&gt;<i>     11(6184) INFO:ISC: - child init [1004]
+</I>&gt;&gt;&gt;<i>     11(6184) INFO:[3] Worker process started...
+</I>&gt;&gt;&gt;<i>     15(6188) INFO:S-CSCF:mod_child_init: Initialization of module in
+</I>&gt;&gt;&gt;<i>     child [7]
+</I>&gt;&gt;&gt;<i>     13(6186) INFO:ISC: - child init [5]
+</I>&gt;&gt;&gt;<i>     16(6189) INFO:S-CSCF:mod_child_init: Initialization of module in
+</I>&gt;&gt;&gt;<i>     child [8]
+</I>&gt;&gt;&gt;<i>     14(6187) INFO:ISC: - child init [6]
+</I>&gt;&gt;&gt;<i>     17(6190) INFO:S-CSCF:mod_child_init: Initialization of module in
+</I>&gt;&gt;&gt;<i>     child [-4]
+</I>&gt;&gt;&gt;<i>     17(6190) INFO:ISC: - child init [-4]
+</I>&gt;&gt;&gt;<i>     16(6189) INFO:ISC: - child init [8]
+</I>&gt;&gt;&gt;<i>     15(6188) INFO:ISC: - child init [7]
+</I>&gt;&gt;&gt;<i>     12(6185) DBG:peer_timer(): Peer hss.open-ims.test       State 0
+</I>&gt;&gt;&gt;<i>     12(6185) DBG:sm_process(): Peer hss.open-ims.test       State Closed
+</I>&gt;&gt;&gt;<i>     Event Start
+</I>&gt;&gt;&gt;<i>     12(6185) DBG:I_Snd_Conn_Req(): Peer hss.open-ims.test
+</I>&gt;&gt;&gt;<i>     12(6185) INFO:peer_connect(): Trying to connect to *MailScanner has
+</I>&gt;&gt;&gt;<i>     detected a possible fraud attempt from &quot;192.168.1.2&quot; claiming to be*
+</I>&gt;&gt;&gt;<i>     192.168.1.2 &lt;<A HREF="http://192.168.1.2">http://192.168.1.2</A>&gt; port 3868
+</I>&gt;&gt;&gt;<i>     12(6185) WARNING:peer_connect(): Error opening connection to to
+</I>&gt;&gt;&gt;<i>     *MailScanner has detected a possible fraud attempt from
+</I>&gt;&gt;&gt;<i>     &quot;192.168.1.2&quot; claiming to be* 192.168.1.2 &lt;<A HREF="http://192.168.1.2">http://192.168.1.2</A>&gt; port
+</I>&gt;&gt;&gt;<i>     3868 &gt;Connection refused
+</I>&gt;&gt;&gt;<i>     12(6185) DBG:sm_process(): Peer hss.open-ims.test       State
+</I>&gt;&gt;&gt;<i>     Wait_Conn_Ack     Event I_Rcv_Conn_NAck
+</I>&gt;&gt;&gt;<i>     12(6185) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6185)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6185) ------------------
+</I>&gt;&gt;&gt;<i>     12(6185) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6185)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6185) ------------------
+</I>&gt;&gt;&gt;<i>     12(6185) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6185)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6185) ------------------
+</I>&gt;&gt;&gt;<i>       5(6178) INF:S-CSCF:----------  Registrar Contents begin --------
+</I>&gt;&gt;&gt;<i>       5(6178) INF:S-CSCF:----------  Registrar Contents end ----------
+</I>&gt;&gt;&gt;<i>     12(6185) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6185)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6185) ------------------
+</I>&gt;&gt;&gt;<i>     12(6185) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6185)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6185) ------------------
+</I>&gt;&gt;&gt;<i>     12(6185) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6185)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6185) ------------------
+</I>&gt;&gt;&gt;<i>       5(6178) INF:S-CSCF:----------  Registrar Contents begin --------
+</I>&gt;&gt;&gt;<i>       5(6178) INF:S-CSCF:----------  Registrar Contents end ----------
+</I>&gt;&gt;&gt;<i>     12(6185) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6185)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6185) ------------------
+</I>&gt;&gt;&gt;<i>     12(6185) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6185)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6185) ------------------
+</I>&gt;&gt;&gt;<i>     12(6185) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6185)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6185) ------------------
+</I>&gt;&gt;&gt;<i>       5(6178) INF:S-CSCF:----------  Registrar Contents begin --------
+</I>&gt;&gt;&gt;<i>       5(6178) INF:S-CSCF:----------  Registrar Contents end ----------
+</I>&gt;&gt;&gt;<i>     12(6185) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6185)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6185) ------------------
+</I>&gt;&gt;&gt;<i>     12(6185) DBG:peer_timer(): Peer hss.open-ims.test       State 0
+</I>&gt;&gt;&gt;<i>     12(6185) DBG:sm_process(): Peer hss.open-ims.test       State Closed
+</I>&gt;&gt;&gt;<i>     Event Start
+</I>&gt;&gt;&gt;<i>     12(6185) DBG:I_Snd_Conn_Req(): Peer hss.open-ims.test
+</I>&gt;&gt;&gt;<i>     12(6185) INFO:peer_connect(): Trying to connect to *MailScanner has
+</I>&gt;&gt;&gt;<i>     detected a possible fraud attempt from &quot;192.168.1.2&quot; claiming to be*
+</I>&gt;&gt;&gt;<i>     192.168.1.2 &lt;<A HREF="http://192.168.1.2">http://192.168.1.2</A>&gt; port 3868
+</I>&gt;&gt;&gt;<i>     12(6185) WARNING:peer_connect(): Error opening connection to to
+</I>&gt;&gt;&gt;<i>     *MailScanner has detected a possible fraud attempt from
+</I>&gt;&gt;&gt;<i>     &quot;192.168.1.2&quot; claiming to be* 192.168.1.2 &lt;<A HREF="http://192.168.1.2">http://192.168.1.2</A>&gt; port
+</I>&gt;&gt;&gt;<i>     3868 &gt;Connection refused
+</I>&gt;&gt;&gt;<i>     12(6185) DBG:sm_process(): Peer hss.open-ims.test       State
+</I>&gt;&gt;&gt;<i>     Wait_Conn_Ack     Event I_Rcv_Conn_NAck
+</I>&gt;&gt;&gt;<i>     12(6185) --- Peer List: ---
+</I>&gt;&gt;&gt;<i>     12(6185)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;<i>     12(6185) ------------------
+</I>&gt;&gt;&gt;<i>     17(6190) 15(6188) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     10(6183) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     15(6188) qm_sums (0x815cfc0): PKG[tcp receiver child=2]
+</I>&gt;&gt;&gt;<i>     10(6183) qm_sums (0x815cfc0): PKG[cdp worker child=2]
+</I>&gt;&gt;&gt;<i>     16(6189) 10(6183) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       7(6180) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       9(6182) 10(6183)  count=     2 size=        16 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_actions(510)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     6 size=       192 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(436)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(430)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(424)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(418)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     1 size=        60 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(412)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     3 size=       248 bytes from proxy.c: 
+</I>&gt;&gt;&gt;<i> mk_proxy(208)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     3 size=        32 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     3 size=        36 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     3 size=       128 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>       4(6177) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       1(6174) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       4(6177) qm_sums (0x815cfc0): PKG[receiver child=3
+</I>&gt;&gt;&gt;<i>     sock=*MailScanner warning: numerical links are often malicious:*
+</I>&gt;&gt;&gt;<i>     127.0.0.1:6060 &lt;<A HREF="http://127.0.0.1:6060">http://127.0.0.1:6060</A>&gt;]
+</I>&gt;&gt;&gt;<i>       4(6177) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       1(6174) qm_sums (0x815cfc0): PKG[receiver child=0
+</I>&gt;&gt;&gt;<i>     sock=*MailScanner warning: numerical links are often malicious:*
+</I>&gt;&gt;&gt;<i>     127.0.0.1:6060 &lt;<A HREF="http://127.0.0.1:6060">http://127.0.0.1:6060</A>&gt;]
+</I>&gt;&gt;&gt;<i>       1(6174) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       4(6177)  count=     1 size=        28 bytes from udp_server.c:
+</I>&gt;&gt;&gt;<i>     udp_rcv_loop(407)
+</I>&gt;&gt;&gt;<i>       4(6177)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       1(6174) 12(6185)  0(6173) Process Table:
+</I>&gt;&gt;&gt;<i>       0(6173)  0. (6173) &gt; attendant
+</I>&gt;&gt;&gt;<i>       0(6173)  1. (6174) &gt; receiver child=0 sock=*MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 127.0.0.1:6060
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1:6060">http://127.0.0.1:6060</A>&gt;
+</I>&gt;&gt;&gt;<i>       0(6173)  2. (6175) &gt; receiver child=1 sock=*MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 127.0.0.1:6060
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1:6060">http://127.0.0.1:6060</A>&gt;
+</I>&gt;&gt;&gt;<i>       0(6173)  3. (6176) &gt; receiver child=2 sock=*MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 127.0.0.1:6060
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1:6060">http://127.0.0.1:6060</A>&gt;
+</I>&gt;&gt;&gt;<i>       0(6173)  4. (6177) &gt; receiver child=3 sock=*MailScanner warning:
+</I>&gt;&gt;&gt;<i>     numerical links are often malicious:* 127.0.0.1:6060
+</I>&gt;&gt;&gt;<i>     &lt;<A HREF="http://127.0.0.1:6060">http://127.0.0.1:6060</A>&gt;
+</I>&gt;&gt;&gt;<i>     11(6184) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       8(6181) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     11(6184) qm_sums (0x815cfc0): PKG[cdp worker child=3]
+</I>&gt;&gt;&gt;<i>     11(6184) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       8(6181) qm_sums (0x815cfc0): PKG[cdp worker child=0]
+</I>&gt;&gt;&gt;<i>       8(6181) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       8(6181)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     2 size=        16 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_actions(510)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     6 size=       192 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(436)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(430)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(424)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(418)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=        60 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(412)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     3 size=       248 bytes from proxy.c: 
+</I>&gt;&gt;&gt;<i> mk_proxy(208)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     3 size=        32 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     3 size=        36 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     3 size=       128 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=    62 size=      1696 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     8 size=       272 bytes from route.c: 
+</I>&gt;&gt;&gt;<i> fix_expr(312)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=    37 size=      1184 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=    82 size=      2624 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=   321 size=     19260 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     5 size=       160 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=    10 size=       160 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=   426 size=     54528 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=        20 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>     11(6184)  6(6179) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       5(6178) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       6(6179) qm_sums (0x815cfc0): PKG[timer]
+</I>&gt;&gt;&gt;<i>       6(6179) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       5(6178) qm_sums (0x815cfc0): PKG[slow timer]
+</I>&gt;&gt;&gt;<i>       5(6178) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       6(6179)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       6(6179)  count=     2 size=        16 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_actions(510)
+</I>&gt;&gt;&gt;<i>       6(6179)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       6(6179)  5(6178) 14(6187)  3(6176)  2(6175) INFO: signal 2 
+</I>&gt;&gt;&gt;<i> received
+</I>&gt;&gt;&gt;<i>     13(6186) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       2(6175) qm_sums (0x815cfc0): PKG[receiver child=1
+</I>&gt;&gt;&gt;<i>     sock=*MailScanner warning: numerical links are often malicious:*
+</I>&gt;&gt;&gt;<i>     127.0.0.1:6060 &lt;<A HREF="http://127.0.0.1:6060">http://127.0.0.1:6060</A>&gt;]
+</I>&gt;&gt;&gt;<i>       2(6175) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>     13(6186) qm_sums (0x815cfc0): PKG[tcp receiver child=0]
+</I>&gt;&gt;&gt;<i>     13(6186) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        28 bytes from udp_server.c:
+</I>&gt;&gt;&gt;<i>     udp_rcv_loop(407)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       2(6175) 13(6186)  count=     2 size=        16 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_actions(510)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     6 size=       192 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(436)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(430)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(424)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(418)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        60 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(412)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     3 size=       248 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     mk_proxy(208)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     3 size=        32 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     3 size=        36 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     3 size=       128 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=    62 size=      1696 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     8 size=       272 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_expr(312)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=    37 size=      1184 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=    82 size=      2624 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=   321 size=     19260 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     5 size=       160 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=    10 size=       160 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=   426 size=     54528 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        20 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        60 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        20 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        64 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     2 size=        32 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        24 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(926)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     1 size=        12 bytes from nonsip_hooks.c:
+</I>&gt;&gt;&gt;<i>     init_nonsip_hooks(50)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     2 size=        12 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     init_rlist(150)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     6 size=        88 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=    30 size=       728 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_add(129)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     5 size=       320 bytes from str_hash.h:
+</I>&gt;&gt;&gt;<i>     str_hash_alloc(69)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=     2 size=        16 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(565)
+</I>&gt;&gt;&gt;<i>       2(6175)  count=  1057 size=     83100 bytes in total
+</I>&gt;&gt;&gt;<i>       2(6175) -----------------------------
+</I>&gt;&gt;&gt;<i>     INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     17(6190) qm_sums (0x815cfc0): PKG[tcp main process]
+</I>&gt;&gt;&gt;<i>     17(6190) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       0(6173)  5. (6178) &gt; slow timer
+</I>&gt;&gt;&gt;<i>       0(6173) 17(6190)  count=     1 size=     25320 bytes from 
+</I>&gt;&gt;&gt;<i> io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(573)
+</I>&gt;&gt;&gt;<i>     INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     1 size=     25320 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(522)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     1 size=      2580 bytes from tcp_main.c:
+</I>&gt;&gt;&gt;<i>     send_fd_queue_init(1006)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     1 size=        80 bytes from tcp_main.c:
+</I>&gt;&gt;&gt;<i>     tcp_init_children(1996)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     2 size=        16 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_actions(510)
+</I>&gt;&gt;&gt;<i>     17(6190) 16(6189) qm_sums (0x815cfc0): PKG[tcp receiver child=3]
+</I>&gt;&gt;&gt;<i>     16(6189) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=     25320 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(573)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=     25320 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(522)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        80 bytes from tcp_main.c:
+</I>&gt;&gt;&gt;<i>     tcp_init_children(1996)
+</I>&gt;&gt;&gt;<i>     16(6189)  7(6180)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>     qm_sums (0x815cfc0): PKG[cdp_acceptor]
+</I>&gt;&gt;&gt;<i>     INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=    62 size=      1696 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     8 size=       272 bytes from route.c: 
+</I>&gt;&gt;&gt;<i> fix_expr(312)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=    37 size=      1184 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>     10(6183)  9(6182)  4(6177)  count=     2 size=        16 bytes from
+</I>&gt;&gt;&gt;<i>     route.c: fix_actions(510)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        28 bytes from udp_server.c:
+</I>&gt;&gt;&gt;<i>     udp_rcv_loop(407)
+</I>&gt;&gt;&gt;<i>       1(6174) INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       8(6181)  count=     2 size=        16 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_actions(510)
+</I>&gt;&gt;&gt;<i>       8(6181)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       8(6181)  count=     6 size=       192 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       8(6181)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(436)
+</I>&gt;&gt;&gt;<i>       8(6181)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(430)
+</I>&gt;&gt;&gt;<i>       8(6181) 12(6185)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(424)
+</I>&gt;&gt;&gt;<i>     qm_sums (0x815cfc0): PKG[cdp_timer]
+</I>&gt;&gt;&gt;<i>       count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=        60 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=        20 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=        64 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     2 size=        32 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=        24 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(926)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     1 size=        12 bytes from nonsip_hooks.c:
+</I>&gt;&gt;&gt;<i>     init_nonsip_hooks(50)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     2 size=        12 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     init_rlist(150)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     6 size=        88 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=    30 size=       728 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_add(129)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     5 size=       320 bytes from str_hash.h:
+</I>&gt;&gt;&gt;<i>     str_hash_alloc(69)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     2 size=        16 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(565)
+</I>&gt;&gt;&gt;<i>     11(6184)  count=  1056 size=     83072 bytes in total
+</I>&gt;&gt;&gt;<i>     11(6184)  count=     6 size=       192 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       6(6179)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(436)
+</I>&gt;&gt;&gt;<i>       6(6179)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(430)
+</I>&gt;&gt;&gt;<i>       count=     3 size=        12 bytes from proxy.c: hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>     INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>     14(6187) qm_sums (0x815cfc0): PKG[tcp receiver child=1]
+</I>&gt;&gt;&gt;<i>     14(6187) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=     25320 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(573)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=     25320 bytes from io_wait.c:
+</I>&gt;&gt;&gt;<i>     init_io_wait(522)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        80 bytes from tcp_main.c:
+</I>&gt;&gt;&gt;<i>     tcp_init_children(1996)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     2 size=        16 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_actions(510)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     6 size=       192 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(436)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(430)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(424)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(418)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        60 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(412)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     3 size=       248 bytes from proxy.c: 
+</I>&gt;&gt;&gt;<i> mk_proxy(208)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     3 size=        32 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     3 size=        36 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     3 size=       128 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=    62 size=      1696 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     8 size=       272 bytes from route.c: 
+</I>&gt;&gt;&gt;<i> fix_expr(312)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=    37 size=      1184 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=    82 size=      2624 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=   321 size=     19260 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     5 size=       160 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=    10 size=       160 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=   426 size=     54528 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        20 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        60 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        20 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        64 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     2 size=        32 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        24 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(926)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     1 size=        12 bytes from nonsip_hooks.c:
+</I>&gt;&gt;&gt;<i>     init_nonsip_hooks(50)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     2 size=        12 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     init_rlist(150)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     6 size=        88 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=    30 size=       728 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_add(129)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     5 size=       320 bytes from str_hash.h:
+</I>&gt;&gt;&gt;<i>     str_hash_alloc(69)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=     2 size=        16 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(565)
+</I>&gt;&gt;&gt;<i>     14(6187)  count=  1059 size=    133792 bytes in total
+</I>&gt;&gt;&gt;<i>     14(6187) -----------------------------
+</I>&gt;&gt;&gt;<i>     INFO: signal 2 received
+</I>&gt;&gt;&gt;<i>       3(6176) qm_sums (0x815cfc0): PKG[receiver child=2
+</I>&gt;&gt;&gt;<i>     sock=*MailScanner warning: numerical links are often malicious:*
+</I>&gt;&gt;&gt;<i>     127.0.0.1:6060 &lt;<A HREF="http://127.0.0.1:6060">http://127.0.0.1:6060</A>&gt;]
+</I>&gt;&gt;&gt;<i>       3(6176) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       6. (6179) &gt; timer
+</I>&gt;&gt;&gt;<i>       3(6176)  0(6173) 15(6188)  count=     1 size=     25320 bytes from
+</I>&gt;&gt;&gt;<i>     io_wait.c: init_io_wait(573)
+</I>&gt;&gt;&gt;<i>       count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     6 size=       192 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(436)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(430)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(424)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(418)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     1 size=        60 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(412)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     3 size=       248 bytes from proxy.c: 
+</I>&gt;&gt;&gt;<i> mk_proxy(208)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     3 size=        32 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     3 size=        36 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>     17(6190)  count=     3 size=       128 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     2 size=        16 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_actions(510)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     6 size=       192 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(436)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(430)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(424)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(418)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        60 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(412)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     3 size=       248 bytes from proxy.c: 
+</I>&gt;&gt;&gt;<i> mk_proxy(208)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     3 size=        32 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     3 size=        36 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     3 size=       128 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=    62 size=      1696 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     8 size=       272 bytes from route.c: 
+</I>&gt;&gt;&gt;<i> fix_expr(312)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=    37 size=      1184 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=    82 size=      2624 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=   321 size=     19260 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     5 size=       160 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=    10 size=       160 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=   426 size=     54528 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        20 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        60 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        20 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        64 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     2 size=        32 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        24 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(926)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     1 size=        12 bytes from nonsip_hooks.c:
+</I>&gt;&gt;&gt;<i>     init_nonsip_hooks(50)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     2 size=        12 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     init_rlist(150)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     6 size=        88 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=    30 size=       728 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_add(129)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     5 size=       320 bytes from str_hash.h:
+</I>&gt;&gt;&gt;<i>     str_hash_alloc(69)
+</I>&gt;&gt;&gt;<i>     16(6189)  count=     2 size=        16 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(565)
+</I>&gt;&gt;&gt;<i>     16(6189)  7(6180) summarizing all alloc'ed. fragments:
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=         8 bytes from acceptor.c:
+</I>&gt;&gt;&gt;<i>     acceptor_process(92)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(133)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     2 size=        16 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_actions(510)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=        32 bytes from textops.c:
+</I>&gt;&gt;&gt;<i>     sel_hf_value_name(1711)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     6 size=       192 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(660)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(436)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=        56 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(430)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(424)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=        28 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(418)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=        60 bytes from mod.c:
+</I>&gt;&gt;&gt;<i>     build_record_service_route(412)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     3 size=        24 bytes from select.c:
+</I>&gt;&gt;&gt;<i>     register_select_table(348)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     3 size=        48 bytes from script_cb.c:
+</I>&gt;&gt;&gt;<i>     add_callback(60)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     3 size=       248 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     mk_proxy(208)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     3 size=        32 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(122)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     3 size=        12 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(99)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     3 size=        36 bytes from proxy.c:
+</I>&gt;&gt;&gt;<i>     hostent_cpy(88)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     3 size=       128 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_new_list(202)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=       428 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1476)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=    62 size=      1696 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     fix_param(626)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     8 size=       272 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     fix_expr(312)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     6 size=        96 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=    37 size=      1184 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_exp(58)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=    82 size=      2624 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_elem(74)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=   321 size=     19260 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     5 size=       160 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_regex(114)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=    10 size=       160 bytes from sr_module.c:
+</I>&gt;&gt;&gt;<i>     register_module(146)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=   426 size=     54528 bytes from cfg.lex: 
+</I>&gt;&gt;&gt;<i> addstr(744)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=        20 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(607)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=        60 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(99)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=        20 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(474)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=        64 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(1362)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     2 size=        24 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(117)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     2 size=       200 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     new_sock_info(112)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     2 size=        32 bytes from cfg.y:
+</I>&gt;&gt;&gt;<i>     mk_listen_id(1937)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=        12 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(455)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=        24 bytes from cfg.y: 
+</I>&gt;&gt;&gt;<i> yyparse(926)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     1 size=        12 bytes from nonsip_hooks.c:
+</I>&gt;&gt;&gt;<i>     init_nonsip_hooks(50)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     2 size=        12 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     init_rlist(150)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     6 size=        88 bytes from name_alias.h:
+</I>&gt;&gt;&gt;<i>     add_alias(101)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=    30 size=       728 bytes from route.c:
+</I>&gt;&gt;&gt;<i>     route_add(129)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     5 size=       320 bytes from str_hash.h:
+</I>&gt;&gt;&gt;<i>     str_hash_alloc(69)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=     2 size=        16 bytes from socket_info.c:
+</I>&gt;&gt;&gt;<i>     fix_socket_list(565)
+</I>&gt;&gt;&gt;<i>       7(6180)  count=  1057 size=     83080 bytes in total
+</I>&gt;&gt;&gt;<i>       7(6180) -----------------------------
+</I>&gt;&gt;&gt;<i>       count=    82 size=      2624 bytes from route_struct.c: 
+</I>&gt;&gt;&gt;<i> mk_elem(74)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=   321 size=     19260 bytes from route_struct.c:
+</I>&gt;&gt;&gt;<i>     mk_action(94)
+</I>&gt;&gt;&gt;<i>     10(6183)  count=     5 size=       160 bytes from modparam.c:
+</I>&gt;&gt;&gt;<i>     set_mod_param_re...
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     [Message tronqu&#233;] 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+-- 
+Gille Gomand
+1-Ma, Facult&#233; d'Informatique, FUNDP
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">gille.gomand at student.fundp.ac.be</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003750.html">[OpenIMSCore-Users] separate FHoSS and cscf
+</A></li>
+	<LI>Next message: <A HREF="003737.html">[OpenIMSCore-Users] Guide to integrate ASTERISK as Application	Server on Open IMS Core
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3796">[ date ]</a>
+              <a href="thread.html#3796">[ thread ]</a>
+              <a href="subject.html#3796">[ subject ]</a>
+              <a href="author.html#3796">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problems with authentication and registration on coreims with domain name changed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problems%20with%20authentication%20and%0A%20registration%20on%20coreims%20with%20domain%20name%20changed&In-Reply-To=%3C47B9A4AE.5000005%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003403.html">
+   <LINK REL="Next"  HREF="003410.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problems with authentication and registration on coreims with domain name changed</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problems%20with%20authentication%20and%0A%20registration%20on%20coreims%20with%20domain%20name%20changed&In-Reply-To=%3C47B9A4AE.5000005%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Problems with authentication and registration on coreims with domain name changed">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Feb 18 16:30:54 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003403.html">[OpenIMSCore-Users] Problems with authentication and registration on coreims with domain name changed
+</A></li>
+        <LI>Next message: <A HREF="003410.html">[OpenIMSCore-Users] Problem compiling FHoSS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3408">[ date ]</a>
+              <a href="thread.html#3408">[ thread ]</a>
+              <a href="subject.html#3408">[ subject ]</a>
+              <a href="author.html#3408">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>AFAIK, xlite does not support AKA, so this is why it stops after it gets
+an AKA challenge.
+
+For the 403 Forbidden HSS User Unknown - check the private identity (the
+identity sent in the Authorization header as the user parameter) and the
+public identity in the From header.
+
+xlite, again, does not send the Authorization header in the first
+request. So then the OpenIMSCore tries a fallback and derives it from
+the public identity. We have discussed this many many times before... so
+if you have a public identity sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> then the derived
+private identity would be <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test.</A> There's not better way we
+think of guessing the private identity, which is mandatory!
+
+Check your traces, including the Diameter message and you will see what
+is sent in the UAR. Then check those values against what you have
+provisioned.
+
+-Dragos
+
+
+
+Jorge M. Alonso Fern&#225;ndez wrote:
+&gt;<i> Hi everyone!
+</I>&gt;<i>
+</I>&gt;<i> I installed a now OpenImsCore and changed the domain name as explained 
+</I>&gt;<i> on the manual. It seemed to work fine, all processes executed ok, but 
+</I>&gt;<i> when trying to Register a user using 'x-lite', it can't be done.
+</I>&gt;<i>
+</I>&gt;<i> It seems to be problem of the authentication scheme: When I try to 
+</I>&gt;<i> register using AKAv1-MD5, the core delivers me an 401 - Unauthorized - 
+</I>&gt;<i> Challenging the UE, and no further action is taken neither from the 
+</I>&gt;<i> Xlite nor from the core. Hss delivers these lines:
+</I>&gt;<i> 2008-02-18 11:05:58,734 DEBUG de.fhg.fokus.hss.main.Task - execute 
+</I>&gt;<i> Processing UAR!
+</I>&gt;<i> 2008-02-18 11:05:58,765 DEBUG de.fhg.fokus.hss.main.Task - execute 
+</I>&gt;<i> Processing MAR!
+</I>&gt;<i> 2008-02-18 11:05:58,774 DEBUG de.fhg.fokus.hss.cx.op.MAR - 
+</I>&gt;<i> generateAuthVector Auth-Scheme is Digest-AKA
+</I>&gt;<i> 2008-02-18 11:05:58,775 DEBUG de.fhg.fokus.hss.auth.DigestAKA - 
+</I>&gt;<i> getAuthenticationVector Authentication-Scheme: AKAv1!
+</I>&gt;<i>
+</I>&gt;<i> I have tried with an MD5 authentication scheme, and the core returns me 
+</I>&gt;<i> a 403- Forbidden - Hss User Unknown (I'm trying to register Bob, so it 
+</I>&gt;<i> does exist for sure). HSS delivers the following:
+</I>&gt;<i> 2008-02-18 12:11:41,226 DEBUG de.fhg.fokus.hss.main.Task - execute 
+</I>&gt;<i> Processing UAR!
+</I>&gt;<i> 2008-02-18 12:11:41,254 DEBUG de.fhg.fokus.hss.main.Task - execute 
+</I>&gt;<i> Processing MAR!
+</I>&gt;<i> 2008-02-18 12:11:41,265 DEBUG de.fhg.fokus.hss.cx.op.MAR - 
+</I>&gt;<i> generateAuthVector Auth-Scheme is Digest-MD5
+</I>&gt;<i> 2008-02-18 12:11:41,475 DEBUG de.fhg.fokus.hss.main.Task - execute 
+</I>&gt;<i> Processing UAR!
+</I>&gt;<i> de.fhg.fokus.hss.cx.CxExperimentalResultException: 
+</I>&gt;<i> IMS_Diameter_Error_User_Unknown
+</I>&gt;<i>         at de.fhg.fokus.hss.cx.op.UAR.processRequest(UAR.java:113)
+</I>&gt;<i>         at de.fhg.fokus.hss.main.Task.execute(Task.java:169)
+</I>&gt;<i>         at de.fhg.fokus.hss.main.Worker.run(Worker.java:66)
+</I>&gt;<i>
+</I>&gt;<i> As I read in another thread of this list, I went to scsf.cfg and changed 
+</I>&gt;<i> the registration default algorithm to &quot;HSS-Selected&quot;
+</I>&gt;<i>
+</I>&gt;<i> Can anyone help me? Does it have to do with the domain change?
+</I>&gt;<i>
+</I>&gt;<i> I can provide any information you may need, config files, ethereal 
+</I>&gt;<i> captures or whatever. Just let me know
+</I>&gt;<i>
+</I>&gt;<i> Thank you very much
+</I>&gt;<i> Best Regards
+</I>&gt;<i> Jorge
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003403.html">[OpenIMSCore-Users] Problems with authentication and registration on coreims with domain name changed
+</A></li>
+	<LI>Next message: <A HREF="003410.html">[OpenIMSCore-Users] Problem compiling FHoSS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3408">[ date ]</a>
+              <a href="thread.html#3408">[ thread ]</a>
+              <a href="subject.html#3408">[ subject ]</a>
+              <a href="author.html#3408">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Query on Registration Over IPSec
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Query%20on%20Registration%20Over%20IPSec&In-Reply-To=%3C97083DFAC8827841B568A86D40354C4A03C82F1C%40ZMY16EXM66.ds.mot.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006088.html">
+   <LINK REL="Next"  HREF="006090.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Query on Registration Over IPSec</H1>
+    <B>Sunil Suraj-a22975</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Query%20on%20Registration%20Over%20IPSec&In-Reply-To=%3C97083DFAC8827841B568A86D40354C4A03C82F1C%40ZMY16EXM66.ds.mot.com%3E"
+       TITLE="[OpenIMSCore-Users] Query on Registration Over IPSec">surajsunil at motorola.com
+       </A><BR>
+    <I>Wed Feb 24 10:09:56 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006088.html">[OpenIMSCore-Users] Query on Registration Over IPSec
+</A></li>
+        <LI>Next message: <A HREF="006090.html">[OpenIMSCore-Users] Query on Registration Over IPSec
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6089">[ date ]</a>
+              <a href="thread.html#6089">[ thread ]</a>
+              <a href="subject.html#6089">[ subject ]</a>
+              <a href="author.html#6089">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Naveen,
+ 
+           I think the below mentioned rule is sufficient for sending to
+spi=5019 or else could you  let me know is there any other rules to be
+added.
+ 
+spdadd 10.232.14.119[7071] 10.232.15.41[4063] any -P out ipsec
+esp/transport//unique:1;
+add 10.232.14.119 10.232.15.41 esp 5019 -m transport -u 1 -E 3des-cbc
+0x97a16ddcd0e94fc25d1da35b25810b5d97a16ddcd0e94fc2 -A hmac-md5
+0x2688bdd633606a7ce69893f97f9a2688
+ 
+Regards,
+Suraj
+
+________________________________
+
+From: Naveen BN [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">naveen.bn at globaledgesoft.com</A>] 
+Sent: Wednesday, February 24, 2010 2:13 PM
+To: Sunil Suraj-a22975
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>; P Sudarshanakrishnan-A14377
+Subject: Re: [OpenIMSCore-Users] Query on Registration Over IPSec
+
+
+Sunil,
+Ensure that the protected register message to server is going using
+spi=5019.
+
+Regards
+Naveen
+Sunil Suraj-a22975 wrote: 
+
+	Following test is performed in below environment
+	 
+	OpenIms version : 0595. With ipsec pacage is installed.
+	OS : Linux
+	kernal : 2.6.21
+	 
+	Regards,
+	Suraj
+
+________________________________
+
+	From: Sunil Suraj-a22975 
+	Sent: Tuesday, February 23, 2010 7:05 PM
+	To: '<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>'
+	Cc: Vavilapalli Srikanth-A19563; P Sudarshanakrishnan-A14377
+	Subject: Query on Registration Over IPSec 
+	
+	
+	Hi All,
+	 
+	Our Client sends the SIP REGISTER message to the OpenIMS over
+UDP, with Security-Client header as follows
+	Security-Client:
+ipsec-3gpp;alg=hmac-md5-96;prot=esp;ealg=des-ede3-cbc;spi-c=3030;spi-s=3
+031;port-c=7071;port-s=7072
+	 
+	OpenIMS challenges the UAC by sending the 401 with
+Security-Server header as follows
+	Security-Server: ipsec-3gpp; ealg=des-ede3-cbc; alg=hmac-md5-96;
+spi-c=5018; spi-s=5019; port-c=4062; port-s=4063; prot=esp; mod=trans;
+q=0.1
+	 
+	UAC sends Re_register message to the OpenIms Server from 7071 to
+4063 over UDP, with Security-Verify header as
+	Security-Verify:
+ipsec-3gpp;q=0.1;alg=hmac-md5-96;prot=esp;ealg=des-ede3-cbc;spi-c=5018;s
+pi-s=5019;port-c=4062;port-s=4063
+	 
+	Before sending the Re-registration client updates ipsec database
+with following information
+	 
+	spdadd 10.232.15.41[4062] 10.232.14.119[7072] any -P in ipsec
+esp/transport//require;
+	add 10.232.15.41 10.232.14.119 esp 3031 -m transport -E 3des-cbc
+0x97a16ddcd0e94fc25d1da35b25810b5d97a16ddcd0e94fc2 -A hmac-md5
+0x2688bdd633606a7ce69893f97f9a2688;
+	spdadd 10.232.15.41[4063] 10.232.14.119[7071] any -P in ipsec
+esp/transport//require;
+	add 10.232.15.41 10.232.14.119 esp 3030 -m transport -E 3des-cbc
+0x97a16ddcd0e94fc25d1da35b25810b5d97a16ddcd0e94fc2 -A hmac-md5
+0x2688bdd633606a7ce69893f97f9a2688;
+	spdadd 10.232.14.119[7071] 10.232.15.41[4063] any -P out ipsec
+esp/transport//unique:1;
+	add 10.232.14.119 10.232.15.41 esp 5019 -m transport -u 1 -E
+3des-cbc 0x97a16ddcd0e94fc25d1da35b25810b5d97a16ddcd0e94fc2 -A hmac-md5
+0x2688bdd633606a7ce69893f97f9a2688;
+	spdadd 10.232.14.119[7072] 10.232.15.41[4062] any -P out ipsec
+esp/transport//unique:2;
+	add 10.232.14.119 10.232.15.41 esp 5018 -m transport -u 2 -E
+3des-cbc 0x97a16ddcd0e94fc25d1da35b25810b5d97a16ddcd0e94fc2 -A hmac-md5
+0x2688bdd633606a7ce69893f97f9a2688;
+	 
+	But openIms doesn't sends response to the REGISTER request.
+	 
+	From the OpenIms screen log, I could see only the execution of
+script ipsec_P_Inc_Req.sh.
+	 
+	Ipsec entries are as follows
+	 
+	[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at micslin14</A> ~]# setkey -D
+	10.232.14.119 10.232.15.41
+	        esp mode=transport spi=5019(0x0000139b)
+reqid=0(0x00000000)
+	        E: 3des-cbc  97a16ddc d0e94fc2 5d1da35b 25810b5d
+97a16ddc d0e94fc2
+	        A: hmac-md5  2688bdd6 33606a7c e69893f9 7f9a00e3
+	        seq=0x00000000 replay=0 flags=0x00000000 state=mature
+	        created: Jan 21 15:42:55 2007   current: Jan 21 15:42:58
+2007
+	        diff: 3(s)      hard: 0(s)      soft: 0(s)
+	        last: Jan 21 15:42:55 2007      hard: 0(s)      soft:
+0(s)
+	        current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+	        allocated: 0    hard: 0 soft: 0
+	        sadb_seq=0 pid=1361 refcnt=0
+	[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at micslin14</A> ~]# setkey -DP
+	10.232.14.119[7071] 10.232.15.41[4063] tcp
+	        in prio def ipsec
+	        esp/transport//require
+	        created: Jan 21 15:42:55 2007  lastused:
+	        lifetime: 0(s) validtime: 0(s)
+	        spid=1520 seq=1 pid=1362
+	        refcnt=1
+	10.232.14.119[7071] 10.232.15.41[4063] udp
+	        in prio def ipsec
+	        esp/transport//require
+	        created: Jan 21 15:42:55 2007  lastused:
+	        lifetime: 0(s) validtime: 0(s)
+	        spid=1536 seq=2 pid=1362
+	        refcnt=1
+	10.232.14.119[7071] 10.232.15.41[4063] tcp
+	        fwd prio def ipsec
+	        esp/transport//require
+	        created: Jan 21 15:42:55 2007  lastused:
+	        lifetime: 0(s) validtime: 0(s)
+	        spid=1530 seq=3 pid=1362
+	        refcnt=1
+	10.232.14.119[7071] 10.232.15.41[4063] udp
+	        fwd prio def ipsec
+	        esp/transport//require
+	        created: Jan 21 15:42:55 2007  lastused:
+	        lifetime: 0(s) validtime: 0(s)
+	        spid=1546 seq=0 pid=1362
+	        refcnt=1
+	[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at micslin14</A> ~]#
+	 
+	
+
+	Can anyone please let me know the reason why OpenIms not sending
+the responses?
+	 
+	Attached OpenIms Screenlog -&gt; screenlog.txt
+	ESP messages can be viewed in Ethreal log -&gt; ipsec.pcap
+	 
+	Regards,
+	Suraj
+	
+________________________________
+
+
+	_______________________________________________
+	OpenIMSCore-Users mailing list
+	<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+	<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+	  
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100224/6292405d/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100224/6292405d/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006088.html">[OpenIMSCore-Users] Query on Registration Over IPSec
+</A></li>
+	<LI>Next message: <A HREF="006090.html">[OpenIMSCore-Users] Query on Registration Over IPSec
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6089">[ date ]</a>
+              <a href="thread.html#6089">[ thread ]</a>
+              <a href="subject.html#6089">[ subject ]</a>
+              <a href="author.html#6089">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

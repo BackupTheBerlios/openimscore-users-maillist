@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] 403 after Register
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20403%20after%20Register&In-Reply-To=%3C005701cb91e1%2472953000%2457bf9000%24%40technikum-wien.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006776.html">
+   <LINK REL="Next"  HREF="006787.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] 403 after Register</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20403%20after%20Register&In-Reply-To=%3C005701cb91e1%2472953000%2457bf9000%24%40technikum-wien.at%3E"
+       TITLE="[OpenIMSCore-Users] 403 after Register">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Thu Dec  2 06:26:18 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006776.html">[OpenIMSCore-Users] [Orig_Subsequent] fails for non emergency calls	(Franz Edler)
+</A></li>
+        <LI>Next message: <A HREF="006787.html">[OpenIMSCore-Users] 403 after Register
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6777">[ date ]</a>
+              <a href="thread.html#6777">[ thread ]</a>
+              <a href="subject.html#6777">[ subject ]</a>
+              <a href="author.html#6777">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Peter,
+
+&gt;<i> Your reasoning is perfectly clear, but my problem is not with those
+</I>&gt;<i> packets (just look for &quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bachjanos at open-ims.test</A>&quot;'s communication
+</I>&gt;<i> flow, please).
+</I>&gt;<i> I cannot figure out why I keep receiving packet no. 28 and 30, the 403
+</I>&gt;<i> responses for the user registered just before sending those PUBLISH
+</I>&gt;<i> and SUBSCRIBE messages.
+</I>
+Oh, I see. I have looked at other messages.
+I only may guess a little bit.:
+Based on the code in pcscf.cfg it is the function &quot; P_is_registered&quot; which
+causes the error.
+Looking into the small code of this function I see that the decision to
+reject the request is based on the content of the Via header field (see
+module registration.c).
+The Via header of the REGISTER request is a little bit strange. It includes
+two Contact header fields with one with expires=0. This may be valid but of
+course unusual.
+Maybe the code cannot not handle this specific situation.
+
+Look at the content of the registration periodically shown at the console
+ 5(3312) INF:P-CSCF:----------  Registrar Contents begin --------
+ 5(3312) INF:P-CSCF:[  35] C: &lt;0:// xxxxxxxxxxxx:yyyy &gt; Exp:[3596] ...
+
+and in particular for the console output when PUBLISH is received:
+ 2(3309) &gt;&gt;       Orig_Initial
+ 2(3309) DBG:P-CSCF:P_is_registered: Looking if registered
+ 2(3309) DBG:P-CSCF:P_is_registered: Looking for &lt;1://xxxxxxxxxxxx:yyyy&gt;
+
+Maybe that helps. If not then increase the debug level at pcscf.cfg to &quot;4&quot;
+and provide the console-log.
+
+Franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006776.html">[OpenIMSCore-Users] [Orig_Subsequent] fails for non emergency calls	(Franz Edler)
+</A></li>
+	<LI>Next message: <A HREF="006787.html">[OpenIMSCore-Users] 403 after Register
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6777">[ date ]</a>
+              <a href="thread.html#6777">[ thread ]</a>
+              <a href="subject.html#6777">[ subject ]</a>
+              <a href="author.html#6777">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

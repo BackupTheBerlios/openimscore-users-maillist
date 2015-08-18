@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] callee cpapbilities : A registered IMS client	with two devices
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20callee%20cpapbilities%20%3A%20A%20registered%20IMS%20client%0A%09with%20two%20devices&In-Reply-To=%3C489111358B3C664891E5591205E0B830A7D3C3%40exbe04.ad.hosteam.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003831.html">
+   <LINK REL="Next"  HREF="003834.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] callee cpapbilities : A registered IMS client	with two devices</H1>
+    <B>Arnaud Paulus</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20callee%20cpapbilities%20%3A%20A%20registered%20IMS%20client%0A%09with%20two%20devices&In-Reply-To=%3C489111358B3C664891E5591205E0B830A7D3C3%40exbe04.ad.hosteam.fr%3E"
+       TITLE="[OpenIMSCore-Users] callee cpapbilities : A registered IMS client	with two devices">arnaud.paulus at arismore.fr
+       </A><BR>
+    <I>Fri Apr 25 16:25:08 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003831.html">[OpenIMSCore-Users] OpenIMSCore + OpenSER
+</A></li>
+        <LI>Next message: <A HREF="003834.html">[OpenIMSCore-Users] callee cpapbilities : A registered IMS	clientwith two devices
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3832">[ date ]</a>
+              <a href="thread.html#3832">[ thread ]</a>
+              <a href="subject.html#3832">[ subject ]</a>
+              <a href="author.html#3832">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here follows the scenario:
+
+ 
+
+I have three clients on the same host (10.1.2.11)
+
+ 
+
+1- IMSU: bob
+
+   IMPU: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+
+   IMPI: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+
+   Port: 3060
+
+   Software: ims-communicator
+
+ 
+
+2- IMSU: bob
+
+   IMPU: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+
+   IMPI: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob.gateway at open-ims.test</A>
+
+   Port: 5061
+
+   Software: OpenIC_Lite
+
+ 
+
+3  IMSU: alice
+
+   IMPU: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+
+   IMPI: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+
+   Port: 4060
+
+   Software: ims-communicator
+
+ 
+
+My scenario is to make alice call bob.
+
+ 
+
+The Invite is send. Alerts are triggered on both clients of
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> making them ringing.
+
+Then one of the sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> client answers sending a OK. This
+OK pass through the IMS Core network until the S-CSCF where this
+identity has been registered.
+
+At that point, the S-CSCF forward the OK to alice and sends a CANCEL to
+the second client of sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test.</A>
+
+The point is that the P-CSCF doesn't forward it to the client and sends
+back to S-CSCF a 403 forbidden SIP message: &quot;Not registered, you may
+first register to a S-CSCF&quot;
+
+ 
+
+I have attached the wireshark files of
+
+- the registration of the three clients: between the UE and the
+OpenIMSCore (AliceRegistration.pcap, BobRegistration.pcap and
+BobGatewayRegistration.pcap) and inside the OpenIMSCOre
+(AliceRegistration_Inside.pcap, BobRegistration_Inside.pcap and
+BobGatewayRegistration_Inside.pcap). All these files are in the zip file
+registration.zip
+
+ 
+
+- what happen between the clients and the OpenIMSCore (AliceToBob.pcap
+file) and what happen inside the IMS core network (10.40.51.58 server -
+4060:P-CSCF 5060:I-CSCF 6060:S-CSCF) (AliceToBob_InsideIMSCore.pcap
+file)
+
+ 
+
+Have you any idea of why the P-CSCF sends this 403 forbidden request?
+
+ 
+
+Thanks.
+
+ 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080425/1206d11d/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080425/1206d11d/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: registration.zip
+Type: application/x-zip-compressed
+Size: 11179 bytes
+Desc: registration.zip
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080425/1206d11d/attachment.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080425/1206d11d/attachment.bin</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: AliceToBob_InsideIMSCore.pcap
+Type: application/octet-stream
+Size: 46621 bytes
+Desc: AliceToBob_InsideIMSCore.pcap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080425/1206d11d/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080425/1206d11d/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: AliceToBob.pcap
+Type: application/octet-stream
+Size: 20623 bytes
+Desc: AliceToBob.pcap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080425/1206d11d/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080425/1206d11d/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003831.html">[OpenIMSCore-Users] OpenIMSCore + OpenSER
+</A></li>
+	<LI>Next message: <A HREF="003834.html">[OpenIMSCore-Users] callee cpapbilities : A registered IMS	clientwith two devices
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3832">[ date ]</a>
+              <a href="thread.html#3832">[ thread ]</a>
+              <a href="subject.html#3832">[ subject ]</a>
+              <a href="author.html#3832">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

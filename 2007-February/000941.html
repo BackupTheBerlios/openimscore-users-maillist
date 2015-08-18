@@ -1,0 +1,316 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Open Source Java Diameter implementation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Open%20Source%20Java%20Diameter%20implementation&In-Reply-To=%3C45E2A642.1030102%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000940.html">
+   <LINK REL="Next"  HREF="000758.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Open Source Java Diameter implementation</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Open%20Source%20Java%20Diameter%20implementation&In-Reply-To=%3C45E2A642.1030102%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Open Source Java Diameter implementation">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Feb 26 10:20:02 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000940.html">[OpenIMSCore-Users] Open Source Java Diameter implementation
+</A></li>
+        <LI>Next message: <A HREF="000758.html">[OpenIMSCore-Users]  BYE requests
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#941">[ date ]</a>
+              <a href="thread.html#941">[ thread ]</a>
+              <a href="subject.html#941">[ subject ]</a>
+              <a href="author.html#941">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Ben,
+
+First, as an advice, if I many, I guess that in the spirit of open
+source you will find out that it will be better for people integrating
+the code in their project to offer the code as CVS/SVN download-able.
+Having every-time to get an archive by filling in my e-mail address is
+not getting you downloads from developers ;-). Why the nice sourceforge
+addresses and stuff then? Is you boss really not getting into the spirit
+and really wants to count downloads? ;-)
+
+- about the rest of the 3GPP/3GPP2 interfaces, you are right, we mostly
+care about 2: Cx and Sh. This is just because in our scope we do not
+need more. We would welcome more, if anyone would use them, but there is
+no real interest so far and I for one don't like things that are there
+just for numbers and are never used.
+
+- the interfaces are mostly Rel.6 with almost all Rel.7 updates. But as
+I said before, if we don't use something there is no point in having it.
+Soon a full Rel.7 functionality will be rolled-out (e.g. see the HSS
+branch) and then also this interfaces will have all the whistles.
+However... as far as I see it, we are just talking about some constants,
+right? There is no difference in the diameter stacks for Rel5-&gt;7, right?
+
+- standards are great sometimes. However, we deal with the core network
+and we favor greater performance against plug-ability. I mean, in the
+end, how many times do you change your diameter stack? Of course, we
+have considered implementing the API, but it was simply more easy,
+efficient and fast to just use the API that the light-weight stack now
+implements. Some people here felt very strongly, but in the end it was
+just inefficient to spend time on it. This might also be because I hate
+for example writing a class AVPUserName, which extends AVP and actually
+is there just because some users are too lazy to remember or define a
+constant for the AVP Code.
+
+- as I just said in the previous point, I don't see the point of
+defining new things just because some users are lazy and don't want to
+read a documentation. In C/JavaDiameterPeer you can at any time write
+use any possible AVP, vendor specific or not. Yes, we do have to work a
+little on encoding, but so far no complaints. I think that in any
+implementation, including ours, you will probably want to write your
+wrappers for messages, avps, etc. So why write one more in the stack, or
+do you think that writing a generic one in the stack is going to be more
+efficient? Advertising all those interface names is just something that
+we, with a non-commercial target, don't care too much.
+
+... well, tastes ;-)
+
+- no, OpenIMS Core IS GPL LICENSED. The old license from SIP Express
+Router (which is used as a base for the project) is GPLv2 and you can
+not change such a license. You are talking about a disclaimer, a warning
+that we have put upfront and in any source file that we have.
+
+The disclaimer there only warns you that in case you use it in a
+commercial product you should be aware of the pending patents and also
+disclaims us from being sued by implementing a patented technology, like
+IMS is. As such, feel free to remove that part and use it commercially
+for all we care, but you have been warned. This is something that I am
+sure that no Diameter stack, including OpenBloX can avoid. So small
+letters or not, we wanted to warn the user, at least.
+
+I know that this is nasty territory, but the truth is that we do not
+live in an ideal world and patents can touch you even if you use open
+source. IMHO this is the reality when you can put patents on ideas.
+
+I will end this by saying that we will certainly take a peek at how you
+approached realm-routing ;-) as this is on our roadmap for the Diameter
+stack.
+
+Cheers,
+-Dragos
+
+OpenBloX Maintainer wrote:
+&gt;<i>
+</I>&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I hope you are well.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I guess by now you found out you can download the code from
+</I>&gt;<i> www.traffixsystems.com &lt;<A HREF="http://www.traffixsystems.com/">http://www.traffixsystems.com/</A>&gt; (Traffix is
+</I>&gt;<i> proudly supporting the OpenBloX GPL project)
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I looked at the stacks you mentioned, some important differences to
+</I>&gt;<i> take into account before implantation are:
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> &#167;   OpenBloX Diameter encapsulates _all the 3GPP and 3GPP2 interfaces_
+</I>&gt;<i> &#8211; more than 30 currently!
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> &#167;   I noticed your implantation supports mostly Rel.5(&quot;for Cx we are
+</I>&gt;<i> somewhat at Rel.5...&quot; - OpenBloX Diameter supports the _latest Rel.7_
+</I>&gt;<i> (Q4/06 versions)
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> &#167;   OpenBloX is using the JDiameter API, an Open Source industry
+</I>&gt;<i> initiative led by contributors like Ericsson, Jntex and Mobicents to
+</I>&gt;<i> create &quot;de facto&quot; JSLEE standart Diameter API - I'm sure you can see
+</I>&gt;<i> the benefit and advantage of using this API.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> &#167;   OpenBloX is customized with vendor specific AVP's used by
+</I>&gt;<i> different Operators &#8211; again you can see the integration benefit here.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> &#167;   Most important for users is that OpenIMS is (and excuse me if I'm
+</I>&gt;<i> wrong but this is written in your site)not GPL licensed and can not be
+</I>&gt;<i> used in any commercial context _(&quot;Open Source IMS Core System is not
+</I>&gt;<i> intended to become or act as a product in a commercial context!&quot;_) &#8211;
+</I>&gt;<i> OpenBloX is pure GPL with no small letters attached.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I believe you understand better now why OpenBloX Diameter is so much
+</I>&gt;<i> needed.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I will be happy if you'll test OpenBloX yourself and see closely the
+</I>&gt;<i> code quality &amp; robustness.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I hope we could collaborate, now that you see clearly the OpenBloX
+</I>&gt;<i> Diameter advantage.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Ben
+</I>&gt;<i>
+</I>&gt;<i>      
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;<i> Sent: Monday, February 12, 2007 12:11 PM
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openblox at users.sourceforge.net</A>
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openblox-users at lists.sourceforge.net</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] Open Source Java Diameter implementation
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Dear Colleague Ben :),
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Thank you for your announcement. But I am a little confused. Although
+</I>&gt;<i>
+</I>&gt;<i> you have many release announcements, I couldn't download anything. Your
+</I>&gt;<i>
+</I>&gt;<i> CVS is empty <A HREF="http://openblox.cvs.sourceforge.net/openblox/">http://openblox.cvs.sourceforge.net/openblox/</A> and also the
+</I>&gt;<i>
+</I>&gt;<i> Download section is empty too
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://sourceforge.net/project/showfiles.php?group_id=184116">http://sourceforge.net/project/showfiles.php?group_id=184116</A> .
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Then, in case you missed it, I would like to inform you that we already
+</I>&gt;<i>
+</I>&gt;<i> have not one, but 2 Diameter stacks, the JavaDiameterPeer and the
+</I>&gt;<i>
+</I>&gt;<i> CDiameterPeer. You can access them through SVN
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://svn.berlios.de/wsvn/openimscore/JavaDiameterPeer/?rev=0&amp;sc=0">http://svn.berlios.de/wsvn/openimscore/JavaDiameterPeer/?rev=0&amp;sc=0</A>  or
+</I>&gt;<i>
+</I>&gt;<i> you could get daily snapshots from here
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="ftp://ftp.berlios.de/pub/openimscore/snapshots/">ftp://ftp.berlios.de/pub/openimscore/snapshots/</A> .
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I think that we would be very interested in reading what would the
+</I>&gt;<i>
+</I>&gt;<i> technical advantages of OpenBloX over JavaDiameterPeer in the IMS
+</I>&gt;<i>
+</I>&gt;<i> context. It's a pity that we hear so late about your product, but we
+</I>&gt;<i>
+</I>&gt;<i> have started developing our Diameter stacks more than a year ago and now
+</I>&gt;<i>
+</I>&gt;<i> they are tightly integrated into our components.  Besides the CSCFs and
+</I>&gt;<i>
+</I>&gt;<i> HSS, also, they have been successfully used in various Application
+</I>&gt;<i>
+</I>&gt;<i> Servers. However, we still have things that are missing and we would be
+</I>&gt;<i>
+</I>&gt;<i> interested for sure in your solutions. Do you support SCTP for example?
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Best Regards,
+</I>&gt;<i>
+</I>&gt;<i> Dragos Vingarzan
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i>
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i>
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i>
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i>
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i>
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i>
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000940.html">[OpenIMSCore-Users] Open Source Java Diameter implementation
+</A></li>
+	<LI>Next message: <A HREF="000758.html">[OpenIMSCore-Users]  BYE requests
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#941">[ date ]</a>
+              <a href="thread.html#941">[ thread ]</a>
+              <a href="subject.html#941">[ subject ]</a>
+              <a href="author.html#941">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

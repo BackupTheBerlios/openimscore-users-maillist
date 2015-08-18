@@ -1,0 +1,632 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to disable IPSec in Open IMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20disable%20IPSec%20in%20Open%20IMS&In-Reply-To=%3C20071207103216.53240%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003080.html">
+   <LINK REL="Next"  HREF="003086.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to disable IPSec in Open IMS</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20disable%20IPSec%20in%20Open%20IMS&In-Reply-To=%3C20071207103216.53240%40gmx.net%3E"
+       TITLE="[OpenIMSCore-Users] How to disable IPSec in Open IMS">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Fri Dec  7 11:32:16 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003080.html">[OpenIMSCore-Users] How to disable IPSec in Open IMS
+</A></li>
+        <LI>Next message: <A HREF="003086.html">[OpenIMSCore-Users] How to disable IPSec in Open IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3082">[ date ]</a>
+              <a href="thread.html#3082">[ thread ]</a>
+              <a href="subject.html#3082">[ subject ]</a>
+              <a href="author.html#3082">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Sabyasachi,
+
+unfortunately I can't help you with this problem, I've lookt a bit into the source code and it looks like there is a problem with the TM-modul and the transaction ID...
+
+I'm not a programmer, so I can just guess, there might be a problem with the transaction ID the client uses...
+i.e. the branch-parameter of your client is always the same... at least it is the same in the two traces you sent me... but actually when restarting the server it should work at least once to get past this error message (3(12592) ERROR: t_newtran: transaction already in process 0xb6198940)
+
+br, Klemens
+
+
+
+-------- Original-Nachricht --------
+Datum: Fri, 7 Dec 2007 14:39:42 +0530
+Von: &quot;Sabyasachi Samal&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>&gt;
+An: &quot;Klemens Schragel&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt;
+CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Betreff: Re: [OpenIMSCore-Users] How to disable IPSec in Open IMS
+
+Hello Klemens,
+Thanx a lot for your quick response and support. Pl find the reply to your
+queries embedded inside with tag Sabyasachi[071207].
+
+Regards,
+Sabyasachi
+
+
+On 12/7/07, Klemens Schragel &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Oh.. well.. your REGISTER looks good to me, I was hoping the Reg would
+</I>&gt;<i> reacht at least the S-CSCF... you have all CSCFs running on one machine? If
+</I>&gt;<i> yes, did you take the trace from the client-machine or at the server?
+</I>&gt;<i> Sabyasachi[071207] No REG is not reaching at SCSCF. We are running all the
+</I>&gt;<i> CSCFs and FoHSS in one m/c. I took the previous trace from the server m/c
+</I>&gt;<i> where Open IMS is running.
+</I>
+
+What does P-CSCF print? Do you have DNS on the same machine running as
+P-CSCF?
+Sabyasachi[071207] Pl check the attached doc for PCSCF logs. Yes i am having
+the DNS in the same m/c where all the CSCFs are running.
+
+In case you made the trace at the client-machine, could you redo the
+scenario and get the trace from CSCFs server? use
+tcpdump -i any -s 3000 -w /directory/tree/name.pcap not port 22 and not port
+3306 and not port 8080
+Sabyasachi[071207] Pl see the attached name.pcap trace taken by using the
+above command suggested by you.
+
+
+br, Klemens
+
+-------- Original-Nachricht --------
+&gt;<i> Datum: Fri, 7 Dec 2007 11:00:10 +0530
+</I>&gt;<i> Von: &quot;Sabyasachi Samal&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>&gt;
+</I>&gt;<i> An: &quot;Klemens Schragel&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt;
+</I>&gt;<i> CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Betreff: Re: [OpenIMSCore-Users] How to disable IPSec in Open IMS
+</I>
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> Pl find the ethereal trace attached. Suggest if there is any thing wrong.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Sabyasachi
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On 12/5/07, Klemens Schragel &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Could please you provide a network trace?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Br, Klemens
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   ------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; *From:* Sabyasachi Samal [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>]
+</I>&gt;<i> &gt; *Sent:* Mittwoch, 05. Dezember 2007 08:05
+</I>&gt;<i> &gt; *To:* Dragos Vingarzan
+</I>&gt;<i> &gt; *Cc:* Klemens Schragel; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; *Subject:* Re: [OpenIMSCore-Users] How to disable IPSec in Open IMS
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hello,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanx to all. I have already tried as suggested by Klemens. we are
+</I>&gt;<i> sending
+</I>&gt;<i> &gt; any value for Security-Client. Still it replies with 500 I'm terribly
+</I>&gt;<i> sorry
+</I>&gt;<i> &gt; error.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Sending my pcscf.cfg file, Pl have a look.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Regards,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Sabyasachi
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On 12/4/07, *Dragos Vingarzan* &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; right... so for now if ipsec is enabled like Klemens, it's an
+</I>&gt;<i> &gt; auto-detect mode - if you come-up with a Security-Client header, we
+</I>&gt;<i> &gt; assume that you want to negotiate some IPSec or TLS connection, right?
+</I>&gt;<i> &gt; If you don't, then it just leaves you alone - yes it's not secure
+</I>&gt;<i> &gt; because somebody can just be in the middle and remove that header but
+</I>&gt;<i> &gt; you could also enforce it...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; -Dragos
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Klemens Schragel wrote:
+</I>&gt;<i> &gt; &gt; Hi,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; IPSec is by default not mandatory, so there should be no need to
+</I>&gt;<i> disable
+</I>&gt;<i> &gt; it...
+</I>&gt;<i> &gt; &gt; If you feel better by disabling it modify in pcscf.cfg
+</I>&gt;<i> &gt; &gt;   modparam(&quot;pcscf&quot;,&quot;use_ipsec&quot;,1)
+</I>&gt;<i> &gt; &gt; to
+</I>&gt;<i> &gt; &gt;   modparam(&quot;pcscf&quot;,&quot;use_ipsec&quot;,0)
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; ...btw, I think the problem with IPSec you suggest would cause 494
+</I>&gt;<i> &gt; &quot;Security Agreement Required&quot;...
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; br, Klemens
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; -------- Original-Nachricht --------
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;&gt; Datum: Tue, 4 Dec 2007 20:58:45 +0530
+</I>&gt;<i> &gt; &gt;&gt; Von: &quot;Sabyasachi Samal&quot; &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>&gt;
+</I>&gt;<i> &gt; &gt;&gt; An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt;&gt; Betreff: [OpenIMSCore-Users] How to disable IPSec in Open IMS
+</I>&gt;<i> &gt; &gt;&gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;&gt; Hello,
+</I>&gt;<i> &gt; &gt;&gt;
+</I>&gt;<i> &gt; &gt;&gt; Can anybody let know how to disable ipsec in Open IMS? I am getting
+</I>&gt;<i> 500
+</I>&gt;<i> &gt; &gt;&gt; error while sending REGISTER without security info to pcscf.
+</I>&gt;<i> &gt; &gt;&gt;
+</I>&gt;<i> &gt; &gt;&gt; BR,
+</I>&gt;<i> &gt; &gt;&gt; Sabyasachi
+</I>&gt;<i> &gt; &gt;&gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt; -----------------------------------------
+</I>&gt;<i> &gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt; Fraunhofer FOKUS/NGNI
+</I>&gt;<i> &gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt; Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> &gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>
+--
+GMX FreeMail: 1 GB Postfach, 5 E-Mail-Adressen, 10 Free SMS.
+Alle Infos und kostenlose Anmeldung: <A HREF="http://www.gmx.net/de/go/freemail">http://www.gmx.net/de/go/freemail</A>
+
+-- 
+Psssst! Schon vom neuen GMX MultiMessenger geh&#246;rt?
+Der kann`s mit allen: <A HREF="http://www.gmx.net/de/go/multimessenger">http://www.gmx.net/de/go/multimessenger</A>
+-------------- next part --------------
+3(12592) qm_malloc(0x812ff20, 804) called from receive.c: receive_msg(94)
+ 3(12592) qm_malloc(0x812ff20, 804) returns address 0x818589c frag. 0x8185884 (size=804) on 1 -th hit
+ 3(12592) SIP Request:
+ 3(12592)  method:  &lt;REGISTER&gt;
+ 3(12592)  uri:     &lt;sip:open-ims.test&gt;
+ 3(12592)  version: &lt;SIP/2.0&gt;
+ 3(12592) parse_headers: flags=2
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81860c8 frag. 0x81860b0 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 116) called from parser/msg_parser.c: get_hdr_field(111)
+ 3(12592) qm_malloc(0x812ff20, 116) returns address 0x81865c0 frag. 0x81865a8 (size=116) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/parse_via.c: parse_via(2142)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186078 frag. 0x8186060 (size=32) on 1 -th hit
+ 3(12592) Found param type 232, &lt;branch&gt; = &lt;z9hG4bK4ba6296b02a99598b1ceee4508a13a3f&gt;; state=16
+ 3(12592) end of header reached, state=5
+ 3(12592) parse_headers: Via found, flags=2
+ 3(12592) parse_headers: this is the first via
+ 3(12592) After parse_msg...
+ 3(12592) preparing to run routing scripts...
+ 3(12592) parse_headers: flags=100
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81861ac frag. 0x8186194 (size=32) on 1 -th hit
+ 3(12592) DEBUG:maxfwd:is_maxfwd_present: value = 70
+ 3(12592) DBG:maxfwd:process_maxfwd_header: value 70 decreased to 16
+ 3(12592) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.21.21.191&gt;
+ 3(12592) parse_headers: flags=ffffffffffffffff
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8185f84 frag. 0x8185f6c (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81862ec frag. 0x81862d4 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 44) called from parser/msg_parser.c: get_hdr_field(151)
+ 3(12592) qm_malloc(0x812ff20, 44) returns address 0x8185fd4 frag. 0x8185fbc (size=44) on 1 -th hit
+ 3(12592) end of header reached, state=9
+ 3(12592) DEBUG: get_hdr_field: &lt;To&gt; [27]; uri=[sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>]
+ 3(12592) DEBUG: to body [&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+]
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x818624c frag. 0x8186234 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186bec frag. 0x8186bd4 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 20) called from parser/msg_parser.c: get_hdr_field(130)
+ 3(12592) qm_malloc(0x812ff20, 20) returns address 0x8186118 frag. 0x8186100 (size=20) on 1 -th hit
+ 3(12592) get_hdr_field: cseq &lt;CSeq&gt;: &lt;1&gt; &lt;REGISTER&gt;
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x818629c frag. 0x8186284 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81868f8 frag. 0x81868e0 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81868a8 frag. 0x8186890 (size=32) on 1 -th hit
+ 3(12592) DEBUG: get_hdr_body : content_length=0
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186488 frag. 0x8186470 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81861fc frag. 0x81861e4 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x818615c frag. 0x8186144 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186b4c frag. 0x8186b34 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x818633c frag. 0x8186324 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8185d84 frag. 0x8185d6c (size=32) on 1 -th hit
+ 3(12592) found end of header
+ 3(12592) qm_free(0x812ff20, 0x8185d84), called from parser/msg_parser.c: parse_headers(313)
+ 3(12592) qm_free: freeing frag. 0x8185d6c alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) DBG:P-CSCF:P_check 3(12592) qm_malloc(0x812ff20, 804) called from receive.c: receive_msg(94)
+ 3(12592) qm_malloc(0x812ff20, 804) returns address 0x818589c frag. 0x8185884 (size=804) on 1 -th hit
+ 3(12592) SIP Request:
+ 3(12592)  method:  &lt;REGISTER&gt;
+ 3(12592)  uri:     &lt;sip:open-ims.test&gt;
+ 3(12592)  version: &lt;SIP/2.0&gt;
+ 3(12592) parse_headers: flags=2
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81860c8 frag. 0x81860b0 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 116) called from parser/msg_parser.c: get_hdr_field(111)
+ 3(12592) qm_malloc(0x812ff20, 116) returns address 0x81865c0 frag. 0x81865a8 (size=116) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/parse_via.c: parse_via(2142)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186078 frag. 0x8186060 (size=32) on 1 -th hit
+ 3(12592) Found param type 232, &lt;branch&gt; = &lt;z9hG4bK4ba6296b02a99598b1ceee4508a13a3f&gt;; state=16
+ 3(12592) end of header reached, state=5
+ 3(12592) parse_headers: Via found, flags=2
+ 3(12592) parse_headers: this is the first via
+ 3(12592) After parse_msg...
+ 3(12592) preparing to run routing scripts...
+ 3(12592) parse_headers: flags=100
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81861ac frag. 0x8186194 (size=32) on 1 -th hit
+ 3(12592) DEBUG:maxfwd:is_maxfwd_present: value = 70
+ 3(12592) DBG:maxfwd:process_maxfwd_header: value 70 decreased to 16
+ 3(12592) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.21.21.191&gt;
+ 3(12592) parse_headers: flags=ffffffffffffffff
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8185f84 frag. 0x8185f6c (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81862ec frag. 0x81862d4 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 44) called from parser/msg_parser.c: get_hdr_field(151)
+ 3(12592) qm_malloc(0x812ff20, 44) returns address 0x8185fd4 frag. 0x8185fbc (size=44) on 1 -th hit
+ 3(12592) end of header reached, state=9
+ 3(12592) DEBUG: get_hdr_field: &lt;To&gt; [27]; uri=[sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>]
+ 3(12592) DEBUG: to body [&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+]
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x818624c frag. 0x8186234 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186bec frag. 0x8186bd4 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 20) called from parser/msg_parser.c: get_hdr_field(130)
+ 3(12592) qm_malloc(0x812ff20, 20) returns address 0x8186118 frag. 0x8186100 (size=20) on 1 -th hit
+ 3(12592) get_hdr_field: cseq &lt;CSeq&gt;: &lt;1&gt; &lt;REGISTER&gt;
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x818629c frag. 0x8186284 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81868f8 frag. 0x81868e0 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81868a8 frag. 0x8186890 (size=32) on 1 -th hit
+ 3(12592) DEBUG: get_hdr_body : content_length=0
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186488 frag. 0x8186470 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81861fc frag. 0x81861e4 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x818615c frag. 0x8186144 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186b4c frag. 0x8186b34 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x818633c frag. 0x8186324 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8185d84 frag. 0x8185d6c (size=32) on 1 -th hit
+ 3(12592) found end of header
+ 3(12592) qm_free(0x812ff20, 0x8185d84), called from parser/msg_parser.c: parse_headers(313)
+ 3(12592) qm_free: freeing frag. 0x8185d6c alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;&gt;
+ 3(12592) DBG:P-CSCF:P_check_sent_by(): Via does not contain a sent-by parameter 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: anchor_lump(341)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8185d84 frag. 0x8185d6c (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 22) called from security.c: P_add_via_received(795)
+ 3(12592) qm_malloc(0x812ff20, 24) returns address 0x8186030 frag. 0x8186018 (size=24) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: insert_new_lump_before(140)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186b9c frag. 0x8186b84 (size=32) on 1 -th hit
+ 3(12592) DEBUG: t_newtran: msg id=9 , global msg id=8 , T on entrance=0xffffffff
+ 3(12592) parse_headers: flags=ffffffffffffffff
+ 3(12592) parse_headers: flags=78
+ 3(12592) t_lookup_request: start searching: hash=46411, isACK=0
+ 3(12592) DEBUG: RFC3261 transaction matching failed
+ 3(12592) DEBUG: t_lookup_request: no transaction found
+ 3(12592) qm_malloc(0xb5fae000, 2836) called from h_table.c: build_cell(254)
+ 3(12592) qm_malloc(0xb5fae000, 2836) returns address 0xb6198940 frag. 0xb6198928 (size=2836) on 1 -th hit
+ 3(12592) qm_malloc(0xb5fae000, 2188) called from sip_msg.c: sip_msg_cloner(429) 3(12592) qm_malloc(0xb5fae000, 2188) returns address 0xb619f49c frag. 0xb619f484 (size=2404) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 46) called from registration.c: P_add_path(101)
+ 3(12592) qm_malloc(0x812ff20, 48) returns address 0x8186560 frag. 0x8186548 (size=48) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: anchor_lump(341)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8185c40 frag. 0x8185c28 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: insert_new_lump_after(115)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8187148 frag. 0x8187130 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 15) called from registration.c: P_add_require(124)
+ 3(12592) qm_malloc(0x812ff20, 16) returns address 0x8186704 frag. 0x81866ec (size=28) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: anchor_lump(341)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81864d8 frag. 0x81864c0 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: insert_new_lump_after(115)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81866b4 frag. 0x818669c (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 119) called from sip.c: cscf_add_p_charging_vector(2536)
+ 3(12592) qm_malloc(0x812ff20, 120) returns address 0x8186800 frag. 0x81867e8 (size=120) on 1 -th hit
+ 3(12592) DBG:P-CSCF:cscf_add_p_charging_vector: time is 1197017571d
+ 3(12592) DBG:P-CSCF:cscf_add_p_charging_vector: count is 15d
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: anchor_lump(341)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186ce4 frag. 0x8186ccc (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: insert_new_lump_after(115)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186c94 frag. 0x8186c7c (size=32) on 1 -th hit
+ 3(12592) parse_headers: flags=ffffffffffffffff
+ 3(12592) DBG:P-CSCF:cscf_get_security_verify: Message does not contain Security-Verify header.
+ 3(12592) parse_headers: flags=ffffffffffffffff
+ 3(12592) DBG:P-CSCF:cscf_get_security_client: Message does not contain Security-Client header.
+ 3(12592) parse_headers: flags=ffffffffffffffff
+ 3(12592) DBG:P-CSCF:cscf_get_security_client: Message does not contain Security-Client header.
+ 3(12592) DEBUG: t_newtran: msg id=9 , global msg id=9 , T on entrance=0xb6198940
+ 3(12592) DEBUG: t_newtran: transaction already in process 0xb6198940
+ 3(12592) ERROR: t_newtran: transaction already in process 0xb6198940
+ 3(12592) parse_headers: flags=ffffffffffffffff
+ 3(12592) check_via_address(10.21.21.191, 10.21.21.191, 0)
+ 3(12592) qm_malloc(0x812ff20, 12) called from msg_translator.c: rport_builder(353)
+ 3(12592) qm_malloc(0x812ff20, 12) returns address 0x818725c frag. 0x8187244 (size=12) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 601) called from msg_translator.c: build_res_buf_from_sip_req(1838)
+ 3(12592) qm_malloc(0x812ff20, 604) returns address 0x81873d8 frag. 0x81873c0 (size=1032) on 1 -th hit
+ 3(12592) qm_free(0x812ff20, 0x818725c), called from msg_translator.c: build_res_buf_from_sip_req(1998)
+ 3(12592) qm_free: freeing frag. 0x8187244 alloc'ed from msg_translator.c: rport_builder(353)
+ 3(12592) qm_free(0x812ff20, 0x81873d8), called from sl_funcs.c: sl_send_reply(172)
+ 3(12592) qm_free: freeing frag. 0x81873c0 alloc'ed from msg_translator.c: build_res_buf_from_sip_req(1838)
+ 3(12592) ERROR: sl_reply_error used: I'm terribly sorry, server error occurred (1/SL)
+ 3(12592) DEBUG:destroy_avp_list: destroying list (nil)
+ 3(12592) DEBUG:destroy_avp_list: destroying list (nil)
+ 3(12592) DEBUG:destroy_avp_list: destroying list (nil)
+ 3(12592) DEBUG:destroy_avp_list: destroying list (nil)
+ 3(12592) DEBUG:destroy_avp_list: destroying list (nil)
+ 3(12592) DEBUG:destroy_avp_list: destroying list (nil)
+ 3(12592) receive_msg: cleaning up
+ 3(12592) qm_free(0x812ff20, 0x8186078), called from parser/parse_via.c: free_via_param_list(2361)
+ 3(12592) qm_free: freeing frag. 0x8186060 alloc'ed from parser/parse_via.c: parse_via(2142)
+ 3(12592) qm_free(0x812ff20, 0x81865c0), called from parser/parse_via.c: free_via_list(2373)
+ 3(12592) qm_free: freeing frag. 0x81865a8 alloc'ed from parser/msg_parser.c: get_hdr_field(111)
+ 3(12592) qm_free(0x812ff20, 0x81860c8), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x81860b0 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x81861ac), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186194 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x8185f84), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8185f6c alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x8185fd4), called from parser/parse_to.c: free_to(784)
+ 3(12592) qm_free: freeing frag. 0x8185fbc alloc'ed from parser/msg_parser.c: get_hdr_field(151)
+ 3(12592) qm_free(0x812ff20, 0x81862ec), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x81862d4 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x818624c), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186234 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x8186118), called from parser/parse_cseq.c: free_cseq(102)
+ 3(12592) qm_free: freeing frag. 0x8186100 alloc'ed from parser/msg_parser.c: get_hdr_field(130)
+ 3(12592) qm_free(0x812ff20, 0x8186bec), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186bd4 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x818629c), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186284 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x81868f8), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x81868e0 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x81868a8), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186890 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x8186488), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186470 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x81861fc), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x81861e4 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x818615c), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186144 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x8186b4c), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186b34 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x818633c), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186324 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x8186030), called from data_lump.c: free_lump(382) 3(12592) qm_free: freeing frag. 0x8186018 alloc'ed from security.c: P_add_via_received(795)
+ 3(12592) qm_free(0x812ff20, 0x8186b9c), called from data_lump.c: free_lump_list(409)
+ 3(12592) qm_free: freeing frag. 0x8186b84 alloc'ed from data_lump.c: insert_new_lump_before(140)
+ 3(12592) qm_free(0x812ff20, 0x8185d84), called from data_lump.c: free_lump_list(420)
+ 3(12592) qm_free: freeing frag. 0x8185d6c alloc'ed from data_lump.c: anchor_lump(341)
+ 3(12592) qm_free(0x812ff20, 0x8186560), called from data_lump.c: free_lump(382) 3(12592) qm_free: freeing frag. 0x8186548 alloc'ed from registration.c: P_add_path(101)
+ 3(12592) qm_free(0x812ff20, 0x8187148), called from data_lump.c: free_lump_list(415)
+ 3(12592) qm_free: freeing frag. 0x8187130 alloc'ed from data_lump.c: insert_new_lump_after(115)
+ 3(12592) qm_free(0x812ff20, 0x8185c40), called from data_lump.c: free_lump_list(420)
+ 3(12592) qm_free: freeing frag. 0x8185c28 alloc'ed from data_lump.c: anchor_lump(341)
+ 3(12592) qm_free(0x812ff20, 0x8186704), called from data_lump.c: free_lump(382) 3(12592) qm_free: freeing frag. 0x81866ec alloc'ed from registration.c: P_add_require(124)
+ 3(12592) qm_free(0x812ff20, 0x81866b4), called from data_lump.c: free_lump_list(415)
+ 3(12592) qm_free: freeing frag. 0x818669c alloc'ed from data_lump.c: insert_new_lump_after(115)
+ 3(12592) qm_free(0x812ff20, 0x81864d8), called from data_lump.c: free_lump_list(420)
+ 3(12592) qm_free: freeing frag. 0x81864c0 alloc'ed from data_lump.c: anchor_lump(341)
+ 3(12592) qm_free(0x812ff20, 0x8186800), called from data_lump.c: free_lump(382) 3(12592) qm_free: freeing frag. 0x81867e8 alloc'ed from sip.c: cscf_add_p_charging_vector(2536)
+ 3(12592) qm_free(0x812ff20, 0x8186c94), called from data_lump.c: free_lump_list(415)
+ 3(12592) qm_free: freeing frag. 0x8186c7c alloc'ed from data_lump.c: insert_new_lump_after(115)
+ 3(12592) qm_free(0x812ff20, 0x8186ce4), called from data_lump.c: free_lump_list(420)
+ 3(12592) qm_free: freeing frag. 0x8186ccc alloc'ed from data_lump.c: anchor_lump(341)
+ 3(12592) qm_free(0x812ff20, 0x818589c), called from receive.c: receive_msg(243) 3(12592) qm_free: freeing frag. 0x8185884 alloc'ed from receive.c: receive_msg(94)
+ 5(12594) DBG:P-CSCF:registrar_timer: Called at 68505006
+ 5(12594) INF:P-CSCF:----------  Registrar Contents begin --------
+ 5(12594) INF:P-CSCF:----------  Registrar Contents end ----------
+ 5(12594) INF:P-CSCF:----------  Subscription list begin ---------
+ 5(12594) INF:P-CSCF:----------  Subscription list end -----------
+_sent_by(): Via sent-by=&lt;&gt;
+ 3(12592) DBG:P-CSCF:P_check_sent_by(): Via does not contain a sent-by parameter 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: anchor_lump(341)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8185d84 frag. 0x8185d6c (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 22) called from security.c: P_add_via_received(795)
+ 3(12592) qm_malloc(0x812ff20, 24) returns address 0x8186030 frag. 0x8186018 (size=24) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: insert_new_lump_before(140)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186b9c frag. 0x8186b84 (size=32) on 1 -th hit
+ 3(12592) DEBUG: t_newtran: msg id=9 , global msg id=8 , T on entrance=0xffffffff
+ 3(12592) parse_headers: flags=ffffffffffffffff
+ 3(12592) parse_headers: flags=78
+ 3(12592) t_lookup_request: start searching: hash=46411, isACK=0
+ 3(12592) DEBUG: RFC3261 transaction matching failed
+ 3(12592) DEBUG: t_lookup_request: no transaction found
+ 3(12592) qm_malloc(0xb5fae000, 2836) called from h_table.c: build_cell(254)
+ 3(12592) qm_malloc(0xb5fae000, 2836) returns address 0xb6198940 frag. 0xb6198928 (size=2836) on 1 -th hit
+ 3(12592) qm_malloc(0xb5fae000, 2188) called from sip_msg.c: sip_msg_cloner(429) 3(12592) qm_malloc(0xb5fae000, 2188) returns address 0xb619f49c frag. 0xb619f484 (size=2404) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 46) called from registration.c: P_add_path(101)
+ 3(12592) qm_malloc(0x812ff20, 48) returns address 0x8186560 frag. 0x8186548 (size=48) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: anchor_lump(341)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8185c40 frag. 0x8185c28 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: insert_new_lump_after(115)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8187148 frag. 0x8187130 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 15) called from registration.c: P_add_require(124)
+ 3(12592) qm_malloc(0x812ff20, 16) returns address 0x8186704 frag. 0x81866ec (size=28) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: anchor_lump(341)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81864d8 frag. 0x81864c0 (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: insert_new_lump_after(115)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x81866b4 frag. 0x818669c (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 119) called from sip.c: cscf_add_p_charging_vector(2536)
+ 3(12592) qm_malloc(0x812ff20, 120) returns address 0x8186800 frag. 0x81867e8 (size=120) on 1 -th hit
+ 3(12592) DBG:P-CSCF:cscf_add_p_charging_vector: time is 1197017571d
+ 3(12592) DBG:P-CSCF:cscf_add_p_charging_vector: count is 15d
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: anchor_lump(341)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186ce4 frag. 0x8186ccc (size=32) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 32) called from data_lump.c: insert_new_lump_after(115)
+ 3(12592) qm_malloc(0x812ff20, 32) returns address 0x8186c94 frag. 0x8186c7c (size=32) on 1 -th hit
+ 3(12592) parse_headers: flags=ffffffffffffffff
+ 3(12592) DBG:P-CSCF:cscf_get_security_verify: Message does not contain Security-Verify header.
+ 3(12592) parse_headers: flags=ffffffffffffffff
+ 3(12592) DBG:P-CSCF:cscf_get_security_client: Message does not contain Security-Client header.
+ 3(12592) parse_headers: flags=ffffffffffffffff
+ 3(12592) DBG:P-CSCF:cscf_get_security_client: Message does not contain Security-Client header.
+ 3(12592) DEBUG: t_newtran: msg id=9 , global msg id=9 , T on entrance=0xb6198940
+ 3(12592) DEBUG: t_newtran: transaction already in process 0xb6198940
+ 3(12592) ERROR: t_newtran: transaction already in process 0xb6198940
+ 3(12592) parse_headers: flags=ffffffffffffffff
+ 3(12592) check_via_address(10.21.21.191, 10.21.21.191, 0)
+ 3(12592) qm_malloc(0x812ff20, 12) called from msg_translator.c: rport_builder(353)
+ 3(12592) qm_malloc(0x812ff20, 12) returns address 0x818725c frag. 0x8187244 (size=12) on 1 -th hit
+ 3(12592) qm_malloc(0x812ff20, 601) called from msg_translator.c: build_res_buf_from_sip_req(1838)
+ 3(12592) qm_malloc(0x812ff20, 604) returns address 0x81873d8 frag. 0x81873c0 (size=1032) on 1 -th hit
+ 3(12592) qm_free(0x812ff20, 0x818725c), called from msg_translator.c: build_res_buf_from_sip_req(1998)
+ 3(12592) qm_free: freeing frag. 0x8187244 alloc'ed from msg_translator.c: rport_builder(353)
+ 3(12592) qm_free(0x812ff20, 0x81873d8), called from sl_funcs.c: sl_send_reply(172)
+ 3(12592) qm_free: freeing frag. 0x81873c0 alloc'ed from msg_translator.c: build_res_buf_from_sip_req(1838)
+ 3(12592) ERROR: sl_reply_error used: I'm terribly sorry, server error occurred (1/SL)
+ 3(12592) DEBUG:destroy_avp_list: destroying list (nil)
+ 3(12592) DEBUG:destroy_avp_list: destroying list (nil)
+ 3(12592) DEBUG:destroy_avp_list: destroying list (nil)
+ 3(12592) DEBUG:destroy_avp_list: destroying list (nil)
+ 3(12592) DEBUG:destroy_avp_list: destroying list (nil)
+ 3(12592) DEBUG:destroy_avp_list: destroying list (nil)
+ 3(12592) receive_msg: cleaning up
+ 3(12592) qm_free(0x812ff20, 0x8186078), called from parser/parse_via.c: free_via_param_list(2361)
+ 3(12592) qm_free: freeing frag. 0x8186060 alloc'ed from parser/parse_via.c: parse_via(2142)
+ 3(12592) qm_free(0x812ff20, 0x81865c0), called from parser/parse_via.c: free_via_list(2373)
+ 3(12592) qm_free: freeing frag. 0x81865a8 alloc'ed from parser/msg_parser.c: get_hdr_field(111)
+ 3(12592) qm_free(0x812ff20, 0x81860c8), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x81860b0 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x81861ac), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186194 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x8185f84), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8185f6c alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x8185fd4), called from parser/parse_to.c: free_to(784)
+ 3(12592) qm_free: freeing frag. 0x8185fbc alloc'ed from parser/msg_parser.c: get_hdr_field(151)
+ 3(12592) qm_free(0x812ff20, 0x81862ec), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x81862d4 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x818624c), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186234 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x8186118), called from parser/parse_cseq.c: free_cseq(102)
+ 3(12592) qm_free: freeing frag. 0x8186100 alloc'ed from parser/msg_parser.c: get_hdr_field(130)
+ 3(12592) qm_free(0x812ff20, 0x8186bec), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186bd4 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x818629c), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186284 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x81868f8), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x81868e0 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x81868a8), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186890 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x8186488), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186470 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x81861fc), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x81861e4 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x818615c), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186144 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x8186b4c), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186b34 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x818633c), called from parser/hf.c: free_hdr_field_lst(212)
+ 3(12592) qm_free: freeing frag. 0x8186324 alloc'ed from parser/msg_parser.c: parse_headers(297)
+ 3(12592) qm_free(0x812ff20, 0x8186030), called from data_lump.c: free_lump(382) 3(12592) qm_free: freeing frag. 0x8186018 alloc'ed from security.c: P_add_via_received(795)
+ 3(12592) qm_free(0x812ff20, 0x8186b9c), called from data_lump.c: free_lump_list(409)
+ 3(12592) qm_free: freeing frag. 0x8186b84 alloc'ed from data_lump.c: insert_new_lump_before(140)
+ 3(12592) qm_free(0x812ff20, 0x8185d84), called from data_lump.c: free_lump_list(420)
+ 3(12592) qm_free: freeing frag. 0x8185d6c alloc'ed from data_lump.c: anchor_lump(341)
+ 3(12592) qm_free(0x812ff20, 0x8186560), called from data_lump.c: free_lump(382) 3(12592) qm_free: freeing frag. 0x8186548 alloc'ed from registration.c: P_add_path(101)
+ 3(12592) qm_free(0x812ff20, 0x8187148), called from data_lump.c: free_lump_list(415)
+ 3(12592) qm_free: freeing frag. 0x8187130 alloc'ed from data_lump.c: insert_new_lump_after(115)
+ 3(12592) qm_free(0x812ff20, 0x8185c40), called from data_lump.c: free_lump_list(420)
+ 3(12592) qm_free: freeing frag. 0x8185c28 alloc'ed from data_lump.c: anchor_lump(341)
+ 3(12592) qm_free(0x812ff20, 0x8186704), called from data_lump.c: free_lump(382) 3(12592) qm_free: freeing frag. 0x81866ec alloc'ed from registration.c: P_add_require(124)
+ 3(12592) qm_free(0x812ff20, 0x81866b4), called from data_lump.c: free_lump_list(415)
+ 3(12592) qm_free: freeing frag. 0x818669c alloc'ed from data_lump.c: insert_new_lump_after(115)
+ 3(12592) qm_free(0x812ff20, 0x81864d8), called from data_lump.c: free_lump_list(420)
+ 3(12592) qm_free: freeing frag. 0x81864c0 alloc'ed from data_lump.c: anchor_lump(341)
+ 3(12592) qm_free(0x812ff20, 0x8186800), called from data_lump.c: free_lump(382) 3(12592) qm_free: freeing frag. 0x81867e8 alloc'ed from sip.c: cscf_add_p_charging_vector(2536)
+ 3(12592) qm_free(0x812ff20, 0x8186c94), called from data_lump.c: free_lump_list(415)
+ 3(12592) qm_free: freeing frag. 0x8186c7c alloc'ed from data_lump.c: insert_new_lump_after(115)
+ 3(12592) qm_free(0x812ff20, 0x8186ce4), called from data_lump.c: free_lump_list(420)
+ 3(12592) qm_free: freeing frag. 0x8186ccc alloc'ed from data_lump.c: anchor_lump(341)
+ 3(12592) qm_free(0x812ff20, 0x818589c), called from receive.c: receive_msg(243) 3(12592) qm_free: freeing frag. 0x8185884 alloc'ed from receive.c: receive_msg(94)
+ 5(12594) DBG:P-CSCF:registrar_timer: Called at 68505006
+ 5(12594) INF:P-CSCF:----------  Registrar Contents begin --------
+ 5(12594) INF:P-CSCF:----------  Registrar Contents end ----------
+ 5(12594) INF:P-CSCF:----------  Subscription list begin ---------
+ 5(12594) INF:P-CSCF:----------  Subscription list end -----------
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: name.pcap
+Type: application/octet-stream
+Size: 18047 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071207/e78c7307/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071207/e78c7307/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003080.html">[OpenIMSCore-Users] How to disable IPSec in Open IMS
+</A></li>
+	<LI>Next message: <A HREF="003086.html">[OpenIMSCore-Users] How to disable IPSec in Open IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3082">[ date ]</a>
+              <a href="thread.html#3082">[ thread ]</a>
+              <a href="subject.html#3082">[ subject ]</a>
+              <a href="author.html#3082">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

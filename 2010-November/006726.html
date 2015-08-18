@@ -1,0 +1,326 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] OpenIMS and Sailfin: strange behaviour
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMS%20and%20Sailfin%3A%20strange%20behaviour&In-Reply-To=%3CAANLkTikzUjn%2BZDcD9x0ZSiwFzNfGLjO75MkA1Xfiv%3DJc%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006725.html">
+   <LINK REL="Next"  HREF="006727.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] OpenIMS and Sailfin: strange behaviour</H1>
+    <B>Federico</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMS%20and%20Sailfin%3A%20strange%20behaviour&In-Reply-To=%3CAANLkTikzUjn%2BZDcD9x0ZSiwFzNfGLjO75MkA1Xfiv%3DJc%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] OpenIMS and Sailfin: strange behaviour">puddux at gmail.com
+       </A><BR>
+    <I>Thu Nov 18 17:04:40 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006725.html">[OpenIMSCore-Users] Monster client connecting fail
+</A></li>
+        <LI>Next message: <A HREF="006727.html">[OpenIMSCore-Users] r1010 - start of icscf failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6726">[ date ]</a>
+              <a href="thread.html#6726">[ thread ]</a>
+              <a href="subject.html#6726">[ subject ]</a>
+              <a href="author.html#6726">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+I want to use Sailfin with OpenIMS to simply realize a redirect of a
+call incoming from a client running myMONSTER towards another one. I
+managed to set the iFC in the HSS so that the S-CSCF forwards the SIP
+INVITE requests to the Sailfin AS, where is deployed a simple servlet
+with the following doInvite method:
+
+protected void doInvite(SipServletRequest request)
+            throws ServletException, IOException{
+        if (request.isInitial()) {
+            Proxy proxy = request.getProxy();
+            proxy.setRecordRoute(true);
+            proxy.setSupervised(true);
+            proxy.proxyTo(sf.createSipURI(&quot;bob&quot;,&quot;open-ims.test&quot;));
+//Redirect URI
+
+        }
+        System.out.println(&quot;SimpleProxyServlet: Received request:\n&quot; + request);
+    }
+
+Using wireshark I saw that the SIP INVITE message follows the route:
+(at the end of this message there are the sniffed packets)
+IMS Client Alice -&gt; P-CSCF (4060) -&gt; S-CSCF (6060) -&gt; AS (9060) -&gt;
+S-CSCF -&gt; S-CSCF -&gt; AS -&gt; S-CSCF -&gt; P-CSCF -&gt; IMS Client Bob
+
+Also in the server's log I see a duplicate SIP INVITE coming from the
+S-CSCF which is strange. Is it possible that Sailfin doesn't support
+the ISC interface as specified for the IMS standard? Which would be
+the correct behaviour for a simple redirect service?
+
+Thank you.
+
+E@@:INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> SIP/2.0
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d3d348f5bd57fa0090d0ad0c1f761e74 at 127.0.0.1</A>
+CSeq: 4 INVITE
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1005
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+Via: SIP/2.0/UDP
+127.0.0.1:5062;branch=z9hG4bK8de32709230ca0d60552f6d87745b51a333338
+Max-Forwards: 20
+Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+Content-Type: application/sdp
+Contact: &quot;Alice&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 127.0.0.1</A>:5062&gt;
+User-Agent: Fokus MONSTER Version: 0.9.13
+Content-Length: 241
+
+
+E@@8INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> SIP/2.0
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d3d348f5bd57fa0090d0ad0c1f761e74 at 127.0.0.1</A>
+CSeq: 4 INVITE
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1005
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+Via: SIP/2.0/UDP 127.0.0.1:4060;branch=z9hG4bKd8da.81c9eb9.0
+Via: SIP/2.0/UDP
+127.0.0.1:5062;rport=5062;branch=z9hG4bK8de32709230ca0d60552f6d87745b51a333338
+Max-Forwards: 16
+Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+Content-Type: application/sdp
+Contact: &quot;Alice&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 127.0.0.1</A>:5062&gt;
+User-Agent: Fokus MONSTER Version: 0.9.13
+Content-Length: 241
+P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd4ce54b5b0000000c&quot;;icid-generated-at=127.0.0.1;orig-ioi=&quot;open-ims.test&quot;
+
+E@@8#dINVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> SIP/2.0
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Route: &lt;sip:127.0.0.1:9060;lr&gt;,
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=0;d=0;a=7369703a616c696365406f70656e2d696d732e74657374&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d3d348f5bd57fa0090d0ad0c1f761e74 at 127.0.0.1</A>
+CSeq: 4 INVITE
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1005
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.1c40c763.0
+Via: SIP/2.0/UDP 127.0.0.1:4060;branch=z9hG4bKd8da.81c9eb9.0
+Via: SIP/2.0/UDP
+127.0.0.1:5062;rport=5062;branch=z9hG4bK8de32709230ca0d60552f6d87745b51a333338
+Max-Forwards: 15
+Content-Type: application/sdp
+Contact: &quot;Alice&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 127.0.0.1</A>:5062&gt;
+User-Agent: Fokus MONSTER Version: 0.9.13
+Content-Length: 241
+P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd4ce54b5b0000000c&quot;;icid-generated-at=127.0.0.1;orig-ioi=&quot;open-ims.test&quot;
+
+E&lt;~@@#d(&lt;INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> SIP/2.0
+Record-Route: &lt;sip:127.0.0.1:9060;fid=server_1;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Content-Length: 241
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+Contact: &quot;Alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 127.0.0.1</A>:5062&gt;
+Cseq: 4 INVITE
+User-Agent: Fokus MONSTER Version: 0.9.13
+Max-Forwards: 13
+P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd4ce54b5b0000000c&quot;;icid-generated-at=127.0.0.1;orig-ioi=&quot;open-ims.test&quot;
+Via: SIP/2.0/UDP
+127.0.0.1:9060;branch=z9hG4bKdaac701c2cb7e1f94ade859f4b7be420c0b5
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.1c40c763.0
+Via: SIP/2.0/UDP 127.0.0.1:4060;branch=z9hG4bKd8da.81c9eb9.0
+Via: SIP/2.0/UDP
+127.0.0.1:5062;rport=5062;branch=z9hG4bK8de32709230ca0d60552f6d87745b51a333338
+Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=0;d=0;a=7369703a616c696365406f70656e2d696d732e74657374&gt;
+Content-Type: application/sdp
+Call-Id: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d3d348f5bd57fa0090d0ad0c1f761e74 at 127.0.0.1</A>
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1005
+
+E@@@<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">7, at INVITE</A> sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> SIP/2.0
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:127.0.0.1:9060;fid=server_1;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Content-Length: 241
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+Contact: &quot;Alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 127.0.0.1</A>:5062&gt;
+Cseq: 4 INVITE
+User-Agent: Fokus MONSTER Version: 0.9.13
+Max-Forwards: 12
+P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd4ce54b5b0000000c&quot;;icid-generated-at=127.0.0.1;orig-ioi=&quot;open-ims.test&quot;
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.2c40c763.0
+Via: SIP/2.0/UDP
+127.0.0.1:9060;branch=z9hG4bKdaac701c2cb7e1f94ade859f4b7be420c0b5
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.1c40c763.0
+Via: SIP/2.0/UDP 127.0.0.1:4060;branch=z9hG4bKd8da.81c9eb9.0
+Via: SIP/2.0/UDP
+127.0.0.1:5062;rport=5062;branch=z9hG4bK8de32709230ca0d60552f6d87745b51a333338
+Content-Type: application/sdp
+Call-Id: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d3d348f5bd57fa0090d0ad0c1f761e74 at 127.0.0.1</A>
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1005
+
+E7@@6#d#7INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> SIP/2.0
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+Route: &lt;sip:127.0.0.1:9060;lr&gt;,
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=0;d=1;a=7369703a626f62406f70656e2d696d732e74657374&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:127.0.0.1:9060;fid=server_1;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Content-Length: 241
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+Contact: &quot;Alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 127.0.0.1</A>:5062&gt;
+Cseq: 4 INVITE
+User-Agent: Fokus MONSTER Version: 0.9.13
+Max-Forwards: 11
+P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd4ce54b5b0000000c&quot;;icid-generated-at=127.0.0.1;orig-ioi=&quot;open-ims.test&quot;
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.3c40c763.0
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.2c40c763.0
+Via: SIP/2.0/UDP
+127.0.0.1:9060;branch=z9hG4bKdaac701c2cb7e1f94ade859f4b7be420c0b5
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.1c40c763.0
+Via: SIP/2.0/UDP 127.0.0.1:4060;branch=z9hG4bKd8da.81c9eb9.0
+Via: SIP/2.0/UDP
+127.0.0.1:5062;rport=5062;branch=z9hG4bK8de32709230ca0d60552f6d87745b51a333338
+Content-Type: application/sdp
+Call-Id: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d3d348f5bd57fa0090d0ad0c1f761e74 at 127.0.0.1</A>
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1005
+
+E~@@~#dINVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> SIP/2.0
+Record-Route: &lt;sip:127.0.0.1:9060;fid=server_2;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:127.0.0.1:9060;fid=server_1;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Content-Length: 241
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+Contact: &quot;Alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 127.0.0.1</A>:5062&gt;
+Cseq: 4 INVITE
+User-Agent: Fokus MONSTER Version: 0.9.13
+Max-Forwards: 9
+P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd4ce54b5b0000000c&quot;;icid-generated-at=127.0.0.1;orig-ioi=&quot;open-ims.test&quot;
+Via: SIP/2.0/UDP
+127.0.0.1:9060;branch=z9hG4bKdaac10bf04c084004ee9a54ba1d09a165894
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.3c40c763.0
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.2c40c763.0
+Via: SIP/2.0/UDP
+127.0.0.1:9060;branch=z9hG4bKdaac701c2cb7e1f94ade859f4b7be420c0b5
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.1c40c763.0
+Via: SIP/2.0/UDP 127.0.0.1:4060;branch=z9hG4bKd8da.81c9eb9.0
+Via: SIP/2.0/UDP
+127.0.0.1:5062;rport=5062;branch=z9hG4bK8de32709230ca0d60552f6d87745b51a333338
+Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=0;d=1;a=7369703a626f62406f70656e2d696d732e74657374&gt;
+Content-Type: application/sdp
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1005
+Call-Id: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d3d348f5bd57fa0090d0ad0c1f761e74 at 127.0.0.1</A>
+
+E@@5INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:5064 SIP/2.0
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+Record-Route: &lt;sip:127.0.0.1:9060;fid=server_2;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:127.0.0.1:9060;fid=server_1;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Content-Length: 241
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+Contact: &quot;Alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 127.0.0.1</A>:5062&gt;
+Cseq: 4 INVITE
+User-Agent: Fokus MONSTER Version: 0.9.13
+Max-Forwards: 8
+P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd4ce54b5b0000000c&quot;;icid-generated-at=127.0.0.1;orig-ioi=&quot;open-ims.test&quot;
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.4c40c763.0
+Via: SIP/2.0/UDP
+127.0.0.1:9060;branch=z9hG4bKdaac10bf04c084004ee9a54ba1d09a165894
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.3c40c763.0
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.2c40c763.0
+Via: SIP/2.0/UDP
+127.0.0.1:9060;branch=z9hG4bKdaac701c2cb7e1f94ade859f4b7be420c0b5
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.1c40c763.0
+Via: SIP/2.0/UDP 127.0.0.1:4060;branch=z9hG4bKd8da.81c9eb9.0
+Via: SIP/2.0/UDP
+127.0.0.1:5062;rport=5062;branch=z9hG4bK8de32709230ca0d60552f6d87745b51a333338
+Content-Type: application/sdp
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1005
+Call-Id: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d3d348f5bd57fa0090d0ad0c1f761e74 at 127.0.0.1</A>
+P-Called-Party-ID: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+
+EW@@5CWINVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 127.0.0.1</A>:5064 SIP/2.0
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>:4060;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:127.0.0.1:9060;fid=server_2;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:127.0.0.1:9060;fid=server_1;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Content-Length: 241
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+Contact: &quot;Alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 127.0.0.1</A>:5062&gt;
+Cseq: 4 INVITE
+User-Agent: Fokus MONSTER Version: 0.9.13
+Max-Forwards: 7
+P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd4ce54b5b0000000c&quot;;icid-generated-at=127.0.0.1;orig-ioi=&quot;open-ims.test&quot;
+Via: SIP/2.0/UDP 127.0.0.1:4060;branch=z9hG4bKd8da.91c9eb9.0
+Via: SIP/2.0/UDP 127.0.0.1:6060;rport=6060;branch=z9hG4bKd8da.4c40c763.0
+Via: SIP/2.0/UDP
+127.0.0.1:9060;branch=z9hG4bKdaac10bf04c084004ee9a54ba1d09a165894
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.3c40c763.0
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.2c40c763.0
+Via: SIP/2.0/UDP
+127.0.0.1:9060;branch=z9hG4bKdaac701c2cb7e1f94ade859f4b7be420c0b5
+Via: SIP/2.0/UDP 127.0.0.1:6060;branch=z9hG4bKd8da.1c40c763.0
+Via: SIP/2.0/UDP 127.0.0.1:4060;branch=z9hG4bKd8da.81c9eb9.0
+Via: SIP/2.0/UDP
+127.0.0.1:5062;rport=5062;branch=z9hG4bK8de32709230ca0d60552f6d87745b51a333338
+Content-Type: application/sdp
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1005
+Call-Id: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d3d348f5bd57fa0090d0ad0c1f761e74 at 127.0.0.1</A>
+P-Called-Party-ID: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006725.html">[OpenIMSCore-Users] Monster client connecting fail
+</A></li>
+	<LI>Next message: <A HREF="006727.html">[OpenIMSCore-Users] r1010 - start of icscf failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6726">[ date ]</a>
+              <a href="thread.html#6726">[ thread ]</a>
+              <a href="subject.html#6726">[ subject ]</a>
+              <a href="author.html#6726">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Trigger Point problem.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Trigger%20Point%20problem.&In-Reply-To=%3C653aae1a0708210754j54a5733etc158cc0a49d08b4c%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002439.html">
+   <LINK REL="Next"  HREF="002414.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Trigger Point problem.</H1>
+    <B>campo</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Trigger%20Point%20problem.&In-Reply-To=%3C653aae1a0708210754j54a5733etc158cc0a49d08b4c%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Trigger Point problem.">robcampo at gmail.com
+       </A><BR>
+    <I>Tue Aug 21 16:54:54 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002439.html">[OpenIMSCore-Users] Trigger Point problem.
+</A></li>
+        <LI>Next message: <A HREF="002414.html">[OpenIMSCore-Users] TLS Support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2446">[ date ]</a>
+              <a href="thread.html#2446">[ thread ]</a>
+              <a href="subject.html#2446">[ subject ]</a>
+              <a href="author.html#2446">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok,
+
+for the time being I have inserted my own pani (ani.s &amp; ani.len) in
+'ser_ims/modules/isc/sip.c'
+and although there have been minor issues ('Merged Request') it seems to
+have helped get to AS.
+
+
+
+On 8/21/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> I have recently received a patch, regarding this, from the original
+</I>&gt;<i> author of this part of the code. Please stay tuned for updates, as we
+</I>&gt;<i> still have to double-check it before committing it.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> campo wrote:
+</I>&gt;<i> &gt; Hi again,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Ok so I have traced the problem down to a particular point.
+</I>&gt;<i> &gt; My pani (P-Access-Network-Info) seems to be null?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Therefore in 'ser_ims/modules/isc/sip.c' at function
+</I>&gt;<i> &gt; 'cscf_get_access_network_info'
+</I>&gt;<i> &gt; it searches through the message but cannot find 'P-Access-Network-Info'?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Can anyone tell me what this value should be or is it possible to
+</I>&gt;<i> &gt; continue without
+</I>&gt;<i> &gt; it? My client (Xlite) doesn't seem to produce one or is there a
+</I>&gt;<i> &gt; problem with a cscf?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Please help,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Rob
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On 8/20/07, *campo* &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">robcampo at gmail.com</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">robcampo at gmail.com</A>&gt;&gt;
+</I>&gt;<i> &gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     Hi all,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     I seem to be having problems creating third party registers.
+</I>&gt;<i> &gt;     The trigger point is setup to redirect REGISTER's and INVITE's.
+</I>&gt;<i> &gt;     However when a register comes to the S-CSCF I get this error logged:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     ERR:ISC:isc_third_party_reg: Error creating new third party
+</I>&gt;<i> &gt;     registration
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     Any ideas?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070821/693509b2/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070821/693509b2/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002439.html">[OpenIMSCore-Users] Trigger Point problem.
+</A></li>
+	<LI>Next message: <A HREF="002414.html">[OpenIMSCore-Users] TLS Support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2446">[ date ]</a>
+              <a href="thread.html#2446">[ thread ]</a>
+              <a href="subject.html#2446">[ subject ]</a>
+              <a href="author.html#2446">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,318 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] using SIPp script to register failed with	latest release of OPEN IMS core
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20using%20SIPp%20script%20to%20register%20failed%20with%0A%09latest%20release%20of%20OPEN%20IMS%20core&In-Reply-To=%3C922770.57062.qm%40web56106.mail.re3.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001902.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] using SIPp script to register failed with	latest release of OPEN IMS core</H1>
+    <B>Sudhakar Patil</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20using%20SIPp%20script%20to%20register%20failed%20with%0A%09latest%20release%20of%20OPEN%20IMS%20core&In-Reply-To=%3C922770.57062.qm%40web56106.mail.re3.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] using SIPp script to register failed with	latest release of OPEN IMS core">spatil4572 at yahoo.com
+       </A><BR>
+    <I>Thu May 31 23:52:11 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001902.html">[OpenIMSCore-Users] Route Sets mismatch in ACK request
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1905">[ date ]</a>
+              <a href="thread.html#1905">[ thread ]</a>
+              <a href="subject.html#1905">[ subject ]</a>
+              <a href="author.html#1905">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dragos, 
+I have resolved the problem. It has to do with using aka_k param instead of aka_K in the registrationscenario file that I used for SIPp.
+
+Regards,
+Sudhakar.
+
+----- Original Message ----
+From: Sudhakar Patil &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">spatil4572 at yahoo.com</A>&gt;
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Sent: Wednesday, May 30, 2007 3:11:22 PM
+Subject: Re: [OpenIMSCore-Users] using SIPp script to register failed with latest release of OPEN IMS core
+
+
+Hi Dragos,
+
+I have OSIMS release 293 and sipp dated 2007-05-30. I have made the changes that you recommended for call.cpp and message.cpp as indicated below. However, AKA authentication is failing. 
+
+I have attached the ethereal trace captured at the server that has p/s/i-CSCFs and FHoSS and the script that I used for SIPP. I have also attached the information within hssdb tables in MySQL. Appreciate your help in understanding why AKA authentication is failing. 
+
+
+
+Regards,
+Sudhakar.
+
+
+----- Original Message ----
+From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+To: Sudhakar Patil &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">spatil4572 at yahoo.com</A>&gt;
+Cc: Kevin Chen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kevin.chen at cosmobic.com</A>&gt;; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Sent: Wednesday, May 30, 2007 5:43:10 AM
+Subject: Re: [OpenIMSCore-Users] using SIPp script to register failed with latest release of OPEN IMS core
+
+
+Hello Sudhakar,
+
+I have just posted a patch on the sipp-users mailing list related to
+this. The patch was for the latest SVN revision, 253. I think that 2.0.1
+is something around 237 so it might be affected by the same issue.
+Anyway... latest revision + patch below  works.
+
+-Dragos
+
+Index: call.cpp
+===================================================================
+--- call.cpp    (revision 253)
++++ call.cpp    (working copy)
+@@ -2239,9 +2239,9 @@
+     /* Build the auth credenticals */
+     char uri[MAX_HEADER_LEN];
+     sprintf (uri, &quot;%s:%d&quot;, remote_ip, remote_port);
+-    if (createAuthHeader(auth_comp-&gt;auth_user, auth_comp-&gt;auth_pass,
++    if (createAuthHeader(auth_comp-&gt;comp_param.auth_param.auth_user,
+auth_comp-&gt;comp_param.auth_param.auth_pass,
+          method, uri, body, dialog_authentication,
+-         auth_comp-&gt;aka_OP, auth_comp-&gt;aka_AMF, auth_comp-&gt;aka_K,
++         auth_comp-&gt;comp_param.auth_param.aka_OP,
+auth_comp-&gt;comp_param.auth_param.aka_AMF,
+auth_comp-&gt;comp_param.auth_param.aka_K,
+          result + authlen) == 0) {
+       ERROR_P1(&quot;%s&quot;, result + authlen);
+     }
+Index: message.cpp
+===================================================================
+--- message.cpp (revision 253)
++++ message.cpp (working copy)
+@@ -426,18 +426,20 @@
+   getKeywordParam(keyword, &quot;password=&quot;, my_auth_pass);
+   dst-&gt;comp_param.auth_param.auth_user = strdup(my_auth_user);
+   dst-&gt;comp_param.auth_param.auth_pass = strdup(my_auth_pass);
+-
++
+   dst-&gt;comp_param.auth_param.aka_OP = (char *)calloc(KEYWORD_SIZE, 1);
++  memset(dst-&gt;comp_param.auth_param.aka_OP,0,KEYWORD_SIZE*1);
+   dst-&gt;comp_param.auth_param.aka_AMF = (char *)calloc(KEYWORD_SIZE, 1);
++  memset(dst-&gt;comp_param.auth_param.aka_AMF,0,KEYWORD_SIZE*1);
+   dst-&gt;comp_param.auth_param.aka_K = (char *)calloc(KEYWORD_SIZE, 1);
+-
++  memset(dst-&gt;comp_param.auth_param.aka_K,0,KEYWORD_SIZE*1);
++
+   /* add aka_OP, aka_AMF, aka_K */
+   getKeywordParam(keyword, &quot;aka_OP=&quot;, dst-&gt;comp_param.auth_param.aka_OP);
+   getKeywordParam(keyword, &quot;aka_AMF=&quot;, dst-&gt;comp_param.auth_param.aka_AMF);
+   getKeywordParam(keyword, &quot;aka_K=&quot;, dst-&gt;comp_param.auth_param.aka_K);
+   if (dst-&gt;comp_param.auth_param.aka_K[0]==0){
+-    memcpy(dst-&gt;comp_param.auth_param.aka_K,my_auth_pass,16);
+-    dst-&gt;comp_param.auth_param.aka_K[16]=0;
++   
+memcpy(dst-&gt;comp_param.auth_param.aka_K,my_auth_pass,strlen(my_auth_pass));
+   }
+}
+
+
+
+Sudhakar Patil wrote:
+&gt;<i> Dragos, 
+</I>&gt;<i>
+</I>&gt;<i> I am using sipp 2.0.1 released on May 16th. By any chance do you know if your changes were captured in this release? I could not find a way to search what went into 2.0.1, so requesting your help. 
+</I>&gt;<i>
+</I>&gt;<i> AKA authentication is failing for me. I have OSIMS version 133. 
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Sudhakar.
+</I>&gt;<i>
+</I>&gt;<i> ----- Original Message ----
+</I>&gt;<i> From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> To: Kevin Chen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kevin.chen at cosmobic.com</A>&gt;
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Sent: Monday, March 5, 2007 4:04:27 AM
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] using SIPp script to register failed with latest release of OPEN IMS core
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Upgrade SIPp to the latest SVN version. When I changed the Open IMS
+</I>&gt;<i> Core, I also sent the patch to SIPp. For me the latest revision of both
+</I>&gt;<i> work nice together.
+</I>&gt;<i>
+</I>&gt;<i> Using password instead of aka_K also works and it is maybe easier to
+</I>&gt;<i> use. if aka_K is missing then it is filled with the contents of password.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Kevin Chen wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hello:
+</I>&gt;&gt;<i>     I use OPEN IMS since last year. Register by SIPp is always ok with the
+</I>&gt;&gt;<i> old version I got at about beginning of Dec. last year. Recently, I'm tring
+</I>&gt;&gt;<i> the latest version of OPEN IMS, but my SIPp script registration always fail.
+</I>&gt;&gt;<i>     Form S-CSCF I can see the log like &quot;UE said ...... and we expected
+</I>&gt;&gt;<i> .....&quot; log, and found they are difference.
+</I>&gt;&gt;<i>     It is strange that I didn't change my registration script. So I guess
+</I>&gt;&gt;<i> the key/response generation algorithm changed since last year right?
+</I>&gt;&gt;<i>     If so what I can do to continue use SIPp scripts? as we have lots of
+</I>&gt;&gt;<i> scripts using SIPp.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> see following about my registration script of SIPp:
+</I>&gt;&gt;<i> &lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot; ?&gt;
+</I>&gt;&gt;<i> &lt;!DOCTYPE scenario SYSTEM &quot;sipp.dtd&quot;&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &lt;!-- This program is free software; you can redistribute it and/or      --&gt;
+</I>&gt;&gt;<i> &lt;!-- modify it under the terms of the GNU General Public License as     --&gt;
+</I>&gt;&gt;<i> &lt;!-- published by the Free Software Foundation; either version 2 of the --&gt;
+</I>&gt;&gt;<i> &lt;!-- License, or (at your option) any later version.                    --&gt;
+</I>&gt;&gt;<i> &lt;!--                                                                    --&gt;
+</I>&gt;&gt;<i> &lt;!-- This program is distributed in the hope that it will be useful,    --&gt;
+</I>&gt;&gt;<i> &lt;!-- but WITHOUT ANY WARRANTY; without even the implied warranty of     --&gt;
+</I>&gt;&gt;<i> &lt;!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      --&gt;
+</I>&gt;&gt;<i> &lt;!-- GNU General Public License for more details.                       --&gt;
+</I>&gt;&gt;<i> &lt;!--                                                                    --&gt;
+</I>&gt;&gt;<i> &lt;!-- You should have received a copy of the GNU General Public License  --&gt;
+</I>&gt;&gt;<i> &lt;!-- along with this program; if not, write to the                      --&gt;
+</I>&gt;&gt;<i> &lt;!-- Free Software Foundation, Inc.,                                    --&gt;
+</I>&gt;&gt;<i> &lt;!-- 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA             --&gt;
+</I>&gt;&gt;<i> &lt;!--                                                                    --&gt;
+</I>&gt;&gt;<i> &lt;!--                 Sipp default 'uac' scenario.                       --&gt;
+</I>&gt;&gt;<i> &lt;!--                                                                    --&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &lt;scenario name=&quot;register&quot;&gt;
+</I>&gt;&gt;<i>   &lt;!-- In client mode (sipp placing calls), the Call-ID MUST be         --&gt;
+</I>&gt;&gt;<i>   &lt;!-- generated by sipp. To do so, use [call_id]
+</I>&gt;&gt;<i>          --&gt;
+</I>&gt;&gt;<i>   &lt;send &gt;
+</I>&gt;&gt;<i>     &lt;![CDATA[
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>       REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;&gt;<i>       Via: SIP/2.0/UDP [local_ip];rport=[local_port];branch=[branch]
+</I>&gt;&gt;<i>       Content-Length: 0
+</I>&gt;&gt;<i>       Contact: &lt;sip:alice@[local_ip]:[local_port]&gt;
+</I>&gt;&gt;<i>       Call-ID: [call_id]
+</I>&gt;&gt;<i>       CSeq: 9 REGISTER
+</I>&gt;&gt;<i>       From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=[call_number]
+</I>&gt;&gt;<i>       Max-Forwards: 16
+</I>&gt;&gt;<i>       To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+</I>&gt;&gt;<i>       Expires:3600
+</I>&gt;&gt;<i>       User-Agent: SJphone/1.60.289a (SJ Labs)
+</I>&gt;&gt;<i>       Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;,
+</I>&gt;&gt;<i> realm=&quot;open-ims.test&quot;,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     ]]&gt;
+</I>&gt;&gt;<i>   &lt;/send&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   &lt;recv response=&quot;401&quot;  auth=&quot;true&quot;&gt;
+</I>&gt;&gt;<i>   &lt;/recv&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   &lt;send &gt;
+</I>&gt;&gt;<i>     &lt;![CDATA[
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>       REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;&gt;<i>       Via: SIP/2.0/UDP [local_ip];rport=[local_port];branch=[branch]
+</I>&gt;&gt;<i>       Content-Length: 0
+</I>&gt;&gt;<i>       Contact: &lt;sip:alice@[local_ip]:[local_port]&gt;
+</I>&gt;&gt;<i>       Call-ID: [call_id]
+</I>&gt;&gt;<i>       CSeq: 10 REGISTER
+</I>&gt;&gt;<i>       From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=[call_number]
+</I>&gt;&gt;<i>       Max-Forwards: 16
+</I>&gt;&gt;<i>       To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+</I>&gt;&gt;<i>       Expires:3600
+</I>&gt;&gt;<i>       User-Agent: SJphone/1.60.289a (SJ Labs)
+</I>&gt;&gt;<i>       [authentication username=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> password=alice]
+</I>&gt;&gt;<i>     ]]&gt;
+</I>&gt;&gt;<i>   &lt;/send&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   &lt;recv response=&quot;200&quot; &gt;
+</I>&gt;&gt;<i>   &lt;/recv&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &lt;/scenario&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> for &quot;    [authentication username=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> password=alice]&quot; I
+</I>&gt;&gt;<i> also tried &quot;[authentication username=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+</I>&gt;&gt;<i> aka_OP=0x00000000000000000000000000000000
+</I>&gt;&gt;<i>        aka_K=0x616c6963650000000000000000000000 aka_AMF=0x0000]&quot;
+</I>&gt;&gt;<i> but the result is the same.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> BR
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> K.Chen
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 2007.3.5
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+       
+____________________________________________________________________________________Ready for the edge of your seat? 
+Check out tonight's top picks on Yahoo! TV. 
+<A HREF="http://tv.yahoo.com/">http://tv.yahoo.com/</A>
+
+
+       
+____________________________________________________________________________________
+Need a vacation? Get great deals
+to amazing places on Yahoo! Travel.
+<A HREF="http://travel.yahoo.com/">http://travel.yahoo.com/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001902.html">[OpenIMSCore-Users] Route Sets mismatch in ACK request
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1905">[ date ]</a>
+              <a href="thread.html#1905">[ thread ]</a>
+              <a href="subject.html#1905">[ subject ]</a>
+              <a href="author.html#1905">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

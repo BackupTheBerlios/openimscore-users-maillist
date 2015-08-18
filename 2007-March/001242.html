@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registration, port numbers and NAT
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%2C%20port%20numbers%20and%20NAT&In-Reply-To=%3CBAY108-F16059112A094AA022D504FF9760%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001236.html">
+   <LINK REL="Next"  HREF="001243.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registration, port numbers and NAT</H1>
+    <B>Arnold Schwarz</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%2C%20port%20numbers%20and%20NAT&In-Reply-To=%3CBAY108-F16059112A094AA022D504FF9760%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] Registration, port numbers and NAT">scharn333 at hotmail.com
+       </A><BR>
+    <I>Mon Mar 19 12:54:30 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001236.html">[OpenIMSCore-Users] Registration, port numbers and NAT
+</A></li>
+        <LI>Next message: <A HREF="001243.html">[OpenIMSCore-Users] Registration, port numbers and NAT
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1242">[ date ]</a>
+              <a href="thread.html#1242">[ thread ]</a>
+              <a href="subject.html#1242">[ subject ]</a>
+              <a href="author.html#1242">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> &gt; ... But I still have one concern: shouldn't the Contact-header in
+</I>&gt;<i> &gt; the end override all of the others? Or what is the reasoning for the
+</I>&gt;<i> &gt; header?
+</I>&gt;<i>
+</I>&gt;<i>Both header fields (Via and Contact) have different tasks. The Via header
+</I>&gt;<i>field cares for correct routing of responses and the Contact header field
+</I>&gt;<i>enables to directly send requests (not responses) to UE. But in fact, if 
+</I>&gt;<i>the
+</I>&gt;<i>content of Via header field is wrong due to NAT, the same is for the 
+</I>&gt;<i>Contact
+</I>&gt;<i>header field.
+</I>
+Again, thanks for the helpful answer! :)
+
+&gt;<i>There are different methods to cope with wrong Contact header fields. The
+</I>&gt;<i>obvious one is: the combined outbound/inbound proxy (P-CSCF) recognizes the
+</I>&gt;<i>NAT situation and uses the detected address from the previous mechanisms
+</I>&gt;<i>(Via received and rport) to automatically use this address when forwarding 
+</I>&gt;<i>a
+</I>&gt;<i>request to the UE.
+</I>
+Actually my problem was, that I had one port number in the UDP header, and 
+another one in the Via and Contact-headers. Because of the &quot;rport&quot; 
+parameter, the P-CSCF sent the reply always to the port number in the UDP. 
+Which than did not come to my client, since it prefers the number in the Via 
+nad the Contact-header...
+
+Commenting the NAT_response() and NAT_request() methods in the P-CSCF did 
+not help, and neither did changing the NAT_enable from 1 to 0. But I finally 
+found one solution: I commented out the force_rport() method in the P-CSCF, 
+so now the solution does not use the rport parameter, and the reply is sent 
+to the original port number in the Via-header. So now I get finally the user 
+registered, but when I try to originate a session, the P-CSCF still stores 
+the UDP header port number to the session identifier, so althoug the session 
+invite again includes the correct port number, and no rport is added, the 
+response is sent to the wrong port number (which is in the UDP heade, but 
+not in the Via-header)
+
+_________________________________________________________________
+Watch free concerts with Pink, Rod Stewart, Oasis and more. Visit MSN 
+Presents today. 
+<A HREF="http://music.msn.com/presents?icid=ncmsnpresentstagline&amp;ocid=T002MSN03A07001">http://music.msn.com/presents?icid=ncmsnpresentstagline&amp;ocid=T002MSN03A07001</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001236.html">[OpenIMSCore-Users] Registration, port numbers and NAT
+</A></li>
+	<LI>Next message: <A HREF="001243.html">[OpenIMSCore-Users] Registration, port numbers and NAT
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1242">[ date ]</a>
+              <a href="thread.html#1242">[ thread ]</a>
+              <a href="subject.html#1242">[ subject ]</a>
+              <a href="author.html#1242">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Getting 513 Message Too big
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Getting%20513%20Message%20Too%20big&In-Reply-To=%3C593788.50920.qm%40web56105.mail.re3.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001114.html">
+   <LINK REL="Next"  HREF="001115.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Getting 513 Message Too big</H1>
+    <B>Sudhakar Patil</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Getting%20513%20Message%20Too%20big&In-Reply-To=%3C593788.50920.qm%40web56105.mail.re3.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] Getting 513 Message Too big">spatil4572 at yahoo.com
+       </A><BR>
+    <I>Thu Mar  8 20:05:11 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001114.html">[OpenIMSCore-Users] Getting 513 Message Too big
+</A></li>
+        <LI>Next message: <A HREF="001115.html">[OpenIMSCore-Users] [Feature #3130] Early IMS Authentication Support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1145">[ date ]</a>
+              <a href="thread.html#1145">[ thread ]</a>
+              <a href="subject.html#1145">[ subject ]</a>
+              <a href="author.html#1145">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+I have seen this error as I installed OSIMS on
+Solaris. I traced it how xcscf.cfg gets
+compiled/encoded/parsed when SER starts. In my case
+msg:len &gt;=  max_len was always getting converted to
+msg:len &gt;= 0 hence I used to get this message
+irrespective of the real message size. I had asked for
+help in seruser mailing list but did not get a
+response. As per Dragos's suggestion I commented out
+that check in sip2ims/p/s/icscf.cfg files. 
+
+Regards,
+Sudhakar.
+
+--- Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+wrote:
+
+&gt;<i> The cscf_get_transaction log is not an error.
+</I>&gt;<i> 
+</I>&gt;<i> It is important to keep the I-CSCF on 5060 because
+</I>&gt;<i> the DNS for the home
+</I>&gt;<i> domain would point there.
+</I>&gt;<i> 
+</I>&gt;<i> Then I don't think that the Open IMS Core was
+</I>&gt;<i> generating the 513
+</I>&gt;<i> actually because in th 513 I see: Server: OpenSer
+</I>&gt;<i> (1.1.0-notls
+</I>&gt;<i> (i386/linux)). Unless you have converted the Open
+</I>&gt;<i> IMS Core to also run
+</I>&gt;<i> on OpenSer (which would be great, btw), I think that
+</I>&gt;<i> somebody else is
+</I>&gt;<i> sending this and it probably does because of a loop
+</I>&gt;<i> (via count is 17
+</I>&gt;<i> when this answer is generated).
+</I>&gt;<i> 
+</I>&gt;<i> So I think that actually you are not capturing all
+</I>&gt;<i> the traffic that goes
+</I>&gt;<i> inside the Open IMS Core, as clearly the P-CSCF is
+</I>&gt;<i> not the one
+</I>&gt;<i> generating that response.
+</I>&gt;<i> 
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Vignesh wrote:
+</I>&gt;<i> &gt; Dragos,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The trace was taken at the server side.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I find some errors on pcscf logs like
+</I>&gt;<i> &gt; &quot;cscf_get_transaction: Transaction 7539 563488534
+</I>&gt;<i> &gt; exists.Retransmission&quot;.  Could this be related?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I couldn't start icscf on 5060 since it was
+</I>&gt;<i> &gt; complaining that 5060 wasn't available.  To
+</I>&gt;<i> overcome
+</I>&gt;<i> &gt; the same I changed the default port in icscf.cfg
+</I>&gt;<i> to
+</I>&gt;<i> &gt; 5070.  Hope it is not an issue.  Also, was
+</I>&gt;<i> wondering
+</I>&gt;<i> &gt; if some other application sends it.  This is ruled
+</I>&gt;<i> out
+</I>&gt;<i> &gt; since the response is from 4060 &amp; it contains a
+</I>&gt;<i> Server
+</I>&gt;<i> &gt; header which openIMScore adds it.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I am running openIMScore on a Linux machine
+</I>&gt;<i> running
+</I>&gt;<i> &gt; Fedora 6.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; -Vignesh
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; --- Dragos Vingarzan
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; The trace was taken from the client side? because
+</I>&gt;<i> I
+</I>&gt;<i> &gt;&gt; can not see anything
+</I>&gt;<i> &gt;&gt; going inside the IMS core and to get 513 for that
+</I>&gt;<i> &gt;&gt; message is very strange...
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Vignesh wrote:
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; I wanted to mention it eariler, but missed it. 
+</I>&gt;<i> I
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; am
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; using Linux Fedora core 6.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; -Vignesh
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; --- Dragos Vingarzan
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; wrote:
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;   
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt;&gt;&gt; Hi Vignesh,
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; Are you running it on Solaris? There was a
+</I>&gt;<i> patch
+</I>&gt;<i> &gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt; for
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt; Solaris because SER
+</I>&gt;<i> &gt;&gt;&gt;&gt; was doing a wrong calculation on the message
+</I>&gt;<i> size
+</I>&gt;<i> &gt;&gt;&gt;&gt; and this might have
+</I>&gt;<i> &gt;&gt;&gt;&gt; re-surfaced. I will look for the patch...
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; Vignesh wrote:
+</I>&gt;<i> &gt;&gt;&gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; Dragos,
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; Thanks for your mail.  
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; Kindly let me know where to look for the logs
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt; from
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; cscf  and is there any place to enable logs on
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt; to
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt;&gt;&gt; the
+</I>&gt;<i> &gt;&gt;&gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; file system.  For now, I have captured the
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt; screen
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt;&gt;&gt; logs
+</I>&gt;<i> &gt;&gt;&gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; for the cscf, hss, ethereal trace and same is
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; attached.
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; I have also changed the subject for better
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt;&gt;&gt; tracking.
+</I>&gt;<i> &gt;&gt;&gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; Problem is that for the Registration I send,
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; openIMScore responds with a 513 Message too
+</I>&gt;<i> big
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; although I find the message reasonably
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt;&gt;&gt; small(around
+</I>&gt;<i> &gt;&gt;&gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; 600 Bytes).
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; Kindly let me know what could be wrong.
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; Regards,
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; Vignesh
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; --- Dragos Vingarzan
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt;&gt;&gt; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; wrote:
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;   
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; Hi Vignesh,
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; please capture and attach a full trace from
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;             
+</I>&gt;<i> &gt;&gt;&gt;&gt; inside
+</I>&gt;<i> &gt;&gt;&gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; the Open IMS Core
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; box, that also show the trace between the
+</I>&gt;<i> CSCFs
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;             
+</I>&gt;<i> &gt;&gt;&gt;&gt; and
+</I>&gt;<i> &gt;&gt;&gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; HSS.
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; Vignesh wrote:
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;         
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;             
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; Hi,
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; I am fairly new to openImsCore.  After
+</I>&gt;<i> setting
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;           
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;               
+</I>&gt;<i> &gt;&gt;&gt;&gt; it
+</I>&gt;<i> 
+</I>=== message truncated ===
+
+
+
+ 
+____________________________________________________________________________________
+Bored stiff? Loosen up... 
+Download and play hundreds of games for free on Yahoo! Games.
+<A HREF="http://games.yahoo.com/games/front">http://games.yahoo.com/games/front</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001114.html">[OpenIMSCore-Users] Getting 513 Message Too big
+</A></li>
+	<LI>Next message: <A HREF="001115.html">[OpenIMSCore-Users] [Feature #3130] Early IMS Authentication Support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1145">[ date ]</a>
+              <a href="thread.html#1145">[ thread ]</a>
+              <a href="subject.html#1145">[ subject ]</a>
+              <a href="author.html#1145">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

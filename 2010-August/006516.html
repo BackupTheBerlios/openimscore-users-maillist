@@ -1,0 +1,316 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] some problem with ims-communicator
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20some%20problem%20with%20ims-communicator&In-Reply-To=%3CBAY120-W7BD2F03EB43C96D530838B0890%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006510.html">
+   <LINK REL="Next"  HREF="006517.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] some problem with ims-communicator</H1>
+    <B>yousan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20some%20problem%20with%20ims-communicator&In-Reply-To=%3CBAY120-W7BD2F03EB43C96D530838B0890%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] some problem with ims-communicator">striver1982 at hotmail.com
+       </A><BR>
+    <I>Mon Aug 30 08:16:57 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006510.html">[OpenIMSCore-Users] SUBSCRIBE AS to reg events
+</A></li>
+        <LI>Next message: <A HREF="006517.html">[OpenIMSCore-Users] some problem with ims-communicator
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6516">[ date ]</a>
+              <a href="thread.html#6516">[ thread ]</a>
+              <a href="subject.html#6516">[ subject ]</a>
+              <a href="author.html#6516">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi,Everyone
+
+ 
+
+I want to do as follow:
+
+ 
+
+X-Lite --- FreeSwitch --- OpenIMSCore --- ims-communicator
+
+FreeSwitch's gateway have registered to OpenIMSCore successfully. 
+
+I use X-Lite call ims-communicator. ims-communicator begin ringing,then answer the call. but X-Lite can't hear ims-
+
+communicator. there is no RTP packet which is sent to freeswitch from ims-communicator. 
+then Freeswitch send BYE to OpenIMSCore several seconds later.
+
+ 
+
+the RTP info: 
+
+X-Lite --(RTP-PCMU)--&gt; FreeSwitch --(RTP-GSM 06 10)--&gt; ims-communicator
+ims-communicator --(NO RTP)--&gt; FreeSwitch --(NO RTP)--&gt; X-Lite
+
+ 
+
+if I use X-Lite as the client of OpenIMSCore, every thing is OK.
+
+ 
+
+some sip message:
+
+ 
+
+openimscore--(INVITE)--&gt;ims-communicator:
+
+ 
+
+INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.92.71</A>:4060 SIP/2.0
+
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>:4060;lr&gt;
+
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+
+Via: SIP/2.0/UDP 192.168.92.64:4060;branch=z9hG4bK6f0f.29a91ae7.0
+
+Via: SIP/2.0/UDP 192.168.92.64:6060;received=192.168.92.64;rport=6060;branch=z9hG4bK6f0f.2ce86844.0
+
+Via: SIP/2.0/UDP 192.168.92.64:6060;branch=z9hG4bK6f0f.1ce86844.0
+
+Via: SIP/2.0/UDP 192.168.92.64:4060;branch=z9hG4bK6f0f.19a91ae7.0
+
+Via: SIP/2.0/UDP 192.168.92.77:5080;rport=5080;branch=z9hG4bKgK9Kv25FmB45D
+
+Max-Forwards: 13
+
+From: &quot;bob&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>;transport=udp&gt;;tag=Dr88Uj17Q1aSF
+
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+
+Call-ID: 533f7848-2c1b-122e-1fad-a7b3a281dc75
+
+CSeq: 1099779 INVITE
+
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">gw+open-ims.test at 192.168.92.77</A>:5080;transport=udp;gw=open-ims.test&gt;
+
+User-Agent: FreeSWITCH-mod_sofia/1.0.6-exported
+
+Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, UPDATE, INFO, REGISTER, REFER, NOTIFY
+
+Supported: timer, precondition, path, replaces
+
+Allow-Events: talk, refer
+
+Content-Type: application/sdp
+
+Content-Disposition: session
+
+Content-Length: 293
+
+X-FS-Support: update_display
+
+Remote-Party-ID: &quot;bob&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1001 at open-ims.test</A>&gt;;party=calling;screen=yes;privacy=off
+
+P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+
+P-Charging-Vector: icid-value=&quot;P-CSCFabcd4c77118800000016&quot;;icid-generated-at=192.168.92.64;orig-ioi=&quot;open-ims.test&quot;
+
+P-Called-Party-ID: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+
+ 
+
+v=0
+
+o=FreeSWITCH 1282847039 1282847040 IN IP4 192.168.92.77
+
+s=FreeSWITCH
+
+c=IN IP4 192.168.92.77
+
+t=0 0
+
+m=audio 24648 RTP/AVP 0 8 3 101 13
+
+a=rtpmap:0 PCMU/8000
+
+a=rtpmap:8 PCMA/8000
+
+a=rtpmap:3 GSM/8000
+
+a=rtpmap:101 telephone-event/8000
+
+a=fmtp:101 0-16
+
+a=rtpmap:13 CN/8000
+
+a=ptime:20
+
+ 
+
+ims-communicator--(200 OK)--&gt;openimscore:
+
+ 
+
+SIP/2.0 200 OK
+
+Via: SIP/2.0/UDP 192.168.92.64:4060;branch=z9hG4bK6f0f.29a91ae7.0,SIP/2.0/UDP 192.168.92.64:6060;received=192.168.92.64;rport=6060;branch=z9hG4bK6f0f.2ce86844.0,SIP/2.0/UDP 192.168.92.64:6060;branch=z9hG4bK6f0f.1ce86844.0,SIP/2.0/UDP 192.168.92.64:4060;branch=z9hG4bK6f0f.19a91ae7.0,SIP/2.0/UDP 192.168.92.77:5080;rport=5080;branch=z9hG4bKgK9Kv25FmB45D
+
+From: &quot;bob&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>;transport=udp&gt;;tag=Dr88Uj17Q1aSF
+
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=21830977
+
+Call-ID: 533f7848-2c1b-122e-1fad-a7b3a281dc75
+
+CSeq: 1099779 INVITE
+
+Content-Type: application/sdp
+
+User-Agent: IMS-Communicator 081209
+
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>:4060;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+
+Allow: INVITE,ACK,CANCEL,BYE,MESSAGE,PRACK,UPDATE
+
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.92.71</A>:4060&gt;
+
+Content-Length: 434
+
+ 
+
+v=0
+
+o=- 0 0 IN IP4 192.168.92.71
+
+s=-
+
+c=IN IP4 192.168.92.71
+
+t=0 0
+
+m=audio 22224 RTP/AVP 0 3 4 5 6 8 15 18
+
+b=AS:25
+
+a=sendrecv
+
+a=rtpmap:0 ULAW/8000
+
+a=rtpmap:3 gsm/8000
+
+a=rtpmap:4 g723/8000
+
+a=rtpmap:5 dvi/8000
+
+a=rtpmap:6 dvi/16000
+
+a=rtpmap:8 alaw/8000
+
+a=rtpmap:15 g728/8000
+
+a=rtpmap:18 g729/8000
+
+m=video 22222 RTP/AVP 34 26 31
+
+b=AS:75
+
+a=recvonly
+
+a=rtpmap:34 h263/90000
+
+a=rtpmap:26 jpeg/90000
+
+a=rtpmap:31 h261/90000
+
+ 
+
+freeSwitch--(BYE)--&gt;openimscore
+
+ 
+
+BYE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.92.71</A>:4060 SIP/2.0
+
+Via: SIP/2.0/UDP 192.168.92.64:4060;branch=z9hG4bK05ef.3516d7a2.0
+
+Via: SIP/2.0/UDP 192.168.92.64:6060;received=192.168.92.64;rport=6060;branch=z9hG4bK05ef.b040e4b2.0
+
+Via: SIP/2.0/UDP 192.168.92.64:6060;branch=z9hG4bK05ef.a040e4b2.0
+
+Via: SIP/2.0/UDP 192.168.92.64:4060;branch=z9hG4bK05ef.2516d7a2.0
+
+Via: SIP/2.0/UDP 192.168.92.77:5080;rport=5080;branch=z9hG4bKj5U5Zr7peXgBN
+
+Max-Forwards: 13
+
+From: &quot;bob&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>;transport=udp&gt;;tag=Dr88Uj17Q1aSF
+
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=21830977
+
+Call-ID: 533f7848-2c1b-122e-1fad-a7b3a281dc75
+
+CSeq: 1099780 BYE
+
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">gw+open-ims.test at 192.168.92.77</A>:5080;transport=udp;gw=open-ims.test&gt;
+
+User-Agent: FreeSWITCH-mod_sofia/1.0.6-exported
+
+Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, UPDATE, INFO, REGISTER, REFER, NOTIFY
+
+Supported: timer, precondition, path, replaces
+
+Reason: Q.850;cause=16;text=&quot;NORMAL_CLEARING&quot;
+
+Content-Length: 0
+
+P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+
+ 
+
+ 
+
+Thanks!
+
+ 
+
+yousan
+
+30/08/2010
+ 		 	   		  
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100830/84c7bbc2/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100830/84c7bbc2/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006510.html">[OpenIMSCore-Users] SUBSCRIBE AS to reg events
+</A></li>
+	<LI>Next message: <A HREF="006517.html">[OpenIMSCore-Users] some problem with ims-communicator
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6516">[ date ]</a>
+              <a href="thread.html#6516">[ thread ]</a>
+              <a href="subject.html#6516">[ subject ]</a>
+              <a href="author.html#6516">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

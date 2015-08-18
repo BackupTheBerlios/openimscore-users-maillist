@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Question on AS /MRF and AS/Client	interaction
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Question%20on%20AS%20/MRF%20and%20AS/Client%0A%09interaction&In-Reply-To=%3C45827285.7060903%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000313.html">
+   <LINK REL="Next"  HREF="000315.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Question on AS /MRF and AS/Client	interaction</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Question%20on%20AS%20/MRF%20and%20AS/Client%0A%09interaction&In-Reply-To=%3C45827285.7060903%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Question on AS /MRF and AS/Client	interaction">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Dec 15 11:01:41 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000313.html">[OpenIMSCore-Users] Question on AS /MRF and AS/Client	interaction
+</A></li>
+        <LI>Next message: <A HREF="000315.html">[OpenIMSCore-Users] Application Server (AS)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#314">[ date ]</a>
+              <a href="thread.html#314">[ thread ]</a>
+              <a href="subject.html#314">[ subject ]</a>
+              <a href="author.html#314">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gaurav,
+
+I am not sure what &quot;trusted server&quot; means in IMS specs. It might be that
+you are talking about PSI? We do have that ...
+
+Again, as the scope is not commercial (see the big disclaimer on the
+first page), such commercial features as strong security on the S-CSCF
+have been deferred for later implementation. This means that the S-CSCF
+will accept and route any correctly formed message. For now, security is
+present, but at the edge of the network only - P-CSCF for visited,
+I-CSCF for home, etc.
+
+-Dragos
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">upadhyay.gaurav at wipro.com</A> wrote:
+&gt;<i>
+</I>&gt;<i> Hello Dragos,
+</I>&gt;<i> Thanks for your reply.
+</I>&gt;<i> I know of a few commercial CSCF products which support the ability to
+</I>&gt;<i> configure &quot;Trusted servers&quot;. The S-CSCF routes any message which has
+</I>&gt;<i> source and destination either a &quot;trusted server&quot; OR &quot;registered users&quot;.
+</I>&gt;<i> This helps in scenario when AS needs to send an INVITE to any server (
+</I>&gt;<i> say MRF), we would just need to add both AS and MRF to &quot;Trusted server&quot;.
+</I>&gt;<i>
+</I>&gt;<i> Is there some such mechanism/plan to have such mechanism in s-cscf which
+</I>&gt;<i> would allow AS to send INVITE to MRF, both being a &quot;trusted servers&quot; ?
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Gaurav
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;<i> Sent: Thursday, December 14, 2006 3:49 PM
+</I>&gt;<i> To: Gaurav Upadhyay (WT01 - Product Engineering Solutions)
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] Question on AS /MRF and AS/Client
+</I>&gt;<i> interaction
+</I>&gt;<i>
+</I>&gt;<i> As you say, the AS needs to deal with it, so it is not something in the
+</I>&gt;<i> core.
+</I>&gt;<i>
+</I>&gt;<i> However, when you want to initiate a call from the AS, you have
+</I>&gt;<i> basically 2 options:
+</I>&gt;<i>
+</I>&gt;<i> 1. Do origination - and as such, simulate a UE. Then you need to fill a
+</I>&gt;<i> Route header as indicated in the 3rd party REGISTER that we do not have
+</I>&gt;<i> yet. This is for now almost the same as the Route header from the
+</I>&gt;<i> client.
+</I>&gt;<i> 2. Do termination - and send the request to the domain of the Req-URI -
+</I>&gt;<i> that would get resolved into a I-CSCF.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">upadhyay.gaurav at wipro.com</A> wrote:
+</I>&gt;<i> &gt; Hello,
+</I>&gt;<i> &gt; My query is for the following scenario:
+</I>&gt;<i> &gt; 1. Client sends INVITE to AS : This is possible using IFC (Trigger
+</I>&gt;<i> &gt; point/Application server combination) 2. Now for the service
+</I>&gt;<i> &gt; triggered, AS needs to send INVITE to MRFC - I don't know how this is
+</I>&gt;<i> &gt; possible and what configuration is needed for SCSCF to know that MRFC
+</I>&gt;<i> &gt; is a &quot;allowed server&quot; ( Doesn't need to register) 3. What will be
+</I>&gt;<i> &gt; needed for AS to send an INVITE to Client ( for the triggered service)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Please let me know if this is supported and what is the configuration
+</I>&gt;<i> &gt; needed for this.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Regards,
+</I>&gt;<i> &gt; Gaurav
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The information contained in this electronic message and any
+</I>&gt;<i> &gt; attachments to this message are intended for the exclusive use of the
+</I>&gt;<i> &gt; addressee(s) and may contain proprietary, confidential or privileged
+</I>&gt;<i> &gt; information. If you are not the intended recipient, you should not
+</I>&gt;<i> &gt; disseminate, distribute or copy this e-mail. Please notify the sender
+</I>&gt;<i> &gt; immediately and destroy all copies of this message and any
+</I>&gt;<i> attachments.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; WARNING: Computer viruses can be transmitted via email. The recipient
+</I>&gt;<i> &gt; should check this email and any attachments for the presence of
+</I>&gt;<i> &gt; viruses. The company accepts no liability for any damage caused by any
+</I>&gt;<i>
+</I>&gt;<i> &gt; virus transmitted by this email.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; www.wipro.com
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ----------------------------------------------------------------------
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;  
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000313.html">[OpenIMSCore-Users] Question on AS /MRF and AS/Client	interaction
+</A></li>
+	<LI>Next message: <A HREF="000315.html">[OpenIMSCore-Users] Application Server (AS)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#314">[ date ]</a>
+              <a href="thread.html#314">[ thread ]</a>
+              <a href="subject.html#314">[ subject ]</a>
+              <a href="author.html#314">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] IPSec Problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IPSec%20Problem&In-Reply-To=%3C491ABA8C.2040302%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004819.html">
+   <LINK REL="Next"  HREF="004825.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] IPSec Problem</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IPSec%20Problem&In-Reply-To=%3C491ABA8C.2040302%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] IPSec Problem">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Nov 12 12:14:20 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004819.html">[OpenIMSCore-Users] IPSec Problem
+</A></li>
+        <LI>Next message: <A HREF="004825.html">[OpenIMSCore-Users] IPSec Problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4823">[ date ]</a>
+              <a href="thread.html#4823">[ thread ]</a>
+              <a href="subject.html#4823">[ subject ]</a>
+              <a href="author.html#4823">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Veena,
+
+so you have a kind of proxy between the P-CSCF and the UE, if I
+understand well. This kind of breaks the concept of the P-CSCF.... maybe
+you should rethink it and establish just one secure connection between
+the P-CSCF and your gateway, with other mechanism than the Gm specified
+one, as those are conceptually designed for many-to-one connections and
+you have a one-to-one connection. I mean the whole thing was supposed to
+prevent a man-in-the-middle attack, so you're on thin ice with something
+inserted in there.
+
+Or support a full B2B and allocate to each of your clients a dedicate
+IP:port towards the P-CSCF.
+
+Or build a custom P-CSCF.
+
+Although the 3GPP example shows that the P-CSCF would dynamically
+allocate a port for each of its clients, I don't think that you'd find
+one implementation doing that. Sure, you can open one million ports (our
+SIPNuke load generator does that), but this is not really practical and
+would be a potential DoS exploitable issue.
+
+
+And just to be pedantic, our P-CSCF supports other ports than 4060, you
+can use even multiple ones, but not one port per client...
+
+
+Cheers,
+-Dragos
+
+
+Veena.S wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> We are designing a Multiple Registration concept with multiple clients  
+</I>&gt;<i> accessing the same stack with different terminals.
+</I>&gt;<i>
+</I>&gt;<i> So Incase of IPSec if port value is same or different new SAs get created,  
+</I>&gt;<i> this is happening in our case but once we try to bind to the port in the  
+</I>&gt;<i> application  since it is already in use we are not able test this scenario.
+</I>&gt;<i>
+</I>&gt;<i> This is because Open-IMS-Server doesnt support port values otherthan 4060  
+</I>&gt;<i> for IPSec(P-CSCF).
+</I>&gt;<i> Please suggest us any other IMS Server that supports above IPSec scenario.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Veena
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Wed, 12 Nov 2008 16:03:39 +0530, Dragos Vingarzan  
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi Veena,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In our P-CSCF implementation we were restricted by the functionality of
+</I>&gt;&gt;<i> the underlying SIP Express Router, so we could not use dynamic ports for
+</I>&gt;&gt;<i> IPsec SAs. You can use a different port for the P-CSCF, but not open
+</I>&gt;&gt;<i> dynamic ones during runtime.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> However, this should not be a problem, as the identification of each SA
+</I>&gt;&gt;<i> is based on (IP UE, port UE, IP P-CSCF, port P-CSCF) and no 2 clients
+</I>&gt;&gt;<i> could use the same IP and port.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In your test I see that both clients use port 4060 for both c and s SAs
+</I>&gt;&gt;<i> and the same IP address (please don't confuse the UE port 4060 with the
+</I>&gt;&gt;<i> P-CSCF port 4060). Why is this? Couldn't you just use a different (IP
+</I>&gt;&gt;<i> UE, port UE) on the client side?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Veena S wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi All,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> We are facing IPSec issue in the following scenario:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Consider two users(UAC) running on the same system at different  
+</I>&gt;&gt;&gt;<i> terminals.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> User A gets REGISTERED using IPSec to OpenIMSServer(version 576)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> User B tries to REGISTER using IPSec to OpenIMSServer,SAs are created
+</I>&gt;&gt;&gt;<i> but connection to the secured fails since the port 4060(*Other port
+</I>&gt;&gt;&gt;<i> numbers cannot be used in this version*)  is already in use.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> If User A tries to DEREGISTER(ESP) , *494 error or no response* is
+</I>&gt;&gt;&gt;<i> generated.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> This case is not seen when only one person tries registration from a
+</I>&gt;&gt;&gt;<i> system.Please analyse the same and let me know if the problem is on
+</I>&gt;&gt;&gt;<i> Client side or Server side.Traces are attached.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> We are considering the above scenario, since we want to know if
+</I>&gt;&gt;&gt;<i> Different SAs get created for different applications running on the
+</I>&gt;&gt;&gt;<i> same system, please suggest us if we are doing anything wrong.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> In the latest version of OpenIMSCore, is it possibe to use port number
+</I>&gt;&gt;&gt;<i> other than 4060 for IPSec establishment?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;<i> Veena
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004819.html">[OpenIMSCore-Users] IPSec Problem
+</A></li>
+	<LI>Next message: <A HREF="004825.html">[OpenIMSCore-Users] IPSec Problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4823">[ date ]</a>
+              <a href="thread.html#4823">[ thread ]</a>
+              <a href="subject.html#4823">[ subject ]</a>
+              <a href="author.html#4823">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

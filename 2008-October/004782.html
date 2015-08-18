@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Sailfin integration with openimscore
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Sailfin%20integration%20with%20openimscore&In-Reply-To=%3CCEBD58040DCA414C8EE06A9D92CB75F2%40notebook%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004781.html">
+   <LINK REL="Next"  HREF="004783.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Sailfin integration with openimscore</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Sailfin%20integration%20with%20openimscore&In-Reply-To=%3CCEBD58040DCA414C8EE06A9D92CB75F2%40notebook%3E"
+       TITLE="[OpenIMSCore-Users] Sailfin integration with openimscore">franz.edler at inode.at
+       </A><BR>
+    <I>Fri Oct 24 06:43:07 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004781.html">[OpenIMSCore-Users] Sailfin integration with openimscore
+</A></li>
+        <LI>Next message: <A HREF="004783.html">[OpenIMSCore-Users] Sailfin integration with openimscore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4782">[ date ]</a>
+              <a href="thread.html#4782">[ thread ]</a>
+              <a href="subject.html#4782">[ subject ]</a>
+              <a href="author.html#4782">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Rishikesh,
+
+Looking at the Trigger Point you are using I found that the Trigger Point
+(shown below) can never match. You have to use Disjunctive Normal Form
+instead of Conjunctive Normal Form. A request can never be a REGISTER and a
+SUBSCRIBE at the same time!
+
+Your trigger point is:
+
+&lt;TriggerPoint&gt;
+&lt;ConditionTypeCNF&gt;1&lt;/ConditionTypeCNF&gt;
+&lt;SPT&gt;
+&lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+&lt;Group&gt;0&lt;/Group&gt;
+&lt;Method&gt;REGISTER&lt;/Method&gt;
+&lt;Extension&gt;
+&lt;/Extension&gt;
+&lt;/SPT&gt;
+&lt;SPT&gt;
+&lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+&lt;Group&gt;0&lt;/Group&gt;
+&lt;Method&gt;SUBSCRIBE&lt;/Method&gt;
+&lt;Extension&gt;
+&lt;/Extension&gt;
+&lt;/SPT&gt;
+&lt;SPT&gt;
+&lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+&lt;Group&gt;1&lt;/Group&gt;
+&lt;SIPHeader&gt;
+&lt;Header&gt;Event&lt;/Header&gt;
+&lt;Content&gt;*reg*&lt;/Content&gt;
+&lt;/SIPHeader&gt;
+&lt;Extension&gt;
+&lt;/Extension&gt;
+&lt;/SPT&gt;
+&lt;/TriggerPoint&gt;
+&lt;ApplicationServer&gt;
+&lt;ServerName&gt;sip:127.0.0.1:5060&lt;/ServerName&gt;
+&lt;DefaultHandling&gt;1&lt;/DefaultHandling&gt;
+&lt;/ApplicationServer&gt;
+&lt;/InitialFilterCriteria&gt;
+&lt;/ServiceProfile&gt;
+&lt;/IMSSubscription&gt;
+
+
+I suggest you should change &lt;ConditionTypeCNF&gt;1&lt;/ConditionTypeCNF&gt; to
+&lt;ConditionTypeCNF&gt;0&lt;/ConditionTypeCNF&gt;.
+
+-Franz
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004781.html">[OpenIMSCore-Users] Sailfin integration with openimscore
+</A></li>
+	<LI>Next message: <A HREF="004783.html">[OpenIMSCore-Users] Sailfin integration with openimscore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4782">[ date ]</a>
+              <a href="thread.html#4782">[ thread ]</a>
+              <a href="subject.html#4782">[ subject ]</a>
+              <a href="author.html#4782">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

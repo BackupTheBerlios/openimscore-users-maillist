@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Terminating Pcscf is not adding itself to record route
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Terminating%20Pcscf%20is%20not%20adding%20itself%20to%0A%20record%20route&In-Reply-To=%3C47174824.6080306%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002753.html">
+   <LINK REL="Next"  HREF="002765.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Terminating Pcscf is not adding itself to record route</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Terminating%20Pcscf%20is%20not%20adding%20itself%20to%0A%20record%20route&In-Reply-To=%3C47174824.6080306%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Terminating Pcscf is not adding itself to record route">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Oct 18 13:48:52 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002753.html">[OpenIMSCore-Users] Terminating Pcscf is not adding itself to	record route
+</A></li>
+        <LI>Next message: <A HREF="002765.html">[OpenIMSCore-Users] Terminating Pcscf is not adding itself to record route
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2764">[ date ]</a>
+              <a href="thread.html#2764">[ thread ]</a>
+              <a href="subject.html#2764">[ subject ]</a>
+              <a href="author.html#2764">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Nacho,
+
+Could you also capture and send the P-CSCF log? Is this the last
+revision of the OpenIMSCore and the configuration is the same as in the
+last revision? If not, please send your pcscf.cfg.
+
+I suspect that this is the same bug as:
+<A HREF="http://www.openimscore.org/node/65">http://www.openimscore.org/node/65</A> . This is not considered critical as
+you usually don't call yourself...
+
+Also, I strongly discourage you to use any type of proxy between the UE
+and the P-CSCF. I think that the processing on the terminating P-CSCF
+gets into route[Term_Standalone] instead of route[Term_Initial] because
+the dialog is wrongfully identified - the immediate cause is that the
+SBC or whatever box is there between OpenIC and the P-CSCF has the same
+IP:port for all users... Also, you probably have issues after you
+de-register one user probably as the others will get 403 after that, am
+I right?
+
+-Dragos
+
+
+Nacho Conde wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> About the previous message (see below), we have the same problem and
+</I>&gt;<i> scenario. The Pcscf terminating is not adding itself to record route.
+</I>&gt;<i> We have a snoop capture where you can see terminating pcscf&#180;s record
+</I>&gt;<i> route is not added. Can you help us?
+</I>&gt;<i> Feel free to request further information.
+</I>&gt;<i>
+</I>&gt;<i> Thanks a lot,
+</I>&gt;<i>
+</I>&gt;<i> Nacho &amp; David
+</I>&gt;<i>
+</I>&gt;<i> ---------------------------------------------------------------------------------------------
+</I>&gt;<i> *raman gupta* ramandumcs at gmail.com
+</I>&gt;<i> &lt;mailto:openimscore-users%40lists.berlios.de?Subject=%5BOpenIMSCore-Users%5D%20Terminating%20Pcscf%20is%20not%20adding%20itself%20to%0A%09record%20route&amp;In-Reply-To=&gt;
+</I>&gt;<i>
+</I>&gt;<i> /Mon May 28 14:06:20 CEST 2007/
+</I>&gt;<i>
+</I>&gt;<i>    * Previous message: [OpenIMSCore-Users] NAT problems - RTP Proxy
+</I>&gt;<i>      issue &lt;003335.html&gt;
+</I>&gt;<i>    * Next message: [OpenIMSCore-Users] Terminating Pcscf is not adding
+</I>&gt;<i>      itself to record route &lt;003351.html&gt;
+</I>&gt;<i>    * *Messages sorted by:* [ date ] &lt;date.html#3337&gt; [ thread ]
+</I>&gt;<i>      &lt;thread.html#3337&gt; [ subject ] &lt;subject.html#3337&gt; [ author ]
+</I>&gt;<i>      &lt;author.html#3337&gt;
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Hi
+</I>&gt;<i> we are trying to establish a call between two IP soft phones over IMS
+</I>&gt;<i> network. Both softphones are hidden behind NAT and then SBC. i.e we
+</I>&gt;<i> have the
+</I>&gt;<i> following setup
+</I>&gt;<i>
+</I>&gt;<i> IP Phone --&gt; NAT --&gt;SBC --&gt;IMS Core
+</I>&gt;<i>
+</I>&gt;<i> SBC uses single IP and port for both IP Phones sitting behind NAT. 
+</I>&gt;<i> Problem
+</I>&gt;<i> is that P-cscf is not adding itself  in record route on terminating
+</I>&gt;<i> side in
+</I>&gt;<i> initial INVITE request. Since both phones are running on same domain so
+</I>&gt;<i> single instance of P,I, and S are running and acting as originating as
+</I>&gt;<i> well
+</I>&gt;<i> as terminating cscf.
+</I>&gt;<i>
+</I>&gt;<i> P-cscf is being able to add itself as originating P but not as a
+</I>&gt;<i> teminating P in record route of initial invite message (S is working fine
+</I>&gt;<i> and is adding itself as both originating and terminating S.) Due to which
+</I>&gt;<i> Signalling messages are not following their proper path. And for ACK
+</I>&gt;<i> P-cscf
+</I>&gt;<i> gives the error: Messages not following Dialogue Route.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thanks
+</I>&gt;<i> Raman Gupta
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002753.html">[OpenIMSCore-Users] Terminating Pcscf is not adding itself to	record route
+</A></li>
+	<LI>Next message: <A HREF="002765.html">[OpenIMSCore-Users] Terminating Pcscf is not adding itself to record route
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2764">[ date ]</a>
+              <a href="thread.html#2764">[ thread ]</a>
+              <a href="subject.html#2764">[ subject ]</a>
+              <a href="author.html#2764">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

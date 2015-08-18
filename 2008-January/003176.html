@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ICSCF error - ERROR: parse_uri: bad uri,	state 0 parsed: &lt;scsc&gt; (4) / &lt;scscf.ims.rd.touk.pl&gt; (20)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ICSCF%20error%20-%20ERROR%3A%20parse_uri%3A%20bad%20uri%2C%0A%09state%200%20parsed%3A%20%3Cscsc%3E%20%284%29%20/%20%3Cscscf.ims.rd.touk.pl%3E%20%2820%29&In-Reply-To=%3C006f01c856ad%2447a07c50%240901a8c0%40AUB30306LAD830%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003175.html">
+   <LINK REL="Next"  HREF="003177.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ICSCF error - ERROR: parse_uri: bad uri,	state 0 parsed: &lt;scsc&gt; (4) / &lt;scscf.ims.rd.touk.pl&gt; (20)</H1>
+    <B>Andreas H&#228;ber</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ICSCF%20error%20-%20ERROR%3A%20parse_uri%3A%20bad%20uri%2C%0A%09state%200%20parsed%3A%20%3Cscsc%3E%20%284%29%20/%20%3Cscscf.ims.rd.touk.pl%3E%20%2820%29&In-Reply-To=%3C006f01c856ad%2447a07c50%240901a8c0%40AUB30306LAD830%3E"
+       TITLE="[OpenIMSCore-Users] ICSCF error - ERROR: parse_uri: bad uri,	state 0 parsed: &lt;scsc&gt; (4) / &lt;scscf.ims.rd.touk.pl&gt; (20)">andreas.haber at uia.no
+       </A><BR>
+    <I>Mon Jan 14 13:59:12 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003175.html">[OpenIMSCore-Users] ICSCF error - ERROR: parse_uri: bad uri,	state 0 parsed: &lt;scsc&gt; (4) / &lt;scscf.ims.rd.touk.pl&gt; (20)
+</A></li>
+        <LI>Next message: <A HREF="003177.html">[OpenIMSCore-Users] IMS Services
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3176">[ date ]</a>
+              <a href="thread.html#3176">[ thread ]</a>
+              <a href="subject.html#3176">[ subject ]</a>
+              <a href="author.html#3176">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+ 
+The error messages at the bottom of the log say that the URI
+(scscf.ims.rd.touk.pl) is wrong. Then start to read upwards and see where
+the URI comes from:
+
+ 4(17043) INFO:I-CSCF:new_scscf_entry:  &lt;scscf.ims.rd.touk.pl&gt;
+ 4(17043) INFO:I-CSCF:new_scscf_entry:  &lt;sip: scscf.ims.rd.touk.pl:6060&gt;
+ 4(17043) ERROR: parse_uri: bad uri,  state 0 parsed: &lt;scsc&gt; (4) /
+&lt;scscf.ims.rd.touk.pl&gt; (20) 
+
+Notice that there is a space character between 'sip:' and the DNS-name in
+the second line. This makes the URI invalid, so you need to remove that
+character.
+
+I guess there is an error in the ICSCF database. Assuming you use MySql try
+the following:
+echo &quot;select s_cscf_uri from s_cscf;&quot; | sudo mysql -D icscf
+
+(You might need to replace &quot;sudo mysql&quot; with something like &quot;mysql -u id
+-p&quot;)
+
+The result should look like this:
+$ echo &quot;select s_cscf_uri from s_cscf;&quot; | sudo mysql -D icscf
+s_cscf_uri
+sip:scscf.ims.ict-fiesta.test:6060
+
+Check the returned URI if it is indeed what the I-CSCF reports in the log
+(&quot;sip: scscf.ims.rd.touk.pl:6060&quot;). If that's the case, then modify it by
+removing the space character between 'sip:' and the DNS-name using a UPDATE
+SQL statement.
+
+An example from our system:
+ 2(25714) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+ 2(25714) INFO:I-CSCF:Cx_get_capabilities: Failed finding avp
+ 2(25714) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf.ims.ict-fiesta.test:6060&gt;
+
+Hope this helps!
+
+Best regards,
+Andreas
+________________________________
+
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Tomasz
+Zieleniewski
+Sent: 14. januar 2008 13:37
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: [OpenIMSCore-Users] ICSCF error - ERROR: parse_uri: bad uri,state 0
+parsed: &lt;scsc&gt; (4) / &lt;scscf.ims.rd.touk.pl&gt; (20)
+
+
+Hi,
+
+When I try to register user I get the following error in icscf
+18(19302) DBG:sm_process(): Peer hss.ims.rd.touk.pl     State R_Open
+Event R_Rcv_Message
+ 4(17043) INFO:I-CSCF:Cx_get_result_code: Failed finding avp 
+ 4(17043) INFO:I-CSCF:Cx_get_server_name: Failed finding avp
+ 4(17043) INFO:I-CSCF:new_scscf_entry:  &lt;scscf.ims.rd.touk.pl&gt;
+ 4(17043) INFO:I-CSCF:new_scscf_entry:  &lt;sip: scscf.ims.rd.touk.pl:6060&gt;
+ 4(17043) ERROR: parse_uri: bad uri,  state 0 parsed: &lt;scsc&gt; (4) /
+&lt;scscf.ims.rd.touk.pl&gt; (20) 
+ 4(17043) ERROR: parse_sip_msg_uri: bad uri &lt;scscf.ims.rd.touk.pl&gt;
+ 4(17043) ERROR: new_t: uri invalid
+ 4(17043) ERROR: t_newtran: new_t failed
+ 4(17043) ERROR: parse_uri: bad uri,  state 0 parsed: &lt;scsc&gt; (4) / &lt;
+scscf.ims.rd.touk.pl&gt; (20)
+ 4(17043) ERROR: parse_sip_msg_uri: bad uri &lt;scscf.ims.rd.touk.pl&gt;
+ 4(17043) ERROR: new_t: uri invalid 
+ 4(17043) ERROR: t_newtran: new_t failed
+ 4(17043) ERROR: sl_reply_error used: Regretfully, we were not able to
+process the URI (479/SL)
+
+What could be the reason of such behavior?
+
+Best regards
+Tomasz 
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003175.html">[OpenIMSCore-Users] ICSCF error - ERROR: parse_uri: bad uri,	state 0 parsed: &lt;scsc&gt; (4) / &lt;scscf.ims.rd.touk.pl&gt; (20)
+</A></li>
+	<LI>Next message: <A HREF="003177.html">[OpenIMSCore-Users] IMS Services
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3176">[ date ]</a>
+              <a href="thread.html#3176">[ thread ]</a>
+              <a href="subject.html#3176">[ subject ]</a>
+              <a href="author.html#3176">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

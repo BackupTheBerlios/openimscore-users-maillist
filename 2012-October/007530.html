@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] OpenIMSCore, TLS &amp; Crash
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore%2C%20TLS%20%26%20Crash&In-Reply-To=%3CCADghFCwVvc09rGiZumzn2X1Ex-skRgELufsnNE%2Bd%3D9tV-FUcnw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007529.html">
+   <LINK REL="Next"  HREF="007531.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] OpenIMSCore, TLS &amp; Crash</H1>
+    <B>Mika Saari</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore%2C%20TLS%20%26%20Crash&In-Reply-To=%3CCADghFCwVvc09rGiZumzn2X1Ex-skRgELufsnNE%2Bd%3D9tV-FUcnw%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] OpenIMSCore, TLS &amp; Crash">mika.saari at gmail.com
+       </A><BR>
+    <I>Tue Oct 23 13:02:58 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007529.html">[OpenIMSCore-Users] Open IMSCore Ipv6
+</A></li>
+        <LI>Next message: <A HREF="007531.html">[OpenIMSCore-Users] IMSdroid - doubt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7530">[ date ]</a>
+              <a href="thread.html#7530">[ thread ]</a>
+              <a href="subject.html#7530">[ subject ]</a>
+              <a href="author.html#7530">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+  I am using latest svn build of ser_ims and when enabling TLS, I'll get
+core. The get_tls_session_hash is defined and seems like the pcscf couldn't
+be calling this function properly, but couldn't figure out for what reason.
+
+  Including some syslog dump and the debugger backtract here.
+
+  Thanks a lot for any tips,
+    -Mika
+
+  Syslog debug:
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]: parse_headers:
+flags=ffffffffffffffff
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]: parse_headers:
+flags=78
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]:
+t_lookup_request: start searching: hash=795, isACK=0
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]: DEBUG: RFC3261
+transaction matching failed
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]: DEBUG:
+t_lookup_request: no transaction found
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]:
+DBG:P-CSCF:P_emergency_flag: Check if the user made an Emergency
+Registration
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]: parse_headers:
+flags=ffffffffffffffff
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]:
+DBG:P-CSCF:P_emergency_flag: contact &lt;
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">87Pqhlu95uHXcHAUp3DM at 10.36.58.243</A>:5061&gt;
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]:
+DBG:P-CSCF:P_verify_security: Looking for &lt;3://10.36.58.243:5061&gt;
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]: DBG:P-CSCF:
+Looking for contacts
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]: DBG:P-CSCF: Our
+HOST  10.36.58.243 the HASH:182
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]:
+DBG:P-CSCF:P_verify_security: No Contact found !
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]:
+DBG:P-CSCF:P_is_integrity_protected: Looking if registered
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31811]:
+DBG:P-CSCF:P_is_integrity_protected: Looking for &lt;3://10.36.58.243:5061
+,43398&gt;
+Oct 23 13:55:27 agims kernel: [2945751.940764] ser[31811]: segfault at
+72db28 ip 000000000072db28 sp 00007fff3aeaa048 error 15
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31815]: ERROR:
+receive_fd: EOF on 14
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31815]: DBG:
+handle_ser_child: dead child 7, pid 31811 (shutting down?)
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31815]: DBG:
+io_watch_del (0x70cbe0, 14, -1, 0x0) fd_no=16 called
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31815]: DBG:
+handle_tcp_child: dead tcp child 0 (pid 31811, no 7) (shutting down?)
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31815]: DBG:
+io_watch_del (0x70cbe0, 16, -1, 0x0) fd_no=15 called
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31803]: child process
+31811 exited by a signal 11
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31803]: core was
+generated
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31803]: INFO:
+terminating due to SIGCHLD
+Oct 23 13:55:27 agims /opt/OpenIMSCore/ser_ims/ser[31803]: Process Table:
+
+
+
+  GDB BT:
+  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at agims</A>:/opt/OpenIMSCore/ser_ims# gdb ser /core
+GNU gdb (GDB) 7.0.1-debian
+Copyright (C) 2009 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later &lt;<A HREF="http://gnu.org/licenses/gpl.html">http://gnu.org/licenses/gpl.html</A>
+&gt;<i>
+</I>This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type &quot;show copying&quot;
+and &quot;show warranty&quot; for details.
+This GDB was configured as &quot;x86_64-linux-gnu&quot;.
+For bug reporting instructions, please see:
+&lt;<A HREF="http://www.gnu.org/software/gdb/bugs/">http://www.gnu.org/software/gdb/bugs/</A>&gt;...
+Reading symbols from /opt/OpenIMSCore/ser_ims/ser...done.
+
+warning: Can't read pathname for load map: Input/output error.
+Reading symbols from /lib/libdl.so.2...(no debugging symbols found)...done.
+Loaded symbols for /lib/libdl.so.2
+Reading symbols from /lib/libresolv.so.2...(no debugging symbols
+found)...done.
+Loaded symbols for /lib/libresolv.so.2
+Reading symbols from /lib/libc.so.6...(no debugging symbols found)...done.
+Loaded symbols for /lib/libc.so.6
+Reading symbols from /lib64/ld-linux-x86-64.so.2...(no debugging symbols
+found)...done.
+Loaded symbols for /lib64/ld-linux-x86-64.so.2
+Reading symbols from /opt/OpenIMSCore/ser_ims/modules/sl/sl.so...done.
+Loaded symbols for /opt/OpenIMSCore/ser_ims/modules/sl/sl.so
+Reading symbols from /opt/OpenIMSCore/ser_ims/modules/tm/tm.so...done.
+Loaded symbols for /opt/OpenIMSCore/ser_ims/modules/tm/tm.so
+Reading symbols from
+/opt/OpenIMSCore/ser_ims/modules/dialog/dialog.so...done.
+Loaded symbols for /opt/OpenIMSCore/ser_ims/modules/dialog/dialog.so
+Reading symbols from /usr/local/lib/ser/lib_ser_cds.so...done.
+Loaded symbols for /usr/local/lib/ser/lib_ser_cds.so
+Reading symbols from /opt/OpenIMSCore/ser_ims/modules/rr/rr.so...done.
+Loaded symbols for /opt/OpenIMSCore/ser_ims/modules/rr/rr.so
+Reading symbols from
+/opt/OpenIMSCore/ser_ims/modules/maxfwd/maxfwd.so...done.
+Loaded symbols for /opt/OpenIMSCore/ser_ims/modules/maxfwd/maxfwd.so
+Reading symbols from
+/opt/OpenIMSCore/ser_ims/modules/textops/textops.so...done.
+Loaded symbols for /opt/OpenIMSCore/ser_ims/modules/textops/textops.so
+Reading symbols from /opt/OpenIMSCore/ser_ims/modules/pcscf/pcscf.so...done.
+Loaded symbols for /opt/OpenIMSCore/ser_ims/modules/pcscf/pcscf.so
+Reading symbols from /usr/lib/libxml2.so.2...(no debugging symbols
+found)...done.
+Loaded symbols for /usr/lib/libxml2.so.2
+Reading symbols from /lib/libpthread.so.0...(no debugging symbols
+found)...done.
+Loaded symbols for /lib/libpthread.so.0
+Reading symbols from /usr/lib/libz.so.1...(no debugging symbols
+found)...done.
+Loaded symbols for /usr/lib/libz.so.1
+Reading symbols from /lib/libm.so.6...(no debugging symbols found)...done.
+Loaded symbols for /lib/libm.so.6
+Reading symbols from /opt/OpenIMSCore/ser_ims/modules/exec/exec.so...done.
+Loaded symbols for /opt/OpenIMSCore/ser_ims/modules/exec/exec.so
+Reading symbols from /opt/OpenIMSCore/ser_ims/modules/tls/tls.so...done.
+Loaded symbols for /opt/OpenIMSCore/ser_ims/modules/tls/tls.so
+Reading symbols from /usr/lib/libssl.so.0.9.8...(no debugging symbols
+found)...done.
+Loaded symbols for /usr/lib/libssl.so.0.9.8
+Reading symbols from /usr/lib/libcrypto.so.0.9.8...(no debugging symbols
+found)...done.
+Loaded symbols for /usr/lib/libcrypto.so.0.9.8
+Reading symbols from /lib/libnss_files.so.2...(no debugging symbols
+found)...done.
+Loaded symbols for /lib/libnss_files.so.2
+Core was generated by `/opt/OpenIMSCore/ser_ims/ser -f
+/opt/OpenIMSCore/pcscf.cfg -D -D'.
+Program terminated with signal 11, Segmentation fault.
+#0  0x000000000072db28 in get_tls_session_hash ()
+(gdb) bt
+#0  0x000000000072db28 in get_tls_session_hash ()
+#1  0x00007f440a55e156 in P_is_integrity_protected (msg=0x7c12b0,
+str1=&lt;value optimized out&gt;, str2=&lt;value optimized out&gt;)
+    at registration.c:229
+#2  0x000000000040f187 in do_action (a=0x7781f0, msg=0x7c12b0) at
+action.c:681
+#3  0x0000000000410d05 in run_actions (a=&lt;value optimized out&gt;, msg=&lt;value
+optimized out&gt;) at action.c:920
+#4  0x0000000000459f41 in eval_elem (e=0x7782c0, msg=0x7c12b0) at
+route.c:1050
+#5  0x000000000045affc in eval_expr (e=0x778350, msg=0x7c12b0) at
+route.c:1170
+#6  0x000000000040eb85 in do_action (a=0x779430, msg=0x7c12b0) at
+action.c:652
+#7  0x0000000000410d05 in run_actions (a=&lt;value optimized out&gt;, msg=&lt;value
+optimized out&gt;) at action.c:920
+#8  0x000000000040f145 in do_action (a=0x76d550, msg=0x7c12b0) at
+action.c:439
+#9  0x0000000000410d05 in run_actions (a=&lt;value optimized out&gt;, msg=&lt;value
+optimized out&gt;) at action.c:920
+#10 0x000000000040ebc4 in do_action (a=0x76d6f0, msg=0x7c12b0) at
+action.c:675
+#11 0x0000000000410d05 in run_actions (a=&lt;value optimized out&gt;, msg=&lt;value
+optimized out&gt;) at action.c:920
+#12 0x00000000004502d4 in receive_msg (
+    buf=0x7f44073345f8 &quot;REGISTER sip:ims.xxxxx.com SIP/2.0\r\nRoute:
+&lt;sip:pcscf.xxxxx.com:5061;lr&gt;\r\nVia: SIP/2.0/TLS
+10.36.58.243:5061;branch=z9hG4bKfdr8rjkimthc70ot2jt9i57;keep;rport\r\nFrom:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+5168 at ims</A>&quot;..., len=858, rcv_info=0x7f4407334588)
+    at receive.c:171
+#13 0x00000000004856c4 in tcp_read_req (con=0x7f4407334578,
+bytes_read=0x7fff3aeab1ec) at tcp_read.c:619
+#14 0x0000000000486643 in handle_io (fm=0x7b2ea8, idx=-1) at tcp_read.c:895
+#15 0x0000000000487ed9 in io_wait_loop_epoll (unix_sock=&lt;value optimized
+out&gt;) at io_wait.h:731
+#16 tcp_receive_loop (unix_sock=&lt;value optimized out&gt;) at tcp_read.c:1001
+#17 0x00000000004783ac in tcp_init_children () at tcp_main.c:2197
+#18 0x000000000043516c in main_loop () at main.c:1077
+#19 0x00000000004363e0 in main (argc=1, argv=0x7fff3aeab5b8) at main.c:1614
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20121023/5796ec73/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20121023/5796ec73/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007529.html">[OpenIMSCore-Users] Open IMSCore Ipv6
+</A></li>
+	<LI>Next message: <A HREF="007531.html">[OpenIMSCore-Users] IMSdroid - doubt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7530">[ date ]</a>
+              <a href="thread.html#7530">[ thread ]</a>
+              <a href="subject.html#7530">[ subject ]</a>
+              <a href="author.html#7530">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] how to connect the IMS core from another box
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20how%20to%20connect%20the%20IMS%20core%20from%20another%20box&In-Reply-To=%3C346835.9833.qm%40web27102.mail.ukl.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000952.html">
+   <LINK REL="Next"  HREF="000856.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] how to connect the IMS core from another box</H1>
+    <B>asma a</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20how%20to%20connect%20the%20IMS%20core%20from%20another%20box&In-Reply-To=%3C346835.9833.qm%40web27102.mail.ukl.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] how to connect the IMS core from another box">asmaa_a_m at yahoo.co.uk
+       </A><BR>
+    <I>Mon Feb 19 12:11:39 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000952.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+        <LI>Next message: <A HREF="000856.html">[OpenIMSCore-Users] how to connect the IMS core from another box
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#855">[ date ]</a>
+              <a href="thread.html#855">[ thread ]</a>
+              <a href="subject.html#855">[ subject ]</a>
+              <a href="author.html#855">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi;
+
+yes, this is my problem the pcscf and sip2ims can not be reached by the client;
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at open-ims</A> ~]# ping pcscf.open-ims.test
+ping: unknown host pcscf.open-ims.test
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at open-ims</A> ~]# ping sip2ims.open-ims.test
+ping: unknown host sip2ims.open-ims.test
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at open-ims</A> ~]# 
+
+Thanks
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">upadhyay.gaurav at wipro.com</A> wrote:     Asma,
+ You can ignore the warnings here, the pcscf has started successfully for you on port UDP:4060 tcp:4060.
+ Try ping pcscf.open-ims.test, this should resolve to 192.168.100.129 if the DNS changes are correct.
+  
+ What exactly is the problem being faced by you ? Is it like you cannot still reach pcscf ?
+  
+ Regards,
+ Gaurav
+
+  
+---------------------------------
+ From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of asma a
+Sent: Monday, February 19, 2007 3:32 PM
+To: Dragos Vingarzan; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+Subject: Re: [OpenIMSCore-Users] how to connect the IMS core from another box
+
+
+ 
+Hi, all
+after changing the localhost instances to IP-address
+in all .cfg .sql .xml files in ser_ims and the dnszone file
+the cscf(s) give a warning as follows:
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at open-ims</A> OpenIMSCore]# ./pcscf.sh 
+./pcscf.sh: line 3: killser: command not found
+ 0(3042) WARNING: fix_socket_list: could not rev. resolve 192.168.100.129
+ 0(3042) WARNING: fix_socket_list: could not rev. resolve 192.168.100.129
+Listening on 
+             udp: 192.168.100.129 [192.168.100.129]:4060
+             tcp: 192.168.100.129 [192.168.100.129]:4060
+Aliases: 
+             *: pcscf.open-ims.test:*
+
+
+
+using dig the result is as follows: ---&gt;&gt;&gt;
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at open-ims</A> ~]# dig @192.168.100.129 pcscf.open-ims.test
+
+; &lt;&lt;&gt;&gt; DiG 9.3.3rc3 &lt;&lt;&gt;&gt; @192.168.100.129 pcscf.open-ims.test
+; (1 server found)
+;; global options:  printcmd
+;; Got answer:
+;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 15980
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 1
+
+;; QUESTION SECTION:
+;pcscf.open-ims.test.           IN      A
+
+;; ANSWER SECTION:
+pcscf.open-ims.test.    86400   IN      A       192.168.100.129
+
+;; AUTHORITY SECTION:
+open-ims.test.          86400   IN      NS      ns.open-ims.test.
+
+;; ADDITIONAL SECTION:
+ns.open-ims.test.       86400   IN      A       192.168.100.129
+
+;; Query time: 28 msec
+;; SERVER: 192.168.100.129#53(192.168.100.129)
+;; WHEN: Mon Feb 19 11:22:37 2007
+;; MSG SIZE  rcvd: 86
+
+
+however with ping ----&gt;&gt;&gt;&gt;
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at open-ims</A> ~]# ping pcscf.192.168.100.129
+ping: unknown host pcscf.192.168.100.129
+
+
+What do I mis????
+
+
+Asma
+
+Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; wrote: Hi   Asma,
+
+You need to change everywhere in the cfg and xml files the   &quot;127.0.0.1&quot;
+local loopback address with your external IP address. Don't   forget to
+update and restart the DNS server.
+
+-Dragos
+
+asma a   wrote:
+&gt;<i> Hi all;
+</I>&gt;<i>
+</I>&gt;<i> I have successfully installed the IMS   core and held a connction
+</I>&gt;<i> between alice and bob at the same box using   xlite.
+</I>&gt;<i>
+</I>&gt;<i> now I want to make the same thing but with alice and   bob at two
+</I>&gt;<i> differnet boxes; what do I need to change?
+</I>&gt;<i>
+</I>&gt;<i>   Thanks;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Asma
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   ------------------------------------------------------------------------
+</I>&gt;<i>   Now you can scan emails quickly with a reading pane
+</I>&gt;<i> .
+</I>&gt;<i> Get the new Yahoo!   Mail
+</I>&gt;<i> .
+</I>&gt;<i>
+</I>&gt;<i>   ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>   _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users   mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>   <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng.   Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589   Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 -   5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web   www.fokus.fraunhofer.de
+We could change the world if God would give us the   source   code...
+-----------------------------------------------------------------
+
+
+  
+
+---------------------------------
+ New Yahoo! Mail is the ultimate force in competitive emailing. Find out more at the Yahoo! Mail Championships. Plus: play games and win prizes. The information contained in this electronic message and any attachments to this message are intended for the exclusive use of the addressee(s) and may contain proprietary, confidential or privileged information. If you are not the intended recipient, you should not disseminate, distribute or copy this e-mail. Please notify the sender immediately and destroy all copies of this message and any attachments.   WARNING: Computer viruses can be transmitted via email. The recipient should check this email and any attachments for the presence of viruses. The company accepts no liability for any damage caused by any virus transmitted by this email.   www.wipro.com 
+ 
+
+ 		
+---------------------------------
+ Inbox full of unwanted email? Get leading protection and 1GB storage with All New Yahoo! Mail.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070219/f50f6ebf/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070219/f50f6ebf/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000952.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+	<LI>Next message: <A HREF="000856.html">[OpenIMSCore-Users] how to connect the IMS core from another box
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#855">[ date ]</a>
+              <a href="thread.html#855">[ thread ]</a>
+              <a href="subject.html#855">[ subject ]</a>
+              <a href="author.html#855">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

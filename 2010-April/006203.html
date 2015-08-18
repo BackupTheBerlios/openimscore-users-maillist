@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Introducing AS to IMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Introducing%20AS%20to%20IMS&In-Reply-To=%3C4BCDB680.3070404%40amphinicy.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006207.html">
+   <LINK REL="Next"  HREF="006205.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Introducing AS to IMS</H1>
+    <B>Marko Mrvelj</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Introducing%20AS%20to%20IMS&In-Reply-To=%3C4BCDB680.3070404%40amphinicy.com%3E"
+       TITLE="[OpenIMSCore-Users] Introducing AS to IMS">Marko.Mrvelj at amphinicy.com
+       </A><BR>
+    <I>Tue Apr 20 16:13:20 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006207.html">[OpenIMSCore-Users] Introducing AS to IMS
+</A></li>
+        <LI>Next message: <A HREF="006205.html">[OpenIMSCore-Users] Invitation: 7th Emergency Services Workshop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6203">[ date ]</a>
+              <a href="thread.html#6203">[ thread ]</a>
+              <a href="subject.html#6203">[ subject ]</a>
+              <a href="author.html#6203">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi!
+
+I have already used &quot;Profile Part Indicator&quot; and set it to unregistered. 
+However for some reason it seems that it does not work.
+
+trigger point SPTs: SIP METHOD MESSAGE
+
+attached iFC:
+AS: my AS
+Profile Part Indicator: Unregistered
+
+Service Profile has iFC attached, and all users are using this service 
+profile.
+
+So if I login as one user with sip client and then try to send message 
+to another user which is offline, I expect this message to be routed to 
+my AS, however instead I am previously mentioned errors.
+
+On 20.4.2010. 15:20, Schumann Sebastian wrote:
+&gt;<i> Hi Marko
+</I>&gt;<i>
+</I>&gt;<i> The HSS has profile part indicators, you should be able to apply different actions for online (i.e., registered) and offline (i.e., not registered) users.
+</I>&gt;<i>
+</I>&gt;<i> I don&#8217;t have the configuration front-end accessible just now, but I think to remember it was under Service - iFC. Not sure though, haven't tested it yet.
+</I>&gt;<i>
+</I>&gt;<i> I guess if you set it for unregistered, then the trigger will only apply if the user is not registered. If I understand you correctly, this is what you want. Route messages normally when the user is online and trigger routing to your AS when he is offline.
+</I>&gt;<i>
+</I>&gt;<i> Sebastian
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:openimscore-users-
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bounces at lists.berlios.de</A>] On Behalf Of Marko Mrvelj
+</I>&gt;&gt;<i> Sent: Tuesday, 20. April 2010 14:43
+</I>&gt;&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: [OpenIMSCore-Users] Introducing AS to IMS
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi all!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have developed an SIP server that is capable to send and receive messages
+</I>&gt;&gt;<i> (SIP MESSAGE). This server has it's own user base and is used to send and
+</I>&gt;&gt;<i> receive messages via various protocols (e.g. XMPP/Jabber, e-mail, SMS). My
+</I>&gt;&gt;<i> idea is to integrate this AS so that IMS core would route messages to my
+</I>&gt;&gt;<i> server for processing. It is acceptable to synchronize users in my server
+</I>&gt;&gt;<i> and HSS manually at this moment.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I can send messages out from my server to SIP users on IMS network, but
+</I>&gt;&gt;<i> reception is problematic.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I need following:
+</I>&gt;&gt;<i> - my server receives SIP MESSAGE messages coming to core network
+</I>&gt;&gt;<i> - users need to be able to login via SIP clients also
+</I>&gt;&gt;<i> - Ideally if user is logged in via SIP client, message would be route to him
+</I>&gt;&gt;<i> directly, otherwise it would be routed to my server
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I tried to configure AS with triggers, but since the user is not logged in
+</I>&gt;&gt;<i> trying to send message to him gives various error messages depending on
+</I>&gt;&gt;<i> configuration (e.g. 600 busy everywhere -empty list of S-CSCFs, or 480
+</I>&gt;&gt;<i> Temporarily Unavailable - HSS identity not registered).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Can you give me any hits, help here?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>      
+</I>
+-- 
+
+*Marko Mrvelj*
+Technical Director
+
+Amphinicy Technologies
+Nothing is Impossible.&#174;
+
+Zagreb Office
+Bednjanska 8A *|* HR-10000 Zagreb *|* Croatia
+T +385 1 4852 814 *|* F +385 1 4852 824
+W amphinicy.com
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006207.html">[OpenIMSCore-Users] Introducing AS to IMS
+</A></li>
+	<LI>Next message: <A HREF="006205.html">[OpenIMSCore-Users] Invitation: 7th Emergency Services Workshop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6203">[ date ]</a>
+              <a href="thread.html#6203">[ thread ]</a>
+              <a href="subject.html#6203">[ subject ]</a>
+              <a href="author.html#6203">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

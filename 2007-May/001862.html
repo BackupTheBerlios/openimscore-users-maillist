@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] DNS question - roaming case
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20DNS%20question%20-%20roaming%20case&In-Reply-To=%3COF649FF341.E53E0165-ONC12572EA.0034EA21-C12572EA.0036E303%40sagem.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001871.html">
+   <LINK REL="Next"  HREF="001874.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] DNS question - roaming case</H1>
+    <B>Daniel VIRASSAMY</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20DNS%20question%20-%20roaming%20case&In-Reply-To=%3COF649FF341.E53E0165-ONC12572EA.0034EA21-C12572EA.0036E303%40sagem.com%3E"
+       TITLE="[OpenIMSCore-Users] DNS question - roaming case">daniel.virassamy at sagem.com
+       </A><BR>
+    <I>Tue May 29 11:59:30 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001871.html">[OpenIMSCore-Users] Terminating Pcscf is not adding itself to record route
+</A></li>
+        <LI>Next message: <A HREF="001874.html">[OpenIMSCore-Users] DNS question - roaming case
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1862">[ date ]</a>
+              <a href="thread.html#1862">[ thread ]</a>
+              <a href="subject.html#1862">[ subject ]</a>
+              <a href="author.html#1862">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello everyone,
+
+I'm trying to setup IMS Core to study roaming case. However I'm stuck with 
+DNS configuration.
+
+
+My current network is:
+
+
+[ims.foo domain] ------- public inter domain (foobar.foo) ----------- [ 
+roaming.ims.foo domain]
+  private DNS                              public DNS              private 
+DNS
+
+How can I set up private domain in let's say roaming.ims.foo to register 
+alice in home network (ims.foo)
+
+For the moment both networks work fine seperately. So the DNS 
+configuration maps NAPTR and SRV requests to icscf.ims.foo or 
+icscf.roaming.ims.foo
+
+What I am trying to do is that when alice registers in roaming.ims.foo 
+with ims.foo uri, my NAPTR and SRV records would return 
+accessrouter.foobar.foo domain (public domain).
+Afters a simple DNS A request would gibe me IP of accessrouter.foobar.foo 
+and register would be directed towards ims.foo domain.
+
+The problem is:
+
+1) The DNS in roaming.ims.foo does not seem to give back 
+accessrouter.foobar.foo when ims.foo SRV request is sent. It just forward 
+the request to public DNS which of couse does not know ims.foo
+
+Question:
+
+1) Can this case work ? i.e. interconnecting 2 privates domains via a 
+public domain. e.g. two private sites connected via internet.
+2) If yes to 1) how should I configure DNS in private domains to make this 
+domain name translation/mapping i.e. the dns in roaming.ims.foo receiving 
+a request for ims.foo and replying accessrouter.foobar.foo
+
+My current configuration is: in private DNS (roaming.ims.foo) I configured 
+db.roaming.ims.foo with A, SRV and NAPTR records for local requests. For 
+roaming (same DNS) - I also configured db.ims.foo with SRV and NAPTR 
+records with the translation line : _sip._udp.ims.foo. SRV 10 10 
+accessserver.foobar.foo
+
+
+
+Can you help me please or give me some interesting links
+
+
+
+Regards
+
+Daniel
+
+
+
+&quot; Ce courriel et les documents qui y sont attaches peuvent contenir des informations confidentielles. Si vous n'etes  pas le destinataire escompte, merci d'en informer l'expediteur immediatement et de detruire ce courriel  ainsi que tous les documents attaches de votre systeme informatique. Toute divulgation, distribution ou copie du present courriel et des documents attaches sans autorisation prealable de son emetteur est interdite.&quot; 
+
+&quot; This e-mail and any attached documents may contain confidential or proprietary information. If you are not the intended recipient, please advise the sender immediately and delete this e-mail and all attached documents from your computer system. Any unauthorised disclosure, distribution or copying hereof is prohibited.&quot;
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070529/aba038d7/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070529/aba038d7/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001871.html">[OpenIMSCore-Users] Terminating Pcscf is not adding itself to record route
+</A></li>
+	<LI>Next message: <A HREF="001874.html">[OpenIMSCore-Users] DNS question - roaming case
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1862">[ date ]</a>
+              <a href="thread.html#1862">[ thread ]</a>
+              <a href="subject.html#1862">[ subject ]</a>
+              <a href="author.html#1862">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

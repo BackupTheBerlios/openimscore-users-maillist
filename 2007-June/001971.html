@@ -1,0 +1,323 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem during re-registration : 401 response ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20during%20re-registration%20%3A%20401%0A%20response%20%3F&In-Reply-To=%3C467169B2.4090807%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001969.html">
+   <LINK REL="Next"  HREF="001972.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem during re-registration : 401 response ?</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20during%20re-registration%20%3A%20401%0A%20response%20%3F&In-Reply-To=%3C467169B2.4090807%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Problem during re-registration : 401 response ?">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Jun 14 18:15:46 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001969.html">[OpenIMSCore-Users] Problem during re-registration : 401	response ?
+</A></li>
+        <LI>Next message: <A HREF="001972.html">[OpenIMSCore-Users] Problem during re-registration : 401	response ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1971">[ date ]</a>
+              <a href="thread.html#1971">[ thread ]</a>
+              <a href="subject.html#1971">[ subject ]</a>
+              <a href="author.html#1971">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I agree, but it must be coupled with code to drop the MD5 authentication
+vectors sometime or you'll have a memory leak.... when is that time right?
+
+-Dragos
+
+JF wrote:
+&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i> I was testing with a SIP-enabled DSL router that sends in the
+</I>&gt;<i> de-REGISTER the same MD5 Authorization header sent previously in the
+</I>&gt;<i> REGISTER.
+</I>&gt;<i> With the current behaviour the de-REGISTRATION doesn't succeed because
+</I>&gt;<i> the REGISTER (with Expires=0) is challenged but this client does not
+</I>&gt;<i> support responding to challenges in de-REGISTERs...
+</I>&gt;<i>
+</I>&gt;<i> I was able to solve it by modifying
+</I>&gt;<i> scscf/registration.c::S_is_authorized():
+</I>&gt;<i>
+</I>&gt;<i> if (response16.len==expected_len &amp;&amp;
+</I>&gt;<i> strncasecmp(response16.s,expected,response16.len)==0){
+</I>&gt;<i>                if (av-&gt;type==AUTH_AKAV1_MD5 ||
+</I>&gt;<i> av-&gt;type==AUTH_AKAV2_MD5)  // ADDED BECAUSE SOME CLIENTS SEND
+</I>&gt;<i> Authorization header with the same MD5 response in de-registers and
+</I>&gt;<i> re-registers with no Gm security
+</I>&gt;<i>                        av-&gt;status = AUTH_VECTOR_USELESS;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I understand that invalidating the auth vectors making them one-time
+</I>&gt;<i> usable brings improved security for MD5, but do you agree with having
+</I>&gt;<i> a configurable flag for choosing whether the auth vector can be reused
+</I>&gt;<i> for MD5? I can send the patch.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> JF
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On 6/11/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+</I>&gt;&gt;<i> Hello Frederic,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Well, because authentication vectors are treated int he same way. In the
+</I>&gt;&gt;<i> end it is hard to please everyone in all the specs 3GPP, TISPAN,
+</I>&gt;&gt;<i> PacketCable or IETF on the same platform. So we took the approach of
+</I>&gt;&gt;<i> invalidating the vectors after one usage.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In general, by re-registration in IMS I understand a REGISTER sent over
+</I>&gt;&gt;<i> a secure connection - because converged security is one the main IMS
+</I>&gt;&gt;<i> features, right? Then if re-registration happens over a secure channel
+</I>&gt;&gt;<i> it won't be challenged/authenticated so anyway there is no need for
+</I>&gt;&gt;<i> keeping the authentication vectors valid and reusing them. If you are
+</I>&gt;&gt;<i> not using any kind of security for the Gm interface then I think that
+</I>&gt;&gt;<i> you are missing most of the IMS value and you are outside the current
+</I>&gt;&gt;<i> target of the Open IMS Core.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> For Gm security we now have IPSec. There is also a functional TLS branch
+</I>&gt;&gt;<i> that we will try to merge very soon in the trunk.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Babon Frederic wrote:
+</I>&gt;&gt;<i> &gt; Thanks for your explanation !
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; In my case, I am using MD5 and you said that one-time vectors does
+</I>&gt;&gt;<i> not apply to MD5, so why my authentication vector is no longer valid
+</I>&gt;&gt;<i> when I try to re-register?
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Frederic.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; -----Message d'origine-----
+</I>&gt;&gt;<i> &gt; De : Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;&gt;<i> &gt; Envoy&#233; : lundi 4 juin 2007 11:16
+</I>&gt;&gt;<i> &gt; &#192; : Verbeiren, David
+</I>&gt;&gt;<i> &gt; Cc : Babon Frederic; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> &gt; Objet : Re: [OpenIMSCore-Users] Problem during re-registration :
+</I>&gt;&gt;<i> 401 response ?
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Hi David,
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; You are right. The authentication vectors are treated as one-time
+</I>&gt;&gt;<i> valid
+</I>&gt;&gt;<i> &gt; ones. This means that each authentication vector can be used exactly
+</I>&gt;&gt;<i> &gt; once to test a response for correctness (irrespective if it is correct
+</I>&gt;&gt;<i> &gt; or not). This is a must for AKA. I have seen that it is not for
+</I>&gt;&gt;<i> MD5, but
+</I>&gt;&gt;<i> &gt; I think that the extra security that this one-time usage brings is
+</I>&gt;&gt;<i> worth
+</I>&gt;&gt;<i> &gt; the effort of creating new authentication vectors (plus that the
+</I>&gt;&gt;<i> S-CSCF
+</I>&gt;&gt;<i> &gt; can request more than 1 auth vector at a time).
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; So then re-registration is simpler and quicker only if the client
+</I>&gt;&gt;<i> uses a
+</I>&gt;&gt;<i> &gt; IPSec or TLS security mechanism with the P-CSCF so that the
+</I>&gt;&gt;<i> security of
+</I>&gt;&gt;<i> &gt; the REGISTER message is granted. Then an integrity-protected=yes value
+</I>&gt;&gt;<i> &gt; will be present in the Authorization header and the S-CSCF won't
+</I>&gt;&gt;<i> &gt; challenge it.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; About compatibility, I think that any client should be ready to act at
+</I>&gt;&gt;<i> &gt; any time to 401/407 responses.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; -Dragos
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Verbeiren, David wrote:
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;&gt; Hi Frederic,
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Based on the behavior I've seen from the CSCFs (i.e. not based on
+</I>&gt;&gt;<i> code walkthrough), I think the log message means that the auth vector
+</I>&gt;&gt;<i> that the CSCF got from the HSS during initial registration has been
+</I>&gt;&gt;<i> removed from a local cache somehow and that, upon receiving 401, your
+</I>&gt;&gt;<i> UE has to respond to the new challenge (i.e. new REGISTER with
+</I>&gt;&gt;<i> response to the new challenge). And I don't think - again only based
+</I>&gt;&gt;<i> on observed behavior so far -, that the time an auth vector remains
+</I>&gt;&gt;<i> in the cache is related in any way to the registration expiry time
+</I>&gt;&gt;<i> negotiated during initial registration.
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Also, I do not know whether this behavior is correct or not. It
+</I>&gt;&gt;<i> seems a bit odd because it makes the re-registration really behave as
+</I>&gt;&gt;<i> a fresh registration as soon as the auth vector is not in the cache
+</I>&gt;&gt;<i> anymore...
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Just my 2c.
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; -David
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; ________________________________________
+</I>&gt;&gt;<i> &gt;&gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of
+</I>&gt;&gt;<i> Babon Frederic
+</I>&gt;&gt;<i> &gt;&gt; Sent: 01 June 2007 18:35
+</I>&gt;&gt;<i> &gt;&gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> &gt;&gt; Subject: [OpenIMSCore-Users] Problem during re-registration : 401
+</I>&gt;&gt;<i> response ?
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Hello,
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; I have a problem when i try to do a re-registration: the server
+</I>&gt;&gt;<i> reply by a 401 unauthorized sip message.
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; If I take a look at the CSCF trace log I can see: no matching auth
+</I>&gt;&gt;<i> vector found - maybe timer expired
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Is that mean that I have to send my re-registration message one
+</I>&gt;&gt;<i> second before registration timeout or something like this?
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; The CSCF should wait a little more before disabling registration?
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; This is the corresponding ethereal trace:
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; REQUEST
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Frame 119 (707 bytes on wire, 707 bytes captured)
+</I>&gt;&gt;<i> &gt;&gt; Ethernet II, Src: 00:11:25:55:22:e8, Dst: 00:0c:29:3d:20:09
+</I>&gt;&gt;<i> &gt;&gt; Internet Protocol, Src Addr: 178.3.3.57 (178.3.3.57), Dst Addr:
+</I>&gt;&gt;<i> 178.3.3.30 (178.3.3.30)
+</I>&gt;&gt;<i> &gt;&gt; User Datagram Protocol, Src Port: 5070 (5070), Dst Port: 5060 (5060)
+</I>&gt;&gt;<i> &gt;&gt; Session Initiation Protocol
+</I>&gt;&gt;<i> &gt;&gt;     Request-Line: REGISTER sip:test.net SIP/2.0
+</I>&gt;&gt;<i> &gt;&gt;         Method: REGISTER
+</I>&gt;&gt;<i> &gt;&gt;     Message Header
+</I>&gt;&gt;<i> &gt;&gt;         Via: SIP/2.0/UDP
+</I>&gt;&gt;<i> 178.3.3.57:5070;rport;branch=z9hG4bKPj8bba4284637b40fb8b89684b9b95f2cb
+</I>&gt;&gt;<i> &gt;&gt;         Route: &lt;sip:pcscf.test.net:5060;lr&gt;
+</I>&gt;&gt;<i> &gt;&gt;         Max-Forwards: 70
+</I>&gt;&gt;<i> &gt;&gt;         From:
+</I>&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fbabon at test.net</A>&gt;;tag=4985f8994a1b43f4b9612976af86df94
+</I>&gt;&gt;<i> &gt;&gt;         To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fbabon at test.net</A>&gt;
+</I>&gt;&gt;<i> &gt;&gt;         Call-ID: c7936cc9979e4523b293fd17bf47f3c1
+</I>&gt;&gt;<i> &gt;&gt;         CSeq: 41426 REGISTER
+</I>&gt;&gt;<i> &gt;&gt;         User-Agent: SmartBox
+</I>&gt;&gt;<i> &gt;&gt;         Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fbabon at 178.3.3.57</A>:5070;transport=UDP&gt;
+</I>&gt;&gt;<i> &gt;&gt;         Expires: 30
+</I>&gt;&gt;<i> &gt;&gt;         Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fbabon_private1 at test.net</A>&quot;,
+</I>&gt;&gt;<i> realm=&quot;test.net&quot;, nonce=&quot;31733e7d0be15bef21d5ee6644d67a58&quot;,
+</I>&gt;&gt;<i> uri=&quot;sip:test.net&quot;, response=&quot;5a49954854b3d332b7ef98e27f88c41c&quot;,
+</I>&gt;&gt;<i> algorithm=md5
+</I>&gt;&gt;<i> &gt;&gt;     Message body
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; RESPONSE
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Frame 120 (881 bytes on wire, 881 bytes captured)
+</I>&gt;&gt;<i> &gt;&gt; Ethernet II, Src: 00:0c:29:3d:20:09, Dst: 00:11:25:55:22:e8
+</I>&gt;&gt;<i> &gt;&gt; Internet Protocol, Src Addr: 178.3.3.30 (178.3.3.30), Dst Addr:
+</I>&gt;&gt;<i> 178.3.3.57 (178.3.3.57)
+</I>&gt;&gt;<i> &gt;&gt; User Datagram Protocol, Src Port: 5060 (5060), Dst Port: 5070 (5070)
+</I>&gt;&gt;<i> &gt;&gt; Session Initiation Protocol
+</I>&gt;&gt;<i> &gt;&gt;     Status-Line: SIP/2.0 401 Unauthorized - Challenging the UE
+</I>&gt;&gt;<i> &gt;&gt;         Status-Code: 401
+</I>&gt;&gt;<i> &gt;&gt;     Message Header
+</I>&gt;&gt;<i> &gt;&gt;         Via: SIP/2.0/UDP
+</I>&gt;&gt;<i> 178.3.3.57:5070;received=178.3.3.57;rport=5070;branch=z9hG4bKPj8bba4284637b40fb8b89684b9b95f2cb
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt;&gt;         From:
+</I>&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fbabon at test.net</A>&gt;;tag=4985f8994a1b43f4b9612976af86df94
+</I>&gt;&gt;<i> &gt;&gt;         To:
+</I>&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fbabon at test.net</A>&gt;;tag=52d5f3a3b88eb39fcd217d749091994e-c85e
+</I>&gt;&gt;<i> &gt;&gt;         Call-ID: c7936cc9979e4523b293fd17bf47f3c1
+</I>&gt;&gt;<i> &gt;&gt;         CSeq: 41426 REGISTER
+</I>&gt;&gt;<i> &gt;&gt;         Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.test.net</A>:5060;lr&gt;
+</I>&gt;&gt;<i> &gt;&gt;         Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.test.net</A>:6060;lr&gt;
+</I>&gt;&gt;<i> &gt;&gt;         Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore
+</I>&gt;&gt;<i> (i386/linux))
+</I>&gt;&gt;<i> &gt;&gt;         Content-Length: 0
+</I>&gt;&gt;<i> &gt;&gt;         Warning: 392 178.3.3.30:6060 &quot;Noisy feedback tells: 
+</I>&gt;&gt;<i> pid=1072 req_src_ip=178.3.3.30 req_src_port=4060
+</I>&gt;&gt;<i> in_uri=sip:scscf.test.net:6060 out_uri=sip:scscf.test.net:6060
+</I>&gt;&gt;<i> via_cnt==3&quot;
+</I>&gt;&gt;<i> &gt;&gt;         WWW-Authenticate: Digest realm=&quot;test.net&quot;,
+</I>&gt;&gt;<i> nonce=&quot;e8445d47dd69542ad7ba6fb3ba195cac&quot;, algorithm=MD5
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Thanks a lot for your help.
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Frederic Babon
+</I>&gt;&gt;<i> &gt;&gt; _______________________________________________
+</I>&gt;&gt;<i> &gt;&gt; OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -- 
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001969.html">[OpenIMSCore-Users] Problem during re-registration : 401	response ?
+</A></li>
+	<LI>Next message: <A HREF="001972.html">[OpenIMSCore-Users] Problem during re-registration : 401	response ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1971">[ date ]</a>
+              <a href="thread.html#1971">[ thread ]</a>
+              <a href="subject.html#1971">[ subject ]</a>
+              <a href="author.html#1971">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P-CSCF doesn't forward the ACK
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20doesn%27t%20forward%20the%20ACK&In-Reply-To=%3C485171F9.1040107%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004075.html">
+   <LINK REL="Next"  HREF="004076.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P-CSCF doesn't forward the ACK</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20doesn%27t%20forward%20the%20ACK&In-Reply-To=%3C485171F9.1040107%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] P-CSCF doesn't forward the ACK">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Jun 12 20:59:05 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004075.html">[OpenIMSCore-Users] P-CSCF doesn't forward the ACK
+</A></li>
+        <LI>Next message: <A HREF="004076.html">[OpenIMSCore-Users] Problem in installing OpenIMSCore ( I-CSCF and	S-CSCF)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4119">[ date ]</a>
+              <a href="thread.html#4119">[ thread ]</a>
+              <a href="subject.html#4119">[ subject ]</a>
+              <a href="author.html#4119">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Arnaud,
+
+The problem is that the Route header in the ACK is not correct. The 
+P-CSCF checks this against the one saved from the 200 OK. That one had 
+one more Record-Route that you added to yourself when the INVITE was 
+created (I'll explain in a bit why you can't do this). So the P-CSCF 
+rejects the ACK and you should at least see a log on the P-CSCF output. 
+Unfortunately more can not be done, as an ACK can not be responded (a 
+BYE from Alice with the same Route set as what you used in the ACK would 
+get a 403 Forbidden - Not following indicated dialog routes). Overall, 
+this is a security feature of the P-CSCF, which enforces correct 
+signaling paths.
+
+Now about why you shouldn't Record-Route on the client.... I know that 
+you record-routed to yourself, but there was no need - you are reached 
+by the means of the Contact header and you can use all your parameters 
+there too (just the IP:port have to be the same as those that you 
+previously registered).
+
+A workaround is not possible because the P-CSCF is designed and was 
+built on purpose such that it will not allow any proxy between the UE 
+and itself, in any direction. If you think about it, that eventually you 
+will have an encrypted connection, you can't insert nodes in there. 
+Also, the client would accept for security reasons only signaling coming 
+over such secure connection from the P-CSCF that it registered through. 
+Else, you would get a lot of spam for example around the IMS 
+architecture and you won't be able to tell if really Alice is calling 
+you or it's a spoofed call.
+
+I am sure though that this was not you intention and you just wanted to 
+transport some context information. You can use the contact for that, or 
+even the Call-ID. I would store the context locally though and only link 
+it to the call-id. This way others won't sniff on your context information.
+
+Cheers,
+-Dragos
+
+
+Arnaud Paulus wrote:
+&gt;<i>
+</I>&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I&#8217;m trying to develop an IMS client.
+</I>&gt;<i>
+</I>&gt;<i> I have a problem at the session establishment point.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> The ACK message I have constructed is not forwarded through the IMS 
+</I>&gt;<i> core network. The P-CSCSF stops the message and does nothing.
+</I>&gt;<i>
+</I>&gt;<i> I don&#8217;t know why?
+</I>&gt;<i>
+</I>&gt;<i> I have built the ACK message on the OpenIC_Lite model.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I have attached the wireshark file: with bob registration, alice 
+</I>&gt;<i> registration and alice to bob call session.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> inviteAlicetoBob_insideCore.pcap: the call setup inside the 
+</I>&gt;<i> OpenIMSCore (there is no ACK)
+</I>&gt;<i>
+</I>&gt;<i> inviteAlicetoBob.pcap: the call setup between the clients and the 
+</I>&gt;<i> OpenIMSCore
+</I>&gt;<i>
+</I>&gt;<i> /XXX/Registration_ClientToInCore.pcap : registration between /XXX/ 
+</I>&gt;<i> Client and the OpenIMSCore
+</I>&gt;<i>
+</I>&gt;<i> /XXX/Registration_insideCore.pcap: /XXX/ registration inside the 
+</I>&gt;<i> OpenIMSCore
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> _Configuration_
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Bob : OpenIC_Lite
+</I>&gt;<i>
+</I>&gt;<i> 10.1.2.11:5060
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Alice : 10.1.2.11:5080 (the client we are trying to build)
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> The IMS core is deployed on a server (10.40.51.58)
+</I>&gt;<i>
+</I>&gt;<i> P-CSCF:5060
+</I>&gt;<i>
+</I>&gt;<i> I-CSCF:4060
+</I>&gt;<i>
+</I>&gt;<i> S-CSCF:6060
+</I>&gt;<i>
+</I>&gt;<i> It&#8217;s not the original configuration, but this configuration has been 
+</I>&gt;<i> tested and everything is OK with the OpenIC_Lite and ims-communicator 
+</I>&gt;<i> client.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Thanks for your help.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004075.html">[OpenIMSCore-Users] P-CSCF doesn't forward the ACK
+</A></li>
+	<LI>Next message: <A HREF="004076.html">[OpenIMSCore-Users] Problem in installing OpenIMSCore ( I-CSCF and	S-CSCF)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4119">[ date ]</a>
+              <a href="thread.html#4119">[ thread ]</a>
+              <a href="subject.html#4119">[ subject ]</a>
+              <a href="author.html#4119">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

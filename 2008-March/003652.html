@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20JavaDiameterPeer%3A%20How%20do%20I%20know%20when%20a%20Peer%0A%20is%09connected%3F&In-Reply-To=%3C47E2C1C7.9060700%40cmf.nrl.navy.mil%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003640.html">
+   <LINK REL="Next"  HREF="003669.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?</H1>
+    <B>David W Talmage - CONTRACTOR</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20JavaDiameterPeer%3A%20How%20do%20I%20know%20when%20a%20Peer%0A%20is%09connected%3F&In-Reply-To=%3C47E2C1C7.9060700%40cmf.nrl.navy.mil%3E"
+       TITLE="[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?">talmage at cmf.nrl.navy.mil
+       </A><BR>
+    <I>Thu Mar 20 20:57:59 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003640.html">[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?
+</A></li>
+        <LI>Next message: <A HREF="003669.html">[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3652">[ date ]</a>
+              <a href="thread.html#3652">[ thread ]</a>
+              <a href="subject.html#3652">[ subject ]</a>
+              <a href="author.html#3652">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks for explaining, Dragos.  I have a solution.  It's not ideal but 
+it works.
+
+
+Dragos Vingarzan wrote:
+&gt;<i>...
+</I>&gt;<i> whenever they are broken. Also the send request functions should decide 
+</I>&gt;<i> on the proper routing of the message and the old send request to peer 
+</I>&gt;<i> methods are deprecated and not conforming to RFC3588 (but very useful 
+</I>
+
+Which methods are deprecated?  I'm using
+
+	boolean sendRequestTransactional(DiameterMessage req, 
+TransactionListener tl)
+
+
+Somewhere inside the implementation is where the &quot;Peer: Can't send 
+message when not connected&quot; message comes out.  My code never sees an 
+indication of the error.
+
+ &gt; ...
+&gt;<i> thread... If we'd have the initialization period blocking it would be a 
+</I>&gt;<i> good thing, but again how long should it be blocking? ... unfortunately 
+</I>&gt;<i> you can't tell how long it would take for the other peers to respond, so 
+</I>&gt;<i> it might bother you if you have some inactive peers in the list, to wait 
+</I>&gt;<i> until all the peer connections timeout or are established.
+</I> &gt; ...
+
+My solution is to ask the PeerManager.  He won't tell me directly but if 
+I dig around in him, I can find out.  Here is the function I made to 
+tell me if the first Peer is connected:
+
+
+     public boolean connected() {
+		Vector&lt;Peer&gt; peers = _diameter.peerManager.peers;
+		Peer first = peers.firstElement();
+
+		return (null != first &amp;&amp;
+				((first.state == StateMachine.I_Open) ||
+				 (first.state == StateMachine.R_Open)));
+     }
+
+As you can see, the code knows something about a DiameterPeer, its 
+PeerManager, and the PeerManager's StateMachine.
+
+For my purposes, it's enough to know that the first Peer is connected. 
+There is only one Peer in this application.
+
+It would be nice if PeerManager could notify me when a Peer enters the 
+connected state (I_Open or R_Open) and/or when all Peers enter the 
+connected state.  Something like:
+
+	DiameterPeer _diameter;
+	_diameter.peerManager.notifyAnyPeerConnected(this);
+	// or
+	_diameter.peerManager.notifyAllPeersConnected(this)
+
+
+	// where 'this' implements some callback interface like:
+
+	public interface PeerStateChange {
+	  public void peerConnected(DiameterPeer d, Peer p);
+	  public void allPeersConnected(DiameterPeer d);
+	  public void peerDisconnected(DiameterPeer d, Peer p);
+	  public void allPeersDisconnected(DiameterPeer d);
+	}
+
+
+Dave
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003640.html">[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?
+</A></li>
+	<LI>Next message: <A HREF="003669.html">[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3652">[ date ]</a>
+              <a href="thread.html#3652">[ thread ]</a>
+              <a href="subject.html#3652">[ subject ]</a>
+              <a href="author.html#3652">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

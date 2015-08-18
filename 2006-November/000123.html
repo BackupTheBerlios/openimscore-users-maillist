@@ -1,0 +1,556 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Could not establish a call	between	Bob	andAlice
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Could%20not%20establish%20a%20call%0A%09between%09Bob%09andAlice&In-Reply-To=%3C456C5D2F.20507%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000122.html">
+   <LINK REL="Next"  HREF="000126.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Could not establish a call	between	Bob	andAlice</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Could%20not%20establish%20a%20call%0A%09between%09Bob%09andAlice&In-Reply-To=%3C456C5D2F.20507%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Could not establish a call	between	Bob	andAlice">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Nov 28 17:00:47 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000122.html">[OpenIMSCore-Users] Could not establish a call	between	Bob	andAlice
+</A></li>
+        <LI>Next message: <A HREF="000126.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 1, Issue 32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#123">[ date ]</a>
+              <a href="thread.html#123">[ thread ]</a>
+              <a href="subject.html#123">[ subject ]</a>
+              <a href="author.html#123">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>As a general rule, everywhere :). Umut was working on a configuration 
+utility that changes all for you.
+Regarding the line:
+
+if (method==&quot;ACK&quot;||method==&quot;BYE&quot;||method==&quot;NOTIFY&quot;||method==&quot;MESSAGE&quot;){
+
+Well, it was thought as a way of routing subsequent requests, and 
+MESSAGE is not.
+
+
+-Dragos
+
+Outi Koski (AC/EDD) wrote:
+&gt;<i> Juhuu, got it (almost) working! 
+</I>&gt;<i>
+</I>&gt;<i> (registration works, instant messaging also with the correct route, and
+</I>&gt;<i> the voIP call for caller A, the caller B can't yet answer but I'm on my
+</I>&gt;<i> way... :) Thanks for Dragos for the wild guess, hadn't noticed to change
+</I>&gt;<i> the IP address in the Route[PCSCF]...
+</I>&gt;<i>
+</I>&gt;<i> I also switched the lines in Route 1
+</I>&gt;<i>
+</I>&gt;<i> From: 
+</I>&gt;<i> if (method==&quot;ACK&quot;||method==&quot;BYE&quot;||method==&quot;NOTIFY&quot;){
+</I>&gt;<i> To:
+</I>&gt;<i> if (method==&quot;ACK&quot;||method==&quot;BYE&quot;||method==&quot;NOTIFY&quot;||method==&quot;MESSAGE&quot;){
+</I>&gt;<i>
+</I>&gt;<i> (without the modification message wasn't delivered, but I received a 477
+</I>&gt;<i> error)
+</I>&gt;<i>
+</I>&gt;<i> And from: 
+</I>&gt;<i> if (method==&quot;INVITE&quot; ||method==&quot;SUBCRIBE&quot;){
+</I>&gt;<i> To:
+</I>&gt;<i> if (method==&quot;INVITE&quot; ||method==&quot;SUBSCRIBE&quot;){
+</I>&gt;<i>
+</I>&gt;<i> Might be a good idea to insert a small guide for people, who are letting
+</I>&gt;<i> the IMS core run on one laptop and have external SIP clients to let them
+</I>&gt;<i> know, where the modifications to the default configuration (where to
+</I>&gt;<i> insert the IP address of the network) have to be made? 
+</I>&gt;<i>
+</I>&gt;<i> Sip2ims.cfg:	listen=127.0.0.1
+</I>&gt;<i> Sip2ims.cfg: 	if
+</I>&gt;<i> (!search(&quot;.*sip:127.0.0.1:3060.*&quot;)||method==&quot;REGISTER&quot;) {
+</I>&gt;<i> Pcscf.cfg:		modparam(&quot;pcscf&quot;,&quot;sip2ims_via&quot;,&quot;127.0.0.1:3060&quot;)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -Outi
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ggb at tid.es</A> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ggb at tid.es</A>] 
+</I>&gt;&gt;<i> Sent: Tuesday, November 28, 2006 3:18 PM
+</I>&gt;&gt;<i> To: Outi Koski (AC/EDD); <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: RE: [OpenIMSCore-Users] Could not establish a call 
+</I>&gt;&gt;<i> between Bob andAlice
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Could you include a network capture of a MESSAGE and an INVITE path?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> G.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> -----Mensaje original-----
+</I>&gt;&gt;&gt;<i> De: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> 
+</I>&gt;&gt;&gt;<i> [mailto:openimscore-users- <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bounces at lists.berlios.de</A>] En 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> nombre de Outi 
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Koski (AC/EDD) Enviado el: martes, 28 de noviembre de 2006 14:50
+</I>&gt;&gt;&gt;<i> Para: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> Asunto: Re: [OpenIMSCore-Users] Could not establish a call 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> between Bob 
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> andAlice
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Yeap, that is my problem. And I guess it is yet again in 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> the SIP2IMS 
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> GW
+</I>&gt;&gt;&gt;<i> :)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Since with the ROUTE 1: (code below)
+</I>&gt;&gt;&gt;<i> - the registration goes ok
+</I>&gt;&gt;&gt;<i> - with instant messaging I get a 477 error (unfortunately error on 
+</I>&gt;&gt;&gt;<i> sending to next hop occurred). The message travels UE -&gt; SIP2IMS -&gt; 
+</I>&gt;&gt;&gt;<i> PCSCF -&gt; SCSCF -&gt; PCSCF -&gt; SIP2IMS -&gt; PCSCF -&gt; SCSCF
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> And with the ROUTE 2: (code below. Did I understand 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> correctly how it 
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> was
+</I>&gt;&gt;&gt;<i> meant?)
+</I>&gt;&gt;&gt;<i> - the registration goes ok
+</I>&gt;&gt;&gt;<i> - the instant messaging works, but the messages travel UE1 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> -&gt; SIP2IMS 
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> -&gt; SCSCF -&gt; PCSCF -&gt; UE2, so one PCSCF is missing from the route
+</I>&gt;&gt;&gt;<i> - and the VoIP calls won't work because the PCSCF is 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> missing, but the 
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> INVITE comes back eith the error messages in SCSCF I posted already 
+</I>&gt;&gt;&gt;<i> earlier.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> So my question is, did I understand Gustavos fix correctly, 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> or is that 
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> solution also still routing wrongly? And has anyone else 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> looked into 
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> the same problem more thoroughly yet?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> ROUTE 1 (directly from the source code:
+</I>&gt;&gt;&gt;<i> ========================================
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> route[PCSCF]
+</I>&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;<i>     if (method==&quot;INVITE&quot; ||method==&quot;SUBCRIBE&quot;){
+</I>&gt;&gt;&gt;<i> 		record_route();
+</I>&gt;&gt;&gt;<i> 	}
+</I>&gt;&gt;&gt;<i> 	if (method==&quot;ACK&quot;||method==&quot;BYE&quot;||method==&quot;NOTIFY&quot;){
+</I>&gt;&gt;&gt;<i> 		loose_route();
+</I>&gt;&gt;&gt;<i> 		t_relay();
+</I>&gt;&gt;&gt;<i> 		exit;
+</I>&gt;&gt;&gt;<i> 	}
+</I>&gt;&gt;&gt;<i> 	loose_route();
+</I>&gt;&gt;&gt;<i> 	if (!search(&quot;.*sip:127.0.0.1:3060.*&quot;)||method==&quot;REGISTER&quot;) {
+</I>&gt;&gt;&gt;<i> 		if (!t_relay_to_udp(&quot;127.0.0.1&quot;,&quot;4060&quot;)) {
+</I>&gt;&gt;&gt;<i> 		    sl_send_reply(&quot;500&quot;,&quot;Error forwarding to P-CSCF&quot;);
+</I>&gt;&gt;&gt;<i> 		}
+</I>&gt;&gt;&gt;<i> 	} else {
+</I>&gt;&gt;&gt;<i> 	    if (!t_relay()) {
+</I>&gt;&gt;&gt;<i>     	     sl_reply_error();
+</I>&gt;&gt;&gt;<i>     	}
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i>     exit;
+</I>&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> ROUTE 2 (from
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> <A HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-November/0000">http://lists.berlios.de/pipermail/openimscore-users/2006-November/0000</A>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> 09
+</I>&gt;&gt;&gt;<i> .html )
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> ======================================================================
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> ==
+</I>&gt;&gt;&gt;<i> =====================
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> route[PCSCF]
+</I>&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;<i>     if (method==&quot;INVITE&quot; ||method==&quot;SUBCRIBE&quot;){
+</I>&gt;&gt;&gt;<i> 		record_route();
+</I>&gt;&gt;&gt;<i> 	}
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     if (method==&quot;ACK&quot;||method==&quot;BYE&quot;||method==&quot;NOTIFY&quot;){
+</I>&gt;&gt;&gt;<i> 	loose_route();
+</I>&gt;&gt;&gt;<i> 	t_relay();
+</I>&gt;&gt;&gt;<i> 	exit;
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     loose_route();
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     if (uri == myself || method==&quot;REGISTER&quot;) {
+</I>&gt;&gt;&gt;<i>     	if (!t_relay_to_udp(&quot;127.0.0.1&quot;,&quot;4060&quot;)) {
+</I>&gt;&gt;&gt;<i>      		sl_send_reply(&quot;500&quot;,&quot;Error forwarding 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> to P-CSCF&quot;);
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>     	};
+</I>&gt;&gt;&gt;<i>     } else {
+</I>&gt;&gt;&gt;<i> 	if (!t_relay()) {
+</I>&gt;&gt;&gt;<i>       	sl_reply_error();
+</I>&gt;&gt;&gt;<i>     	};
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i>     exit;
+</I>&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;&gt;&gt;&gt;<i> Sent: Tuesday, November 28, 2006 12:20 PM
+</I>&gt;&gt;&gt;&gt;<i> To: Outi Koski (AC/EDD)
+</I>&gt;&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Could not establish a 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> call between 
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> Bob and Alice
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Hi Outi,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I think that your messages go around the P-CSCF - from SIP2IMS to 
+</I>&gt;&gt;&gt;&gt;<i> S-CSCF. If that is the case, you are missing the 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> P-Asserted-Identity 
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> header and this is why the S-CSCF can not retrieve the 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> originating 
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> &quot;contact&quot;.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Outi Koski (AC/EDD) wrote:
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> Hi Sebastian!
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Have you seen this thread?
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> <A HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-November/00">http://lists.berlios.de/pipermail/openimscore-users/2006-November/00</A>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> 00
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> 09
+</I>&gt;&gt;&gt;&gt;&gt;<i> .html
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Is the IP address and port in your pcscf.cfg on line
+</I>&gt;&gt;&gt;&gt;&gt;<i> (&quot;modparam(&quot;pcscf&quot;,&quot;sip2ims_via&quot;,&quot;127.0.0.1:3060&quot;)&quot;)
+</I>&gt;&gt;&gt;&gt;&gt;<i> The same as the listen address in sip2ims.cfg?
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Since I had the same problem, which was solved byt the
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> change of the
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> address.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> @Dragos: the advice for the RTPproxy was sufficient, thanks
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> for that!
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> But still I haven't managed to create a VoIP session. Instant 
+</I>&gt;&gt;&gt;&gt;&gt;<i> messaging works, so the routing works already on some
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> level. But with
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> voice calls the S-CSCF gives the following:
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> 1(30124) DBG:S-CSCF:S_mobile_originating:
+</I>&gt;&gt;&gt;&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;&gt;&gt;&gt;&gt;<i>  1(30124) &gt;&gt;       Orig
+</I>&gt;&gt;&gt;&gt;&gt;<i>  1(30124) ERR:S-CSCF:S_save_dialog(): Error retrieving orig 
+</I>&gt;&gt;&gt;&gt;&gt;<i> contact
+</I>&gt;&gt;&gt;&gt;&gt;<i>  2(30125) DBG:S-CSCF:S_mobile_originating:
+</I>&gt;&gt;&gt;&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;&gt;&gt;&gt;&gt;<i>  2(30125) &gt;&gt;       Orig
+</I>&gt;&gt;&gt;&gt;&gt;<i>  2(30125) ERR:S-CSCF:S_save_dialog(): Error retrieving orig 
+</I>&gt;&gt;&gt;&gt;&gt;<i> contact
+</I>&gt;&gt;&gt;&gt;&gt;<i> 17(30140) --- Peer List: ---
+</I>&gt;&gt;&gt;&gt;&gt;<i> 17(30140)  S[I_Open] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;&gt;&gt;<i> 17(30140) ------------------
+</I>&gt;&gt;&gt;&gt;&gt;<i>  4(30127) DBG:S-CSCF:S_mobile_originating:
+</I>&gt;&gt;&gt;&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;&gt;&gt;&gt;&gt;<i>  4(30127) &gt;&gt;       Orig
+</I>&gt;&gt;&gt;&gt;&gt;<i>  4(30127) ERR:S-CSCF:S_save_dialog(): Error retrieving orig 
+</I>&gt;&gt;&gt;&gt;&gt;<i> contact
+</I>&gt;&gt;&gt;&gt;&gt;<i> 17(30140) --- Peer List: ---
+</I>&gt;&gt;&gt;&gt;&gt;<i> 17(30140)  S[I_Open] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;&gt;&gt;<i> 17(30140) ------------------
+</I>&gt;&gt;&gt;&gt;&gt;<i> 17(30140) --- Peer List: ---
+</I>&gt;&gt;&gt;&gt;&gt;<i> 17(30140)  S[I_Open] hss.open-ims.test:3868 D[ ]
+</I>&gt;&gt;&gt;&gt;&gt;<i> 17(30140) ------------------
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Any hints on what is happening? My testbed is so
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> configured, that the
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> core + the SIP2IMS gw are on one laptop, and the clients on
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> another,
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> so the only interface that &quot;is not handled with 127.0.0.1&quot;
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> is the one
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> between the client and the SIP2IMS gateway.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> -Outi
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;<i> Behalf Of 
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Sebastian Felis
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Sent: Tuesday, November 28, 2006 10:02 AM
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> To: Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Could not establish a
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;<i> call between
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Bob and Alice
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Good morning Dragos
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Thank you for your reply. Now, the sip2ims GW sends the 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Unfortunately, the P-CSCF sends a &quot;403 Forbidden - Not 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;<i> Registered!
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> You must register first with a S-CSCF&quot; message, if Bob
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;<i> tries to call
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Alice. The function
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> P_is_registered() in route[Orig_Initial] of pcscf.cfg
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;<i> returns false.
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Any suggestions? The new trace is attached.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Sebastian
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Dragos Vingarzan wrote:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi Sebastian,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> here you have a shot at fixing the SIP2IMS routing problem.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> For me it
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> works, but with eyebeam it might not. Please try again
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;<i> and send me
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> another trace if it still fails.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Dragos Vingarzan wrote:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Could you also please send a network trace? The
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                 
+</I>&gt;&gt;&gt;&gt;<i> SIP-to-IMS Gateway
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> seems to have not been fully fixed.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Dragos
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Sebastian Felis wrote:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Bob and Alice are registered through the sip2ims gw and
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                   
+</I>&gt;&gt;&gt;&gt;<i> Bob calls
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Alice. However, the S-CSCF does not proceed the call.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> The debug output of S-CSCF shows:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(7122) INF:S-CSCF:----------  Registrar Contents 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                   
+</I>&gt;&gt;<i> begin --------
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(7122) INF:S-CSCF:[   3] P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt; R[ 1]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(7122) INF:S-CSCF:         C:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at x.x.x.x</A>:28706;rinstance=e1314b6974a1d8eb&gt; 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Exp:[3581]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(7122) INF:S-CSCF:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Path:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(7122) INF:S-CSCF:           UA: &lt;X-Lite release 1006e
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                   
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> stamp 34025&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(7122) INF:S-CSCF:         S: Event[0] Exp:[3613]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;sip:pcscf.open-ims.test:4060&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(7122) INF:S-CSCF:[  52] P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; R[ 1]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(7122) INF:S-CSCF:         C:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at x.x.x.x</A>:43246;rinstance=d3c39c387a9bc95e&gt; 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                   
+</I>&gt;&gt;<i> Exp:[3523]
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(7122) INF:S-CSCF:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Path:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(7122) INF:S-CSCF:           UA: &lt;X-Lite release 1006e
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                   
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> stamp 34025&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(7122) INF:S-CSCF:         S: Event[0] Exp:[3558]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;sip:pcscf.open-ims.test:4060&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 5(7122) INF:S-CSCF:----------  Registrar Contents end 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ----------
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 2(7119) DBG:S-CSCF:S_mobile_originating:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 2(7119) &gt;&gt;       Orig
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 2(7119) ERR:S-CSCF:S_save_dialog(): Error retrieving
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                   
+</I>&gt;&gt;&gt;&gt;<i> orig contact
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> What did I miss in the configuration?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Sebastian Felis
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                   
+</I>&gt;&gt;<i> --------------------------------------------------------------------
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                   
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>                 
+</I>&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>     
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000122.html">[OpenIMSCore-Users] Could not establish a call	between	Bob	andAlice
+</A></li>
+	<LI>Next message: <A HREF="000126.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 1, Issue 32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#123">[ date ]</a>
+              <a href="thread.html#123">[ thread ]</a>
+              <a href="subject.html#123">[ subject ]</a>
+              <a href="author.html#123">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

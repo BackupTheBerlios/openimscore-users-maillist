@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> No subject
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.8.1331735653.7444.openimscore-users%40lists.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006087.html">
+   <LINK REL="Next"  HREF="000087.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>No subject</H1>
+    <B></B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.8.1331735653.7444.openimscore-users%40lists.berlios.de%3E"
+       TITLE="No subject">
+       </A><BR>
+    <I>Wed Mar 14 15:33:54 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006087.html">No subject
+</A></li>
+        <LI>Next message: <A HREF="000087.html">No subject
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#843">[ date ]</a>
+              <a href="thread.html#843">[ thread ]</a>
+              <a href="subject.html#843">[ subject ]</a>
+              <a href="author.html#843">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>following components (ports are shown below):
+
+UE1--&gt;SIP2IMS--&gt;P-CSCF--&gt;S-CSCF--&gt;S-CSCF--&gt;P-CSCF--&gt;UE2
+5061   3060      4060     6060     6060     4060  
+5062
+
+The Route contained in BYE and ACK headers seems right
+to me: 
+Route: &lt;sip:127.0.0.1:3060;lr=on&gt;,
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>;lr&gt;,
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>;lr&gt;,
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>;lr&gt;,
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>;lr&gt;
+
+But when ACK reaches the P-CSCF from sip2ims, p-cscf
+just discards the message. And while BYE reaches the
+P-CSCF from sip2ims, p-cscf generates the error
+message.
+
+I am not quite sure about the route the INVITE message
+goes through. Per my understanding, the route the
+INVITE message takes should look something like:
+
+UE1--&gt;SIP2IMS--&gt;P-CSCF--&gt;S-CSCF--&gt;I-CSCF--&gt;
+S-CSCF--&gt;P-CSCF--&gt;SIP2IMS--&gt;UE2
+
+do I miss something here?
+
+thanks,
+Joy
+
+--- Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+wrote:
+
+&gt;<i> Hi Joy,
+</I>&gt;<i> 
+</I>&gt;<i> For security issues, the I-CSCF is configured by
+</I>&gt;<i> default to accept only
+</I>&gt;<i> INVITE, SUBSCRIBE or MESSAGE as initial requests.
+</I>&gt;<i> Normally, your ACK,
+</I>&gt;<i> BYE and any other subsequent requests for dialogs
+</I>&gt;<i> should contain a Route
+</I>&gt;<i> header when getting to the I-CSCF and be
+</I>&gt;<i> loose_routed before reaching
+</I>&gt;<i> that condition. It seems that yours does not. Could
+</I>&gt;<i> you please check
+</I>&gt;<i> that and if still in trouble post back a network
+</I>&gt;<i> dump?
+</I>&gt;<i> 
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> Katty Xiong wrote:
+</I>&gt;<i> &gt; I couldn't establish session between two UEs. From
+</I>&gt;<i> the
+</I>&gt;<i> &gt; packet trace, I can see ACK and BYE request
+</I>&gt;<i> (scenario
+</I>&gt;<i> &gt; is as below) are not received by caller (BOB). 
+</I>&gt;<i> &gt; At Alice (Caller) side, an error message: Aborting
+</I>&gt;<i> &gt; call on unexpected message for call id: while
+</I>&gt;<i> &gt; expecting 200 responce, received 'SIP/2.0 406
+</I>&gt;<i> initial
+</I>&gt;<i> &gt; Request Method not allowed at the I-CSCF
+</I>&gt;<i> &gt; ...
+</I>&gt;<i> &gt; Allow: INVITE, SUBSCRIBE, MESSAGE
+</I>&gt;<i> &gt; ...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The scenario
+</I>&gt;<i> &gt; alice               bob
+</I>&gt;<i> &gt; INVITE
+</I>&gt;<i> &gt; --------------------&gt;
+</I>&gt;<i> &gt; 180 trying
+</I>&gt;<i> &gt; &lt;-------------------
+</I>&gt;<i> &gt; 200OK
+</I>&gt;<i> &gt; &lt;-------------------
+</I>&gt;<i> &gt; ACK
+</I>&gt;<i> &gt; --------------X-----&gt;
+</I>&gt;<i> &gt; PAUSE
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; BYE
+</I>&gt;<i> &gt; --------------X------&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Does anyone experience the similar problems?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; thanks,
+</I>&gt;<i> &gt; Joy
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>____________________________________________________________________________________
+&gt;<i> &gt; Food fight? Enjoy some healthy debate 
+</I>&gt;<i> &gt; in the Yahoo! Answers Food &amp; Drink Q&amp;A.
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I><A HREF="http://answers.yahoo.com/dir/?link=list&amp;sid=396545367">http://answers.yahoo.com/dir/?link=list&amp;sid=396545367</A>
+&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I><A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> -- 
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the
+</I>&gt;<i> source code...
+</I>&gt;<i>
+</I>-----------------------------------------------------------------
+&gt;<i> 
+</I>&gt;<i> 
+</I>
+
+
+ 
+____________________________________________________________________________________
+Never miss an email again!
+Yahoo! Toolbar alerts you the instant new Mail arrives.
+<A HREF="http://tools.search.yahoo.com/toolbar/features/mail/">http://tools.search.yahoo.com/toolbar/features/mail/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006087.html">No subject
+</A></li>
+	<LI>Next message: <A HREF="000087.html">No subject
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#843">[ date ]</a>
+              <a href="thread.html#843">[ thread ]</a>
+              <a href="subject.html#843">[ subject ]</a>
+              <a href="author.html#843">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

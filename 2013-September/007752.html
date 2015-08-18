@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Message handling for calls(INVITE messages)	in OpenIMSCore and SDP buffer corruption for (200 Ok	messages) in the PCSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2013-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Message%20handling%20for%20calls%28INVITE%20messages%29%0A%09in%20OpenIMSCore%20and%20SDP%20buffer%20corruption%20for%20%28200%20Ok%0A%09messages%29%20in%20the%20PCSCF&In-Reply-To=%3C008a01cea9e9%244b0b50f0%24e121f2d0%24%40technikum-wien.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007751.html">
+   <LINK REL="Next"  HREF="007753.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Message handling for calls(INVITE messages)	in OpenIMSCore and SDP buffer corruption for (200 Ok	messages) in the PCSCF</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Message%20handling%20for%20calls%28INVITE%20messages%29%0A%09in%20OpenIMSCore%20and%20SDP%20buffer%20corruption%20for%20%28200%20Ok%0A%09messages%29%20in%20the%20PCSCF&In-Reply-To=%3C008a01cea9e9%244b0b50f0%24e121f2d0%24%40technikum-wien.at%3E"
+       TITLE="[OpenIMSCore-Users] Message handling for calls(INVITE messages)	in OpenIMSCore and SDP buffer corruption for (200 Ok	messages) in the PCSCF">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Thu Sep  5 05:37:48 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007751.html">[OpenIMSCore-Users] Message handling for calls(INVITE messages) in OpenIMSCore and SDP buffer corruption for (200 Ok messages) in the PCSCF
+</A></li>
+        <LI>Next message: <A HREF="007753.html">[OpenIMSCore-Users] Message handling for calls(INVITE messages) in OpenIMSCore and SDP buffer corruption for (200 Ok messages) in the PCSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7752">[ date ]</a>
+              <a href="thread.html#7752">[ thread ]</a>
+              <a href="subject.html#7752">[ subject ]</a>
+              <a href="author.html#7752">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Badri,
+
+ 
+
+without going into deep analysis of your issues I see a principle problem in
+the addresses used in your tests.
+
+IMS is based on domain names, therefore you never should use addresses like
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a6 at 192.168.0.236</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a6 at 192.168.0.236</A>&gt;  and  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a1 at 192.168.0.231</A>
+&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a1 at 192.168.0.231</A>&gt; .
+
+Just use <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a1 at open-ims.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a1 at open-ims.test</A>&gt;  and <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a2 at open-ims.test</A>
+&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a2 at open-ims.test</A>&gt;  and you will see a quite different behavior.
+
+ 
+
+BR Franz
+
+ 
+
+From: Badri Ranganathan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">badri at arcatech.com</A>] 
+Sent: Tuesday, September 3, 2013 7:51 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Message handling for calls(INVITE messages) in OpenIMSCore and SDP
+buffer corruption for (200 Ok messages) in the PCSCF
+
+ 
+
+Hi Franz/all,
+
+ 
+
+I am facing a problem with understanding the way openIMS core works while
+making a call.
+
+I have registered 2 endpoints of my device with the openIMS core
+successfully -  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a6 at 192.168.0.236</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a6 at 192.168.0.236</A>&gt;  and
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a1 at 192.168.0.231</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a1 at 192.168.0.231</A>&gt;  
+
+ 
+
+ 
+
+I am making a call through the OpenIMS core and also answering the call. 
+
+ 
+
+192.168.0.236 -Makes the call
+
+192.168.0.231 - Answers the call
+
+192.168.0.197:4060 - P-CSCF (proxy)
+
+192.168.0.197:6060 - S-CSCF (registrar)
+
+ 
+
+I have 2 doubts in the working of the open ims core. Please refer to the
+attached wireshark traces.
+
+ 
+
+1.  INVITE message handling
+
+ 
+
+Case (a)
+
+  In sip_capture_ims.pcap we have-
+
+  192.168.0.236                                   ----MakeCall-----------&gt;
+192.168.0.197:4060 (P-CSCF)
+
+192.168.0.197:4060 (P-CSCF)            -----Forwards it to------&gt;
+192.168.0.197:6060 (S-CSCF)
+
+192.168.0.197:6060 (S-CSCF)             ------Forwards it to------&gt;
+192.168.0.231 (AnswerSide)
+
+ 
+
+Case (b)
+
+  Whereas, in sip_capture_ims_ok.pcap, we have -
+
+  192.168.0.236
+------MakeCall-----------------------&gt;      192.168.0.197:4060 (P-CSCF)
+
+192.168.0.197:4060 (P-CSCF)            ------Forwards it directly to------&gt;
+192.168.0.231 (AnswerSide)
+
+ 
+
+Why is there a difference in the behaviour (the way the call is handled )?
+Why is the S-CSCF even getting involved in the INVITE. Is it not just a
+registrar? &amp; Is not the final message in sip signalling always sent out from
+the P-CSCF in  IMS ? Why is the S-CSCF forwarding the INVITE to the
+AnswerSide in case (a). For calls (INVITE messages), should it not always
+follow case (b)?
+
+ 
+
+2.  200 OK message handling.
+
+ 
+
+Even assuming case (a) is a valid case for packets other than REGISTER
+packets, Further , If you look at 200 OK messages - packet numbers  44 and
+45 of the capture file sip_capture_ims , (which is following case (a)) you
+can see that the SDP information (connection Information ) has been
+corrupted in the 200 OK message at  packet number 45.
+
+ 
+
+It was ok when 192.168.0.236 sent it to 192.168.0.197:6060(S-CSCF) @ pkt no.
+43. 
+
+ It was ok when 192.168.0.197:6060 (S-CSCF) sent it to 192.168.0.197:4060
+(P-CSCF)
+
+However, when 192.168.0.197:4060(P-CSCF) sends it to 192.168.0.231 @ pkt no.
+45, SDP information is corrupted. Connection Information now shows as
+127.0.0.1 instead of 192.168.0.236
+
+( I am suspecting that the internal address used in the openIMS core is
+mixed up here. Internally OpenIMScore components run on
+127.0.0.1:4060,5060,6060 )
+
+ 
+
+Could you please help me with the understanding and whether it is a bug I am
+seeing?
+
+ 
+
+Thanks,
+
+Badri.
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130905/4f67d4c9/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130905/4f67d4c9/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007751.html">[OpenIMSCore-Users] Message handling for calls(INVITE messages) in OpenIMSCore and SDP buffer corruption for (200 Ok messages) in the PCSCF
+</A></li>
+	<LI>Next message: <A HREF="007753.html">[OpenIMSCore-Users] Message handling for calls(INVITE messages) in OpenIMSCore and SDP buffer corruption for (200 Ok messages) in the PCSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7752">[ date ]</a>
+              <a href="thread.html#7752">[ thread ]</a>
+              <a href="subject.html#7752">[ subject ]</a>
+              <a href="author.html#7752">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

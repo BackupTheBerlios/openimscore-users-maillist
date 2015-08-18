@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Compilation errors of ser_ims on Solaris 10
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Compilation%20errors%20of%20ser_ims%20on%20Solaris%2010&In-Reply-To=%3C45289.1154.2381-18951-715247530-1278072170%40seznam.cz%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006295.html">
+   <LINK REL="Next"  HREF="006297.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Compilation errors of ser_ims on Solaris 10</H1>
+    <B>Oliva Luk&#225;&#353;</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Compilation%20errors%20of%20ser_ims%20on%20Solaris%2010&In-Reply-To=%3C45289.1154.2381-18951-715247530-1278072170%40seznam.cz%3E"
+       TITLE="[OpenIMSCore-Users] Compilation errors of ser_ims on Solaris 10">plhu at seznam.cz
+       </A><BR>
+    <I>Fri Jul  2 14:02:50 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006295.html">[OpenIMSCore-Users] hss problems
+</A></li>
+        <LI>Next message: <A HREF="006297.html">[OpenIMSCore-Users] 3rd party registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6296">[ date ]</a>
+              <a href="thread.html#6296">[ thread ]</a>
+              <a href="subject.html#6296">[ subject ]</a>
+              <a href="author.html#6296">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>  Hello,
+I try to compile ser_ims on Sun T5220 (SPARC) machine using gmake but it fails. The machine runs on Solaris 10 and has most of GNU tools from blastwave. The version that I tried was from svn rev 956.
+
+I discovered several problems with Makefiles, like:
+  - the gcc complaints about -minline-all-stringops switch in CFLAGS that seems to be unsupported fo SPARC version according to gcc documentation. Removing the switch enables start of compilation.
+  - during make modules following message appears and can be suppressed by adding SHELL=/usr/bin/bash to Makefile
+  - also it seems that the architecture is wrong selected since the architecture that is visible during compilation is sparc not sparc64 (as it should be on T5220)
+
+  - Unfortunately, there seems to be a problem also with make modules specifically in cds that I did not solve. Could anyone check the problem or tell how to solve it?
+
+make modules
+make -C lib -f Makefile.ser
+make[1]: Entering directory `/root/openimscore-fresh/trunks-svn-rev956/ser_ims/trunk/lib'
+Making  in binrpc
+make[2]: Entering directory `/root/openimscore-fresh/trunks-svn-rev956/ser_ims/trunk/lib/binrpc'
+make[2]: `libbinrpc.so' is up to date.
+make[2]: Leaving directory `/root/openimscore-fresh/trunks-svn-rev956/ser_ims/trunk/lib/binrpc'
+Making  in cds
+make[2]: Entering directory `/root/openimscore-fresh/trunks-svn-rev956/ser_ims/trunk/lib/cds'
+gcc    -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCOMPILER='&quot;gcc 4.0.4&quot;' -D__CPU_spar .. imple_profile.c
+simple_profile.c:14: Error: error: syntax error before 'old_sigx_action'
+simple_profile.c:14: warning: type defaults to 'int' in declaration of 'old_sigx_action'
+simple_profile.c:14: warning: data definition has no type or storage class
+simple_profile.c: In function 'start_profile':
+simple_profile.c:65: warning: assignment makes integer from pointer without a cast
+simple_profile.c:70: warning: passing argument 2 of 'signal' makes pointer from integer without a cast
+simple_profile.c: In function 'stop_profile':
+simple_profile.c:82: warning: passing argument 2 of 'signal' makes pointer from integer without a cast
+make[2]: *** [simple_profile.o] Error 1
+make[2]: Leaving directory `/root/openimscore-fresh/trunks-svn-rev956/ser_ims/trunk/lib/cds'
+make[1]: [cds] Error 2 (ignored)
+Making  in xcap
+make[2]: Entering directory `/root/openimscore-fresh/trunks-svn-rev956/ser_ims/trunk/lib/xcap'
+gcc -shared    -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCOMPILER='&quot;gcc 4.0.4&quot;' -D__ .. t.o xml_utils.o
+ld: fatal: library -l_ser_cds: not found
+ld: fatal: File processing errors. No output written to lib_ser_xcap.so
+collect2: Error: ld returned 1 exit status
+make[2]: *** [lib_ser_xcap.so] Error 1
+make[2]: Leaving directory `/root/openimscore-fresh/trunks-svn-rev956/ser_ims/trunk/lib/xcap'
+make[1]: [xcap] Error 2 (ignored)
+Making  in presence
+make[2]: Entering directory `/root/openimscore-fresh/trunks-svn-rev956/ser_ims/trunk/lib/presence'
+gcc -shared    -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCOMPILER='&quot;gcc 4.0.4&quot;' -D__ .. utils.o xpidf.o
+ld: fatal: library -l_ser_cds: not found
+ld: fatal: File processing errors. No output written to lib_ser_presence.so
+collect2: Error: ld returned 1 exit status
+
+
+  Please check following output from compilation
+
+make ser
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. n.c -o action.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. -o atomic_ops.o
+In file included from atomic_ops.h:150,
+                 from atomic_ops.c:37:
+atomic/atomic_sparc.h:46:2: warning: #warning &quot;sparc32 atomic operations support not tested&quot;
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. c -o core_cmd.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  crc.c -o crc.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  -o daemonize.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  -o data_lump.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. data_lump_rpl.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  -o dns_cache.o
+In file included from atomic_ops.h:150,
+                 from dns_cache.h:41,
+                 from dns_cache.c:38:
+atomic/atomic_sparc.h:46:2: warning: #warning &quot;sparc32 atomic operations support not tested&quot;
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. t.c -o dprint.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. set.c -o dset.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. dst_blacklist.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. or.c -o error.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. gs.c -o flags.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. .c -o forward.o
+In file included from atomic_ops.h:150,
+                 from dns_cache.h:41,
+                 from forward.c:87:
+atomic/atomic_sparc.h:46:2: warning: #warning &quot;sparc32 atomic operations support not tested&quot;
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  -o hash_func.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. -c id.c -o id.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. .c -o io_wait.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. .c -o ip_addr.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. ain.c -o main.o
+In file included from atomic_ops.h:150,
+                 from dns_cache.h:41,
+                 from main.c:149:
+atomic/atomic_sparc.h:46:2: warning: #warning &quot;sparc32 atomic operations support not tested&quot;
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  md5.c -o md5.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. c -o md5utils.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. c -o modparam.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. sg_translator.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  nonsip_hooks.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. .c -o pass_fd.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. xy.c -o proxy.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. -c pt.c -o pt.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. e.c -o qvalue.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. -c re.c -o re.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. .c -o receive.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. .c -o resolve.o
+In file included from atomic_ops.h:150,
+                 from dns_cache.h:41,
+                 from resolve.c:54:
+atomic/atomic_sparc.h:46:2: warning: #warning &quot;sparc32 atomic operations support not tested&quot;
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. te.c -o route.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  route_struct.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  -o script_cb.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. t.c -o select.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. -o select_buf.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. o select_core.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. c -o ser_stun.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. .c -o signals.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. o socket_info.o
+
+
+
+
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  -o sr_module.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. ts.c -o stats.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. c -o tcp_main.o
+In file included from atomic_ops.h:150,
+                 from tcp_conn.h:43,
+                 from tcp_main.c:111:
+atomic/atomic_sparc.h:46:2: warning: #warning &quot;sparc32 atomic operations support not tested&quot;
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. c -o tcp_read.o
+In file included from atomic_ops.h:150,
+                 from tcp_conn.h:43,
+                 from tcp_read.c:59:
+atomic/atomic_sparc.h:46:2: warning: #warning &quot;sparc32 atomic operations support not tested&quot;
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. er.c -o timer.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  -o tls_hooks.o
+In file included from atomic_ops.h:150,
+                 from tcp_conn.h:43,
+                 from tls_hooks.h:40,
+                 from tls_hooks.c:26:
+atomic/atomic_sparc.h:46:2: warning: #warning &quot;sparc32 atomic operations support not tested&quot;
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. nd.c -o tsend.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. -o udp_server.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. .c -o usr_avp.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. -c ut.c -o ut.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  mem/f_malloc.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. .c -o mem/mem.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. o mem/memtest.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  mem/q_malloc.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. o mem/shm_mem.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. mem/vq_malloc.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO ..  -o parser/hf.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. er/msg_parser.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. r/parse_allow.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. parse_content.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. er/parse_cseq.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. e_disposition.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. rse_diversion.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. r/parse_event.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. parse_expires.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. r/parse_fline.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. er/parse_from.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. /parse_hname2.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. arse_hostport.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. parse_methods.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. arse_nameaddr.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. r/parse_param.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. arse_refer_to.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. er/parse_rpid.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. rser/parse_rr.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. se_sipifmatch.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. ription_state.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. rser/parse_to.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. ser/parse_uri.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. ser/parse_via.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. rser/parser_f.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. digest/digest.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. digest_parser.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. /param_parser.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. ntact/contact.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. parse_contact.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. db.c -o db/db.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. c -o db/db_id.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. -o db/db_pool.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. y.c -o lex.yy.o
+gcc -g -O9 -funroll-loops     -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;sparc&quot;' -DOS='solaris_' -DOS_QUOTED='&quot;solaris&quot;' -DCO .. .c -o cfg.tab.o
+gcc  -O2  action.o atomic_ops.o core_cmd.o crc.o daemonize.o data_lump.o data_lump_rpl.o dns_cache.o dprint.o dset.o dst_blacklist.o error.o flags.o forw .. l  -lrt -o ser
+
+  Best regards
+  
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006295.html">[OpenIMSCore-Users] hss problems
+</A></li>
+	<LI>Next message: <A HREF="006297.html">[OpenIMSCore-Users] 3rd party registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6296">[ date ]</a>
+              <a href="thread.html#6296">[ thread ]</a>
+              <a href="subject.html#6296">[ subject ]</a>
+              <a href="author.html#6296">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

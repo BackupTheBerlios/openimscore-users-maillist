@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] MySQL issues in running I-CSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20MySQL%20issues%20in%20running%20I-CSCF&In-Reply-To=%3C002901c72987%24446238c0%240200a8c0%40notebookFE%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000400.html">
+   <LINK REL="Next"  HREF="000395.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] MySQL issues in running I-CSCF</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20MySQL%20issues%20in%20running%20I-CSCF&In-Reply-To=%3C002901c72987%24446238c0%240200a8c0%40notebookFE%3E"
+       TITLE="[OpenIMSCore-Users] MySQL issues in running I-CSCF">franz.edler at inode.at
+       </A><BR>
+    <I>Wed Dec 27 08:18:49 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000400.html">[OpenIMSCore-Users] MySQL issues in running I-CSCF
+</A></li>
+        <LI>Next message: <A HREF="000395.html">[OpenIMSCore-Users] MySQL issues in running I-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#402">[ date ]</a>
+              <a href="thread.html#402">[ thread ]</a>
+              <a href="subject.html#402">[ subject ]</a>
+              <a href="author.html#402">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Gaurav and Babu,
+
+&gt;<i> Are there some configurations which need to be done for SQL of some
+</I>&gt;<i> changes to be done in cfg file? Can you provide some input on that?
+</I>
+Yes there are. The access to the MySQL database is controlled by the table
+mysql.user within the database. 
+
+You can look at the permissions and privileges using the command:
+SELECT * FROM mysql.user;
+
+Permissions and privileges are granted to user &quot;hss&quot; on &quot;localhost&quot; as you
+can see in hssdb.sql.
+grant all privileges on hssdb.* to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">hss at localhost</A> identified by 'hss';
+
+Therefore you have to extend the privileges to your allocated IP address,
+(192.168.0.7 in my example):
+grant all privileges on hssdb.* to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">hss at 192.168.0.7</A> identified by 'hss';
+
+
+&gt;<i> Following is the log when I run sip2ims and icscf. In sip2ims, I get an
+</I>&gt;<i> error saying that access denied for user 'sip2ims'@'localhost' (using
+</I>&gt;<i> password: YES)
+</I>
+Similar you should extend the privileges for access to sip2ims (as you can
+see in sip2ims.sql):
+grant delete,insert,select,update on sip2ims.* to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sip2ims at 192.168.0.7</A>
+identified by 'heslo';
+grant delete,insert,select,update on sip2ims.* to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">provisioning at 192.168.0.7</A>
+identified by 'provi';
+
+&gt;<i> In case of icscf, the error is access denied for user 'icscf'@'localhost'
+</I>&gt;<i> (using password: YES)
+</I>
+... and the same for icscf (as you can see in icscf.sql):
+grant delete,insert,select,update on icscf.* to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">icscf at 192.168.0.7</A> identified
+by 'heslo';
+ 
+
+I think that should help.
+franz
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000400.html">[OpenIMSCore-Users] MySQL issues in running I-CSCF
+</A></li>
+	<LI>Next message: <A HREF="000395.html">[OpenIMSCore-Users] MySQL issues in running I-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#402">[ date ]</a>
+              <a href="thread.html#402">[ thread ]</a>
+              <a href="subject.html#402">[ subject ]</a>
+              <a href="author.html#402">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Getting a 403 Forbidden after a challenge
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Getting%20a%20403%20Forbidden%20after%20a%20challenge&In-Reply-To=%3C4614CF26.2050109%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001403.html">
+   <LINK REL="Next"  HREF="001388.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Getting a 403 Forbidden after a challenge</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Getting%20a%20403%20Forbidden%20after%20a%20challenge&In-Reply-To=%3C4614CF26.2050109%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Getting a 403 Forbidden after a challenge">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Apr  5 12:27:50 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001403.html">[OpenIMSCore-Users] Getting a 403 Forbidden after a challenge
+</A></li>
+        <LI>Next message: <A HREF="001388.html">[OpenIMSCore-Users] SCSCF_Crashed (core backtrace text)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1408">[ date ]</a>
+              <a href="thread.html#1408">[ thread ]</a>
+              <a href="subject.html#1408">[ subject ]</a>
+              <a href="author.html#1408">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>We do support Digest-AKAv1-MD5 and Digest-AKAv2-MD5 and not
+Digest-MD5-AKav1. The spelling of the algorithm name is quite important.
+
+In the 2nd register, although you receive a AKAv1-MD5 in the 401, you
+are sending algorithm=MD5. I don't know why you do that, but your user
+is probably not allowed to do MD5 in the HSS.
+
+-Dragos
+
+Vignesh wrote:
+&gt;<i> Dragos,
+</I>&gt;<i>
+</I>&gt;<i> I am using Digest-MD5-AKav1.  The same has been set
+</I>&gt;<i> for that user in HSS and it is configured on scscf.cfg
+</I>&gt;<i> too.
+</I>&gt;<i>
+</I>&gt;<i> You are right when you said that we are not providing
+</I>&gt;<i> a good response.  We send an empty response.  We do so
+</I>&gt;<i> because we are not able to authenticate the network.
+</I>&gt;<i>
+</I>&gt;<i> - Shouldn't scscf send another 401 Unauthorized
+</I>&gt;<i> Challenging UE if it doesn't get a response?
+</I>&gt;<i> - We are not able to authenticate the network because
+</I>&gt;<i> of any of the following:
+</I>&gt;<i>   - Key mismatch
+</I>&gt;<i>   - Operator code mismatch
+</I>&gt;<i>   - AMF mismatch(is this possible?  I have left it to
+</I>&gt;<i> default 0000)
+</I>&gt;<i>   - Algorithm mismatch (scscf is using Milenage, I am
+</I>&gt;<i> not sure what is my SIM card using.  Need to verify
+</I>&gt;<i> it)
+</I>&gt;<i>
+</I>&gt;<i> The first two reasons cannot be possible since I have
+</I>&gt;<i> double checked it.
+</I>&gt;<i>
+</I>&gt;<i> Logs available at
+</I>&gt;<i> <A HREF="http://download.yousendit.com/38D9CF4F42E0B1D3.">http://download.yousendit.com/38D9CF4F42E0B1D3.</A>
+</I>&gt;<i>  Kindly let me know if I am on the right path.
+</I>&gt;<i>
+</I>&gt;<i> Thanking in advance,
+</I>&gt;<i> Vignesh
+</I>&gt;<i>
+</I>&gt;<i> --- Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> The reason for this is usually that the S-CSCF tries
+</I>&gt;&gt;<i> to do an
+</I>&gt;&gt;<i> authentication that the HSS does not support or that
+</I>&gt;&gt;<i> the HSS does not
+</I>&gt;&gt;<i> allow for that particular user. You should usually
+</I>&gt;&gt;<i> get it in the first
+</I>&gt;&gt;<i> REGISTER. I don't know how you solved that :), but
+</I>&gt;&gt;<i> now it seems that you
+</I>&gt;&gt;<i> are not providing a good response in the 2nd and the
+</I>&gt;&gt;<i> S-CSCF tries to get
+</I>&gt;&gt;<i> another authentication vector. What authentication
+</I>&gt;&gt;<i> scheme are you trying
+</I>&gt;&gt;<i> to use?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> OP and AMF are defined in the HSS and are mandatory
+</I>&gt;&gt;<i> and used only for
+</I>&gt;&gt;<i> AKA. You should have the same values in the client
+</I>&gt;&gt;<i> side AKA. The only
+</I>&gt;&gt;<i> algorithm used for AKA is Milenage. Do you know of
+</I>&gt;&gt;<i> any others that might
+</I>&gt;&gt;<i> be used with AKA?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Vignesh wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I get a &quot;SIP/2.0 403 Forbidden - HSS returned no
+</I>&gt;&gt;&gt;<i> authentication vectors&quot; for the second REGISTER
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> that I
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> send to openIMScore on receipt of &quot;401
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> Unauthorized
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Challenging UE&quot;.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> What could be the rootcause?  I ehad arlier got
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> HSS
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> returned no authentication vectors for the first
+</I>&gt;&gt;&gt;<i> REGISTER itself which is now resolved.  My keys
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> are
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> rightly entered in HSS.  Is OPerator ID mandatory?
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> How do I give the choice of algorithms (like
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> Mileanage
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> etc... /* Did I get spelling right */ )?  What is
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> AMF?
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>  I have left them to default values, can that be
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> reason?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The only relevant error msage I get in icscf is:
+</I>&gt;&gt;&gt;<i> 12(4820)  S[R_Open] hss.ims.cingularme.com:3868 D[
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> ]
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> 12(4820) ------------------
+</I>&gt;&gt;&gt;<i> 18(4832) DBG:sm_process(): Peer
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> hss.ims.cingularme.com
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>  State R_Open    Event R_Rcv_Message
+</I>&gt;&gt;&gt;<i>  1(4809) INFO:I-CSCF:Cx_get_result_code: Failed
+</I>&gt;&gt;&gt;<i> finding avp
+</I>&gt;&gt;&gt;<i>  1(4809) INFO:I-CSCF:Cx_get_capabilities: Failed
+</I>&gt;&gt;&gt;<i> finding avp
+</I>&gt;&gt;&gt;<i> 18(4832) DBG:sm_process(): Peer
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> hss.ims.cingularme.com
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>  State R_Open    Event R_Rcv_Message
+</I>&gt;&gt;&gt;<i>  2(4810) INFO:I-CSCF:Cx_get_result_code: Failed
+</I>&gt;&gt;&gt;<i> finding avp
+</I>&gt;&gt;&gt;<i>  2(4810) INFO:I-CSCF:Cx_get_capabilities: Failed
+</I>&gt;&gt;&gt;<i> finding avp
+</I>&gt;&gt;&gt;<i> 12(4820) --- Peer List: ---
+</I>&gt;&gt;&gt;<i> 12(4820)  S[R_Open] hss.ims.cingularme.com:3868 D[
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> ]
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> 12(4820) ------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> scscf prints:
+</I>&gt;&gt;&gt;<i> 12(4848)  S[R_Open] hss.ims.cingularme.com:3868 D[
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> ]
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> 12(4848) ------------------
+</I>&gt;&gt;&gt;<i>  1(4837) ERROR: t_get_trans_ident: no transaction
+</I>&gt;&gt;&gt;<i> found
+</I>&gt;&gt;&gt;<i> 18(4888) DBG:sm_process(): Peer
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> hss.ims.cingularme.com
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>  State R_Open    Event R_Rcv_Message
+</I>&gt;&gt;&gt;<i>  4(4840) ERROR: t_get_trans_ident: no transaction
+</I>&gt;&gt;&gt;<i> found
+</I>&gt;&gt;&gt;<i> 18(4888) DBG:sm_process(): Peer
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> hss.ims.cingularme.com
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>  State R_Open    Event R_Rcv_Message
+</I>&gt;&gt;&gt;<i>  4(4840) ERR:S-CSCF:S_challenge: Error retrieving
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> an
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> auth vector
+</I>&gt;&gt;&gt;<i> 12(4848) --- Peer List: ---
+</I>&gt;&gt;&gt;<i> 12(4848)  S[R_Open] hss.ims.cingularme.com:3868 D[
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> ]
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> 12(4848) ------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Kindly help.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thanking in advance for help,
+</I>&gt;&gt;&gt;<i> Vignesh
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> 		
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> ___________________________________________________________
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> All New Yahoo! Mail &#226;&#8364;&#8220; Tired of unwanted email
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> come-ons? Let our SpamGuard protect you.
+</I>&gt;&gt;<i> <A HREF="http://uk.docs.yahoo.com/nowyoucan.html">http://uk.docs.yahoo.com/nowyoucan.html</A>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> -- 
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;<i> We could change the world if God would give us the
+</I>&gt;&gt;<i> source code...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 		
+</I>&gt;<i> ___________________________________________________________ 
+</I>&gt;<i> The all-new Yahoo! Mail goes wherever you go - free your email address from your Internet provider. <A HREF="http://uk.docs.yahoo.com/nowyoucan.html">http://uk.docs.yahoo.com/nowyoucan.html</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001403.html">[OpenIMSCore-Users] Getting a 403 Forbidden after a challenge
+</A></li>
+	<LI>Next message: <A HREF="001388.html">[OpenIMSCore-Users] SCSCF_Crashed (core backtrace text)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1408">[ date ]</a>
+              <a href="thread.html#1408">[ thread ]</a>
+              <a href="subject.html#1408">[ subject ]</a>
+              <a href="author.html#1408">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

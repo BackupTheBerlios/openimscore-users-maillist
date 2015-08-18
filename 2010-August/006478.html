@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Error in ./startup.sh file
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20in%20./startup.sh%20file&In-Reply-To=%3C500CB29A2EC04105A2945C0E020ECBB7%40FranzEdlerPC%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006481.html">
+   <LINK REL="Next"  HREF="006482.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Error in ./startup.sh file</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20in%20./startup.sh%20file&In-Reply-To=%3C500CB29A2EC04105A2945C0E020ECBB7%40FranzEdlerPC%3E"
+       TITLE="[OpenIMSCore-Users] Error in ./startup.sh file">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Tue Aug 24 16:46:29 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006481.html">[OpenIMSCore-Users] Error in ./startup.sh file
+</A></li>
+        <LI>Next message: <A HREF="006482.html">[OpenIMSCore-Users] error 478
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6478">[ date ]</a>
+              <a href="thread.html#6478">[ thread ]</a>
+              <a href="subject.html#6478">[ subject ]</a>
+              <a href="author.html#6478">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+you have some errors in your script-file.
+Go back to SVN and look at the file &quot;
+<A HREF="http://svn.berlios.de/wsvn/openimscore/FHoSS/trunk/scripts/startup.sh">http://svn.berlios.de/wsvn/openimscore/FHoSS/trunk/scripts/startup.sh</A>&quot;
+
+#!/bin/bash
+# --------------------------------------------------------------
+# Include JAR Files
+# --------------------------------------------------------------
+
+echo &quot;Building Classpath&quot;
+CLASSPATH=$CLASSPATH:log4j.properties:.
+for i in lib/*.jar; do CLASSPATH=&quot;$i&quot;:&quot;$CLASSPATH&quot;; done
+echo &quot;Classpath is $CLASSPATH.&quot;
+
+# --------------------------------------------------------------
+# Start-up
+# --------------------------------------------------------------
+
+$JAVA_HOME/bin/java -cp $CLASSPATH de.fhg.fokus.hss.main.HSSContainer $1 $2
+$3 $4 $5 $6 $7 $8 $9
+
+
+The last command is start of HSS by calling the Java class.
+
+If you have a truncated line starting with &quot;cp $PATH&quot; it is a copy command
+and not a call of the Java runtime. Therefore you get the error.
+
+- franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006481.html">[OpenIMSCore-Users] Error in ./startup.sh file
+</A></li>
+	<LI>Next message: <A HREF="006482.html">[OpenIMSCore-Users] error 478
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6478">[ date ]</a>
+              <a href="thread.html#6478">[ thread ]</a>
+              <a href="subject.html#6478">[ subject ]</a>
+              <a href="author.html#6478">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

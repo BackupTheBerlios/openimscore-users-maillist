@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Regarding%20Trigger%20point%20for%20ACR%20in%20.cfg%20file&In-Reply-To=%3C48C1717A.9050009%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004610.html">
+   <LINK REL="Next"  HREF="004631.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Regarding%20Trigger%20point%20for%20ACR%20in%20.cfg%20file&In-Reply-To=%3C48C1717A.9050009%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Sep  5 19:50:50 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004610.html">[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+</A></li>
+        <LI>Next message: <A HREF="004631.html">[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4611">[ date ]</a>
+              <a href="thread.html#4611">[ thread ]</a>
+              <a href="subject.html#4611">[ subject ]</a>
+              <a href="author.html#4611">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Forgot to mention, you might also need to deeper integrate this with
+certain parts of the pcscf and scscf modules, as B2B BYEs can be sent
+and those won't be catched in the routing script.
+
+The routing script is executed when requests and responses are received.
+The msg parameter is filled with the respective message that was received.
+
+Cheers,
+-Dragos
+
+Dragos Vingarzan wrote:
+&gt;<i> Hi Suresh,
+</I>&gt;<i>
+</I>&gt;<i> first of all, let's not call it &quot;triggering point&quot; because this would
+</I>&gt;<i> get confused with the ones in the HSS.
+</I>&gt;<i>
+</I>&gt;<i> Then I think that you should start a new module and define and export
+</I>&gt;<i> new functions for use from the SER routing script (the cfg files). I
+</I>&gt;<i> suggest a new module so that you would just load it when you want Rf
+</I>&gt;<i> functionality, on any type of CSCF or other SER proxy. For this, look at
+</I>&gt;<i> the examples in the modules, like pcscf.
+</I>&gt;<i>
+</I>&gt;<i> Next it is a question of calling these functions from the right points.
+</I>&gt;<i> For example, the BYEs will be routed in the pcscf through the
+</I>&gt;<i> route[Orig_Subsequent] and route[Term_Subsequent]. There insert
+</I>&gt;<i> something like:
+</I>&gt;<i>
+</I>&gt;<i> if (method==&quot;BYE&quot;) {
+</I>&gt;<i>     Rf_ACR(&quot;stop&quot;);
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> the responses are usually through the routes with _reply at end and it
+</I>&gt;<i> would probably look like
+</I>&gt;<i>
+</I>&gt;<i> if (t_check_status(200)){
+</I>&gt;<i>     Rf_ACR(&quot;start&quot;);
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> Then you will need to integrate your module with the cdp module, in
+</I>&gt;<i> order to use Diameter, like the pcscf/icscf/scscf modules do. I have to
+</I>&gt;<i> warn you that the Accounting state machine is not finished yet. You
+</I>&gt;<i> should use the 08_cdp_sessions branch of ser_ims as that is much much
+</I>&gt;<i> more advanced in defining the authorization and accounting state
+</I>&gt;<i> machine. The trunk is mostly frozen until development completes there.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> sureshkumar.jaiswal wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi All i'm working with one charging module for developing constructing CDR 
+</I>&gt;&gt;<i> (charging data records)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> for Offline/online.(basically charging Trigger function CTC i.e send the 
+</I>&gt;&gt;<i> ACR[start],...to charging Data function
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> for start creating CDR using Rf interface)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I want to know different or single trigger point entery in IMScore cfg file 
+</I>&gt;&gt;<i> i.e (P-CSCF.cfg ,S-CSCF.cfg,I-CSCF.cfg file)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> for start following
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ACR [Start]
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP 200 OK acknowledging an initial SIP INVITE
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP 200 OK acknowledging a SIP
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> RE-INVITE or SIP UPDATE [e.g. change in media components] (see note 2)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ACR [Interim]
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Expiration of AVP [Acct-Interim-Interval]
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP BYE message (both normal and abnormal session termination cases)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ACR [Stop]
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP BYE message
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ACR [Event]
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP 200 OK acknowledging non-session related SIP messages, which are:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP NOTIFY
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP MESSAGE
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP REGISTER (see note 1)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP SUBSCRIBE (see note 3)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP PUBLISH
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP 200 OK acknowledging an initial SIP INVITE
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP 202 Accepted acknowledging a SIP REFER or any other method
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP Final Response 2xx (except SIP 200 OK)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP Final/Redirection Response 3xx
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP Final Response (4xx, 5xx or 6xx), indicating an unsuccessful SIP session 
+</I>&gt;&gt;<i> set-up
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP Final Response (4xx, 5xx or 6xx), indicating an unsuccessful 
+</I>&gt;&gt;<i> session-unrelated procedure
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> SIP CANCEL, indicating abortion of a SIP session set-up
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> When  P-CSCF/S-CSCF/I-CSCF get this sip method then I will call one my 
+</I>&gt;&gt;<i> exported function like PSI_ACR my ctf moulde
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Can any one help me regarding this.. Triggering point.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ~Suresh
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004610.html">[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+</A></li>
+	<LI>Next message: <A HREF="004631.html">[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4611">[ date ]</a>
+              <a href="thread.html#4611">[ thread ]</a>
+              <a href="subject.html#4611">[ subject ]</a>
+              <a href="author.html#4611">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

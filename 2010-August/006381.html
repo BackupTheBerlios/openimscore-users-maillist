@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Query for Cx Interface failing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Query%20for%20Cx%20Interface%20failing&In-Reply-To=%3CAANLkTikqGt6j3zt-Uye4uzeKqcDOpKBDUNT9f008xeEy%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="006382.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Query for Cx Interface failing</H1>
+    <B>sougata pal</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Query%20for%20Cx%20Interface%20failing&In-Reply-To=%3CAANLkTikqGt6j3zt-Uye4uzeKqcDOpKBDUNT9f008xeEy%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Query for Cx Interface failing">sougata.pal at gmail.com
+       </A><BR>
+    <I>Mon Aug  2 20:12:13 CEST 2010</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="006382.html">[OpenIMSCore-Users] Query for Cx Interface failing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6381">[ date ]</a>
+              <a href="thread.html#6381">[ thread ]</a>
+              <a href="subject.html#6381">[ subject ]</a>
+              <a href="author.html#6381">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dear All,
+
+I am facing a trouble in User registration in the FOKUS MONSTER client.
+Every time when i am going to register any of my users that i have generated
+in the FHoSS Web Console, &quot; Trang and Jelena&quot; every time on the MONSTER
+Console i am getting one error &quot; Error 480 - Diameter Cx interface failed&quot;.
+In the mean time in the console of deploy where i am doing ./startup.sh, i
+am seeing that a error showing up &quot; java.sql.SQLException: Access denied for
+user 'hss'@'scscf.open-ims.sougata' (using password: YES)&quot;.
+When i am checking the netstat -putan, its clearly showing me the mysql is
+running on <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">10.80.4.244 at 3306.</A>
+
+Even i am connected through this specific user on my mysql console. Traces
+attached below -
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sougata-desktop</A>:/home/sougata# mysql -h scscf.open-ims.sougata -u hss
+-p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 20352
+Server version: 5.1.37-1ubuntu5.4 (Ubuntu)
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input
+statement.
+
+mysql&gt; show databases;
++--------------------+
+|<i> Database           |
+</I>+--------------------+
+|<i> information_schema |
+</I>|<i> hss_db             |
+</I>|<i> icscf              |
+</I>|<i> ims                |
+</I>|<i> mysql              |
+</I>|<i> userdata           |
+</I>+--------------------+
+6 rows in set (0.00 sec)
+
+mysql&gt; use &quot;hss_db&quot;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql&gt; status
+--------------
+mysql  Ver 14.14 Distrib 5.1.37, for debian-linux-gnu (i486) using  EditLine
+wrapper
+
+Connection id:        20352
+SSL:            Not in use
+Current pager:        stdout
+Using outfile:        ''
+Using delimiter:    ;
+Server version:        5.1.37-1ubuntu5.4 (Ubuntu)
+Protocol version:    10
+Connection:        scscf.open-ims.sougata via TCP/IP
+Client characterset:    latin1
+Server characterset:    latin1
+TCP port:        3306
+Uptime:            7 hours 36 min 55 sec
+
+Threads: 1  Questions: 547  Slow queries: 0  Opens: 60  Flush tables: 1
+Open tables: 53  Queries per second avg: 0.19
+--------------
+
+mysql&gt; select user();
++----------------------------+
+|<i> user()                     |
+</I>+----------------------------+
+|<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">hss at scscf.open-ims.sougata</A> |
+</I>+----------------------------+
+1 row in set (0.00 sec)
+
+Now i need to state some points that i have followed -
+
+1. I have binded the port <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3306 at 10.80.4.244</A> (as i have changed the loop back
+ip address to my own pc address and also changed the domain name from
+open-ims.test to open-ims.sougata) where ever its necessary
+
+2. I have also updated the my.cnf (the config file of mysql) where the
+binding address has been updated to 10.80.4.244.
+
+3. I need to know, do i need to update the debian.cnf file also where the
+corresponding host is showing as localhost.
+
+Now as i have comprehended that Cx interface failing means, HSS is not
+getting connected to either of the S/I-CSCF. Now i was thinking that maybe
+the hss_db database was not getting properly connected with the 2 proxy
+servers and that's why this Cx interface was failing again and again. BUt
+even i am doing the changes its still failing. I just can't figure out where
+exactly i am missing the point.
+
+I have also updates properly the 4 main files for HSS handling which are as
+follows -
+
+1. DiameterPeerHSS.xml
+2. hibernate.properties
+3. hss.properties
+4. log4j.properties
+
+I am attaching the trace below which is coming on the MONSTER console when i
+am going to register any of the 2 user that i have created.
+
+REGISTER sip:open-ims.sougata SIP/2.0
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">66af416923e21b1db3fdfd3fe2d72e3e at 10.80.4.244</A>
+CSeq: 5 REGISTER
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Jelena at open-ims.sougata</A>&gt;;tag=1004
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Jelena at open-ims.sougata</A>&gt;
+Via: SIP/2.0/UDP 10.80.4.244:4062
+Max-Forwards: 20
+Expires: 3600
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Jelena at 10.80.4.244</A>:4062&gt;
+User-Agent: Fokus MONSTER Version: 0.9.8-SNAPSHOT
+Content-Length: 0
+
+
+13576875 [UDPMessageChannelThread] DEBUG de.fhg.fokus.ims.core.IMSManager  -
+Incoming Response
+ SIP/2.0 480 Temporarily Unavailable - Diameter Cx interface failed
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">66af416923e21b1db3fdfd3fe2d72e3e at 10.80.4.244</A>
+CSeq: 5 REGISTER
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Jelena at open-ims.sougata</A>&gt;;tag=1004
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Jelena at open-ims.sougata</A>&gt;;tag=0b2a3a6877bebbc8e199a1414d0ddc8b-7daa
+Via: SIP/2.0/UDP 10.80.4.244:4062
+;rport=4062;branch=z9hG4bK12550dad909ef8b1879bc574abe591fe
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+Warning: 392 10.80.4.244:5060 &quot;Noisy feedback tells:  pid=8549
+req_src_ip=10.80.4.244 req_src_port=4060 in_uri=sip:open-ims.sougata
+out_uri=sip:open-ims.sougata via_cnt==2&quot;
+Content-Length: 0
+
+
+13576875 [TaskServiceWorker] ERROR de.fhg.fokus.ims.core.IMSManager  -
+Registration failed: 480 - Temporarily Unavailable - Diameter Cx interface
+failed
+javax.sip.SipException: Registration failed: 480 - Temporarily Unavailable -
+Diameter Cx interface failed
+    at de.fhg.fokus.ims.core.Registration.register(Registration.java:214)
+    at de.fhg.fokus.ims.core.IMSManager.openCoreService(IMSManager.java:397)
+    at
+de.fhg.fokus.microedition.io.Connector.createCoreservice(Connector.java:91)
+    at de.fhg.fokus.microedition.io.Connector.open(Connector.java:44)
+    at de.fhg.fokus.microedition.io.Connector.open(Connector.java:30)
+    at de.fhg.fokus.microedition.io.Connector.open(Connector.java:25)
+    at
+de.fhg.fokus.monster.apps.impl.ims.ModuleWorkItem.initServices(ModuleWorkItem.java:338)
+    at
+de.fhg.fokus.monster.apps.impl.ims.ModuleWorkItem.profileActivating(ModuleWorkItem.java:674)
+    at
+de.fhg.fokus.config.ProfileService.fireProfileActivating(ProfileService.java:568)
+    at de.fhg.fokus.config.ProfileService.activate(ProfileService.java:205)
+    at
+de.fhg.fokus.monster.LoginWorkItem$4$1.execute(LoginWorkItem.java:180)
+    at
+de.fhg.fokus.ims.client.util.ExtendedTaskAdapter.execute(ExtendedTaskAdapter.java:26)
+    at de.fhg.fokus.ims.client.util.TaskService.run(TaskService.java:108)
+    at java.lang.Thread.run(Thread.java:619)
+
+
+I sincerely apologise for this long query mail ,
+
+Regards,
+
+Sougata
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100802/31b1d1d8/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100802/31b1d1d8/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="006382.html">[OpenIMSCore-Users] Query for Cx Interface failing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6381">[ date ]</a>
+              <a href="thread.html#6381">[ thread ]</a>
+              <a href="subject.html#6381">[ subject ]</a>
+              <a href="author.html#6381">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

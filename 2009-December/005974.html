@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P-CSCF not complying RFC 3680
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20not%20complying%20RFC%203680&In-Reply-To=%3C79CCBF311733CD41A173AD8DB59D4F36012F0FA5%40ex2-del1.synapse.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005969.html">
+   <LINK REL="Next"  HREF="005976.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P-CSCF not complying RFC 3680</H1>
+    <B>Preeti Khurana</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20not%20complying%20RFC%203680&In-Reply-To=%3C79CCBF311733CD41A173AD8DB59D4F36012F0FA5%40ex2-del1.synapse.com%3E"
+       TITLE="[OpenIMSCore-Users] P-CSCF not complying RFC 3680">preeti.khurana at globallogic.com
+       </A><BR>
+    <I>Mon Dec 21 12:15:19 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005969.html">[OpenIMSCore-Users] registration with different IMPI and IMPU
+</A></li>
+        <LI>Next message: <A HREF="005976.html">[OpenIMSCore-Users] OpenIMSCore forwards the Requests without terminating Require header with '\r\n'
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5974">[ date ]</a>
+              <a href="thread.html#5974">[ thread ]</a>
+              <a href="subject.html#5974">[ subject ]</a>
+              <a href="author.html#5974">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks Dragos for the information
+
+
+For your second point on storage of reginfo document, I see in the code
+(r_notification_process), we are calling update_r_contact with service
+route related args sets to NULL and in that function we simply return if
+this is NULL. So effectively there is no update happening on any
+database maintained by PCSCF for such Notifications. 
+And this is required as per RFC 3680 because a subscriber maintains
+tables as per subscriptions and update them as per Partial or Full data
+coming in Notify, which is the basic 3680 processing of the reginfo doc.
+In other words, P-CSCF does not comply 3680 in this respect as well as
+of today. It just parses the xml.
+
+Let me know if I am missing something here.
+
+Thanks
+Preeti
+
+
+-----Original Message-----
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-request at lists.berlios.de</A>
+Sent: Saturday, December 19, 2009 4:31 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: OpenIMSCore-Users Digest, Vol 38, Issue 14
+
+Send OpenIMSCore-Users mailing list submissions to
+	<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+
+To subscribe or unsubscribe via the World Wide Web, visit
+	<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+or, via email, send a message with subject or body 'help' to
+	<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-request at lists.berlios.de</A>
+
+You can reach the person managing the list at
+	<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-owner at lists.berlios.de</A>
+
+When replying, please edit your Subject line so it is more specific
+than &quot;Re: Contents of OpenIMSCore-Users digest...&quot;
+
+
+Today's Topics:
+
+   1. Re: Facing issues running HSS (Dragos Vingarzan)
+   2. Re: P-CSCF not complying RFC 3680 (Dragos Vingarzan)
+
+
+----------------------------------------------------------------------
+
+Message: 1
+Date: Fri, 18 Dec 2009 12:25:04 +0100
+From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+Subject: Re: [OpenIMSCore-Users] Facing issues running HSS
+To: Varun Gupta &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">varun.gupta at aricent.com</A>&gt;
+Cc: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&quot;
+	&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;,	Narayan Das Gupta
+	&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">narayan.gupta at aricent.com</A>&gt;
+Message-ID: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">4B2B6690.3090308 at fokus.fraunhofer.de</A>&gt;
+Content-Type: text/plain; charset=windows-1252; format=flowed
+
+Hi Varun,
+
+regarding killser - put that script into your PATH
+
+regarding the mysql module, you need to install libmysqlclient15-dev
+
+Cheers,
+-Dragos
+
+Varun Gupta wrote:
+&gt;<i>
+</I>&gt;<i> Hi All,
+</I>&gt;<i>
+</I>&gt;<i> I am getting following error while running ICSCF but my SCSCF and 
+</I>&gt;<i> PCSCF are running fine:
+</I>&gt;<i>
+</I>&gt;<i> /./icscf.sh/
+</I>&gt;<i> &gt;/     &gt;/
+</I>&gt;<i> &gt;/     &gt; ./icscf.sh: line 3: killser: command not found/
+</I>&gt;<i> &gt;/     &gt;/
+</I>&gt;<i> &gt;/     &gt;  0(6427) ERROR: load_module: could not open module/
+</I>&gt;<i> &gt;/     &gt; &lt;/opt/OpenIMSCore/ser_ims/modules/mysql/mysql.so&gt;:/
+</I>&gt;<i> &gt;/     &gt; libmysqlclient.so.15: cannot open shared object file: No
+</I>such/
+&gt;<i> &gt;/     file or/
+</I>&gt;<i> &gt;/     &gt; directory/
+</I>&gt;<i> &gt;/     &gt;/
+</I>&gt;<i>
+</I>&gt;<i> And also finding error while running HSS:
+</I>&gt;<i>
+</I>&gt;<i> /./FHoSS/deploy/startup.sh/
+</I>&gt;<i> &gt;/     &gt;/
+</I>&gt;<i> &gt;/     &gt; Building Classpath/
+</I>&gt;<i> &gt;/     &gt;/
+</I>&gt;<i> &gt;/     &gt; Classpath is lib/*.jar::log4j.properties:../
+</I>&gt;<i> &gt;/     &gt;/
+</I>&gt;<i> &gt;/     &gt; Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError:/
+</I>&gt;<i> &gt;/     &gt; de/fhg/fokus/hss/main/HSSContainer/
+</I>&gt;<i> &gt;/     &gt;unable to resolve de.fhg.focus.hss.main.HSSContainer/
+</I>&gt;<i> &gt;/     &gt;/
+</I>&gt;<i>
+</I>&gt;<i> Command I used to run HSS from a shell file:
+</I>&gt;<i>
+</I>&gt;<i> Java ?cp $CALSSPATH /de.fhg.focus.hss.main.HSSContainer $1 $2 $3 $4/
+</I>&gt;<i>
+</I>&gt;<i> / /
+</I>&gt;<i>
+</I>&gt;<i> /Where there is nothing that I pass in command for command line
+</I>argument./
+&gt;<i>
+</I>&gt;<i> In case more info is required please let me know and thanks in
+</I>advance.
+&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i>
+</I>&gt;<i> Varun
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>------------------------------------------------------------------------
+&gt;<i> &quot;DISCLAIMER: This message is proprietary to Aricent and is intended 
+</I>&gt;<i> solely for the use of the individual to whom it is addressed. It may 
+</I>&gt;<i> contain privileged or confidential information and should not be 
+</I>&gt;<i> circulated or used for any purpose other than for what it is intended.
+</I>
+&gt;<i> If you have received this message in error, please notify the 
+</I>&gt;<i> originator immediately. If you are not the intended recipient, you are
+</I>
+&gt;<i> notified that you are strictly prohibited from using, copying, 
+</I>&gt;<i> altering, or disclosing the contents of this message. Aricent accepts 
+</I>&gt;<i> no responsibility for loss or damage arising from the use of the 
+</I>&gt;<i> information transmitted by this email including damage from virus.&quot;
+</I>&gt;<i>
+</I>------------------------------------------------------------------------
+&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+------------------------------
+
+Message: 2
+Date: Fri, 18 Dec 2009 12:29:41 +0100
+From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+Subject: Re: [OpenIMSCore-Users] P-CSCF not complying RFC 3680
+To: Preeti Khurana &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">preeti.khurana at globallogic.com</A>&gt;
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Message-ID: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">4B2B67A5.4070106 at fokus.fraunhofer.de</A>&gt;
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+
+Hi Preeti,
+
+regarding the version, you are right - this feature is not yet 
+implemented. We're trying to cover as much functionality with as little 
+effort. While the version would be helpful, this is only true on some 
+limit situations. Anyway, patches and improvements are welcomed.
+
+Regarding the storage of the reginfo document, the P-CSCF parses the 
+information and keeps it's local version of the registrar synchronized 
+with the status on the S-CSCFs. I don't see any need in keeping the 
+entire document in memory after this update operation. Or is there any?
+
+Cheers,
+-Dragos
+
+
+Preeti Khurana wrote:
+&gt;<i>
+</I>&gt;<i> My application acts as a registrar and has all the data for 
+</I>&gt;<i> registrations occurring on the box. The same needs to be sent over to 
+</I>&gt;<i> a Presence Server through Registration Event mechanism specified in 
+</I>&gt;<i> RFC 3680. I am using PCSCF for testing out this feature on my end, 
+</I>&gt;<i> where a Notify is sent to PCSCF with reginfo in the msgbody.  I get a 
+</I>&gt;<i> successful response of 200 Ok.   But by looking at the code, I see 
+</I>&gt;<i> that pcscf completely ignores the version field in the reginfo 
+</I>&gt;<i> document. Also, it just parses the xml and prints it in log . It does 
+</I>&gt;<i> NOT maintain any kind of database per subscription.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Does anyone know if its partially implemented  or the current 
+</I>&gt;<i> implementation is meant for something else.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Thanks
+</I>&gt;<i>
+</I>&gt;<i> Preeti
+</I>&gt;<i>
+</I>&gt;<i>
+</I>------------------------------------------------------------------------
+&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+------------------------------
+
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+
+End of OpenIMSCore-Users Digest, Vol 38, Issue 14
+*************************************************
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005969.html">[OpenIMSCore-Users] registration with different IMPI and IMPU
+</A></li>
+	<LI>Next message: <A HREF="005976.html">[OpenIMSCore-Users] OpenIMSCore forwards the Requests without terminating Require header with '\r\n'
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5974">[ date ]</a>
+              <a href="thread.html#5974">[ thread ]</a>
+              <a href="subject.html#5974">[ subject ]</a>
+              <a href="author.html#5974">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

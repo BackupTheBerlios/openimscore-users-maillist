@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] hss problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20hss%20problems&In-Reply-To=%3C495243.83075.qm%40web37005.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="006295.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] hss problems</H1>
+    <B>Ionescu Antonio</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20hss%20problems&In-Reply-To=%3C495243.83075.qm%40web37005.mail.mud.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] hss problems">ionescu_antonio at yahoo.com
+       </A><BR>
+    <I>Thu Jul  1 16:58:58 CEST 2010</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="006295.html">[OpenIMSCore-Users] hss problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6294">[ date ]</a>
+              <a href="thread.html#6294">[ thread ]</a>
+              <a href="subject.html#6294">[ subject ]</a>
+              <a href="author.html#6294">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've installed the IMS Bench&#160;SIPp application and I'm running some tests&#160;on openimscore. It doesn't&#160;seem to work properly. Both SIPp and OpenIMSCore are configured with the default settings, I've only changed&#160;the ip addresses. Can you please help me?
+I'll attach the log files for all the entities:
+&#160;
+1. P-CSCF (nothing unusual here)
+&#160;
+debian:/etc/openimscore# tail -f /var/log/OpenIMSCore/pcscf.log 
+&#160;5(9427) INF:P-CSCF:----------&#160; Subscription list end -----------
+&#160;5(9427) INF:P-CSCF:----------&#160; Registrar Contents begin --------
+&#160;5(9427) INF:P-CSCF:----------&#160; Registrar Contents end ----------
+&#160;5(9427) INF:P-CSCF:----------&#160; Subscription list begin ---------
+&#160;5(9427) INF:P-CSCF:----------&#160; Subscription list end -----------
+
+2. S-CSCF (it seems to be working just fine)
+&#160;
+14(9496) --- Peer List: ---
+14(9496)&#160; S[I_Open] hss.open-ims.test:3868 D[ ]
+14(9496) &#160; [16777216,10415]
+14(9496) &#160; [16777216,4491]
+14(9496) &#160; [16777216,13019]
+14(9496) &#160; [16777217,10415]
+14(9496) &#160; [16777221,10415]
+14(9496) ------------------
+&#160;5(9487) INF:S-CSCF:----------&#160; S-CSCF Dialog List begin --------------
+&#160;5(9487) INF:S-CSCF:----------&#160; S-CSCF Dialog List end&#160;&#160; --------------
+
+3. I-CSCF 
+&#160;
+14(9565) --- Peer List: ---
+14(9565)&#160; S[I_Open] hss.open-ims.test:3868 D[ ]
+14(9565) &#160; [16777216,10415]
+14(9565) &#160; [16777216,4491]
+14(9565) &#160; [16777216,13019]
+14(9565) &#160; [16777217,10415]
+14(9565) &#160; [16777221,10415]
+14(9565) ------------------
+&#160;5(9556) WARNING: -_set_fr_timer- already added: 0xb640bde8 , tl=0xb640bdf8!!!
+&#160;5(9556) BUG: set_final_timer: start retr failed for 0xb640bde8
+&#160;1(9552) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+&#160;1(9552) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+&#160;1(9552) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+&#160;1(9552) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+&#160;1(9552) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+&#160;1(9552) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+&#160;1(9552) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+&#160;1(9552) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+&#160;1(9552) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+&#160;1(9552) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+&#160;4(9555) WARNING: t_reply: ACKs are not replied
+&#160;3(9554) ERROR: forward_reply: no 2nd via found in reply
+&#160;2(9553) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+
+4. HSS (some problems here, but I don't know exactly what's wrong)
+4.1. from de /hss.activities.log
+&#160;
+2010-07-01 16:36:41,374 [Thread-13] DEBUG de.fhg.fokus.hss.main.Task&#160; - Processing LIR!
+2010-07-01 16:36:41,379 [Thread-14] DEBUG de.fhg.fokus.hss.main.Task&#160; - Processing LIR!
+
+4.2. from the /hss.server.log
+&#160;
+2010-07-01 15:06:40,807 [Thread-24] ERROR de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine&#160; - StateMachine: Peer scscf.open-ims.test:3870 not responding to connection attempt 
+2010-07-01 15:20:26,505 [main] WARN&#160; org.apache.catalina.connector.MapperListener&#160; - Unknown default host: 192.168.182.131
+2010-07-01 15:20:29,888 [main] WARN&#160; org.hibernate.impl.SessionFactoryObjectFactory&#160; - InitialContext did not implement EventContext
+2010-07-01 15:20:29,970 [Thread-24] ERROR de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine&#160; - StateMachine: Peer icscf.open-ims.test:3869 not responding to connection attempt 
+
+Thanks,
+Antonio
+&#160;
+
+
+      
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100701/dbb85c92/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100701/dbb85c92/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="006295.html">[OpenIMSCore-Users] hss problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6294">[ date ]</a>
+              <a href="thread.html#6294">[ thread ]</a>
+              <a href="subject.html#6294">[ subject ]</a>
+              <a href="author.html#6294">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,601 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Client for IPSec AKA remotely	from	OpenIMSCore
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Client%20for%20IPSec%20AKA%20remotely%0A%09from%09OpenIMSCore&In-Reply-To=%3C20071120224831.7C58210B4BF%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002954.html">
+   <LINK REL="Next"  HREF="002903.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Client for IPSec AKA remotely	from	OpenIMSCore</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Client%20for%20IPSec%20AKA%20remotely%0A%09from%09OpenIMSCore&In-Reply-To=%3C20071120224831.7C58210B4BF%40mail.berlios.de%3E"
+       TITLE="[OpenIMSCore-Users] Client for IPSec AKA remotely	from	OpenIMSCore">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Tue Nov 20 23:45:26 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002954.html">[OpenIMSCore-Users] Client for IPSec AKA remotely	from	OpenIMSCore
+</A></li>
+        <LI>Next message: <A HREF="002903.html">[OpenIMSCore-Users] I need feedback on the new ISC functionality
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2968">[ date ]</a>
+              <a href="thread.html#2968">[ thread ]</a>
+              <a href="subject.html#2968">[ subject ]</a>
+              <a href="author.html#2968">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sure, I'm just going to add some comments (especially to the timers) and
+adjust the script to the old one (I moved my script from SIPp-directory)..
+
+Br, Klemens
+
+&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;<i> Sent: Dienstag, 20. November 2007 12:29
+</I>&gt;<i> To: Marc Archer
+</I>&gt;<i> Cc: Klemens Schragel; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] Client for IPSec AKA remotely from
+</I>&gt;<i> OpenIMSCore
+</I>&gt;<i> 
+</I>&gt;<i> So :), I thought about just dropping by and picking the results.
+</I>&gt;<i> 
+</I>&gt;<i> It seems that the published SIPp scenarios are buggy... Do you guys have
+</I>&gt;<i> a new archive that I could replace with?
+</I>&gt;<i> 
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> Marc Archer wrote:
+</I>&gt;<i> &gt; Hi Klemens,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; It turned out to be a parsing error of the port-s value in the 401
+</I>&gt;<i> &gt; received by the P-CSCF. Hacky I know, but I hardcoded it to the same
+</I>&gt;<i> &gt; value configured on the P-CSCF, and now, I see the 2nd register over
+</I>&gt;<i> ESP.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I added the pause and the clean up of spis.csv you suggested below -
+</I>&gt;<i> &gt; thanks!
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks again for the help.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Cheers,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Marc
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On Nov 9, 2007 3:40 AM, Klemens Schragel &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>
+</I>&gt;<i> &gt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt;&gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     Hi Marc,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     I sometimes had the same problem, but I'm not realy sure why...
+</I>&gt;<i> &gt;     could you send me a trace?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     However, I've attached my scenario, additional &quot;my scenario
+</I>&gt;<i> story&quot;...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     1st runIPSEC.sh:
+</I>&gt;<i> &gt;     for now I just wanted to see the REGISTER, thus after scenario
+</I>&gt;<i> &gt;     execution the creates SAs are not needed anymore. So I flush the
+</I>&gt;<i> &gt;     SAD (setkey -F). SADs are not flushed, every scenario execution
+</I>&gt;<i> &gt;     creates new ones =&gt; problems could occure due to overlapping
+</I>&gt;<i> &gt;     parameters (ceated SADs stay active until... I don't know...
+</I>&gt;<i> &gt;     restart?)
+</I>&gt;<i> &gt;     furthermore SIPp had sometimes problems overwriting the
+</I>&gt;<i> &gt;     spis.csv... I have no clue why, however, after scenario execution
+</I>&gt;<i> &gt;     the stored information is useless anyway so I remove the file.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     regIPSEC1.xml:
+</I>&gt;<i> &gt;     here we have the first timer (&lt;pause milliseconds=&quot;2000&quot;/&gt;)...
+</I>&gt;<i> &gt;     after adding the &quot;rm spis.csv&quot; I often figured out problems by
+</I>&gt;<i> &gt;     executing the next scenario: &quot;file not found&quot;.. So I added a timer
+</I>&gt;<i> &gt;     to give SIPp some time to create the file.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     regIPSEC2.xml:
+</I>&gt;<i> &gt;     maybe due to the missing removement of the legacy scenario SADs I
+</I>&gt;<i> &gt;     noticed a quit odd behaviour: regIPSEC2.xml was not executed, the
+</I>&gt;<i> &gt;     script jumped somehow jumped from 1 to 3. Moreover, when this
+</I>&gt;<i> &gt;     behaviour occured the whole shell crashed after canceling
+</I>&gt;<i> &gt;     regIPSEC3.xml... the 3 second timer just eases to see whether this
+</I>&gt;<i> &gt;     xml was played or skipped
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     regIPSEC3.xml:
+</I>&gt;<i> &gt;     I added a timeout for the 200 Ok, but this timer did't work yet...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     br, Klemens
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     -------- Original-Nachricht --------
+</I>&gt;<i> &gt;     &gt; Datum: Thu, 8 Nov 2007 17:22:13 -0500
+</I>&gt;<i> &gt;     &gt; Von: &quot;Marc Archer&quot; &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">marc.archer at gmail.com</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">marc.archer at gmail.com</A>&gt;&gt;
+</I>&gt;<i> &gt;     &gt; An: &quot;Klemens Schragel&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt;&gt;
+</I>&gt;<i> &gt;     &gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;<i> &gt;     &gt; Betreff: Re: [OpenIMSCore-Users] Client for IPSec AKA remotely
+</I>&gt;<i> &gt;     from OpenIMSCore
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     &gt; Hi Klemens,
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; I fixed that particular issue by altering the regexp in
+</I>&gt;<i> &gt;     &gt; scenarios/regIPSEC1.xml to match the Security-Server header I
+</I>&gt;<i> &gt;     get from my
+</I>&gt;<i> &gt;     &gt; P-CSCF.
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; Now the SAs are being created by the ipsec/ipsec-E* scripts which
+</I>&gt;<i> is
+</I>&gt;<i> &gt;     &gt; great.
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; However, I do not see the second register going out over IPSec.
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; If I run the runIPSEC.sh script I don't see the second Register
+</I>&gt;<i> &gt;     going out
+</I>&gt;<i> &gt;     &gt; at
+</I>&gt;<i> &gt;     &gt; all.
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; If I run the first two sipp commands contained in runIPSEC.sh
+</I>&gt;<i> &gt;     from the
+</I>&gt;<i> &gt;     &gt; command line one after the other, I see the second Register
+</I>&gt;<i> &gt;     going out over
+</I>&gt;<i> &gt;     &gt; UDP from port 12345 to port 5060 of the P-CSCF, not over IPSec.
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; Any ideas? I presume all is good with the kernel settings as I'm
+</I>&gt;<i> &gt;     &gt; running 2.6I presume all is good with the ipsec-tools as setkey is
+</I>&gt;<i> &gt;     &gt; working, and I was
+</I>&gt;<i> &gt;     &gt; able to test this setup with manual keying in the past.
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]# uname -a
+</I>&gt;<i> &gt;     &gt; Linux sipp-server 2.6.9-42.ELsmp #1 SMP Sat Aug 12 09:39:11 CDT
+</I>&gt;<i> &gt;     2006 i686
+</I>&gt;<i> &gt;     &gt; i686 i386 GNU/Linux
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; Cheers,
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; Marc
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; On Nov 8, 2007 4:16 PM, Marc Archer &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">marc.archer at gmail.com</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">marc.archer at gmail.com</A>&gt;&gt; wrote:
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; &gt; Hi Klemens,
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; Registration would be a start, but the goal is bob calls
+</I>&gt;<i> &gt;     alice, after
+</I>&gt;<i> &gt;     &gt; both
+</I>&gt;<i> &gt;     &gt; &gt; are registered.
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; The behaviour I'm seeing is that spis.csv is populated
+</I>&gt;<i> &gt;     correctly, but
+</I>&gt;<i> &gt;     &gt; &gt; setkey -D shows no SAs being created by the external calls to
+</I>&gt;<i> &gt;     &gt; ipsec/ipsec-E*
+</I>&gt;<i> &gt;     &gt; &gt; scripts.
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; However, if I take the inputs from spis.csv and ck_key and
+</I>&gt;<i> &gt;     ik_key (which
+</I>&gt;<i> &gt;     &gt; I
+</I>&gt;<i> &gt;     &gt; &gt; dump to another file), then run the ipsec/ipsec-E* scripts at
+</I>&gt;<i> the
+</I>&gt;<i> &gt;     &gt; command
+</I>&gt;<i> &gt;     &gt; &gt; line the SAs are established (see at the end of this email)
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; Does setting timers, removing files (that you mention below)
+</I>&gt;<i> &gt;     help with
+</I>&gt;<i> &gt;     &gt; &gt; that particular issue?
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; Out of interest, why is it necessary to pass ck_key and ik_key
+</I>&gt;<i> &gt;     to the
+</I>&gt;<i> &gt;     &gt; &gt; ipsec/ipsec-E* scripts if they are not used within the scripts
+</I>&gt;<i> &gt;     to call
+</I>&gt;<i> &gt;     &gt; &gt; setkey?
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; Cheers,
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; Marc
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]#
+</I>&gt;<i> &gt;     ipsec/ipsec_E_Out_Req.sh
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.10 &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt; 12345 192.168.0.100
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt; 3458 2036 aes-cbc
+</I>&gt;<i> &gt;     &gt; &gt; 0x0808ed0e8b5f8546205084704538fa72 hmac-md5-96
+</I>&gt;<i> &gt;     &gt; &gt; 0x6e0be85f60e175aeade147ed2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt; The result of line 1: File exists.
+</I>&gt;<i> &gt;     &gt; &gt; The result of line 2: File exists.
+</I>&gt;<i> &gt;     &gt; &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]# setkey -D
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.10 &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt; 192.168.0.100
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt;
+</I>&gt;<i> &gt;     &gt; &gt;         esp mode=transport spi=2036(0x000007f4)
+</I>&gt;<i> &gt;     reqid=1(0x00000001)
+</I>&gt;<i> &gt;     &gt; &gt;         E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+</I>&gt;<i> &gt;     &gt; &gt;         A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt;         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;<i> &gt;     &gt; &gt;         created: Nov  8 16:06:21 2007   current: Nov  8
+</I>&gt;<i> &gt;     16:06:26 2007
+</I>&gt;<i> &gt;     &gt; &gt;         diff: 5(s)      hard: 0(s)      soft: 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         last:                           hard: 0(s)      soft:
+</I>&gt;<i> 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;<i> &gt;     &gt; &gt;         allocated: 0    hard: 0 soft: 0
+</I>&gt;<i> &gt;     &gt; &gt;         sadb_seq=0 pid=716 refcnt=0
+</I>&gt;<i> &gt;     &gt; &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]#
+</I>&gt;<i> &gt;     ipsec/ipsec_E_Out_Rpl.sh
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.10 &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt; 3062 192.168.0.100
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt; 3457 2035 aes-cbc
+</I>&gt;<i> &gt;     &gt; &gt; 0x0808ed0e8b5f8546205084704538fa72 hmac-md5-96
+</I>&gt;<i> &gt;     &gt; &gt; 0x6e0be85f60e175aeade147ed2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt; The result of line 1: File exists.
+</I>&gt;<i> &gt;     &gt; &gt; The result of line 2: File exists.
+</I>&gt;<i> &gt;     &gt; &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]# setkey -D
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.10 &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt; 192.168.0.100
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt;
+</I>&gt;<i> &gt;     &gt; &gt;         esp mode=transport spi=2035(0x000007f3)
+</I>&gt;<i> &gt;     reqid=2(0x00000002)
+</I>&gt;<i> &gt;     &gt; &gt;         E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+</I>&gt;<i> &gt;     &gt; &gt;         A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt;         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;<i> &gt;     &gt; &gt;         created: Nov  8 16:09:20 2007   current: Nov  8
+</I>&gt;<i> &gt;     16:09:23 2007
+</I>&gt;<i> &gt;     &gt; &gt;         diff: 3(s)      hard: 0(s)      soft: 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         last:                           hard: 0(s)      soft:
+</I>&gt;<i> 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;<i> &gt;     &gt; &gt;         allocated: 0    hard: 0 soft: 0
+</I>&gt;<i> &gt;     &gt; &gt;         sadb_seq=1 pid=736 refcnt=0
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.10 &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt; 192.168.0.100
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt;
+</I>&gt;<i> &gt;     &gt; &gt;         esp mode=transport spi=2036(0x000007f4)
+</I>&gt;<i> &gt;     reqid=1(0x00000001)
+</I>&gt;<i> &gt;     &gt; &gt;         E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+</I>&gt;<i> &gt;     &gt; &gt;         A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt;         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;<i> &gt;     &gt; &gt;         created: Nov  8 16:06:21 2007   current: Nov  8
+</I>&gt;<i> &gt;     16:09:23 2007
+</I>&gt;<i> &gt;     &gt; &gt;         diff: 182(s)    hard: 0(s)      soft: 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         last:                           hard: 0(s)      soft:
+</I>&gt;<i> 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;<i> &gt;     &gt; &gt;         allocated: 0    hard: 0 soft: 0
+</I>&gt;<i> &gt;     &gt; &gt;         sadb_seq=0 pid=736 refcnt=0
+</I>&gt;<i> &gt;     &gt; &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]#
+</I>&gt;<i> &gt;     ipsec/ipsec_E_Inc_Req.sh
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.10 &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt; 3062 192.168.0.100
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt; 2048 2035 aes-cbc
+</I>&gt;<i> &gt;     &gt; &gt; 0x0808ed0e8b5f8546205084704538fa72 hmac-md5-96
+</I>&gt;<i> &gt;     &gt; &gt; 0x6e0be85f60e175aeade147ed2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt; The result of line 1: File exists.
+</I>&gt;<i> &gt;     &gt; &gt; The result of line 1: File exists.
+</I>&gt;<i> &gt;     &gt; &gt; The result of line 2: File exists.
+</I>&gt;<i> &gt;     &gt; &gt; The result of line 2: File exists.
+</I>&gt;<i> &gt;     &gt; &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]# setkey -D
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.100 &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt; 192.168.0.10
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt;
+</I>&gt;<i> &gt;     &gt; &gt;         esp mode=transport spi=2035(0x000007f3)
+</I>&gt;<i> &gt;     reqid=0(0x00000000)
+</I>&gt;<i> &gt;     &gt; &gt;         E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+</I>&gt;<i> &gt;     &gt; &gt;         A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt;         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;<i> &gt;     &gt; &gt;         created: Nov  8 16:10:17 2007   current: Nov  8
+</I>&gt;<i> &gt;     16:10:21 2007
+</I>&gt;<i> &gt;     &gt; &gt;         diff: 4(s)      hard: 0(s)      soft: 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         last:                           hard: 0(s)      soft:
+</I>&gt;<i> 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;<i> &gt;     &gt; &gt;         allocated: 0    hard: 0 soft: 0
+</I>&gt;<i> &gt;     &gt; &gt;         sadb_seq=2 pid=761 refcnt=0
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.10 &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt; 192.168.0.100
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt;
+</I>&gt;<i> &gt;     &gt; &gt;         esp mode=transport spi=2035(0x000007f3)
+</I>&gt;<i> &gt;     reqid=2(0x00000002)
+</I>&gt;<i> &gt;     &gt; &gt;         E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+</I>&gt;<i> &gt;     &gt; &gt;         A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt;         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;<i> &gt;     &gt; &gt;         created: Nov  8 16:09:20 2007   current: Nov  8
+</I>&gt;<i> &gt;     16:10:21 2007
+</I>&gt;<i> &gt;     &gt; &gt;         diff: 61(s)     hard: 0(s)      soft: 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         last:                           hard: 0(s)      soft:
+</I>&gt;<i> 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;<i> &gt;     &gt; &gt;         allocated: 0    hard: 0 soft: 0
+</I>&gt;<i> &gt;     &gt; &gt;         sadb_seq=1 pid=761 refcnt=0
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.10 &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt; 192.168.0.100
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt;
+</I>&gt;<i> &gt;     &gt; &gt;         esp mode=transport spi=2036(0x000007f4)
+</I>&gt;<i> &gt;     reqid=1(0x00000001)
+</I>&gt;<i> &gt;     &gt; &gt;         E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+</I>&gt;<i> &gt;     &gt; &gt;         A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt;         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;<i> &gt;     &gt; &gt;         created: Nov  8 16:06:21 2007   current: Nov  8
+</I>&gt;<i> &gt;     16:10:21 2007
+</I>&gt;<i> &gt;     &gt; &gt;         diff: 240(s)    hard: 0(s)      soft: 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         last:                           hard: 0(s)      soft:
+</I>&gt;<i> 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;<i> &gt;     &gt; &gt;         allocated: 0    hard: 0 soft: 0
+</I>&gt;<i> &gt;     &gt; &gt;         sadb_seq=0 pid=761 refcnt=0
+</I>&gt;<i> &gt;     &gt; &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]#
+</I>&gt;<i> &gt;     ipsec/ipsec_E_Inc_Rpl.sh
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.10 &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt; 12345 192.168.0.100
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt; 1024 3458 aes-cbc
+</I>&gt;<i> &gt;     &gt; &gt; 0x0808ed0e8b5f8546205084704538fa72 hmac-md5-96
+</I>&gt;<i> &gt;     &gt; &gt; 0x6e0be85f60e175aeade147ed2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt; The result of line 1: File exists.
+</I>&gt;<i> &gt;     &gt; &gt; The result of line 1: File exists.
+</I>&gt;<i> &gt;     &gt; &gt; The result of line 2: File exists.
+</I>&gt;<i> &gt;     &gt; &gt; The result of line 2: File exists.
+</I>&gt;<i> &gt;     &gt; &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]# setkey -D
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.100 &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt; 192.168.0.10
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt;
+</I>&gt;<i> &gt;     &gt; &gt;         esp mode=transport spi=3458(0x00000d82)
+</I>&gt;<i> &gt;     reqid=0(0x00000000)
+</I>&gt;<i> &gt;     &gt; &gt;         E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+</I>&gt;<i> &gt;     &gt; &gt;         A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt;         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;<i> &gt;     &gt; &gt;         created: Nov  8 16:11:15 2007   current: Nov  8
+</I>&gt;<i> &gt;     16:11:16 2007
+</I>&gt;<i> &gt;     &gt; &gt;         diff: 1(s)      hard: 0(s)      soft: 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         last:                           hard: 0(s)      soft:
+</I>&gt;<i> 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;<i> &gt;     &gt; &gt;         allocated: 0    hard: 0 soft: 0
+</I>&gt;<i> &gt;     &gt; &gt;         sadb_seq=3 pid=798 refcnt=0
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.100 &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt; 192.168.0.10
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt;
+</I>&gt;<i> &gt;     &gt; &gt;         esp mode=transport spi=2035(0x000007f3)
+</I>&gt;<i> &gt;     reqid=0(0x00000000)
+</I>&gt;<i> &gt;     &gt; &gt;         E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+</I>&gt;<i> &gt;     &gt; &gt;         A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt;         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;<i> &gt;     &gt; &gt;         created: Nov  8 16:10:17 2007   current: Nov  8
+</I>&gt;<i> &gt;     16:11:16 2007
+</I>&gt;<i> &gt;     &gt; &gt;         diff: 59(s)     hard: 0(s)      soft: 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         last:                           hard: 0(s)      soft:
+</I>&gt;<i> 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;<i> &gt;     &gt; &gt;         allocated: 0    hard: 0 soft: 0
+</I>&gt;<i> &gt;     &gt; &gt;         sadb_seq=2 pid=798 refcnt=0
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.10 &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt; 192.168.0.100
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt;
+</I>&gt;<i> &gt;     &gt; &gt;         esp mode=transport spi=2035(0x000007f3)
+</I>&gt;<i> &gt;     reqid=2(0x00000002)
+</I>&gt;<i> &gt;     &gt; &gt;         E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+</I>&gt;<i> &gt;     &gt; &gt;         A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt;         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;<i> &gt;     &gt; &gt;         created: Nov  8 16:09:20 2007   current: Nov  8
+</I>&gt;<i> &gt;     16:11:16 2007
+</I>&gt;<i> &gt;     &gt; &gt;         diff: 116(s)    hard: 0(s)      soft: 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         last:                           hard: 0(s)      soft:
+</I>&gt;<i> 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;<i> &gt;     &gt; &gt;         allocated: 0    hard: 0 soft: 0
+</I>&gt;<i> &gt;     &gt; &gt;         sadb_seq=1 pid=798 refcnt=0
+</I>&gt;<i> &gt;     &gt; &gt; 192.168.0.10 &lt;<A HREF="http://192.168.0.10">http://192.168.0.10</A>&gt; 192.168.0.100
+</I>&gt;<i> &gt;     &lt;<A HREF="http://192.168.0.100">http://192.168.0.100</A>&gt;
+</I>&gt;<i> &gt;     &gt; &gt;         esp mode=transport spi=2036(0x000007f4)
+</I>&gt;<i> &gt;     reqid=1(0x00000001)
+</I>&gt;<i> &gt;     &gt; &gt;         E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+</I>&gt;<i> &gt;     &gt; &gt;         A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+</I>&gt;<i> &gt;     &gt; &gt;         seq=0x00000000 replay=0 flags=0x00000000 state=mature
+</I>&gt;<i> &gt;     &gt; &gt;         created: Nov  8 16:06:21 2007   current: Nov  8
+</I>&gt;<i> &gt;     16:11:16 2007
+</I>&gt;<i> &gt;     &gt; &gt;         diff: 295(s)    hard: 0(s)      soft: 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         last:                           hard: 0(s)      soft:
+</I>&gt;<i> 0(s)
+</I>&gt;<i> &gt;     &gt; &gt;         current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+</I>&gt;<i> &gt;     &gt; &gt;         allocated: 0    hard: 0 soft: 0
+</I>&gt;<i> &gt;     &gt; &gt;         sadb_seq=0 pid=798 refcnt=0
+</I>&gt;<i> &gt;     &gt; &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]#
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; On Nov 8, 2007 1:06 PM, Klemens Schragel &lt;
+</I>&gt;<i> &gt;     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt; &gt;
+</I>&gt;<i> &gt;     &gt; wrote:
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;  Hi Marc,
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; I had the same problem with clients you mentioned, that's
+</I>&gt;<i> &gt;     why I'm
+</I>&gt;<i> &gt;     &gt; using
+</I>&gt;<i> &gt;     &gt; &gt; &gt; SIPp...
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; The first error is easily solved when the single SPI set to
+</I>&gt;<i> &gt;     2028 is
+</I>&gt;<i> &gt;     &gt; &gt; &gt; changed to 2048. At this point you might be able to register
+</I>&gt;<i> to
+</I>&gt;<i> &gt;     &gt; open-ims (I
+</I>&gt;<i> &gt;     &gt; &gt; &gt; needed some minor changes, by setting timers and removing
+</I>&gt;<i> &gt;     files), just
+</I>&gt;<i> &gt;     &gt; the
+</I>&gt;<i> &gt;     &gt; &gt; &gt; regIPSEC3.xml is closed with an error-message (I didn't care
+</I>&gt;<i> &gt;     much
+</I>&gt;<i> &gt;     &gt; about
+</I>&gt;<i> &gt;     &gt; &gt; &gt; that yet because I just wanted to register over IPSec).
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; What do you plan to test with your client?
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; Br, Klemens
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;   ------------------------------
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; *From:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>&gt; [mailto:
+</I>&gt;<i> &gt;     &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>&gt;] *On Behalf Of
+</I>&gt;<i> &gt;     *Marc Archer
+</I>&gt;<i> &gt;     &gt; &gt; &gt; *Sent:* Donnerstag, 08. November 2007 18:31
+</I>&gt;<i> &gt;     &gt; &gt; &gt; *To:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; *Subject:* [OpenIMSCore-Users] Client for IPSec AKA remotely
+</I>&gt;<i> &gt;     from
+</I>&gt;<i> &gt;     &gt; &gt; &gt; OpenIMSCore
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; Hi,
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; Does anyone have a recommendation for a client for IPSec AKA
+</I>&gt;<i> &gt;     and
+</I>&gt;<i> &gt;     &gt; &gt; &gt; OpenIMSCore?
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; I need the client to be on a linux server remote from the
+</I>&gt;<i> &gt;     OpenIMS
+</I>&gt;<i> &gt;     &gt; &gt; &gt; installation.
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; First, I tried the patched version of SIPP available on
+</I>&gt;<i> &gt;     &gt; openimscore.org &lt;<A HREF="http://openimscore.org">http://openimscore.org</A>&gt;,
+</I>&gt;<i> &gt;     &gt; &gt; &gt; but ran into the same problems as described on this list by
+</I>&gt;<i> &gt;     Jamal
+</I>&gt;<i> &gt;     &gt; backon Thu
+</I>&gt;<i> &gt;     &gt; &gt; &gt; Sep 13 17:04:31 CEST 2007 :
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; Dragos,
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; This doesnt seem to be the right venue - but using the
+</I>&gt;<i> &gt;     excuse of being
+</I>&gt;<i> &gt;     &gt; a
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; newbie:
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; Who should i be sending this to?
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; 1) regIPSEC1.xml has an error on incoming reply advertises
+</I>&gt;<i> &gt;     SPI as 2048
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; and passing to the ipsec scripts 2028; so the last
+</I>&gt;<i> &gt;     (encrypted) 200 OK
+</I>&gt;<i> &gt;     &gt; is
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; never seen.
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; 2) regIPSEC3.xml fails to process the last 200 OK because some
+</I>&gt;<i> &gt;     &gt; previous
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; state is expected to be saved prior to validating the regexp.
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; In the case of this script the Cseq: header is expected to
+</I>&gt;<i> have
+</I>&gt;<i> &gt;     &gt; already
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; been known before the 200 Ok is received. I have a small
+</I>&gt;<i> &gt;     patch that
+</I>&gt;<i> &gt;     &gt; sort
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; of says to sipp &quot;assume cseq = blah&quot;.
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; None of these issues will be seen if you run sipp, and the
+</I>&gt;<i> &gt;     rest of
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; openims on the same node.
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; cheers,
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; jamal
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; Then I tried IMS Communicator, but it doesn't yet support
+</I>&gt;<i> &gt;     IPSec, just
+</I>&gt;<i> &gt;     &gt; &gt; &gt; the AKA headers in SIP.
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; I tried OpenIC Lite, but it was adding multiple
+</I>&gt;<i> &gt;     P-Access-Network-Info
+</I>&gt;<i> &gt;     &gt; &gt; &gt; headers, which my P-CSCF (not the OpenIMS P-CSCF) correctly
+</I>&gt;<i> &gt;     rejects.
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; I was unable to install UCT IMS Client - perhaps if someone
+</I>&gt;<i> &gt;     has been
+</I>&gt;<i> &gt;     &gt; &gt; &gt; successful with this client, then I can revisit the
+</I>&gt;<i> &gt;     installation.
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; Cheers,
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt; &gt; Marc
+</I>&gt;<i> &gt;     &gt; &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;     &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     --
+</I>&gt;<i> &gt;     Ist Ihr Browser Vista-kompatibel? Jetzt die neuesten
+</I>&gt;<i> &gt;     Browser-Versionen downloaden: <A HREF="http://www.gmx.net/de/go/browser">http://www.gmx.net/de/go/browser</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002954.html">[OpenIMSCore-Users] Client for IPSec AKA remotely	from	OpenIMSCore
+</A></li>
+	<LI>Next message: <A HREF="002903.html">[OpenIMSCore-Users] I need feedback on the new ISC functionality
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2968">[ date ]</a>
+              <a href="thread.html#2968">[ thread ]</a>
+              <a href="subject.html#2968">[ subject ]</a>
+              <a href="author.html#2968">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

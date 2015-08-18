@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to test IPSec in Open IMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20test%20IPSec%20in%20Open%20IMS&In-Reply-To=%3C20080126121247.B0F8812D533%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003248.html">
+   <LINK REL="Next"  HREF="003279.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to test IPSec in Open IMS</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20test%20IPSec%20in%20Open%20IMS&In-Reply-To=%3C20080126121247.B0F8812D533%40mail.berlios.de%3E"
+       TITLE="[OpenIMSCore-Users] How to test IPSec in Open IMS">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Sat Jan 26 13:08:00 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003248.html">[OpenIMSCore-Users] How to test IPSec in Open IMS
+</A></li>
+        <LI>Next message: <A HREF="003279.html">[OpenIMSCore-Users] How to test IPSec in Open IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3255">[ date ]</a>
+              <a href="thread.html#3255">[ thread ]</a>
+              <a href="subject.html#3255">[ subject ]</a>
+              <a href="author.html#3255">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+About the shell-scripts: actually I don't really know, didn't care much
+about it..
+
+The SA on P-CSCF is created:
+3(14030) INF:P-CSCF:execute_cmd:
+[/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Inc_Req.sh 10.21.21.149 6001
+10.21.21.147 4064 5001 null 0x43e0597777e294752d6283443c704e40 hmac-md5
+0x8bc5d0f2366cf8625a1a7dd67acdeb74]
+
+This is required to be able to decode the encrypted (2nd) REGISTER... I
+think PCSCF generates the other SAs when the 2nd REGISTER is received and
+correct (security-verify)...
+
+But I think I understand now the error message...
+3(14030) ERR:P-CSCF:P_security_relay: we cannot find the contact or its
+IPSec/TLS SAs for &lt;1://10.21.21.149:6070&gt;.
+
+It looks like the 2nd REGISTER uses port 6070 (same as the first REGISTER)
+but in your security-client header you announce that it will be sent from
+6001! Have once more a look at the p-cscf execute_cmd, the IP of your client
+is stored with the src-port 6001 =&gt; your client misses to change the port!
+
+Br, Klemens
+
+
+________________________________________
+From: Sabyasachi Samal [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>] 
+Sent: Freitag, 25. J&#228;nner 2008 12:34
+To: Klemens Schragel; Dragos Vingarzan
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Re: How to test IPSec in Open IMS
+
+Hello,
+
+I am confused about the sh files meant for IPSec. There are 10 sh files in
+the /modules/pcscf folder. 5 for E and 5 for P. But in pcscf.cfg only 5 for
+P is used. When the sh files for E are used?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003248.html">[OpenIMSCore-Users] How to test IPSec in Open IMS
+</A></li>
+	<LI>Next message: <A HREF="003279.html">[OpenIMSCore-Users] How to test IPSec in Open IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3255">[ date ]</a>
+              <a href="thread.html#3255">[ thread ]</a>
+              <a href="subject.html#3255">[ subject ]</a>
+              <a href="author.html#3255">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

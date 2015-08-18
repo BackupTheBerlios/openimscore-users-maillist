@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Diameter Cx Interface failed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Diameter%20Cx%20Interface%20failed&In-Reply-To=%3Cd7d566c20902190322r57d602f9x3f0ec93084710211%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005089.html">
+   <LINK REL="Next"  HREF="005090.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Diameter Cx Interface failed</H1>
+    <B>Richard Spiers</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Diameter%20Cx%20Interface%20failed&In-Reply-To=%3Cd7d566c20902190322r57d602f9x3f0ec93084710211%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Diameter Cx Interface failed">richard.spiers at gmail.com
+       </A><BR>
+    <I>Thu Feb 19 12:22:31 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005089.html">[OpenIMSCore-Users] Diameter Cx Interface failed
+</A></li>
+        <LI>Next message: <A HREF="005090.html">[OpenIMSCore-Users] iFC for  REFER
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5093">[ date ]</a>
+              <a href="thread.html#5093">[ thread ]</a>
+              <a href="subject.html#5093">[ subject ]</a>
+              <a href="author.html#5093">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Harish
+
+First the HSS error message - &gt;
+
+Error opening socket on port 3868
+
+java.net.BindException: Cannot assign requested address
+
+This means that the HSS can not listen on the requested address - are you
+sure you changed the ip address correctly ? Have a look in
+DiameterPeerHSS.xml and make sure that the IP listed there is the one you
+are trying to use. (Look for something like  &lt;Acceptor port=&quot;3868&quot;
+bind=&quot;192.168.0.3&quot; /&gt; ) (Similarly, double check the other component's xml
+files)
+
+The next error mesage ERROR 1044 (42000): Access denied for user
+'hss'@'199.30.19.113'
+to database 'hss'
+
+is a mysql related error. It is telling you that the user that you are using
+does not have access rights to the database hss. Check your mysql usernam
+and password, as well as making sure that that user has the necessary
+privleges to manipulate the databse you are using.
+
+Kind Regards
+Richard Spiers
+
+
+
+On Thu, Feb 19, 2009 at 11:03 AM, &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">harish.kanakaraju at wipro.com</A>&gt; wrote:
+
+&gt;<i>  Hi,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I am trying to setup OpenIMSCore on a linux box, my local setup worked very
+</I>&gt;<i> fine. But when I configured it to an external ip and domain, registeration
+</I>&gt;<i> fails with 480 error message.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I get an error message :Diameter Cx Interface failed&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Correspondingly below are the error messages which I get in P- cscf and
+</I>&gt;<i> i-cscf
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> DBG:P-CSCF:P_verify_security: Looking for &lt;1://192.219.223.148:5060&gt;
+</I>&gt;<i>
+</I>&gt;<i>  3(10943) INFO:P-CSCF:P_NAT_relay: &lt;sip:192.219.223.148:5060&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ERROR:AAASendRecvMessageToPeer(): Peer not connected to hss.nor.test
+</I>&gt;<i>
+</I>&gt;<i>  1(10984) ERR:I-CSCF:I_UAR: Error creating/sending UAR or UAR time-out
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> This is the error I get from FHoss,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &#195;&#710;9-02-19 13:03:38,722 ERROR
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.transport.Acceptor - openSocket Acceptor:
+</I>&gt;<i> Error opening socket on port 3868
+</I>&gt;<i>
+</I>&gt;<i> java.net.BindException: Cannot assign requested address
+</I>&gt;<i>
+</I>&gt;<i>         at java.net.PlainSocketImpl.socketBind(Native Method)
+</I>&gt;<i>
+</I>&gt;<i>         at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:359)
+</I>&gt;<i>
+</I>&gt;<i>         at java.net.ServerSocket.bind(ServerSocket.java:319)
+</I>&gt;<i>
+</I>&gt;<i>         at java.net.ServerSocket.&lt;init&gt;(ServerSocket.java:185)
+</I>&gt;<i>
+</I>&gt;<i>         at
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.transport.Acceptor.openSocket(Acceptor.java:111)
+</I>&gt;<i>
+</I>&gt;<i>         at
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.transport.Acceptor.&lt;init&gt;(Acceptor.java:105)
+</I>&gt;<i>
+</I>&gt;<i>         at
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.DiameterPeer.&lt;init&gt;(DiameterPeer.java:284)
+</I>&gt;<i>
+</I>&gt;<i>         at
+</I>&gt;<i> de.fhg.fokus.hss.diam.DiameterStack.&lt;init&gt;(DiameterStack.java:69)        at
+</I>&gt;<i> de.fhg.fokus.hss.main.HSSContainer.&lt;init&gt;(HSSContainer.java:95)        at
+</I>&gt;<i> de.fhg.fokus.hss.main.HSSContainer.main(HSSContainer.java:110)Exception in
+</I>&gt;<i> thread &quot;main&quot; java.lang.NullPointerException
+</I>&gt;<i>
+</I>&gt;<i>         at
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.transport.Acceptor.openSocket(Acceptor.java:117)
+</I>&gt;<i>
+</I>&gt;<i>         at
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.transport.Acceptor.&lt;init&gt;(Acceptor.java:105)
+</I>&gt;<i>
+</I>&gt;<i>         at
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.DiameterPeer.&lt;init&gt;(DiameterPeer.java:284)
+</I>&gt;<i>
+</I>&gt;<i>         at
+</I>&gt;<i> de.fhg.fokus.hss.diam.DiameterStack.&lt;init&gt;(DiameterStack.java:69)        at
+</I>&gt;<i> de.fhg.fokus.hss.main.HSSContainer.&lt;init&gt;(HSSContainer.java:95)        at
+</I>&gt;<i> de.fhg.fokus.hss.main.HSSContainer.main(HSSContainer.java:110)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Below is the error message I got when I executed
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> # &gt;&gt;&gt; mysql -h 199.30.19.113 -u hss -p hss
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ERROR 1044 (42000): Access denied for user 'hss'@'199.30.19.113' to
+</I>&gt;<i> database 'hss'
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Kindly help,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thanks
+</I>&gt;<i>
+</I>&gt;<i> Harish
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> * Please do not print this email unless it is absolutely necessary. *
+</I>&gt;<i>
+</I>&gt;<i> The information contained in this electronic message and any attachments to
+</I>&gt;<i> this message are intended for the exclusive use of the addressee(s) and may
+</I>&gt;<i> contain proprietary, confidential or privileged information. If you are not
+</I>&gt;<i> the intended recipient, you should not disseminate, distribute or copy this
+</I>&gt;<i> e-mail. Please notify the sender immediately and destroy all copies of this
+</I>&gt;<i> message and any attachments.
+</I>&gt;<i>
+</I>&gt;<i> WARNING: Computer viruses can be transmitted via email. The recipient
+</I>&gt;<i> should check this email and any attachments for the presence of viruses. The
+</I>&gt;<i> company accepts no liability for any damage caused by any virus transmitted
+</I>&gt;<i> by this email.
+</I>&gt;<i>
+</I>&gt;<i> www.wipro.com
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090219/b0fc88dd/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090219/b0fc88dd/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005089.html">[OpenIMSCore-Users] Diameter Cx Interface failed
+</A></li>
+	<LI>Next message: <A HREF="005090.html">[OpenIMSCore-Users] iFC for  REFER
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5093">[ date ]</a>
+              <a href="thread.html#5093">[ thread ]</a>
+              <a href="subject.html#5093">[ subject ]</a>
+              <a href="author.html#5093">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

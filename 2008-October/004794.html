@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] IMS diameter error user unknown....
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IMS%20diameter%20error%20user%20unknown....&In-Reply-To=%3C4909E512.3080909%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004775.html">
+   <LINK REL="Next"  HREF="004776.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] IMS diameter error user unknown....</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IMS%20diameter%20error%20user%20unknown....&In-Reply-To=%3C4909E512.3080909%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] IMS diameter error user unknown....">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Oct 30 17:47:14 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004775.html">[OpenIMSCore-Users] IMS diameter error user unknown....
+</A></li>
+        <LI>Next message: <A HREF="004776.html">[OpenIMSCore-Users] Problems with INVITE Request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4794">[ date ]</a>
+              <a href="thread.html#4794">[ thread ]</a>
+              <a href="subject.html#4794">[ subject ]</a>
+              <a href="author.html#4794">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Tariq,
+
+You are right in routing to the I-CSCF. Also, the PSTN gw does not need
+to register.
+
+The problem would be that the I-CSCF would look exactly for the user
+&quot;sip:4153333333 at 172.25.78.241
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-hss">https://lists.berlios.de/mailman/listinfo/openimscore-hss</A>&gt;:5060&quot; and
+not for &quot;sip:4153333333 at openims.test
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-hss">https://lists.berlios.de/mailman/listinfo/openimscore-hss</A>&gt;&quot;. You will
+need to either:
+- configure the gateway to send the proper domain
+- configure the gateway to send instead a TEL URI and add that TEL uri
+in your HSS as part of the same implicit registered set as the SIP URI
+- place a ser_ims/SER/OpenSER or other SIP proxy between the gateway and
+the Open IMS Core, which will do the proper Request-URI translation.
+
+Cheers,
+-Dragos
+
+
+tariq mohiuddin wrote:
+&gt;<i> Appreciate any help on this problem:
+</I>&gt;<i>
+</I>&gt;<i> Here is what i'm trying to do:
+</I>&gt;<i>
+</I>&gt;<i> make a call from a PSTN gateway (cantata CSP) originating sip uri: 1234567890 at 172.25.74.5 &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-hss">https://lists.berlios.de/mailman/listinfo/openimscore-hss</A>&gt;:5060 to a UE registered with open IMS as 4153333333 at openims.test. &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-hss">https://lists.berlios.de/mailman/listinfo/openimscore-hss</A>&gt; All the openims components (icscf,pcscf and scscf) are registered in DNS. I'm able to make calls between clients registered on openims (bob,alice,4153333333). The PSTN gateway doesnt support registration with proxy, so I am pointing to ICSCF which is 172.25.78.241:4060.
+</I>&gt;<i>
+</I>&gt;<i> Here is trace from wireshark:
+</I>&gt;<i> No.     Time       
+</I>&gt;<i>  Source                Destination           Protocol Info
+</I>&gt;<i>    1821 11.826964   172.25.74.5           172.25.78.241         SIP/SDP  Request: INVITE sip:4153333333 at 172.25.78.241 &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-hss">https://lists.berlios.de/mailman/listinfo/openimscore-hss</A>&gt;:5060, with session description
+</I>&gt;<i>
+</I>&gt;<i> Frame 1821 (642 bytes on wire, 642 bytes captured)
+</I>&gt;<i> Ethernet II, Src: Cisco_1e:20:e0 (00:13:80:1e:20:e0), Dst: Dell_ad:2d:c8 (00:1e:c9:ad:2d:c8)
+</I>&gt;<i> Internet Protocol, Src: 172.25.74.5 (172.25.74.5), Dst: 172.25.78.241 (172.25.78.241)
+</I>&gt;<i> User Datagram Protocol, Src Port: sip (5060), Dst Port: sip (5060)
+</I>&gt;<i> Session Initiation Protocol
+</I>&gt;<i>
+</I>&gt;<i> No.     Time       
+</I>&gt;<i>  Source                Destination           Protocol Info
+</I>&gt;<i>    1828 11.842099   172.25.78.241         172.25.74.5           SIP      Status: 100 trying -- your call is important to us
+</I>&gt;<i>
+</I>&gt;<i> Frame 1828 (596 bytes on wire, 596 bytes captured)
+</I>&gt;<i> Ethernet II, Src: Dell_ad:2d:c8 (00:1e:c9:ad:2d:c8), Dst: All-HSRP-routers_64 (00:00:0c:07:ac:64)
+</I>&gt;<i> Internet Protocol, Src: 172.25.78.241 (172.25.78.241), Dst: 172.25.74.5 (172.25.74.5)
+</I>&gt;<i> User Datagram Protocol, Src Port: sip (5060), Dst Port: sip (5060)
+</I>&gt;<i> Session Initiation Protocol
+</I>&gt;<i>
+</I>&gt;<i> No.     Time       
+</I>&gt;<i>  Source                Destination           Protocol Info
+</I>&gt;<i>    2571 21.939836   172.25.78.241         172.25.74.5           SIP      Status: 600 Busy everywhere - Forwarding to S-CSCF failed
+</I>&gt;<i>
+</I>&gt;<i> Frame 2571 (647 bytes on wire, 647 bytes captured)
+</I>&gt;<i> Ethernet II, Src: Dell_ad:2d:c8 (00:1e:c9:ad:2d:c8), Dst: All-HSRP-routers_64 (00:00:0c:07:ac:64)
+</I>&gt;<i> Internet Protocol, Src: 172.25.78.241 (172.25.78.241), Dst: 172.25.74.5 (172.25.74.5)
+</I>&gt;<i> User Datagram Protocol, Src Port: sip (5060), Dst Port: sip (5060)
+</I>&gt;<i> Session Initiation Protocol
+</I>&gt;<i>
+</I>&gt;<i> No.     Time       
+</I>&gt;<i>  Source                Destination           Protocol Info
+</I>&gt;<i>    2572 21.958353   172.25.74.5           172.25.78.241         SIP      Request: ACK sip:4153333333 at 172.25.78.241 &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-hss">https://lists.berlios.de/mailman/listinfo/openimscore-hss</A>&gt;:5060
+</I>&gt;<i>
+</I>&gt;<i> Frame 2572 (361 bytes on wire, 361 bytes captured)
+</I>&gt;<i> Ethernet II, Src: Cisco_1e:20:e0 (00:13:80:1e:20:e0), Dst: Dell_ad:2d:c8 (00:1e:c9:ad:2d:c8)
+</I>&gt;<i> Internet Protocol, Src: 172.25.74.5 (172.25.74.5), Dst: 172.25.78.241 (172.25.78.241)
+</I>&gt;<i> User Datagram Protocol, Src Port: sip (5060), Dst Port: sip (5060)
+</I>&gt;<i> Session Initiation Protocol
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The Error on HSS console:
+</I>&gt;<i>
+</I>&gt;<i> 2008-10-16 03:43:09,909 DEBUG de.fhg.fokus.hss.main.Task -
+</I>&gt;<i>  execute Processing LIR!
+</I>&gt;<i> de.fhg.fokus.hss.cx.CxExperimentalResultException: IMS_Diameter_Error_User_Unknown
+</I>&gt;<i>     at de.fhg.fokus.hss.cx.op.LIR.processRequest(LIR.java:104)
+</I>&gt;<i>     at de.fhg.fokus.hss.main.Task.execute(Task.java:121)
+</I>&gt;<i>     at de.fhg.fokus.hss.main.Worker.run(Worker.java:66)
+</I>&gt;<i>
+</I>&gt;<i> The Errors on ICSCF:
+</I>&gt;<i>
+</I>&gt;<i> 5(20979) WARNING: -_set_fr_timer- already added: 0xb626d730 , tl=0xb626d740!!!
+</I>&gt;<i>  5(20979) BUG: set_final_timer: start retr failed for 0xb626d730
+</I>&gt;<i>
+</I>&gt;<i> 18(21017) DBG:sm_process(): Peer hss.openims.test     State R_Open     Event R_Rcv_Message
+</I>&gt;<i>  4(20978) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> 18(21017) DBG:sm_process(): Peer hss.openims.test     State R_Open     Event R_Rcv_Message
+</I>&gt;<i>  4(20978) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> 18(21017) DBG:sm_process(): Peer
+</I>&gt;<i>  hss.openims.test     State R_Open     Event R_Rcv_Message
+</I>&gt;<i>  4(20978) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> 18(21017) DBG:sm_process(): Peer hss.openims.test     State R_Open     Event R_Rcv_Message
+</I>&gt;<i>  4(20978) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> 18(21017) DBG:sm_process(): Peer hss.openims.test     State R_Open     Event R_Rcv_Message
+</I>&gt;<i>  4(20978) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> 18(21017) DBG:sm_process(): Peer hss.openims.test     State R_Open     Event R_Rcv_Message
+</I>&gt;<i>  3(20977) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> 18(21017) DBG:sm_process(): Peer hss.openims.test     State R_Open     Event R_Rcv_Message
+</I>&gt;<i>  3(20977) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> 18(21017) DBG:sm_process(): Peer
+</I>&gt;<i>  hss.openims.test     State R_Open     Event R_Rcv_Message
+</I>&gt;<i>  3(20977) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> 18(21017) DBG:sm_process(): Peer hss.openims.test     State R_Open     Event R_Rcv_Message
+</I>&gt;<i>  3(20977) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> 18(21017) DBG:sm_process(): Peer hss.openims.test     State R_Open     Event R_Rcv_Message
+</I>&gt;<i>  1(20975) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i>         
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> __________________________________________________
+</I>&gt;<i> Do You Yahoo!?
+</I>&gt;<i> Tired of spam? Yahoo! Mail has the best spam protection around
+</I>&gt;<i> <A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004775.html">[OpenIMSCore-Users] IMS diameter error user unknown....
+</A></li>
+	<LI>Next message: <A HREF="004776.html">[OpenIMSCore-Users] Problems with INVITE Request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4794">[ date ]</a>
+              <a href="thread.html#4794">[ thread ]</a>
+              <a href="subject.html#4794">[ subject ]</a>
+              <a href="author.html#4794">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem with tel URI routing in P-CSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20tel%20URI%20routing%20in%20P-CSCF&In-Reply-To=%3C92B62DE8353344C299EB1434763C4B57%40FranzEdlerPC%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006318.html">
+   <LINK REL="Next"  HREF="006321.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem with tel URI routing in P-CSCF</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20tel%20URI%20routing%20in%20P-CSCF&In-Reply-To=%3C92B62DE8353344C299EB1434763C4B57%40FranzEdlerPC%3E"
+       TITLE="[OpenIMSCore-Users] Problem with tel URI routing in P-CSCF">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Wed Jul  7 18:32:47 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006318.html">[OpenIMSCore-Users] Problem with tel URI routing in P-CSCF
+</A></li>
+        <LI>Next message: <A HREF="006321.html">[OpenIMSCore-Users] time-stamp header in SIP 3261
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6319">[ date ]</a>
+              <a href="thread.html#6319">[ thread ]</a>
+              <a href="subject.html#6319">[ subject ]</a>
+              <a href="author.html#6319">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Werner,
+
+&gt;<i> When I use tel URI e.g. &quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+43123456789 at pstn.net</A>&quot; the invite is
+</I>&gt;<i> sent from P-CSCF to S-CSCF. This is the expected behavior I would need.
+</I>
+This is a SIP URI in E.164 format, which requires a user=phone parameter.
+
+&gt;<i> Unfortunately the used MGCF requires &quot;user=phone&quot; as part of the tel URI.
+</I>
+As expected (but again it is a SIP URI).
+
+&gt;<i> Does anybody know how I could change message routing in P-CSCF?
+</I>
+Of course, but I suggest not to change the routing-logic in any x-CSCF,
+because these are perfect designed and routing to PSTN is already covered.
+Routing to the destination always traverses the home S-CSCF.
+
+If you use a true TEL-URI which is &quot;tel:+43123456789&quot; in your case than the
+S-CSCF routes to the gateway according to the following code in scscf.cfg:
+
+	route[PSTN_handling]
+	{
+		#PSTN gateway handling
+		if (uri=~&quot;tel:\+(.*)&quot;){
+			if(!enum_query()){
+				route(PSTN);
+				break;
+		}
+	}
+
+You only have to modify the IP address &amp; port of your gateway accordingly in
+
+	route[PSTN]
+	{
+		t_on_reply(&quot;PSTN_reply&quot;); 
+		t_relay_to_udp(&quot;192.168.1.105&quot;, &quot;9060&quot;);
+		exit;
+	}
+
+&gt;<i> Is there any tutorial or description on how the routing logic works?
+</I>
+Yes there are tutorials and a book in the area of SER derivates
+(OpenSER/Kamailio, OpenSIPS) e.g. &quot;Building Telephony Systems with OpenSIPS
+1.6&quot;.
+
+BR
+Franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006318.html">[OpenIMSCore-Users] Problem with tel URI routing in P-CSCF
+</A></li>
+	<LI>Next message: <A HREF="006321.html">[OpenIMSCore-Users] time-stamp header in SIP 3261
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6319">[ date ]</a>
+              <a href="thread.html#6319">[ thread ]</a>
+              <a href="subject.html#6319">[ subject ]</a>
+              <a href="author.html#6319">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

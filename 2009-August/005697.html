@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Basic outgoing call issue when test client isbehind NAT
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Basic%20outgoing%20call%20issue%20when%20test%20client%0A%20isbehind%20NAT&In-Reply-To=%3C4A8434C0.5000101%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005696.html">
+   <LINK REL="Next"  HREF="005699.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Basic outgoing call issue when test client isbehind NAT</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Basic%20outgoing%20call%20issue%20when%20test%20client%0A%20isbehind%20NAT&In-Reply-To=%3C4A8434C0.5000101%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Basic outgoing call issue when test client isbehind NAT">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Aug 13 17:44:00 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005696.html">[OpenIMSCore-Users] Basic outgoing call issue when test client	isbehind NAT
+</A></li>
+        <LI>Next message: <A HREF="005699.html">[OpenIMSCore-Users] Basic outgoing call issue when test client	isbehind NAT
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5697">[ date ]</a>
+              <a href="thread.html#5697">[ thread ]</a>
+              <a href="subject.html#5697">[ subject ]</a>
+              <a href="author.html#5697">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I meant exactly that.
+
+And... if you have a NAT and it works with just the Open IMS Core, what 
+problem are you trying to solve with STUN then? ;o)
+
+Anyway, in IMS, all your inbound calls have to go through your client's 
+P-CSCF, so having a public IP on the client does not actually matter, as 
+an IMS client should only accept signaling from the P-CSCF.
+
+Cheers,
+-Dragos
+
+Venkatesh Arun-A21466 wrote:
+&gt;<i> Dragos,
+</I>&gt;<i>
+</I>&gt;<i> With NAT solution provided with P-CSCF (STUN server not used, so only
+</I>&gt;<i> local addresses placed in Contact), things work.
+</I>&gt;<i>
+</I>&gt;<i> When I use STUN server (and hence place public addresses in Contact)
+</I>&gt;<i> things don't work.
+</I>&gt;<i>
+</I>&gt;<i> Are you saying that P-CSCF (with NAT solution) and STUN server combo
+</I>&gt;<i> doesn't work? If yes, is it because P-CSCF tries to match address in
+</I>&gt;<i> Via: (of INVITE) with address in Contact (of INVITE).
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i> Arun
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;&gt;<i> Sent: Thursday, August 13, 2009 1:32 PM
+</I>&gt;&gt;<i> To: Venkatesh Arun-A21466
+</I>&gt;&gt;<i> Cc: Franz Edler; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Basic outgoing call issue 
+</I>&gt;&gt;<i> when test client isbehind NAT
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Indeed. The P-CSCF implements the NAT mechanisms also to 
+</I>&gt;&gt;<i> avoid situations like this. You are registering the 10.x.x.x 
+</I>&gt;&gt;<i> contact and then try to send an INVITE from 192.168.x.x. The 
+</I>&gt;&gt;<i> P-CSCF rejects the call because only the registered contact 
+</I>&gt;&gt;<i> for that identity is allowed to originate signaling with that 
+</I>&gt;&gt;<i> originating identity.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Franz Edler wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi Arun,
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Setup 1 (NAT setup):
+</I>&gt;&gt;&gt;&gt;<i> 		  	   |
+</I>&gt;&gt;&gt;&gt;<i> |
+</I>&gt;&gt;&gt;&gt;<i> SIP ClientA &lt;-------&gt;|&lt;----------- OpenImsCore-----------&gt;|&lt;-----&gt; 
+</I>&gt;&gt;&gt;&gt;<i> SIP ClientB
+</I>&gt;&gt;&gt;&gt;<i> 			   |&lt;----------- STUN Server-----------&gt;|
+</I>&gt;&gt;&gt;&gt;<i>                     NAT                                  NAT
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> Why do you not use the NAT solution provided with P-CSCF?
+</I>&gt;&gt;&gt;<i> You just have to add rtpproxy and enable NAT handling in pcscf.cfg.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Best regards
+</I>&gt;&gt;&gt;<i> Franz
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org We could 
+</I>&gt;&gt;<i> change the world if God would give us the source code...
+</I>&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005696.html">[OpenIMSCore-Users] Basic outgoing call issue when test client	isbehind NAT
+</A></li>
+	<LI>Next message: <A HREF="005699.html">[OpenIMSCore-Users] Basic outgoing call issue when test client	isbehind NAT
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5697">[ date ]</a>
+              <a href="thread.html#5697">[ thread ]</a>
+              <a href="subject.html#5697">[ subject ]</a>
+              <a href="author.html#5697">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

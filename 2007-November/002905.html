@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] I need feedback on the new ISC functionality
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20I%20need%20feedback%20on%20the%20new%20ISC%20functionality&In-Reply-To=%3Cb33002040711090453h71ebbd6eq50bf3a9ab6c7476b%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002903.html">
+   <LINK REL="Next"  HREF="002911.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] I need feedback on the new ISC functionality</H1>
+    <B>Jo&#227;o Filipe Pl&#225;cido</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20I%20need%20feedback%20on%20the%20new%20ISC%20functionality&In-Reply-To=%3Cb33002040711090453h71ebbd6eq50bf3a9ab6c7476b%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] I need feedback on the new ISC functionality">joao-f-placido at ptinovacao.pt
+       </A><BR>
+    <I>Fri Nov  9 13:53:25 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002903.html">[OpenIMSCore-Users] I need feedback on the new ISC functionality
+</A></li>
+        <LI>Next message: <A HREF="002911.html">[OpenIMSCore-Users] I need feedback on the new ISC functionality
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2905">[ date ]</a>
+              <a href="thread.html#2905">[ thread ]</a>
+              <a href="subject.html#2905">[ subject ]</a>
+              <a href="author.html#2905">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I thought the detection of changed Request-URI was related to usage of
+B2BUA ASs and the need to include an &quot;original dialog identifier&quot;
+(ODI) in the ISC mark in the Route header in order to detect this
+Req-URI change and apply different routing logic, as in 24.229 r7 and
+8.
+
+Just including the public identity in the mark is not enough for this
+use case. We need to compare the Call-ID, from and to tags (dialog id)
+in a message coming from an AS with the ODI in its Route header and
+check if this ODI is stored in the S-CSCF.
+Furthermore, in the general case ODI may be an actual SIP dialog id,
+or a SIP transaction id (think of triggers for MESSAGE going through a
+B2BUA AS).
+
+We've been working on support for ODI but it's not yet complete.
+
+Jo&#227;o Filipe Pl&#225;cido
+PT Inova&#231;&#227;o
+
+On Nov 9, 2007 12:55 AM, Dragos Vingarzan
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i> I have just upgraded the ISC modules in r490.
+</I>&gt;<i>
+</I>&gt;<i> - the public identity is saved in the ISC mark =&gt; now we don't care
+</I>&gt;<i> anymore about the S-CSCF changing the R-URI or dropping the
+</I>&gt;<i> P-Asserted-Identity header
+</I>&gt;<i> - introduced new timers just for fwding on the ISC interface
+</I>&gt;<i>    - isc_fr_timeout/isc_fr_inv_timeout
+</I>&gt;<i>    - before the overall fr timers were set for the S-CSCF
+</I>&gt;<i>    - now non-ISC transactions won't timeout prematurely as before
+</I>&gt;<i>
+</I>&gt;<i> About the timers... I have the feeling that once the AS responded, the
+</I>&gt;<i> transaction timers should be re-extended to their normal SIP values.
+</I>&gt;<i> However, nobody complained about it before, when it was even worse, so I
+</I>&gt;<i> have doubts. Also, it is a little difficult as I can not distinguish
+</I>&gt;<i> between the first and next replies, so I have some trouble extending it
+</I>&gt;<i> just once.
+</I>&gt;<i>
+</I>&gt;<i> I have tested it a little, but it needs much more testing. So pls pls
+</I>&gt;<i> pls, if you have time to spare send me feedback if I broke or not your
+</I>&gt;<i> use of the ISC interface. Please provide also traces if you report bugs.
+</I>&gt;<i>
+</I>&gt;<i> Thanx,
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002903.html">[OpenIMSCore-Users] I need feedback on the new ISC functionality
+</A></li>
+	<LI>Next message: <A HREF="002911.html">[OpenIMSCore-Users] I need feedback on the new ISC functionality
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2905">[ date ]</a>
+              <a href="thread.html#2905">[ thread ]</a>
+              <a href="subject.html#2905">[ subject ]</a>
+              <a href="author.html#2905">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

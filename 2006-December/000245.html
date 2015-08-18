@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Initiating 3rd party Registration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Initiating%203rd%20party%20Registration&In-Reply-To=%3CH000008e0007374b.1165805377.dakghar.aylus.com%40MHS%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000244.html">
+   <LINK REL="Next"  HREF="000252.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Initiating 3rd party Registration</H1>
+    <B>Babu George</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Initiating%203rd%20party%20Registration&In-Reply-To=%3CH000008e0007374b.1165805377.dakghar.aylus.com%40MHS%3E"
+       TITLE="[OpenIMSCore-Users] Initiating 3rd party Registration">bgeorge at aylus.com
+       </A><BR>
+    <I>Mon Dec 11 03:49:38 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000244.html">[OpenIMSCore-Users] Call not getting through
+</A></li>
+        <LI>Next message: <A HREF="000252.html">[OpenIMSCore-Users] Initiating 3rd party Registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#245">[ date ]</a>
+              <a href="thread.html#245">[ thread ]</a>
+              <a href="subject.html#245">[ subject ]</a>
+              <a href="author.html#245">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dragos,
+ Can I know what I need to do for getting a third party registration done by scscf towards my application server.If I assign the IP Address of my application server to 'defult_as'(through HSS Gui), would that work?
+Thanks
+Babu
+
+-----Original Message-----
+From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+Sent: Monday, December 11, 2006 5:12 AM
+To: Babu George
+Cc: franz.edler; openimscore-users
+Subject: Re: [OpenIMSCore-Users] Call not getting through
+
+Hi Babu,
+
+It seems that you have only partially changed the IP address. Please 
+change ALL occurences in pcscf.cfg, icscf.cfg and scscf.cfg. There are 
+more than just the first listen lines. That is why the S-CSCF fails to 
+loop the message to itself - you moved it from 127.0.0.1, yet when 
+looping it is still sending there - this is configured somewhere at the 
+bottom of the routing script.
+
+Well... I suggest that you do a replace all. Don't forget to update the 
+open-ims.dnszone!
+
+If you have all 3 diameter peers on the same machine (I-CSCF, S-CSCF and 
+HSS) than you can leave the icscf.xml, scscf.xml and DiametePeerHSS.xml 
+with the 127.0.0.1. However, as the DNS names are the same, once you 
+change the open-ims.dnszone, you will have to change this too, as Franz 
+replied, or the peers won't connect. I usually just drop the bind 
+parameter from the Acceptor tag - then it will listen on all available 
+interfaces (be aware then that other people can connect to your Diameter 
+Peers if you also have this parameter AcceptUnknownPeers=&quot;1&quot; and do bad 
+things).
+
+
+-Dragos
+
+Babu George wrote:
+&gt;<i> All,
+</I>&gt;<i>  I changed the IP Address of SCSCF from 127.0.0.1 to the machine IP 192.168.20.13(Changed in scscf.cfg and /etc/bind/open-ims.dnszone).Registartion is getting through with the change, but not call.Looks like in the termination leg system uses the loopback address(127.0.0.1) instead of the assigned IP Address(192.68.20.13).
+</I>&gt;<i> Is there anything I am missing here?
+</I>&gt;<i> Thanks
+</I>&gt;<i> Babu
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;<i> Sent: Saturday, December 09, 2006 4:33 PM
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>
+</I>&gt;<i> Cc: Babu George; 'openimscore-users'
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] Call not getting through
+</I>&gt;<i>
+</I>&gt;<i> Yes, that is the cause. So please use the Contact in the 200 OK, 
+</I>&gt;<i> sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 192.168.20.13</A>:5055;transport=UDP as Request-URI for the ACK. 
+</I>&gt;<i> Then all will be fine.
+</I>&gt;<i>
+</I>&gt;<i> However, I see a bug there in the P-CSCF in packet 25 - the Route header 
+</I>&gt;<i> should've been removed... investigating.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Franz Edler wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   I corrected it. Now ACK takes the following path.
+</I>&gt;&gt;&gt;<i>   Alice--PCSCF-SCSCF-SCSCF-PCSCF-ICSCF-PCCSF and then getting looped.
+</I>&gt;&gt;&gt;<i>   Not sure why PCSCF is sending message to ICSCF instead of sending to bob
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> It is, because your ACK is addressed to BoB's AoR and not towards its
+</I>&gt;&gt;<i> Contact received in 200 OK.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers
+</I>&gt;&gt;<i> Franz
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000244.html">[OpenIMSCore-Users] Call not getting through
+</A></li>
+	<LI>Next message: <A HREF="000252.html">[OpenIMSCore-Users] Initiating 3rd party Registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#245">[ date ]</a>
+              <a href="thread.html#245">[ thread ]</a>
+              <a href="subject.html#245">[ subject ]</a>
+              <a href="author.html#245">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

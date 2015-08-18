@@ -1,0 +1,306 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ACK and BYE requests
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ACK%20and%20BYE%20requests&In-Reply-To=%3C90110.63355.qm%40web50906.mail.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000845.html">
+   <LINK REL="Next"  HREF="000895.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ACK and BYE requests</H1>
+    <B>Katty Xiong</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ACK%20and%20BYE%20requests&In-Reply-To=%3C90110.63355.qm%40web50906.mail.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] ACK and BYE requests">cyyxiong at yahoo.com
+       </A><BR>
+    <I>Tue Feb 20 20:04:01 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000845.html">[OpenIMSCore-Users] ACK and BYE requests
+</A></li>
+        <LI>Next message: <A HREF="000895.html">[OpenIMSCore-Users] ACK and BYE requests
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#874">[ date ]</a>
+              <a href="thread.html#874">[ thread ]</a>
+              <a href="subject.html#874">[ subject ]</a>
+              <a href="author.html#874">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+
+(I just dig out your reply. Somehow the yahoo mail put
+the message in the bulk folder)
+
+Yes. ACK is on the same dialog. The network trace (as
+attached) shows ACK has the same call-ID and tags as
+those in INVITE.
+
+--- Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+wrote:
+
+&gt;<i> Is the ACK on the same dialog? because the P-CSCF
+</I>&gt;<i> checks Service-Routes
+</I>&gt;<i> only on initial requests, like INVITE. on subsequent
+</I>&gt;<i> it checks
+</I>&gt;<i> Record-Routes.
+</I>&gt;<i> 
+</I>&gt;<i> Then about your question on the INVITE route - You
+</I>&gt;<i> are right, yet, if
+</I>&gt;<i> the S-CSCF knows that the terminating user is to be
+</I>&gt;<i> serviced on itself,
+</I>&gt;<i> why would it ask again the I-CSCF for that? However,
+</I>&gt;<i> if that would not
+</I>&gt;<i> be the case, it will happen as you say.
+</I>
+Just want to make sure I understand this correctly.
+If the terminating user is in the same domain, S-CSCF
+will always check if it knows the addr for the
+terminating user. If yes, the path will not go through
+I-CSCF. But if it doesn't know, it will still ask
+I-CSCF in the domain.
+
+thanks,
+Joy
+
+&gt;<i> 
+</I>&gt;<i> The SIP2IMS missing from the terminating side -
+</I>&gt;<i> again the B2B issues.
+</I>&gt;<i> 
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> Katty Xiong wrote:
+</I>&gt;<i> &gt; Hi Dragos,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; You are exactly right. The ACK and BYE requests
+</I>&gt;<i> missed
+</I>&gt;<i> &gt; Route headers. But after I add route header, I hit
+</I>&gt;<i> &gt; another error message given by P-CSCF: 400Bad
+</I>&gt;<i> &gt; request-not following indicated Service-Routes.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt;From the trace, I see INVITE goes through the
+</I>&gt;<i> &gt; following components (ports are shown below):
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>UE1--&gt;SIP2IMS--&gt;P-CSCF--&gt;S-CSCF--&gt;S-CSCF--&gt;P-CSCF--&gt;UE2
+&gt;<i> &gt; 5061   3060      4060     6060     6060     4060  
+</I>&gt;<i> &gt; 5062
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The Route contained in BYE and ACK headers seems
+</I>&gt;<i> right
+</I>&gt;<i> &gt; to me: 
+</I>&gt;<i> &gt; Route: &lt;sip:127.0.0.1:3060;lr=on&gt;,
+</I>&gt;<i> &gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>;lr&gt;,
+</I>&gt;<i> &gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>;lr&gt;,
+</I>&gt;<i> &gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>;lr&gt;,
+</I>&gt;<i> &gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>;lr&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; But when ACK reaches the P-CSCF from sip2ims,
+</I>&gt;<i> p-cscf
+</I>&gt;<i> &gt; just discards the message. And while BYE reaches
+</I>&gt;<i> the
+</I>&gt;<i> &gt; P-CSCF from sip2ims, p-cscf generates the error
+</I>&gt;<i> &gt; message.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I am not quite sure about the route the INVITE
+</I>&gt;<i> message
+</I>&gt;<i> &gt; goes through. Per my understanding, the route the
+</I>&gt;<i> &gt; INVITE message takes should look something like:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; UE1--&gt;SIP2IMS--&gt;P-CSCF--&gt;S-CSCF--&gt;I-CSCF--&gt;
+</I>&gt;<i> &gt; S-CSCF--&gt;P-CSCF--&gt;SIP2IMS--&gt;UE2
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; do I miss something here?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; thanks,
+</I>&gt;<i> &gt; Joy
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; --- Dragos Vingarzan
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; Hi Joy,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; For security issues, the I-CSCF is configured by
+</I>&gt;<i> &gt;&gt; default to accept only
+</I>&gt;<i> &gt;&gt; INVITE, SUBSCRIBE or MESSAGE as initial requests.
+</I>&gt;<i> &gt;&gt; Normally, your ACK,
+</I>&gt;<i> &gt;&gt; BYE and any other subsequent requests for dialogs
+</I>&gt;<i> &gt;&gt; should contain a Route
+</I>&gt;<i> &gt;&gt; header when getting to the I-CSCF and be
+</I>&gt;<i> &gt;&gt; loose_routed before reaching
+</I>&gt;<i> &gt;&gt; that condition. It seems that yours does not.
+</I>&gt;<i> Could
+</I>&gt;<i> &gt;&gt; you please check
+</I>&gt;<i> &gt;&gt; that and if still in trouble post back a network
+</I>&gt;<i> &gt;&gt; dump?
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Katty Xiong wrote:
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; I couldn't establish session between two UEs.
+</I>&gt;<i> From
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; the
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; packet trace, I can see ACK and BYE request
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; (scenario
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; is as below) are not received by caller (BOB). 
+</I>&gt;<i> &gt;&gt;&gt; At Alice (Caller) side, an error message:
+</I>&gt;<i> Aborting
+</I>&gt;<i> &gt;&gt;&gt; call on unexpected message for call id: while
+</I>&gt;<i> &gt;&gt;&gt; expecting 200 responce, received 'SIP/2.0 406
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; initial
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; Request Method not allowed at the I-CSCF
+</I>&gt;<i> &gt;&gt;&gt; ...
+</I>&gt;<i> &gt;&gt;&gt; Allow: INVITE, SUBSCRIBE, MESSAGE
+</I>&gt;<i> &gt;&gt;&gt; ...
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; The scenario
+</I>&gt;<i> &gt;&gt;&gt; alice               bob
+</I>&gt;<i> &gt;&gt;&gt; INVITE
+</I>&gt;<i> &gt;&gt;&gt; --------------------&gt;
+</I>&gt;<i> &gt;&gt;&gt; 180 trying
+</I>&gt;<i> &gt;&gt;&gt; &lt;-------------------
+</I>&gt;<i> &gt;&gt;&gt; 200OK
+</I>&gt;<i> &gt;&gt;&gt; &lt;-------------------
+</I>&gt;<i> &gt;&gt;&gt; ACK
+</I>&gt;<i> &gt;&gt;&gt; --------------X-----&gt;
+</I>&gt;<i> &gt;&gt;&gt; PAUSE
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; BYE
+</I>&gt;<i> &gt;&gt;&gt; --------------X------&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Does anyone experience the similar problems?
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; thanks,
+</I>&gt;<i> &gt;&gt;&gt; Joy
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;  
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>____________________________________________________________________________________
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt;&gt; Food fight? Enjoy some healthy debate 
+</I>&gt;<i> &gt;&gt;&gt; in the Yahoo! Answers Food &amp; Drink Q&amp;A.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I><A HREF="http://answers.yahoo.com/dir/?link=list&amp;sid=396545367">http://answers.yahoo.com/dir/?link=list&amp;sid=396545367</A>
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt;&gt; _______________________________________________
+</I>&gt;<i> &gt;&gt;&gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I><A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt;&gt;   
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; -- 
+</I>&gt;<i> &gt;&gt; -----------------------------------------
+</I>&gt;<i> &gt;&gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt;&gt; FOKUS/NGNI
+</I>&gt;<i> &gt;&gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt;&gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt;&gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt;&gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt;&gt; eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt;&gt; Web www.fokus.fraunhofer.de
+</I>&gt;<i> &gt;&gt; We could change the world if God would give us
+</I>&gt;<i> the
+</I>&gt;<i> &gt;&gt; source code...
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>-----------------------------------------------------------------
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>____________________________________________________________________________________
+&gt;<i> &gt; Never miss an email again!
+</I>&gt;<i> &gt; Yahoo! Toolbar alerts you the instant new Mail
+</I>&gt;<i> arrives.
+</I>&gt;<i> &gt;
+</I>&gt;<i> <A HREF="http://tools.search.yahoo.com/toolbar/features/mail/">http://tools.search.yahoo.com/toolbar/features/mail/</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> -- 
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the
+</I>&gt;<i> source 
+</I>=== message truncated ===
+
+
+ 
+____________________________________________________________________________________
+Looking for earth-friendly autos? 
+Browse Top Cars by &quot;Green Rating&quot; at Yahoo! Autos' Green Center.
+<A HREF="http://autos.yahoo.com/green_center/">http://autos.yahoo.com/green_center/</A>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: invite.400error
+Type: application/octet-stream
+Size: 74338 bytes
+Desc: 1596350787-invite.400error
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070220/f5ac63c9/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070220/f5ac63c9/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000845.html">[OpenIMSCore-Users] ACK and BYE requests
+</A></li>
+	<LI>Next message: <A HREF="000895.html">[OpenIMSCore-Users] ACK and BYE requests
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#874">[ date ]</a>
+              <a href="thread.html#874">[ thread ]</a>
+              <a href="subject.html#874">[ subject ]</a>
+              <a href="author.html#874">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

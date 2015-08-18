@@ -1,0 +1,466 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20About%20NOTIFY%20for%20SUBSCRIBE%20to%20reg%20event&In-Reply-To=%3C48C7A037.1020209%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004634.html">
+   <LINK REL="Next"  HREF="004601.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20About%20NOTIFY%20for%20SUBSCRIBE%20to%20reg%20event&In-Reply-To=%3C48C7A037.1020209%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Sep 10 12:23:51 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004634.html">[OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event
+</A></li>
+        <LI>Next message: <A HREF="004601.html">[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4637">[ date ]</a>
+              <a href="thread.html#4637">[ thread ]</a>
+              <a href="subject.html#4637">[ subject ]</a>
+              <a href="author.html#4637">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The versions of the notifications should apply on a dialog basis.
+
+Like I said before, a version of 0 after a version of 2 would just be
+ignored by a good client, so the server should not do that, but always
+send bigger versions than the previous. This is what I understand from
+the RFC.
+
+If a UE is power off it de-registers. Then the subscription is deleted,
+as I said in one of my first replies.
+
+Cheers,
+-Dragos
+
+sssere as wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> Thank you for your help. I am still confused about the NOTIFY coming
+</I>&gt;<i> after a re-SUBSCRIBE... It contains a state=&quot;full&quot;. But about the
+</I>&gt;<i> version, if it should restart with zero or just increment by one? My
+</I>&gt;<i> steps for the traces are:
+</I>&gt;<i> 1. Power on UE and capture subs_1.cap (REGISTER then SUBSCRIBE)
+</I>&gt;<i> 2. Power off UE
+</I>&gt;<i> 3. Power on UE and capture subs_2.cap (REGISTER then SUBSCRIBE. Both
+</I>&gt;<i> not expire since step 1)
+</I>&gt;<i> In step 3, maybe the UE is another device with the same user identity
+</I>&gt;<i> and key, if the UE should accept the NOTIFY with version not zero?
+</I>&gt;<i>
+</I>&gt;<i> Thanks and regards,
+</I>&gt;<i> CW Chung
+</I>&gt;<i>
+</I>&gt;<i> --- *08/9/9 (&#26143;&#26399;&#20108;)&#65292;Dragos Vingarzan
+</I>&gt;<i> /&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;/* &#23531;&#36947;&#65306;
+</I>&gt;<i>
+</I>&gt;<i>     &#23492;&#20214;&#32773;: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &#20027;&#26088;: Re: [OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event
+</I>&gt;<i>     &#25910;&#20214;&#32773;: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cwchungcwchung at yahoo.com.tw</A>
+</I>&gt;<i>     &#21103;&#26412;: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>     &#26085;&#26399;: 2008 9 9 &#26143;&#26399;&#20108; &#19979;&#21320; 10:34
+</I>&gt;<i>
+</I>&gt;<i>     Hi Chung,
+</I>&gt;<i>
+</I>&gt;<i>     From RFC3680:&quot; version: This attribute allows the recipient of
+</I>&gt;<i>     registration information documents to properly order them. Versions
+</I>&gt;<i>     start at 0, and increment by one for each new document sent to a
+</I>&gt;<i>     subscriber. Versions are scoped within a subscription. Versions MUST be
+</I>&gt;<i>     representable using a 32 bit integer.&quot;
+</I>&gt;<i>
+</I>&gt;<i>     Then later about sequencing: &quot;If the value in the document is less than
+</I>&gt;<i>     the local version, the document is discarded without processing.&quot;
+</I>&gt;<i>
+</I>&gt;<i>     To conclude, if a client is implemented according to the RFC, it would
+</I>&gt;<i>     discard a version=&quot;0&quot; coming after  version=&quot;2&quot;.
+</I>&gt;<i>
+</I>&gt;<i>     The full section on version is this:
+</I>&gt;<i>
+</I>&gt;<i>     5.2.  Computing Registrations from the
+</I>&gt;<i>      Document
+</I>&gt;<i>
+</I>&gt;<i>        Typically, the NOTIFY for registration information will only contain
+</I>&gt;<i>        information about those contacts whose state has changed.  To
+</I>&gt;<i>        construct a coherent view of the total state of all registrations, a
+</I>&gt;<i>        subscriber will need to combine NOTIFYs received over time.  The
+</I>&gt;<i>        subscriber maintains a table for each registration it receives
+</I>&gt;<i>        information for.  Each registration is uniquely identified by the
+</I>&gt;<i>        &quot;id&quot; attribute in the &quot;registration&quot; element.  Each
+</I>&gt;<i>     table contains a
+</I>&gt;<i>        row for each contact in that registration.  Each row is indexed by
+</I>&gt;<i>        the unique ID for that contact.  It is conveyed in the &quot;id&quot;
+</I>&gt;<i>     attribute
+</I>&gt;<i>        of the &quot;contact&quot; element.  The contents of each row contain the
+</I>&gt;<i>     state
+</I>&gt;<i>        of that contact as conveyed in the &quot;contact&quot; element.  The tables
+</I>&gt;<i>     are
+</I>&gt;<i>        also associated with a version number.  The version number MUST be
+</I>&gt;<i>        initialized with the value of the &quot;version&quot; attribute
+</I>&gt;<i>      from the
+</I>&gt;<i>        &quot;reginfo&quot; element in the first document received.  Each time a new
+</I>&gt;<i>        document is received, the value of the local version number, and the
+</I>&gt;<i>        &quot;version&quot; attribute in the new document, are compared.  If the
+</I>&gt;<i>     value
+</I>&gt;<i>        in the new document is one higher than the local version number, the
+</I>&gt;<i>        local version number is increased by one, and the document is
+</I>&gt;<i>        processed.  If the value in the document is more than one higher than
+</I>&gt;<i>        the local version number, the local version number is set to the
+</I>&gt;<i>        value in the new document, the document is processed, and the
+</I>&gt;<i>        subscriber SHOULD generate a refresh request to trigger a full state
+</I>&gt;<i>        notification.  If the value in the document is less than the local
+</I>&gt;<i>        version, the document is discarded without processing.
+</I>&gt;<i>
+</I>&gt;<i>        The processing of the document depends on whether it contains full or
+</I>&gt;<i>        partial state.  If it contains full state, indicated by the value of
+</I>&gt;<i>        the
+</I>&gt;<i>      &quot;state&quot; attribute in the &quot;reginfo&quot; element, the
+</I>&gt;<i>     contents of all
+</I>&gt;<i>        tables associated with this subscription are flushed.  They are
+</I>&gt;<i>        re-populated from the document.  A new table is created for each
+</I>&gt;<i>        &quot;registration&quot; element, and a new row in each table is created for
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     Rosenberg                   Standards Track                    [Page 14]
+</I>&gt;<i>
+</I>&gt;<i>     RFC 3680                SIP Registrations Event               March 2004
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>        each &quot;contact&quot; element.  If the reginfo contains partial state, as
+</I>&gt;<i>        indicated by the value of the &quot;state&quot; attribute in the
+</I>&gt;<i>     &quot;reginfo&quot;
+</I>&gt;<i>        element, the document is used to update the existing tables.  For
+</I>&gt;<i>        each &quot;registration&quot; element, the subscriber checks to see if a
+</I>&gt;<i>     table
+</I>&gt;<i>        exists for that registration.  This check is done by comparing the
+</I>&gt;<i>        value in the &quot;id&quot; attribute of the &quot;registration&quot;
+</I>&gt;<i>     element with the ID
+</I>&gt;<i>        associated with the table.  If a table doesn't exist
+</I>&gt;<i>      for that
+</I>&gt;<i>        registration, one is created.  For each &quot;contact&quot; element in the
+</I>&gt;<i>        registration, the subscriber checks to see whether a row exists for
+</I>&gt;<i>        that contact.  This check is done by comparing the ID in the &quot;id&quot;
+</I>&gt;<i>        attribute of the &quot;contact&quot; element with the ID associated with the
+</I>&gt;<i>        row.  If the contact doesn't exist in the table, a row is added, and
+</I>&gt;<i>        its state is set to the information from that &quot;contact&quot; element. 
+</I>&gt;<i>     If
+</I>&gt;<i>        the contact does exist, its state is updated to be the information
+</I>&gt;<i>        from that &quot;contact&quot; element.  If a row is updated or created, such
+</I>&gt;<i>        that its state is now terminated, that entry MAY be removed from the
+</I>&gt;<i>        table at any time.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     Cheers,
+</I>&gt;<i>     -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     sssere as wrote:
+</I>&gt;<i>     &gt; Hi Dragos,
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Thank you for the explanation. I check the SUBSCRIBE and NOTIFY as below:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; subs_1.cap
+</I>&gt;<i>     &gt; init-SUBSCRIBE
+</I>&gt;<i>     &gt; NOTIFY (reginfo version=&quot;0&quot;, state=&quot;full&quot;;
+</I>&gt;<i>      contact
+</I>&gt;<i>     event=&quot;registered&quot;)
+</I>&gt;<i>     &gt; subs_2.cap
+</I>&gt;<i>     &gt; re-SUBSCRIBE
+</I>&gt;<i>     &gt; NOTIFY (reginfo version=&quot;1&quot;, state=&quot;partial&quot;; contact
+</I>&gt;<i>     event=&quot;refreshed&quot;)
+</I>&gt;<i>     &gt; NOTIFY (reginfo version=&quot;2&quot;, state=&quot;full&quot;; contact
+</I>&gt;<i>     event=&quot;registered&quot;)
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; In the 2nd NOTIFY of subs_2.cap for re-subscription, the version is 2.
+</I>&gt;<i>     &gt; I think maybe this is the issue. I am not sure if the OpenIMSCore
+</I>&gt;<i>     &gt; shell send NOTIFY with version=&quot;0&quot;, state=&quot;full&quot; or
+</I>&gt;<i>     the UE should
+</I>&gt;<i>     &gt; accept the NOTIFY with version=&quot;2&quot;, state=&quot;full&quot; as a
+</I>&gt;<i>     full state
+</I>&gt;<i>     &gt; notification?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; --- *08/9/8 (&#26143;&#26399;&#19968;)&#65292;Dragos Vingarzan
+</I>&gt;<i>     &gt; /&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;/* &#23531;&#36947;&#65306;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     &#23492;&#20214;&#32773;: Dragos Vingarzan
+</I>&gt;<i>     &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &#20027;&#26088;: Re: [OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg
+</I>&gt;<i>     event
+</I>&gt;<i>     &gt;     &#25910;&#20214;&#32773;: &quot;sssere as&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cwchungcwchung at yahoo.com.tw</A>&gt;
+</I>&gt;<i>     &gt;    
+</I>&gt;<i>      &#21103;&#26412;: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>     &gt;     &#26085;&#26399;: 2008 9 8 &#26143;&#26399;&#19968; &#19979;&#21320; 8:22
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     Hi Chung,
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     all seems in order. Couldn't spot any problem in there... What
+</I>&gt;<i>     might be
+</I>&gt;<i>     &gt;     the issue?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     in subs_2.cap the first notify is due to the refresh in registration
+</I>&gt;<i>     and
+</I>&gt;<i>     &gt;     the 2nd due to the re-subscribe
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     in subs_4.cap the first NOTIFY is for the initial SUBSCRIBE. The 2nd
+</I>&gt;<i>     and
+</I>&gt;<i>     &gt;     forth seem to be retransmissions - strange, but still ok. The 3rd is
+</I>&gt;<i>     the
+</I>&gt;<i>     &gt;     one for the registration expiration. Please notice the
+</I>&gt;<i>     &gt;     Subscription-State: terminated header.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     In case you missed it - if there are no more things to watch - all
+</I>&gt;<i>     &gt;     contacts have been de-registere/expired, the subscription is
+</I>&gt;<i>     terminated
+</I>&gt;<i>     &gt;     by the
+</I>&gt;<i>     &gt;      S-CSCF. Watch always the Subscription-State header. Even if your
+</I>&gt;<i>     &gt;    
+</I>&gt;<i>      expires was 3600, it might contain something like active;expires=60.
+</I>&gt;<i>     The
+</I>&gt;<i>     &gt;     S-CSCF will automatically reduce the huge initial expiration to
+</I>&gt;<i>     &gt;     something more suitable, like the max expiration of a contact watched
+</I>&gt;<i>     +
+</I>&gt;<i>     &gt;     30 seconds.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     There's no point of keeping a reg subscription active beyond the
+</I>&gt;<i>     &gt;     registration period. Anyway, even if the S-CSCF will send
+</I>&gt;<i>     notifications,
+</I>&gt;<i>     &gt;     you won't be able to receive them anymore. This is because of the
+</I>&gt;<i>     &gt;     security associations (IPSec/TLS) being dropped on the registration
+</I>&gt;<i>     &gt;     expiration.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     Cheers,
+</I>&gt;<i>     &gt;     -Dragos
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     sssere as wrote:
+</I>&gt;<i>     &gt;     &gt; Hi Dragos,
+</I>&gt;<i>     &gt;     &gt;  
+</I>&gt;<i>     &gt;     &gt; Thank you for your response. I've attached 3 traces:
+</I>&gt;<i>     &gt;     &gt;  
+</I>&gt;<i>     &gt;     &gt; subs_1.cap: First subscription with reg expire 3600 and subs
+</I>&gt;<i>     expire 3761
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>      subs_2.cap: Re-subscribe before expire
+</I>&gt;<i>     &gt;     &gt; subs_4..cap: Re-subscribe after reg expire (reg expire 30 and
+</I>&gt;<i>     subs
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;      expire 3761)
+</I>&gt;<i>     &gt;     &gt;  
+</I>&gt;<i>     &gt;     &gt; The OpenIMSCore is r582. I found that re-subscribing after reg or
+</I>&gt;<i>     subs
+</I>&gt;<i>     &gt;     &gt; expire would be ok.
+</I>&gt;<i>     &gt;     &gt;  
+</I>&gt;<i>     &gt;     &gt; Best Regards,
+</I>&gt;<i>     &gt;     &gt; CW Chung
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt; --- *08/9/6 (&#26143;&#26399;&#20845;)&#65292;Dragos Vingarzan
+</I>&gt;<i>     &gt;     &gt; /&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;/* &#23531;&#36947;&#65306;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &#23492;&#20214;&#32773;: Dragos Vingarzan
+</I>&gt;<i>     &gt;     &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     &gt;     &gt;     &#20027;&#26088;: Re: [OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to
+</I>&gt;<i>     reg
+</I>&gt;<i>     &gt;     event
+</I>&gt;<i>     &gt;     &gt;     &#25910;&#20214;&#32773;: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cwchungcwchung at yahoo.com.tw</A>
+</I>&gt;<i>     &gt;     &gt;     &#21103;&#26412;: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>     &gt;     &gt;     &#26085;&#26399;: 2008 9 6 &#26143;&#26399;&#20845; &#19978;&#21320; 1:29
+</I>&gt;<i>     &gt; 
+</I>&gt;<i>         &gt;
+</I>&gt;<i>     &gt;     &gt;     Could be an issue. I looked in the code and there's no
+</I>&gt;<i>     difference
+</I>&gt;<i>     &gt;     &gt;     between subscribe and re-subscriber: the same full one should
+</I>&gt;<i>     be
+</I>&gt;<i>     &gt;     generated.
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     Could you please send a trace?
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     Cheers,
+</I>&gt;<i>     &gt;     &gt;     -Dragos
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     sssere as wrote:
+</I>&gt;<i>     &gt;     &gt;   
+</I>&gt;<i>     &gt;       &gt; Hi All,
+</I>&gt;<i>     &gt;     &gt;     &gt;  
+</I>&gt;<i>     &gt;     &gt;     &gt; When I subscribe without a body, the NOTIFY's body
+</I>&gt;<i>     is with
+</I>&gt;<i>     &gt;     &gt;     version=&quot;0&quot;
+</I>&gt;<i>     &gt;     &gt;     &gt; and state=&quot;full&quot;. But when I subscribe again
+</I>&gt;<i>     before
+</I>&gt;<i>     &gt;     subscription
+</I>&gt;<i>     &gt;     &gt;     &gt; expire, the NOTIFY's body is however with
+</I>&gt;<i>     &gt;     version=&quot;1&quot; and
+</I>&gt;<i>     &gt;     &gt;     &gt; state=&quot;partial&quot;. If I subscribe after
+</I>&gt;<i>     subscription
+</I>&gt;<i>     &gt;     expire, the
+</I>&gt;<i>     &gt;     &gt;     NOTIFY
+</I>&gt;<i>     &gt;     &gt;     &gt; is
+</I>&gt;<i>      good. In RFC 3680 4.3, it says the default policy is:
+</I>&gt;<i>     &gt;     &gt;     &gt; &quot;Notifications triggered from a SUBSCRIBE contain
+</I>&gt;<i>     full state
+</I>&gt;<i>     &gt;     (the
+</I>&gt;<i>     &gt;     &gt;     list
+</I>&gt;<i>     &gt;     &gt;     &gt; of all contacts bound to the address-of-record)&quot;.
+</I>&gt;<i>     &gt;     &gt;     &gt;  
+</I>&gt;<i>     &gt;     &gt;     &gt; I am wondering if this is an issue or my
+</I>&gt;<i>     misunderstanding?
+</I>&gt;<i>     &gt;     &gt;     &gt;  
+</I>&gt;<i>     &gt;     &gt;     &gt; Best Regards,
+</I>&gt;<i>     &gt;     &gt;     &gt; CW Chung
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt; &#24819;&#30693;&#36947;&#28961;&#32842;&#29983;&#27963;&#22914;&#20309;&#22823;&#35722;&#36523;&#22043;&#65311; -
+</I>&gt;<i>     *&#39340;&#19978;&#30631;&#30631;*
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;  
+</I>&gt;<i>     &gt;       
+</I>&gt;<i>     &gt;    
+</I>&gt;<i>     &lt;<A HREF="http://tw.rd.yahoo.com/referurl/mail/dc/campiagn/*http://tw.promote.mail.yahoo.com/dc/change.html">http://tw.rd.yahoo.com/referurl/mail/dc/campiagn/*http://tw.promote.mail.yahoo.com/dc/change.html</A>&gt;
+</I>&gt;<i>     &gt;     &gt;     &gt; *&#65281;*
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;   
+</I>&gt;<i>      
+</I>&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     &gt; _______________________________________________
+</I>&gt;<i>     &gt;     &gt;     &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i>     &gt;     &gt;     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &gt;     &gt;     &gt;
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>     &gt;     &gt;     &gt;   
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;     -- 
+</I>&gt;<i>     &gt;     &gt;     -----------------------------------------
+</I>&gt;<i>     &gt;     &gt;     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     &gt;     &gt;     Fraunhofer FOKUS/NGNI
+</I>&gt;<i>     &gt;     &gt;     Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     &gt;     &gt;     10589 Berlin,Germany
+</I>&gt;<i>     &gt;     &gt;     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     &gt;     &gt;     Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i>     &gt;     &gt;     Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i>     &gt;     &gt;     We could change the world if God would give us
+</I>&gt;<i>      the
+</I>&gt;<i>     &gt;      source code...
+</I>&gt;<i>     &gt;     &gt;    
+</I>&gt;<i>     -----------------------------------------------------------------
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;               
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt; &#24819;&#30693;&#36947;&#28961;&#32842;&#29983;&#27963;&#22914;&#20309;&#22823;&#35722;&#36523;&#22043;&#65311; - *&#39340;&#19978;&#30631;&#30631;*
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;    
+</I>&gt;<i>     &lt;<A HREF="http://tw.rd.yahoo.com/referurl/mail/dc/campiagn/*http://tw.promote.mail.yahoo.com/dc/change.html">http://tw.rd.yahoo.com/referurl/mail/dc/campiagn/*http://tw.promote.mail.yahoo.com/dc/change.html</A>&gt;
+</I>&gt;<i>     &gt;     &gt; *&#65281;*
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;<i>     &gt;     &gt;
+</I>&gt;<i>     &gt;     &gt; _______________________________________________
+</I>&gt;<i>     &gt;     &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i>     &gt;     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &gt;     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>     &gt;     &gt;   
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;     -- 
+</I>&gt;<i>     &gt;     -----------------------------------------
+</I>&gt;<i>     &gt;     Dipl. Eng. Dragos
+</I>&gt;<i>      Vingarzan
+</I>&gt;<i>     &gt;     Fraunhofer FOKUS/NGNI
+</I>&gt;<i>     &gt;     Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     &gt;     10589 Berlin,Germany
+</I>&gt;<i>     &gt;     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     &gt;     Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i>     &gt;     Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i>     &gt;     We could change
+</I>&gt;<i>     &gt;      the world if God would give us the source code...
+</I>&gt;<i>     &gt;     -----------------------------------------------------------------
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;               
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; &#24819;&#30693;&#36947;&#28961;&#32842;&#29983;&#27963;&#22914;&#20309;&#22823;&#35722;&#36523;&#22043;&#65311; - *&#39340;&#19978;&#30631;&#30631;*
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &lt;<A HREF="http://tw.rd.yahoo.com/referurl/mail/dc/campiagn/*http://tw.promote.mail.yahoo.com/dc/change.html">http://tw.rd.yahoo.com/referurl/mail/dc/campiagn/*http://tw.promote.mail.yahoo.com/dc/change.html</A>&gt;
+</I>&gt;<i>     &gt; *&#65281;*
+</I>&gt;<i>     &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     -- 
+</I>&gt;<i>     -----------------------------------------
+</I>&gt;<i>     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     Fraunhofer FOKUS/NGNI
+</I>&gt;<i>     Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     10589 Berlin,Germany
+</I>&gt;<i>     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i>     Web www.fokus.fraunhofer.de
+</I>&gt;<i>      www.openimscore.org
+</I>&gt;<i>     We could change the world if God would give us the source code...
+</I>&gt;<i>     -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>               
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &#24819;&#30693;&#36947;&#28961;&#32842;&#29983;&#27963;&#22914;&#20309;&#22823;&#35722;&#36523;&#22043;&#65311; - *&#39340;&#19978;&#30631;&#30631;*
+</I>&gt;<i> &lt;<A HREF="http://tw.rd.yahoo.com/referurl/mail/dc/campiagn/*http://tw.promote.mail.yahoo.com/dc/change.html">http://tw.rd.yahoo.com/referurl/mail/dc/campiagn/*http://tw.promote.mail.yahoo.com/dc/change.html</A>&gt;
+</I>&gt;<i> *&#65281;*
+</I>&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004634.html">[OpenIMSCore-Users] About NOTIFY for SUBSCRIBE to reg event
+</A></li>
+	<LI>Next message: <A HREF="004601.html">[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4637">[ date ]</a>
+              <a href="thread.html#4637">[ thread ]</a>
+              <a href="subject.html#4637">[ subject ]</a>
+              <a href="author.html#4637">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

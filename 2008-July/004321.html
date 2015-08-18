@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] syntax error when executing cscf
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20syntax%20error%20when%20executing%20cscf&In-Reply-To=%3C908C469360504C4FB29F79FD7CB289AB%40notebook%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004320.html">
+   <LINK REL="Next"  HREF="004322.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] syntax error when executing cscf</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20syntax%20error%20when%20executing%20cscf&In-Reply-To=%3C908C469360504C4FB29F79FD7CB289AB%40notebook%3E"
+       TITLE="[OpenIMSCore-Users] syntax error when executing cscf">franz.edler at inode.at
+       </A><BR>
+    <I>Sat Jul 19 06:52:50 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004320.html">[OpenIMSCore-Users] syntax error when executing cscf
+</A></li>
+        <LI>Next message: <A HREF="004322.html">[OpenIMSCore-Users] DNS Issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4321">[ date ]</a>
+              <a href="thread.html#4321">[ thread ]</a>
+              <a href="subject.html#4321">[ subject ]</a>
+              <a href="author.html#4321">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Reza,
+
+&gt;<i> I got this when executing pcscf :
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at hire</A>:/opt/OpenIMSCore# ./pcscf.sh
+</I>&gt;<i> ./pcscf.sh: line 4: setkey: command not found
+</I>&gt;<i> ./pcscf.sh: line 5: setkey: command not found
+</I>
+These errors are caused by the start script. I guess that you do not have
+ipsec-tools installed.
+
+&gt;<i>  0(17878) parse error (26,23-25): syntax error
+</I>&gt;<i>  0(17878) parse error (26,23-25):  hostname expected
+</I>&gt;<i>  0(17878) parse error (26,25-26):
+</I>&gt;<i> ERROR: bad config file (3 errors)
+</I>
+There is something wrong in the config file pcscf.cfg in line 26.
+This is the alias statement for the hostname of your P-CSCF. 
+It should look like: alias=pcscf.net1.test:4060
+
+I again guess that you have not fully changed the domain names in all
+relevant files.
+
+&gt;<i> executing ping pcscf.open-ims.test seems to be ok, but ping
+</I>&gt;<i> pcscf.myname.com somehow doesn't work well.
+</I>
+Why do you have two domains?
+Either you use the original configuration data, than you have
+pcscf.open-ims.test, but if you have changed the domain you only should have
+pcscf.myname.com.
+
+Did you also modify your DNS accordingly?
+
+Regards
+Franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004320.html">[OpenIMSCore-Users] syntax error when executing cscf
+</A></li>
+	<LI>Next message: <A HREF="004322.html">[OpenIMSCore-Users] DNS Issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4321">[ date ]</a>
+              <a href="thread.html#4321">[ thread ]</a>
+              <a href="subject.html#4321">[ subject ]</a>
+              <a href="author.html#4321">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

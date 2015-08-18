@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] TLS Problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20TLS%20Problem&In-Reply-To=%3C20080109130914.217B8126D0E%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003160.html">
+   <LINK REL="Next"  HREF="003167.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] TLS Problem</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20TLS%20Problem&In-Reply-To=%3C20080109130914.217B8126D0E%40mail.berlios.de%3E"
+       TITLE="[OpenIMSCore-Users] TLS Problem">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Wed Jan  9 14:04:53 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003160.html">[OpenIMSCore-Users] TLS Problem
+</A></li>
+        <LI>Next message: <A HREF="003167.html">[OpenIMSCore-Users] TLS Problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3161">[ date ]</a>
+              <a href="thread.html#3161">[ thread ]</a>
+              <a href="subject.html#3161">[ subject ]</a>
+              <a href="author.html#3161">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ohh... where do you know that the rfc3329 headers where not used?
+
+Anyway, according to TS 33.203 annex o the TLS session shall be set up after
+exchange of security-client/server headers! Unfortunately I haven't yet
+found the procedure for UE initiating the TLS handshake before security
+headers exchange... I guess the client-hello will be dropped if the orig. IP
+is not related to any active transaction, but that&#146;s just my thoughts...
+
+br, klemens
+
+
+&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;<i> Sent: Mittwoch, 09. J&#228;nner 2008 13:39
+</I>&gt;<i> To: Klemens Schragel
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">trinathpujari at tataelxsi.co.in</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] TLS Problem
+</I>&gt;<i> 
+</I>&gt;<i> Hi guys,
+</I>&gt;<i> 
+</I>&gt;<i> well, the problem is probably that although the client uses TLS, it does
+</I>&gt;<i> not use the RFC3329 - the Security-Client/Server/Verify headers. The
+</I>&gt;<i> P-CSCF unfortunately only stores the extra security information
+</I>&gt;<i> associated to the contact (IPSec or TLS) only when that is negotiated
+</I>&gt;<i> through RFC3329. Otherwise I don't know if the TLS tunnel could be
+</I>&gt;<i> really trusted as per IMS P-CSCF security...
+</I>&gt;<i> 
+</I>&gt;<i> Hmm... I never thought about this possibility. Thoughts anyone? Should
+</I>&gt;<i> we extend the P-CSCF code to save TLS information even if the proper RFC
+</I>&gt;<i> is not used? If yes, what's the use of RFC3329? :)
+</I>&gt;<i> 
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Klemens Schragel wrote:
+</I>&gt;<i> &gt; Hmm... looks like PCSCF ignores that <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">rahul at open-ims.test</A> registered at
+</I>&gt;<i> port
+</I>&gt;<i> &gt; 4061 over TLS... PCSCF sends the INVITE to the correct port of rahul,
+</I>&gt;<i> but
+</I>&gt;<i> &gt; from 4060 port instead of 4061 and thus via UDP instead of TLS...
+</I>&gt;<i> although
+</I>&gt;<i> &gt; SCSCF even adds &quot;transport=TLS&quot; to the request-line...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I think this is a problem of PCSCF at the terminating side... maybe port
+</I>&gt;<i> &gt; 4060 is used by default, independent of the registration?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Dragos, what do you think?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; p.s.: I've attached a filtered version of the trace
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; -----Original Message-----
+</I>&gt;<i> &gt;&gt; From: trinath pujari [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">trinathpujari at tataelxsi.co.in</A>]
+</I>&gt;<i> &gt;&gt; Sent: Donnerstag, 03. J&#228;nner 2008 12:47
+</I>&gt;<i> &gt;&gt; To: 'Klemens Schragel'; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt;&gt; Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; Subject: RE: [OpenIMSCore-Users] TLS Problem
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Hi Klemens,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;           Thnks for your reply, Here i am attaching the ethereal traces
+</I>&gt;<i> of
+</I>&gt;<i> &gt;&gt; the two user agents and the OpenIMSCore so it will be easy for you to
+</I>&gt;<i> find
+</I>&gt;<i> &gt;&gt; out where the problem lies. Hope for the earliest reply....
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Thanks &amp; Regards,
+</I>&gt;<i> &gt;&gt;    Trinath Pujari,
+</I>&gt;<i> &gt;&gt;    <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">trinathpujari at tataelxsi.co.in</A>,
+</I>&gt;<i> &gt;&gt;    TATA ELXSI LMITED,
+</I>&gt;<i> &gt;&gt;    Bangalore,India.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -----Original Message-----
+</I>&gt;<i> &gt;&gt; From: Klemens Schragel [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>]
+</I>&gt;<i> &gt;&gt; Sent: Thursday, January 03, 2008 3:45 PM
+</I>&gt;<i> &gt;&gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">trinathpujari at tataelxsi.co.in</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt;&gt; Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; Subject: Re: [OpenIMSCore-Users] TLS Problem
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; hi,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; could you provide a network trace please?
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; br, Klemens
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -------- Original-Nachricht --------
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Datum: Thu, 3 Jan 2008 10:21:04 +0530
+</I>&gt;<i> &gt;&gt;&gt; Von: &quot;trinath pujari&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">trinathpujari at tataelxsi.co.in</A>&gt;
+</I>&gt;<i> &gt;&gt;&gt; An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt;&gt;&gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt;&gt; Betreff: [OpenIMSCore-Users] TLS Problem
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Hi All,
+</I>&gt;<i> &gt;&gt;&gt;          We can make a call between eyebeam with tls and x-lite
+</I>&gt;<i> without
+</I>&gt;<i> &gt;&gt;&gt; tls
+</I>&gt;<i> &gt;&gt;&gt; through OpenIMSCore. But when i am making a call between two tls
+</I>&gt;<i> enabled
+</I>&gt;<i> &gt;&gt;&gt; user agents then it is showing request trimeout. So is  any
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; configuration
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; there to setup two tls enabled user agents through openimscore.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Thanks &amp; Regards,
+</I>&gt;<i> &gt;&gt;&gt;    Trinath Pujari,
+</I>&gt;<i> &gt;&gt;&gt;    <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">trinathpujari at tataelxsi.co.in</A>,
+</I>&gt;<i> &gt;&gt;&gt;    TATA ELXSI LMITED,
+</I>&gt;<i> &gt;&gt;&gt;    Bangalore,India
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; The information contained in this electronic message and any
+</I>&gt;<i> attachments
+</I>&gt;<i> &gt;&gt;&gt; to this message are intended for the exclusive use of the addressee(s)
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; and
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; may contain proprietary, confidential or privileged information. If
+</I>&gt;<i> you
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; are
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; not the intended recipient, you should not disseminate, distribute or
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; copy
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; this e-mail. Please notify the sender immediately and destroy all
+</I>&gt;<i> copies
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; of
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; this message and any attachments contained in it.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Contact your Administrator for further information.
+</I>&gt;<i> &gt;&gt;&gt; _______________________________________________
+</I>&gt;<i> &gt;&gt;&gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; --
+</I>&gt;<i> &gt;&gt; GMX FreeMail: 1 GB Postfach, 5 E-Mail-Adressen, 10 Free SMS.
+</I>&gt;<i> &gt;&gt; Alle Infos und kostenlose Anmeldung: <A HREF="http://www.gmx.net/de/go/freemail">http://www.gmx.net/de/go/freemail</A>
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; The information contained in this electronic message and any
+</I>&gt;<i> attachments
+</I>&gt;<i> &gt;&gt; to this message are intended for the exclusive use of the addressee(s)
+</I>&gt;<i> and
+</I>&gt;<i> &gt;&gt; may contain proprietary, confidential or privileged information. If you
+</I>&gt;<i> &gt;&gt; are not the intended recipient, you should not disseminate, distribute
+</I>&gt;<i> or
+</I>&gt;<i> &gt;&gt; copy this e-mail. Please notify the sender immediately and destroy all
+</I>&gt;<i> &gt;&gt; copies of this message and any attachments contained in it.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Contact your Administrator for further information.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -----------------------------------------------------------------------
+</I>&gt;<i> -
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; _______________________________________________
+</I>&gt;<i> &gt;&gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003160.html">[OpenIMSCore-Users] TLS Problem
+</A></li>
+	<LI>Next message: <A HREF="003167.html">[OpenIMSCore-Users] TLS Problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3161">[ date ]</a>
+              <a href="thread.html#3161">[ thread ]</a>
+              <a href="subject.html#3161">[ subject ]</a>
+              <a href="author.html#3161">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Calling problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Calling%20problem&In-Reply-To=%3C48170524.6080304%40tecsidel.es%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003849.html">
+   <LINK REL="Next"  HREF="003852.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Calling problem</H1>
+    <B>Fernando Pascual Blanco</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Calling%20problem&In-Reply-To=%3C48170524.6080304%40tecsidel.es%3E"
+       TITLE="[OpenIMSCore-Users] Calling problem">fernando.pascual at tecsidel.es
+       </A><BR>
+    <I>Tue Apr 29 13:23:16 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003849.html">[OpenIMSCore-Users] Calling problem
+</A></li>
+        <LI>Next message: <A HREF="003852.html">[OpenIMSCore-Users] Calling problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3850">[ date ]</a>
+              <a href="thread.html#3850">[ thread ]</a>
+              <a href="subject.html#3850">[ subject ]</a>
+              <a href="author.html#3850">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+    I have just added the xlog line that Franz recommended me, and here 
+are the logs (p/i/s-cscf). How do you get the scenario trace file in 
+html? Now, the softphone is the user <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fpb20 at poseidon.imscore</A> and the 
+camera (Mobotix M22 IT) is <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cupido at poseidon.imscore.</A> A call from fpb20 to 
+cupido works perfectly but from cupido to fpb20 it doesn&#180;t works. We 
+have seen that cupido doesn&#180;t send the &quot;rinstance&quot; parameter in the 
+REGISTER, but we&#180;re not sure that this could be a problem. Thanks in 
+advance.
+
+Regards, Fernando.
+
+Dragos Vingarzan escribi&#243;:
+&gt;<i> Strange issue... In any case, the sequence that Fernando is mentioning 
+</I>&gt;<i> is not normal... The subsequent routes are only called on ACK and BYE...
+</I>&gt;<i>
+</I>&gt;<i> Fernando, please update to the latest revision of the ser_ims and the 
+</I>&gt;<i> cfg files... Then please see the logs again...
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Franz Edler wrote:
+</I>&gt;&gt;<i> Hi Fernando,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> In the first call, the terminating P-CSCF receives INVITE but It 
+</I>&gt;&gt;&gt;<i> doesn't
+</I>&gt;&gt;&gt;<i> send TRYING. We attach logs of P-CSCF,I-CSCF and S-CSCF and one snoop
+</I>&gt;&gt;&gt;<i> with these 2 calls.
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In the first call I can see that the P-CSCF on the terminating side 
+</I>&gt;&gt;<i> does not
+</I>&gt;&gt;<i> forward the request to the terminal (iscar). But I can't see why.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It would be more easy to find the cause when you set a tracepoint into
+</I>&gt;&gt;<i> pcscf.cfg at the begin of the route block like:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   xlog(&quot;L_INFO&quot;,&quot;%Cyb %cs %rm %ru from %si:%sp From: %fu  To: 
+</I>&gt;&gt;<i> %tu\n%Cxx&quot;);
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Then it will be easyer to find a hint in the 1000 lines of the log-file.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have included a scenario trace of your tracefile which shows 
+</I>&gt;&gt;<i> clearly the
+</I>&gt;&gt;<i> issue (packet 95 ... packet 100).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards
+</I>&gt;&gt;<i> Franz
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>   
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: logs.rar
+Type: application/octet-stream
+Size: 17381 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080429/3298b898/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080429/3298b898/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003849.html">[OpenIMSCore-Users] Calling problem
+</A></li>
+	<LI>Next message: <A HREF="003852.html">[OpenIMSCore-Users] Calling problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3850">[ date ]</a>
+              <a href="thread.html#3850">[ thread ]</a>
+              <a href="subject.html#3850">[ subject ]</a>
+              <a href="author.html#3850">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] nonce and response values in	Re-REGISTER:Shouldit be same as previous REGISTER event for	&quot;auth&quot;and&quot;auth-int&quot; qop options?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20nonce%20and%20response%20values%0A%20in%09Re-REGISTER%3AShouldit%20be%20same%20as%20previous%20REGISTER%20event%0A%20for%09%22auth%22and%22auth-int%22%20qop%20options%3F&In-Reply-To=%3C49EDC8BA.3060004%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005260.html">
+   <LINK REL="Next"  HREF="005274.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] nonce and response values in	Re-REGISTER:Shouldit be same as previous REGISTER event for	&quot;auth&quot;and&quot;auth-int&quot; qop options?</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20nonce%20and%20response%20values%0A%20in%09Re-REGISTER%3AShouldit%20be%20same%20as%20previous%20REGISTER%20event%0A%20for%09%22auth%22and%22auth-int%22%20qop%20options%3F&In-Reply-To=%3C49EDC8BA.3060004%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] nonce and response values in	Re-REGISTER:Shouldit be same as previous REGISTER event for	&quot;auth&quot;and&quot;auth-int&quot; qop options?">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Apr 21 15:23:06 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005260.html">[OpenIMSCore-Users] starting icscf
+</A></li>
+        <LI>Next message: <A HREF="005274.html">[OpenIMSCore-Users] Question about &quot;ACK not following dialog routes	discarded silently!!!&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5265">[ date ]</a>
+              <a href="thread.html#5265">[ thread ]</a>
+              <a href="subject.html#5265">[ subject ]</a>
+              <a href="author.html#5265">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>also inlined:
+
+Vavilapalli Srikanth-A19563 wrote:
+&gt;&gt;<i> The above section tells that UE shall add Authorization header in 
+</I>&gt;&gt;<i> Refresh REGISTER with same nonce and response as last 
+</I>&gt;&gt;<i> received/calculated values. Does this applicable even if 401 carries 
+</I>&gt;&gt;<i> qop options as &quot;auth&quot; or &quot;auth-int&quot;?  RFC 2617 describes the usage of 
+</I>&gt;&gt;<i> nonce-count in digest calculation and nonce-count has to be 
+</I>&gt;&gt;<i> incremented every time UE uses the same nonce. In such scenario, won't
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> the digest response value generated for Refresh REGISTER different 
+</I>&gt;&gt;<i> from last calculated response value?
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> IMS always uses one-time nonce values and a refresh REGISTER is always
+</I>&gt;<i> based on an new authentication vector.
+</I>&gt;<i>   
+</I>this one-time authentication vectors come as a requirement from AKA, 
+which was the first (and only at the beginning) authorization method in 
+the 3GPP IMS. Then it stayed like that because in IMS, due to the Gm 
+interface (UE&lt;-&gt;P-CSCF) there is no need for re-authentications, so the 
+reuse of authentication vectors is pretty useless.
+&gt;<i> Srikanth&gt;&gt;&gt;&gt; I didn't quite get ur answer. When u said &quot;IMS uses
+</I>&gt;<i> one-time nonce value&quot;, does that mean that P-CSCF adds
+</I>&gt;<i> Authenitcation-Info header with next-nonce attribute for the UE to use
+</I>&gt;<i> it in Refresh REGISTER? If then, why does 24.229 talks about using last
+</I>&gt;<i> received nonce value and last calculated response values in Refresh
+</I>&gt;<i> REGISTER?
+</I>&gt;<i>   
+</I>no, there are no next-nonces. And the S-CSCF asks for an authentication 
+vector from the HSS and then it populates the headers as required. The 
+P-CSCF only forwards this info and does some security modifications.
+&gt;&gt;<i> i) what does the phrase &quot;REGISTER request that does not contain a 
+</I>&gt;&gt;<i> challenge response&quot; mean? Does it mean that 'Refresh REGISTER' in the 
+</I>&gt;&gt;<i> above context?
+</I>&gt;&gt;<i>     
+</I>it means an initial REGISTER, not one resulted due to reception of a 
+401. No, it does not mean a Refresh REGISTER necessarily. Due to 
+existing security on the Gm interface (IPsec, TLS), the refresh register 
+are not required to be challenged. The P-CSCF will add an 
+&quot;integrity-protected=yes&quot; parameter and the S-CSCF will just trust that 
+and not generated a new authentication vector. But there is no reuse of 
+nonce in any case.
+
+&gt;&gt;<i> Ii)Any specific reason on why the nonce and response directive to be 
+</I>&gt;&gt;<i> empty in the case of SIP digest with/without TLS?
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Yes of course. As a difference to the legacy application of the digest
+</I>&gt;<i> algorithm in SIP, the authentication in IMS always requires in the first
+</I>&gt;<i> REGISTER transaction the private User Identity and the realm to generate
+</I>&gt;<i> an individual authentication vector. The empty nonce and response
+</I>&gt;<i> directive is used to distinguish the first from the second REGISTER
+</I>&gt;<i> transaction.
+</I>&gt;<i>
+</I>&gt;<i> Srikanth&gt;&gt;&gt;&gt; Yes, definitely the nonce and response in the first
+</I>&gt;<i> REGISTER transaction has to be empty. I don't deny it. But the above
+</I>&gt;<i> phrase is copy/paste from 24.229 section talking about Refersh REGISTER.
+</I>&gt;<i> My doubt is, why should the nonce and response should be empty in
+</I>&gt;<i> Refresh REGISTER if the SIP Digest/with or without TLS is used as
+</I>&gt;<i> Authentication mechanism? Why should the nonce and response should be
+</I>&gt;<i> same last received/calculated value in Refresh REGISTER for IMS AKA
+</I>&gt;<i> authentication mechanism? Hope u r clear with my question.
+</I>&gt;<i>   
+</I>the old authentication vector is discarded on the S-CSCF when a 
+challenge response is received or it expires after being sent. So there 
+is no point in reusing the nonce as there will be no matching vector. In 
+this case, the nonce should be empty to indicate that this is not a 
+response to a previously sent challenge, but a new REGISTER procedure, 
+being it refresh or not.
+
+Cheers,
+-Dragos
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005260.html">[OpenIMSCore-Users] starting icscf
+</A></li>
+	<LI>Next message: <A HREF="005274.html">[OpenIMSCore-Users] Question about &quot;ACK not following dialog routes	discarded silently!!!&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5265">[ date ]</a>
+              <a href="thread.html#5265">[ thread ]</a>
+              <a href="subject.html#5265">[ subject ]</a>
+              <a href="author.html#5265">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

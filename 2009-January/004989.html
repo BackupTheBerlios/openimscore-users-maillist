@@ -1,0 +1,357 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] INVITE rejected by pcscf
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20INVITE%20rejected%20by%20pcscf&In-Reply-To=%3C496C86A9.4020701%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004977.html">
+   <LINK REL="Next"  HREF="004992.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] INVITE rejected by pcscf</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20INVITE%20rejected%20by%20pcscf&In-Reply-To=%3C496C86A9.4020701%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] INVITE rejected by pcscf">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Jan 13 13:18:49 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004977.html">[OpenIMSCore-Users] INVITE rejected by pcscf
+</A></li>
+        <LI>Next message: <A HREF="004992.html">[OpenIMSCore-Users] INVITE rejected by pcscf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4989">[ date ]</a>
+              <a href="thread.html#4989">[ thread ]</a>
+              <a href="subject.html#4989">[ subject ]</a>
+              <a href="author.html#4989">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I would suspect that your pcscf.cfg has a problem at the 
+P_enforce_service_route(). I don't see it being called and this might be 
+reason why the request is not sent out. Please post your pcscf.cfg.
+
+Cheers,
+-Dragos
+
+Soshant Bali wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> Here is what happens at pcscf with debug level 9. Also I am attaching
+</I>&gt;<i> another pcap trace with DNS included. There is no DNS query from PCSCF
+</I>&gt;<i> when it receives the INVITE. The INVITE is just dropped.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Soshant
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 4(11992) SIP Request:
+</I>&gt;<i>  4(11992)  method:  &lt;INVITE&gt;
+</I>&gt;<i>  4(11992)  uri:     &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">16503751111 at openims.wireless</A>;user=phone&gt;
+</I>&gt;<i>  4(11992)  version: &lt;SIP/2.0&gt;
+</I>&gt;<i>  4(11992) parse_headers: flags=2
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819b6c0 frag.
+</I>&gt;<i> 0x819b6a8 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 116) called from parser/msg_parser.c:
+</I>&gt;<i> get_hdr_field(111)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 116) returns address 0x819b304 frag.
+</I>&gt;<i> 0x819b2ec (size=116) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/parse_via.c:
+</I>&gt;<i> parse_via(2142)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819b498 frag.
+</I>&gt;<i> 0x819b480 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) Found param type 232, &lt;branch&gt; = &lt;z9hG4bK5c0938f16c5eed9f&gt;; state=16
+</I>&gt;<i>  4(11992) end of header reached, state=5
+</I>&gt;<i>  4(11992) parse_headers: Via found, flags=2
+</I>&gt;<i>  4(11992) parse_headers: this is the first via
+</I>&gt;<i>  4(11992) After parse_msg...
+</I>&gt;<i>  4(11992) preparing to run routing scripts...
+</I>&gt;<i>  4(11992) parse_headers: flags=100
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819b56c frag.
+</I>&gt;<i> 0x819b554 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) DEBUG:maxfwd:is_maxfwd_present: value = 70
+</I>&gt;<i>  4(11992) DBG:maxfwd:process_maxfwd_header: value 70 decreased to 16
+</I>&gt;<i>  4(11992) Calling SELECT 0x817fa84
+</I>&gt;<i>  4(11992) parse_headers: flags=ffffffffffffffff
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819b82c frag.
+</I>&gt;<i> 0x819b814 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 44) called from parser/msg_parser.c:
+</I>&gt;<i> get_hdr_field(151)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 44) returns address 0x819afc4 frag.
+</I>&gt;<i> 0x819afac (size=44) on 1 -th hit
+</I>&gt;<i>  4(11992) end of header reached, state=9
+</I>&gt;<i>  4(11992) DEBUG: get_hdr_field: &lt;To&gt; [47];
+</I>&gt;<i> uri=[sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">16503751111 at openims.wireless</A>;user=phone]
+</I>&gt;<i>  4(11992) DEBUG: to body [&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">16503751111 at openims.wireless</A>;user=phone&gt;]
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819b670 frag.
+</I>&gt;<i> 0x819b658 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819aed4 frag.
+</I>&gt;<i> 0x819aebc (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819b204 frag.
+</I>&gt;<i> 0x819b1ec (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 20) called from parser/msg_parser.c:
+</I>&gt;<i> get_hdr_field(130)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 20) returns address 0x819b070 frag.
+</I>&gt;<i> 0x819b058 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) get_hdr_field: cseq &lt;CSeq&gt;: &lt;1&gt; &lt;INVITE&gt;
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819bbdc frag.
+</I>&gt;<i> 0x819bbc4 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819b1b4 frag.
+</I>&gt;<i> 0x819b19c (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819bccc frag.
+</I>&gt;<i> 0x819bcb4 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819b020 frag.
+</I>&gt;<i> 0x819b008 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819ade0 frag.
+</I>&gt;<i> 0x819adc8 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819b448 frag.
+</I>&gt;<i> 0x819b430 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819bc7c frag.
+</I>&gt;<i> 0x819bc64 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819b3f8 frag.
+</I>&gt;<i> 0x819b3e0 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) DEBUG: get_hdr_body : content_length=226
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from parser/msg_parser.c:
+</I>&gt;<i> parse_headers(297)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819b710 frag.
+</I>&gt;<i> 0x819b6f8 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) found end of header
+</I>&gt;<i>  4(11992) qm_free(0x8140fa0, 0x819b710), called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(313)
+</I>&gt;<i>  4(11992) qm_free: freeing frag. 0x819b6f8 alloc'ed from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  4(11992) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.1.1.16&gt;
+</I>&gt;<i>  4(11992) parse_headers: flags=ffffffffffffffff
+</I>&gt;<i>  4(11992) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;10.1.1.16&gt;
+</I>&gt;<i>  4(11992) DBG:P-CSCF:P_check_sent_by(): sent-by matches the actual IP
+</I>&gt;<i> received from
+</I>&gt;<i>  4(11992) parse_headers: flags=200
+</I>&gt;<i>  4(11992) DBG:P-CSCF:cscf_get_first_route: Header Route not found
+</I>&gt;<i>  4(11992) DBG:P-CSCF:P_mobile_terminating: No Route header.
+</I>&gt;<i>  4(11992) DBG:P-CSCF:cscf_get_originating_contact: 1://10.1.1.16:15002
+</I>&gt;<i>  4(11992) parse_headers: flags=40
+</I>&gt;<i>  4(11992) DBG:P-CSCF:cscf_get_terminating_contact: 0://openims.wireless:0
+</I>&gt;<i>  4(11992) parse_headers: flags=40
+</I>&gt;<i>  4(11992) &gt;&gt;       Orig_Initial
+</I>&gt;<i>  4(11992) DBG:P-CSCF:P_is_registered: Looking if registered
+</I>&gt;<i>  4(11992) DBG:P-CSCF:P_is_registered: Looking for &lt;1://10.1.1.16:15002&gt;
+</I>&gt;<i>  4(11992) INF:P-CSCF:P_assert_identity: Asserting Identity
+</I>&gt;<i>  4(11992) parse_headers: flags=ffffffffffffffff
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 36) called from parser/parse_rr.c:
+</I>&gt;<i> do_parse_rr_body(68)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 36) returns address 0x819b5bc frag.
+</I>&gt;<i> 0x819b5a4 (size=36) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_free(0x8140fa0, 0x819b5bc), called from
+</I>&gt;<i> parser/parse_rr.c: do_free_rr(193)
+</I>&gt;<i>  4(11992) qm_free: freeing frag. 0x819b5a4 alloc'ed from
+</I>&gt;<i> parser/parse_rr.c: do_parse_rr_body(68)
+</I>&gt;<i>  4(11992) DBG:P-CSCF:P_assert_identity: Looking for
+</I>&gt;<i> &lt;1://10.1.1.16:15002&gt; Pref: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">16503751112 at openims.wireless</A>
+</I>&gt;<i>  4(11992) DBG:P-CSCF:r_assert_identity: Asserting preferred id
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">16503751112 at openims.wireless</A>&gt;
+</I>&gt;<i>  4(11992) DBG:P-CSCF:r_assert_identity: to &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">16503751112 at openims.wireless</A>&gt;
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from data_lump.c: del_lump(287)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819b710 frag.
+</I>&gt;<i> 0x819b6f8 (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 57) called from registration.c:
+</I>&gt;<i> P_assert_identity(518)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 60) returns address 0x819bacc frag.
+</I>&gt;<i> 0x819bab4 (size=64) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from data_lump.c: anchor_lump(341)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819af24 frag.
+</I>&gt;<i> 0x819af0c (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) called from data_lump.c:
+</I>&gt;<i> insert_new_lump_after(115)
+</I>&gt;<i>  4(11992) qm_malloc(0x8140fa0, 32) returns address 0x819b254 frag.
+</I>&gt;<i> 0x819b23c (size=32) on 1 -th hit
+</I>&gt;<i>  4(11992) parse_headers: flags=200
+</I>&gt;<i>  4(11992) find_first_route: No Route headers found
+</I>&gt;<i>  4(11992) loose_route: There is no Route HF
+</I>&gt;<i>  4(11992) parse_headers: flags=ffffffffffffffff
+</I>&gt;<i>  4(11992) DEBUG:destroy_avp_list: destroying list (nil)
+</I>&gt;<i>  4(11992) DEBUG:destroy_avp_list: destroying list (nil)
+</I>&gt;<i>  4(11992) DEBUG:destroy_avp_list: destroying list (nil)
+</I>&gt;<i>  4(11992) DEBUG:destroy_avp_list: destroying list (nil)
+</I>&gt;<i>  4(11992) DEBUG:destroy_avp_list: destroying list (nil)
+</I>&gt;<i>  4(11992) DEBUG:destroy_avp_list: destroying list (nil)
+</I>&gt;<i>  4(11992) receive_msg: cleaning up
+</I>&gt;<i>  4(11992) qm_free(0x8140fa0, 0x819b498), called from
+</I>&gt;<i> parser/parse_via.c: free_via_param_list(2361)
+</I>&gt;<i>  4(11992) qm_free: freeing frag. 0x819b480 alloc'ed from
+</I>&gt;<i> parser/parse_via.c: parse_via(2142)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Tue, Jan 6, 2009 at 2:43 AM, Dragos Vingarzan
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi Soshant,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Could you please see if there aren't any failed DNS queries or something
+</I>&gt;&gt;<i> like that?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Also, please increase the debug level on the P-CSCF and paste a more
+</I>&gt;&gt;<i> detailed log.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Soshant Bali wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> More on this: The same configuration works fine (i.e., INVITEs are
+</I>&gt;&gt;&gt;<i> forwarded and call completes) when we use rev 508 for ser_ims. The
+</I>&gt;&gt;&gt;<i> problem occurs with rev 611.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On Mon, Jan 5, 2009 at 11:32 AM, Soshant Bali &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">soshant.bali at gmail.com</A>&gt;
+</I>&gt;&gt;&gt;<i> wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Hello everyone,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> We are trying to establish a call between two SIP modems (16503751111
+</I>&gt;&gt;&gt;&gt;<i> and 16503751112). The request URI is of the user=phone format. Both
+</I>&gt;&gt;&gt;&gt;<i> UEs register first and then 1112 calls 1111. However, when the INVITE
+</I>&gt;&gt;&gt;&gt;<i> from 1112 arrives at the pcscf, the pcscf just dumps the INVITE and
+</I>&gt;&gt;&gt;&gt;<i> does not forward it to the SCSCF. We noticed that the UE does not
+</I>&gt;&gt;&gt;&gt;<i> insert a ROUTE header with scscf address in the INVITE. To overcome
+</I>&gt;&gt;&gt;&gt;<i> this, we have configured the pcscf to enforce service route (Variant
+</I>&gt;&gt;&gt;&gt;<i> 2: P_enforce_service_route). On receiving the INVITE from 1112, the
+</I>&gt;&gt;&gt;&gt;<i> PCSCF logs are as follows: -
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>      Orig_Initial
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;<i>  1(1599) DBG:P-CSCF:P_is_registered: Looking if registered
+</I>&gt;&gt;&gt;&gt;<i>  1(1599) DBG:P-CSCF:P_is_registered: Looking for
+</I>&gt;&gt;&gt;&gt;<i> &lt;1://208.30.175.87:15002&gt;
+</I>&gt;&gt;&gt;&gt;<i>  1(1599) INF:P-CSCF:P_assert_identity: Asserting Identity
+</I>&gt;&gt;&gt;&gt;<i>  1(1599) DBG:P-CSCF:P_assert_identity: Looking for
+</I>&gt;&gt;&gt;&gt;<i> &lt;1://208.30.175.87:15002&gt; Pref: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">16503751112 at openims.wireless</A>
+</I>&gt;&gt;&gt;&gt;<i>  4(1602) DBG:P-CSCF:cscf_get_originating_contact: 1://208.30.175.87:15002
+</I>&gt;&gt;&gt;&gt;<i>  4(1602) DBG:P-CSCF:cscf_get_terminating_contact: 0://openims.wireless:0
+</I>&gt;&gt;&gt;&gt;<i>  4(1602) &gt;&gt;       Orig_Initial
+</I>&gt;&gt;&gt;&gt;<i>  4(1602) DBG:P-CSCF:P_is_registered: Looking if registered
+</I>&gt;&gt;&gt;&gt;<i>  4(1602) DBG:P-CSCF:P_is_registered: Looking for
+</I>&gt;&gt;&gt;&gt;<i> &lt;1://208.30.175.87:15002&gt;
+</I>&gt;&gt;&gt;&gt;<i>  4(1602) INF:P-CSCF:P_assert_identity: Asserting Identity
+</I>&gt;&gt;&gt;&gt;<i>  4(1602) DBG:P-CSCF:P_assert_identity: Looking for
+</I>&gt;&gt;&gt;&gt;<i> &lt;1://208.30.175.87:15002&gt; Pref: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">16503751112 at openims.wireless</A>
+</I>&gt;&gt;&gt;&gt;<i>  3(1601) DBG:P-CSCF:cscf_get_originating_contact: 1://208.30.175.87:15002
+</I>&gt;&gt;&gt;&gt;<i>  3(1601) DBG:P-CSCF:cscf_get_terminating_contact: 0://openims.wireless:0
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I am also attaching a pcap file with the trace captured on the openims
+</I>&gt;&gt;&gt;&gt;<i> machine. The cscfs are listening on the following: -
+</I>&gt;&gt;&gt;&gt;<i> pcscf: 208.30.175.210:5060
+</I>&gt;&gt;&gt;&gt;<i> icscf: 127.0.0.1: 5060
+</I>&gt;&gt;&gt;&gt;<i> scscf: 127.0.0.1:6060
+</I>&gt;&gt;&gt;&gt;<i> hss: 208.30.175.210
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> named and configuration files are configured accordingly.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Please have a look.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Thanks,
+</I>&gt;&gt;&gt;&gt;<i> Soshant Bali
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004977.html">[OpenIMSCore-Users] INVITE rejected by pcscf
+</A></li>
+	<LI>Next message: <A HREF="004992.html">[OpenIMSCore-Users] INVITE rejected by pcscf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4989">[ date ]</a>
+              <a href="thread.html#4989">[ thread ]</a>
+              <a href="subject.html#4989">[ subject ]</a>
+              <a href="author.html#4989">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

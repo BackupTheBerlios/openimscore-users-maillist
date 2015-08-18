@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Tel URI
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Tel%20URI&In-Reply-To=%3C10d080960704120159k2681a2c1ue4d0bc679b2b6deb%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001459.html">
+   <LINK REL="Next"  HREF="001473.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Tel URI</H1>
+    <B>ketzal devims</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Tel%20URI&In-Reply-To=%3C10d080960704120159k2681a2c1ue4d0bc679b2b6deb%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Tel URI">ketzaldevims at gmail.com
+       </A><BR>
+    <I>Thu Apr 12 10:59:01 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001459.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 6,	Issue 33  Cannot create phone call between Bob and
+</A></li>
+        <LI>Next message: <A HREF="001473.html">[OpenIMSCore-Users] Tel URI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1460">[ date ]</a>
+              <a href="thread.html#1460">[ thread ]</a>
+              <a href="subject.html#1460">[ subject ]</a>
+              <a href="author.html#1460">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I tried to test an INVITE with Tel URIs (RFC 3966) and It doesn't work. In
+fact, I've seen the file scscf.cfg, and, in the originating route, nothing
+define an incoming INVITE request with Tel URI.
+
+That's why , after the lines defined int route[Orig]
+
+#PSTN gateway handling
+        if (method==&quot;INVITE&quot; &amp;&amp; uri=~&quot;sip:[0-9]<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+ at open-ims</A>\.test(.*)&quot;){
+                        route(PSTN);
+                        break;
+        }
+
+I've defined  this  :
+
+         if(method==&quot;INVITE&quot; &amp;&amp; uri=~&quot;tel:\+[0-9]&quot;){
+                route(TELURI);
+                break;
+        }
+
+I've tested it, and when an INVITE request containing a Tel URI incomes to
+the scscf, that works.
+
+Now my problem is :
+
+route[TELURI]
+{
+        log(1,&quot;&gt;&gt;       Tel URI INVITE\n&quot;);
+        exit;
+}
+
+What sould I write in this part to handle these things :
+ - I would like the scscf to do an ENUM Convertion to get the SIP URI
+matching with the Tel URI
+ - I would like to route the incoming request to the appropriated I-CSCF.
+
+Maybe I'm wrong in what I want to do... Please tell me if it is
+
+Thanks everybody
+
+Ketzal
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070412/eddd9e89/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070412/eddd9e89/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001459.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 6,	Issue 33  Cannot create phone call between Bob and
+</A></li>
+	<LI>Next message: <A HREF="001473.html">[OpenIMSCore-Users] Tel URI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1460">[ date ]</a>
+              <a href="thread.html#1460">[ thread ]</a>
+              <a href="subject.html#1460">[ subject ]</a>
+              <a href="author.html#1460">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

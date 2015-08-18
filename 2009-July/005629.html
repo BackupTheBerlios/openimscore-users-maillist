@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Capacity of OpenIMS S-CSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Capacity%20of%20OpenIMS%20S-CSCF&In-Reply-To=%3C4A66E626.2000407%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005611.html">
+   <LINK REL="Next"  HREF="005634.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Capacity of OpenIMS S-CSCF</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Capacity%20of%20OpenIMS%20S-CSCF&In-Reply-To=%3C4A66E626.2000407%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Capacity of OpenIMS S-CSCF">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Jul 22 12:12:54 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005611.html">[OpenIMSCore-Users] Capacity of OpenIMS S-CSCF
+</A></li>
+        <LI>Next message: <A HREF="005634.html">[OpenIMSCore-Users] Capacity of OpenIMS S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5629">[ date ]</a>
+              <a href="thread.html#5629">[ thread ]</a>
+              <a href="subject.html#5629">[ subject ]</a>
+              <a href="author.html#5629">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dushyant,
+
+it's hard to put a number on this as there are way to many variables 
+involved like hardware, topology setup, traffic profile, call durations 
+a.s.o.
+
+You should expect thousands of transactions per second and many hunderds 
+of cps. The dumped core is not necessarily an overload situation, but 
+more likely you have uncovered a bug.
+
+To test for performance you will need to disable logging, reconfigure 
+the CSCFs with hash-table sizes aligned to the number of users used, 
+provision many more users so that you won't do thousands of calls per 
+second per user (which is unrealistic), reconfigure the CSCF to use much 
+more memory, etc.
+
+Then you will hit the HSS limitations, due to its Java platform. For 
+performance tests we used at FOKUS a different HSS written in C, which 
+is much faster, but does not provide all the features that FHoSS does, 
+like an Sh interface or the web GUI. Unfortunately, this is not 
+available as open source and anyway it kind of goes beyond the testbed 
+targets of our project due to its performance.
+
+Cheers,
+-Dragos
+
+Dushyant Dhalia wrote:
+&gt;<i> I want to know what is the capacity of OpenIMS S-CSCF, I-CSCF and HSS 
+</I>&gt;<i> (in terms of cps, no. of subscribers and call hold time).
+</I>&gt;<i>
+</I>&gt;<i> I am running load (INVITE related sessions) at 100 cps and S-CSCF is 
+</I>&gt;<i> dumping core. Is there any parameter in *.cfg file which is to be 
+</I>&gt;<i> configured for load scenarios?
+</I>&gt;<i>
+</I>&gt;<i> Dushyant P S Dhalia
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005611.html">[OpenIMSCore-Users] Capacity of OpenIMS S-CSCF
+</A></li>
+	<LI>Next message: <A HREF="005634.html">[OpenIMSCore-Users] Capacity of OpenIMS S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5629">[ date ]</a>
+              <a href="thread.html#5629">[ thread ]</a>
+              <a href="subject.html#5629">[ subject ]</a>
+              <a href="author.html#5629">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Anyone faced Error 479 with extra space? //	KIndly help
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Anyone%20faced%20Error%20479%20with%20extra%20space%3F%20//%0A%09KIndly%20help&In-Reply-To=%3CAANLkTiki6%3DFCG-MYOz2Db8iozOVoDbNCEfPJKOcQvJim%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006437.html">
+   <LINK REL="Next"  HREF="006440.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Anyone faced Error 479 with extra space? //	KIndly help</H1>
+    <B>sougata pal</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Anyone%20faced%20Error%20479%20with%20extra%20space%3F%20//%0A%09KIndly%20help&In-Reply-To=%3CAANLkTiki6%3DFCG-MYOz2Db8iozOVoDbNCEfPJKOcQvJim%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Anyone faced Error 479 with extra space? //	KIndly help">sougata.pal at gmail.com
+       </A><BR>
+    <I>Mon Aug 16 13:45:47 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006437.html">[OpenIMSCore-Users] Trigger for out of network call
+</A></li>
+        <LI>Next message: <A HREF="006440.html">[OpenIMSCore-Users] Anyone faced Error 479 with extra space?	//KIndly help
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6438">[ date ]</a>
+              <a href="thread.html#6438">[ thread ]</a>
+              <a href="subject.html#6438">[ subject ]</a>
+              <a href="author.html#6438">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello All,
+
+I am getting that error while getting my user's registered which is &quot;
+1(7280) ERROR: parse_sip_msg_uri: bad uri &lt;sip:scscf.open-ims.sougata:6060
+&gt;<i>&quot;.
+</I>
+Actually the trace which i am getting in my icscf is attached below and
+being highlighted.
+
+ERR:I-CSCF:cscf_get_private_identity: Message does not contain Authorization
+header.
+ 1(7280) INF:I-CSCF:cscf_get_private_identity: Falling back to
+private_id=stripped(public_id)
+-&gt; Message did not contain a valid Authorization Header!!! This fallback is
+deprecated outside Early-IMS or NASS-Bundled!
+ 1(7280) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+ 1(7280) INFO:I-CSCF:Cx_get_server_name: Failed finding avp
+ *1(7280) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf.open-ims.sougata:6060 &gt;*
+ 1(7280) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf.open-ims.sougata:6060&gt;
+ 1(7280) ERROR: parse_uri: bad port in uri (error at char  in state 3)
+parsed: &lt;sip:scscf.open-ims.sougata:6060 &gt;(32)
+/&lt;sip:scscf.open-ims.sougata:6060 &gt; (32)
+ *1(7280) ERROR: parse_sip_msg_uri: bad uri &lt;sip:scscf.open-ims.sougata:6060
+&gt;<i>*
+</I> 1(7280) ERROR: new_t: uri invalid
+ 1(7280) ERROR: t_newtran: new_t failed
+ 1(7280) ERROR: parse_uri: bad port in uri (error at char  in state 3)
+parsed: &lt;sip:scscf.open-ims.sougata:6060 &gt;(32)
+/&lt;sip:scscf.open-ims.sougata:6060 &gt; (32)
+ 1(7280) ERROR: parse_sip_msg_uri: bad uri &lt;sip:scscf.open-ims.sougata:6060
+&gt;<i>
+</I> 1(7280) ERROR: new_t: uri invalid
+ 1(7280) ERROR: t_newtran: new_t failed
+ 1(7280) ERROR: sl_reply_error used: Regretfully, we were not able to
+process the URI (479/SL)
+
+I can see that there is an extra &quot;space&quot; coming after the port being
+declared which is 6060.
+How to get rid of this extra space, which i am sure is the root cause for
+this error and which is not letting my users to get registered?
+
+Everywhere i have updated the scscf as &lt;sip:scscf.open-ims.sougata:6060&gt; ,
+but still this extra space is coming and not letting my users get
+registered.
+
+Just to mention on this error trace that i am reviewing now, i see in
+wireshark that error is coming after the uri is reaching ICSCF&lt;5060&gt; , which
+if i have correctly understood the &quot;extra&quot; space is coming at this stage ,
+which the icscf can't match as the corresponding scscf uri which should be
+&lt;sip:scscf.open-ims.sougata:6060&gt; rather than
+&lt;sip:scscf.open-ims.sougata:6060 &gt;
+
+Which is surprising me that in my icscf database, the table s_cscf looks
+like this -
+
+mysql&gt; SELECT * FROM s_cscf;
++----+-----------------------+---------------------------------+
+|<i> id | name                  | s_cscf_uri                      |
+</I>+----+-----------------------+---------------------------------+
+|<i>  1 | First and only S-CSCF | sip:scscf.open-ims.sougata:6060 |
+</I>+----+-----------------------+---------------------------------+
+
+Anyone who has faced this error?? Where exactly i maybe missing ??
+
+Regards,
+
+Sougata
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100816/3f6bf2e5/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100816/3f6bf2e5/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: tracefile.pcap
+Type: application/cap
+Size: 236030 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100816/3f6bf2e5/attachment.pcap">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100816/3f6bf2e5/attachment.pcap</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: Error in icscf console
+Type: application/octet-stream
+Size: 1690 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100816/3f6bf2e5/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100816/3f6bf2e5/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: Registration Error
+Type: application/octet-stream
+Size: 7323 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100816/3f6bf2e5/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100816/3f6bf2e5/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006437.html">[OpenIMSCore-Users] Trigger for out of network call
+</A></li>
+	<LI>Next message: <A HREF="006440.html">[OpenIMSCore-Users] Anyone faced Error 479 with extra space?	//KIndly help
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6438">[ date ]</a>
+              <a href="thread.html#6438">[ thread ]</a>
+              <a href="subject.html#6438">[ subject ]</a>
+              <a href="author.html#6438">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

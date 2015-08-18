@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Realm parsing error in S-CSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Realm%20parsing%20error%20in%20S-CSCF&In-Reply-To=%3C45D343E6.6070209%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000807.html">
+   <LINK REL="Next"  HREF="000809.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Realm parsing error in S-CSCF</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Realm%20parsing%20error%20in%20S-CSCF&In-Reply-To=%3C45D343E6.6070209%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Realm parsing error in S-CSCF">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Feb 14 18:16:22 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000807.html">[OpenIMSCore-Users] Realm parsing error in S-CSCF
+</A></li>
+        <LI>Next message: <A HREF="000809.html">[OpenIMSCore-Users] registration test
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#808">[ date ]</a>
+              <a href="thread.html#808">[ thread ]</a>
+              <a href="subject.html#808">[ subject ]</a>
+              <a href="author.html#808">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Suty,
+
+Oy... this might've beeen there for a loooong time because the HSS
+doesn't mind.
+
+Anyway, this lines were moved in sip.c in cscf_get_realm_from_uri()
+since r131. I fixed it again in r141.
+
+Thanx for the report!
+
+-Dragos
+
+Suty Martin wrote:
+&gt;<i> hi,
+</I>&gt;<i>             After successful registration, of two clients, we tried to 
+</I>&gt;<i> call between them. After appoximately 4 minutes registration timeout 
+</I>&gt;<i> occured in S-CSCF and S-CSCF sent Cx SAR request to HSS.
+</I>&gt;<i>
+</I>&gt;<i> In wireshark capture, we see destination realm AVP with value :
+</I>&gt;<i> @strom-ims.sk
+</I>&gt;<i> instead of:
+</I>&gt;<i> strom-ims.sk
+</I>&gt;<i>
+</I>&gt;<i> We found the problem in file
+</I>&gt;<i> /ser_ims/modules/scscf/registrar.c
+</I>&gt;<i> in function
+</I>&gt;<i> void registrar_timer(unsigned int ticks, void* param)
+</I>&gt;<i>
+</I>&gt;<i> in this code
+</I>&gt;<i>
+</I>&gt;<i> while(realm.s[0]!='@' &amp;&amp; realm.len&gt;0){
+</I>&gt;<i> realm.s ++;
+</I>&gt;<i> realm.len--;
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> //THIS LINE SHOULD BE ADDED TO CORRECT BUG
+</I>&gt;<i> if (realm.len &gt; 0) { realm.s++; realm.len--; }
+</I>&gt;<i> //END
+</I>&gt;<i>
+</I>&gt;<i> for(j=0;j&lt;realm.len;j++)
+</I>&gt;<i> if (realm.s[j]==';'||realm.s[j]=='&amp;') {
+</I>&gt;<i> realm.len = j;
+</I>&gt;<i> break;
+</I>&gt;<i> }
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000807.html">[OpenIMSCore-Users] Realm parsing error in S-CSCF
+</A></li>
+	<LI>Next message: <A HREF="000809.html">[OpenIMSCore-Users] registration test
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#808">[ date ]</a>
+              <a href="thread.html#808">[ thread ]</a>
+              <a href="subject.html#808">[ subject ]</a>
+              <a href="author.html#808">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

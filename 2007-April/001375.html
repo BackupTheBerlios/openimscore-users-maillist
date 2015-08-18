@@ -1,0 +1,302 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] scscf core dump
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20scscf%20core%20dump&In-Reply-To=%3CL3CB6882C6F804351AE1707599C67D134.1175619413.postal.aylus.com%40MHS%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001373.html">
+   <LINK REL="Next"  HREF="001376.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] scscf core dump</H1>
+    <B>Vijay Malani</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20scscf%20core%20dump&In-Reply-To=%3CL3CB6882C6F804351AE1707599C67D134.1175619413.postal.aylus.com%40MHS%3E"
+       TITLE="[OpenIMSCore-Users] scscf core dump">vmalani at aylus.com
+       </A><BR>
+    <I>Tue Apr  3 18:57:35 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001373.html">[OpenIMSCore-Users] RTPproxy and 2 P-CSCFs
+</A></li>
+        <LI>Next message: <A HREF="001376.html">[OpenIMSCore-Users] scscf core dump
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1375">[ date ]</a>
+              <a href="thread.html#1375">[ thread ]</a>
+              <a href="subject.html#1375">[ subject ]</a>
+              <a href="author.html#1375">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+When I make an OPTION exchange, scscf is core dumping. I think that 
+scscf is trying a DNS query (appends _sip._udp to the actual needed 
+query) and since it doesn't find a response, it core dumps.
+
+Below is the screen output and the ethereal trace is attached. My domain 
+is tv.comcast.com &amp; I was expecting a dns query for 
+geo-as.tv.comcast.com (configured as my App server, but the query is for 
+_sip._udp.geo-as.tv.comcast.com)
+
+12(3173) DBG:sm_process(): Peer hss.tv.comcast.com      State I_Open    
+Event I_Rcv_DWA
+11(3144) --- Peer List: ---
+11(3144)  S[I_Open] hss.tv.comcast.com:3868 D[ ]
+11(3144) ------------------
+ 2(3135) INF:S-CSCF:----------  Registrar Contents begin --------
+ 2(3135) INF:S-CSCF:[  14] P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at tv.comcast.com</A>&gt; R[ 1]
+ 2(3135) INF:S-CSCF:         C: 
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.83.0.201</A>:5061;+g.3gpp.cs-voice&gt; Exp:[599855]
+ 2(3135) INF:S-CSCF:           
+Path:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.tv.comcast.com</A>:4060;lr&gt;
+ 2(3135) INF:S-CSCF:           UA: &lt;PMI-0001&gt;
+ 2(3135) INF:S-CSCF:         S: Event[0] Exp:[599886] 
+&lt;sip:pcscf.tv.comcast.com:4060&gt;
+ 2(3135) INF:S-CSCF:         S: Event[0] Exp:[599858] 
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.83.0.201</A>:5061;+g.3gpp.cs-voice&gt;
+ 2(3135) INF:S-CSCF:[ 230] P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at tv.comcast.com</A>&gt; R[ 1]
+ 2(3135) INF:S-CSCF:         C: 
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.83.0.167</A>:5061;+g.3gpp.cs-voice&gt; Exp:[599936]
+ 2(3135) INF:S-CSCF:           
+Path:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.tv.comcast.com</A>:4060;lr&gt;
+ 2(3135) INF:S-CSCF:           UA: &lt;PMI-0001&gt;
+ 2(3135) INF:S-CSCF:         S: Event[0] Exp:[599937] 
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.83.0.167</A>:5061;+g.3gpp.cs-voice&gt;
+ 2(3135) INF:S-CSCF:         S: Event[0] Exp:[599971] 
+&lt;sip:pcscf.tv.comcast.com:4060&gt;
+ 2(3135) INF:S-CSCF:----------  Registrar Contents end ----------
+11(3144) --- Peer List: ---
+11(3144)  S[I_Open] hss.tv.comcast.com:3868 D[ ]
+11(3144) ------------------
+11(3144) --- Peer List: ---
+11(3144)  S[I_Open] hss.tv.comcast.com:3868 D[ ]
+11(3144) ------------------
+ 1(3134) &gt;&gt;       Orig
+ 1(3134) INFO:ISC:ISC_match_filter(orig): Checking triggers
+ 1(3134) INFO:ISC:isc_mark_get_from_msg: Trying to get the mark from the 
+message
+ 1(3134) INFO:ISC:ISC_match_filter(orig): Starting triggering
+ 1(3134) INFO:ISC:ISC_match_filter(orig): Orig User 
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at tv.comcast.com</A>&gt; [1]
+ 1(3134) INFO:ISC:isc_checker_find: starting search
+ 1(3134) INFO:ISC:isc_checker_find: MATCH -&gt; 
+sip:geo-as.tv.comcast.com;orig () handling 0
+ 1(3134) INFO:ISC:isc_mark_set: NEW mark 
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.tv.comcast.com</A>:6060;lr;s=1;h=0;d=0&gt;
+ 1(3134) INF:ISC:cscf_get_transaction: Transaction 25737 1074296883 
+exists.Retransmission?
+ 1(3134) INFO:ISC:isc_mark_get_from_msg: Trying to get the mark from the 
+message
+ 1(3134) INFO:ISC:isc_mark_get_from_msg: Found 
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.tv.comcast.com</A>:6060;lr;orig;s=1;h=0;d=0&gt;
+ 1(3134) INFO:ISC:ISC_from_AS(orig): Message returned s=1;h=0;d=0
+ 1(3134) &gt;&gt;       Orig
+ 1(3134) INFO:ISC:ISC_match_filter(orig): Checking triggers
+ 1(3134) INFO:ISC:isc_mark_get_from_msg: Trying to get the mark from the 
+message
+ 1(3134) INFO:ISC:isc_mark_get_from_msg: Found 
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.tv.comcast.com</A>:6060;lr;orig;s=1;h=0;d=0&gt;
+ 1(3134) INFO:ISC:ISC_match_filter(orig): Message returned s=1;h=0;d=0
+ 1(3134) INFO:ISC:ISC_match_filter(orig): Orig User 
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at tv.comcast.com</A>&gt; [1]
+ 1(3134) INFO:ISC:isc_checker_find: resuming search from 1
+ 5(3138) ERROR: receive_fd: EOF on 6
+ 0(3133) child process 3134 exited by a signal 11
+ 0(3133) core was generated
+ 0(3133) INFO: terminating due to SIGCHLD
+ 0(3133) Process Table:
+ 0(3133)  0. (3133) &gt; attendant
+ 0(3133)  1. (3134) &gt; udp
+ 0(3133)  2. (3135) &gt; slow timer
+ 0(3133)  3. (3136) &gt; timer
+ 0(3133)  4. (3137) &gt; tcp receiver child=0
+ 0(3133)  5. (3138) &gt; tcp main process
+ 0(3133)  6. (3139) &gt; cdp_acceptor
+ 0(3133)  7. (3140) &gt; cdp worker child=0
+ 0(3133)  8. (3141) &gt; cdp worker child=1
+ 0(3133)  9. (3142) &gt; cdp worker child=2
+ 0(3133) 10. (3143) &gt; cdp worker child=3
+ 0(3133) 11. (3144) &gt; cdp_timer
+ 0(3133) 12. (3173) &gt; receiver I
+ 2(3135) INFO: signal 15 received
+ 5(3138) ERROR: receive_fd: EOF on 7
+ 3(3136) INFO: signal 15 received
+ 5(3138)  5(3138) INFO: signal 15 received
+ 4(3137) INFO: signal 15 received
+ 8(3141) INFO: signal 15 received
+ 7(3140) INFO: signal 15 received
+11(3144) INFO: signal 15 received
+ 9(3142) INFO: signal 15 received
+12(3173) INFO: signal 15 received
+10(3143) INFO: signal 15 received
+ 6(3139) INFO: signal 15 received
+ 0(3133) INFO:cdp:cdp_exit(): CDiameterPeer stoping ...
+ 0(3133) INFO:destroy_diameter_peer(): Terminating all childs...
+ 0(3133) INFO:destroy_diameter_peer(): Waiting for child [3173] to 
+terminate...
+ 0(3133) INFO:destroy_diameter_peer(): Waiting for child [3144] to 
+terminate...
+ 0(3133) INFO:destroy_diameter_peer(): Waiting for child [3143] to 
+terminate...
+ 0(3133) INFO:destroy_diameter_peer(): Waiting for child [3142] to 
+terminate...
+ 0(3133) INFO:destroy_diameter_peer(): Waiting for child [3141] to 
+terminate...
+ 0(3133) INFO:destroy_diameter_peer(): Waiting for child [3140] to 
+terminate...
+ 0(3133) INFO:destroy_diameter_peer(): Waiting for child [3139] to 
+terminate...
+ 0(3133) INFO:destroy_diameter_peer(): All processes terminated. 
+Cleaning up.
+ 0(3133) INFO:destroy_diameter_peer(): Bye Bye from C Diameter Peer test
+ 0(3133) INFO:cdp:cdp_exit(): ... CDiameterPeer stoped
+ 0(3133) INFO:ISC: - child exit
+ 0(3133) INFO:S-CSCF:mod_destroy: child exit
+ 0(3133) BUG: shutdown timeout triggered, dying..../scscf.sh: line 4:  
+3133 Aborted                 (core dumped) /opt/OpenIMSCore/ser_ims/ser 
+-f /opt/OpenIMSCore/scscf.cfg -D -D
+
+------ Semaphore Arrays --------
+key        semid      owner      perms      nsems
+0x00000000 393216     root      666        1
+0x00000000 425985     root      666        1
+
+
+
+Thanks,
+
+Vijay
+
+-----Original Message-----
+From: Arnold Schwarz [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">scharn333 at hotmail.com</A>] 
+Sent: Tuesday, April 03, 2007 8:41 AM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Re: [OpenIMSCore-Users] RTPproxy and 2 P-CSCFs
+
+
+Hmm... somehow the connection doesn't seem to work even with the first 
+P-CSCF, but I get the following failure messages on the P-CSCF:
+
+linux:/home/eoutkos # pcscf
+Listening on
+             udp: 192.150.17.101 [192.150.17.101]:4060
+             tcp: 192.150.17.101 [192.150.17.101]:4060
+Aliases:
+             *: pcscf.open-ims.test:4060
+
+0(7354) init_tcp: using epoll_lt as the io watch method (auto detected)
+0(7354) Maxfwd module- initializing
+0(7354) INFO:P-CSCF:mod_init: Initialization of module
+0(7354) INFO:P-CSCFnode is created
+0(7354) INFO: udp_init: SO_RCVBUF is initially 108544
+0(7354) INFO: udp_init: SO_RCVBUF is finally 217088
+1(7355) INFO:P-CSCF:mod_init: Initialization of module in child [1]
+1(7355) INFO:P-CSCF:mod_init: Initialization of module/pcscf/rtpproxy in
+child [1]
+1(7355) ERROR: send_rtpp_command: can't send command to a RTP proxy
+1(7355) send_rtpp_command(): proxy &lt;udp:192.150.17.101:34999&gt; does not
+responding, disable it
+1(7355) WARNING: rtpp_test: can't get version of the RTP proxy
+1(7355) WARNING: rtpp_test: support for RTP proxy
+&lt;udp:192.150.17.101:34999&gt;has been disabled temporarily
+2(7356) INFO:P-CSCF:mod_init: Initialization of module in child [2]
+2(7356) INFO:P-CSCF:mod_init: Initialization of module/pcscf/rtpproxy in
+child [2]
+2(7356) ERROR: send_rtpp_command: can't send command to a RTP proxy
+2(7356) send_rtpp_command(): proxy &lt;udp:192.150.17.101:34999&gt; does not
+responding, disable it
+2(7356) WARNING: rtpp_test: can't get version of the RTP proxy
+2(7356) WARNING: rtpp_test: support for RTP proxy
+&lt;udp:192.150.17.101:34999&gt;has been disabled temporarily
+
+
+
+The proxy is started with the following line (and is definately running, 
+
+that's not the problem):
+rtpproxy -l 192.150.17.101 -s udp:127.0.0.1:34999 -f'
+
+and the pcscf.cfg consists of
+modparam(&quot;pcscf&quot;,&quot;rtpproxy_socket&quot;, &quot;udp:192.150.17.101:34999&quot;)
+modparam(&quot;pcscf&quot;,&quot;rtpproxy_enable&quot;, 1)
+modparam(&quot;pcscf&quot;,&quot;rtpproxy_disable_tout&quot;, 60)
+modparam(&quot;pcscf&quot;,&quot;rtpproxy_retr&quot;, 5)
+modparam(&quot;pcscf&quot;,&quot;rtpproxy_tout&quot;, 1)
+
+What to do or check?
+
+&gt;<i>From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>To: Arnold Schwarz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">scharn333 at hotmail.com</A>&gt;
+</I>&gt;<i>CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>Subject: Re: [OpenIMSCore-Users] RTPproxy and 2 P-CSCFs
+</I>&gt;<i>Date: Tue, 03 Apr 2007 11:33:34 +0200
+</I>&gt;<i>
+</I>&gt;<i>You could use the same RTPProxy from both P-CSCFs or you can use 2
+</I>&gt;<i>different ones. well, it depends on what do you want to do.
+</I>&gt;<i>
+</I>&gt;<i>-Dragos
+</I>&gt;<i>
+</I>&gt;<i>Arnold Schwarz wrote:
+</I>&gt;<i> &gt; Hi!
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I decided to test my network with two P-CSCFs, and therefore would 
+</I>like 
+&gt;<i>to
+</I>&gt;<i> &gt; know, how does the configuration of the RTP proxy change from these
+</I>&gt;<i> &gt; instructions:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; <A HREF="http://www.openimscore.org/docs/faq.html#CSCFs">http://www.openimscore.org/docs/faq.html#CSCFs</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Do I have to configure two different proxies, or is one enough? Or 
+</I>&gt;<i>change
+</I>&gt;<i> &gt; the rtpproxy_socket in one of the pcscf config files?
+</I>&gt;<i>
+</I>
+_________________________________________________________________
+Need a break? Find your escape route with Live Search Maps. 
+<A HREF="http://maps.live.com/?icid=hmtag3">http://maps.live.com/?icid=hmtag3</A>
+
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: scscfcoredump.pcap
+Type: application/octet-stream
+Size: 83051 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070403/965513d4/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070403/965513d4/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001373.html">[OpenIMSCore-Users] RTPproxy and 2 P-CSCFs
+</A></li>
+	<LI>Next message: <A HREF="001376.html">[OpenIMSCore-Users] scscf core dump
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1375">[ date ]</a>
+              <a href="thread.html#1375">[ thread ]</a>
+              <a href="subject.html#1375">[ subject ]</a>
+              <a href="author.html#1375">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

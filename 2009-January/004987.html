@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] NAT: duplicate Received value inside Via header
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20NAT%3A%20duplicate%20Received%20value%20inside%20Via%20header&In-Reply-To=%3CB7B40D44871EC84496E2BACA7CADE77B932E8E%40spqcexc04.exfo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004986.html">
+   <LINK REL="Next"  HREF="004993.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] NAT: duplicate Received value inside Via header</H1>
+    <B>Bin Zhou</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20NAT%3A%20duplicate%20Received%20value%20inside%20Via%20header&In-Reply-To=%3CB7B40D44871EC84496E2BACA7CADE77B932E8E%40spqcexc04.exfo.com%3E"
+       TITLE="[OpenIMSCore-Users] NAT: duplicate Received value inside Via header">bin.zhou at exfo.com
+       </A><BR>
+    <I>Mon Jan 12 17:08:25 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004986.html">[OpenIMSCore-Users] Regarding '404',	'Not Found - destination user not found on this S-CSC
+</A></li>
+        <LI>Next message: <A HREF="004993.html">[OpenIMSCore-Users] How to add Enum entries ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4987">[ date ]</a>
+              <a href="thread.html#4987">[ thread ]</a>
+              <a href="subject.html#4987">[ subject ]</a>
+              <a href="author.html#4987">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello 
+
+ 
+
+It look that openims (pcscf.cfg 477 2007-11-02) has a bug in this NAT
+scenario. 
+
+ 
+
+UE(10.250.2.11:3261) - NAT(100.250.0.2.11:7000) --&gt;
+PCSCF(100.250.0.11:4060)
+
+ 
+
+The response from openims contains duplicate received fields. 
+
+ 
+
+Here is a copy of the 401 Challenge message that contains multiple
+&quot;received&quot; fields:
+
+ 
+
+Session Initiation Protocol
+
+    Status-Line: SIP/2.0 401 Unauthorized - Challenging the UE
+
+        Status-Code: 401
+
+        [Resent Packet: False]
+
+    Message Header
+
+        Via: SIP/2.0/UDP
+10.250.2.11:3061;received=100.250.2.11;received=100.250.2.11;rport=7000;
+branch=z9hG4bK0-0afa020b-0000-843612763
+
+            Transport: UDP
+
+            Sent-by Address: 10.250.2.11
+
+            Sent-by port: 3061
+
+            Received: 100.250.2.11
+
+            Received: 100.250.2.11
+
+            RPort: 7000
+
+            Branch: z9hG4bK0-0afa020b-0000-843612763
+
+        Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">0-090109204436-837620169 at 0afa020b</A>
+
+        CSeq: 89357136 REGISTER
+
+            Sequence Number: 89357136
+
+            Method: REGISTER
+
+        From:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=0-0afa020b-090109204436-2143504968
+
+            SIP from address: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+
+            SIP tag: 0-0afa020b-090109204436-2143504968
+
+        To:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=fc0a2ae0b5a796409923e3cfc1b62df5-262a
+
+            SIP to address: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+
+            SIP tag: fc0a2ae0b5a796409923e3cfc1b62df5-262a
+
+        Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+
+        Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+
+        Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE,
+NOTIFY, MESSAGE, INFO
+
+        Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+
+        Content-Length: 0
+
+        Warning: 392 100.250.0.11:6060 &quot;Noisy feedback tells:  pid=30721
+req_src_ip=100.250.0.11 req_src_port=5060
+in_uri=sip:scscf.open-ims.test:6060 out_uri=sip:scscf.open-ims.test:6060
+via_cnt==3&quot;
+
+        WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,
+nonce=&quot;f5VLS3qRUWpIHOyReBPLpTTtMGvH+bm5h+zceHFjMP4=&quot;,
+algorithm=AKAv1-MD5
+
+            Authentication Scheme: Digest
+
+            Realm: &quot;open-ims.test&quot;
+
+            Nonce Value: &quot;f5VLS3qRUWpIHOyReBPLpTTtMGvH+bm5h+zceHFjMP4=&quot;
+
+            Algorithm: AKAv1-MD5
+
+        Security-Server: ipsec-3gpp; ealg=aes-cbc; alg=hmac-md5-96;
+spi-c=5000; spi-s=5001; port-c=4060; port-s=4060; q=0.1
+
+ 
+
+According to RFC3261, UE should discard this message.
+
+ 
+
+Here is the quote from RFC.
+
+ 
+
+8.1.3.3 Vias
+ 
+   If more than one Via header field value is present in a response, the
+   UAC SHOULD discard the message.
+ 
+      The presence of additional Via header field values that precede
+      the originator of the request suggests that the message was
+      misrouted or possibly corrupted.
+ 
+
+Regards,
+
+ 
+
+Bin
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090112/2ee65a6a/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090112/2ee65a6a/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004986.html">[OpenIMSCore-Users] Regarding '404',	'Not Found - destination user not found on this S-CSC
+</A></li>
+	<LI>Next message: <A HREF="004993.html">[OpenIMSCore-Users] How to add Enum entries ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4987">[ date ]</a>
+              <a href="thread.html#4987">[ thread ]</a>
+              <a href="subject.html#4987">[ subject ]</a>
+              <a href="author.html#4987">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

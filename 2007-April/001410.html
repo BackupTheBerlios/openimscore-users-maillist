@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registration with IPSEC
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20with%20IPSEC&In-Reply-To=%3C20070405104341.91270.qmail%40web34001.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001433.html">
+   <LINK REL="Next"  HREF="001411.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registration with IPSEC</H1>
+    <B>Prateek Shadangi</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20with%20IPSEC&In-Reply-To=%3C20070405104341.91270.qmail%40web34001.mail.mud.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] Registration with IPSEC">pshadangirecr at yahoo.com
+       </A><BR>
+    <I>Thu Apr  5 12:43:41 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001433.html">[OpenIMSCore-Users] MD5 Digest authentication problem
+</A></li>
+        <LI>Next message: <A HREF="001411.html">[OpenIMSCore-Users] Registration with IPSEC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1410">[ date ]</a>
+              <a href="thread.html#1410">[ thread ]</a>
+              <a href="subject.html#1410">[ subject ]</a>
+              <a href="author.html#1410">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+Whatever you have said is true for TCP,
+But When Client is using UPD as transport protocol, It should send Request from port-uc and expect responses at port-us.
+
+Below is the excepts from 3GPP 33.203:
+....
+These ports are used with both, UDP and TCP. The use of these ports may differ for TCP and UDP, as follows:
+        UDP case: the UE receives requests and responses protected with ESP on the port port_us (the&quot;protected server port&quot;). The UE sends requests and responses protected with ESP on the port port_uc (the &quot;protected client port&quot;).
+        TCP case: the UE, if it does not have a TCP connection towards the P CSCF yet, shall set up a TCP connection to the port port_ps of the P CSCF before sending a request to it.
+....
+
+
+Regards,
+Prateek
+
+-----Original Message-----
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Dragos Vingarzan
+Sent: Thursday, April 05, 2007 3:41 PM
+To: Prateek Shadangi
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Re: [OpenIMSCore-Users] Registration with IPSEC
+
+Hello Prateek,
+
+The responses are sent to the port_uc - User Client. When the Endpoint is doing UAC, then it sends requests from port_uc and should be ready to receive answers for those requests on the same port. Only requests are sent towards port_us.
+
+Then about your error, please register the same contacts that you are going to use: you registered 192.168.1.2:5060 and then you use
+192.168.1.2:1052 because of IPSec. So the error below was normal.
+
+-Dragos
+
+Prateek Shadangi wrote:
+&gt;<i> Hi All,
+</I>&gt;<i> I am testing REGISTRATION with IPSEC enabled.
+</I>&gt;<i> I am able to send the 1st register and get 401 response for it.
+</I>&gt;<i> I am able to send the 2nd encrypted register and pcscf is able to
+</I>&gt;<i> decrypt it.
+</I>&gt;<i> But I am not receiving a 200 OK for it.
+</I>&gt;<i>
+</I>&gt;<i> From the ethereal logs I can see that the 200 OK is being sent as a
+</I>&gt;<i> plain text.
+</I>&gt;<i> One more issue is 200 OK is being sent to port-uc of the client
+</I>&gt;<i> instead of port-us.
+</I>&gt;<i>
+</I>&gt;<i> I can see the following msgs in pcscf log:
+</I>&gt;<i> 1(19977) DBG:P-CSCF:P_ipsec_200: Looking for &lt;1://192.168.1.2:1052&gt;
+</I>&gt;<i> 1(19977) DBG:P-CSCF:P_ipsec_200: Contact expired or no IPSec info
+</I>&gt;<i>
+</I>&gt;<i> Attaching the ethereal trace and pcscf log.
+</I>&gt;<i>
+</I>&gt;<i> Can anyone tell me where is the problem ??
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Prateek
+</I>&gt;<i>
+</I>&gt;<i> ----------------------------------------------------------------------
+</I>&gt;<i> -- Don't be flakey. Get Yahoo! Mail for Mobile
+</I>&gt;<i> &lt;<A HREF="http://us.rd.yahoo.com/evt=43909/*http://mobile.yahoo.com/mail">http://us.rd.yahoo.com/evt=43909/*http://mobile.yahoo.com/mail</A>&gt; and
+</I>&gt;<i> always stay connected
+</I>&gt;<i> &lt;<A HREF="http://us.rd.yahoo.com/evt=43909/*http://mobile.yahoo.com/mail">http://us.rd.yahoo.com/evt=43909/*http://mobile.yahoo.com/mail</A>&gt; to
+</I>&gt;<i> friends.
+</I>&gt;<i> ----------------------------------------------------------------------
+</I>&gt;<i> --
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>  
+</I>
+
+--
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+
+
+
+ 
+---------------------------------
+Finding fabulous fares is fun.
+Let Yahoo! FareChase search your favorite travel sites to find flight and hotel bargains.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070405/cc92f4da/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070405/cc92f4da/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001433.html">[OpenIMSCore-Users] MD5 Digest authentication problem
+</A></li>
+	<LI>Next message: <A HREF="001411.html">[OpenIMSCore-Users] Registration with IPSEC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1410">[ date ]</a>
+              <a href="thread.html#1410">[ thread ]</a>
+              <a href="subject.html#1410">[ subject ]</a>
+              <a href="author.html#1410">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

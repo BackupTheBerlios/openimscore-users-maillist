@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] HSS throwing Errors - (i	and	s)cscf.open-ims.test not responding to connection attempt
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20HSS%20throwing%20Errors%20-%20%28i%0A%09and%09s%29cscf.open-ims.test%20not%20responding%20to%20connection%20attempt&In-Reply-To=%3C88AFBB3FD277A94995903AD015E5CEFAE3451440%40staexch2.STAFF.AIT.IE%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004935.html">
+   <LINK REL="Next"  HREF="004946.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] HSS throwing Errors - (i	and	s)cscf.open-ims.test not responding to connection attempt</H1>
+    <B>Eoghan Conway</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20HSS%20throwing%20Errors%20-%20%28i%0A%09and%09s%29cscf.open-ims.test%20not%20responding%20to%20connection%20attempt&In-Reply-To=%3C88AFBB3FD277A94995903AD015E5CEFAE3451440%40staexch2.STAFF.AIT.IE%3E"
+       TITLE="[OpenIMSCore-Users] HSS throwing Errors - (i	and	s)cscf.open-ims.test not responding to connection attempt">econway at AIT.IE
+       </A><BR>
+    <I>Mon Dec 15 11:59:54 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004935.html">[OpenIMSCore-Users] HSS throwing Errors - (i and	s)cscf.open-ims.test not responding to connection attempt
+</A></li>
+        <LI>Next message: <A HREF="004946.html">[OpenIMSCore-Users] HSS throwing Errors - (i and	s)cscf.open-ims.test not responding to connection attempt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4938">[ date ]</a>
+              <a href="thread.html#4938">[ thread ]</a>
+              <a href="subject.html#4938">[ subject ]</a>
+              <a href="author.html#4938">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've had a peek inside the sql files and it seems that the mysql permissions are being set for (userx)@localhost. The configurator script only replaces the ip address, so even after running it the db permissions will still be for local usage only. Your cscfs will be trying to connect from non-loopback addresses. Try replacing the @localhost with @192.168.x.x before reloading the sql files.
+
+/Eoghan 
+________________________________________
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Franz Edler [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>]
+Sent: 13 December 2008 17:05
+To: 'Raghu Narasimhan'; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Re: [OpenIMSCore-Users] HSS throwing Errors - (i and   s)cscf.open-ims.test not responding to connection attempt
+
+Hi Raghu,
+
+&gt;<i> It isn't working and HSS is constantly throwing the error:Peer scscf.open-
+</I>&gt;<i> ims.test not responding to connection attempt.
+</I>
+&gt;<i> Please advise.
+</I>
+There is a script doing that job: configurator.sh
+
+These are the instructions:
+In order to change the domain name and ip address you can use a
+script(configurator.sh) at ser_ims/cfg/. Copy the all *.sql *.cfg *.xml
+files that you want to modify to the same directory as configurator.sh and
+execute it. Follow the instructions then you should have your files
+reconfigured for new domain and ip.
+
+My experiences: apply it in the following directories:
+- /ser_ims/cfg
+- /FHoss/deploy
+- /FHoss/scripts
+
+And then it should work.
+
+Franz
+
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+______________________________________________________________________
+This email has been scanned by the MessageLabs Email Security System.
+For more information please visit <A HREF="http://www.messagelabs.com/email">http://www.messagelabs.com/email</A>
+______________________________________________________________________
+
+_______________________________________________________________________
+The information contained in this email is confidential and is designated solely for the attention of the intended recipient(s). If you have received this email in error, please do not use or transmit it for any purpose but rather notify us immediately and delete all copies of this email from your computer system(s). Unless otherwise specifically agreed by our authorised representative, the views expressed in this email are those of the author only and shall not represent the view of or otherwise bind Athlone Institute of Technology. Contact <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">administrator at ait.ie</A> or telephone 090 6424400.
+
+
+Please consider the environment before printing this e-mail or its attachment(s) 
+
+______________________________________________________________________
+This email has been scanned by the MessageLabs Email Security System.
+For more information please visit <A HREF="http://www.messagelabs.com/email">http://www.messagelabs.com/email</A> 
+______________________________________________________________________
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004935.html">[OpenIMSCore-Users] HSS throwing Errors - (i and	s)cscf.open-ims.test not responding to connection attempt
+</A></li>
+	<LI>Next message: <A HREF="004946.html">[OpenIMSCore-Users] HSS throwing Errors - (i and	s)cscf.open-ims.test not responding to connection attempt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4938">[ date ]</a>
+              <a href="thread.html#4938">[ thread ]</a>
+              <a href="subject.html#4938">[ subject ]</a>
+              <a href="author.html#4938">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

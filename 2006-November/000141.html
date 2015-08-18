@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20P_follows_service_routes%28%29&In-Reply-To=%3C456DD890.8080002%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000137.html">
+   <LINK REL="Next"  HREF="000145.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P-CSCF P_follows_service_routes()</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20P_follows_service_routes%28%29&In-Reply-To=%3C456DD890.8080002%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] P-CSCF P_follows_service_routes()">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Nov 29 19:59:28 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000137.html">[OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+</A></li>
+        <LI>Next message: <A HREF="000145.html">[OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#141">[ date ]</a>
+              <a href="thread.html#141">[ thread ]</a>
+              <a href="subject.html#141">[ subject ]</a>
+              <a href="author.html#141">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I fixed the P_enforce_service_route() (also realized that 
+P_enforce_dialog_routes() was broken too).
+
+I tested it a little and it seemed to work. Would be great if you could 
+confirm.
+
+Now the thing is... this kind of solves the P_follows_service_route() 
+bug... I will come with another fix for that, but later.
+
+-Dragos
+
+Jos&#233; Carlos Amorim wrote:
+&gt;<i> Hello Dragos,
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> The question would be why is there that route.
+</I>&gt;&gt;<i>     
+</I>&gt;<i> &gt;From what I saw in the specifications I think this is possible.
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Would be good if we would create some bug-reports so that we won't 
+</I>&gt;&gt;<i> forget about it. I have created them now for both your bug reports.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> I added another bug report: <A HREF="http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=9581&amp;group_id=7589">http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=9581&amp;group_id=7589</A>
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Jose Carlos Silva
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;<i> Sent: quarta-feira, 29 de Novembro de 2006 8:15
+</I>&gt;<i> To: Jos&#233; Carlos Amorim
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+</I>&gt;<i>
+</I>&gt;<i> Hello Jose,
+</I>&gt;<i>
+</I>&gt;<i> The question would be why is there that route. You can do without 
+</I>&gt;<i> usually. However, I think that this should still work, so I will do a 
+</I>&gt;<i> patch to ignore the first one if it is set to &quot;myself&quot;.
+</I>&gt;<i>
+</I>&gt;<i> Would be good if we would create some bug-reports so that we won't 
+</I>&gt;<i> forget about it. I have created them now for both your bug reports.
+</I>&gt;<i>
+</I>&gt;<i> Dragos
+</I>&gt;<i>
+</I>&gt;<i> Jos&#233; Carlos Amorim wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> When establishing calls the Invite that reaches the P-cscf contains a 
+</I>&gt;&gt;<i> Route header that looks like this: Route: 
+</I>&gt;&gt;<i> &lt;sip:pcscf.open-ims.test&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> But the service-route that P-CSCF stores during registration is the 
+</I>&gt;&gt;<i> following SR : &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So when the P-cscf receives this Invite and calls the 
+</I>&gt;&gt;<i> P_follows_service_routes(), it will get false, which is wrong, since 
+</I>&gt;&gt;<i> the Request follows the service Routes.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Since the P_enforce_service_routes is called if the 
+</I>&gt;&gt;<i> P_follows_service_routes() fails, this will result on the request 
+</I>&gt;&gt;<i> leaving with two Route headers with the following content : 
+</I>&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Jose Carlos Silva
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000137.html">[OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+</A></li>
+	<LI>Next message: <A HREF="000145.html">[OpenIMSCore-Users] P-CSCF P_follows_service_routes()
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#141">[ date ]</a>
+              <a href="thread.html#141">[ thread ]</a>
+              <a href="subject.html#141">[ subject ]</a>
+              <a href="author.html#141">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

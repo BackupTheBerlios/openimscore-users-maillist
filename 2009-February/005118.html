@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] OpenIC_Lite in IPv6 address
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIC_Lite%20in%20IPv6%20address&In-Reply-To=%3C49A53388.6000106%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005116.html">
+   <LINK REL="Next"  HREF="005122.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] OpenIC_Lite in IPv6 address</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIC_Lite%20in%20IPv6%20address&In-Reply-To=%3C49A53388.6000106%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] OpenIC_Lite in IPv6 address">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Feb 25 13:03:20 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005116.html">[OpenIMSCore-Users] P-CSCF automatically started when I rann the	OpenIMSCore KDE with VMware player
+</A></li>
+        <LI>Next message: <A HREF="005122.html">[OpenIMSCore-Users] OpenIC_Lite in IPv6 address
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5118">[ date ]</a>
+              <a href="thread.html#5118">[ thread ]</a>
+              <a href="subject.html#5118">[ subject ]</a>
+              <a href="author.html#5118">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Matsuoka,
+
+if I remember well, the trigger for IPv6 is the DNS resolution of the 
+P-CSCF address. If you have an &quot;AAAA&quot; entry instead of an &quot;A&quot;, the UE 
+will try a IPv6 TCP connection to the P-CSCF. Upon connection, it would 
+take the local-end address of the TCP connection as the outbound address 
+towards the core. Then the TCP connection is closed, without sending 
+anything and the SIP stack is bound to the local discovered IP address.
+
+So, this is the mechanism to determine the local outbound interface 
+address that is able to rote packets towards the IMS core. Of course, 
+several things must happen for a IPv6 use:
+- have DNS entry correctly configured towards the P-CSCF, with an AAAA entry
+- have the P-CSCF listen on TCP on that IPv6 address configured in the DNS.
+
+ From you log the connection failed. If you think that both points above 
+were satisfied and still can't figure it out, please send a network trace.
+
+Cheers,
+-Dragos
+ 
+
+Matsuoka Noriko wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> We set up other linux machines to try OpenIC_Lite and
+</I>&gt;<i> found some of them worked perfect !
+</I>&gt;<i> OK -- VIne Linux 3.2 and fedora core2
+</I>&gt;<i> NG -- fedora core4
+</I>&gt;<i>
+</I>&gt;<i> Each machine have IPv6 addres, same profile.cfg and JDK version.
+</I>&gt;<i>
+</I>&gt;<i> OpenIMSCore server is Vine Linux 4.0.
+</I>&gt;<i> The linux version might have influence on OpenIC_Lite ?
+</I>&gt;<i> I guess something wrong with configurations of NG machine.
+</I>&gt;<i>
+</I>&gt;<i> I got console log on NG machine.
+</I>&gt;<i>
+</I>&gt;<i> rying connection to Proxy-CSCF: <A HREF="tcp://pcscf.open-ims.test:4060">tcp://pcscf.open-ims.test:4060</A>
+</I>&gt;<i> If this takes too long, your Internet connection is broken or the core
+</I>&gt;<i> network is down.
+</I>&gt;<i>
+</I>&gt;<i> Make sure your proxy server supports tcp ....
+</I>&gt;<i>   
+</I>&gt;&gt;<i> T:1 E:1 Connection unavailable. Check access configuration
+</I>&gt;&gt;<i>     
+</I>&gt;<i> SIP Stack on UDP/TCP:5060
+</I>&gt;<i>   
+</I>&gt;&gt;<i> T:1 E:0 null
+</I>&gt;&gt;<i> T:3 E:2 IMS UserEndpoint Registration/Unregistration Failed.
+</I>&gt;&gt;<i> T:1 E:0 null
+</I>&gt;&gt;<i> T:3 E:2 IMS UserEndpoint Registration/Unregistration Failed.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thank you for your help.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Noriko Matsuoka
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005116.html">[OpenIMSCore-Users] P-CSCF automatically started when I rann the	OpenIMSCore KDE with VMware player
+</A></li>
+	<LI>Next message: <A HREF="005122.html">[OpenIMSCore-Users] OpenIC_Lite in IPv6 address
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5118">[ date ]</a>
+              <a href="thread.html#5118">[ thread ]</a>
+              <a href="subject.html#5118">[ subject ]</a>
+              <a href="author.html#5118">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

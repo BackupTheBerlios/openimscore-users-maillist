@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Disappearing IPsec security associations
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Disappearing%20IPsec%20security%20associations&In-Reply-To=%3C20081115163221.1584315F526%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004841.html">
+   <LINK REL="Next"  HREF="004834.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Disappearing IPsec security associations</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Disappearing%20IPsec%20security%20associations&In-Reply-To=%3C20081115163221.1584315F526%40mail.berlios.de%3E"
+       TITLE="[OpenIMSCore-Users] Disappearing IPsec security associations">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Sat Nov 15 17:32:13 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004841.html">[OpenIMSCore-Users] Disappearing IPsec security associations
+</A></li>
+        <LI>Next message: <A HREF="004834.html">[OpenIMSCore-Users] How to configure S-CSCF ISC interface listen	port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4845">[ date ]</a>
+              <a href="thread.html#4845">[ thread ]</a>
+              <a href="subject.html#4845">[ subject ]</a>
+              <a href="author.html#4845">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> &gt; 1) why does your client mention port 5060 in the contact header but
+</I>&gt;<i> &gt; establishes IPSec SA for port 16386 (client) and 16387 (server)?
+</I>&gt;<i> 
+</I>&gt;<i> It chooses new ports for each new IPsec channel because the 3GPP
+</I>&gt;<i> specifications say it should. And since the Open IMS P-CSCF uses port 4060
+</I>&gt;<i> for all the connections, different ports on the user agent's end is the
+</I>&gt;<i> only
+</I>&gt;<i> way to tell two connections apart.^
+</I>&gt;<i>
+</I>&gt;<i> Do you think I should put port 16387 in the contact header?
+</I>
+The SIP &quot;contact&quot; header tells the Registrar how the UE shall be reached.
+This means if your UE wants to receive messages as UAS over IPSec SA then it
+should add its port-s port =&gt; yes, put port to 16387.
+Furthermore the via-header added by your UE is wrong. You use e.g. in the
+first REGISTER TCP port 16385, but on SIP-level you pretend the originating
+port is 5060... actually P-CSCF should send the 401 only according to the
+via-header =&gt; to 5060; don't know why it does not...
+
+I recommend you to get these erroneous headers right and try again, if the
+error's the same we can look further..
+
+&gt;<i> &gt; do you know, why there are 3 ESP messages (Registers?) toward P-CSCF
+</I>&gt;<i> before
+</I>&gt;<i> &gt; the 200 ok is responded?
+</I>&gt;<i> 
+</I>&gt;<i> The first two are TCP syn and ack packets. Between them you can see the
+</I>&gt;<i> unencrypted syn+ack from the server. First a TCP connection is opened,
+</I>&gt;<i> then
+</I>&gt;<i> the REGISTER is sent.
+</I>
+Yes sure... I've never used SIP over TCP yet and moreover never seen it in a
+trace before.. and then I've overseen your're using it =)
+
+&gt;<i> 
+</I>&gt;<i> Bj&#246;rn Persson
+</I>
+Klemens
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004841.html">[OpenIMSCore-Users] Disappearing IPsec security associations
+</A></li>
+	<LI>Next message: <A HREF="004834.html">[OpenIMSCore-Users] How to configure S-CSCF ISC interface listen	port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4845">[ date ]</a>
+              <a href="thread.html#4845">[ thread ]</a>
+              <a href="subject.html#4845">[ subject ]</a>
+              <a href="author.html#4845">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

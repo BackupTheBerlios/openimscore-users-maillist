@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] setting up reverse DNS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20setting%20up%20reverse%20DNS&In-Reply-To=%3C46418EE4.5080009%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001704.html">
+   <LINK REL="Next"  HREF="001735.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] setting up reverse DNS</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20setting%20up%20reverse%20DNS&In-Reply-To=%3C46418EE4.5080009%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] setting up reverse DNS">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed May  9 11:05:40 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001704.html">[OpenIMSCore-Users] setting up reverse DNS
+</A></li>
+        <LI>Next message: <A HREF="001735.html">[OpenIMSCore-Users] setting up reverse DNS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1717">[ date ]</a>
+              <a href="thread.html#1717">[ thread ]</a>
+              <a href="subject.html#1717">[ subject ]</a>
+              <a href="author.html#1717">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>This looks great for a FAQ entry as it is required if you change the
+default 127.0.0.1 address! On the new website you could probably insert
+it yourself. In any case, Umut would help you for sure.
+
+Thanx!
+-Dragos
+Gaurav Kansal wrote:
+&gt;<i>
+</I>&gt;<i> Hi
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> While starting the FOKUS CSCF application, following warning is observed:
+</I>&gt;<i>
+</I>&gt;<i> &#8220;WARNING: fix_socket_list: could not rev. resolve 10.0.64.50&#8221;
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> This warning comes because reverse DNS is not set.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Reverse DNS can be setup as follows:
+</I>&gt;<i>
+</I>&gt;<i>    1. Configure a file 10-0-64.dnszone with following contents
+</I>&gt;<i>
+</I>&gt;<i> $TTL 1W
+</I>&gt;<i>
+</I>&gt;<i> @                       1D IN SOA       localhost. root.localhost. (
+</I>&gt;<i>
+</I>&gt;<i>                                         2006101001      ; serial
+</I>&gt;<i>
+</I>&gt;<i>                                         3H              ; refresh
+</I>&gt;<i>
+</I>&gt;<i>                                         15M             ; retry
+</I>&gt;<i>
+</I>&gt;<i>                                         1W              ; expiry
+</I>&gt;<i>
+</I>&gt;<i>                                         1D )            ; minimum
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>                         1D IN NS        ns
+</I>&gt;<i>
+</I>&gt;<i> ns                      1D IN A         10.0.64.18
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> 50                      PTR             pcscf.open-ims.test
+</I>&gt;<i>
+</I>&gt;<i> 50                      PTR             icscf.open-ims.test
+</I>&gt;<i>
+</I>&gt;<i> 50                      PTR             scscf.open-ims.test
+</I>&gt;<i>
+</I>&gt;<i> 18                      PTR             hss.open-ims.test
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>    2. Add an entry into the named.conf file
+</I>&gt;<i>
+</I>&gt;<i> zone &quot;64.0.10.in-addr.arpa.&quot; IN {
+</I>&gt;<i>
+</I>&gt;<i>         type master;
+</I>&gt;<i>
+</I>&gt;<i>         file &quot;10-0-64.dnszone&quot;;
+</I>&gt;<i>
+</I>&gt;<i>         allow-update { none; };
+</I>&gt;<i>
+</I>&gt;<i> };
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>    3. Restart the named service
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> If something is missing, please provide you inputs/comments.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Gaurav Kansal
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001704.html">[OpenIMSCore-Users] setting up reverse DNS
+</A></li>
+	<LI>Next message: <A HREF="001735.html">[OpenIMSCore-Users] setting up reverse DNS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1717">[ date ]</a>
+              <a href="thread.html#1717">[ thread ]</a>
+              <a href="subject.html#1717">[ subject ]</a>
+              <a href="author.html#1717">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

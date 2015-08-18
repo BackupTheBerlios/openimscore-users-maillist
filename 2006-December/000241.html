@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Diameter avp-problems at	Registration	De-Registration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Diameter%20avp-problems%20at%0A%09Registration%09De-Registration&In-Reply-To=%3C457C9839.3010903%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000239.html">
+   <LINK REL="Next"  HREF="000276.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Diameter avp-problems at	Registration	De-Registration</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Diameter%20avp-problems%20at%0A%09Registration%09De-Registration&In-Reply-To=%3C457C9839.3010903%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Diameter avp-problems at	Registration	De-Registration">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Dec 11 00:28:57 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000239.html">[OpenIMSCore-Users] Diameter avp-problems at Registration	De-Registration
+</A></li>
+        <LI>Next message: <A HREF="000276.html">[OpenIMSCore-Users] Diameter avp-problems at	Registration	De-Registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#241">[ date ]</a>
+              <a href="thread.html#241">[ thread ]</a>
+              <a href="subject.html#241">[ subject ]</a>
+              <a href="author.html#241">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Franz,
+
+The INFO warnings for &quot;Failed finding avp&quot; are OK, no worries. They are 
+there because if some AVP is missing, it will go unnoticed. However, 
+some AVPs are optional. CDiameterPeer does not have a list of such 
+optional AVPs/message and as such the normal cases can not be yet 
+detected and filtered.
+
+The ERRORs are not trivial though. I have filled a bug-report about them 
+here 
+<A HREF="https://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=9678&amp;group_id=7589">https://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=9678&amp;group_id=7589</A> 
+. Thanx for the trace!
+
+Regarding the subscribe_after_de-register issue - this is not why it 
+happens because this new bug happens after the SUBSCRIBE which should 
+not be sent is actually sent.
+
+The old bug was put on hold because I couldn't reproduce it. I have 
+posted a SIPp scenario here: 
+<A HREF="https://lists.berlios.de/pipermail/openimscore-users/2006-December/000187.html">https://lists.berlios.de/pipermail/openimscore-users/2006-December/000187.html</A>
+
+That one did not trigger the problem. Could you please post your SIPp 
+scenario that triggers it so that I could debug why this happens?
+
+Thanx,
+Dragos
+
+
+Franz Edler wrote:
+&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i> I have now again looked into the previous problem of 
+</I>&gt;<i> &quot;P-CSCF subscribes to registration-event after de-registration&quot;
+</I>&gt;<i> <A HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/000187.htm">http://lists.berlios.de/pipermail/openimscore-users/2006-December/000187.htm</A>
+</I>&gt;<i> l .
+</I>&gt;<i>
+</I>&gt;<i> I used also a simple SIPp-szenario for Registration and De-Registration of
+</I>&gt;<i> Bob. 
+</I>&gt;<i>
+</I>&gt;<i> At registration of bob the debug log of I-CSCF shows some issues like
+</I>&gt;<i>  1(1249) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i>  1(1249) INFO:I-CSCF:Cx_get_server_name: Failed finding avp
+</I>&gt;<i>  1(1249) INFO:I-CSCF:Cx_get_capabilities: Failed finding avp
+</I>&gt;<i>
+</I>&gt;<i> These are only infos, so I do not worry very much but at de-deregistration
+</I>&gt;<i> of bob the debug log of I-CSCF shows:
+</I>&gt;<i>
+</I>&gt;<i> 1(1249) INFO:I-CSCF:Cx_get_capabilities: Failed finding avp
+</I>&gt;<i> 1(1249) INFO:I-CSCF:Cx_get_capabilities: Failed finding avp
+</I>&gt;<i>
+</I>&gt;<i> and more seriously:
+</I>&gt;<i>
+</I>&gt;<i> 18(1267) ERROR:AAACreateAVP: NULL value received for param data/length !!
+</I>&gt;<i> 18(1267) ERROR:AAATranslateMessage: message conversion droped!!
+</I>&gt;<i> 18(1267) ERROR:AAACreateAVP: NULL value received for param data/length !!
+</I>&gt;<i> 18(1267) ERROR:AAATranslateMessage: message conversion droped!!
+</I>&gt;<i> 18(1267) ERROR:AAACreateAVP: NULL value received for param data/length !!
+</I>&gt;<i> 18(1267) ERROR:AAATranslateMessage: message conversion droped!!
+</I>&gt;<i> 18(1267) ERROR:AAACreateAVP: NULL value received for param data/length !!
+</I>&gt;<i> 18(1267) ERROR:AAATranslateMessage: message conversion droped!!
+</I>&gt;<i>  1(1249) ERR:I-CSCF:I_LIR: Error creating/sending UAR
+</I>&gt;<i>  4(1252) ERR:I-CSCF:I_LIR: Error creating/sending UAR
+</I>&gt;<i>  4(1252) ERROR: _reply_light: can't generate 480 reply when a final 480 was
+</I>&gt;<i> sent out
+</I>&gt;<i>  3(1251) ERR:I-CSCF:I_LIR: Error creating/sending UAR
+</I>&gt;<i>  3(1251) ERROR: _reply_light: can't generate 480 reply when a final 480 was
+</I>&gt;<i> sent out
+</I>&gt;<i> 2(1250) ERR:I-CSCF:I_LIR: Error creating/sending UAR
+</I>&gt;<i>  2(1250) ERROR: _reply_light: can't generate 480 reply when a final 480 was
+</I>&gt;<i> sent out
+</I>&gt;<i>
+</I>&gt;<i> Obviously this is the root of the problem mentioned in the previous thread.
+</I>&gt;<i>
+</I>&gt;<i> What might be wrong?
+</I>&gt;<i>
+</I>&gt;<i> I have attached the I-CSCF log and the associated wireshark trace-file.
+</I>&gt;<i>
+</I>&gt;<i> Cheers
+</I>&gt;<i> -franz
+</I>&gt;<i>   
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000239.html">[OpenIMSCore-Users] Diameter avp-problems at Registration	De-Registration
+</A></li>
+	<LI>Next message: <A HREF="000276.html">[OpenIMSCore-Users] Diameter avp-problems at	Registration	De-Registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#241">[ date ]</a>
+              <a href="thread.html#241">[ thread ]</a>
+              <a href="subject.html#241">[ subject ]</a>
+              <a href="author.html#241">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

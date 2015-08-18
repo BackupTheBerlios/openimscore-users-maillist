@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Update%20subscribe%20dialog%20does%20not%20work%2C%0A%20and%20tcp%20buffer%20error%20for%20NOTIFY%20messages&In-Reply-To=%3CBLU124-W22FA7470A3F43D7A98BB6AD6450%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004669.html">
+   <LINK REL="Next"  HREF="004672.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages</H1>
+    <B>Persa Zaloshnja</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Update%20subscribe%20dialog%20does%20not%20work%2C%0A%20and%20tcp%20buffer%20error%20for%20NOTIFY%20messages&In-Reply-To=%3CBLU124-W22FA7470A3F43D7A98BB6AD6450%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages">arushi58 at hotmail.com
+       </A><BR>
+    <I>Wed Sep 24 10:35:52 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004669.html">[OpenIMSCore-Users] Update subscribe dialog does not work,	and tcp buffer error for NOTIFY messages
+</A></li>
+        <LI>Next message: <A HREF="004672.html">[OpenIMSCore-Users] Update subscribe dialog does not work,	and tcp buffer error for NOTIFY messages
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4671">[ date ]</a>
+              <a href="thread.html#4671">[ thread ]</a>
+              <a href="subject.html#4671">[ subject ]</a>
+              <a href="author.html#4671">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi Franz, Thank you for your support! Since it is an application server I do not send a SIP REGISTER, do not register through the pcscf, all the messages go through scscf. Please note that I'm running this scenario: application server- to-Open IMS Core-application server, there is no 'normal' client being involved, this is why you do not see the service-route in the message headers. In the traces you see the case of updating the subscription dialog which I have mentioned that do not seem to work; this might be because I am doing the implementation wrong - and non-complaint with the open ims core, and this is why I'd like to confirm if this is the case):A brief desciption of the traces follows: First subscribe coming from as_1 (192.121.150.4 src) is sent to scscf - iFC has been configured in the open ims core that this should be routed to as_2 (192.121.150.6 dst) (the presence server)the subscribe is successfully routed, and you can see the 200Ok sent back.A SIP Notify is sent from as_2 to scsf - scscf knows (iFC configured) that this SIP Notify has to be routed to as_1. this is successfully sent and a 200 OK received back.next after 3000 seconds as_1 updates the subscription for event dev_presence to as_2; A new subscribe is sent in the same way as described above. yet the scscf decides to send subscribe with expire time 0 after 3600 seconds of the first subscribe. I hope it's clearer now, thanks once again, Persa&gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">arushi58 at hotmail.com</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">dragos.vingarzan at fokus.fraunhofer.de</A>&gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt; Subject: RE: [OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages&gt; Date: Wed, 24 Sep 2008 05:57:33 +0200&gt; &gt; Hi Persa,&gt; &gt; &gt; I just would like to ask whether you have any findings from the traces I&gt; &gt; sent. None of the users seem to have reported any troubles of the sort.&gt; &gt; Unfortunately, I haven't come up with a solution either, hereby I'd like&gt; &gt; to ask for your support, advice on how I can support transport tcp - i&gt; &gt; think that is pretty basic functionality, and renewing my subscription of&gt; &gt; an application server to a presence server. I'd really appreciate some&gt; &gt; hints.&gt; &gt; I just looked on your trace and I wonder about your configuration.&gt; What are you doing?&gt; Your client sends directly to S-CSCF?&gt; It does not use the service route (sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf....</A>)?   &gt; &gt; I wonder that the request is not rejected by S-CSCF.&gt; &gt; Please clarify.&gt; &gt; -franz
+_________________________________________________________________
+Connect to the next generation of MSN Messenger&#160;
+<A HREF="http://imagine-msn.com/messenger/launch80/default.aspx?locale=en-us&amp;source=wlmailtagline">http://imagine-msn.com/messenger/launch80/default.aspx?locale=en-us&amp;source=wlmailtagline</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080924/b805fcf9/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080924/b805fcf9/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004669.html">[OpenIMSCore-Users] Update subscribe dialog does not work,	and tcp buffer error for NOTIFY messages
+</A></li>
+	<LI>Next message: <A HREF="004672.html">[OpenIMSCore-Users] Update subscribe dialog does not work,	and tcp buffer error for NOTIFY messages
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4671">[ date ]</a>
+              <a href="thread.html#4671">[ thread ]</a>
+              <a href="subject.html#4671">[ subject ]</a>
+              <a href="author.html#4671">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

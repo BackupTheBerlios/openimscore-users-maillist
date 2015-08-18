@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Update%20subscribe%20dialog%20does%20not%20work%2C%0A%20and%20tcp%20buffer%20error%20for%20NOTIFY%20messages&In-Reply-To=%3CBLU124-W2088428320813CCCBAFA08D6570%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004678.html">
+   <LINK REL="Next"  HREF="004647.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages</H1>
+    <B>Persa Zaloshnja</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Update%20subscribe%20dialog%20does%20not%20work%2C%0A%20and%20tcp%20buffer%20error%20for%20NOTIFY%20messages&In-Reply-To=%3CBLU124-W2088428320813CCCBAFA08D6570%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages">arushi58 at hotmail.com
+       </A><BR>
+    <I>Wed Sep 10 13:51:09 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004678.html">[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+</A></li>
+        <LI>Next message: <A HREF="004647.html">[OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4638">[ date ]</a>
+              <a href="thread.html#4638">[ thread ]</a>
+              <a href="subject.html#4638">[ subject ]</a>
+              <a href="author.html#4638">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi Dragos,
+
+Thank you for your support!
+That's exactly the message I get: ser_ims/tcp_read.c:108
+ I did change the BUF_SIZE, set up to 1 megabyte ( just to test - experimental  case) and still the message does not go through, and the same print is displayed, as mentioned in the above mentioned file. The default setting was to 64k, and for a message content length in my case 10k - this still should not happen :-/
+
+As about the functiones P_update_dialog and S_update_dialog() I'll add some logging to trace further. One clearification here though is that it's not a ua subscribing  to a presence server, but an application server subscribing to another application server.
+I am attaching the wireshark trace, and may be you can spot some possible error in the messages.
+Thanks a lot, 
+
+Cheers, Persa
+
+
+&gt;<i> Date: Tue, 9 Sep 2008 16:28:52 +0200
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">arushi58 at hotmail.com</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] Update subscribe dialog does not work,	and tcp buffer error for NOTIFY messages
+</I>&gt;<i> 
+</I>&gt;<i> Hi Persa,
+</I>&gt;<i> 
+</I>&gt;<i> for the TCP issue:
+</I>&gt;<i> - I was looking over the code, but couldn't find exactly your error in
+</I>&gt;<i> any logging... what is the exact error
+</I>&gt;<i> - I suppose it was the one from ser_ims/tcp_read.c:108
+</I>&gt;<i> - see ser_ims/config.h:152 - edit the BUF_SIZE, recompile and see what
+</I>&gt;<i> happens
+</I>&gt;<i> - look on the traces and see if for example wireshark decodes it right
+</I>&gt;<i> (does it have right ending indicators?); send a trace to us in case of
+</I>&gt;<i> trouble
+</I>&gt;<i> 
+</I>&gt;<i> for SUBSCRIBE:
+</I>&gt;<i> - SUBSCRIBE dialogs should be updated in
+</I>&gt;<i> ser_ims/modules/pcscf/dlg_state.c and the same for scscf, in the
+</I>&gt;<i> P_update_dialog() and S_update_dialog() functions, on responses to
+</I>&gt;<i> SUBSCRIBE or on NOTIFY
+</I>&gt;<i> - take a look at the function and tell us if you think that they are
+</I>&gt;<i> wrong. there were previous bugs in there, so there might still be one...
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Franz Edler wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hi Persa,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; please keep the list on Cc to let others participate.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; For the first question: I don&#8217;t have an idea. Maybe you should add
+</I>&gt;<i> &gt; more diagnostic data (the scscf-log) to see wher it happens.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; For the second question: Which event do you SUBSCRIBE (presence)?
+</I>&gt;<i> &gt; Which AS? If it does not honor the refresh than it is obvious an issue
+</I>&gt;<i> &gt; of the AS.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; -franz
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; *From:* Persa Zaloshnja [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">arushi58 at hotmail.com</A>]
+</I>&gt;<i> &gt; *Sent:* Monday, September 08, 2008 10:04 AM
+</I>&gt;<i> &gt; *To:* Dragos Vingarzan; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>
+</I>&gt;<i> &gt; *Subject:* Update subscribe dialog does not work, and tcp buffer error
+</I>&gt;<i> &gt; for NOTIFY messages
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hello Dragos, Franz,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I have been asking this question sometime ago in the forum and to you
+</I>&gt;<i> &gt; guys as well, apperantly I have not found an answer yet.
+</I>&gt;<i> &gt; the first issue is that whenever I send a SIP NOTIFY using transport
+</I>&gt;<i> &gt; TCP an error is thrown -tcp error socket buffer overload; This is a
+</I>&gt;<i> &gt; print from the scscf log. I tried to decrease and message body from
+</I>&gt;<i> &gt; 10k to 0k and this time the NOTIFY goes through. is there a setting
+</I>&gt;<i> &gt; that can allow larger messages to go though ? I'd appreciate some
+</I>&gt;<i> &gt; feedback on the matter, please.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The second issue is with updating the SUBSCRIBE dialogs - 10min before
+</I>&gt;<i> &gt; a SUBSCRIBE dialog expires, I resend a SIP SUBSCRIBE, with the new
+</I>&gt;<i> &gt; expire time (default 3600) And this should update the subscription of
+</I>&gt;<i> &gt; the ua to the AS. Unfourtanetly this never happens, and after 3600 (
+</I>&gt;<i> &gt; an hour) all dialogs have expired. have you ever encountered such a
+</I>&gt;<i> &gt; situation ? is there any default setting to be enabled that the
+</I>&gt;<i> &gt; dialogs should be updatable ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks a lot,
+</I>&gt;<i> &gt; great work,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Persa
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Connect to the next generation of MSN Messenger  Get it now!
+</I>&gt;<i> &gt; &lt;<A HREF="http://imagine-msn.com/messenger/launch80/default.aspx?locale=en-us&amp;source=wlmailtagline">http://imagine-msn.com/messenger/launch80/default.aspx?locale=en-us&amp;source=wlmailtagline</A>&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;   
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> -- 
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i> 
+</I>
+_________________________________________________________________
+News, entertainment and everything you care about at Live.com. Get it now!
+<A HREF="http://www.live.com/getstarted.aspx">http://www.live.com/getstarted.aspx</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080910/9bd0a2f2/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080910/9bd0a2f2/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: trace_2008_09_10.pcap
+Type: application/octet-stream
+Size: 11685 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080910/9bd0a2f2/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080910/9bd0a2f2/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004678.html">[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+</A></li>
+	<LI>Next message: <A HREF="004647.html">[OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4638">[ date ]</a>
+              <a href="thread.html#4638">[ thread ]</a>
+              <a href="subject.html#4638">[ subject ]</a>
+              <a href="author.html#4638">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ERR:S-CSCF:parse_user_data: Verification of XML against XSD failed [temp reply]
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ERR%3AS-CSCF%3Aparse_user_data%3A%20Verification%20of%20XML%0A%20against%20XSD%20failed%20%5Btemp%20reply%5D&In-Reply-To=%3C4A574C1C.3060601%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005600.html">
+   <LINK REL="Next"  HREF="005602.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ERR:S-CSCF:parse_user_data: Verification of XML against XSD failed [temp reply]</H1>
+    <B>Alberto Diez</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ERR%3AS-CSCF%3Aparse_user_data%3A%20Verification%20of%20XML%0A%20against%20XSD%20failed%20%5Btemp%20reply%5D&In-Reply-To=%3C4A574C1C.3060601%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] ERR:S-CSCF:parse_user_data: Verification of XML against XSD failed [temp reply]">Alberto.Diez at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Jul 10 16:11:40 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005600.html">[OpenIMSCore-Users] Questions and problems about QoS
+</A></li>
+        <LI>Next message: <A HREF="005602.html">[OpenIMSCore-Users] ERR:S-CSCF:parse_user_data: Verification of	XML against XSD failed [temp reply]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5601">[ date ]</a>
+              <a href="thread.html#5601">[ thread ]</a>
+              <a href="subject.html#5601">[ subject ]</a>
+              <a href="author.html#5601">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hi franz,
+
+according to the XSD file
+
+&lt;xs:complexType name=&quot;tSePoTriExtension&quot;&gt;
+		&lt;xs:sequence&gt;
+			&lt;xs:element name=&quot;RegistrationType&quot; type=&quot;tRegistrationType&quot; 
+minOccurs=&quot;0&quot; maxOccurs=&quot;2&quot;/&gt;
+			&lt;xs:element name=&quot;Extension&quot; type=&quot;tExtension&quot; minOccurs=&quot;0&quot;/&gt;
+		&lt;/xs:sequence&gt;
+	&lt;/xs:complexType&gt;
+
+this means it could happen 0 1 or 2 times but not 3
+
+I do not know if this is wrong or not because the XSD files come in the 
+TS from 3GPP (TS29.228 as you know) i have  just had a look at it and in 
+Rel8 it is still with MaxOccurs 2
+
+so we have to think if makes sense to have a service point trigger in 
+the Trigger Point, for me I think why not. I think the error is that the 
+content can only have values 0 1 or 2 but it could appear 0 1 2 or 3 
+times and maybe 3GPP made a mistake (why not, we all make them) ...
+
+
+but anyway a temporary solution is to substitute the maxOccurs=&quot;2&quot; with 
+a maxOccurs=&quot;3&quot;  then it will work
+that is in the file   ser_ims/modules/scscf/CXDataType_Rel7.xsd  line 206
+
+
+
+
+-- 
+--------------------------------
+Alberto Diez Albaladejo
+Fraunhofer FOKUS
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alberto.diez at fokus.fraunhofer.de</A>
+tel:00493034637307
+--------------------------------
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005600.html">[OpenIMSCore-Users] Questions and problems about QoS
+</A></li>
+	<LI>Next message: <A HREF="005602.html">[OpenIMSCore-Users] ERR:S-CSCF:parse_user_data: Verification of	XML against XSD failed [temp reply]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5601">[ date ]</a>
+              <a href="thread.html#5601">[ thread ]</a>
+              <a href="subject.html#5601">[ subject ]</a>
+              <a href="author.html#5601">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

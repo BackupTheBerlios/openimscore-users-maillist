@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot; when	unsubscribing the &quot;reg&quot; event
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Get%20%22403%20Forbidden%20to%20SUBSCRIBE%22%20when%0A%09unsubscribing%20the%20%22reg%22%20event&In-Reply-To=%3CC3AC879692AF214FA0A73511504E77530455C781%40bjngsmail02.ap.thmulti.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003921.html">
+   <LINK REL="Next"  HREF="003950.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot; when	unsubscribing the &quot;reg&quot; event</H1>
+    <B>Chen Ren Lei</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Get%20%22403%20Forbidden%20to%20SUBSCRIBE%22%20when%0A%09unsubscribing%20the%20%22reg%22%20event&In-Reply-To=%3CC3AC879692AF214FA0A73511504E77530455C781%40bjngsmail02.ap.thmulti.com%3E"
+       TITLE="[OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot; when	unsubscribing the &quot;reg&quot; event">ren-lei.chen at thomson.net
+       </A><BR>
+    <I>Wed May  7 08:39:23 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003921.html">[OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot; when	unsubscribing the &quot;reg&quot; event
+</A></li>
+        <LI>Next message: <A HREF="003950.html">[OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot; when	unsubscribing the &quot;reg&quot; event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3925">[ date ]</a>
+              <a href="thread.html#3925">[ thread ]</a>
+              <a href="subject.html#3925">[ subject ]</a>
+              <a href="author.html#3925">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dear Franz,
+
+I did as you said, then got the attached log and trace file.
+
+Best wishes,
+Renlei
+
+-----Original Message-----
+From: Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>] 
+Sent: Wednesday, May 07, 2008 1:45 PM
+To: Chen Ren Lei
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: RE: Get &quot;403 Forbidden to SUBSCRIBE&quot; when unsubscribing the
+&quot;reg&quot; event 
+
+Hi,
+
+&gt;<i> Attached are all logs of the CSCF server and the trace file on the
+</I>&gt;<i> client, and I have no idea when I checked them all, could you please
+</I>&gt;<i> help me identify the location of the problem? 
+</I>
+In the scscf.log I found:
+        ERR:S-CSCF:S_can_subscribe: P-Asserted-Identity empty.
+
+But the P-Asserted-Identity header field has to be inserted by P-CSCF.
+In
+pcscf.log I did not see any hint.
+
+Therefore I suggest the following:
+1. Insert trace-points in the pcscf.cfg and scscf.cfg like:
+	xlog(&quot;L_INFO&quot;,&quot;%CybTracepoint: %cs %rm %ru from %si:%sp From:
+%fu
+To: %tu\n%Cxx&quot;);
+This will insert a line in the log when a request arrives and it is more
+easy to find the part of the log where to look at.
+
+2. Add a wireshark trace of internal traffic (SIP and Diameter) as
+mentioned
+in <A HREF="http://www.openimscore.org/installation_guide#step8">http://www.openimscore.org/installation_guide#step8</A>
+
+Than maybe we can help you.
+
+&gt;<i> I heard that the logging
+</I>&gt;<i> level can be changed to obtain more messages, but do not know how to
+</I>do
+&gt;<i> to accomplish this.
+</I>
+In the cfg-files there is a line &quot;debug=3&quot; if you increase the number
+you
+will get a lot more logs. But that maybe is not necessary.
+
+Franz
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: ims_client.trace.zip
+Type: application/x-zip-compressed
+Size: 5340 bytes
+Desc: ims_client.trace.zip
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080507/2ad5efa5/attachment.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080507/2ad5efa5/attachment.bin</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: hss.log.zip
+Type: application/x-zip-compressed
+Size: 2051 bytes
+Desc: hss.log.zip
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080507/2ad5efa5/attachment-0001.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080507/2ad5efa5/attachment-0001.bin</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: icscf.log.zip
+Type: application/x-zip-compressed
+Size: 2994 bytes
+Desc: icscf.log.zip
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080507/2ad5efa5/attachment-0002.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080507/2ad5efa5/attachment-0002.bin</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: ims_cscf_server.trace.zip
+Type: application/x-zip-compressed
+Size: 5453 bytes
+Desc: ims_cscf_server.trace.zip
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080507/2ad5efa5/attachment-0003.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080507/2ad5efa5/attachment-0003.bin</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: pcscf.log.zip
+Type: application/x-zip-compressed
+Size: 3734 bytes
+Desc: pcscf.log.zip
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080507/2ad5efa5/attachment-0004.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080507/2ad5efa5/attachment-0004.bin</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: scscf.log.zip
+Type: application/x-zip-compressed
+Size: 4471 bytes
+Desc: scscf.log.zip
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080507/2ad5efa5/attachment-0005.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080507/2ad5efa5/attachment-0005.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003921.html">[OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot; when	unsubscribing the &quot;reg&quot; event
+</A></li>
+	<LI>Next message: <A HREF="003950.html">[OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot; when	unsubscribing the &quot;reg&quot; event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3925">[ date ]</a>
+              <a href="thread.html#3925">[ thread ]</a>
+              <a href="subject.html#3925">[ subject ]</a>
+              <a href="author.html#3925">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

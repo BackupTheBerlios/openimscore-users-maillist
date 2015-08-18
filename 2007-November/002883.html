@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem changing location of S-CSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20changing%20location%20of%20S-CSCF&In-Reply-To=%3C47307C53.3000407%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002879.html">
+   <LINK REL="Next"  HREF="002886.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem changing location of S-CSCF</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20changing%20location%20of%20S-CSCF&In-Reply-To=%3C47307C53.3000407%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Problem changing location of S-CSCF">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Nov  6 15:38:11 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002879.html">[OpenIMSCore-Users] Problem changing location of S-CSCF
+</A></li>
+        <LI>Next message: <A HREF="002886.html">[OpenIMSCore-Users] Problem changing location of S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2883">[ date ]</a>
+              <a href="thread.html#2883">[ thread ]</a>
+              <a href="subject.html#2883">[ subject ]</a>
+              <a href="author.html#2883">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>You have missed the icscf database probably. There you have the S-CSCF
+network topology.
+
+-Dragos
+
+Pedro Antonio Vico Solano wrote:
+&gt;<i>
+</I>&gt;<i> Hello again,
+</I>&gt;<i>
+</I>&gt;<i> I'm trying to separate the location of S-CSCF from the HSS and
+</I>&gt;<i> I/P-CSCF. Thus I've changed the &quot;Preferred S-CSCF Set&quot; on HSS for all
+</I>&gt;<i> user to a new server called &quot;scscf*1*.open-ims.test&quot;. Its address is
+</I>&gt;<i> also included on DNS.
+</I>&gt;<i>
+</I>&gt;<i> The problem is that when a users registers itself, the I-CSCF gets the
+</I>&gt;<i> old S-CSCF name (scscf.open-ims.test) or none on the UAA response. The
+</I>&gt;<i> first UAA does not include any server-name and following responses
+</I>&gt;<i> include old server. Anyway I think I-CSCF is getting the server name
+</I>&gt;<i> from the icscf database.
+</I>&gt;<i>
+</I>&gt;<i> I attach you the image from HSS and a capture.
+</I>&gt;<i>
+</I>&gt;<i> Maybe I've missed something &#191;?
+</I>&gt;<i>
+</I>&gt;<i> Thanks in advance.
+</I>&gt;<i> Pedro
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> First try on I-CSCF:
+</I>&gt;<i>
+</I>&gt;<i>  3(31338) ERR:I-CSCF:cscf_get_private_identity: Message does not
+</I>&gt;<i> contain Authorization header.
+</I>&gt;<i>  3(31338) INF:I-CSCF:cscf_get_private_identity: Falling back to
+</I>&gt;<i> private_id=stripped(public_id)
+</I>&gt;<i> -&gt; Message did not contain a valid Authorization Header!!! This
+</I>&gt;<i> fallback is deprecated outside Early-IMS or NASS-Bundled!
+</I>&gt;<i> 18(31378) DBG:sm_process(): Peer hss.open-ims.test      State R_Open  
+</I>&gt;<i>  Event R_Rcv_Message
+</I>&gt;<i>  3(31338) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i>  3(31338) INFO:I-CSCF:*Cx_get_server_name: Failed finding avp*
+</I>&gt;<i>  3(31338) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf.open-ims.test:6060&gt;
+</I>&gt;<i>  3(31338) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf1.open-ims.test:6060&gt;
+</I>&gt;<i>
+</I>&gt;<i> Second try on S-CSCF:
+</I>&gt;<i>
+</I>&gt;<i> 18(31378) DBG:sm_process(): Peer hss.open-ims.test      State R_Open  
+</I>&gt;<i>  Event R_Rcv_Message
+</I>&gt;<i>  3(31338) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i>  3(31338) INFO:I-CSCF:*Cx_get_capabilities: Failed finding avp*
+</I>&gt;<i>  3(31338) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf.open-ims.test:6060&gt;
+</I>&gt;<i>  3(31338) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf1.open-ims.test:6060&gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002879.html">[OpenIMSCore-Users] Problem changing location of S-CSCF
+</A></li>
+	<LI>Next message: <A HREF="002886.html">[OpenIMSCore-Users] Problem changing location of S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2883">[ date ]</a>
+              <a href="thread.html#2883">[ thread ]</a>
+              <a href="subject.html#2883">[ subject ]</a>
+              <a href="author.html#2883">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

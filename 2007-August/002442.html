@@ -1,0 +1,375 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] R&#233;f. : Re:  Registration Failure through GGSN
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%20%3D%3Fiso-8859-1%3Fq%3FR%3DE9f%3D2E_%3D3A_Re%3D3A__Registrati%3F%3D%0A%20%3D%3Fiso-8859-1%3Fq%3Fon_Failure_through_GGSN%3F%3D&In-Reply-To=%3C46CAFD68.6010708%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002508.html">
+   <LINK REL="Next"  HREF="002449.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] R&#233;f. : Re:  Registration Failure through GGSN</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%20%3D%3Fiso-8859-1%3Fq%3FR%3DE9f%3D2E_%3D3A_Re%3D3A__Registrati%3F%3D%0A%20%3D%3Fiso-8859-1%3Fq%3Fon_Failure_through_GGSN%3F%3D&In-Reply-To=%3C46CAFD68.6010708%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] R&#233;f. : Re:  Registration Failure through GGSN">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Aug 21 16:57:44 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002508.html">[OpenIMSCore-Users] Presence server works for some time then scscf	replies with 403 Forbidden - Dialog not found on S-CSCF or	Terminating user not suitable for	 unregistered services
+</A></li>
+        <LI>Next message: <A HREF="002449.html">[OpenIMSCore-Users] R&#233;f. : Re:  Registration Failure through GGSN
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2442">[ date ]</a>
+              <a href="thread.html#2442">[ thread ]</a>
+              <a href="subject.html#2442">[ subject ]</a>
+              <a href="author.html#2442">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>here is my configuration template:
+
+here is my configuration though:
+
+Service-Profile: IETF (works also with 3GPP, but I couldn't get the AKA
+params out of my SIM card)
+Public User name: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">dragos at open-ims.test</A>
+Use Compression: No
+Registration: Always on
+Use Security: No
+Proxy server:
+    Address: sip:1.2.3.4
+    Realm: open-ims.test
+    User name: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">dragos at open-ims.test</A>
+    Password: ***
+    Allow loose routing: yes
+    Transport type: Auto
+    Port: 4060
+Registrar server:
+    Address: sip:open-ims.test
+    Realm: open-ims.test
+    User name: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">dragos at open-ims.org</A>
+    Password: ***
+    Transport type: Auto
+    Port: 5060
+
+
+Could you please test with these and confirm the bug?
+
+-Dragos
+
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kiran.bkumar at wipro.com</A> wrote:
+&gt;<i> Hi Daniel / Dragos,
+</I>&gt;<i>  
+</I>&gt;<i> Does that mean the Registration could still happen without TLS ??
+</I>&gt;<i> (meaning, even if the TLS is not enabled at the PCSCF, will the
+</I>&gt;<i> Registration happen).
+</I>&gt;<i>  
+</I>&gt;<i> I have attached the ethereal traces for the SIP Registration through
+</I>&gt;<i> N95 using our UMTS access network.
+</I>&gt;<i>  
+</I>&gt;<i> Please help me in debugging where the issue could be.
+</I>&gt;<i>  
+</I>&gt;<i> Thanks very much in advance,
+</I>&gt;<i>  
+</I>&gt;<i> Regards,
+</I>&gt;<i> Kiran.
+</I>&gt;<i>  
+</I>&gt;<i> This is what I see in the pcscf window,
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> 1(24085) DBG:P-CSCF:P_verify_security: Looking for &lt;1://10.10.10.88:4060&gt;
+</I>&gt;<i>
+</I>&gt;<i> 1(24085) ERR:P-CSCF:cscf_get_authorization: Message does not contain
+</I>&gt;<i> Authorization header.
+</I>&gt;<i>
+</I>&gt;<i> 1(24085) INF:P-CSCF:P_add_integrity_protected: No authorization header
+</I>&gt;<i> found.
+</I>&gt;<i>
+</I>&gt;<i> 1(24085) DBG:P-CSCF:P_remove_header_tag(): Original &lt;Require&gt; -&gt; &lt;path&gt;
+</I>&gt;<i>
+</I>&gt;<i> 1(24085) DBG:P-CSCF:P_remove_header_tag(): Original &lt;Require&gt; -&gt; &lt;path&gt;
+</I>&gt;<i>
+</I>&gt;<i> 1(24085) DBG:P-CSCF:P_remove_header_tag(): Original &lt;Require&gt; -&gt; &lt;path&gt;
+</I>&gt;<i>
+</I>&gt;<i> 1(24085) DBG:P-CSCF:P_remove_header_tag(): Original &lt;Require&gt; -&gt; &lt;path&gt;
+</I>&gt;<i>
+</I>&gt;<i> 1(24085) DBG:P-CSCF:P_remove_header_tag(): Original &lt;Require&gt; -&gt; &lt;path&gt;
+</I>&gt;<i>
+</I>&gt;<i> 1(24085) DBG:P-CSCF:P_remove_header_tag(): Original &lt;Require&gt; -&gt; &lt;path&gt;
+</I>&gt;<i>
+</I>&gt;<i> 1(24085) DBG:P-CSCF:P_remove_header_tag(): Original &lt;Require&gt; -&gt; &lt;path&gt;
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> *From:* Daniel VIRASSAMY [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">daniel.virassamy at sagem.com</A>]
+</I>&gt;<i> *Sent:* Tue 8/21/2007 17:42
+</I>&gt;<i> *To:* Kiran B Kumar (WT01 - Testing Services)
+</I>&gt;<i> *Cc:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i> *Subject:* R&#233;f. : Re: [OpenIMSCore-Users] Registration Failure through
+</I>&gt;<i> GGSN
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The &quot;supported: sec-agree&quot; means that the client can negociate for a
+</I>&gt;<i> security mechanism for subsequent requests.
+</I>&gt;<i>
+</I>&gt;<i> Thus it can negociate for IPSEC, TLS , DIGEST .... depending on UE's
+</I>&gt;<i> and P-CSCF capabilities.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	
+</I>&gt;<i> 	
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hello Dragos,
+</I>&gt;<i>
+</I>&gt;<i> Thanks for the response.
+</I>&gt;<i> But how do I change the Request URI, because I have done the SIP client
+</I>&gt;<i> configuration on the N95.
+</I>&gt;<i>
+</I>&gt;<i> Also the N95 SIP client is sending &quot;supported: sec-agree&quot; in the
+</I>&gt;<i> Register message, does this mean that the TLS security association is
+</I>&gt;<i> required between the UE and the PCSCF.
+</I>&gt;<i>
+</I>&gt;<i> I have now installed the Rel 434 and have also enabled the TLS support,
+</I>&gt;<i> but still the Registration fails.
+</I>&gt;<i>
+</I>&gt;<i> Kindly help....
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Kiran.
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;<i> Sent: Tuesday, August 21, 2007 12:11 AM
+</I>&gt;<i> To: Kiran B Kumar (WT01 - Testing Services)
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] Registration Failure through GGSN
+</I>&gt;<i>
+</I>&gt;<i> Hello Kiran,
+</I>&gt;<i>
+</I>&gt;<i> the problem might be the Request-URI. It should be
+</I>&gt;<i> sip:mkd149633.wipro.com.
+</I>&gt;<i>
+</I>&gt;<i> BTW: I also have a N95 and it works (over WiFi).
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kiran.bkumar at wipro.com</A> wrote:
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt; Hi All,
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt; I was able to send the SIP Register message from the Nokia N95 mobile
+</I>&gt;<i> &gt; SIP client to the IMS server which is connected to our Lab GGSN
+</I>&gt;<i> &gt; through UMTS access n/w. But after this the IMS server send a 504
+</I>&gt;<i> &gt; Server Time Out (0 Bindings)
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;  The Register message looks as below,
+</I>&gt;<i> &gt; No. Time Source Destination Protocol Info
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt; 4612 286.552759 10.126.1.234 10.10.10.88 *SIP Request: REGISTER*
+</I>&gt;<i> &gt; sip:mkd149633.wipro.com:4060;transport=UDP
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt; Frame 4612 (561 bytes on wire, 561 bytes captured) Ethernet II, Src:
+</I>&gt;<i> &gt; HuaweiTe_a7:b2:e9 (00:e0:fc:a7:b2:e9), Dst:
+</I>&gt;<i> &gt; Dell_0a:96:82 (00:18:8b:0a:96:82)
+</I>&gt;<i> &gt; Internet Protocol, Src: 10.126.1.234 (10.126.1.234), Dst: 10.10.10.88
+</I>&gt;<i> &gt; (10.10.10.88)
+</I>&gt;<i> &gt; User Datagram Protocol, Src Port: sip (5060), Dst Port: 4060 (4060)
+</I>&gt;<i> &gt; Source port: sip (5060) Destination port: 4060 (4060)
+</I>&gt;<i> &gt; Length: 527
+</I>&gt;<i> &gt; Checksum: 0x7035 [correct]
+</I>&gt;<i> &gt; Session Initiation Protocol
+</I>&gt;<i> &gt; Request-Line: REGISTER sip:mkd149633.wipro.com:4060;transport=UDP
+</I>&gt;<i> &gt; SIP/2.0
+</I>&gt;<i> &gt; Method: REGISTER
+</I>&gt;<i> &gt; Resent Packet: False]
+</I>&gt;<i> &gt; Message Header
+</I>&gt;<i> &gt; Route: &lt;sip:mkd149633.wipro.com:4060;lr;transport=UDP&gt;
+</I>&gt;<i> &gt; Via: SIP/2.0/UDP
+</I>&gt;<i> &gt; 10.126.1.234:5060;branch=z9hG4bKveicno9qo5hc7gnn0dl960v;rport
+</I>&gt;<i> &gt; From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kiran at mkd149633.wipro.com</A>&gt;;tag=ul4snocemthc73r80dl9
+</I>&gt;<i> &gt; To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kiran at mkd149633.wipro.com</A>&gt;
+</I>&gt;<i> &gt; Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kiran at 10.126.1.234</A>;transport=UDP&gt;;expires=3600
+</I>&gt;<i> &gt; CSeq: 665 REGISTER
+</I>&gt;<i> &gt; Call-ID: wi_bUjQVoIdZG0dGAN3L8kbdRkIafb
+</I>&gt;<i> &gt; Supported: sec-agree
+</I>&gt;<i> &gt; User-Agent: Nokia RM-159 V 10.0.018
+</I>&gt;<i> &gt; Max-Forwards: 70
+</I>&gt;<i> &gt; Content-Length: 0
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; No. Time Source Destination Protocol Info
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt; 5079 316.517465 10.10.10.88 10.126.1.234* SIP Status: 504 Server
+</I>&gt;<i> &gt; Time-Out (0 bindings) *Frame 5079 (666 bytes on wire, 666 bytes
+</I>&gt;<i> &gt; captured) Ethernet II, Src: Dell_0a:96:82 (00:18:8b:0a:96:82), Dst:
+</I>&gt;<i> &gt; HuaweiTe_a7:b2:e9 (00:e0:fc:a7:b2:e9)
+</I>&gt;<i> &gt; Internet Protocol, Src: 10.10.10.88 (10.10.10.88), Dst: 10.126.1.234
+</I>&gt;<i> &gt; (10.126.1.234)
+</I>&gt;<i> &gt; User Datagram Protocol, Src Port: 4060 (4060), Dst Port: sip (5060)
+</I>&gt;<i> &gt; Source port: 4060 (4060) Destination port: sip (5060)
+</I>&gt;<i> &gt; Length: 632
+</I>&gt;<i> &gt; Checksum: 0x2353 [incorrect, should be 0x80c6] Session Initiation
+</I>&gt;<i> &gt; Protocol
+</I>&gt;<i> &gt; Status-Line: SIP/2.0 504 Server Time-Out
+</I>&gt;<i> &gt; Status-Code: 504
+</I>&gt;<i> &gt; [Resent Packet: False]
+</I>&gt;<i> &gt; Message Header
+</I>&gt;<i> &gt; Via: SIP/2.0/UDP
+</I>&gt;<i> &gt; 10.126.1.234:5060;branch=z9hG4bKveicno9qo5hc7gnn0dl960v;rport=5060
+</I>&gt;<i> &gt; From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kiran at mkd149633.wipro.com</A>&gt;;tag=ul4snocemthc73r80dl9
+</I>&gt;<i> &gt; To:
+</I>&gt;<i> &gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kiran at mkd149633.wipro.com</A>&gt;;tag=069722b5894599dd6233f763dfca82e2-3
+</I>&gt;<i> &gt; d2b
+</I>&gt;<i> &gt; CSeq: 665 REGISTER
+</I>&gt;<i> &gt; Call-ID: wi_bUjQVoIdZG0dGAN3L8kbdRkIafb
+</I>&gt;<i> &gt; Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+</I>&gt;<i> &gt; Content-Length: 0
+</I>&gt;<i> &gt; Warning: 392 10.10.10.88:4060 &quot;Noisy feedback tells: pid=6298
+</I>&gt;<i> &gt; req_src_ip=10.126.1.234 req_src_port=5060
+</I>&gt;<i> &gt; in_uri=sip:mkd149633.wipro.com:4060;transport=UDP
+</I>&gt;<i> &gt; out_uri=sip:mkd149633.wipro.com:4060;transport=UDP via_cnt==0&quot;
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt; Kindly let me know what could be the problem.
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt; Looking forward to your response!!!!
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt; Thanks,
+</I>&gt;<i> &gt; Kiran.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The information contained in this electronic message and any
+</I>&gt;<i> &gt; attachments to this message are intended for the exclusive use of the
+</I>&gt;<i> &gt; addressee(s) and may contain proprietary, confidential or privileged
+</I>&gt;<i> &gt; information. If you are not the intended recipient, you should not
+</I>&gt;<i> &gt; disseminate, distribute or copy this e-mail. Please notify the sender
+</I>&gt;<i> &gt; immediately and destroy all copies of this message and any
+</I>&gt;<i> attachments.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; WARNING: Computer viruses can be transmitted via email. The recipient
+</I>&gt;<i> &gt; should check this email and any attachments for the presence of
+</I>&gt;<i> &gt; viruses. The company accepts no liability for any damage caused by any
+</I>&gt;<i>
+</I>&gt;<i> &gt; virus transmitted by this email.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; www.wipro.com
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ----------------------------------------------------------------------
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;  
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org We could change the
+</I>&gt;<i> world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The information contained in this electronic message and any
+</I>&gt;<i> attachments to this message are intended for the exclusive use of the
+</I>&gt;<i> addressee(s) and may contain proprietary, confidential or privileged
+</I>&gt;<i> information. If you are not the intended recipient, you should not
+</I>&gt;<i> disseminate, distribute or copy this e-mail. Please notify the sender
+</I>&gt;<i> immediately and destroy all copies of this message and any attachments.
+</I>&gt;<i>
+</I>&gt;<i> WARNING: Computer viruses can be transmitted via email. The recipient
+</I>&gt;<i> should check this email and any attachments for the presence of
+</I>&gt;<i> viruses. The company accepts no liability for any damage caused by any
+</I>&gt;<i> virus transmitted by this email.
+</I>&gt;<i>
+</I>&gt;<i> www.wipro.com
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &quot; Ce courriel et les documents qui y sont attaches peuvent contenir
+</I>&gt;<i> des informations confidentielles. Si vous n'etes pas le destinataire
+</I>&gt;<i> escompte, merci d'en informer l'expediteur immediatement et de
+</I>&gt;<i> detruire ce courriel ainsi que tous les documents attaches de votre
+</I>&gt;<i> systeme informatique. Toute divulgation, distribution ou copie du
+</I>&gt;<i> present courriel et des documents attaches sans autorisation prealable
+</I>&gt;<i> de son emetteur est interdite.&quot;
+</I>&gt;<i>
+</I>&gt;<i> &quot; This e-mail and any attached documents may contain confidential or
+</I>&gt;<i> proprietary information. If you are not the intended recipient, please
+</I>&gt;<i> advise the sender immediately and delete this e-mail and all attached
+</I>&gt;<i> documents from your computer system. Any unauthorised disclosure,
+</I>&gt;<i> distribution or copying hereof is prohibited.&quot;
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002508.html">[OpenIMSCore-Users] Presence server works for some time then scscf	replies with 403 Forbidden - Dialog not found on S-CSCF or	Terminating user not suitable for	 unregistered services
+</A></li>
+	<LI>Next message: <A HREF="002449.html">[OpenIMSCore-Users] R&#233;f. : Re:  Registration Failure through GGSN
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2442">[ date ]</a>
+              <a href="thread.html#2442">[ thread ]</a>
+              <a href="subject.html#2442">[ subject ]</a>
+              <a href="author.html#2442">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

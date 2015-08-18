@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to enforce call tear down when credit	isexhausted in SER_IMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20enforce%20call%20tear%20down%20when%20credit%0A%09isexhausted%20in%20SER_IMS&In-Reply-To=%3C7875bb250901070354m56854a2y2d8f0486896794fa%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004958.html">
+   <LINK REL="Next"  HREF="004980.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to enforce call tear down when credit	isexhausted in SER_IMS</H1>
+    <B>Suresh jaiswal</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20enforce%20call%20tear%20down%20when%20credit%0A%09isexhausted%20in%20SER_IMS&In-Reply-To=%3C7875bb250901070354m56854a2y2d8f0486896794fa%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] How to enforce call tear down when credit	isexhausted in SER_IMS">itssuresh79 at gmail.com
+       </A><BR>
+    <I>Wed Jan  7 12:54:02 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004958.html">[OpenIMSCore-Users] How to enforce call tear down when credit	isexhausted in SER_IMS
+</A></li>
+        <LI>Next message: <A HREF="004980.html">[OpenIMSCore-Users] How to enforce call tear down when credit	isexhausted in SER_IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4978">[ date ]</a>
+              <a href="thread.html#4978">[ thread ]</a>
+              <a href="subject.html#4978">[ subject ]</a>
+              <a href="author.html#4978">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Alberto/Franz,
+
+Thanks for information.
+
+Based on the mail exchanges so far, I am a bit confused though.
+
+Scenario 1 ( as I perceive it):
+SER_IMS is CAPABLE of call control as required by Online charging.
+For this I just have to write proper code based on lines similar to
+that of release_call() present in pcscf and/or scscf. Once I write
+code for call control I dont need any support of any other AS acting
+as B2BUA for charging.
+
+Scenario 2 (as perceived by me):
+SER_IMS (by itself) is NOT capable of call control as is mentioned in
+SER guide and as is confirmed by senior members like Franz, Dragos.
+And in order to implement Online Charging, I HAVE TO have a new AS
+acting as b2bua for charging and call control.
+
+My questions are:
+Q1: Do I have both options for implementing online charging i.e.
+option 1: IMS itself handles call control with help of functionality
+similar to release_call.
+option 2: With help of new charging AS (b2bua form) call control is implemented.
+
+Q2: If I have both options, are there any differences w.r.t.
+performance, capabilities, etc between the two options
+
+Q3: (A bit redundant question) Why option of B2BUA was suggested in
+place of &quot;actually modifying the IMS for call control&quot; (of course if
+both options are similar)
+
+Thanks.
+~Suresh
+
+On Fri, Jan 2, 2009 at 8:21 PM, Alberto Diez
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i> hi,
+</I>&gt;<i>
+</I>&gt;<i> as Franz already told you in general SER is only a proxy server
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> There is only one small exception, because the 3GPP specification requires
+</I>&gt;<i> that the P-CSCF and S-CSCF not only act as a SIP proxy but also as a SIP UA
+</I>&gt;<i>  for some cases (for example the release of a call for administrative
+</I>&gt;<i> reasons) we did implement this functionality and its called release_call
+</I>&gt;<i> included in the P-CSCF and S-CSCF with several cases being contemplated.
+</I>&gt;<i> This function is used for appropriate signaling upon dialog expiration and
+</I>&gt;<i> upon policy when using the PCC extensions included in the cdp_sessions
+</I>&gt;<i> branch.
+</I>&gt;<i>
+</I>&gt;&gt;<i>Is it that we cannot implement online charging in SER_IMS as it is based on
+</I>&gt;&gt;<i> SER?
+</I>&gt;<i>
+</I>&gt;<i> You can implement the online charging system, i guess you want to charge in
+</I>&gt;<i> the S-CSCF and spare programming the Ro interface (?) to an external OCS. It
+</I>&gt;<i> should be possible.
+</I>&gt;<i>
+</I>&gt;<i> I do not know if this is the most advisable way to do it, or it would be
+</I>&gt;<i> better to use a external AS for the OCS that you have to consider.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i>Or if we CAN, then do we have to have very tedious effort for doing it
+</I>&gt;<i> through SER_IMS? Can you comment on the time-line, learning curve for doing
+</I>&gt;<i> the same.
+</I>&gt;<i>
+</I>&gt;<i> Programming for SER_IMS is not easy but also not very complicated, it
+</I>&gt;<i> requires a bit of time depending on your skills and on how familiar you are
+</I>&gt;<i> with C programming and SER modules structures.
+</I>&gt;<i>
+</I>&gt;<i> Maybe doing some Java SIP Servlet is much quicker..
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i>and  also can some one let me know How to enforce call tear down when
+</I>&gt;&gt;<i> credit is exhausted in SER_IMS.
+</I>&gt;<i>
+</I>&gt;<i> Take a look at the release_call files in the scscf or pcscf modules
+</I>&gt;<i>
+</I>&gt;<i> good luck
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> --------------------------------
+</I>&gt;<i> Alberto Diez Albaladejo
+</I>&gt;<i> Fraunhofer FOKUS
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alberto.diez at fokus.fraunhofer.de</A>
+</I>&gt;<i> tel:00493034637307
+</I>&gt;<i> --------------------------------
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004958.html">[OpenIMSCore-Users] How to enforce call tear down when credit	isexhausted in SER_IMS
+</A></li>
+	<LI>Next message: <A HREF="004980.html">[OpenIMSCore-Users] How to enforce call tear down when credit	isexhausted in SER_IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4978">[ date ]</a>
+              <a href="thread.html#4978">[ thread ]</a>
+              <a href="subject.html#4978">[ subject ]</a>
+              <a href="author.html#4978">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

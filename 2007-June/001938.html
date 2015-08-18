@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] INVITE ignored with IMS Communicator behind	NAT
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20INVITE%20ignored%20with%20IMS%20Communicator%20behind%0A%09NAT&In-Reply-To=%3C39a901c7a9b7%24f11cbc10%24967d5f0a%40ADNAMANTINO%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001936.html">
+   <LINK REL="Next"  HREF="001934.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] INVITE ignored with IMS Communicator behind	NAT</H1>
+    <B>Rafael Mor&#243;n Abad</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20INVITE%20ignored%20with%20IMS%20Communicator%20behind%0A%09NAT&In-Reply-To=%3C39a901c7a9b7%24f11cbc10%24967d5f0a%40ADNAMANTINO%3E"
+       TITLE="[OpenIMSCore-Users] INVITE ignored with IMS Communicator behind	NAT">rma352 at tid.es
+       </A><BR>
+    <I>Fri Jun  8 12:29:48 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001936.html">[OpenIMSCore-Users] INVITE ignored with IMS Communicator behind NAT
+</A></li>
+        <LI>Next message: <A HREF="001934.html">[OpenIMSCore-Users] how to do barred public user identity?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1938">[ date ]</a>
+              <a href="thread.html#1938">[ thread ]</a>
+              <a href="subject.html#1938">[ subject ]</a>
+              <a href="author.html#1938">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thank you very much, Dragos.
+
+My main problem was that I had configured my DNS to resolve the Open IMS 
+elements to 127.0.0.1. I've modified the DNS server in order to resolve them 
+to the IP network address and this problem dissapeared.
+I've also removed the &quot;listen=127.0.0.1&quot; lines in the *.cfg files and left 
+only the &quot;listen=&lt;network address&gt;&quot; line.
+
+Regards,
+    Rafael
+
+----- Original Message ----- 
+From: &quot;Dragos Vingarzan&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+To: &quot;Rafael Mor&#243;n Abad&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">rma352 at tid.es</A>&gt;
+Cc: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+Sent: Friday, June 08, 2007 10:19 AM
+Subject: Re: [OpenIMSCore-Users] INVITE ignored with IMS Communicator behind 
+NAT
+
+
+&gt;<i> Hello Rafael,
+</I>&gt;<i>
+</I>&gt;<i> It seems that you are using a mix of local loopback and other interfaces
+</I>&gt;<i> on the CSCFs. This means that it might happen (and it did :) ) for the
+</I>&gt;<i> CSCFs to try and send out a message from the local loopback to a non
+</I>&gt;<i> local IP address (like the client?). This is kind of impossible.
+</I>&gt;<i>
+</I>&gt;<i> To fix this please try to stick to only non-local loopback interfaces if
+</I>&gt;<i> you have anything outside that. The initial configuration example is
+</I>&gt;<i> just for exemplification in a closed environment.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Rafael Mor&#243;n Abad wrote:
+</I>&gt;&gt;<i> Hi Dragos,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have tried without NAT from within of the network where the IMS Core
+</I>&gt;&gt;<i> is installed. I get a 477 error.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks in advance,
+</I>&gt;&gt;<i>    Rafael
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ----- Original Message ----- From: &quot;Dragos Vingarzan&quot;
+</I>&gt;&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;<i> To: &quot;Rafael Mor&#243;n Abad&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">rma352 at tid.es</A>&gt;
+</I>&gt;&gt;<i> Cc: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;&gt;<i> Sent: Thursday, June 07, 2007 3:27 PM
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] INVITE ignored with IMS Communicator
+</I>&gt;&gt;<i> behind NAT
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Could you please send a full network trace?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Rafael Mor&#243;n Abad wrote:
+</I>&gt;&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I have just installed the Open IMS Core and I've been able to register
+</I>&gt;&gt;&gt;&gt;<i> with two IMS Communicators from behind a NAT, using the default users
+</I>&gt;&gt;&gt;&gt;<i> Bob and Alice.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> When I try to send an INVITE, I get no answer from the P-CSCSF. In
+</I>&gt;&gt;&gt;&gt;<i> addition to this, the INVITE is not sent by the P-CSCF neither through
+</I>&gt;&gt;&gt;&gt;<i> the eth0 interface nor the loopback interface.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I've put a log trace in pcscf.cfg at the beginning of the route:
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> route{
+</I>&gt;&gt;&gt;&gt;<i> log(-1,&quot;*************** Start routing logic!!!\n&quot;);
+</I>&gt;&gt;&gt;&gt;<i> But it doesn't appear in the logs, so I must suppose that the routing
+</I>&gt;&gt;&gt;&gt;<i> logic doesn't even start.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> The INVITE message is the following:
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> ------------------------------------------------------------------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Internet Protocol, Src: 192.168.154.5 (192.168.154.5), Dst:
+</I>&gt;&gt;&gt;&gt;<i> 10.95.37.199 (10.95.37.199)
+</I>&gt;&gt;&gt;&gt;<i> User Datagram Protocol, Src Port: 34017 (34017), Dst Port: 4060 (4060)
+</I>&gt;&gt;&gt;&gt;<i> Session Initiation Protocol
+</I>&gt;&gt;&gt;&gt;<i>     Request-Line: INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> SIP/2.0
+</I>&gt;&gt;&gt;&gt;<i>         Method: INVITE
+</I>&gt;&gt;&gt;&gt;<i>         Resent Packet: False
+</I>&gt;&gt;&gt;&gt;<i>     Message Header
+</I>&gt;&gt;&gt;&gt;<i>         Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">b011412a0080b2387bdc6ebc342456ad at 192.168.154.5</A>
+</I>&gt;&gt;&gt;&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">b011412a0080b2387bdc6ebc342456ad at 192.168.154.5</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i>         CSeq: 1 INVITE
+</I>&gt;&gt;&gt;&gt;<i>         From: &quot;bob&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=10009590
+</I>&gt;&gt;&gt;&gt;<i>         To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i>         Via: SIP/2.0/UDP
+</I>&gt;&gt;&gt;&gt;<i> 192.168.154.5:34017;branch=z9hG4bK07fd9e722c7a182954cfd12062566283
+</I>&gt;&gt;&gt;&gt;<i>         Max-Forwards: 70
+</I>&gt;&gt;&gt;&gt;<i>         Contact: &quot;bob&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 192.168.154.5</A>:34017;transport=udp&gt;
+</I>&gt;&gt;&gt;&gt;<i>         Route:
+</I>&gt;&gt;&gt;&gt;<i> &lt;sip:10.95.37.199:4060;transport=udp&gt;,&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         Allow: INVITE,ACK,CANCEL,BYE,MESSAGE,PRACK,UPDATE
+</I>&gt;&gt;&gt;&gt;<i>         P-Preferred-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i>         Privacy: none
+</I>&gt;&gt;&gt;&gt;<i>         Proxy-Require: sec-agree
+</I>&gt;&gt;&gt;&gt;<i>         Security-Verify: ipsec-3gpp;
+</I>&gt;&gt;&gt;&gt;<i> ealg=null;alg=hmac-sha-1-96;spi-c=5000;spi-s=5001;port-c=4060;port-s=4060;q=0.1
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         Require: sec-agree
+</I>&gt;&gt;&gt;&gt;<i>         Supported: 100rel, precondition
+</I>&gt;&gt;&gt;&gt;<i>         P-Access-Network-Info: IEEE-802.11
+</I>&gt;&gt;&gt;&gt;<i>         Content-Type: application/sdp
+</I>&gt;&gt;&gt;&gt;<i>         Content-Length: 682
+</I>&gt;&gt;&gt;&gt;<i>     Message body
+</I>&gt;&gt;&gt;&gt;<i>         Session Description Protocol
+</I>&gt;&gt;&gt;&gt;<i>             Session Description Protocol Version (v): 0
+</I>&gt;&gt;&gt;&gt;<i>             Owner/Creator, Session Id (o): <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;&gt;&gt;&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; 0 0 IN IP4 192.168.154.5
+</I>&gt;&gt;&gt;&gt;<i>                 Owner Username: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;&gt;&gt;&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i>                 Session ID: 0
+</I>&gt;&gt;&gt;&gt;<i>                 Session Version: 0
+</I>&gt;&gt;&gt;&gt;<i>                 Owner Network Type: IN
+</I>&gt;&gt;&gt;&gt;<i>                 Owner Address Type: IP4
+</I>&gt;&gt;&gt;&gt;<i>                 Owner Address: 192.168.154.5
+</I>&gt;&gt;&gt;&gt;<i>             Session Name (s): -
+</I>&gt;&gt;&gt;&gt;<i>             Connection Information (c): IN IP4 192.168.154.5
+</I>&gt;&gt;&gt;&gt;<i>                 Connection Network Type: IN
+</I>&gt;&gt;&gt;&gt;<i>                 Connection Address Type: IP4
+</I>&gt;&gt;&gt;&gt;<i>                 Connection Address: 192.168.154.5
+</I>&gt;&gt;&gt;&gt;<i>             Time Description, active time (t): 0 0
+</I>&gt;&gt;&gt;&gt;<i>                 Session Start Time: 0
+</I>&gt;&gt;&gt;&gt;<i>                 Session Stop Time: 0
+</I>&gt;&gt;&gt;&gt;<i>             Media Description, name and address (m): audio 22224
+</I>&gt;&gt;&gt;&gt;<i> RTP/AVP 0 3 4 5 6 8 15
+</I>&gt;&gt;&gt;&gt;<i>                 Media Type: audio
+</I>&gt;&gt;&gt;&gt;<i>                 Media Port: 22224
+</I>&gt;&gt;&gt;&gt;<i>                 Media Proto: RTP/AVP
+</I>&gt;&gt;&gt;&gt;<i>                 Media Format: ITU-T G.711 PCMU
+</I>&gt;&gt;&gt;&gt;<i>                 Media Format: GSM 06.10
+</I>&gt;&gt;&gt;&gt;<i>                 Media Format: ITU-T G.723
+</I>&gt;&gt;&gt;&gt;<i>                 Media Format: DVI4 8000 samples/s
+</I>&gt;&gt;&gt;&gt;<i>                 Media Format: DVI4 16000 samples/s
+</I>&gt;&gt;&gt;&gt;<i>                 Media Format: ITU-T G.711 PCMA
+</I>&gt;&gt;&gt;&gt;<i>                 Media Format: ITU-T G.728
+</I>&gt;&gt;&gt;&gt;<i> ------------------------------------------------------------------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Can you figure out what may be happening?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I've already checked the DNS, and the *-CSCF and FHoSS are running.
+</I>&gt;&gt;&gt;&gt;<i> All CSCFs are listening in loopback and network IP addresses.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Thanks in advance,
+</I>&gt;&gt;&gt;&gt;<i>     Rafael
+</I>&gt;&gt;&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -- 
+</I>&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -- 
+</I>&gt;&gt;&gt;<i> No virus found in this incoming message.
+</I>&gt;&gt;&gt;<i> Checked by AVG Free Edition.
+</I>&gt;&gt;&gt;<i> Version: 7.5.472 / Virus Database: 269.8.11/837 - Release Date:
+</I>&gt;&gt;&gt;<i> 06/06/2007 14:03
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> No virus found in this incoming message.
+</I>&gt;<i> Checked by AVG Free Edition.
+</I>&gt;<i> Version: 7.5.472 / Virus Database: 269.8.11/838 - Release Date: 07/06/2007 
+</I>&gt;<i> 14:21
+</I>&gt;<i> 
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001936.html">[OpenIMSCore-Users] INVITE ignored with IMS Communicator behind NAT
+</A></li>
+	<LI>Next message: <A HREF="001934.html">[OpenIMSCore-Users] how to do barred public user identity?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1938">[ date ]</a>
+              <a href="thread.html#1938">[ thread ]</a>
+              <a href="subject.html#1938">[ subject ]</a>
+              <a href="author.html#1938">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

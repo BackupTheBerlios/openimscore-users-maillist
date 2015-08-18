@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] IMS Gateway and Diameter
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IMS%20Gateway%20and%20Diameter&In-Reply-To=%3C48F468D2.1020906%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004762.html">
+   <LINK REL="Next"  HREF="004764.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] IMS Gateway and Diameter</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IMS%20Gateway%20and%20Diameter&In-Reply-To=%3C48F468D2.1020906%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] IMS Gateway and Diameter">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Oct 14 11:39:30 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004762.html">[OpenIMSCore-Users] IMS Gateway and Diameter
+</A></li>
+        <LI>Next message: <A HREF="004764.html">[OpenIMSCore-Users] JavaDiameterPeer Communicator MAX_MESSAGE_LENGTH
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4763">[ date ]</a>
+              <a href="thread.html#4763">[ thread ]</a>
+              <a href="subject.html#4763">[ subject ]</a>
+              <a href="author.html#4763">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Raj,
+
+I would rather just link those servers with a Diameter library. There
+are many available out there, like the simple ones from our project
+(JavaDiameterPeer, CDiameterPeer, for which non-GPL licenses are
+available) or other complex ones like Open Diameter. Diameter has a lot
+of features over RADIUS, so I don't think that the advantages are
+questionable. Then Diameter has been around for a long time now - I
+would call 5 years a long time in IT&amp;C - for this to still be an actual
+scenario.
+
+We also investigated around 2004 such bridges, but there are a lot of
+inherent limitations, like not being able to push requests in both
+directions. Without this, a Cx or Sh implementation will not be complete
+(e.g. the RTR/A and PPR/A requests). This means that such 5 years old
+RADIUS servers are just too old and need a architectural make-over anyway.
+
+I doubt that the indicated gateway would solve issues like this...
+unfortunately the article is just an ad and has no technical insight;
+here are some parts:
+- &quot;As a critical analyst, fragrance of perfect amalgamation of high-end
+technology and user&#8217;s expectation provides ultimate pleasure and an
+aesthetic user satisfaction.&quot; - this one made me look for what else the
+author wrote on that site... oh dear...
+- &quot;Lowering investment cost and simultaneously decreasing time to
+revenue for the service provider.&quot; - pitching for those technically
+challenged honchos... this is a temporary hack and I doubt that on the
+long run such an intermediate transition is going to be cheaper than a
+proper transition to NGN architectures.
+- &quot;Users also find themselves in a position to access all new function
+of NGN solution without substantial investment.&quot; - well, actually, not
+&quot;all&quot; ...
+
+
+In the end, getting back to your question: it probably makes sense in
+certain scenarios, but for the Cx/Sh interfaces at least, I kind of
+doubt it. You will have to take into account how the full new
+functionality maps on the old one and whether this would work without
+doing some big changes tot he RADIUS/LDAP side. Sure, such gateways are
+easy to have, as you can see in Diameter the RADIUS inheritance and many
+things are so easy to translate. But something is always lost, otherwise
+one might argue that Diameter can't do more than RADIUS. And are the
+benefits high enough to motivate the costs of an intermediate architecture?
+
+just my 2 euro-cents,
+-Dragos
+
+Raj Patel wrote:
+&gt;<i> Hi
+</I>&gt;<i>  
+</I>&gt;<i> I have a question
+</I>&gt;<i> I came across a Diameter Gateway,
+</I>&gt;<i> <A HREF="http://www.articledashboard.com/Article/Diameter-gateway-proved-a-rock-solid-bridge/545416">http://www.articledashboard.com/Article/Diameter-gateway-proved-a-rock-solid-bridge/545416</A>
+</I>&gt;<i>  it seems to make sense since RADIUS/LDAP which we use in the existing
+</I>&gt;<i> network don't work with Diameter
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> my question is it making sense ? are there alternatives and are you
+</I>&gt;<i> familiar with such products
+</I>&gt;<i> also if it makes sense and there are plans to some work in this
+</I>&gt;<i> direction we will be happy to contribute
+</I>&gt;<i>  
+</I>&gt;<i> Regards
+</I>&gt;<i> Raj
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004762.html">[OpenIMSCore-Users] IMS Gateway and Diameter
+</A></li>
+	<LI>Next message: <A HREF="004764.html">[OpenIMSCore-Users] JavaDiameterPeer Communicator MAX_MESSAGE_LENGTH
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4763">[ date ]</a>
+              <a href="thread.html#4763">[ thread ]</a>
+              <a href="subject.html#4763">[ subject ]</a>
+              <a href="author.html#4763">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

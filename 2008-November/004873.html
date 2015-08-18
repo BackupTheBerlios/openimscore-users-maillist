@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Disappearing IPsec security associations
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Disappearing%20IPsec%20security%20associations&In-Reply-To=%3C20081123160521.75D2B2728E%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004871.html">
+   <LINK REL="Next"  HREF="004863.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Disappearing IPsec security associations</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Disappearing%20IPsec%20security%20associations&In-Reply-To=%3C20081123160521.75D2B2728E%40mail.berlios.de%3E"
+       TITLE="[OpenIMSCore-Users] Disappearing IPsec security associations">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Sun Nov 23 17:05:14 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004871.html">[OpenIMSCore-Users] Disappearing IPsec security associations
+</A></li>
+        <LI>Next message: <A HREF="004863.html">[OpenIMSCore-Users] Mobility of sessions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4873">[ date ]</a>
+              <a href="thread.html#4873">[ thread ]</a>
+              <a href="subject.html#4873">[ subject ]</a>
+              <a href="author.html#4873">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi there,
+
+1) I must admit that I don't really get why P-CSCF does not set up the IPSec
+SA correctly... in SA_failure_SAD_SDP_dump.txt you can also see that only
+the SA for UE as UAC is set up, so 16386=&gt;4060. What does P-CSCF log say?
+
+2) What does S-CSCF log tell? Unfortunately the traces do not show the
+communication between P-CSCF and I-CSCF and S-CSCF...
+Is the destination UE (<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">userb1 at open-ims.softwell.se</A>) registrated?
+
+3) I guess this issue is related to the other mail you wrote about the
+SPIs...
+
+Cheers
+
+&gt;<i> -----Original Message-----
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:openimscore-
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">users-bounces at lists.berlios.de</A>] On Behalf Of Bj&#246;rn Persson
+</I>&gt;<i> Sent: Mittwoch, 19. November 2008 19:21
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] Disappearing IPsec security associations
+</I>&gt;<i> 
+</I>&gt;<i> Klemens Schragel wrote:
+</I>&gt;<i> &gt; The SIP &quot;contact&quot; header tells the Registrar how the UE shall be
+</I>&gt;<i> reached.
+</I>&gt;<i> &gt; This means if your UE wants to receive messages as UAS over IPSec SA
+</I>&gt;<i> then
+</I>&gt;<i> &gt; it should add its port-s port =&gt; yes, put port to 16387.
+</I>&gt;<i> &gt; Furthermore the via-header added by your UE is wrong. You use e.g. in
+</I>&gt;<i> the
+</I>&gt;<i> &gt; first REGISTER TCP port 16385, but on SIP-level you pretend the
+</I>&gt;<i> originating
+</I>&gt;<i> &gt; port is 5060... actually P-CSCF should send the 401 only according to
+</I>&gt;<i> the
+</I>&gt;<i> &gt; via-header =&gt; to 5060; don't know why it does not...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I recommend you to get these erroneous headers right and try again, if
+</I>&gt;<i> the
+</I>&gt;<i> &gt; error's the same we can look further..
+</I>&gt;<i> 
+</I>&gt;<i> Well, I changed the port numbers and now the SAs that get set up no longer
+</I>&gt;<i> disappear, but other than that the result is actually a worsening.
+</I>&gt;<i> 
+</I>&gt;<i> I now use port-s in Contact, and in Via I use the sending port of each
+</I>&gt;<i> message, which is the client port of the unauthenticated connection in the
+</I>&gt;<i> first REGISTER and port-c in the second REGISTER. I also removed a
+</I>&gt;<i> redundant &quot;methods&quot; parameter in Contact. The effects I have observed are
+</I>&gt;<i> as
+</I>&gt;<i> follows:
+</I>&gt;<i> 
+</I>&gt;<i> 1: SER still doesn't run ipsec_P_Inc_Rpl.sh, ipsec_P_Out_Req.sh or
+</I>&gt;<i> ipsec_P_Out_Rpl.sh, only ipsec_P_Inc_Req.sh. The only improvement is that
+</I>&gt;<i> the
+</I>&gt;<i> SA that ipsec_P_Inc_Req.sh sets up now sticks. That is, SER doesn't run
+</I>&gt;<i> ipsec_P_Drop.sh to remove it after a minute.
+</I>&gt;<i> 
+</I>&gt;<i> 2: I can no longer send MESSAGE. I get 200 OK on the second REGISTER, and
+</I>&gt;<i> the
+</I>&gt;<i> user is shown as registered both in the output of the P-CSCF and in the
+</I>&gt;<i> web
+</I>&gt;<i> interface of FHoSS. Despite all this the P-CSCF responds to MESSAGE with
+</I>&gt;<i> &quot;403
+</I>&gt;<i> Forbidden - Not Registered! You must register first with a S-CSCF&quot;. This
+</I>&gt;<i> worked before I changed the port numbers. See the attachment
+</I>&gt;<i> MESSAGE_forbidden.txt.
+</I>&gt;<i> 
+</I>&gt;<i> 3: ipsec_P_Inc_Req.sh works unreliably. In some REGISTER transactions no
+</I>&gt;<i> SA
+</I>&gt;<i> gets added even though the P-CSCF calls ipsec_P_Inc_Req.sh. I had similar
+</I>&gt;<i> symptoms a few times before but I couldn't reproduce it. Now it happens
+</I>&gt;<i> much
+</I>&gt;<i> more often. The four attachments that start with &quot;SA_failure&quot; show how one
+</I>&gt;<i> registration succeeds and the second one stalls because the server lacks
+</I>&gt;<i> an
+</I>&gt;<i> SA to decrypt the second REGISTER. At the end of
+</I>&gt;<i> SA_failure_PF_KEY_trace.txt,
+</I>&gt;<i> an attempt to add an SA is rejected with an error code of 17.
+</I>&gt;<i> This problem might of course not have any connection to the port numbers.
+</I>&gt;<i> It
+</I>&gt;<i> might just be bad luck that it happens more often now.
+</I>&gt;<i> 
+</I>&gt;<i> Bj&#246;rn Persson
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004871.html">[OpenIMSCore-Users] Disappearing IPsec security associations
+</A></li>
+	<LI>Next message: <A HREF="004863.html">[OpenIMSCore-Users] Mobility of sessions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4873">[ date ]</a>
+              <a href="thread.html#4873">[ thread ]</a>
+              <a href="subject.html#4873">[ subject ]</a>
+              <a href="author.html#4873">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

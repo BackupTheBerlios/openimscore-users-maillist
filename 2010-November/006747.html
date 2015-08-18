@@ -1,0 +1,404 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for	non	emergency calls (Franz Edler)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20%5BOrig_Subsequent%5D%20fails%20for%0A%09non%09emergency%20calls%20%28Franz%20Edler%29&In-Reply-To=%3C804B13F8F3D94A4AB18B9B01ACB68FA1039EA365%40EXCHSRV.fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006744.html">
+   <LINK REL="Next"  HREF="006749.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for	non	emergency calls (Franz Edler)</H1>
+    <B>Onofrei, Andreea Ancuta</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20%5BOrig_Subsequent%5D%20fails%20for%0A%09non%09emergency%20calls%20%28Franz%20Edler%29&In-Reply-To=%3C804B13F8F3D94A4AB18B9B01ACB68FA1039EA365%40EXCHSRV.fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for	non	emergency calls (Franz Edler)">andreea.ancuta.onofrei at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Nov 24 11:29:53 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006744.html">[OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for	non	emergency calls (Franz Edler)
+</A></li>
+        <LI>Next message: <A HREF="006749.html">[OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for	non	emergency calls (Franz Edler)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6747">[ date ]</a>
+              <a href="thread.html#6747">[ thread ]</a>
+              <a href="subject.html#6747">[ subject ]</a>
+              <a href="author.html#6747">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+Dear all,
+
+I have fixed and tested the configuration file of the P-CSCF. The fix is available in version 1012. Please test and let us know if there are other problems.
+
+Thank you all for your feedback,
+Ancuta Onofrei
+
+-----Original Message-----
+From: Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>]
+Sent: Tue 11/23/2010 8:28 PM
+To: Onofrei, Andreea Ancuta; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: RE: [OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for non	emergency calls (Franz Edler)
+ 
+Hello Ancuta,
+
+ 
+
+I have added the &quot;else&quot; as shown below and it does not work (as i expected).
+
+The logic now is:
+
+If the subsequent request can be correlated to a registered user (normal
+registration) than the code additionally requires also an emergency
+registration being active to pass the clause.
+
+ 
+
+The consequence is that no subsequent request can pass the P-CSCF.
+
+ 
+
+Best regards
+
+Franz
+
+ 
+
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Onofrei,
+Andreea Ancuta
+Sent: Tuesday, November 23, 2010 9:39 AM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: [OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for non
+emergency calls (Franz Edler)
+
+ 
+
+ 
+
+Hello Franz,
+
+You are right, the configuration file is not correct. It should contain an
+else if before (!P_is_em_registered()):
+
+
+        log(1,&quot;&gt;&gt;       Orig_Subsequent\n&quot;);
+        if (!P_is_registered()){
+                if (!P_assert_identity(&quot;non-emerg&quot;)){
+                        sl_send_reply(&quot;403&quot;,&quot;Forbidden - You must register
+first with a S-CSCF&quot;);
+                    break;
+                };
+        } else if (!P_is_em_registered()){
+                if (!P_assert_identity(&quot;emerg&quot;)){
+                        sl_send_reply(&quot;403&quot;,&quot;Forbidden - You must register
+first with a S-CSCF&quot;);
+                    break;
+                };
+        }
+
+Please try again by adding the else and let us know if it works.
+
+Best regards,
+Ancuta
+
+
+-----Original Message-----
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> on behalf of
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-request at lists.berlios.de</A>
+Sent: Mon 11/22/2010 12:00 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: OpenIMSCore-Users Digest, Vol 49, Issue 19
+
+Send OpenIMSCore-Users mailing list submissions to
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+
+To subscribe or unsubscribe via the World Wide Web, visit
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+or, via email, send a message with subject or body 'help' to
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-request at lists.berlios.de</A>
+
+You can reach the person managing the list at
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-owner at lists.berlios.de</A>
+
+When replying, please edit your Subject line so it is more specific
+than &quot;Re: Contents of OpenIMSCore-Users digest...&quot;
+
+
+Today's Topics:
+
+   1. Setting for IMS Communicator (Tejaswini S B)
+   2. P-CSCF [Orig_Subsequent] fails for non    emergency calls
+      (Franz Edler)
+   3. Re: Setting for IMS Communicator (Franz Edler)
+   4. Re: Setting for IMS Communicator (Tejaswini S B)
+   5. Transfer data from MSRP server to client via      OpenIMSCore
+      (Tejaswini S B)
+
+
+----------------------------------------------------------------------
+
+Message: 1
+Date: Mon, 22 Nov 2010 01:30:56 +0530
+From: Tejaswini S B &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tejaswini.sb at iiitb.net</A>&gt;
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>,
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-owner at lists.berlios.de</A>
+Subject: [OpenIMSCore-Users] Setting for IMS Communicator
+Message-ID:
+        &lt;AANLkTin8okE2Ws=94EYsP=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pDvPTRYRG8_XLDzPitsiM- at mail.gmail.com</A>&gt;
+Content-Type: text/plain; charset=&quot;iso-8859-1&quot;
+
+Hi,
+
+I am trying to configure IMS Communicator for making calls with
+OpenIMSCore.I have followed the link given here
+<A HREF="http://imscommunicator.berlios.de/">http://imscommunicator.berlios.de/</A> But the hss is not downlading the user
+data to scscf and the registration request is getting timed out. Can someone
+please send me the steps to configure bob and alice in ims communicator for
+open-ims.test domain. If you could send me the ims-communicator.xml file it
+will be helpful
+
+Thanks and Regards
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL:
+&lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20101122/1">https://lists.berlios.de/pipermail/openimscore-users/attachments/20101122/1</A>
+19fb766/attachment-0001.html&gt;
+
+------------------------------
+
+Message: 2
+Date: Sun, 21 Nov 2010 21:18:52 +0100
+From: &quot;Franz Edler&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+To: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+Subject: [OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for non
+        emergency calls
+Message-ID: &lt;000701cb89b9$509a84d0$f1cf8e70$@technikum-wien.at&gt;
+Content-Type: text/plain;       charset=&quot;us-ascii&quot;
+
+Hi,
+
+I have installed r1010 and recognized that in route [Orig_Subsequent] of
+P-CSCF subsequent requests like ACK or PRACK always fail with &quot;403 Forbidden
+- You must register first with a S-CSCF&quot;.
+The reason for this is in my view an error in pcscf.cfg in route
+[Orig_Subsequent].
+
+Instead of
+
+        log(1,&quot;&gt;&gt;       Orig_Subsequent\n&quot;);
+        if (!P_is_registered()){
+                if (!P_assert_identity(&quot;non-emerg&quot;)){
+                        sl_send_reply(&quot;403&quot;,&quot;Forbidden - You must register
+first with a S-CSCF&quot;);
+                    break;
+                };
+        }
+        if (!P_is_em_registered()){
+                if (!P_assert_identity(&quot;emerg&quot;)){
+                        sl_send_reply(&quot;403&quot;,&quot;Forbidden - You must register
+first with a S-CSCF&quot;);
+                    break;
+                };
+        }
+
+it should be
+
+        log(1,&quot;&gt;&gt;       Orig_Subsequent\n&quot;);
+        if (!P_is_registered()){
+                if (!P_is_em_registered()){
+                        sl_send_reply(&quot;403&quot;,&quot;Forbidden - You must register
+first with a S-CSCF&quot;);
+                    break;
+                };
+        };
+
+otherwise a successful registered non-emergency session is additionally
+checked for an emergency registration, which always fails.
+I have successfully tested the code for non-emergency sessions.
+What do you think?
+
+Best regards
+Franz
+
+
+
+------------------------------
+
+Message: 3
+Date: Sun, 21 Nov 2010 21:29:42 +0100
+From: &quot;Franz Edler&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+To: &quot;'Tejaswini S B'&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tejaswini.sb at iiitb.net</A>&gt;,
+        &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+Subject: Re: [OpenIMSCore-Users] Setting for IMS Communicator
+Message-ID: &lt;000001cb89ba$d4094210$7c1bc630$@technikum-wien.at&gt;
+Content-Type: text/plain; charset=&quot;us-ascii&quot;
+
+See the file attached.
+
+
+
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Tejaswini S
+B
+Sent: Sunday, November 21, 2010 9:01 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>;
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-owner at lists.berlios.de</A>
+Subject: [OpenIMSCore-Users] Setting for IMS Communicator
+
+
+
+Hi,
+
+
+
+I am trying to configure IMS Communicator for making calls with
+OpenIMSCore.I have followed the link given here
+<A HREF="http://imscommunicator.berlios.de/">http://imscommunicator.berlios.de/</A> But the hss is not downlading the user
+data to scscf and the registration request is getting timed out. Can someone
+please send me the steps to configure bob and alice in ims communicator for
+open-ims.test domain. If you could send me the ims-communicator.xml file it
+will be helpful
+
+
+
+Thanks and Regards
+
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL:
+&lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20101121/c">https://lists.berlios.de/pipermail/openimscore-users/attachments/20101121/c</A>
+ea37a28/attachment-0001.html&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: ims-communicator.xml
+Type: text/xml
+Size: 7620 bytes
+Desc: not available
+URL:
+&lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20101121/c">https://lists.berlios.de/pipermail/openimscore-users/attachments/20101121/c</A>
+ea37a28/attachment-0001.xml&gt;
+
+------------------------------
+
+Message: 4
+Date: Mon, 22 Nov 2010 02:33:41 +0530
+From: Tejaswini S B &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tejaswini.sb at iiitb.net</A>&gt;
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Re: [OpenIMSCore-Users] Setting for IMS Communicator
+Message-ID:
+        &lt;AANLkTinFoALRiG1A-=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Ghn07G25z0s+PS4tbas1MMbSdF at mail.gmail.com</A>&gt;
+Content-Type: text/plain; charset=&quot;iso-8859-1&quot;
+
+Hi Franz,
+
+I tried using the .xml file you gave . Still I am getting the same problem.
+My hss trace is
+
+2010-11-22 02:21:57,350 DEBUG de.fhg.fokus.hss.main.Task - execute
+Processing UAR!
+2010-11-22 02:22:21,065 DEBUG de.fhg.fokus.hss.main.Task - execute
+Processing UAR!
+2010-11-22 02:22:21,106 DEBUG de.fhg.fokus.hss.main.Task - execute
+Processing MAR!
+2010-11-22 02:22:21,134 DEBUG de.fhg.fokus.hss.cx.op.MAR -
+generateAuthVector Auth-Scheme is Digest-AKA
+2010-11-22 02:22:21,150 DEBUG de.fhg.fokus.hss.auth.DigestAKA -
+getAuthenticationVector Authentication-Scheme: AKAv1!
+
+
+after this the session is getting timed out . Please help
+
+Thanks
+
+Tejaswini
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL:
+&lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20101122/2">https://lists.berlios.de/pipermail/openimscore-users/attachments/20101122/2</A>
+9bba702/attachment-0001.html&gt;
+
+------------------------------
+
+Message: 5
+Date: Mon, 22 Nov 2010 12:59:33 +0530
+From: Tejaswini S B &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tejaswini.sb at iiitb.net</A>&gt;
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>,
+        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">opencvlibrary-users-request at lists.sourceforge.net</A>
+Subject: [OpenIMSCore-Users] Transfer data from MSRP server to client
+        via     OpenIMSCore
+Message-ID:
+        &lt;AANLkTi=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">yM_aofiwapARhRxTHSYe3Q8P1jyrDeBjQ+g6x at mail.gmail.com</A>&gt;
+Content-Type: text/plain; charset=&quot;iso-8859-1&quot;
+
+Hi,
+
+We are working on a project where we need to transfer data stored in an
+application server to a registered IMS Client. We are using Sailfin-Cafe as
+the application server. We are able to transfer files from
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.testto</A> the application server after registration with
+openimscore. But we have
+not been able to send the same file from sailfin to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test.</A>
+
+Is there any msrp server that can give us the capability to send files from
+application server to client.
+
+Thanks and Regards
+Tejaswini.S,B
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL:
+&lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20101122/7">https://lists.berlios.de/pipermail/openimscore-users/attachments/20101122/7</A>
+e5b5b23/attachment-0001.html&gt;
+
+------------------------------
+
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+
+End of OpenIMSCore-Users Digest, Vol 49, Issue 19
+*************************************************
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20101124/60218743/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20101124/60218743/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006744.html">[OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for	non	emergency calls (Franz Edler)
+</A></li>
+	<LI>Next message: <A HREF="006749.html">[OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for	non	emergency calls (Franz Edler)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6747">[ date ]</a>
+              <a href="thread.html#6747">[ thread ]</a>
+              <a href="subject.html#6747">[ subject ]</a>
+              <a href="author.html#6747">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

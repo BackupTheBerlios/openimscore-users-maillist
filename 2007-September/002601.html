@@ -1,0 +1,774 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem in SCSCF,ICSCF and HSS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20in%20SCSCF%2CICSCF%20and%20HSS&In-Reply-To=%3C46E50EA1.4040805%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002597.html">
+   <LINK REL="Next"  HREF="002624.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem in SCSCF,ICSCF and HSS</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20in%20SCSCF%2CICSCF%20and%20HSS&In-Reply-To=%3C46E50EA1.4040805%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Problem in SCSCF,ICSCF and HSS">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Sep 10 11:30:09 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002597.html">[OpenIMSCore-Users] Problems with AS initiated session
+</A></li>
+        <LI>Next message: <A HREF="002624.html">[OpenIMSCore-Users] Seagull SIP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2601">[ date ]</a>
+              <a href="thread.html#2601">[ thread ]</a>
+              <a href="subject.html#2601">[ subject ]</a>
+              <a href="author.html#2601">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>You have a problem with the cx_avp.c file (and probable other files
+too). ser_ims/modules/icscf/cx_avp.c is a link to
+ser_ims/modules/scscf/cx_avp.c. Looking at the error, it would seem that
+the link is broken and the file is empty.
+
+-Dragos
+
+
+
+Sabyasachi Samal wrote:
+&gt;<i> Hello Guys,
+</I>&gt;<i>  
+</I>&gt;<i> I am trying to install ser_ims checked out from svn on 22nd Aug, but
+</I>&gt;<i> the below errors are coming. Any one can help me?
+</I>&gt;<i>
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at imstester</A> ser_ims]# make install-libs all
+</I>&gt;<i>
+</I>&gt;<i> make -C lib -f Makefile.ser install
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/lib'
+</I>&gt;<i>
+</I>&gt;<i> Making install in binrpc
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/binrpc'
+</I>&gt;<i>
+</I>&gt;<i> touch /usr/local/lib/ser/libbinrpc.so
+</I>&gt;<i>
+</I>&gt;<i> install -m 755 libbinrpc.so /usr/local/lib/ser
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/binrpc'
+</I>&gt;<i>
+</I>&gt;<i> Making install in cds
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/cds'
+</I>&gt;<i>
+</I>&gt;<i> touch /usr/local/lib/ser/lib_ser_cds.so
+</I>&gt;<i>
+</I>&gt;<i> install -m 755 lib_ser_cds.so /usr/local/lib/ser
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/cds'
+</I>&gt;<i>
+</I>&gt;<i> Making install in xcap
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/xcap'
+</I>&gt;<i>
+</I>&gt;<i> touch /usr/local/lib/ser/lib_ser_xcap.so
+</I>&gt;<i>
+</I>&gt;<i> install -m 755 lib_ser_xcap.so /usr/local/lib/ser
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/xcap'
+</I>&gt;<i>
+</I>&gt;<i> Making install in presence
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/presence'
+</I>&gt;<i>
+</I>&gt;<i> touch /usr/local/lib/ser/lib_ser_presence.so
+</I>&gt;<i>
+</I>&gt;<i> install -m 755 lib_ser_presence.so /usr/local/lib/ser
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/presence'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib'
+</I>&gt;<i>
+</I>&gt;<i> make -C lib -f Makefile.ser
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/lib'
+</I>&gt;<i>
+</I>&gt;<i> Making in binrpc
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/binrpc'
+</I>&gt;<i>
+</I>&gt;<i> make[2]: `libbinrpc.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/binrpc'
+</I>&gt;<i>
+</I>&gt;<i> Making in cds
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/cds'
+</I>&gt;<i>
+</I>&gt;<i> make[2]: `lib_ser_cds.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/cds'
+</I>&gt;<i>
+</I>&gt;<i> Making in xcap
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/xcap'
+</I>&gt;<i>
+</I>&gt;<i> make[2]: `lib_ser_xcap.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/xcap'
+</I>&gt;<i>
+</I>&gt;<i> Making in presence
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/presence'
+</I>&gt;<i>
+</I>&gt;<i> make[2]: `lib_ser_presence.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/presence'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/acc_db'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `acc_db.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/acc_db'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/acc_syslog'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `acc_syslog.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/acc_syslog'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/auth'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `auth.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/auth'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/auth_db'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `auth_db.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/auth_db'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/avp'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `avp.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/avp'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/avp_db'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `avp_db.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/avp_db'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/avpops'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `avpops.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/avpops'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/cdp'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `cdp.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/cdp'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/ctl'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `ctl.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/ctl'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/db_ops'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `db_ops.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/db_ops'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/dbtext'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `dbtext.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/dbtext'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/dialog'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `dialog.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/dialog'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/dispatcher'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `dispatcher.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/dispatcher'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/diversion'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `diversion.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/diversion'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/domain'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `domain.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/domain'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/enum'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `enum.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/enum'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/exec'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `exec.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/exec'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/fifo'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `fifo.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/fifo'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/flatstore'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `flatstore.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/flatstore'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/gflags'
+</I>&gt;<i>
+</I>&gt;<i> make[1]: `gflags.so' is up to date.
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/gflags'
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/icscf'
+</I>&gt;<i>
+</I>&gt;<i> gcc -fPIC -DPIC -g -O9 -funroll-loops -Wcast-align
+</I>&gt;<i> -minline-all-stringops -falign-loops -mtune=athlon -Wall
+</I>&gt;<i> -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1 OpenIMSCore&quot;' -DARCH='&quot;i386&quot;'
+</I>&gt;<i> -DOS='linux_' -DOS_QUOTED='&quot;linux&quot;' -DCOMPILER='&quot;gcc 3.4.4&quot;'
+</I>&gt;<i> -D__CPU_i386 -D__OS_linux -DSER_VER=2001000
+</I>&gt;<i> -DCFG_DIR='&quot;/usr/local/etc/ser/&quot;' -DPKG_MALLOC -DSHM_MEM -DSHM_MMAP
+</I>&gt;<i> -DDNS_IP_HACK -DUSE_IPV6 -DUSE_MCAST -DUSE_TCP -DDISABLE_NAGLE
+</I>&gt;<i> -DHAVE_RESOLV_RES -DDBG_QM_MALLOC -DUSE_DNS_CACHE -DUSE_DNS_FAILOVER
+</I>&gt;<i> -DUSE_DST_BLACKLIST -ggdb -DUSE_TLS -DTLS_HOOKS -DFAST_LOCK
+</I>&gt;<i> -DADAPTIVE_WAIT -DADAPTIVE_WAIT_LOOPS=1024 -DCC_GCC_LIKE_ASM
+</I>&gt;<i> -DHAVE_GETHOSTBYNAME2 -DHAVE_UNION_SEMUN -DHAVE_SCHED_YIELD
+</I>&gt;<i> -DHAVE_MSG_NOSIGNAL -DHAVE_MSGHDR_MSG_CONTROL -DHAVE_ALLOCA_H
+</I>&gt;<i> -DHAVE_TIMEGM -DHAVE_EPOLL -DHAVE_SIGIO_RT -DSIGINFO64_WORKARROUND
+</I>&gt;<i> -DHAVE_SELECT -c cx_avp.c -o cx_avp.o
+</I>&gt;<i>
+</I>&gt;<i> cx_avp.c:1: error: syntax error before '.' token
+</I>&gt;<i>
+</I>&gt;<i> cx_avp.c:1:23: warning: no newline at end of file
+</I>&gt;<i>
+</I>&gt;<i> make[1]: *** [cx_avp.o] Error 1
+</I>&gt;<i>
+</I>&gt;<i> make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/icscf'
+</I>&gt;<i>
+</I>&gt;<i> make: *** [modules] Error 1
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i> BR,
+</I>&gt;<i> Sabyasachi
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i> On 8/21/07, *Dragos Vingarzan* &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>     It looks like the compilation step of the ser_ims failed. Please do it
+</I>&gt;<i>     one more time and see why it fails. Most probably, you do not have
+</I>&gt;<i>     all
+</I>&gt;<i>     the prerequisites, like the libxml2-devel.
+</I>&gt;<i>
+</I>&gt;<i>     -Dragos
+</I>&gt;<i>
+</I>&gt;<i>     Sabyasachi Samal wrote:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Hello,
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  I have installed OPEN IMS as per the installation guide in a Redhat
+</I>&gt;<i>     &gt; 9.0 system. While running the stuffs, PCSCF is running fine but
+</I>&gt;<i>     I am
+</I>&gt;<i>     &gt; getting below problems:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  Problems for SCSCF:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at IMSTESTER</A> OpenIMSCore]# ./scscf.sh
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; ./scscf.sh: line 5: killser: command not found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) ERROR: load_module: could not open module
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; &lt;/opt/OpenIMSCore/ser_ims/modules/scscf/scscf.so&gt;:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; /opt/OpenIMSCore/ser_ims/modules/scscf/scscf.so: undefined symbol:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; xmlFreeValidCtxt
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (41,13-14): failed to load module
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (43,18-19): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (44,18-19): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (46,18-19): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (47,18-19): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (48,18-19): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (49,17-18): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (50,17-18): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (52,17-18): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (56,18-19): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (59,19-20): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (61,20-21): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (62,18-19): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (63,23-24): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (65,18-19): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (75,17-18): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (77,20-21): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (78,18-19): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (79,23-24): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (81,20-21): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) set_mod_param_regex: No module matching &lt;scscf&gt; found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (84,17-18): Can't set module parameter
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (115,42-43): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (131,27-28): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (136,24-25): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (140,24-25): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (147,30-31): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (148,29-30): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (183,35-36): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (186,27-28): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (187,19-20): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (192,31-32): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (193,28-29): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (205,28-29): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (235,30-31): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (236,27-28): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (248,27-28): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (269,28-29): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (274,35-36): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (275,39-40): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (285,25-26): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (289,22-23): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (290,19-20): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (321,27-28): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (326,29-30): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (327,21-22): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (329,19-20): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (348,29-30): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (372,27-28): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (387,26-27): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (425,21-22): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (442,21-22): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (468,29-30): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (469,21-22): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (471,19-20): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (487,16-17): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (513,26-27): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (546,21-22): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) parse error (565,21-22): unknown command, missing
+</I>&gt;<i>     loadmodule?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; ERROR: bad config file (58 errors)
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6415) INFO:cdp:cdp_exit(): CDiameterPeer stoping ...
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; ./scscf.sh: line 6:  6415 Segmentation fault
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; LD_LIBRARY_PATH=/usr/local/lib/ser /opt/OpenIMSCore/ser_ims/ser -f
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; /opt/OpenIMSCore/scscf.cfg -D -D
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; ------ Semaphore Arrays --------
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; key        semid      owner      perms      nsems
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Problems for ICSCF:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at IMSTESTER</A> OpenIMSCore]# ./icscf.sh
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; ./icscf.sh: line 3: killser: command not found
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6427) ERROR: load_module: could not open module
+</I>&gt;<i>     &gt; &lt;/opt/OpenIMSCore/ser_ims/modules/mysql/mysql.so&gt;:
+</I>&gt;<i>     &gt; libmysqlclient.so.15: cannot open shared object file: No such
+</I>&gt;<i>     file or
+</I>&gt;<i>     &gt; directory
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6427) parse error (30,13-14): failed to load module
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; ERROR: bad config file (1 errors)
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;  0(6427) INFO:cdp:cdp_exit(): CDiameterPeer stoping ...
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; ./icscf.sh: line 4:  6427 Segmentation fault
+</I>&gt;<i>     &gt; /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; ------ Semaphore Arrays --------
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; key        semid      owner      perms      nsems
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Problems for FHoSS:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at IMSTESTER</A> OpenIMSCore]# ./FHoSS/deploy/startup.sh
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Building Classpath
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Classpath is lib/*.jar::log4j.properties:..
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError:
+</I>&gt;<i>     &gt; de/fhg/fokus/hss/main/HSSContainer
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Pl help me if anyone has idea to resolve this.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Thanks n Regards,
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Sabyasachi
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; _______________________________________________
+</I>&gt;<i>     &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>     &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     --
+</I>&gt;<i>     -----------------------------------------
+</I>&gt;<i>     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     Fraunhofer FOKUS/NGNI
+</I>&gt;<i>     Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     10589 Berlin,Germany
+</I>&gt;<i>     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     Web www.fokus.fraunhofer.de &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     www.openimscore.org &lt;<A HREF="http://www.openimscore.org">http://www.openimscore.org</A>&gt;
+</I>&gt;<i>     We could change the world if God would give us the source code...
+</I>&gt;<i>     -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002597.html">[OpenIMSCore-Users] Problems with AS initiated session
+</A></li>
+	<LI>Next message: <A HREF="002624.html">[OpenIMSCore-Users] Seagull SIP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2601">[ date ]</a>
+              <a href="thread.html#2601">[ thread ]</a>
+              <a href="subject.html#2601">[ subject ]</a>
+              <a href="author.html#2601">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Online Offline Charging feasibility in	ser_ims
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Online%20Offline%20Charging%20feasibility%20in%0A%09ser_ims&In-Reply-To=%3C7fb1d2b60810150017n7b5a8717v4af5d55e842adfa5%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004744.html">
+   <LINK REL="Next"  HREF="004792.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Online Offline Charging feasibility in	ser_ims</H1>
+    <B>Amit Kumar</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Online%20Offline%20Charging%20feasibility%20in%0A%09ser_ims&In-Reply-To=%3C7fb1d2b60810150017n7b5a8717v4af5d55e842adfa5%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Online Offline Charging feasibility in	ser_ims">amitkumar.newtech at gmail.com
+       </A><BR>
+    <I>Wed Oct 15 09:17:34 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004744.html">[OpenIMSCore-Users] Online Offline Charging feasibility in	ser_ims
+</A></li>
+        <LI>Next message: <A HREF="004792.html">[OpenIMSCore-Users] Online Offline Charging feasibility	in	ser_ims
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4768">[ date ]</a>
+              <a href="thread.html#4768">[ thread ]</a>
+              <a href="subject.html#4768">[ subject ]</a>
+              <a href="author.html#4768">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+
+Thanks for the reply.
+
+Sorry delay in replying, was away for some days.
+
+Searched the lists for charging work going on. Got some information. You are
+right, I meant the Rf/Ro interfaces.
+
+Came to know about the purpose and intent of ser_ims from the website. Also,
+saw the architecture to be flexible and pluggable enough for new features.
+Regarding the compliance with the specifications: Well, non complying in
+some percentage, doesnt that bias the testbed result or benchmarking results
+in some way? Or if that is upto a &quot;tolerable&quot; limit, then is the compliance
+tracked and documented somewhere? Like lets say I am trying to get some way
+to figure out which areas contribute to the 10% non compliance, so that one
+can get it near 100% compliant. Maybe a single documents lists out which
+areas of a specification are left out or kept pending.
+
+CHARGING TECHNICAL:
+Went through charging and related specifications. Need to figure out how to
+&quot;hook&quot; into message processing loop so that whenever a SIP message if
+forwarded or was a reply, immediately after that some data extracted from
+that message is used to construct an ACR. Some mechanisms needs to be in
+place for the so that the correlation is possible between two ACRs. For
+example during an voice call, when an an reply for an invite message is
+getting forwarded an ACR which will icude ICID of the original INVITE
+message. This ICID will remain constant till the end of call, when the reply
+for BYE is sent, ACR with the same ICID is sent and at the Charging Data
+Function (CDF), these two ACRs can be correlated with the help ICID. Can you
+provide some pointers for this?
+
+GENERIC QUESTION:
+What are the prerequisites you think that the person should have in order to
+understand the
+1. ser_ims operation
+2. understand design of ser_ims
+3. restructure/redesign (if required) the ser_ims
+
+Or in other words what roadmap do you suggest for somebody looking forward
+to redesign or tweak ser_ims in term of adding new modules and/or tweaking
+exiting core modules?
+
+I have figured out this one, please add / delete / reorder this path
+according to your thinking:
+BASICS:
+SIP basics
+Diameter basics
+Network basics
+Advance network aspects like DNS, NAT, etc.
+IMS SPECIFIC
+IMS specifications (core modules)
+Specifications related to other components in the IMS ecosystem (if
+required)
+
+
+Nice work up here, congrats.
+
+Thanks,
+Amit
+
+On Fri, Oct 10, 2008 at 1:45 PM, Dragos Vingarzan &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+
+&gt;<i> Hi Amit,
+</I>&gt;<i>
+</I>&gt;<i> you are certainly not the first that wants to do this...
+</I>&gt;<i>
+</I>&gt;<i> As I said several times before (search our archives for more details),
+</I>&gt;<i> there are some things that I recommend:
+</I>&gt;<i> - implement it as a separate module, so that it would be usable from any
+</I>&gt;<i> CSCFs or anything else that you'd like to build on top of ser_ims.
+</I>&gt;<i> - you'll need to do some debugging and finishes on the cdp module, in
+</I>&gt;<i> the Accounting State Machine definitions. You can find those changes in
+</I>&gt;<i> a branch of ser_ims.
+</I>&gt;<i> - you probably are thinking about the Rf/Ro interfaces, right?
+</I>&gt;<i> - there aren't any big roadblocks, other than time ;-) (if you have it,
+</I>&gt;<i> you can do it)
+</I>&gt;<i>
+</I>&gt;<i> 1. See our statements on the website... experimentation, trials,
+</I>&gt;<i> test-beds, validation, benchmarking, maybe as a reference, etc
+</I>&gt;<i> 2. Of course. First of all, it has the nice configuration through
+</I>&gt;<i> routing scripts. So the CSCF configuration files are just examples on
+</I>&gt;<i> how to build something that does what the specs say for each functional
+</I>&gt;<i> part. You are free to change that as you'd like, to extend it to new
+</I>&gt;<i> specs or to make custom functions. If you need more advanced features,
+</I>&gt;<i> you can take advantage of the modules - implement a new one for your
+</I>&gt;<i> functionality and then use it from the routing script.
+</I>&gt;<i> 3. Mainly for the CSCFs 24.229. For the Diameter interfaces and the HSS
+</I>&gt;<i> - 29.228, 29.229. Then there are a lot of RFCs. However, we don't keep a
+</I>&gt;<i> list of them because we don't want to sell it, so to say, and we usually
+</I>&gt;<i> do implement 90% of the standards in 10% of the time. So don't expect
+</I>&gt;<i> full compliance for everyting, but just the most useful features.
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Amit Kumar wrote:
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I am planning to develop a charging module for IMS.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Do you have any immediate suggestions for getting this done with help
+</I>&gt;<i> &gt; of ser_ims?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Are there any roadblocks that you see while implementing a charging
+</I>&gt;<i> &gt; module with the help of ser_ims?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (An)other question(s) :
+</I>&gt;<i> &gt; What design considerations have gone into building ser_ims:
+</I>&gt;<i> &gt; 1. Like what motive was it supposed to have?
+</I>&gt;<i> &gt; 2. Does it have enough flexibility to incorporate new functionality
+</I>&gt;<i> &gt; that come up with specifications?
+</I>&gt;<i> &gt; 3. Can provide the exact specification names and their version, which
+</I>&gt;<i> &gt; have been taken as basis for ser_ims?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks,
+</I>&gt;<i> &gt; Amit
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20081015/64bf53e5/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20081015/64bf53e5/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004744.html">[OpenIMSCore-Users] Online Offline Charging feasibility in	ser_ims
+</A></li>
+	<LI>Next message: <A HREF="004792.html">[OpenIMSCore-Users] Online Offline Charging feasibility	in	ser_ims
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4768">[ date ]</a>
+              <a href="thread.html#4768">[ thread ]</a>
+              <a href="subject.html#4768">[ subject ]</a>
+              <a href="author.html#4768">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

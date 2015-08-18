@@ -1,0 +1,417 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] after changing IPs, Error creating/sending UAR or UAR time-out
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%3D%3Futf-8%3Fq%3Fafter_changing_IPs%3D2C_Error_creatin%3F%3D%0A%09%3D%3Futf-8%3Fq%3Fg/sending_UAR_or_UAR_time-out%3F%3D&In-Reply-To=%3C20091223221532.1380.qmail%40f5mail-237-141.rediffmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005977.html">
+   <LINK REL="Next"  HREF="005979.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] after changing IPs, Error creating/sending UAR or UAR time-out</H1>
+    <B>Sudhir Kumar</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%3D%3Futf-8%3Fq%3Fafter_changing_IPs%3D2C_Error_creatin%3F%3D%0A%09%3D%3Futf-8%3Fq%3Fg/sending_UAR_or_UAR_time-out%3F%3D&In-Reply-To=%3C20091223221532.1380.qmail%40f5mail-237-141.rediffmail.com%3E"
+       TITLE="[OpenIMSCore-Users] after changing IPs, Error creating/sending UAR or UAR time-out">sudhir_appana at rediffmail.com
+       </A><BR>
+    <I>Wed Dec 23 23:15:32 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005977.html">[OpenIMSCore-Users] OpenIMSCore forwards the Requests without	terminating Require header with '\r\n'
+</A></li>
+        <LI>Next message: <A HREF="005979.html">[OpenIMSCore-Users] after changing IPs,	Error creating/sending UAR or UAR time-out
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5978">[ date ]</a>
+              <a href="thread.html#5978">[ thread ]</a>
+              <a href="subject.html#5978">[ subject ]</a>
+              <a href="author.html#5978">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello:
+
+I installed all required packages/tools and verified the traffic using &quot;UCT IMS client&quot;. Everything working with the default configuration (IP 127.0.0.1). 
+
+Then, I configured four interfaces of the same box to 192.168.20.2, 192.168.20.3, 192.168.20.4 and 192.168.20.5. Changed all config files, sql and xml files to support this configuration as follows:
+192.168.20.2: P-CSCF
+192.168.20.3 : I-CSCF
+192.168.20.4 : S-CSCF
+192.168.20.5 : HSS
+
+Also did following changes:
+- used 5060 port in all sip interfaces since anyhow now IPs are different.
+- in etc/hosts - configured localhost as 192.168.20.5
+- DNS server as 192.168.20.2
+
+Now started UCT IMS Client to register as Bob:
+I got following log. Also attached the trace captured via wireshark. Registration is failed saying &quot;SIP/2.0 480 Temporarily Unavailable - Diameter Cx interface failed&quot;. Please help me in resolving this issue. My objective is to generate traffic for different scenarios. Please let me know incase different IMS client can help here. Thanks for your help.
+
+I-CSCF:
+
+14(4247) 	 [16777221,10415]
+14(4247) ------------------
+ 1(4234) ERR:I-CSCF:I_UAR: Error creating/sending UAR or UAR time-out
+ 2(4235) ERR:I-CSCF:I_UAR: Error creating/sending UAR or UAR time-out
+ 2(4235) ERROR: _reply_light: can't generate 480 reply when a final 480 was sent out
+14(4247) --- Peer List: ---
+14(4247)  S[R_Open] hss.open-ims.test:3868 D[ ]
+14(4247) 	 [16777216,10415]
+14(4247) 	 [16777216,4491]
+14(4247) 	 [16777216,13019]
+14(4247) 	 [16777217,10415]
+14(4247) 	 [16777221,10415]
+14(4247) ------------------
+ 3(4236) ERR:I-CSCF:I_UAR: Error creating/sending UAR or UAR time-out
+ 3(4236) ERROR: _reply_light: can't generate 480 reply when a final 480 was sent out
+ 4(4237) ERR:I-CSCF:I_UAR: Error creating/sending UAR or UAR time-out
+ 4(4237) ERROR: _reply_light: can't generate 480 reply when a final 480 was sent out
+
+
+HSS: 
+nectionProvider.java:35)
+	at org.hibernate.jdbc.ConnectionManager.openConnection(ConnectionManager.java:417)
+	... 6 more
+Caused by: com.mchange.v2.resourcepool.CannotAcquireResourceException: A ResourcePool could not acquire a resource from its primary factory or source.
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1319)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:557)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:477)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:525)
+	... 9 more
+de.fhg.fokus.hss.db.hibernate.DatabaseException: org.hibernate.exception.GenericJDBCException: Cannot open connection
+	at de.fhg.fokus.hss.db.hibernate.HibernateUtil.beginTransaction(HibernateUtil.java:144)
+	at de.fhg.fokus.hss.main.CxEventsWorker.run(CxEventsWorker.java:86)
+Caused by: org.hibernate.exception.GenericJDBCException: Cannot open connection
+	at org.hibernate.exception.SQLStateConverter.handledNonSpecificException(SQLStateConverter.java:103)
+	at org.hibernate.exception.SQLStateConverter.convert(SQLStateConverter.java:91)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:43)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:29)
+	at org.hibernate.jdbc.ConnectionManager.openConnection(ConnectionManager.java:420)
+	at org.hibernate.jdbc.ConnectionManager.getConnection(ConnectionManager.java:144)
+	at org.hibernate.jdbc.JDBCContext.connection(JDBCContext.java:119)
+	at org.hibernate.transaction.JDBCTransaction.begin(JDBCTransaction.java:57)
+	at org.hibernate.impl.SessionImpl.beginTransaction(SessionImpl.java:1326)
+	at de.fhg.fokus.hss.db.hibernate.HibernateUtil.beginTransaction(HibernateUtil.java:137)
+	... 1 more
+Caused by: java.sql.SQLException: Connections could not be acquired from the underlying database!
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:106)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:529)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:128)
+	at org.hibernate.connection.C3P0ConnectionProvider.getConnection(C3P0ConnectionProvider.java:35)
+	at org.hibernate.jdbc.ConnectionManager.openConnection(ConnectionManager.java:417)
+	... 6 more
+Caused by: com.mchange.v2.resourcepool.CannotAcquireResourceException: A ResourcePool could not acquire a resource from its primary factory or source.
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1319)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:557)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:477)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:525)
+	... 9 more
+2009-12-22 12:22:09,287 WARN  com.mchange.v2.resourcepool.BasicResourcePool - run com.mchange.v2.resourcepool.BasicResourcePool$<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">AcquireTask at 6a643edd</A> -- Acquisition Attempt Failed!!! Clearing pending acquires. While trying to acquire a needed new resource, we failed to succeed more than the maximum number of allowed acquisition attempts (60). Last acquisition attempt exception: 
+com.mysql.jdbc.CommunicationsException: Communications link failure due to underlying exception: 
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.net.SocketException
+MESSAGE: java.net.ConnectException: Connection refused
+
+STACKTRACE:
+
+java.net.SocketException: java.net.ConnectException: Connection refused
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:156)
+	at com.mysql.jdbc.MysqlIO.(MysqlIO.java:284)
+	at com.mysql.jdbc.Connection.createNewIO(Connection.java:2555)
+	at com.mysql.jdbc.Connection.(Connection.java:1485)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:266)
+	at com.mchange.v2.c3p0.DriverManagerDataSource.getConnection(DriverManagerDataSource.java:135)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:182)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:171)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager.acquireResource(C3P0PooledConnectionPool.java:137)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquire(BasicResourcePool.java:1014)
+	at com.mchange.v2.resourcepool.BasicResourcePool.access$800(BasicResourcePool.java:32)
+	at com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask.run(BasicResourcePool.java:1810)
+	at com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread.run(ThreadPoolAsynchronousRunner.java:547)
+
+
+** END NESTED EXCEPTION **
+
+
+
+Last packet sent to the server was 0 ms ago.
+	at com.mysql.jdbc.Connection.createNewIO(Connection.java:2621)
+	at com.mysql.jdbc.Connection.(Connection.java:1485)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:266)
+	at com.mchange.v2.c3p0.DriverManagerDataSource.getConnection(DriverManagerDataSource.java:135)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:182)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:171)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager.acquireResource(C3P0PooledConnectionPool.java:137)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquire(BasicResourcePool.java:1014)
+	at com.mchange.v2.resourcepool.BasicResourcePool.access$800(BasicResourcePool.java:32)
+	at com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask.run(BasicResourcePool.java:1810)
+	at com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread.run(ThreadPoolAsynchronousRunner.java:547)
+2009-12-22 12:22:09,287 WARN  com.mchange.v2.resourcepool.BasicResourcePool - run com.mchange.v2.resourcepool.BasicResourcePool$<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">AcquireTask at 4959d87f</A> -- Acquisition Attempt Failed!!! Clearing pending acquires. While trying to acquire a needed new resource, we failed to succeed more than the maximum number of allowed acquisition attempts (60). Last acquisition attempt exception: 
+com.mysql.jdbc.CommunicationsException: Communications link failure due to underlying exception: 
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.net.SocketException
+MESSAGE: java.net.ConnectException: Connection refused
+
+STACKTRACE:
+
+java.net.SocketException: java.net.ConnectException: Connection refused
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:156)
+	at com.mysql.jdbc.MysqlIO.(MysqlIO.java:284)
+	at com.mysql.jdbc.Connection.createNewIO(Connection.java:2555)
+	at com.mysql.jdbc.Connection.(Connection.java:1485)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:266)
+	at com.mchange.v2.c3p0.DriverManagerDataSource.getConnection(DriverManagerDataSource.java:135)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:182)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:171)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager.acquireResource(C3P0PooledConnectionPool.java:137)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquire(BasicResourcePool.java:1014)
+	at com.mchange.v2.resourcepool.BasicResourcePool.access$800(BasicResourcePool.java:32)
+	at com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask.run(BasicResourcePool.java:1810)
+	at com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread.run(ThreadPoolAsynchronousRunner.java:547)
+
+
+** END NESTED EXCEPTION **
+
+
+
+Last packet sent to the server was 0 ms ago.
+	at com.mysql.jdbc.Connection.createNewIO(Connection.java:2621)
+	at com.mysql.jdbc.Connection.(Connection.java:1485)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:266)
+	at com.mchange.v2.c3p0.DriverManagerDataSource.getConnection(DriverManagerDataSource.java:135)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:182)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:171)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager.acquireResource(C3P0PooledConnectionPool.java:137)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquire(BasicResourcePool.java:1014)
+	at com.mchange.v2.resourcepool.BasicResourcePool.access$800(BasicResourcePool.java:32)
+	at com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask.run(BasicResourcePool.java:1810)
+	at com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread.run(ThreadPoolAsynchronousRunner.java:547)
+2009-12-22 12:22:21,407 WARN  com.mchange.v2.resourcepool.BasicResourcePool - run com.mchange.v2.resourcepool.BasicResourcePool$<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">AcquireTask at 29949f78</A> -- Acquisition Attempt Failed!!! Clearing pending acquires. While trying to acquire a needed new resource, we failed to succeed more than the maximum number of allowed acquisition attempts (60). Last acquisition attempt exception: 
+com.mysql.jdbc.CommunicationsException: Communications link failure due to underlying exception: 
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.net.SocketException
+MESSAGE: java.net.ConnectException: Connection refused
+
+STACKTRACE:
+
+java.net.SocketException: java.net.ConnectException: Connection refused
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:156)
+	at com.mysql.jdbc.MysqlIO.(MysqlIO.java:284)
+	at com.mysql.jdbc.Connection.createNewIO(Connection.java:2555)
+	at com.mysql.jdbc.Connection.(Connection.java:1485)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:266)
+	at com.mchange.v2.c3p0.DriverManagerDataSource.getConnection(DriverManagerDataSource.java:135)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:182)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:171)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager.acquireResource(C3P0PooledConnectionPool.java:137)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquire(BasicResourcePool.java:1014)
+	at com.mchange.v2.resourcepool.BasicResourcePool.access$800(BasicResourcePool.java:32)
+	at com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask.run(BasicResourcePool.java:1810)
+	at com.mchange.v2.async.ThreadPerTaskAsynchronousRunner$TaskThread.run(ThreadPerTaskAsynchronousRunner.java:255)
+
+
+** END NESTED EXCEPTION **
+
+
+
+Last packet sent to the server was 0 ms ago.
+	at com.mysql.jdbc.Connection.createNewIO(Connection.java:2621)
+	at com.mysql.jdbc.Connection.(Connection.java:1485)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:266)
+	at com.mchange.v2.c3p0.DriverManagerDataSource.getConnection(DriverManagerDataSource.java:135)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:182)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:171)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager.acquireResource(C3P0PooledConnectionPool.java:137)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquire(BasicResourcePool.java:1014)
+	at com.mchange.v2.resourcepool.BasicResourcePool.access$800(BasicResourcePool.java:32)
+	at com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask.run(BasicResourcePool.java:1810)
+	at com.mchange.v2.async.ThreadPerTaskAsynchronousRunner$TaskThread.run(ThreadPerTaskAsynchronousRunner.java:255)
+2009-12-22 12:22:21,408 WARN  org.hibernate.util.JDBCExceptionReporter - logExceptions SQL Error: 0, SQLState: null
+2009-12-22 12:22:21,409 ERROR org.hibernate.util.JDBCExceptionReporter - logExceptions Connections could not be acquired from the underlying database!
+2009-12-22 12:22:21,408 WARN  org.hibernate.util.JDBCExceptionReporter - logExceptions SQL Error: 0, SQLState: null
+2009-12-22 12:22:21,409 ERROR org.hibernate.util.JDBCExceptionReporter - logExceptions Connections could not be acquired from the underlying database!
+2009-12-22 12:22:21,409 ERROR de.fhg.fokus.hss.db.hibernate.HibernateUtil - beginTransaction Problem in starting a new transaction for the session!
+Message:Cannot open connection
+2009-12-22 12:22:21,409 ERROR de.fhg.fokus.hss.db.hibernate.HibernateUtil - beginTransaction Problem in starting a new transaction for the session!
+Message:Cannot open connection
+org.hibernate.exception.GenericJDBCException: Cannot open connection
+	at org.hibernate.exception.SQLStateConverter.handledNonSpecificException(SQLStateConverter.java:103)
+	at org.hibernate.exception.SQLStateConverter.convert(SQLStateConverter.java:91)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:43)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:29)
+	at org.hibernate.jdbc.ConnectionManager.openConnection(ConnectionManager.java:420)
+	at org.hibernate.jdbc.ConnectionManager.getConnection(ConnectionManager.java:144)
+	at org.hibernate.jdbc.JDBCContext.connection(JDBCContext.java:119)
+	at org.hibernate.transaction.JDBCTransaction.begin(JDBCTransaction.java:57)
+	at org.hibernate.impl.SessionImpl.beginTransaction(SessionImpl.java:1326)
+	at de.fhg.fokus.hss.db.hibernate.HibernateUtil.beginTransaction(HibernateUtil.java:137)
+	at de.fhg.fokus.hss.main.CxEventsWorker.run(CxEventsWorker.java:86)
+Caused by: java.sql.SQLException: Connections could not be acquired from the underlying database!
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:106)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:529)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:128)
+	at org.hibernate.connection.C3P0ConnectionProvider.getConnection(C3P0ConnectionProvider.java:35)
+	at org.hibernate.jdbc.ConnectionManager.openConnection(ConnectionManager.java:417)
+	... 6 more
+Caused by: com.mchange.v2.resourcepool.CannotAcquireResourceException: A ResourcePool could not acquire a resource from its primary factory or source.
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1319)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:557)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:477)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:525)
+	... 9 more
+org.hibernate.exception.GenericJDBCException: Cannot open connection
+	at org.hibernate.exception.SQLStateConverter.handledNonSpecificException(SQLStateConverter.java:103)
+	at org.hibernate.exception.SQLStateConverter.convert(SQLStateConverter.java:91)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:43)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:29)
+	at org.hibernate.jdbc.ConnectionManager.openConnection(ConnectionManager.java:420)
+	at org.hibernate.jdbc.ConnectionManager.getConnection(ConnectionManager.java:144)
+	at org.hibernate.jdbc.JDBCContext.connection(JDBCContext.java:119)
+	at org.hibernate.transaction.JDBCTransaction.begin(JDBCTransaction.java:57)
+	at org.hibernate.impl.SessionImpl.beginTransaction(SessionImpl.java:1326)
+	at de.fhg.fokus.hss.db.hibernate.HibernateUtil.beginTransaction(HibernateUtil.java:137)
+	at de.fhg.fokus.hss.main.ShEventsWorker.run(ShEventsWorker.java:78)
+Caused by: java.sql.SQLException: Connections could not be acquired from the underlying database!
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:106)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:529)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:128)
+	at org.hibernate.connection.C3P0ConnectionProvider.getConnection(C3P0ConnectionProvider.java:35)
+	at org.hibernate.jdbc.ConnectionManager.openConnection(ConnectionManager.java:417)
+	... 6 more
+Caused by: com.mchange.v2.resourcepool.CannotAcquireResourceException: A ResourcePool could not acquire a resource from its primary factory or source.
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1319)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:557)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:477)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:525)
+	... 9 more
+de.fhg.fokus.hss.db.hibernate.DatabaseException: org.hibernate.exception.GenericJDBCException: Cannot open connection
+	at de.fhg.fokus.hss.db.hibernate.HibernateUtil.beginTransaction(HibernateUtil.java:144)
+	at de.fhg.fokus.hss.main.CxEventsWorker.run(CxEventsWorker.java:86)
+Caused by: org.hibernate.exception.GenericJDBCException: Cannot open connection
+	at org.hibernate.exception.SQLStateConverter.handledNonSpecificException(SQLStateConverter.java:103)
+	at org.hibernate.exception.SQLStateConverter.convert(SQLStateConverter.java:91)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:43)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:29)
+	at org.hibernate.jdbc.ConnectionManager.openConnection(ConnectionManager.java:420)
+	at org.hibernate.jdbc.ConnectionManager.getConnection(ConnectionManager.java:144)
+	at org.hibernate.jdbc.JDBCContext.connection(JDBCContext.java:119)
+	at org.hibernate.transaction.JDBCTransaction.begin(JDBCTransaction.java:57)
+	at org.hibernate.impl.SessionImpl.beginTransaction(SessionImpl.java:1326)
+	at de.fhg.fokus.hss.db.hibernate.HibernateUtil.beginTransaction(HibernateUtil.java:137)
+	... 1 more
+Caused by: java.sql.SQLException: Connections could not be acquired from the underlying database!
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:106)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:529)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:128)
+	at org.hibernate.connection.C3P0ConnectionProvider.getConnection(C3P0ConnectionProvider.java:35)
+	at org.hibernate.jdbc.ConnectionManager.openConnection(ConnectionManager.java:417)
+	... 6 more
+Caused by: com.mchange.v2.resourcepool.CannotAcquireResourceException: A ResourcePool could not acquire a resource from its primary factory or source.
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1319)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:557)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:477)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:525)
+	... 9 more
+de.fhg.fokus.hss.db.hibernate.DatabaseException: org.hibernate.exception.GenericJDBCException: Cannot open connection
+	at de.fhg.fokus.hss.db.hibernate.HibernateUtil.beginTransaction(HibernateUtil.java:144)
+	at de.fhg.fokus.hss.main.ShEventsWorker.run(ShEventsWorker.java:78)
+Caused by: org.hibernate.exception.GenericJDBCException: Cannot open connection
+	at org.hibernate.exception.SQLStateConverter.handledNonSpecificException(SQLStateConverter.java:103)
+	at org.hibernate.exception.SQLStateConverter.convert(SQLStateConverter.java:91)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:43)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:29)
+	at org.hibernate.jdbc.ConnectionManager.openConnection(ConnectionManager.java:420)
+	at org.hibernate.jdbc.ConnectionManager.getConnection(ConnectionManager.java:144)
+	at org.hibernate.jdbc.JDBCContext.connection(JDBCContext.java:119)
+	at org.hibernate.transaction.JDBCTransaction.begin(JDBCTransaction.java:57)
+	at org.hibernate.impl.SessionImpl.beginTransaction(SessionImpl.java:1326)
+	at de.fhg.fokus.hss.db.hibernate.HibernateUtil.beginTransaction(HibernateUtil.java:137)
+	... 1 more
+Caused by: java.sql.SQLException: Connections could not be acquired from the underlying database!
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:106)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:529)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:128)
+	at org.hibernate.connection.C3P0ConnectionProvider.getConnection(C3P0ConnectionProvider.java:35)
+	at org.hibernate.jdbc.ConnectionManager.openConnection(ConnectionManager.java:417)
+	... 6 more
+Caused by: com.mchange.v2.resourcepool.CannotAcquireResourceException: A ResourcePool could not acquire a resource from its primary factory or source.
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1319)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:557)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:477)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:525)
+	... 9 more
+2009-12-22 12:22:42,314 WARN  com.mchange.v2.async.ThreadPoolAsynchronousRunner - run com.mchange.v2.async.ThreadPoolAsynchronousRunner$<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">DeadlockDetector at 2d9f90e3</A> -- APPARENT DEADLOCK!!! Creating emergency threads for unassigned pending tasks!
+2009-12-22 12:22:42,315 WARN  com.mchange.v2.async.ThreadPoolAsynchronousRunner - run com.mchange.v2.async.ThreadPoolAsynchronousRunner$<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">DeadlockDetector at 2d9f90e3</A> -- APPARENT DEADLOCK!!! Complete Status: 
+	Managed Threads: 3
+	Active Threads: 3
+	Active Tasks: 
+		com.mchange.v2.resourcepool.BasicResourcePool$<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">AcquireTask at 23461d1</A> (com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#0)
+		com.mchange.v2.resourcepool.BasicResourcePool$<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">AcquireTask at 3d01e178</A> (com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#2)
+		com.mchange.v2.resourcepool.BasicResourcePool$<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">AcquireTask at 4679ac92</A> (com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#1)
+	Pending Tasks: 
+		com.mchange.v2.resourcepool.BasicResourcePool$<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">AcquireTask at 5e30c963</A>
+		com.mchange.v2.resourcepool.BasicResourcePool$<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">AcquireTask at 54f5b2e4</A>
+		com.mchange.v2.resourcepool.BasicResourcePool$<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">AcquireTask at 4eb3c24f</A>
+		com.mchange.v2.resourcepool.BasicResourcePool$<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">AcquireTask at 7b99f8e6</A>
+Pool thread stack traces:
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#2,5,main]
+		java.lang.Thread.sleep(Native Method)
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask.run(BasicResourcePool.java:1805)
+		com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread.run(ThreadPoolAsynchronousRunner.java:547)
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#0,5,main]
+		java.lang.Thread.sleep(Native Method)
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask.run(BasicResourcePool.java:1805)
+		com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread.run(ThreadPoolAsynchronousRunner.java:547)
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#1,5,main]
+		java.lang.Thread.sleep(Native Method)
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask.run(BasicResourcePool.java:1805)
+		com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread.run(ThreadPoolAsynchronousRunner.java:547)
+
+
+Thanks,
+Sudhir
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20091223/9e62fbb8/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20091223/9e62fbb8/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: openims.pcap
+Type: application/octet-stream
+Size: 9721 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20091223/9e62fbb8/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20091223/9e62fbb8/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005977.html">[OpenIMSCore-Users] OpenIMSCore forwards the Requests without	terminating Require header with '\r\n'
+</A></li>
+	<LI>Next message: <A HREF="005979.html">[OpenIMSCore-Users] after changing IPs,	Error creating/sending UAR or UAR time-out
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5978">[ date ]</a>
+              <a href="thread.html#5978">[ thread ]</a>
+              <a href="subject.html#5978">[ subject ]</a>
+              <a href="author.html#5978">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

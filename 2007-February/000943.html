@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SIP%20deregistration%20with%0A%09strange%22Expires%22-header&In-Reply-To=%3CCE74D45C9564494998E85AE3C4CA3E35BF1B51%40hb-altair.hb.buc.materna.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000930.html">
+   <LINK REL="Next"  HREF="000955.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header</H1>
+    <B>Stefan.Brozinski at materna.de</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SIP%20deregistration%20with%0A%09strange%22Expires%22-header&In-Reply-To=%3CCE74D45C9564494998E85AE3C4CA3E35BF1B51%40hb-altair.hb.buc.materna.com%3E"
+       TITLE="[OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header">Stefan.Brozinski at materna.de
+       </A><BR>
+    <I>Mon Feb 26 11:53:27 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000930.html">[OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header
+</A></li>
+        <LI>Next message: <A HREF="000955.html">[OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#943">[ date ]</a>
+              <a href="thread.html#943">[ thread ]</a>
+              <a href="subject.html#943">[ subject ]</a>
+              <a href="author.html#943">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I think this should be handled as a registration: There is a valid
+binding with a expires!=0.
+
+I suppose that this scenario could happen when an IMS client wants to
+change the current contact URI for the public identity of the user (old
+contact URI with &quot;expires=0&quot; and new contact URI with a nonzero value).
+
+Imagine a WLAN phone that is moving from one hotspot to another. When
+the signal strength of the first WLAN falls below a threshold the phone
+contacts the second WLAN with the stronger signal. As soon as both WLAN
+connections are established the phone sends a REGISTER message that
+deregisters the old contact and registers the new one. This assures a
+smooth transition from one hotspot to another without a loss of
+connectivity. The old WLAN connection can safely be dropped now.
+
+Regards
+Stefan
+
+
+&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;<i> Sent: Friday, February 23, 2007 4:08 PM
+</I>&gt;<i> To: Brozinski, Stefan
+</I>&gt;<i> Cc: Bornemann, Sven; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] SIP deregistration with 
+</I>&gt;<i> strange&quot;Expires&quot;-header
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Before trying to fix this... I have a question:
+</I>&gt;<i> 
+</I>&gt;<i> If a REGISTER contains 2 contacts - one with expires=0 and another one
+</I>&gt;<i> with expires!=0... is this a registration or a 
+</I>&gt;<i> de-registration? Because
+</I>&gt;<i> of the treatment that it gets in the nodes, I can't be both, 
+</I>&gt;<i> I guess...
+</I>&gt;<i> 
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Stefan.Brozinski at materna.de</A> wrote:
+</I>&gt;<i> &gt; Hi Dragos,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 3GPP 24.229 v7.6.0 allows both (an 'Expires' header or an 
+</I>&gt;<i> 'expires' parameter of the 'Contact' header) for the user 
+</I>&gt;<i> agent (see 5.1.1.6, subclause f, or 5.2.5.1, or A.2.1.4.12).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; In contrast, the proxies are required to generate an 
+</I>&gt;<i> 'Expires' header (see A.2.2.4.12).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; So it looks to me as if it was the P-CSCF's task to ensure 
+</I>&gt;<i> that the REGISTER request that is passed on the the remaining 
+</I>&gt;<i> *-CSCF's contains an &quot;Expires:&quot;-Header.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; Best fix - put an Expires: 0 header if
+</I>&gt;<i> &gt;&gt; you have a de-registration.
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I don't have access to the source code of X-Lite.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Regards
+</I>&gt;<i> &gt; Stefan
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; -----Original Message-----
+</I>&gt;<i> &gt;&gt; From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;<i> &gt;&gt; Sent: Wednesday, February 21, 2007 3:58 PM
+</I>&gt;<i> &gt;&gt; To: Brozinski, Stefan
+</I>&gt;<i> &gt;&gt; Cc: Bornemann, Sven; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; Subject: Re: [OpenIMSCore-Users] SIP deregistration with 
+</I>&gt;<i> &gt;&gt; strange&quot;Expires&quot;-header
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Hi Stefan,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; The problem is that as there is no clear deregistration - 
+</I>&gt;<i> Expires: 0
+</I>&gt;<i> &gt;&gt; header is missing - the S-CSCF does not identify your request 
+</I>&gt;<i> &gt;&gt; properly.
+</I>&gt;<i> &gt;&gt; The 3rd party REGISTER generated contains another contact 
+</I>&gt;<i> address, the
+</I>&gt;<i> &gt;&gt; S-CSCF one, as per specifications. The Expires header is 
+</I>&gt;<i> equal to the
+</I>&gt;<i> &gt;&gt; remaining period time for registration (because of the false
+</I>&gt;<i> &gt;&gt; identification, this is the expiration time before the update 
+</I>&gt;<i> &gt;&gt; caused by
+</I>&gt;<i> &gt;&gt; the REGISTER) plus a configurable grace period that would 
+</I>&gt;<i> prevent the
+</I>&gt;<i> &gt;&gt; status in the AS to expire before the expiration in the S-CSCF.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Best fix - put an Expires: 0 header if you have a 
+</I>&gt;<i> &gt;&gt; de-registration. I am
+</I>&gt;<i> &gt;&gt; not sure, but I think that this is mandatory in IMS (should 
+</I>&gt;<i> &gt;&gt; be somewhere
+</I>&gt;<i> &gt;&gt; in the SIP profiles in 24.229).
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Stefan.Brozinski at materna.de</A> wrote:
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; Hi all,
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; I would like to follow up on this issue.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Attached is a Wireshark trace that shows the deregistration 
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; process. The packets in this trace are:
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; 1. Client (X-Lite) to sip2ims
+</I>&gt;<i> &gt;&gt;&gt; 2. sip2ims to pcscf
+</I>&gt;<i> &gt;&gt;&gt; 3. pcscf to icscf
+</I>&gt;<i> &gt;&gt;&gt; 4. icscf to scscf
+</I>&gt;<i> &gt;&gt;&gt; 5. scscf to as
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; In packets 1 to 4, a 'Contact' header with an &quot;expires=0&quot; 
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; parameter can be observed.
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; In the last packet, no &quot;expires=0&quot; parameter is present at 
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; the 'Contact' header.
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; Instead an 'Expires' header with a nonzero value is passed 
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; to the AS.
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; This makes it impossible for the AS to recognize the 
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; deregistration of user bob.
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Any idea what's going on and how to fix this?
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Stefan
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000930.html">[OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header
+</A></li>
+	<LI>Next message: <A HREF="000955.html">[OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#943">[ date ]</a>
+              <a href="thread.html#943">[ thread ]</a>
+              <a href="subject.html#943">[ subject ]</a>
+              <a href="author.html#943">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

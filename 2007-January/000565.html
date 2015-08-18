@@ -1,0 +1,358 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Getting 513 - Message too big for REGISTER message
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Getting%20513%20-%20Message%20too%20big%20for%20REGISTER%0A%20message&In-Reply-To=%3C45B8D00D.7030305%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000545.html">
+   <LINK REL="Next"  HREF="000546.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Getting 513 - Message too big for REGISTER message</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Getting%20513%20-%20Message%20too%20big%20for%20REGISTER%0A%20message&In-Reply-To=%3C45B8D00D.7030305%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Getting 513 - Message too big for REGISTER message">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Jan 25 16:43:09 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000545.html">[OpenIMSCore-Users] Getting 513 - Message too big for REGISTER	message
+</A></li>
+        <LI>Next message: <A HREF="000546.html">[OpenIMSCore-Users] 2 byte UDP packages from P-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#565">[ date ]</a>
+              <a href="thread.html#565">[ thread ]</a>
+              <a href="subject.html#565">[ subject ]</a>
+              <a href="author.html#565">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Strange, this looks like a SER bug... Just comment these line and if you
+want to pursue it further, please report it on the <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">serdev at iptel.org</A>
+mailing lists. It seems to be only relevant to Solaris though.
+
+-Dragos
+
+Sudhakar Patil wrote:
+&gt;<i> Hello,
+</I>&gt;<i> I am using FOKUS OpenIMSCore modules and configuration
+</I>&gt;<i> that are built around SER. 
+</I>&gt;<i>
+</I>&gt;<i> I am running the software on Solaris 8 OS with Sparc
+</I>&gt;<i> v9 architecture and 64 bit compilation.
+</I>&gt;<i>
+</I>&gt;<i> I am using xten client. It sends REGISTER message but
+</I>&gt;<i> gets 513: Message too long in the response. The actual
+</I>&gt;<i> message size is 546 bytes. I have placed some DBG
+</I>&gt;<i> commands in SER receive.c and action.c. Everywhere the
+</I>&gt;<i> message size seems to be correct and is 546 bytes. 
+</I>&gt;<i>
+</I>&gt;<i> The .cfg file of sip2ims module has the following code
+</I>&gt;<i> snippet:
+</I>&gt;<i>
+</I>&gt;<i> if (msg:len &gt;=  max_len ) {
+</I>&gt;<i>    sl_send_reply(&quot;513&quot;, &quot;Message too big&quot;);
+</I>&gt;<i>    exit;
+</I>&gt;<i> };
+</I>&gt;<i>
+</I>&gt;<i> I tracked the code eventually to route.c, comp_num
+</I>&gt;<i> function where the comparison is made between msg:len
+</I>&gt;<i> and max_len. However, when I print left and right
+</I>&gt;<i> numbers, the right number is always 0 and hence the
+</I>&gt;<i> expression is always TRUE and I get 513 always.
+</I>&gt;<i> (Please see  1(22318) In comp_num. left 546, right 0
+</I>&gt;<i> debug output below)
+</I>&gt;<i>
+</I>&gt;<i> Below is the output of sip2ims module. 
+</I>&gt;<i>
+</I>&gt;<i> Any help in fixing this problem is greatly
+</I>&gt;<i> appreciated. 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 1392) called from
+</I>&gt;<i> receive.c: receive_msg(92)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 1392) returns address
+</I>&gt;<i> 100265d38 frag. 100265d08 (size=1392) on 1 -th hit
+</I>&gt;<i>  1(22318) SIP Request:
+</I>&gt;<i>  1(22318)  method:  &lt;REGISTER&gt;
+</I>&gt;<i>  1(22318)  uri:     &lt;sip:open-ims.test&gt;
+</I>&gt;<i>  1(22318)  version: &lt;SIP/2.0&gt;
+</I>&gt;<i>  1(22318) parse_headers: flags=2
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 1002657d0 frag. 1002657a0 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 232) called from
+</I>&gt;<i> parser/msg_parser.c: get_hdr_field(111)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 232) returns address
+</I>&gt;<i> 100265870 frag. 100265840 (size=232) on 1 -th hit
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/parse_via.c: parse_via(2142)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 1002659b8 frag. 100265988 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) Found param type 232, &lt;branch&gt; =
+</I>&gt;<i> &lt;z9hG4bK-d87543-27653f391711d351-1--d87543-&gt;; state=6
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/parse_via.c: parse_via(2142)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 100265a58 frag. 100265a28 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) Found param type 235, &lt;rport&gt; = &lt;n/a&gt;;
+</I>&gt;<i> state=17
+</I>&gt;<i>  1(22318) end of header reached, state=5
+</I>&gt;<i>  1(22318) parse_headers: Via found, flags=2
+</I>&gt;<i>  1(22318) parse_headers: this is the first via
+</I>&gt;<i>  1(22318) After parse_msg...
+</I>&gt;<i>  1(22318) preparing to run routing scripts...
+</I>&gt;<i>  1(22318) Message length 546
+</I>&gt;<i>  1(22318) completed exec_pre_cb
+</I>&gt;<i>  1(22318) Before run_actions: message length 546
+</I>&gt;<i>  1(22318) Message length in run_actions546
+</I>&gt;<i>  1(22318) In ROUTE_T 1 546
+</I>&gt;<i>  1(22318) Message length in run_actions546
+</I>&gt;<i>  1(22318) Message length in run_actions546
+</I>&gt;<i>  1(22318) parse_headers: flags=100
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 100265af8 frag. 100265ac8 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) DEBUG:maxfwd:is_maxfwd_present: value = 70
+</I>&gt;<i>  1(22318) DBG:maxfwd:process_maxfwd_header: value 70
+</I>&gt;<i> decreased to 16
+</I>&gt;<i>  1(22318) priting e structure 0
+</I>&gt;<i> --------------------------------------------
+</I>&gt;<i>  1(22318) In comp_num. left 546, right 0
+</I>&gt;<i> --------------------------------------------
+</I>&gt;<i>  1(22318) Message length in run_actions546
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 21) called from ut.c:
+</I>&gt;<i> as_asciiz(135)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 24) returns address
+</I>&gt;<i> 100265b98 frag. 100265b68 (size=24) on 1 -th hit
+</I>&gt;<i>  1(22318) parse_headers: flags=8
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 100265c10 frag. 100265be0 (size=200) on 1 -th hit
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 100266308 frag. 1002662d8 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 88) called from
+</I>&gt;<i> parser/msg_parser.c: get_hdr_field(151)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 88) returns address
+</I>&gt;<i> 1002663a8 frag. 100266378 (size=88) on 1 -th hit
+</I>&gt;<i>  1(22318) end of header reached, state=9
+</I>&gt;<i>  1(22318) DEBUG: get_hdr_field: &lt;To&gt; [34];
+</I>&gt;<i> uri=[sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>]
+</I>&gt;<i>  1(22318) DEBUG: to body
+</I>&gt;<i> [&quot;alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+</I>&gt;<i> ]
+</I>&gt;<i>  1(22318) parse_headers: flags=ffffffffffffffff
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 100266460 frag. 100266430 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 100266500 frag. 1002664d0 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 1002665a0 frag. 100266570 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 40) called from
+</I>&gt;<i> parser/msg_parser.c: get_hdr_field(130)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 40) returns address
+</I>&gt;<i> 100266640 frag. 100266610 (size=40) on 1 -th hit
+</I>&gt;<i>  1(22318) get_hdr_field: cseq &lt;CSeq&gt;: &lt;1&gt; &lt;REGISTER&gt;
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 1002666c8 frag. 100266698 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 100266768 frag. 100266738 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 100266808 frag. 1002667d8 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 1002668a8 frag. 100266878 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) DEBUG: get_hdr_body : content_length=0
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 64) returns address
+</I>&gt;<i> 100266948 frag. 100266918 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) found end of header
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100266948), called from
+</I>&gt;<i> parser/msg_parser.c: parse_headers(313)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100266918 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) check_via_address(192.168.120.1,
+</I>&gt;<i> 192.168.120.1, 0)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 13) called from
+</I>&gt;<i> msg_translator.c: rport_builder(353)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 16) returns address
+</I>&gt;<i> 100266948 frag. 100266918 (size=64) on 1 -th hit
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 609) called from
+</I>&gt;<i> msg_translator.c: build_res_buf_from_sip_req(1824)
+</I>&gt;<i>  1(22318) qm_malloc(100224ce8, 616) returns address
+</I>&gt;<i> 1002669e8 frag. 1002669b8 (size=616) on 1 -th hit
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100266948), called from
+</I>&gt;<i> msg_translator.c: build_res_buf_from_sip_req(1984)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100266918 alloc'ed
+</I>&gt;<i> from msg_translator.c: rport_builder(353)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 1002669e8), called from
+</I>&gt;<i> sl_funcs.c: sl_send_reply(176)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 1002669b8 alloc'ed
+</I>&gt;<i> from msg_translator.c:
+</I>&gt;<i> build_res_buf_from_sip_req(1824)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100265b98), called from
+</I>&gt;<i> sl.c: w_sl_send_reply(178)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100265b68 alloc'ed
+</I>&gt;<i> from ut.c: as_asciiz(135)
+</I>&gt;<i>  1(22318) After run_actions
+</I>&gt;<i>  1(22318) DEBUG:destroy_avp_list: destroying list 0
+</I>&gt;<i>  1(22318) DEBUG:destroy_avp_list: destroying list 0
+</I>&gt;<i>  1(22318) DEBUG:destroy_avp_list: destroying list 0
+</I>&gt;<i>  1(22318) DEBUG:destroy_avp_list: destroying list 0
+</I>&gt;<i>  1(22318) DEBUG:destroy_avp_list: destroying list 0
+</I>&gt;<i>  1(22318) DEBUG:destroy_avp_list: destroying list 0
+</I>&gt;<i>  1(22318) receive_msg: cleaning up
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 1002659b8), called from
+</I>&gt;<i> parser/parse_via.c: free_via_param_list(2361)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100265988 alloc'ed
+</I>&gt;<i> from parser/parse_via.c: parse_via(2142)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100265a58), called from
+</I>&gt;<i> parser/parse_via.c: free_via_param_list(2361)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100265a28 alloc'ed
+</I>&gt;<i> from parser/parse_via.c: parse_via(2142)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100265870), called from
+</I>&gt;<i> parser/parse_via.c: free_via_list(2373)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100265840 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: get_hdr_field(111)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 1002657d0), called from
+</I>&gt;<i> parser/hf.c: free_hdr_field_lst(209)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 1002657a0 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100265af8), called from
+</I>&gt;<i> parser/hf.c: free_hdr_field_lst(209)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100265ac8 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100265c10), called from
+</I>&gt;<i> parser/hf.c: free_hdr_field_lst(209)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100265be0 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 1002663a8), called from
+</I>&gt;<i> parser/parse_to.c: free_to(784)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100266378 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: get_hdr_field(151)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100266308), called from
+</I>&gt;<i> parser/hf.c: free_hdr_field_lst(209)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 1002662d8 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100266460), called from
+</I>&gt;<i> parser/hf.c: free_hdr_field_lst(209)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100266430 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100266500), called from
+</I>&gt;<i> parser/hf.c: free_hdr_field_lst(209)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 1002664d0 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100266640), called from
+</I>&gt;<i> parser/parse_cseq.c: free_cseq(102)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100266610 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: get_hdr_field(130)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 1002665a0), called from
+</I>&gt;<i> parser/hf.c: free_hdr_field_lst(209)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100266570 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 1002666c8), called from
+</I>&gt;<i> parser/hf.c: free_hdr_field_lst(209)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100266698 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100266768), called from
+</I>&gt;<i> parser/hf.c: free_hdr_field_lst(209)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100266738 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100266808), called from
+</I>&gt;<i> parser/hf.c: free_hdr_field_lst(209)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 1002667d8 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 1002668a8), called from
+</I>&gt;<i> parser/hf.c: free_hdr_field_lst(209)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100266878 alloc'ed
+</I>&gt;<i> from parser/msg_parser.c: parse_headers(297)
+</I>&gt;<i>  1(22318) qm_free(100224ce8, 100265d38), called from
+</I>&gt;<i> receive.c: receive_msg(239)
+</I>&gt;<i>  1(22318) qm_free: freeing frag. 100265d08 alloc'ed
+</I>&gt;<i> from receive.c: receive_msg(92)
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Sudhakar.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i> ____________________________________________________________________________________
+</I>&gt;<i> The fish are biting. 
+</I>&gt;<i> Get more visitors on your site using Yahoo! Search Marketing.
+</I>&gt;<i> <A HREF="http://searchmarketing.yahoo.com/arp/sponsoredsearch_v2.php">http://searchmarketing.yahoo.com/arp/sponsoredsearch_v2.php</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000545.html">[OpenIMSCore-Users] Getting 513 - Message too big for REGISTER	message
+</A></li>
+	<LI>Next message: <A HREF="000546.html">[OpenIMSCore-Users] 2 byte UDP packages from P-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#565">[ date ]</a>
+              <a href="thread.html#565">[ thread ]</a>
+              <a href="subject.html#565">[ subject ]</a>
+              <a href="author.html#565">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

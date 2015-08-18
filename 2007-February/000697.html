@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] SIP deregistration with strange &quot;Expires&quot;-header
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SIP%20deregistration%20with%20strange%20%22Expires%22-header&In-Reply-To=%3CDAE692177CCBC94C807D3445E6A0CEC2018C7CA2%40taxis.buc.materna.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000858.html">
+   <LINK REL="Next"  HREF="000698.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] SIP deregistration with strange &quot;Expires&quot;-header</H1>
+    <B>Sven.Bornemann at materna.de</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SIP%20deregistration%20with%20strange%20%22Expires%22-header&In-Reply-To=%3CDAE692177CCBC94C807D3445E6A0CEC2018C7CA2%40taxis.buc.materna.com%3E"
+       TITLE="[OpenIMSCore-Users] SIP deregistration with strange &quot;Expires&quot;-header">Sven.Bornemann at materna.de
+       </A><BR>
+    <I>Wed Feb  7 11:07:49 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000858.html">[OpenIMSCore-Users] how to connect the IMS core from another	box
+</A></li>
+        <LI>Next message: <A HREF="000698.html">[OpenIMSCore-Users] SIP deregistration with strange	&quot;Expires&quot;-header
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#697">[ date ]</a>
+              <a href="thread.html#697">[ thread ]</a>
+              <a href="subject.html#697">[ subject ]</a>
+              <a href="author.html#697">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all!
+Our AS intercepts SIP REGISTER messages sent by S-CSCF in order to
+detect the SIP client registration state (registered/deregistered).
+The original - by X-Lite sent - expiry time (3600 seconds) will always be 
+increased by 120s to 3720s (-&gt; Expires: 3720)
+
+REGISTER sip:192.168.38.131:5070 SIP/2.0
+Via: SIP/2.0/UDP 192.168.38.131:6060;branch=z9hG4bK5704.fde0a342.0
+To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+From: sip:scscf.open-ims.test:6060;tag=4c985cfd8cad9767c3c3ed1e493a07b9-15a9
+CSeq: 10 REGISTER
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">7e39adce-23299 at 192.168.38.131</A>
+User-Agent: Sip EXpress router(0.10.99-dev53-tm_fixes (i386/linux))
+Event: registration
+Content-Length: 0
+Max-Forwards: 10
+Expires: 3720
+Contact: &lt;sip:scscf.open-ims.test:6060&gt;
+P-Charging-Vector: icid-value=&quot;abcd45c9977f000002aa&quot;; icid-generated-at=&quot;192.168.38.131&quot;; orig-ioi=&quot;open-ims.test&quot;
+
+That not a big problem, but the subsequent deregistration received by the AS
+still contains a Expiry header, but with a value &gt; 0 (inital value - interval the
+client was registered -&gt; Expires: 3125). The original REGISTER message, received
+by the SIP2IMS GW, contains no &quot;Expires&quot;-header.
+
+recv 579 bytes from udp/[192.168.38.131]:6060 at 09:20:18.557611:
+REGISTER sip:192.168.38.131:5070 SIP/2.0
+Via: SIP/2.0/UDP 192.168.38.131:6060;branch=z9hG4bK6704.6c5c1d15.0
+To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+From: sip:scscf.open-ims.test:6060;tag=4c985cfd8cad9767c3c3ed1e493a07b9-7a96
+CSeq: 10 REGISTER
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">7e39adcf-23299 at 192.168.38.131</A>
+User-Agent: Sip EXpress router(0.10.99-dev53-tm_fixes (i386/linux))
+Event: registration
+Content-Length: 0
+Max-Forwards: 10
+Expires: 3125
+Contact: &lt;sip:scscf.open-ims.test:6060&gt;
+P-Charging-Vector: icid-value=&quot;abcd45c999d2000002b3&quot;; icid-generated-at=&quot;192.168.38.131&quot;; orig-ioi=&quot;open-ims.test&quot;
+
+We would expect no &quot;Expires&quot;-header or at least a value of 0 for that.
+
+What is the reason for this behaviour? A bug?
+
+Thanks in advance,
+Sven
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000858.html">[OpenIMSCore-Users] how to connect the IMS core from another	box
+</A></li>
+	<LI>Next message: <A HREF="000698.html">[OpenIMSCore-Users] SIP deregistration with strange	&quot;Expires&quot;-header
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#697">[ date ]</a>
+              <a href="thread.html#697">[ thread ]</a>
+              <a href="subject.html#697">[ subject ]</a>
+              <a href="author.html#697">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

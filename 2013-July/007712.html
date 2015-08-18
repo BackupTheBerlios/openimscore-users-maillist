@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] &quot;403 Forbidden - Not Registered! You must register first with a S-CSCF&quot; when behind NAT
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2013-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%22403%20Forbidden%20-%20Not%20Registered%21%20You%20must%0A%20register%20first%20with%20a%20S-CSCF%22%20when%20behind%20NAT&In-Reply-To=%3CCAFEhLu_9gv%3DanDUJO%2BGbCuC8vnr9kiBY-gmRAEa7rBz_bvxywA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007711.html">
+   <LINK REL="Next"  HREF="007713.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] &quot;403 Forbidden - Not Registered! You must register first with a S-CSCF&quot; when behind NAT</H1>
+    <B>Rados&#322;aw Szalski</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%22403%20Forbidden%20-%20Not%20Registered%21%20You%20must%0A%20register%20first%20with%20a%20S-CSCF%22%20when%20behind%20NAT&In-Reply-To=%3CCAFEhLu_9gv%3DanDUJO%2BGbCuC8vnr9kiBY-gmRAEa7rBz_bvxywA%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] &quot;403 Forbidden - Not Registered! You must register first with a S-CSCF&quot; when behind NAT">radoslaw.szalski at gmail.com
+       </A><BR>
+    <I>Fri Jul 26 15:06:13 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007711.html">[OpenIMSCore-Users] FreePCRF
+</A></li>
+        <LI>Next message: <A HREF="007713.html">[OpenIMSCore-Users] (no subject)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7712">[ date ]</a>
+              <a href="thread.html#7712">[ thread ]</a>
+              <a href="subject.html#7712">[ subject ]</a>
+              <a href="author.html#7712">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all!
+
+I have a problem with OpenIMSCore. When I'm behind NAT, after the full
+registration procedure finishes (with correct IP addresses and all that).
+If I issue e.g. a SUBSCRIBE request, OpenIMSCore responds with the
+mentioned 403 code.
+
+I have to either wait for re-registration or re-register manually to fix
+this situation. I would like to avoid that as much as possible.
+
+I am using a custom application built on top of pjsip 2.1 library (
+<A HREF="http://www.pjsip.org/">http://www.pjsip.org/</A>), but I confirmed this issue with both reference
+implementation of pjsip libs called pjsua (<A HREF="http://www.pjsip.org/pjsua.htm">http://www.pjsip.org/pjsua.htm</A>),
+a known X-Lite sip softphone and few other free softphones.
+
+The sequence I am performing every time is:
+
+1. Registration
+2. Automatic registration update -&gt; NAT address change detected (performed
+by pjsip)
+3. SUBSCRIBE request (unsuccessful)
+4. Unregistration (successful)
+
+
+What might be the problem ? I was looking at configuration options of
+SCSCF.cfg and PCSCF.cfg but I'm not sure if anything there would help.
+
+I was looking through OpenIMSCore mailing lists, found that issue pops up
+now and then but there never was a complete solution.
+
+I am attaching full application logs as well as a Wireshark capture file
+and OpenIMSCore CSCF/HSS functions' logs.
+
+My local IP: 172.16.175.74
+My NAT gateway IP: 150.254.41.175
+
+
+Any help will be appreciated!
+
+Regards,
+Radek
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0001.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0001.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: sip_ua.log
+Type: application/octet-stream
+Size: 28672 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0006.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0006.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: sip_ua.pcap
+Type: application/octet-stream
+Size: 12074 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0007.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0007.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: hss.log
+Type: application/octet-stream
+Size: 8978 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0008.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0008.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: icscf.log
+Type: application/octet-stream
+Size: 28228 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0009.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0009.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: pcscf.log
+Type: application/octet-stream
+Size: 22622 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0010.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0010.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: scscf.log
+Type: application/octet-stream
+Size: 34989 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0011.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130726/33aa1e5d/attachment-0011.obj</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007711.html">[OpenIMSCore-Users] FreePCRF
+</A></li>
+	<LI>Next message: <A HREF="007713.html">[OpenIMSCore-Users] (no subject)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7712">[ date ]</a>
+              <a href="thread.html#7712">[ thread ]</a>
+              <a href="subject.html#7712">[ subject ]</a>
+              <a href="author.html#7712">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Cannot Connect Call between 2 IMS	communicatorusers
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Cannot%20Connect%20Call%20between%202%20IMS%0A%09communicatorusers&In-Reply-To=%3C0AE2132CE51D1943A20F450AA7258E5C024CC07E%40INOAVREX05.ptin.corpPT.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001612.html">
+   <LINK REL="Next"  HREF="001587.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Cannot Connect Call between 2 IMS	communicatorusers</H1>
+    <B>Jos&#233; Miguel Freitas (IT)</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Cannot%20Connect%20Call%20between%202%20IMS%0A%09communicatorusers&In-Reply-To=%3C0AE2132CE51D1943A20F450AA7258E5C024CC07E%40INOAVREX05.ptin.corpPT.com%3E"
+       TITLE="[OpenIMSCore-Users] Cannot Connect Call between 2 IMS	communicatorusers">it-j-freitas at ptinovacao.pt
+       </A><BR>
+    <I>Fri Apr 27 16:03:29 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001612.html">[OpenIMSCore-Users] Cannot Connect Call between 2 IMS communicator	users
+</A></li>
+        <LI>Next message: <A HREF="001587.html">[OpenIMSCore-Users] 4xx received for request outside call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1623">[ date ]</a>
+              <a href="thread.html#1623">[ thread ]</a>
+              <a href="subject.html#1623">[ subject ]</a>
+              <a href="author.html#1623">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE> 
+Hi Kiran.
+For issues regarding IMS-Communicator, please refer to the IMS-Communicator lists instead, since IMS-Communicator and Open IMS Core are distinct projects.
+ 
+About the first problem (Failed to acknowledge call), as you can read in the output, the Exception retrieves the message &quot;java.net.UnknownHostException: pcscf.mkd149633.wipro.com&quot;.
+This means that the FQDN &quot;pcscf.mkd149633.wipro.com&quot; cannot be resolved by the DNS configured at your client side, making the jain-sip stack to fail when trying to acknowledge call.
+ 
+About the second problem, please check if the SIP phone you are using has any common codec with IMS-Communicator - <A HREF="http://java.sun.com/products/java-media/jmf/2.1.1/formats.html">http://java.sun.com/products/java-media/jmf/2.1.1/formats.html</A>
+ 
+ 
+Best regards,
+Jos&#233; Miguel Freitas
+_______________________________________
+SRM Department
+Portugal Telecom Inova&#231;&#227;o, SA
+<A HREF="http://www.ptinovacao.pt">http://www.ptinovacao.pt</A> &lt;<A HREF="http://www.ptinovacao.pt/">http://www.ptinovacao.pt/</A>&gt; 
+ 
+
+________________________________
+
+De: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> em nome de <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kiran.bkumar at wipro.com</A>
+Enviada: sex 27-04-2007 9:02
+Para: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">micadeyeye at crg.ee.uct.ac.za</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Assunto: [OpenIMSCore-Users] Cannot Connect Call between 2 IMS communicatorusers
+
+
+
+Hi All,
+
+I am using 2 users via IMS Communicator and when user-B picks the call from user-A, the call is dropped. Below is the Java error seen on the command prompt.
+
+Also I am seeing a error No Media Authorization Header token present when the response to Invite in received.
+
+Please let me know what could be the problem.
+
+At Calling Party :
+
+
+net.java.sip.communicator.sip.CommunicationsException: Failed to acknowledge call!
+ at net.java.sip.communicator.sip.CallProcessing.processInviteOK(CallProcessing.java:2864)
+ at net.java.sip.communicator.sip.SipManager.processResponse(SipManager.java:2617)
+ at gov.nist.javax.sip.EventScanner.deliverEvent(EventScanner.java:220)
+ at gov.nist.javax.sip.EventScanner.run(EventScanner.java:324)
+ at java.lang.Thread.run(Unknown Source)
+Caused by: javax.sip.SipException: Cold not create message channel - java.net.UnknownHostException: pcscf.mkd149633.wipro.com
+ at gov.nist.javax.sip.stack.SIPDialog.sendAck(SIPDialog.java:1218)
+ at net.java.sip.communicator.sip.CallProcessing.processInviteOK(CallProcessing.java:2857)
+ ... 4 more
+
+At Called Party :
+
+
+net.java.sip.communicator.sip.CommunicationsException: The remote party has not replied!The call will be disconnected
+ at net.java.sip.communicator.sip.CallProcessing.processTimeout(CallProcessing.java:3898)
+ at net.java.sip.communicator.sip.SipManager.processTimeout(SipManager.java:2563)
+ at gov.nist.javax.sip.EventScanner.deliverEvent(EventScanner.java:255)
+ at gov.nist.javax.sip.EventScanner.run(EventScanner.java:324)
+ at java.lang.Thread.run(Unknown Source)
+
+
+When Called from another SIP Phone - 3CX
+
+net.java.sip.communicator.media.MediaException: Couldn't set any of the tracks to a valid RTP format
+ at net.java.sip.communicator.media.AVTransmitter.configureProcessor(AVTransmitter.java:288)
+ at net.java.sip.communicator.media.AVTransmitter.start(AVTransmitter.java:141)
+ at net.java.sip.communicator.media.MediaManager.startTransmitter(MediaManager.java:539)
+ at net.java.sip.communicator.media.MediaManager.openMediaStreams(MediaManager.java:469)
+ at net.java.sip.communicator.SipCommunicator.callStateChanged(SipCommunicator.java:1136)
+ at net.java.sip.communicator.sip.Call.fireCallStatusChangedEvent(Call.java:270)
+ at net.java.sip.communicator.sip.Call.setState(Call.java:176)
+ at net.java.sip.communicator.sip.CallProcessing.processAck(CallProcessing.java:4052)
+ at net.java.sip.communicator.sip.SipManager.processRequest(SipManager.java:2394)
+ at gov.nist.javax.sip.EventScanner.deliverEvent(EventScanner.java:185)
+ at gov.nist.javax.sip.EventScanner.run(EventScanner.java:324)
+ at java.lang.Thread.run(Unknown Source)
+
+
+
+The information contained in this electronic message and any attachments to this message are intended for the exclusive use of the addressee(s) and may contain proprietary, confidential or privileged information. If you are not the intended recipient, you should not disseminate, distribute or copy this e-mail. Please notify the sender immediately and destroy all copies of this message and any attachments. 
+
+WARNING: Computer viruses can be transmitted via email. The recipient should check this email and any attachments for the presence of viruses. The company accepts no liability for any damage caused by any virus transmitted by this email.
+
+www.wipro.com
+	
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001612.html">[OpenIMSCore-Users] Cannot Connect Call between 2 IMS communicator	users
+</A></li>
+	<LI>Next message: <A HREF="001587.html">[OpenIMSCore-Users] 4xx received for request outside call
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1623">[ date ]</a>
+              <a href="thread.html#1623">[ thread ]</a>
+              <a href="subject.html#1623">[ subject ]</a>
+              <a href="author.html#1623">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

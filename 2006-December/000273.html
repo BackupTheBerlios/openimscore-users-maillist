@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [Bug #9686] diameter Watch-dog answer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BBug%20%239686%5D%20diameter%20Watch-dog%20answer&In-Reply-To=%3C200612121828.kBCISSuq029074%40unicorn.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000272.html">
+   <LINK REL="Next"  HREF="000275.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [Bug #9686] diameter Watch-dog answer</H1>
+    <B>admin at berlios.de</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BBug%20%239686%5D%20diameter%20Watch-dog%20answer&In-Reply-To=%3C200612121828.kBCISSuq029074%40unicorn.berlios.de%3E"
+       TITLE="[OpenIMSCore-Users] [Bug #9686] diameter Watch-dog answer">admin at berlios.de
+       </A><BR>
+    <I>Tue Dec 12 19:28:28 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000272.html">[OpenIMSCore-Users] Help Please
+</A></li>
+        <LI>Next message: <A HREF="000275.html">[OpenIMSCore-Users] What SIP Simulator to use ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#273">[ date ]</a>
+              <a href="thread.html#273">[ thread ]</a>
+              <a href="subject.html#273">[ subject ]</a>
+              <a href="author.html#273">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Bug #9686, was updated on 2006-Dec-11 18:06
+Here is a current snapshot of the bug.
+
+Project: Open IMS Core
+Category: CDiameterPeer
+Status: Closed
+Resolution: Fixed
+Bug Group: standard compliance
+Priority: 5
+Submitted by: suty
+Assigned to : vingarzan
+Summary: diameter Watch-dog answer
+
+Details: When we tried other DiameterPeer and he first send Watch-dog request, S-CSCF not including in Diameter Watch-dog answer Result_code.
+
+from wireshark:
+
+Frame 6 (144 bytes on wire, 144 bytes captured)
+Linux cooked capture
+Internet Protocol, Src: 10.0.2.50 (10.0.2.50), Dst: 10.0.2.22 (10.0.2.22)
+Transmission Control Protocol, Src Port: 60804 (60804), Dst Port: diameter (3868), Seq: 0, Ack: 0, Len: 76
+Diameter Protocol
+Version: 0x01
+Length: 76
+Flags: 0x80 (Request)
+Command Code: Device-Watchdog-Request (280)
+ApplicationId: Diameter Common Messages (0)
+Hop-by-Hop Identifier: 0x4607e8e1
+End-to-End Identifier: 0xf70daeb4
+Attribute Value Pairs
+Origin-Host (DiameterIdentity) l:0x18 (24 bytes) (24 padded bytes)
+Origin-Realm (DiameterIdentity) l:0x14 (20 bytes) (20 padded bytes)
+Origin-State-Id (Unsigned32) l:0xc (12 bytes) (12 padded bytes)
+
+Frame 7 (180 bytes on wire, 180 bytes captured)
+Linux cooked capture
+Internet Protocol, Src: 10.0.2.22 (10.0.2.22), Dst: 10.0.2.50 (10.0.2.50)
+Transmission Control Protocol, Src Port: diameter (3868), Dst Port: 60804 (60804), Seq: 0, Ack: 76, Len: 112
+Diameter Protocol
+Version: 0x01
+Length: 112
+Flags: 0x00 (&lt;None&gt;)
+Command Code: Device-Watchdog-Answer (280)
+ApplicationId: Diameter Common Messages (0)
+Hop-by-Hop Identifier: 0x4607e8e1
+End-to-End Identifier: 0xf70daeb4
+Attribute Value Pairs
+Origin-Host (DiameterIdentity) l:0x1a (26 bytes) (28 padded bytes)
+Origin-Realm (DiameterIdentity) l:0x14 (20 bytes) (20 padded bytes)
+Destination-Host (DiameterIdentity) l:0x18 (24 bytes) (24 padded bytes)
+Destination-Realm (UTF8String) l:0x14 (20 bytes) (20 padded bytes)
+
+10.0.2.50 is our diameterPeer and 10.0.2.22 is S-CSCF(open-ims)
+
+
+Follow-Ups:
+
+Date: 2006-Dec-12 19:28
+By: vingarzan
+
+Comment:
+Fixed since r71.
+-------------------------------------------------------
+
+For detailed info, follow this link:
+<A HREF="http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=9686&amp;group_id=7589">http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=9686&amp;group_id=7589</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000272.html">[OpenIMSCore-Users] Help Please
+</A></li>
+	<LI>Next message: <A HREF="000275.html">[OpenIMSCore-Users] What SIP Simulator to use ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#273">[ date ]</a>
+              <a href="thread.html#273">[ thread ]</a>
+              <a href="subject.html#273">[ subject ]</a>
+              <a href="author.html#273">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

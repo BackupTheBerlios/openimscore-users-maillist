@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registeration over IPSec fails
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registeration%20over%20IPSec%20fails&In-Reply-To=%3C46E541DF.8080501%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002615.html">
+   <LINK REL="Next"  HREF="002628.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registeration over IPSec fails</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registeration%20over%20IPSec%20fails&In-Reply-To=%3C46E541DF.8080501%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Registeration over IPSec fails">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Sep 10 15:08:47 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002615.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+        <LI>Next message: <A HREF="002628.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2621">[ date ]</a>
+              <a href="thread.html#2621">[ thread ]</a>
+              <a href="subject.html#2621">[ subject ]</a>
+              <a href="author.html#2621">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>You are right, the specs recommend that you should use different ports
+for identification reasons.
+
+However, there are some difficulties with SER on selecting the outbound
+socket to be used - most probably a new upgrade to the latest SER CVS
+would solve this as I have seen some new functionality there.
+
+Anyway, using the same port for all 3 works, given that you do not have
+2 UEs that use the same IP:port, so that you could make different IPSec
+rules. The rules are set on src_ip, src_port, dst_ip,dst_port, protocol.
+
+-Dragos
+
+
+Jamal Hadi Salim wrote:
+&gt;<i> On Mon, 2007-10-09 at 12:05 +0200, Dragos Vingarzan wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Guys, I think that a little bit of clarification is needed here.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So, you could do IPSec in many ways (I am not an IPSec specialist, but
+</I>&gt;&gt;<i> I'll try and explain it in my understanding).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> First option would be to use it in tunnel mode - then you have a virtual
+</I>&gt;&gt;<i> interface that you use as a normal one, yet all traffic would be
+</I>&gt;&gt;<i> encrypted when sent over the real network interface. This method has the
+</I>&gt;&gt;<i> advantage that it is completely transparent.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> &quot;tunnel&quot; unfortunately sometimes is used to describe a secured
+</I>&gt;<i> connection which could be tunnel-mode or ipsec-mode or even ssh (which
+</I>&gt;<i> is transport level) - at least thats how i used it in the thread.
+</I>&gt;<i> A question in regards to the PSCSCF side of things:
+</I>&gt;<i> All encrypted request/replies go to port 4060. So does the cleartext.
+</I>&gt;<i> The spec (.203) seems to indicate there should be 3 different ports.
+</I>&gt;<i>
+</I>&gt;<i> Did i misunderstand?
+</I>&gt;<i>
+</I>&gt;<i> The SIPp scripts on the UE side seem to be fine.
+</I>&gt;<i>
+</I>&gt;<i> cheers,
+</I>&gt;<i> jamal
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002615.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+	<LI>Next message: <A HREF="002628.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2621">[ date ]</a>
+              <a href="thread.html#2621">[ thread ]</a>
+              <a href="subject.html#2621">[ subject ]</a>
+              <a href="author.html#2621">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

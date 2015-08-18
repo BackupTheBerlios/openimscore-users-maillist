@@ -1,0 +1,350 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problems when registering
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problems%20when%20registering&In-Reply-To=%3C471DFE8F.3030104%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002803.html">
+   <LINK REL="Next"  HREF="002804.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problems when registering</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problems%20when%20registering&In-Reply-To=%3C471DFE8F.3030104%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Problems when registering">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Oct 23 16:00:47 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002803.html">[OpenIMSCore-Users] Problems when registering
+</A></li>
+        <LI>Next message: <A HREF="002804.html">[OpenIMSCore-Users] Error starting pcscf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2811">[ date ]</a>
+              <a href="thread.html#2811">[ thread ]</a>
+              <a href="subject.html#2811">[ subject ]</a>
+              <a href="author.html#2811">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Veronica,
+
+
+These errors are very strange. The first ones look like some sort of
+misconfiguration/bad-provisioning on the HSS. The last one like a
+compilation error or something...
+
+Have you had any errors in the installation? What users do you have
+provisioned and how did you provisioned them?
+
+Could you please send a full wireshark trace so that we could see the
+exact message contents, including the Diameter ones?
+
+The UCT IMS Client works well. Also does the OpenIC Lite. It works also
+with regular SIP client, but you will have to be careful in configuring
+them and also to change a little the P-CSCF cfg file to be more
+permissive with old SIP clients.
+
+Cheers,
+-Dragos
+
+Veronica Kumlin wrote:
+&gt;<i>   Hi!
+</I>&gt;<i>  
+</I>&gt;<i> I have just started to use OpenIMSCore and I am experiensing a few
+</I>&gt;<i> problems.
+</I>&gt;<i>  
+</I>&gt;<i> Firstly, when I look at &quot;COMMAND COUNTER&quot; at the hss.web.console this
+</I>&gt;<i> is shown:
+</I>&gt;<i>  
+</I>&gt;<i> Then when I try to register my SIP-client I get errors.
+</I>&gt;<i>  
+</I>&gt;<i> *In the first case:*
+</I>&gt;<i> The logging hss.web.console showes this:
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>     INFO  de.fhg.fokus.hss.util.LoggerHelper- init -
+</I>&gt;<i>     WebLoggingAppender added/cleared.
+</I>&gt;<i>     WARN  de.fhg.fokus.hss.diam.cx.UARCommandListener- recvMessage -
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">de.fhg.fokus.hss.diam.cx.UARCommandListener at 126b8f1</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">de.fhg.fokus.hss.diam.cx.UARCommandListener at 126b8f1</A>&gt;
+</I>&gt;<i>     de.fhg.fokus.cx.exceptions.base.InvalidAvpValue
+</I>&gt;<i>      at
+</I>&gt;<i>     de.fhg.fokus.hss.diam.cx.CxCommandListener.loadPrivateUserIdentity(CxCommandListener.java:140)
+</I>&gt;<i>      at de.fhg.fokus.hss.diam.cx.UARCommandListener.recvMessage
+</I>&gt;<i>     (UARCommandListener.java:115)
+</I>&gt;<i>      at
+</I>&gt;<i>     de.fhg.fokus.diameter.DiameterPeer.DiameterWorker.run(DiameterWorker.java:100)
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i> And wireshark shows this:
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>     Request-Line: REGISTER sip:open-ims.test:5060;transport=udp SIP/2.0
+</I>&gt;<i>
+</I>&gt;<i>     Message Header
+</I>&gt;<i>
+</I>&gt;<i>     Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3f5261695c7d4a7121ad241d08dd1f02 at 192.168.9.103</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3f5261695c7d4a7121ad241d08dd1f02 at 192.168.9.103</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i>     CSeq: 1 REGISTER
+</I>&gt;<i>
+</I>&gt;<i>     Via: SIP/2.0/UDP 192.168.9.103:9000
+</I>&gt;<i>     &lt;<A HREF="http://192.168.9.103:9000/">http://192.168.9.103:9000/</A>&gt;;branch=z9hG4bKca6ad98eb1e57db9e661a5c361b66e5f
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">anonymous at 192.168.9.103</A>:9000;transport=udp&gt;
+</I>&gt;<i>
+</I>&gt;<i>     To: Alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.9.103</A>:9000&gt;
+</I>&gt;<i>
+</I>&gt;<i>     From: Alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.9.103</A>:9000&gt;;tag=161430446
+</I>&gt;<i>
+</I>&gt;<i>     Max-Forwards: 6
+</I>&gt;<i>
+</I>&gt;<i>     P-Visited-Network-ID: Visited Network Number 1
+</I>&gt;<i>
+</I>&gt;<i>     Content-Length: 0
+</I>&gt;<i>
+</I>&gt;<i>      
+</I>&gt;<i>
+</I>&gt;<i>     Status-Line: SIP/2.0 403 Forbidden - HSS responded with unknown
+</I>&gt;<i>     Result Code
+</I>&gt;<i>
+</I>&gt;<i>     Message Header
+</I>&gt;<i>
+</I>&gt;<i>     Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3f5261695c7d4a7121ad241d08dd1f02 at 192.168.9.103</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3f5261695c7d4a7121ad241d08dd1f02 at 192.168.9.103</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i>     CSeq: 1 REGISTER
+</I>&gt;<i>
+</I>&gt;<i>     Via: SIP/2.0/UDP 192.168.9.103:9000
+</I>&gt;<i>     &lt;<A HREF="http://192.168.9.103:9000/">http://192.168.9.103:9000/</A>&gt;;branch=z9hG4bKca6ad98eb1e57db9e661a5c361b66e5f
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     To: Alice
+</I>&gt;<i>     &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.9.103</A>:9000&gt;;tag=d9c23c71c24e8715e1adda344c861367-f95a
+</I>&gt;<i>
+</I>&gt;<i>     From: Alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.9.103</A>:9000&gt;;tag=161430446
+</I>&gt;<i>
+</I>&gt;<i>     Server: Sip EXpress router (0.10.99-dev53-tm_fixes (i386/linux))
+</I>&gt;<i>
+</I>&gt;<i>     Content-Length: 0
+</I>&gt;<i>
+</I>&gt;<i>     Warning: 392 192.168.9.106:5060 &lt;<A HREF="http://192.168.9.106:5060/">http://192.168.9.106:5060/</A>&gt;
+</I>&gt;<i>     &quot;Noisy feedback tells:   pid=6454 req_src_ip= 192.168.9.103
+</I>&gt;<i>     &lt;<A HREF="http://192.168.9.103/">http://192.168.9.103/</A>&gt; req_src_port=2263
+</I>&gt;<i>     in_uri=sip:open-ims.test:5060;transport=udp out_uri=sip:
+</I>&gt;<i>     open-ims.test:5060;transport=udp via_cnt==1&quot;
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i> *In the second case:*
+</I>&gt;<i> I thought that maybe something in the headers were wrong so I changed
+</I>&gt;<i> a bit, then
+</I>&gt;<i>  
+</I>&gt;<i> The logging hss.web.console showes this:
+</I>&gt;<i>
+</I>&gt;<i>      
+</I>&gt;<i>      INFO  de.fhg.fokus.hss.util.LoggerHelper- init -
+</I>&gt;<i>     WebLoggingAppender added/cleared.
+</I>&gt;<i>     WARN  de.fhg.fokus.hss.diam.cx.UARCommandListener- recvMessage -
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">de.fhg.fokus.hss.diam.cx.UARCommandListener at 126b8f1</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">de.fhg.fokus.hss.diam.cx.UARCommandListener at 126b8f1</A>&gt;
+</I>&gt;<i>     de.fhg.fokus.cx.exceptions.ims.RoamingNotAllowed
+</I>&gt;<i>      at
+</I>&gt;<i>     de.fhg.fokus.hss.server.cx.op.QueryCxOperation.execute(QueryCxOperation.java:131)
+</I>&gt;<i>      at de.fhg.fokus.hss.server.cx.HSScxOperationsImpl.cxQuery
+</I>&gt;<i>     (HSScxOperationsImpl.java:99)
+</I>&gt;<i>      at
+</I>&gt;<i>     de.fhg.fokus.hss.diam.cx.UARCommandListener.recvMessage(UARCommandListener.java:131)
+</I>&gt;<i>      at
+</I>&gt;<i>     de.fhg.fokus.diameter.DiameterPeer.DiameterWorker.run(DiameterWorker.java:100)
+</I>&gt;<i>     WARN  de.fhg.fokus.hss.diam.cx.UARCommandListener - recvMessage -
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">de.fhg.fokus.hss.diam.cx.UARCommandListener at 126b8f1</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">de.fhg.fokus.hss.diam.cx.UARCommandListener at 126b8f1</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i> And wireshark shows this:
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>     Request-Line: REGISTER sip:open-ims.test:5060;transport=udp SIP/2.0
+</I>&gt;<i>
+</I>&gt;<i>     Message Header
+</I>&gt;<i>
+</I>&gt;<i>     Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">8c40d6926bd79bf44e95ad339e70a5f6 at 192.168.9.103</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">8c40d6926bd79bf44e95ad339e70a5f6 at 192.168.9.103</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i>     CSeq: 1 REGISTER
+</I>&gt;<i>
+</I>&gt;<i>     Via: SIP/2.0/UDP 192.168.9.103:9000
+</I>&gt;<i>     &lt;<A HREF="http://192.168.9.103:9000/">http://192.168.9.103:9000/</A>&gt;;branch=z9hG4bK9fb22e55f8836058cd9d0012d2781e9a
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">anonymous at 192.168.9.103</A>:9000;transport=udp&gt;
+</I>&gt;<i>
+</I>&gt;<i>     To: Alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;&gt;
+</I>&gt;<i>
+</I>&gt;<i>     From: Alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+</I>&gt;<i>     &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;&gt;;tag=483546008
+</I>&gt;<i>
+</I>&gt;<i>     Max-Forwards: 6
+</I>&gt;<i>
+</I>&gt;<i>     P-Visited-Network-ID: Visited Network Number 1
+</I>&gt;<i>
+</I>&gt;<i>     Content-Length: 0
+</I>&gt;<i>
+</I>&gt;<i>      
+</I>&gt;<i>
+</I>&gt;<i>     Status-Line: SIP/2.0 403 Forbidden - HSS Roaming not allowed
+</I>&gt;<i>
+</I>&gt;<i>     Message Header
+</I>&gt;<i>
+</I>&gt;<i>     Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">8c40d6926bd79bf44e95ad339e70a5f6 at 192.168.9.103</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">8c40d6926bd79bf44e95ad339e70a5f6 at 192.168.9.103</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i>     CSeq: 1 REGISTER
+</I>&gt;<i>
+</I>&gt;<i>     Via: SIP/2.0/UDP 192.168.9.103:9000
+</I>&gt;<i>     &lt;<A HREF="http://192.168.9.103:9000/">http://192.168.9.103:9000/</A>&gt;;branch=z9hG4bK9fb22e55f8836058cd9d0012d2781e9a
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     To: Alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+</I>&gt;<i>     &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;&gt;;tag=d9c23c71c24e8715e1adda344c861367-f625
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     From: Alice &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+</I>&gt;<i>     &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;&gt;;tag=483546008
+</I>&gt;<i>
+</I>&gt;<i>     Server: Sip EXpress router (0.10.99-dev53-tm_fixes (i386/linux))
+</I>&gt;<i>
+</I>&gt;<i>     Content-Length: 0
+</I>&gt;<i>
+</I>&gt;<i>     Warning: 392 192.168.9.106:5060 &lt;<A HREF="http://192.168.9.106:5060/">http://192.168.9.106:5060/</A>&gt;
+</I>&gt;<i>     &quot;Noisy feedback tells:   pid=6456 req_src_ip= 192.168.9.103
+</I>&gt;<i>     &lt;<A HREF="http://192.168.9.103/">http://192.168.9.103/</A>&gt; req_src_port=2289
+</I>&gt;<i>     in_uri=sip:open-ims.test:5060;transport=udp out_uri=sip:
+</I>&gt;<i>     open-ims.test:5060;transport=udp via_cnt==1&quot;
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i> And after a short while, when I have not done anything (not that I
+</I>&gt;<i> know of) this Error is shown in the logging:
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>     ERROR org.apache.catalina.core.ContainerBase.[null].[192.168.9.101
+</I>&gt;<i>     &lt;<A HREF="http://192.168.9.101/">http://192.168.9.101/</A>&gt;].[/hss.web.console].[jsp]- invoke -
+</I>&gt;<i>     Servlet.service () for servlet jsp threw exception
+</I>&gt;<i>     org.apache.jasper.JasperException : Unable to compile class for JSP
+</I>&gt;<i>
+</I>&gt;<i>     An error occurred at line: 43 in the jsp file:
+</I>&gt;<i>     /pages/info/commands.jsp
+</I>&gt;<i>     Generated servlet error:
+</I>&gt;<i>     de.fhg.fokus.hss.main.HssServer.STARTUP cannot be resolved
+</I>&gt;<i>      at org.apache.jasper.compiler.DefaultErrorHandler.javacError
+</I>&gt;<i>     (DefaultErrorHandler.java:84)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:328)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:397)
+</I>&gt;<i>      at org.apache.jasper.compiler.Compiler.compile (Compiler.java:288)
+</I>&gt;<i>      at org.apache.jasper.compiler.Compiler.compile(Compiler.java:267)
+</I>&gt;<i>      at org.apache.jasper.compiler.Compiler.compile(Compiler.java:255)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java
+</I>&gt;<i>     :556)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:293)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:291)
+</I>&gt;<i>      at org.apache.jasper.servlet.JspServlet.service (JspServlet.java:241)
+</I>&gt;<i>      at javax.servlet.http.HttpServlet.service(HttpServlet.java:802)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:252)
+</I>&gt;<i>      at org.apache.catalina.core.ApplicationFilterChain.doFilter
+</I>&gt;<i>     (ApplicationFilterChain.java:173)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:213)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:178)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:407)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:126)
+</I>&gt;<i>      at org.apache.catalina.valves.ErrorReportValve.invoke
+</I>&gt;<i>     (ErrorReportValve.java:105)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:107)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:148)
+</I>&gt;<i>      at org.apache.coyote.http11.Http11Processor.process
+</I>&gt;<i>     (Http11Processor.java:856)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.processConnection(Http11Protocol.java:744)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpoint.java
+</I>&gt;<i>     :527)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFollowerWorkerThread.java:80)
+</I>&gt;<i>      at
+</I>&gt;<i>     org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:684)
+</I>&gt;<i>      at java.lang.Thread.run (Thread.java:619)
+</I>&gt;<i>
+</I>&gt;<i> If anyone can help me I would be very happy!
+</I>&gt;<i>  
+</I>&gt;<i> Another question is if it is possible to use a SIP client or if it is
+</I>&gt;<i> necessary to use an IMS client? (I tried to get utc IMS client going
+</I>&gt;<i> but it never worked)
+</I>&gt;<i>  
+</I>&gt;<i> Tanks a lot
+</I>&gt;<i> Veronica
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002803.html">[OpenIMSCore-Users] Problems when registering
+</A></li>
+	<LI>Next message: <A HREF="002804.html">[OpenIMSCore-Users] Error starting pcscf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2811">[ date ]</a>
+              <a href="thread.html#2811">[ thread ]</a>
+              <a href="subject.html#2811">[ subject ]</a>
+              <a href="author.html#2811">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

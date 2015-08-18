@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ACK not getting sent to the terminating	user by the open-ims core.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2013-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ACK%20not%20getting%20sent%20to%20the%20terminating%0A%09user%20by%20the%20open-ims%20core.&In-Reply-To=%3C000001cece89%240dab88f0%2429029ad0%24%40technikum-wien.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007773.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ACK not getting sent to the terminating	user by the open-ims core.</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ACK%20not%20getting%20sent%20to%20the%20terminating%0A%09user%20by%20the%20open-ims%20core.&In-Reply-To=%3C000001cece89%240dab88f0%2429029ad0%24%40technikum-wien.at%3E"
+       TITLE="[OpenIMSCore-Users] ACK not getting sent to the terminating	user by the open-ims core.">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Mon Oct 21 20:12:07 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007773.html">[OpenIMSCore-Users] Installing OpenIMSCore on raspberry pi?
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7774">[ date ]</a>
+              <a href="thread.html#7774">[ thread ]</a>
+              <a href="subject.html#7774">[ subject ]</a>
+              <a href="author.html#7774">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Badri,
+
+&gt;<i> I have now handled the record-route properly. So the open-ims core adds
+</I>its
+&gt;<i> entry into the &quot;record-route&quot; and the user-agent processes it correctly by
+</I>&gt;<i> copying over contents into its &quot;route&quot; header.
+</I>&gt;<i> 
+</I>&gt;<i> I am able to make a call from <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a6 at open-ims.test</A> to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a1 at open-ims.test</A>
+</I>&gt;<i> However, when the ACK is sent from a6 -&gt; a1 (after receiving a 200 ok) ,
+</I>it
+&gt;<i> goes through 4 proxies namely, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo.pcscf at open-ims.test</A>, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo.scscf at open-</A>
+</I>&gt;<i> ims.test, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt.scscf at open-ims.test</A> and <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt.pcscf at open-ims.test</A>
+</I>&gt;<i> 
+</I>&gt;<i> The terminating proxy i.e., <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt.pcscf at open-ims.test</A> should have sent it to
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a1 at open-ims.test.</A>  The terminating proxy had sent the INVITE request
+</I>&gt;<i> earlier correctly!
+</I>&gt;<i> But this alone is not happening. Am I missing anything here? From DNS
+</I>&gt;<i> traces, I am not able to see anything wrong.
+</I>
+There are 2 issues with your client:
+1. It does not include a Contact header field in 200 OK of INVITE.
+2.  The ACK does not take the Contact address as target address (it is not
+available because of above issue).
+
+BR Franz
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007773.html">[OpenIMSCore-Users] Installing OpenIMSCore on raspberry pi?
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7774">[ date ]</a>
+              <a href="thread.html#7774">[ thread ]</a>
+              <a href="subject.html#7774">[ subject ]</a>
+              <a href="author.html#7774">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

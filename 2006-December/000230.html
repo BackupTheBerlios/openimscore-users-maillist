@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] S-CSCF dialogs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20dialogs&In-Reply-To=%3C4579966D.2040403%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000229.html">
+   <LINK REL="Next"  HREF="000232.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] S-CSCF dialogs</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20dialogs&In-Reply-To=%3C4579966D.2040403%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] S-CSCF dialogs">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Dec  8 17:44:29 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000229.html">[OpenIMSCore-Users] S-CSCF dialogs
+</A></li>
+        <LI>Next message: <A HREF="000232.html">[OpenIMSCore-Users] S-CSCF dialogs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#230">[ date ]</a>
+              <a href="thread.html#230">[ thread ]</a>
+              <a href="subject.html#230">[ subject ]</a>
+              <a href="author.html#230">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Mario,
+
+First let me apologize if my response seemed ironic. I assure you that 
+it was not my intention to do that. Now that I read it again, I think 
+that forgot a &quot;?&quot; after the first smiley and you might have 
+missunderstood that. I am not a SER expert so to say, and as such I did 
+not remembered exactly if tm has dialog support or that was in the 
+dialog module. That is what I meant. It is quite hard for me to keep up 
+with the SER features as they are hardly documented. I don't know how 
+other people are keeping up with that, but I for one have difficulties 
+here due to lack of documentation.
+
+Yes, the NOTIFY was recently updated and takes advantage of that. As 
+such these are sent on the same dialog.
+
+We need to modify also the s_dialog and p_dialog (in P-CSCF) pretty soon 
+to take advantage of this structure, so that the CSCFs could send BYE 
+requests if needed.
+
+So definitely your question was not stupid at all and you are completely 
+right here. However, please understand that this was a big effort that 
+took a lot of our time to get even to this stage. When having to 
+implement more than 4 different components, we had to cut corners in 
+order to get sooner to a &quot;usable&quot; version that got released. We could 
+have waited more, integrated all the new features and so on. But we 
+hoped that by releasing it sooner we can get to a better result in less 
+time as we would get help from the community during this process. This 
+specific item is on the TODO list and if you could spend some time on 
+putting dlg_t in the s_dialog and p_dialog now, your help would be most 
+welcomed.
+
+-Dragos
+
+M&#225;rio Ferreira wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I don't understand your answer, because are the code comments to say 
+</I>&gt;<i> 'tm dialog':   
+</I>&gt;<i>
+</I>&gt;<i> /** registrar subscriber structure */
+</I>&gt;<i> typedef struct _r_subscriber {
+</I>&gt;<i> 	str subscriber;		/**&lt; The subscribers contact 			*/
+</I>&gt;<i> 	int event;
+</I>&gt;<i>
+</I>&gt;<i> 	int expires;		/**&lt; Time of expiration		 			*/
+</I>&gt;<i> 	dlg_t *dialog;		/**&lt; 
+</I>&gt;<i> tm dialog to send notify out		*/
+</I>&gt;<i> 	
+</I>&gt;<i> 	struct _r_subscriber *next;/**&lt; the next subscriber in the list		*/
+</I>&gt;<i> 	struct _r_subscriber *prev;/**&lt; the previous subscriber in the list	*/
+</I>&gt;<i>
+</I>&gt;<i> } r_subscriber;
+</I>&gt;<i>
+</I>&gt;<i> I don't appreciate ironic comments to my questions. If you think that 
+</I>&gt;<i> the question is stupid, all you have to do is not to answer, mainly 
+</I>&gt;<i> when  the question is not directed to you, but to a list.
+</I>&gt;<i>
+</I>&gt;<i> regards,
+</I>&gt;<i>
+</I>&gt;<i> M&#225;rio Ferreira
+</I>&gt;<i>
+</I>&gt;<i> On 12/7/06, *Dragos Vingarzan* &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A> 
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>     Hi Mario,
+</I>&gt;<i>
+</I>&gt;<i>     No, they are not. Are there dialogs in tm :)... I though that was a
+</I>&gt;<i>     different module, called dialog. Well, anyway, the structures are not
+</I>&gt;<i>     there simply because we had this functionality before that module.
+</I>&gt;<i>
+</I>&gt;<i>     The utility of the S-CSCF dialogs is that we can record-route
+</I>&gt;<i>     properly,
+</I>&gt;<i>     follow messages in dialogs and in the future terminate them when the
+</I>&gt;<i>     user is not longer registered. Sorry about the big mess, but you
+</I>&gt;<i>     can't
+</I>&gt;<i>     really say that the dialogs in SER are clean either :(...
+</I>&gt;<i>
+</I>&gt;<i>     -Dragos
+</I>&gt;<i>
+</I>&gt;<i>     M&#225;rio Ferreira wrote:
+</I>&gt;<i>     &gt; Hi,
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; The S-CSCF dialogs (s_dialog struct) are not SIP dialogs, like
+</I>&gt;<i>     the tm
+</I>&gt;<i>     &gt; dialogs that
+</I>&gt;<i>     &gt; the event subscribers struct holds.  This way, these dialogs
+</I>&gt;<i>     can't be
+</I>&gt;<i>     &gt; used for
+</I>&gt;<i>     &gt; sending SIP messages.
+</I>&gt;<i>     &gt; What is the utility of the S-CSCF dialogs?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; regards,
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; M&#225;rio Ferreira.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; _______________________________________________
+</I>&gt;<i>     &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>     &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     --
+</I>&gt;<i>     -----------------------------------------
+</I>&gt;<i>     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     FOKUS/NGNI
+</I>&gt;<i>     Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     10589 Berlin,Germany
+</I>&gt;<i>     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     Web www.fokus.fraunhofer.de &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>     We could change the world if God would give us the source code...
+</I>&gt;<i>     -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000229.html">[OpenIMSCore-Users] S-CSCF dialogs
+</A></li>
+	<LI>Next message: <A HREF="000232.html">[OpenIMSCore-Users] S-CSCF dialogs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#230">[ date ]</a>
+              <a href="thread.html#230">[ thread ]</a>
+              <a href="subject.html#230">[ subject ]</a>
+              <a href="author.html#230">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

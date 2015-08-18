@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] S-CSCF - Presence Server Interaction Issues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20-%20Presence%20Server%20Interaction%20Issues&In-Reply-To=%3C47D30C47.208%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003669.html">
+   <LINK REL="Next"  HREF="003593.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] S-CSCF - Presence Server Interaction Issues</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20-%20Presence%20Server%20Interaction%20Issues&In-Reply-To=%3C47D30C47.208%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] S-CSCF - Presence Server Interaction Issues">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Sat Mar  8 22:59:35 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003669.html">[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?
+</A></li>
+        <LI>Next message: <A HREF="003593.html">[OpenIMSCore-Users] What are you using the Open IMS Core for ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3592">[ date ]</a>
+              <a href="thread.html#3592">[ thread ]</a>
+              <a href="subject.html#3592">[ subject ]</a>
+              <a href="author.html#3592">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Vijay,
+
+First let me say that the default Service Profile that comes with the 
+core is not really good for presence, but it's mostly a configuration 
+example. There are issues with it, as presence should be triggered on 
+the terminating side. A fix will come soon, but we are still evaluating 
+some implications.
+
+In your particular case, I would say that once the un-SUBSCRIBE went 
+through, the dialog does not exist anymore. Yet if I read RFC3265:
+
+3.1.4.3. Unsubscribing
+
+   Unsubscribing is handled in the same way as refreshing of a
+   subscription, with the &quot;Expires&quot; header set to &quot;0&quot;.  Note that a
+   successful unsubscription will also trigger a final NOTIFY message.
+
+I fail to see the logic behind this. How long should I keep the dialog 
+in the S-CSCF in order to be able to accept the notification? Then 
+you'll have to be careful that the notifier does not actually extend the 
+session in the NOTIFY...
+
+Then there is this section:
+
+3.1.6.4. Refreshing of Subscriptions
+
+   When a notifier receives a subscription refresh, assuming that the
+   subscriber is still authorized, the notifier updates the expiration
+   time for the subscription.  As with the initial subscription, the
+   server MAY shorten the amount of time until expiration, but MUST NOT
+   increase it.  The final expiration time is placed in the &quot;Expires&quot;
+   header in the response.  If the duration specified in a SUBSCRIBE
+   message is unacceptably short, the notifier SHOULD respond with a
+   &quot;423 Subscription Too Brief&quot; message.
+
+   If no refresh for a notification address is received before its
+   expiration time, the subscription is removed.  When removing a
+   subscription, the notifier SHOULD send a NOTIFY message with a
+   &quot;Subscription-State&quot; value of &quot;terminated&quot; to inform it that the
+   subscription is being removed.  If such a message is sent, the
+   &quot;Subscription-State&quot; header SHOULD contain a &quot;reason=timeout&quot;
+   parameter.
+
+      The sending of a NOTIFY when a subscription expires allows the
+      corresponding dialog to be terminated, if appropriate.
+
+So this says that you need a NOTIFY to terminate a subscription. Again I 
+find this wrong as if the NOTIFY fails to be delivered, should the 
+client and the proxy on the way keep the state forever? Or until when?
+
+
+Maybe I don't understand the RFC right, but then I don't see how to 
+eliminate any memory leaks from dialog-aware proxies... opinions?
+
+
+Then, I think that irregardless of the NOTIFY's response, the presence 
+server should not refuse the users's access, but it should just affect 
+that specific dialog.
+
+Regards,
+-Dragos
+
+Varma, Vijay K wrote:
+&gt;<i>
+</I>&gt;<i> Hello Peter/Dragos:
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I have the following scenario.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> OSIMS core: version &gt;500 (most likely 514)
+</I>&gt;<i>
+</I>&gt;<i> Two UCT clients: version 1.0.8
+</I>&gt;<i>
+</I>&gt;<i> External Presence Server (PS)
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Alice and Bob have presence turned on and subscribe to each other.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Bob registers; Bob sees as Alice as &#8220;offline&#8221;
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Alice registers; Both Bob and Alice see the other as &#8220;Available&#8221;
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Alice and Bob change their presence status: the other gets notified of 
+</I>&gt;<i> the change in presence status.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Now Alice deregisters:
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Alice PUBLISHES she is going &#8220;offine&#8221; and the PS sends NOTIFY to Bob 
+</I>&gt;<i> that Alice has gone &#8220;offline&#8221;.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> So far everything is fine.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> As a part of deregistration process, the S-CSCF sends a &#8220;SUBSCRIBE&#8221; to 
+</I>&gt;<i> the PS with Expires timer 0 to terminate Alice&#8217;s Subscription. The PS 
+</I>&gt;<i> responds with a 200 OK followed by a NOTIFY to terminate Alice&#8217;s 
+</I>&gt;<i> subscription. Sending a NOTIFY in response to SUBSCRIBE with Expires 0 
+</I>&gt;<i> is a valid procedure as per RFC 3265.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> However, by the time the PS sends a NOTIFY, the S-CSCF has 
+</I>&gt;<i> deregistered Alice and responds with a &#8220;Status 403 Forbidden &#8211; Dialog 
+</I>&gt;<i> not found on S-CSCF or Terminating user not suitable for unregistered 
+</I>&gt;<i> services&#8221;
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> The above message causes the PS not to accept any more PUBLISH from 
+</I>&gt;<i> Alice when she registers again. Therefore, Alice&#8217;s presence status is 
+</I>&gt;<i> not seen by Bob anymore.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Is this a problem with the S-CSCF not waiting for the NOTIFY to come 
+</I>&gt;<i> back from the PS before clearing Alice&#8217;s records?
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Wireshark capture for Alice deregistering and up to 403 Forbidden are 
+</I>&gt;<i> attached.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> As a reference when OpenSER PS is used instead of the external PS, 
+</I>&gt;<i> Alice can deregister and register again and the presence status is 
+</I>&gt;<i> reflected properly. However, I notice that OpenSER PS does not respond 
+</I>&gt;<i> with a NOTIFY to the SUBSCRIBE when Alice deregisters.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I would appreciate your insight into this problem. Thanks,
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Vijay
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003669.html">[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?
+</A></li>
+	<LI>Next message: <A HREF="003593.html">[OpenIMSCore-Users] What are you using the Open IMS Core for ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3592">[ date ]</a>
+              <a href="thread.html#3592">[ thread ]</a>
+              <a href="subject.html#3592">[ subject ]</a>
+              <a href="author.html#3592">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

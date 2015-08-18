@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Update%20subscribe%20dialog%20does%20not%20work%2C%0A%20and%20tcp%20buffer%20error%20for%20NOTIFY%20messages&In-Reply-To=%3C48DB893C.7020700%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004677.html">
+   <LINK REL="Next"  HREF="004694.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Update%20subscribe%20dialog%20does%20not%20work%2C%0A%20and%20tcp%20buffer%20error%20for%20NOTIFY%20messages&In-Reply-To=%3C48DB893C.7020700%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Sep 25 14:51:08 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004677.html">[OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages
+</A></li>
+        <LI>Next message: <A HREF="004694.html">[OpenIMSCore-Users] REGISTER operation failed with [504 Server	Time-Out].
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4679">[ date ]</a>
+              <a href="thread.html#4679">[ thread ]</a>
+              <a href="subject.html#4679">[ subject ]</a>
+              <a href="author.html#4679">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>1) yes. You can subscribe with AS1 having an identity let's say ID1
+subscribe to AS2 for an identity of an user/service ID2.
+2) it is possible, but you'll have to route it properly. When you
+originate requests from the AS, I would say that in all cases you are
+wrong if you do send it directly to a S-CSCF. This is because you can't
+choose in the AS an S-CSCF yourself.
+
+This was said many times on the list and I will write it one more time
+just to make things clear:
+Application Server can send initial requests in 2 modes towards the an
+IMS Core network
+- origination mode - the AS1 simulates that the message originates from
+id1, or actually it is id1 (PSI case). AS1 wants that origination
+services will be applied for these requests -&gt; the IFC triggers will be
+checked for id1. Next the call will be routed towards the terminating
+side, where the IFC triggers of id2 will also be potentially checked.
+- termination mode - the AS1 does not require services for the
+originating side and it is enough to do termination. Then only the IFC
+triggers of id2 will be potentially checked, if id2 is an IMS user or
+service, of course.
+
+For origination, your request should be something like:
+
+SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">id2 at network2</A>
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">id1 at network1</A>&gt;
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">id2 at network2</A>&gt;
+Route: &lt;sip:network1;orig&gt;
+
+and for termination:
+
+SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">id2 at network2</A>
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">id1 at network1</A>&gt;
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">id2 at network2</A>&gt;
+
+
+Both messages need to be routed normally. The first one will be sent
+first to network1 in the Route header and the 2nd message to network2 in
+the Request-URI. Both will resolve into respective I-CSCFs, which will
+locate the correct S-CSCFs to be contacted next, indicating also the
+session case to be treated.
+
+Hope this clears it...
+
+Cheers,
+-Dragos
+
+Persa Zaloshnja wrote:
+&gt;<i> Hi Franz,
+</I>&gt;<i>  
+</I>&gt;<i> I am trying now to make it really simple by asking these 2 questions
+</I>&gt;<i> that might lead to a better understanding of the problem I am facing:
+</I>&gt;<i>  
+</I>&gt;<i> Question 1: Is it possible for an application server (that does not
+</I>&gt;<i> send a register) to send a subscribe to another application server to
+</I>&gt;<i> get notfications on presence updates ( Answer: yes or no ?)
+</I>&gt;<i> Question 2: From the text below I get the feeling that I have to
+</I>&gt;<i> register as a user agent to be able to send a subscribe to get
+</I>&gt;<i> notifications from an as without the problem we have right now ( right
+</I>&gt;<i> or wrong ?)
+</I>&gt;<i>  
+</I>&gt;<i> If it is possible to do as stated in Q1, could you please give me a
+</I>&gt;<i> hint on how to do the subscription between as_1 and as_2 to be able to
+</I>&gt;<i> get the notifications.
+</I>&gt;<i>  
+</I>&gt;<i> Thanks in advance,
+</I>&gt;<i>  
+</I>&gt;<i> Persa
+</I>&gt;<i>
+</I>&gt;<i> &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>
+</I>&gt;<i> &gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">arushi58 at hotmail.com</A>
+</I>&gt;<i> &gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; Subject: RE: [OpenIMSCore-Users] Update subscribe dialog does not
+</I>&gt;<i> work, and tcp buffer error for NOTIFY messages
+</I>&gt;<i> &gt; Date: Wed, 24 Sep 2008 14:45:49 +0200
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hi Persa,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; It is still strange. I will explain below.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; There is a set of users provisioned in the open ims core, they do
+</I>&gt;<i> &gt; &gt; register/log in the system and they send SIP Publish messages. This
+</I>&gt;<i> &gt; &gt; publish messages are going to as_2.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; So as_2 as a state agent fort he PUBLISHED state of the users.
+</I>&gt;<i> That's o.k.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; as_1 wants to subscribe to these presence updates by sending a
+</I>&gt;<i> subscribe
+</I>&gt;<i> &gt; &gt; with a To field of the registered user he is interested in
+</I>&gt;<i> subscribing on.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; A SUBSCRIBE request is usually sent by a user agent. So why does not
+</I>&gt;<i> as_1
+</I>&gt;<i> &gt; behave as a user of IMS? And REGISTER as users usually do?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; When this subscription is coming to ims core there is a rule set
+</I>&gt;<i> (trigger
+</I>&gt;<i> &gt; &gt; point) that this message if it is a SIP subscribe should go to the
+</I>&gt;<i> as_2
+</I>&gt;<i> &gt; &gt; instead of the user.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Which kind of rule set?
+</I>&gt;<i> &gt; If it is the iFC mechanism of IMS, than you have to assign the
+</I>&gt;<i> profile with
+</I>&gt;<i> &gt; that iFC to a Public User Identity.
+</I>&gt;<i> &gt; How do you assign the iFC to as_1 if it does not have a Public User
+</I>&gt;<i> &gt; Identity?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; How does your 'rule set' work?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Regards
+</I>&gt;<i> &gt; Franz
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Get news, entertainment and everything you care about at Live.com.
+</I>&gt;<i> Check it out! &lt;<A HREF="http://www.live.com/getstarted.aspx%20">http://www.live.com/getstarted.aspx%20</A>&gt;
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004677.html">[OpenIMSCore-Users] Update subscribe dialog does not work, and tcp buffer error for NOTIFY messages
+</A></li>
+	<LI>Next message: <A HREF="004694.html">[OpenIMSCore-Users] REGISTER operation failed with [504 Server	Time-Out].
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4679">[ date ]</a>
+              <a href="thread.html#4679">[ thread ]</a>
+              <a href="subject.html#4679">[ subject ]</a>
+              <a href="author.html#4679">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

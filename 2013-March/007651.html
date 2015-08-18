@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Integration Pcscf.qos and PCRF problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2013-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Integration%20Pcscf.qos%20and%20PCRF%20problem&In-Reply-To=%3C004801ce1960%2479c60b20%246d522160%24%40technikum-wien.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007650.html">
+   <LINK REL="Next"  HREF="007652.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Integration Pcscf.qos and PCRF problem</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Integration%20Pcscf.qos%20and%20PCRF%20problem&In-Reply-To=%3C004801ce1960%2479c60b20%246d522160%24%40technikum-wien.at%3E"
+       TITLE="[OpenIMSCore-Users] Integration Pcscf.qos and PCRF problem">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Tue Mar  5 06:15:38 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007650.html">[OpenIMSCore-Users] PCRF PCEF integration
+</A></li>
+        <LI>Next message: <A HREF="007652.html">[OpenIMSCore-Users] Fwd: Open-IMS 403 Forbidden (Not Registered &#8211; You Must First Register with SCSCF) Problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7651">[ date ]</a>
+              <a href="thread.html#7651">[ thread ]</a>
+              <a href="subject.html#7651">[ subject ]</a>
+              <a href="author.html#7651">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Usman,
+
+&gt;<i> I have problem with 2 user registration via UCT IMS Client during testing
+</I>PCRF
+&gt;<i> &amp; PCEF.
+</I>&gt;<i> I have installed PCRF module completely. First, i register alice ... it
+</I>works Ok.
+&gt;<i> But when try to register bob (2 user), somehow i am not able to register.[
+</I>&gt;<i> Error: 17:13:05&gt; Registration Failure (for REGISTER) ] I have also check
+</I>on the
+&gt;<i> s-cscf terminal window but didn't find any clue
+</I>
+&gt;<i> I have also attached the wireshark screenshot.
+</I>
+The screenshot does not help. You have to look into the details of the
+signaling sequence (create a trace protocol with &quot; tcpdump -i any -s 3000 -w
+/var/tmp/trace.pcap&quot;).
+If you need help post the trace-protocol.
+
+&gt;<i> 1. What is the exact difference between pcscf.cfg and pcscf.qos.cfg files
+</I>&gt;<i> because when i use the simple pcscf.sh file, I am able to register as many
+</I>&gt;<i> users as i have in HSS ?
+</I>
+You have to analyze the difference. There is no other way around.
+If you post both files I might help if I find time in the next days.
+
+&gt;<i> 2. When i can see Diameter message on PCRF terminal ? (Although in the UCT
+</I>&gt;<i> IMS client, I have set the QoS = &quot;Mandatory&quot; ?
+</I>
+Again the first step is to analyze the trace-protocol and the respective
+log-file from the console.
+
+&gt;<i> 3. Did I have to configure the openXcap, even though I have not created
+</I>any
+&gt;<i> policy. I am doing this QoS testing with alice &amp; bob I will be very
+</I>thankful if
+&gt;<i> somebody who is already running PCRF successfully on his machine can
+</I>&gt;<i> answer. Specially this pcscf.cfg and pcscf.qos.cfg files
+</I>
+No. XCAP is a totally different story which has nothing to do with PCRF.
+I remember I tried to setup the PCRF about 3 years ago with no success. I
+analyzed the issues in more detail an recognized that the format of diameter
+messages was not aligned anymore.
+There was obviously an update of the protocol format on one side (I guess
+OpenIMSCore) and the other side complained about unknown AVPs in the
+message.
+This has to be updated in the PCRF solution of UCT.
+
+BR Franz
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007650.html">[OpenIMSCore-Users] PCRF PCEF integration
+</A></li>
+	<LI>Next message: <A HREF="007652.html">[OpenIMSCore-Users] Fwd: Open-IMS 403 Forbidden (Not Registered &#8211; You Must First Register with SCSCF) Problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7651">[ date ]</a>
+              <a href="thread.html#7651">[ thread ]</a>
+              <a href="subject.html#7651">[ subject ]</a>
+              <a href="author.html#7651">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

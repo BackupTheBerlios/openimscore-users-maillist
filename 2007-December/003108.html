@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] SCSCF not sending the INVITE to Term UE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SCSCF%20not%20sending%20the%20INVITE%20to%20Term%20UE&In-Reply-To=%3C47610D58.4060109%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003107.html">
+   <LINK REL="Next"  HREF="003111.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] SCSCF not sending the INVITE to Term UE</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SCSCF%20not%20sending%20the%20INVITE%20to%20Term%20UE&In-Reply-To=%3C47610D58.4060109%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] SCSCF not sending the INVITE to Term UE">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Dec 13 11:45:44 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003107.html">[OpenIMSCore-Users] SCSCF not sending the INVITE to Term UE
+</A></li>
+        <LI>Next message: <A HREF="003111.html">[OpenIMSCore-Users] Policy Decision Function (PDF)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3108">[ date ]</a>
+              <a href="thread.html#3108">[ thread ]</a>
+              <a href="subject.html#3108">[ subject ]</a>
+              <a href="author.html#3108">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Sabyasachi,
+
+PSTN = Public Switched Telephony Network, or how we smart-NGN-asses call
+it, Plain Stupid Telephony Network ;-). The default 127.0.0.1:9060 would
+need to be replaced with the address of your gateway to PSTN.
+
+so, you are trying to call a TEL URI. In this case the S-CSCF tries to
+route towards the PSTN as it thinks that, since the ENUM query failed on
+it, this could be the only way to handle it.
+
+Solution: use enum and indicate that your domain is servicing that TEL
+URI. Or don't use TEL URI....(or, as always, just hack the cfg file).
+
+Also I see that you are using a very old revision (268?). I recommend
+that you update to the latest one, which has a much improved ENUM and
+TEL URI handling.
+
+
+Cheers,
+-Dragos
+
+Sabyasachi Samal wrote:
+&gt;<i> Hello Dragos,
+</I>&gt;<i>  
+</I>&gt;<i> I am having one problem while doing the call setup between two UEs. I
+</I>&gt;<i> am registering two users and it is going fine. While orig user sends
+</I>&gt;<i> INVITE it reaches upto scscf and after that scscf sends that to port
+</I>&gt;<i> 9060. but it should send to the term user. I think this is due to the
+</I>&gt;<i> below entry in the scscf.cfg. I don't know the exact porpose the below
+</I>&gt;<i> code.
+</I>&gt;<i>  
+</I>&gt;<i> route[PSTN]
+</I>&gt;<i> {
+</I>&gt;<i> t_relay_to_udp(&quot;10.21.21.89 &lt;<A HREF="http://10.21.21.89">http://10.21.21.89</A>&gt;&quot;, &quot;9060&quot;);
+</I>&gt;<i> exit;
+</I>&gt;<i> }
+</I>&gt;<i>  
+</I>&gt;<i> My requirement/configuration:
+</I>&gt;<i>  
+</I>&gt;<i> I am running the open ims servers (CSCFs and HSS) in one
+</I>&gt;<i> m/c(10.21.21.89 &lt;<A HREF="http://10.21.21.89">http://10.21.21.89</A>&gt;)
+</I>&gt;<i> The two users (micky and donald) are using other m/c with IP addr
+</I>&gt;<i> 10.21.21.152 &lt;<A HREF="http://10.21.21.152">http://10.21.21.152</A>&gt; with different port.donald using
+</I>&gt;<i> port 6080 and micky 5070.
+</I>&gt;<i>  
+</I>&gt;<i> I need a complete call setup between micky and donald. Pl suggest me
+</I>&gt;<i> how to achieve that?
+</I>&gt;<i>  
+</I>&gt;<i> Here my question is why the Invite is sent to 9060 it should go to 6080.
+</I>&gt;<i>  
+</I>&gt;<i> Sending the ethereal trace and the scscf.cfg that i am using for your
+</I>&gt;<i> reference.
+</I>&gt;<i>  
+</I>&gt;<i> Pl help me to solve this problem.
+</I>&gt;<i>  
+</I>&gt;<i> Thanx in advance.
+</I>&gt;<i>  
+</I>&gt;<i> Regards,
+</I>&gt;<i> Sabyasachi
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003107.html">[OpenIMSCore-Users] SCSCF not sending the INVITE to Term UE
+</A></li>
+	<LI>Next message: <A HREF="003111.html">[OpenIMSCore-Users] Policy Decision Function (PDF)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3108">[ date ]</a>
+              <a href="thread.html#3108">[ thread ]</a>
+              <a href="subject.html#3108">[ subject ]</a>
+              <a href="author.html#3108">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

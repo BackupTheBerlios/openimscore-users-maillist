@@ -1,0 +1,337 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Sip Messaging
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Sip%20Messaging&In-Reply-To=%3C0AE2132CE51D1943A20F450AA7258E5C024CC03B%40INOAVREX05.ptin.corpPT.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001260.html">
+   <LINK REL="Next"  HREF="001262.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Sip Messaging</H1>
+    <B>Jos&#233; Miguel Freitas (IT)</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Sip%20Messaging&In-Reply-To=%3C0AE2132CE51D1943A20F450AA7258E5C024CC03B%40INOAVREX05.ptin.corpPT.com%3E"
+       TITLE="[OpenIMSCore-Users] Sip Messaging">it-j-freitas at ptinovacao.pt
+       </A><BR>
+    <I>Wed Mar 21 15:19:10 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001260.html">[OpenIMSCore-Users] Sip Messaging
+</A></li>
+        <LI>Next message: <A HREF="001262.html">[OpenIMSCore-Users] Sip Messaging
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1261">[ date ]</a>
+              <a href="thread.html#1261">[ thread ]</a>
+              <a href="subject.html#1261">[ subject ]</a>
+              <a href="author.html#1261">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+One thing that we had to add to the REGISTER message sent by the sofsip-cli (sofia-sip stack client example), to get it work with OpenIMSCore, was the Expires header :)
+
+So, in the sofsip-cli/src/ssc_sip.c, you can modify the ssc_register() method to include the Expires header:
+
+  nua_register(op-&gt;op_handle, 
+    TAG_IF(registrar, NUTAG_REGISTRAR(registrar)),
+    SIPTAG_EXPIRES_STR(&quot;3600&quot;), // Expires header missing ...
+    TAG_NULL());
+
+Do the same in the ssc_auth() method:
+
+  nua_authenticate(authitem-&gt;ssc_op-&gt;op_handle, NUTAG_AUTH(authstring), 
+    SIPTAG_EXPIRES_STR(&quot;3600&quot;),  // Expires header missing ...	    
+    TAG_END());
+
+It worked for us..
+
+Regards,
+Miguel Freitas
+
+
+-----Original Message-----
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> on behalf of Cavalera Claudio
+Sent: Wed 3/21/2007 10:17 AM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Re: [OpenIMSCore-Users] Sip Messaging
+ 
+-----Original Message-----
+From: Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>]
+
+Change it again and send it to port 4060 (P-CSCF).
+
+
+ 
+Thanks Franz,
+I assume clients should communicate with just P-CSCF on port 4060, right?
+
+Now I think I can't register although P-CSCF tells me I'm registered, S-CSCF does not think so. At least this is what I've understood from the trace. I've modified the client so send &quot;sip:open-ims.test&quot; as REGISTER Request-URI, but now I'm stuck again.
+Please have a look at this trace and provide some other hints.
+Thanks,
+Claudio 
+
+sofsip&gt; r
+UA: REGISTER sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> - registering address to network
+sofsip&gt; send 513 bytes to udp/[127.0.0.1]:4060 at 10:16:28.965144:
+   ------------------------------------------------------------------------
+   REGISTER sip:open-ims.test SIP/2.0
+   Via: SIP/2.0/UDP 172.31.77.49:33090;rport;branch=z9hG4bKeBeSegZF0SXpj
+   Max-Forwards: 70
+   From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=e6Hv913FK5rQj
+   To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+   Call-ID: 13175069-5238-122a-55a4-000e0cc407cd
+   CSeq: 81117758 REGISTER
+   Contact: &lt;sip:6UH3BK2rr8S6jvae.is.invalid:5060;transport=udp&gt;
+   User-Agent: sofia-sip/1.12.5
+   Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, PRACK, MESSAGE, SUBSCRIBE, NOTIFY, REFER, UPDATE
+   Supported: timer, 100rel, path
+   Content-Length: 0
+
+   ------------------------------------------------------------------------
+recv 831 bytes from udp/[127.0.0.1]:4060 at 10:16:28.995856:
+   ------------------------------------------------------------------------
+   SIP/2.0 401 Unauthorized - Challenging the UE
+   Via: SIP/2.0/UDP 172.31.77.49:33090;received=172.31.77.49;rport=33090;branch=z9hG4bKeBeSegZF0SXpj
+   From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=e6Hv913FK5rQj
+   To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=d7837ce6bbd631122d10546eb75bb4cf-eff2
+   Call-ID: 13175069-5238-122a-55a4-000e0cc407cd
+   CSeq: 81117758 REGISTER
+   Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+   Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+   Server: Sip EXpress router (2.1.0-dev1-OpenIMSCore-evision: 195  (i386/linux))
+   Content-Length: 0
+   Warning: 392 127.0.0.1:6060 &quot;Noisy feedback tells:  pid=328 req_src_ip=127.0.0.1 req_src_port=5060 in_uri=sip:scscf.open-ims.test:6060 out_uri=sip:scscf.open-ims.test:6060 via_cnt==3&quot;
+   WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;, nonce=&quot;cc1d0983b8d993d5c19501e2c45df8ed&quot;, algorithm=MD5
+
+   ------------------------------------------------------------------------
+UA: REGISTER: 401 Unauthorized - Challenging the UE
+Server auth: Digest realm=&quot;open-ims.test&quot;, nonce=&quot;cc1d0983b8d993d5c19501e2c45df8ed&quot;, algorithm=MD5
+Please authenticate 'REGISTER' with the 'k' command (e.g. 'k password', or 'k [method:realm:username:]password')
+sofsip&gt; k <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>:bob
+UA: authenticating 'REGISTER' with 'Digest:&quot;open-ims.test&quot;:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>:bob'.
+sofsip&gt; send 715 bytes to udp/[127.0.0.1]:4060 at 10:16:38.679119:
+   ------------------------------------------------------------------------
+   REGISTER sip:open-ims.test SIP/2.0
+   Via: SIP/2.0/UDP 172.31.77.49:33090;rport;branch=z9hG4bKFm7HgBgKX2K9D
+   Max-Forwards: 70
+   From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=e6Hv913FK5rQj
+   To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+   Call-ID: 13175069-5238-122a-55a4-000e0cc407cd
+   CSeq: 81117759 REGISTER
+   Contact: &lt;sip:6UH3BK2rr8S6jvae.is.invalid:5060;transport=udp&gt;
+   User-Agent: sofia-sip/1.12.5
+   Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, PRACK, MESSAGE, SUBSCRIBE, NOTIFY, REFER, UPDATE
+   Supported: timer, 100rel, path
+   Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;, realm=&quot;open-ims.test&quot;, nonce=&quot;cc1d0983b8d993d5c19501e2c45df8ed&quot;, algorithm=MD5, uri=&quot;sip:open-ims.test&quot;, response=&quot;1316c276f33408d477fd37ad3c252ad9&quot;
+   Content-Length: 0
+
+   ------------------------------------------------------------------------
+recv 730 bytes from udp/[127.0.0.1]:4060 at 10:16:38.702877:
+   ------------------------------------------------------------------------
+   SIP/2.0 200 OK - SAR succesful and registrar saved
+   Via: SIP/2.0/UDP 172.31.77.49:33090;received=172.31.77.49;rport=33090;branch=z9hG4bKFm7HgBgKX2K9D
+   From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=e6Hv913FK5rQj
+   To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=d7837ce6bbd631122d10546eb75bb4cf-1f26
+   Call-ID: 13175069-5238-122a-55a4-000e0cc407cd
+   CSeq: 81117759 REGISTER
+   Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+   Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+   Server: Sip EXpress router (2.1.0-dev1-OpenIMSCore-evision: 195  (i386/linux))
+   Content-Length: 0
+   Warning: 392 127.0.0.1:6060 &quot;Noisy feedback tells:  pid=329 req_src_ip=127.0.0.1 req_src_port=5060 in_uri=sip:scscf.open-ims.test:6060 out_uri=sip:scscf.open-ims.test:6060 via_cnt==3&quot;
+
+   ------------------------------------------------------------------------
+UA: REGISTER: 200 OK - SAR succesful and registrar saved
+UA: succesfully registered sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> to network
+sofsip&gt; m sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+UA: sending message to sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+Enter message&gt; Hello alice!
+
+
+
+
+sofsip&gt; r
+UA: REGISTER sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> - registering address to network
+sofsip&gt; send 524 bytes to udp/[127.0.0.1]:4060 at 10:00:54.152044:
+   ------------------------------------------------------------------------
+   REGISTER sip:scscf.open-ims.test:5060 SIP/2.0
+   Via: SIP/2.0/UDP 172.31.77.49:33062;rport;branch=z9hG4bKXty7HFt2vm8Ue
+   Max-Forwards: 70
+   From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=Xv49DUB2teeZQ
+   To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+   Call-ID: e5e62ad1-5235-122a-d397-000e0cc407cd
+   CSeq: 81117291 REGISTER
+   Contact: &lt;sip:H8NHUKZgmQrcc14S.is.invalid:5060;transport=udp&gt;
+   User-Agent: sofia-sip/1.12.5
+   Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, PRACK, MESSAGE, SUBSCRIBE, NOTIFY, REFER, UPDATE
+   Supported: timer, 100rel, path
+   Content-Length: 0
+
+   ------------------------------------------------------------------------
+recv 831 bytes from udp/[127.0.0.1]:4060 at 10:00:54.185664:
+   ------------------------------------------------------------------------
+   SIP/2.0 401 Unauthorized - Challenging the UE
+   Via: SIP/2.0/UDP 172.31.77.49:33062;received=172.31.77.49;rport=33062;branch=z9hG4bKXty7HFt2vm8Ue
+   From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=Xv49DUB2teeZQ
+   To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=d7837ce6bbd631122d10546eb75bb4cf-2d8e
+   Call-ID: e5e62ad1-5235-122a-d397-000e0cc407cd
+   CSeq: 81117291 REGISTER
+   Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+   Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+   Server: Sip EXpress router (2.1.0-dev1-OpenIMSCore-evision: 195  (i386/linux))
+   Content-Length: 0
+   Warning: 392 127.0.0.1:6060 &quot;Noisy feedback tells:  pid=328 req_src_ip=127.0.0.1 req_src_port=5060 in_uri=sip:scscf.open-ims.test:6060 out_uri=sip:scscf.open-ims.test:6060 via_cnt==3&quot;
+   WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;, nonce=&quot;970beff7c22a727a028fd609c15e26fd&quot;, algorithm=MD5
+
+   ------------------------------------------------------------------------
+UA: REGISTER: 401 Unauthorized - Challenging the UE
+Server auth: Digest realm=&quot;open-ims.test&quot;, nonce=&quot;970beff7c22a727a028fd609c15e26fd&quot;, algorithm=MD5
+Please authenticate 'REGISTER' with the 'k' command (e.g. 'k password', or 'k [method:realm:username:]password')
+sofsip&gt; k <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>:bob
+UA: authenticating 'REGISTER' with 'Digest:&quot;open-ims.test&quot;:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>:bob'.
+sofsip&gt; send 737 bytes to udp/[127.0.0.1]:4060 at 10:01:16.547222:
+   ------------------------------------------------------------------------
+   REGISTER sip:scscf.open-ims.test:5060 SIP/2.0
+   Via: SIP/2.0/UDP 172.31.77.49:33062;rport;branch=z9hG4bKy3Q0KaB6SXyea
+   Max-Forwards: 70
+   From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=Xv49DUB2teeZQ
+   To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+   Call-ID: e5e62ad1-5235-122a-d397-000e0cc407cd
+   CSeq: 81117292 REGISTER
+   Contact: &lt;sip:H8NHUKZgmQrcc14S.is.invalid:5060;transport=udp&gt;
+   User-Agent: sofia-sip/1.12.5
+   Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, PRACK, MESSAGE, SUBSCRIBE, NOTIFY, REFER, UPDATE
+   Supported: timer, 100rel, path
+   Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;, realm=&quot;open-ims.test&quot;, nonce=&quot;970beff7c22a727a028fd609c15e26fd&quot;, algorithm=MD5, uri=&quot;sip:scscf.open-ims.test:5060&quot;, response=&quot;ab363a92ff273a5c595481bc3a2b891f&quot;
+   Content-Length: 0
+
+   ------------------------------------------------------------------------
+recv 730 bytes from udp/[127.0.0.1]:4060 at 10:01:16.581570:
+   ------------------------------------------------------------------------
+   SIP/2.0 200 OK - SAR succesful and registrar saved
+   Via: SIP/2.0/UDP 172.31.77.49:33062;received=172.31.77.49;rport=33062;branch=z9hG4bKy3Q0KaB6SXyea
+   From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=Xv49DUB2teeZQ
+   To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=d7837ce6bbd631122d10546eb75bb4cf-ed34
+   Call-ID: e5e62ad1-5235-122a-d397-000e0cc407cd
+   CSeq: 81117292 REGISTER
+   Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+   Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+   Server: Sip EXpress router (2.1.0-dev1-OpenIMSCore-evision: 195  (i386/linux))
+   Content-Length: 0
+   Warning: 392 127.0.0.1:6060 &quot;Noisy feedback tells:  pid=329 req_src_ip=127.0.0.1 req_src_port=5060 in_uri=sip:scscf.open-ims.test:6060 out_uri=sip:scscf.open-ims.test:6060 via_cnt==3&quot;
+
+   ------------------------------------------------------------------------
+UA: REGISTER: 200 OK - SAR succesful and registrar saved
+UA: succesfully registered sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> to network
+sofsip&gt; m sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+UA: sending message to sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+Enter message&gt; hello alice!
+Enter message&gt; send 536 bytes to udp/[127.0.0.1]:4060 at 10:01:48.872421:
+   ------------------------------------------------------------------------
+   MESSAGE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> SIP/2.0
+   Via: SIP/2.0/UDP 172.31.77.49:33062;rport;branch=z9hG4bKZcHSN5U9p6m1N
+   Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+   Max-Forwards: 70
+   From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=y5X2Fpv5QQ4HK
+   To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+   Call-ID: 0683e8ce-5236-122a-d397-000e0cc407cd
+   CSeq: 81117318 MESSAGE
+   User-Agent: sofia-sip/1.12.5
+   Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, PRACK, MESSAGE, SUBSCRIBE, NOTIFY, REFER, UPDATE
+   Supported: timer, 100rel
+   Content-Type: text/plain
+   Content-Length: 12
+
+   hello alice!
+   ------------------------------------------------------------------------
+recv 631 bytes from udp/[127.0.0.1]:4060 at 10:01:48.872810:
+   ------------------------------------------------------------------------
+   SIP/2.0 403 Forbidden - Not Registered! You must register first with a S-CSCF
+   Via: SIP/2.0/UDP 172.31.77.49:33062;rport=33062;branch=z9hG4bKZcHSN5U9p6m1N
+   From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=y5X2Fpv5QQ4HK
+   To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=8456b23699f06fdb908a4dfde0051a59.3795
+   Call-ID: 0683e8ce-5236-122a-d397-000e0cc407cd
+   CSeq: 81117318 MESSAGE
+   Server: Sip EXpress router (2.1.0-dev1-OpenIMSCore-evision: 195  (i386/linux))
+   Content-Length: 0
+   Warning: 392 127.0.0.1:4060 &quot;Noisy feedback tells:  pid=32754 req_src_ip=172.31.77.49 req_src_port=33062 in_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> out_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> via_cnt==1&quot;
+
+   ------------------------------------------------------------------------
+UA: MESSAGE: 403 Forbidden - Not Registered! You must register first with a S-CSCF
+sofsip&gt;
+
+
+
+
+
+
+
+
+
+
+Enter message&gt; send 536 bytes to udp/[127.0.0.1]:4060 at 10:16:50.750980:
+   ------------------------------------------------------------------------
+   MESSAGE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> SIP/2.0
+   Via: SIP/2.0/UDP 172.31.77.49:33090;rport;branch=z9hG4bKgX0aj60ptBavS
+   Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+   Max-Forwards: 70
+   From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=FFBNBXmKgeFae
+   To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+   Call-ID: 2013a80d-5238-122a-55a4-000e0cc407cd
+   CSeq: 81117769 MESSAGE
+   User-Agent: sofia-sip/1.12.5
+   Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, PRACK, MESSAGE, SUBSCRIBE, NOTIFY, REFER, UPDATE
+   Supported: timer, 100rel
+   Content-Type: text/plain
+   Content-Length: 12
+
+   Hello alice!
+   ------------------------------------------------------------------------
+recv 631 bytes from udp/[127.0.0.1]:4060 at 10:16:50.751367:
+   ------------------------------------------------------------------------
+   SIP/2.0 403 Forbidden - Not Registered! You must register first with a S-CSCF
+   Via: SIP/2.0/UDP 172.31.77.49:33090;rport=33090;branch=z9hG4bKgX0aj60ptBavS
+   From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=FFBNBXmKgeFae
+   To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=8456b23699f06fdb908a4dfde0051a59.c84e
+   Call-ID: 2013a80d-5238-122a-55a4-000e0cc407cd
+   CSeq: 81117769 MESSAGE
+   Server: Sip EXpress router (2.1.0-dev1-OpenIMSCore-evision: 195  (i386/linux))
+   Content-Length: 0
+   Warning: 392 127.0.0.1:4060 &quot;Noisy feedback tells:  pid=32754 req_src_ip=172.31.77.49 req_src_port=33090 in_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> out_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> via_cnt==1&quot;
+
+   ------------------------------------------------------------------------
+UA: MESSAGE: 403 Forbidden - Not Registered! You must register first with a S-CSCF
+sofsip&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001260.html">[OpenIMSCore-Users] Sip Messaging
+</A></li>
+	<LI>Next message: <A HREF="001262.html">[OpenIMSCore-Users] Sip Messaging
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1261">[ date ]</a>
+              <a href="thread.html#1261">[ thread ]</a>
+              <a href="subject.html#1261">[ subject ]</a>
+              <a href="author.html#1261">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

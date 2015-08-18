@@ -1,0 +1,594 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Getting 513 Message Too big
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Getting%20513%20Message%20Too%20big&In-Reply-To=%3C45EF22AE.8020601%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001113.html">
+   <LINK REL="Next"  HREF="001145.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Getting 513 Message Too big</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Getting%20513%20Message%20Too%20big&In-Reply-To=%3C45EF22AE.8020601%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Getting 513 Message Too big">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Mar  7 21:38:06 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001113.html">[OpenIMSCore-Users] Getting 513 Message Too big
+</A></li>
+        <LI>Next message: <A HREF="001145.html">[OpenIMSCore-Users] Getting 513 Message Too big
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1114">[ date ]</a>
+              <a href="thread.html#1114">[ thread ]</a>
+              <a href="subject.html#1114">[ subject ]</a>
+              <a href="author.html#1114">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The cscf_get_transaction log is not an error.
+
+It is important to keep the I-CSCF on 5060 because the DNS for the home
+domain would point there.
+
+Then I don't think that the Open IMS Core was generating the 513
+actually because in th 513 I see: Server: OpenSer (1.1.0-notls
+(i386/linux)). Unless you have converted the Open IMS Core to also run
+on OpenSer (which would be great, btw), I think that somebody else is
+sending this and it probably does because of a loop (via count is 17
+when this answer is generated).
+
+So I think that actually you are not capturing all the traffic that goes
+inside the Open IMS Core, as clearly the P-CSCF is not the one
+generating that response.
+
+-Dragos
+
+
+Vignesh wrote:
+&gt;<i> Dragos,
+</I>&gt;<i>
+</I>&gt;<i> The trace was taken at the server side.
+</I>&gt;<i>
+</I>&gt;<i> I find some errors on pcscf logs like
+</I>&gt;<i> &quot;cscf_get_transaction: Transaction 7539 563488534
+</I>&gt;<i> exists.Retransmission&quot;.  Could this be related?
+</I>&gt;<i>
+</I>&gt;<i> I couldn't start icscf on 5060 since it was
+</I>&gt;<i> complaining that 5060 wasn't available.  To overcome
+</I>&gt;<i> the same I changed the default port in icscf.cfg to
+</I>&gt;<i> 5070.  Hope it is not an issue.  Also, was wondering
+</I>&gt;<i> if some other application sends it.  This is ruled out
+</I>&gt;<i> since the response is from 4060 &amp; it contains a Server
+</I>&gt;<i> header which openIMScore adds it.
+</I>&gt;<i>
+</I>&gt;<i> I am running openIMScore on a Linux machine running
+</I>&gt;<i> Fedora 6.
+</I>&gt;<i>
+</I>&gt;<i> -Vignesh
+</I>&gt;<i>
+</I>&gt;<i> --- Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> The trace was taken from the client side? because I
+</I>&gt;&gt;<i> can not see anything
+</I>&gt;&gt;<i> going inside the IMS core and to get 513 for that
+</I>&gt;&gt;<i> message is very strange...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Vignesh wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> I wanted to mention it eariler, but missed it.  I
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> am
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> using Linux Fedora core 6.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -Vignesh
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> --- Dragos Vingarzan
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Hi Vignesh,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Are you running it on Solaris? There was a patch
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> for
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> Solaris because SER
+</I>&gt;&gt;&gt;&gt;<i> was doing a wrong calculation on the message size
+</I>&gt;&gt;&gt;&gt;<i> and this might have
+</I>&gt;&gt;&gt;&gt;<i> re-surfaced. I will look for the patch...
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Vignesh wrote:
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> Dragos,
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Thanks for your mail.  
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Kindly let me know where to look for the logs
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> from
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i> cscf  and is there any place to enable logs on
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> to
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> the
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> file system.  For now, I have captured the
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> screen
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> logs
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> for the cscf, hss, ethereal trace and same is
+</I>&gt;&gt;&gt;&gt;&gt;<i> attached.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> I have also changed the subject for better
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> tracking.
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> Problem is that for the Registration I send,
+</I>&gt;&gt;&gt;&gt;&gt;<i> openIMScore responds with a 513 Message too big
+</I>&gt;&gt;&gt;&gt;&gt;<i> although I find the message reasonably
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> small(around
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> 600 Bytes).
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Kindly let me know what could be wrong.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;&gt;&gt;<i> Vignesh
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> --- Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> wrote:
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi Vignesh,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> please capture and attach a full trace from
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;<i> inside
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> the Open IMS Core
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> box, that also show the trace between the CSCFs
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;<i> and
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> HSS.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Vignesh wrote:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> I am fairly new to openImsCore.  After setting
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;<i> it
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> up(with a different domain(other than
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> open-ims.test),
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> which required modifying userdata and most of
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;<i> the
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> cfg
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> files, I tried sending a REGISTER message
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;<i> (alice)
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> to
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> the server and I got 483 Too many hops.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> I feel I am missing some important info in the
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;<i> SIP
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> message.  It appears like pcscf itself throws
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;<i> up
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> this
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> error as soon it receives the message. 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;<i> Attached
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> are
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> the ethereal logs.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> The pcscf window shows up 5(4709)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> INF:P-CSCF:----------  Subscription list end
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> -----------
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>  3(4707) ERR:P-CSCF:cscf_get_authorization:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Message
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> does not contain Authorization header.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>  3(4707) INF:P-CSCF:P_add_integrity_protected:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;<i> No
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> authorization header found.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>  2(4706) INF:P-CSCF:cscf_get_transaction:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Transaction
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 7539 95323616 exists.Retransmission?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> for every REGISTER message it receives. 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Authentication Scheme for ALICE is set to
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Digest-MD5
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> in the above case.  However, it didn't work
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;<i> for
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Early-IMS mode too.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> As seen on web interface for alice:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at imslab1.localdomain</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> IMSI: alice_ISDN_User_part_ID
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Authentication Scheme: Early IMS
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Also, icscf has been reconfigured to run on
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;<i> 5070
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> instead of the default 5060.  Hope that is not
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;<i> an
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> issue.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Please let me know if I am missing any.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> -Vignesh
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 		
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;<i> ___________________________________________________________
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> What kind of emailer are you? Find out today -
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;<i> get
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> a free analysis of your email personality. Take
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;<i> the
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> quiz at the Yahoo! Mail Championship. 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;<i> <A HREF="http://uk.rd.yahoo.com/evt=44106/*http://mail.yahoo.net/uk">http://uk.rd.yahoo.com/evt=44106/*http://mail.yahoo.net/uk</A>
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>               
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> -- 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> We could change the world if God would give us
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;<i> the
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> source code...
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;<i> 		
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;<i> ___________________________________________________________
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i> What kind of emailer are you? Find out today -
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> get
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> a free analysis of your email personality. Take
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> quiz at the Yahoo! Mail Championship. 
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;<i> <A HREF="http://uk.rd.yahoo.com/evt=44106/*http://mail.yahoo.net/uk">http://uk.rd.yahoo.com/evt=44106/*http://mail.yahoo.net/uk</A>
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> -- 
+</I>&gt;&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;&gt;&gt;<i> We could change the world if God would give us
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> source code...
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> 		
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> ___________________________________________________________
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> All New Yahoo! Mail &#8211; Tired of unwanted email
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> come-ons? Let our SpamGuard protect you.
+</I>&gt;&gt;<i> <A HREF="http://uk.docs.yahoo.com/nowyoucan.html">http://uk.docs.yahoo.com/nowyoucan.html</A>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> -- 
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;<i> We could change the world if God would give us the
+</I>&gt;&gt;<i> source code...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 		
+</I>&gt;<i> ___________________________________________________________ 
+</I>&gt;<i> All New Yahoo! Mail &#8211; Tired of unwanted email come-ons? Let our SpamGuard protect you. <A HREF="http://uk.docs.yahoo.com/nowyoucan.html">http://uk.docs.yahoo.com/nowyoucan.html</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001113.html">[OpenIMSCore-Users] Getting 513 Message Too big
+</A></li>
+	<LI>Next message: <A HREF="001145.html">[OpenIMSCore-Users] Getting 513 Message Too big
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1114">[ date ]</a>
+              <a href="thread.html#1114">[ thread ]</a>
+              <a href="subject.html#1114">[ subject ]</a>
+              <a href="author.html#1114">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

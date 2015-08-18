@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] client/server diameter
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20client/server%20diameter&In-Reply-To=%3CBAY114-W168EB64C25A72133071132AD7D0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004397.html">
+   <LINK REL="Next"  HREF="004406.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] client/server diameter</H1>
+    <B>Wathana Hak</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20client/server%20diameter&In-Reply-To=%3CBAY114-W168EB64C25A72133071132AD7D0%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] client/server diameter">wathana35 at hotmail.com
+       </A><BR>
+    <I>Wed Jul 30 10:01:56 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004397.html">[OpenIMSCore-Users] Registration in TCP mode
+</A></li>
+        <LI>Next message: <A HREF="004406.html">[OpenIMSCore-Users] client/server diameter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4399">[ date ]</a>
+              <a href="thread.html#4399">[ thread ]</a>
+              <a href="subject.html#4399">[ subject ]</a>
+              <a href="author.html#4399">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi Dragos,
+ 
+As you say I had an error with my reverse DNS ... Now it's ok but the console show this errors :
+StateMachine : Peer server.open-ims.test not responding to connection attempt
+DiameterPeer : Peer client .open-ims.test not found in peer list
+ 
+I have replace &quot;cartman&quot; in DiameterPeerTest.java by &quot;client.open-ims.test&quot;.
+My errors can be cause because client.open-ims.test and server.open-ims.test are on the same machine (10.50.2.87) or is it errors on the config files???
+ 
+More over i don't understand why the client and the server must listen on a port (in my case 3871 and 3872). It's more logic only the server listen on a port...?
+ 
+the client config :
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;DiameterPeer 
+	FQDN=&quot;client.open-ims.test&quot;
+	Realm=&quot;open-ims.test&quot;
+	Vendor_Id=&quot;10415&quot;
+	Product_Name=&quot;JavaDiameterClient&quot;
+	AcceptUnknownPeers=&quot;1&quot;
+	DropUnknownOnDisconnect=&quot;1&quot;
+	Tc=&quot;10&quot;
+	Workers=&quot;8&quot;
+	QueueLength=&quot;32&quot;
+&gt;<i>
+</I>
+	&lt;Peer FQDN=&quot;server.open-ims.test&quot; Realm=&quot;open-ims.test&quot; port=&quot;3872&quot;/&gt; 
+
+	&lt;Acceptor port=&quot;3871&quot; bind=&quot;10.50.2.87&quot; /&gt; 
+	
+	&lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;
+	&lt;Auth id=&quot;16777216&quot; vendor=&quot;10416&quot; /&gt;
+	&lt;Acct id=&quot;16777216&quot; vendor=&quot;0&quot; /&gt;
+
+&lt;/DiameterPeer&gt;
+
+the server config :
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;DiameterPeer 
+	FQDN=&quot;server.open-ims.test&quot;
+	Realm=&quot;open-ims.test&quot;
+	Vendor_Id=&quot;10415&quot;
+	Product_Name=&quot;JavaDiameterServer&quot;
+	AcceptUnknownPeers=&quot;1&quot;
+	DropUnknownOnDisconnect=&quot;1&quot;
+	Tc=&quot;10&quot;
+	Workers=&quot;8&quot;
+	QueueLength=&quot;32&quot;
+&gt;<i>
+</I>
+	&lt;Peer FQDN=&quot;client.open-ims.test&quot; Realm=&quot;open-ims.test&quot; port=&quot;3871&quot;/&gt; 
+
+	&lt;Acceptor port=&quot;3872&quot; bind=&quot;10.50.2.87&quot; /&gt; 
+	
+	&lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;
+	&lt;Auth id=&quot;16777216&quot; vendor=&quot;10416&quot; /&gt;
+	&lt;Acct id=&quot;16777216&quot; vendor=&quot;0&quot; /&gt;
+
+&lt;/DiameterPeer&gt;
+
+The command lsof -i shows :
+
+java      12711 root   11u  IPv4 2296189       TCP server.open-ims.test.50.10.in-addr.arpa:3871 
+(LISTEN)
+java      12711 root   12u  IPv4 2296190       TCP server.open-ims.test.50.10.in-addr.arpa:3871-
+&gt;<i>server.open-ims.test.50.10.in-addr.arpa:55819 (ESTABLISHED)
+</I>java      12711 root   13u  IPv4 2296193       TCP server.open-ims.test.50.10.in-addr.arpa:3872 
+(LISTEN)
+java      12711 root   16u  IPv4 2296196       TCP server.open-ims.test.50.10.in-addr.arpa:55819
+-&gt;server.open-ims.test.50.10.in-addr.arpa:3871 (ESTABLISHED)
+
+Thanks in advance
+
+ 
+Wathana
+_________________________________________________________________
+Contr&#244;lez les personnes autoris&#233;es &#224; parler &#224; vos enfants sur  MSN / Windows Live Messenger !
+<A HREF="http://www.windowslive.fr/controleparental/default.asp">http://www.windowslive.fr/controleparental/default.asp</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080730/b863bf12/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080730/b863bf12/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004397.html">[OpenIMSCore-Users] Registration in TCP mode
+</A></li>
+	<LI>Next message: <A HREF="004406.html">[OpenIMSCore-Users] client/server diameter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4399">[ date ]</a>
+              <a href="thread.html#4399">[ thread ]</a>
+              <a href="subject.html#4399">[ subject ]</a>
+              <a href="author.html#4399">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

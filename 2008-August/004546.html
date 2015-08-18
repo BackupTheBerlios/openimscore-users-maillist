@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] FW:  Call java code in C code
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20FW%3A%20%20Call%20java%20code%20in%20C%20code&In-Reply-To=%3C48B2A87B.3040905%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004542.html">
+   <LINK REL="Next"  HREF="004544.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] FW:  Call java code in C code</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20FW%3A%20%20Call%20java%20code%20in%20C%20code&In-Reply-To=%3C48B2A87B.3040905%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] FW:  Call java code in C code">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Aug 25 14:41:31 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004542.html">[OpenIMSCore-Users] FW:  Call java code in C code
+</A></li>
+        <LI>Next message: <A HREF="004544.html">[OpenIMSCore-Users] Call java code in C code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4546">[ date ]</a>
+              <a href="thread.html#4546">[ thread ]</a>
+              <a href="subject.html#4546">[ subject ]</a>
+              <a href="author.html#4546">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The thing that you probably missed is that the CSCFs, which are C based,
+have both SIP and Diameter interfaces. So the CDiameterPeer is used as
+the stack library in the CSCFs and the JavaDiameterPeer in the HSS. The
+Cx interface is as such between the CSCFs and the HSS, between the 2
+stacks. You can, of course have a C based HSS or a Java based CSCF, if
+you would want to implement it like that.
+
+So any of the 2 stacks can be used on any interface. The choice is only
+on the programming language and not at all on the component type of
+interface.
+
+Cheers,
+-Dragos
+
+Miroslave Gudic wrote:
+&gt;<i> Maybe i'm wrong but OpenIMSCore use Java and C code (Java for the HSS,
+</I>&gt;<i> C for SIP Request).
+</I>&gt;<i> When a SIP Register is sent to OpenIMSCore, there is a verification in
+</I>&gt;<i> the data base (if the user exist , his service...).
+</I>&gt;<i> How does it work? is there any communication between the both code??
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Subject: RE: [OpenIMSCore-Users] Call java code in C code
+</I>&gt;<i> Date: Mon, 25 Aug 2008 10:11:14 +0200
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">miro_slave at live.fr</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>
+</I>&gt;<i> Both CDiameterPeer and JavaDiameterPeer stacks can be used for any of
+</I>&gt;<i> the interfaces. Actually, CDiameterPeer is a little more advanced as
+</I>&gt;<i> there is already in development a version of the
+</I>&gt;<i> Authorization/Accounting State Machines (but for Cx/Sh you don't need it).
+</I>&gt;<i>
+</I>&gt;<i> Unlike other Diameter stacks, ours are quite lightweight and don't
+</I>&gt;<i> have &quot;profiles&quot; pre-defined for specific interfaces.
+</I>&gt;<i>
+</I>&gt;<i> Then about CDiameterPeer-Sh, there were several discussions in the
+</I>&gt;<i> past on adding this capabilities into SER, as to make it a fully
+</I>&gt;<i> featured IMS AS.
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Miroslave Gudic [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">miro_slave at live.fr</A>]
+</I>&gt;<i> Sent: Mon 2008-08-25 10:07
+</I>&gt;<i> To: open ims core; Vingarzan, Dragos
+</I>&gt;<i> Subject: RE: [OpenIMSCore-Users] Call java code in C code
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi Dragos,
+</I>&gt;<i> I use JavaDiameterPeer because of Sh Interface ( CDiameterPeer for Cx
+</I>&gt;<i> interface ?)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Subject: RE: [OpenIMSCore-Users] Call java code in C code
+</I>&gt;<i> Date: Mon, 25 Aug 2008 10:01:34 +0200
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">miro_slave at live.fr</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">uctimsclient-users at lists.berlios.de</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> RE: [OpenIMSCore-Users] Call java code in C code
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Well... it is possible, but rather complicated and inefficient. How
+</I>&gt;<i> about using the CDiameterPeer instead of JavaDiameterPeer?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i>
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> on behalf of
+</I>&gt;<i> Miroslave Gudic
+</I>&gt;<i>
+</I>&gt;<i> Sent: Mon 2008-08-25 09:14
+</I>&gt;<i>
+</I>&gt;<i> To: open ims core; ims ims
+</I>&gt;<i>
+</I>&gt;<i> Subject: [OpenIMSCore-Users] Call java code in C code
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I have this following problem :
+</I>&gt;<i>
+</I>&gt;<i> i have a C code (libvlc) and a Java code (javadiameterPeer) and i woud
+</I>&gt;<i> like to call some function created in the javaDiameterPeer in my C
+</I>&gt;<i> main() function (it's in order to create a video application).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Anybody know if it's possible and how?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Best Regards
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _________________________________________________________________
+</I>&gt;<i>
+</I>&gt;<i> Pendant tout l'&#233;t&#233;, consultez vos emails Hotmail sur votre mobile !
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://www.messengersurvotremobile.com/?d=hotmail">http://www.messengersurvotremobile.com/?d=hotmail</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _________________________________________________________________
+</I>&gt;<i> Retouchez, classez et partagez vos photos gratuitement avec le
+</I>&gt;<i> logiciel Galerie de Photos !
+</I>&gt;<i> <A HREF="http://www.windowslive.fr/galerie/">http://www.windowslive.fr/galerie/</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Avec Windows Live Messenger restez en contact avec tous vos amis !
+</I>&gt;<i> T&#233;l&#233;chargez Messenger, c'est gratuit !
+</I>&gt;<i> &lt;<A HREF="http://www.windowslive.fr/messenger/">http://www.windowslive.fr/messenger/</A>&gt;
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004542.html">[OpenIMSCore-Users] FW:  Call java code in C code
+</A></li>
+	<LI>Next message: <A HREF="004544.html">[OpenIMSCore-Users] Call java code in C code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4546">[ date ]</a>
+              <a href="thread.html#4546">[ thread ]</a>
+              <a href="subject.html#4546">[ subject ]</a>
+              <a href="author.html#4546">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

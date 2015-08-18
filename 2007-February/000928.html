@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [Bug #10450] P-CSCF sometimes corrupts auth	header while removing CK/IK
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BBug%20%2310450%5D%20P-CSCF%20sometimes%20corrupts%20auth%0A%09header%20while%20removing%20CK/IK&In-Reply-To=%3C7C26F4EEB99BE34A8408A9B5E9C4853801FC5851%40swsmsx411.ger.corp.intel.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000925.html">
+   <LINK REL="Next"  HREF="000927.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [Bug #10450] P-CSCF sometimes corrupts auth	header while removing CK/IK</H1>
+    <B>Verbeiren, David</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BBug%20%2310450%5D%20P-CSCF%20sometimes%20corrupts%20auth%0A%09header%20while%20removing%20CK/IK&In-Reply-To=%3C7C26F4EEB99BE34A8408A9B5E9C4853801FC5851%40swsmsx411.ger.corp.intel.com%3E"
+       TITLE="[OpenIMSCore-Users] [Bug #10450] P-CSCF sometimes corrupts auth	header while removing CK/IK">david.verbeiren at intel.com
+       </A><BR>
+    <I>Fri Feb 23 15:30:37 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000925.html">[OpenIMSCore-Users] [Bug #10450] P-CSCF sometimes corrupts auth header while removing CK/IK
+</A></li>
+        <LI>Next message: <A HREF="000927.html">[OpenIMSCore-Users] [Bug #10450] P-CSCF sometimes corrupts auth header while removing CK/IK
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#928">[ date ]</a>
+              <a href="thread.html#928">[ thread ]</a>
+              <a href="subject.html#928">[ subject ]</a>
+              <a href="author.html#928">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here is how the WWW-Authenticate header changes as the 401 response
+transits through the P-CSCF. The nonce basically becomes much longer
+than normal and the algorithm parameter is gone. In my case, this causes
+SIPp to incorrectly respond to the challenge with a truncated algorithm
+parameter in the second REGISTER (just &quot;algo&quot;, not even &quot;algorithm=&quot; -
+this is probably a SIPp &quot;bug&quot;), which in turn causes the I-CSCF to
+respond with
+  403 Forbidden - HSS Authentication Scheme Unsupported
+
+I-CSCF -&gt; P-CSCF:
+  WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,
+  nonce=&quot;yuJYshUfd7jLSBkAj2DngQAAAAABtwAAFgzY2ekqcCk=&quot;,
+algorithm=AKAv1-MD5,
+  ck=&quot;e86bc17247953b7c710143cbfa7afaed&quot;,
+  ik=&quot;a713e7c39e766f40f793afb4dc885573&quot;
+
+P-CSCF -&gt; UE:
+  WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,
+ 
+nonce=&quot;yuJYshUfd7jLSBkAj2DngQAAAAABtwAAFgzY2ekqce86bc17247953b7c710143cb
+fa
+  7afaed&quot;
+
+Regards,
+-David
+
+-----Original Message-----
+From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+Sent: 23 February 2007 15:00
+To: Verbeiren, David
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Re: [OpenIMSCore-Users] [Bug #10450] P-CSCF sometimes corrupts
+auth header while removing CK/IK
+
+Hi David,
+
+I will incorporate it now. Could you please tell me how it looks when
+corrupted?
+
+-Dragos
+
+Verbeiren, David wrote:
+&gt;<i> Not sure what's happening to the berlios.de bug tracking system, but
+</I>it
+&gt;<i> does not seem to have created the bug I tried to submit below (despite
+</I>&gt;<i> multiple attempts and multiple confirmation emails received - sorry in
+</I>&gt;<i> case these all made it to the mailing list...).
+</I>&gt;<i>
+</I>&gt;<i> Anyway, attached is my quick fix for this bug in case somebody else
+</I>&gt;<i> bumps into it. I guess this really only happens in a noticeable way
+</I>when
+&gt;<i> you throw some load at the system, just because the occurrence of the
+</I>&gt;<i> problem becomes higher.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> -David
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">admin at berlios.de</A> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">admin at berlios.de</A>] 
+</I>&gt;<i> Sent: 21 February 2007 16:03
+</I>&gt;<i> To: Verbeiren, David; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at bat.berlios.de</A>
+</I>&gt;<i> Subject: [Bug #10450] P-CSCF sometimes corrupts auth header while
+</I>&gt;<i> removing CK/IK
+</I>&gt;<i>
+</I>&gt;<i> Bug #10450, was updated on 2007-Feb-21 16:02
+</I>&gt;<i> Here is a current snapshot of the bug.
+</I>&gt;<i>
+</I>&gt;<i> Project: Open IMS Core
+</I>&gt;<i> Category: P-CSCF
+</I>&gt;<i> Status: Open
+</I>&gt;<i> Resolution: None
+</I>&gt;<i> Bug Group: reproducible
+</I>&gt;<i> Priority: 5
+</I>&gt;<i> Submitted by: dverbeir
+</I>&gt;<i> Assigned to : none
+</I>&gt;<i> Summary: P-CSCF sometimes corrupts auth header while removing CK/IK
+</I>&gt;<i>
+</I>&gt;<i> Details: In registration.c, function P_remove_ck_ik() corrupts the
+</I>auth
+&gt;<i> header in case the included nonce has a &quot;ck=&quot; or &quot;ik=&quot;.
+</I>&gt;<i>
+</I>&gt;<i> This happens because the function, while trying to remove the actual
+</I>CK
+&gt;<i> and IK parameters, completely ignores other parameters and their
+</I>quoted
+&gt;<i> values, and just searches for a &quot;ck=&quot; or &quot;ik=&quot; substring in the
+</I>complete
+&gt;<i> header, even within other parameter values.
+</I>&gt;<i>
+</I>&gt;<i> For detailed info, follow this link:
+</I>&gt;<i>
+</I><A HREF="http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=10450&amp;group_id=7">http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=10450&amp;group_id=7</A>
+&gt;<i> 589
+</I>&gt;<i>   
+</I>&gt;<i>
+</I>------------------------------------------------------------------------
+&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000925.html">[OpenIMSCore-Users] [Bug #10450] P-CSCF sometimes corrupts auth header while removing CK/IK
+</A></li>
+	<LI>Next message: <A HREF="000927.html">[OpenIMSCore-Users] [Bug #10450] P-CSCF sometimes corrupts auth header while removing CK/IK
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#928">[ date ]</a>
+              <a href="thread.html#928">[ thread ]</a>
+              <a href="subject.html#928">[ subject ]</a>
+              <a href="author.html#928">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

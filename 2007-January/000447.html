@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] OpenSIMS and TCP as transport
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenSIMS%20and%20TCP%20as%20transport&In-Reply-To=%3C200701091223.l09CNMJ4014028%40mail.zserv.tuwien.ac.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000453.html">
+   <LINK REL="Next"  HREF="000448.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] OpenSIMS and TCP as transport</H1>
+    <B>Joachim Fabini</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenSIMS%20and%20TCP%20as%20transport&In-Reply-To=%3C200701091223.l09CNMJ4014028%40mail.zserv.tuwien.ac.at%3E"
+       TITLE="[OpenIMSCore-Users] OpenSIMS and TCP as transport">Joachim.Fabini at tuwien.ac.at
+       </A><BR>
+    <I>Tue Jan  9 13:23:07 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000453.html">[OpenIMSCore-Users] Load tests
+</A></li>
+        <LI>Next message: <A HREF="000448.html">[OpenIMSCore-Users] [Bug #9864] reg event package data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#447">[ date ]</a>
+              <a href="thread.html#447">[ thread ]</a>
+              <a href="subject.html#447">[ subject ]</a>
+              <a href="author.html#447">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>A Happy New Year to all of you!
+
+As the subject points out, I'm interested in finding out if 
+someone is operating OSIMS using TCP as transport (IMS core 
+and access, not only in the access). In addition I'd like to 
+start a technical discussion on what changes are required to 
+let OSIMS support alternative transport protocols beside UDP. 
+I'd like to avoid hard-coding the transport in either SER or 
+OSIMS modules. I.e., it should be possible to choose the 
+transport protocol within the core using x-CSCF config script 
+lines.
+
+Background: As Section 18.1.1 of 3261 points out, streaming
+protocols (e.g., TCP/SCTP) are mandatory as SIP transport if 
+messages grow beyond a specific size (and yes, our signaling 
+messages exceed this size already and fragmentation led to 
+strange failures that required some hours of debugging until 
+the reason was found). Accordingly, my personal believe is 
+that UDP is not suited as signaling transport. You can never 
+exclude fragmentation and never guarantee that one of the
+(maybe third-party) AS will generate signaling messages that
+fit into the supported MTU. So there is no alternative to 
+using TCP or SCTP for signalling in IMS, generally speaking
+for commercial IMS deployments and specifically for OSIMS
+when wie consider interoperability tests with commercial 
+IMS systems and IMS components.
+
+Our first tries with TCP were unsuccessuful - if the client
+uses TCP, OSIMS changes to UDP on the first hop (P-CSCF) and
+uses UDP in the core. This might be fixable using the Service-
+Route, but the same problem will occur when the S-CSCF routes 
+to another domain. Here's where NAPTR support could fix the 
+transport selection problem but according to the mailing list 
+archives the SER people do not show huge interest in 
+implementing NAPTR (or back-porting the OpenSER code) 
+- see e.g. the thread following
+&lt;<A HREF="http://lists.iptel.org/pipermail/serdev/2006-July/007771.html">http://lists.iptel.org/pipermail/serdev/2006-July/007771.html</A>&gt;
+
+We had similar problems when implementing some IMS functionality
+on top of OpenSER. These problems were eventually solved by 
+the OpenSER developers replacing/enhancing the stateful relaying 
+function of OpenSER (t_relay()) and enabling NAPTR. (see
+&lt;<A HREF="http://openser.org/pipermail/users/2005-December/002370.html">http://openser.org/pipermail/users/2005-December/002370.html</A>&gt;
+for some details on the discussion). I'm afraid that this is
+also required for OSIMS. Or do I miss something?
+
+So, did someone already start work on switching transport from
+TCP to UDP? Any plans to do so?
+
+Regards
+--Joachim
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000453.html">[OpenIMSCore-Users] Load tests
+</A></li>
+	<LI>Next message: <A HREF="000448.html">[OpenIMSCore-Users] [Bug #9864] reg event package data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#447">[ date ]</a>
+              <a href="thread.html#447">[ thread ]</a>
+              <a href="subject.html#447">[ subject ]</a>
+              <a href="author.html#447">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

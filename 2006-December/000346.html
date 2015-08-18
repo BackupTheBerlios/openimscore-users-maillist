@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Error message from P-CSCF during authentication	caused by SIP2IMS gateway
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20message%20from%20P-CSCF%20during%20authentication%0A%09caused%20by%20SIP2IMS%20gateway&In-Reply-To=%3CDAE692177CCBC94C807D3445E6A0CEC2018C7B52%40taxis.buc.materna.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000381.html">
+   <LINK REL="Next"  HREF="000347.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Error message from P-CSCF during authentication	caused by SIP2IMS gateway</H1>
+    <B>sven.bornemann at Materna.de</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20message%20from%20P-CSCF%20during%20authentication%0A%09caused%20by%20SIP2IMS%20gateway&In-Reply-To=%3CDAE692177CCBC94C807D3445E6A0CEC2018C7B52%40taxis.buc.materna.com%3E"
+       TITLE="[OpenIMSCore-Users] Error message from P-CSCF during authentication	caused by SIP2IMS gateway">sven.bornemann at Materna.de
+       </A><BR>
+    <I>Tue Dec 19 16:59:34 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000381.html">[OpenIMSCore-Users] Tel URI support
+</A></li>
+        <LI>Next message: <A HREF="000347.html">[OpenIMSCore-Users] Error message from P-CSCF during	authenticationcaused by SIP2IMS gateway
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#346">[ date ]</a>
+              <a href="thread.html#346">[ thread ]</a>
+              <a href="subject.html#346">[ subject ]</a>
+              <a href="author.html#346">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all!
+
+When I start all IMS Core components I cyclically get the following error messages
+from the P-CSCF:
+
+ 4(23171) ERROR: sip_hostport2su: could not resolve hostname: &quot;imscore&quot;
+ 4(23171) ERROR: uri2dst: failed to resolve &quot;imscore&quot;
+ 4(23171) ERROR: t_forward_nonack: failure to add branches
+
+It seems to be caused by the SIP2IMS gateway in the following context:
+
+SIP2IMS-Trace:
+
+Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>@imscore:3060&quot;, realm=&quot;imscore&quot;,
+===
+ 1(23291) INF:SIP2IMS:sip2ims_get_public_identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>@imscore:3060&gt;
+ 1(23291) INF:SIP2IMS:Gw_MD5_to_AKA:
+=== 
+
+* I'm not running any SIP client at that time!
+
+* My /etc/hosts contains a valid hostname &quot;imscore&quot; but I used the real IP address (not 
+  localhost or 127.0.0.1) in all configuration files.
+
+* My /etc/hosts
+
+  # Do not remove the following line, or various programs
+  # that require network functionality will fail.
+  127.0.0.1       localhost
+  139.2.247.52    imscore
+  139.2.247.52    scscf.open-ims.test
+  139.2.247.52    icscf.open-ims.test
+  139.2.247.52    pcscf.open-ims.test
+  139.2.247.52    hss.open-ims.test
+  139.2.247.52    imscore.open-ims.test
+  139.2.247.52    sip2ims.open-ims.test
+
+What kind of authorization does the SIP2IMS gateway and where comes the (strange?) 
+digest username &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>@imscore:3060&quot; and the used realm &quot;imscore&quot; come 
+from? And why can &quot;imscore&quot; not be resolved my P-CSCF?
+
+Thanks in advance,
+Sven
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000381.html">[OpenIMSCore-Users] Tel URI support
+</A></li>
+	<LI>Next message: <A HREF="000347.html">[OpenIMSCore-Users] Error message from P-CSCF during	authenticationcaused by SIP2IMS gateway
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#346">[ date ]</a>
+              <a href="thread.html#346">[ thread ]</a>
+              <a href="subject.html#346">[ subject ]</a>
+              <a href="author.html#346">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem in P-CSCF with	multiple	registrations
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20in%20P-CSCF%20with%0A%09multiple%09registrations&In-Reply-To=%3C000a01c8c6dd%24d1e4bd40%24d337a8c0%40ADAVILA%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004051.html">
+   <LINK REL="Next"  HREF="004062.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem in P-CSCF with	multiple	registrations</H1>
+    <B>Ana D&#225;vila</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20in%20P-CSCF%20with%0A%09multiple%09registrations&In-Reply-To=%3C000a01c8c6dd%24d1e4bd40%24d337a8c0%40ADAVILA%3E"
+       TITLE="[OpenIMSCore-Users] Problem in P-CSCF with	multiple	registrations">adavila at experienceis.com
+       </A><BR>
+    <I>Thu Jun  5 09:28:56 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004051.html">[OpenIMSCore-Users] Problem in P-CSCF with	multiple	registrations
+</A></li>
+        <LI>Next message: <A HREF="004062.html">[OpenIMSCore-Users] Problem in P-CSCF with	multiple	registrations
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4058">[ date ]</a>
+              <a href="thread.html#4058">[ thread ]</a>
+              <a href="subject.html#4058">[ subject ]</a>
+              <a href="author.html#4058">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Dragos,
+
+After applying the patch, the P-CSCF works OK: Multiple contacts are
+supported and pcscf doesn't die.
+
+Thank you very much,
+
+BR,
+
+Ana
+
+
+-----Mensaje original-----
+De: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>] 
+Enviado el: mi&#233;rcoles, 04 de junio de 2008 11:58
+Para: Ana D&#225;vila
+CC: 'Alberto Diez'; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Asunto: Re: [OpenIMSCore-Users] Problem in P-CSCF with multiple
+registrations
+
+Hi Ana,
+
+I wrote a patch for you, but it's hard for me to test. Could you please 
+tell me if it solves the issue?
+
+I think that you are registering multiple contacts in the same 
+registrar. Then there was a design bug in the update_contacts() as the 
+same pinhole was saved for all. This went unnoticed for a long time 
+because of the special use case...
+
+Cheers,
+-Dragos
+
+Ana D&#225;vila wrote:
+&gt;<i> Hello Alberto,
+</I>&gt;<i>
+</I>&gt;<i> You are right, it seems that there is a mistake in the data saved, because
+</I>&gt;<i> the P-CSCF assigns the same &quot;NAT&quot; address to both registrations.
+</I>&gt;<i>
+</I>&gt;<i> I send you some lines taken out the pcscf.log file. I hope they clarify
+</I>the
+&gt;<i> problem. If you need the whole document, please let me know.
+</I>&gt;<i>
+</I>&gt;<i> I'll look into the modules you have said, as if I can find out something
+</I>&gt;<i> else. 
+</I>&gt;<i>
+</I>&gt;<i> Thank you very much,
+</I>&gt;<i>
+</I>&gt;<i> BR, 
+</I>&gt;<i>
+</I>&gt;<i> Ana
+</I>&gt;<i>
+</I>&gt;<i> ____________________________________________
+</I>&gt;<i>
+</I>&gt;<i> Ana D&#225;vila Valls
+</I>&gt;<i> eXperience Ingenier&#237;a Y Servicios
+</I>&gt;<i> Parque Tecnol&#243;gico de Boecillo. Valladolid
+</I>&gt;<i> email: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">adavila at experienceis.com</A>
+</I>&gt;<i> tel&#233;fono: 983549848 m&#243;vil: 671602773
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -----Mensaje original-----
+</I>&gt;<i> De: Alberto Diez [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>] 
+</I>&gt;<i> Enviado el: lunes, 02 de junio de 2008 15:56
+</I>&gt;<i> Para: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">adavila at experienceis.com</A>
+</I>&gt;<i> CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Asunto: Problem in P-CSCF with multiple registrations
+</I>&gt;<i>
+</I>&gt;<i> Hola Ana!
+</I>&gt;<i>
+</I>&gt;<i> it would be great if you switch your P-CSCF to a higher log level (4) 
+</I>&gt;<i> and you tell us exactly what is printed before this happens..
+</I>&gt;<i> Maybe something looking like
+</I>&gt;<i>
+</I>&gt;<i> DBG:PCSCF:registrar_timer: Contact &lt;%.*s&gt; expired and removed
+</I>&gt;<i>
+</I>&gt;<i> And then comes the bug
+</I>&gt;<i>
+</I>&gt;<i> The files you are interested in for solving this bug are under 
+</I>&gt;<i> modules/pcscf  and are  registrar.c and registrar_storage.c
+</I>&gt;<i>
+</I>&gt;<i> I am not sure what the problem, but multiplicity of terminals is an 
+</I>&gt;<i> important issue and it would be great if you could find the bug and 
+</I>&gt;<i> provide a patch for this
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> thanks
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004051.html">[OpenIMSCore-Users] Problem in P-CSCF with	multiple	registrations
+</A></li>
+	<LI>Next message: <A HREF="004062.html">[OpenIMSCore-Users] Problem in P-CSCF with	multiple	registrations
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4058">[ date ]</a>
+              <a href="thread.html#4058">[ thread ]</a>
+              <a href="subject.html#4058">[ subject ]</a>
+              <a href="author.html#4058">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

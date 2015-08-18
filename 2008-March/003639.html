@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Bug in routing REGISTER request
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Bug%20in%20routing%20REGISTER%20request&In-Reply-To=%3C47E2A5BE.9070500%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003587.html">
+   <LINK REL="Next"  HREF="003590.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Bug in routing REGISTER request</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Bug%20in%20routing%20REGISTER%20request&In-Reply-To=%3C47E2A5BE.9070500%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Bug in routing REGISTER request">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Mar 20 18:58:22 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003587.html">[OpenIMSCore-Users] Bug in routing REGISTER request
+</A></li>
+        <LI>Next message: <A HREF="003590.html">[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3639">[ date ]</a>
+              <a href="thread.html#3639">[ thread ]</a>
+              <a href="subject.html#3639">[ subject ]</a>
+              <a href="author.html#3639">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hmm... true, but I think that it was really meant by 3GPP in this way. 
+If I remember well the Registration Type was introduced at a later phase 
+and as such, for backwards compatibility matching all REGISTER requests 
+is represented by the lack of any indication for RegistrationType (also 
+this is efficient as the 0 element case can not represent an empty set 
+as this will not ever match). So if it's any then you should have 0 
+elements. To prevent different interpretations, I would leave it like it 
+is, as this is the 3GPP published xsd.
+
+Cheers,
+-Dragos
+
+Sluchevskiy Roman wrote:
+&gt;<i> Hi all!
+</I>&gt;<i>
+</I>&gt;<i> We found following issue: 
+</I>&gt;<i>   - Set up a trigger point for your AS to handle all REGISTER request
+</I>&gt;<i> types (Reg, ReReg, DeReg)
+</I>&gt;<i>   - Try to register -- you will receive 500 Internal server error
+</I>&gt;<i>
+</I>&gt;<i> This error is caused by wrong XML schema in
+</I>&gt;<i> modules/scscf/CxDataType_Rel7.xsd. tRegistrationType defines 3 element
+</I>&gt;<i> while everywhere whithin the file where this type is used maxOccurs for
+</I>&gt;<i> it is set to 2. So to fix this problem we should change maxOccurs from 2
+</I>&gt;<i> to 3.
+</I>&gt;<i> I attached an error log.
+</I>&gt;<i>
+</I>&gt;<i> I'm sure it's easy-to-fix issue :)
+</I>&gt;<i>
+</I>&gt;<i> Roman Sluchevskiy
+</I>&gt;<i>   
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003587.html">[OpenIMSCore-Users] Bug in routing REGISTER request
+</A></li>
+	<LI>Next message: <A HREF="003590.html">[OpenIMSCore-Users] JavaDiameterPeer: How do I know when a Peer is	connected?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3639">[ date ]</a>
+              <a href="thread.html#3639">[ thread ]</a>
+              <a href="subject.html#3639">[ subject ]</a>
+              <a href="author.html#3639">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

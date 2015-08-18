@@ -1,0 +1,365 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ipsec security association problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ipsec%20security%20association%20problem&In-Reply-To=%3C4721DADF.6000807%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002829.html">
+   <LINK REL="Next"  HREF="002843.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ipsec security association problem</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ipsec%20security%20association%20problem&In-Reply-To=%3C4721DADF.6000807%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] ipsec security association problem">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Oct 26 14:17:35 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002829.html">[OpenIMSCore-Users] ipsec security association problem
+</A></li>
+        <LI>Next message: <A HREF="002843.html">[OpenIMSCore-Users] ipsec security association problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2832">[ date ]</a>
+              <a href="thread.html#2832">[ thread ]</a>
+              <a href="subject.html#2832">[ subject ]</a>
+              <a href="author.html#2832">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Mark,
+
+No problem for the bug report. I am sorry though that I filled one and
+not just fixed the issue immediately, but unfortunately we do not have
+all the resources we would like to.
+
+I agree with you on the specs, yet you are a little too much 3GPP
+centric ;-). We are also trying to look at what TISPAN/CableLabs think
+about the registration process and also what actually is required at the
+moment in the real world. And the reality is that only a very small
+percentage of our users have actually such 3GPP clients that support the
+IPSec SAs. I would say that overall there were just a couple of such UEs
+that have been tested with the OpenIMSCore, so obviously there are still
+things to fix.
+
+
+Although I am not sure on what precisely we disagree as I agree with
+most of your comments, I will try to answer.
+
+On Contact header: if you just read the 3GPP standards, your reasoning
+is somehow correct. But I would still insist that according to pure SIP
+methodology, you are wrong a little wrong if you would change the
+Contact header. The Contact header is used during registration to
+indicate to a registrar what is the mapping between an identity and a
+reachable network address. The 2 (or 3 for AKA SQN synchronization) step
+process is specific to 3GPP. The general case is that if the registrar
+accepts the registration it should save and map the found contact
+addresses to the identity communicated. If it does not trust the
+message, it could choose to challenge the originator. Then the
+originator should &quot;resubmit&quot; (this is term used by RFC3261) the request
+with a challenge response. Yes, it is not mandatory that you do not
+change the headers and actually you must for some, yet I interpret this
+as meaning that I should just resend what I sent before, but this time
+with authentication data.
+
+Why would you actually benefit from using different contact addresses?
+If you think about opening the ports later on the UE on a need-only
+basis, well, it might be that you fail later and it's too late as you
+already fixed them in the 1st REGISTER.
+
+And the thing is that the core could decide to accept your 1st REGISTER
+without challenging you, like it does in Early-IMS or NASS-Bundled
+authentication or if you disable the authentication. So you must present
+a real Contact as you don't know how or even if you will be challenged?
+
+Well, anyway. This was just a recommendation from me. Take as a free
+developer insight and disregard if you think that I am wrong.
+
+But let's see why it works when you don't change this. This contact data
+is used and saved mainly on the S-CSCF.The thing is that in our
+particular implementation the P-CSCF data is kept in a reversed
+registrar. That means that for efficiency as the P-CSCF identifies users
+by originating addresses (not identities) and as such the data is
+indexed (hashed actually) by (host,port). In the first REGISTER step,
+because we need to keep the data until the 2nd step, an entry is created
+in the registrar and the user is set to a not-registered state (if it
+was not registered before). Attached to this, the initial SA data is
+saved. On the 2nd step, the P-CSCF will try to identify the originator
+by the Via header. So this would have to match the contact address saved
+in the first step. Well, it doesn't, so the P-CSCF probably thinks that
+this is a new user and creates a new contact entry. The first SA
+succeeded because the other entry was there, but this new one has no
+IPSec entries as the first step of the negotiation process was lost for
+this new contact.
+
+Ideally, the P-CSCF should be able to identify the UE by the SA channel
+only. Yet this is not enough for non-3GPP IMS use. And unfortunately our
+P-CSCF does not have this capability at all as this data is not relayed
+from the Linux kernel IPSec implementation to SER.
+
+To conclude: Yes, there is a bug in handling such cases. I did not
+thought about this case when you would not come with 2 different Contact
+addresses when this was implemented. The bug is not in setting the SAs,
+but in identifying the UE. I have also updated the bug-tracker to better
+describe the actual issue. Sorry, but I am just making assumptions until
+I will have the time to actually replicate the scenario and debug it.
+
+This I hope this closes the first of your conclusions (that the
+UE/P-CSCF should use the ports in the Security Headers for SAs). Yes,
+this is what happens. The issue was different.
+
+Then on 2nd conclusion (different ports for protected/unprotected). Yes,
+the client should do that. The P-CSCF - the story is a little more complex:
+1. by default configuration provided, just 1 port is used for all
+messages. This seems to be enough for most cases
+2. you can reconfigure the P-CSCF to use 2 ports, yet it is impossible
+for now to decide on which one to use when sending out data, due to core
+SER architectural design. I think that I have seen some changes in the
+SER CVS lately related to this, but I don't know much about it. Again,
+it is unfeasible and not worth for our purposes for now to do this.
+3. using 1 port for unprotected and 1 or 2 ports for each client - this
+is quite bad from the scaling perspective as you run out quite soon of
+ports (yes, you can have more IPs, do some hacks, but if you can
+without, it's worth saving the trouble). The only case when this is
+required is for when you have multiple clients using the same IP:port,
+but this is unrealistic.
+
+If you choose options 1 for the P-CSCF as we do now, the UE must use
+different ports or else it won't work. So, of course that we are not
+forcing the UE to use the same port.
+
+The actual issue at hand is more related to handling the contact. The
+P-CSCF tries to do a NAT forward, towards the source of the request. It
+was not supposed to do this if there are IPSec SAs there, but obviously
+the P_security_relay() fails and P_NAT_relay() is overzealous (pcscf.cfg
+- lines 315-316).
+
+Cheers,
+-Dragos
+
+
+Evans, Mark [CTO] wrote:
+&gt;<i> Hi Dragos
+</I>&gt;<i>
+</I>&gt;<i> Thanks for including a bug report. However we don't entirely agree with
+</I>&gt;<i> your synopsis.
+</I>&gt;<i>
+</I>&gt;<i> Based on 3GPP 33.203 it is reasonable to assume that UE will use
+</I>&gt;<i> different ports for Secured and Un Secured messages. 
+</I>&gt;<i>
+</I>&gt;<i> This being the case the Initial Registration message will be sent from
+</I>&gt;<i> the unsecured port. This from TS 33.203 para 7.1
+</I>&gt;<i>
+</I>&gt;<i> &lt;snip&gt;
+</I>&gt;<i> 2. The UE associates two ports, called port_us and port_uc, with each
+</I>&gt;<i> pair of security associations established in an authenticated
+</I>&gt;<i> registration. The ports port_us and port_uc are different from the
+</I>&gt;<i> standard SIP ports 5060 and 5061. 
+</I>&gt;<i>
+</I>&gt;<i> No unprotected messages shall be sent from or received on the ports
+</I>&gt;<i> port_us and port_uc. 
+</I>&gt;<i>
+</I>&gt;<i> &gt;From a security point of view, unprotected messages may be received on
+</I>&gt;<i> any port which is different from the ports port_us and port_uc.
+</I>&gt;<i>
+</I>&gt;<i> The number of the ports port_us and port_uc are communicated to the
+</I>&gt;<i> P-CSCF during the security mode set-up procedure, cf. clause 7.2. These
+</I>&gt;<i> ports are used with both, UDP and TCP
+</I>&gt;<i> &lt;/snip&gt;
+</I>&gt;<i>
+</I>&gt;<i> There is a similar requirement for the P-CSCF.
+</I>&gt;<i>
+</I>&gt;<i> Additionally, the ports declared in the Via and Contact in the 1
+</I>&gt;<i> REGISTER and 2 REGISTER messages will very likely be different.
+</I>&gt;<i>
+</I>&gt;<i> When the UE initially registers (i.e. no security associations exist)
+</I>&gt;<i> the first REGISTER message will contain
+</I>&gt;<i>
+</I>&gt;<i> a)	in the Via header - the IP Address and Port number that the UE
+</I>&gt;<i> is expecting the P-SCSF to send it's (401) response (the port number
+</I>&gt;<i> will be an unprotected port)
+</I>&gt;<i> b)	in the Contact header - the IP address that the UE would expect
+</I>&gt;<i> future Requests to be sent to. A port number IS NOT required, but if it
+</I>&gt;<i> is included it should be set to the same port as described in a) above.
+</I>&gt;<i>
+</I>&gt;<i> In the Second REGISTER message (in response to the P-CSCFs challenge to
+</I>&gt;<i> the first REGISTER)  will contain
+</I>&gt;<i>
+</I>&gt;<i> c)	in the Via Header - the IP Address and Port number that the UE
+</I>&gt;<i> is expecting the P-SCSF to send it's response (the port number will be
+</I>&gt;<i> the UEs protected Server port port_us, assuming UDP is used)
+</I>&gt;<i> d)	in the Contact header - the IP address that UE would expect
+</I>&gt;<i> future Requests to be sent to. A port number IS required (by 3GPP
+</I>&gt;<i> standards) and will be the UEs protected Server port port_us, for the
+</I>&gt;<i> UDP case) This is specified in  TS 24.229 para 5.1.1.2. d)
+</I>&gt;<i>
+</I>&gt;<i> &lt;snip&gt;
+</I>&gt;<i> a Contact header set to include SIP URI(s) containing the IP address of
+</I>&gt;<i> the UE in the hostport parameter or FQDN. ............If the REGISTER
+</I>&gt;<i> request is protected by a security association, the UE shall also
+</I>&gt;<i> include the protected server port value in the hostport parameter;
+</I>&gt;<i> &lt;/snip&gt;
+</I>&gt;<i>
+</I>&gt;<i> So in conclusion;
+</I>&gt;<i>
+</I>&gt;<i> The Security associations used by the UE and P-CSCF should use the ports
+</I>&gt;<i> defined in the Security Client and Security Server headers and NOT
+</I>&gt;<i> Contacts or Vias. The contact and vias in the protected 2nd REGISTER
+</I>&gt;<i> will reflect this. The unprotected and protected REGISTER messages WILL
+</I>&gt;<i> come from different ports.
+</I>&gt;<i>
+</I>&gt;<i> The UE and P-CSCF MUST used different ports for protected and
+</I>&gt;<i> unprotected messages as defined in TS 33.203.
+</I>&gt;<i>
+</I>&gt;<i> When the P-CSCF receives the 401 challenge from the S-CSCF it should set
+</I>&gt;<i> up temporary security associations (based on Sec server/sec client). The
+</I>&gt;<i> P-CSCF should expect the 2 REGISTER message to arrive (protected) at its
+</I>&gt;<i> protected Server port from the UEs Protected Client port. 
+</I>&gt;<i>
+</I>&gt;<i> The 200OK from S-CSCF to the P-CSCF should be used to convert the
+</I>&gt;<i> temporary SAs to new SAs (update the SA expiry).
+</I>&gt;<i>
+</I>&gt;<i> Your BUG fix when implemented should support the above operation and not
+</I>&gt;<i> force the UE to use the same ports for protected and unprotected
+</I>&gt;<i> messages. The P-CSCF should use different ports for protected and
+</I>&gt;<i> unprotected messages.
+</I>&gt;<i>
+</I>&gt;<i> Thanks
+</I>&gt;<i>
+</I>&gt;<i> Mark Evans
+</I>&gt;<i> Sprint
+</I>&gt;<i> Advanced Technology Labs
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>  -----Original Message-----
+</I>&gt;<i>  From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;<i>  Sent: Thursday, October 18, 2007 5:45 AM
+</I>&gt;<i>  To: Soshant Bali
+</I>&gt;<i>  Cc: openIMScore; Evans, Mark [CTO]
+</I>&gt;<i>  Subject: Re: [OpenIMSCore-Users] ipsec security association problem
+</I>&gt;<i>  
+</I>&gt;<i>  Hello Soshant,
+</I>&gt;<i>  
+</I>&gt;<i>  I think that the SAs are always created, just that it is not used if
+</I>&gt;<i> the
+</I>&gt;<i>  2nd contact is different.
+</I>&gt;<i>  
+</I>&gt;<i>  Well, you shouldn't change the contact between the 2 messages - the 2nd
+</I>&gt;<i>  REGISTER should basically be a resend of the first with the extra
+</I>&gt;<i>  authorization information.
+</I>&gt;<i>  
+</I>&gt;<i>  Anyway, the fact that this might happen means that it might be a
+</I>&gt;<i>  security issue.  So the way it works is that on the 401 just one SA is
+</I>&gt;<i>  set, for receiving the next 401. This is because the client might  not
+</I>&gt;<i>  know the secret anyway and this might just be a DoS attach. The other 3
+</I>&gt;<i>  SAs are set just before the 200 OK is sent.
+</I>&gt;<i>  
+</I>&gt;<i>  In your case, the problem is that the IPSec info is saved on the first
+</I>&gt;<i>  REGISTER and then re-used on the 2nd to set the SAs, but those were
+</I>&gt;<i>  wrong and as such not used. So we need to actually update the IPSec
+</I>&gt;<i> info
+</I>&gt;<i>  based on the info in the 200 OK, which is the info to trust as the
+</I>&gt;<i>  REGISTER was authenticated.
+</I>&gt;<i>  
+</I>&gt;<i>  I have filled a bug report here: <A HREF="http://www.openimscore.org/node/115">http://www.openimscore.org/node/115</A>
+</I>&gt;<i>  
+</I>&gt;<i>  But in any case, I would recommend that you do not change the Contact
+</I>&gt;<i>  during the registration.
+</I>&gt;<i>  
+</I>&gt;<i>  Cheers,
+</I>&gt;<i>  -Dragos
+</I>&gt;<i>  
+</I>&gt;<i>  Soshant Bali wrote:
+</I>&gt;<i>  &gt; We are trying to register a UE with OpenIMS using IPSec/AKA. On
+</I>&gt;<i>  &gt; receiving the 401 challenge from pcscf, the UE sends second Register
+</I>&gt;<i>  &gt; to pcscf that is encrypted using ipsec. This register is decrypted
+</I>&gt;<i>  &gt; fine by the pcscf. However the pcscf does not encrypt the 200ok it
+</I>&gt;<i>  &gt; sends back to the UE. The 200 ok is sent in plain text to the UE. We
+</I>&gt;<i>  &gt; checked and found out that the pcscf does not create a security
+</I>&gt;<i>  &gt; association in the direction from pcscf to the UE. It only creates
+</I>&gt;<i>  &gt; security association in the direction from the UE to the pcscf. The
+</I>&gt;<i>  &gt; attached trace, trace1.pcap shows this.
+</I>&gt;<i>  &gt;
+</I>&gt;<i>  &gt; We changed the contact field in the first register to match the
+</I>&gt;<i>  &gt; contact field in the second register and in this case the security
+</I>&gt;<i>  &gt; associations are created fine in both directions. This is shown in
+</I>&gt;<i>  &gt; trace2.pcap that is attached.
+</I>&gt;<i>  &gt;
+</I>&gt;<i>  &gt; Is this expected behavior? What is the reasoning for making the pcscf
+</I>&gt;<i>  &gt; match the contact field of the two register messages before deciding
+</I>&gt;<i>  &gt; whether or not to create a security association in the reverse
+</I>&gt;<i> direction?
+</I>&gt;<i>  &gt;
+</I>&gt;<i>  &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>  &gt;
+</I>&gt;<i>  &gt; _______________________________________________
+</I>&gt;<i>  &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i>  &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>  &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>  &gt;
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i>  --
+</I>&gt;<i>  -----------------------------------------
+</I>&gt;<i>  Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>  Fraunhofer FOKUS/NGNI
+</I>&gt;<i>  Kaiserin-Augusta-Allee 31
+</I>&gt;<i>  10589 Berlin,Germany
+</I>&gt;<i>  Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>  Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>  Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i>  We could change the world if God would give us the source code...
+</I>&gt;<i>  -----------------------------------------------------------------
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002829.html">[OpenIMSCore-Users] ipsec security association problem
+</A></li>
+	<LI>Next message: <A HREF="002843.html">[OpenIMSCore-Users] ipsec security association problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2832">[ date ]</a>
+              <a href="thread.html#2832">[ thread ]</a>
+              <a href="subject.html#2832">[ subject ]</a>
+              <a href="author.html#2832">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

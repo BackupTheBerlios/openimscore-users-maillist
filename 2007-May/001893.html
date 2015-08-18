@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Triggers
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Triggers&In-Reply-To=%3C465DD973.5050001%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001852.html">
+   <LINK REL="Next"  HREF="001854.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Triggers</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Triggers&In-Reply-To=%3C465DD973.5050001%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Triggers">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed May 30 22:07:15 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001852.html">[OpenIMSCore-Users] Triggers
+</A></li>
+        <LI>Next message: <A HREF="001854.html">[OpenIMSCore-Users] NAT problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1893">[ date ]</a>
+              <a href="thread.html#1893">[ thread ]</a>
+              <a href="subject.html#1893">[ subject ]</a>
+              <a href="author.html#1893">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hmmmm... my point of view would be that the session case for
+registration is only a mobile originating operation and never a
+terminating one as the operation ends on the originating side. This is
+because you can't really define a terminating side. Then, if you think
+about how it is routed, you can argue that actually the I-CSCF after the
+UAR/UAA &quot;terminates&quot; the operation towards the S-CSCF :)... Well, for
+generality, I think that the session case should be ignored when IFC
+checking for the 3rd party registration... but then you will need to
+always specify a Method!=REGISTER if you want to catch all terminating
+requests... So I will keep it as it is, with originating only. (or how I
+hope that it is ;-) ).
+
+-Dragos
+
+
+
+Jos&#233; Carlos Amorim wrote:
+&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I have a doubt, with the following user profile when a user tries to
+</I>&gt;<i> register the S-CSCF is going to trigger 2 times to the AS, is this
+</I>&gt;<i> correct?
+</I>&gt;<i>
+</I>&gt;<i> Should it trigger to the AS for Session case = 0? The specs don&#8217;t seam
+</I>&gt;<i> to be clear to me on this aspect.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> &lt;PrivateID&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at ptinovacao.pt</A>&lt;/PrivateID&gt;
+</I>&gt;<i>
+</I>&gt;<i> &lt;ServiceProfile&gt;
+</I>&gt;<i>
+</I>&gt;<i> &lt;PublicIdentity&gt;&lt;BarringIndication&gt;0&lt;/BarringIndication&gt;&lt;Identity&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at ptinovacao.pt</A>&lt;/Identity&gt;&lt;/PublicIdentity&gt;
+</I>&gt;<i>
+</I>&gt;<i> &lt;InitialFilterCriteria&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;Priority&gt;0&lt;/Priority&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;TriggerPoint&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;ConditionTypeCNF&gt;0&lt;/ConditionTypeCNF&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;SPT&gt;
+</I>&gt;<i>
+</I>&gt;<i>                         &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i>
+</I>&gt;<i>                         &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i>
+</I>&gt;<i>                         &lt;Method&gt;REGISTER&lt;/Method&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;/SPT&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;/TriggerPoint&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;ApplicationServer&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;ServerName&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">servicea at 192.168.20.3</A>:5070&lt;/ServerName&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;DefaultHandling&gt;0&lt;/DefaultHandling&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;/ApplicationServer&gt;
+</I>&gt;<i>
+</I>&gt;<i> &lt;/InitialFilterCriteria&gt;
+</I>&gt;<i>
+</I>&gt;<i> &lt;InitialFilterCriteria&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;Priority&gt;1&lt;/Priority&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;TriggerPoint&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;ConditionTypeCNF&gt;0&lt;/ConditionTypeCNF&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;SPT&gt;
+</I>&gt;<i>
+</I>&gt;<i>                         &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i>
+</I>&gt;<i>                         &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i>
+</I>&gt;<i>                         &lt;SessionCase&gt;0&lt;/SessionCase&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;/SPT&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;/TriggerPoint&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;ApplicationServer&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;ServerName&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">serviceb at 192.168.20.3</A>:5070&lt;/ServerName&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;DefaultHandling&gt;0&lt;/DefaultHandling&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;/ApplicationServer&gt;
+</I>&gt;<i>
+</I>&gt;<i> &lt;/InitialFilterCriteria&gt;
+</I>&gt;<i>
+</I>&gt;<i> &lt;InitialFilterCriteria&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;Priority&gt;2&lt;/Priority&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;TriggerPoint&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;ConditionTypeCNF&gt;0&lt;/ConditionTypeCNF&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;SPT&gt;
+</I>&gt;<i>
+</I>&gt;<i>                         &lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;
+</I>&gt;<i>
+</I>&gt;<i>                         &lt;Group&gt;0&lt;/Group&gt;
+</I>&gt;<i>
+</I>&gt;<i>                         &lt;SessionCase&gt;1&lt;/SessionCase&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;/SPT&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;/TriggerPoint&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;ApplicationServer&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;ServerName&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">servicec at 192.168.20.3</A>:5070&lt;/ServerName&gt;
+</I>&gt;<i>
+</I>&gt;<i>                 &lt;DefaultHandling&gt;0&lt;/DefaultHandling&gt;
+</I>&gt;<i>
+</I>&gt;<i>         &lt;/ApplicationServer&gt;
+</I>&gt;<i>
+</I>&gt;<i> &lt;/InitialFilterCriteria&gt;
+</I>&gt;<i>
+</I>&gt;<i> &lt;/ServiceProfile&gt;&lt;/IMSSubscription&gt;
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Jos&#233; Carlos Silva
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001852.html">[OpenIMSCore-Users] Triggers
+</A></li>
+	<LI>Next message: <A HREF="001854.html">[OpenIMSCore-Users] NAT problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1893">[ date ]</a>
+              <a href="thread.html#1893">[ thread ]</a>
+              <a href="subject.html#1893">[ subject ]</a>
+              <a href="author.html#1893">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

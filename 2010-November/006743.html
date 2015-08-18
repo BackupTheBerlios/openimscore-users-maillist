@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Using Servlet to access iFC in HSS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Using%20Servlet%20to%20access%20iFC%20in%20HSS&In-Reply-To=%3CAANLkTik0B7vCqP0tZRBJkArmuErT2rjNHD5NeXmna555%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006749.html">
+   <LINK REL="Next"  HREF="006745.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Using Servlet to access iFC in HSS</H1>
+    <B>Mosiuoa Tsietsi</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Using%20Servlet%20to%20access%20iFC%20in%20HSS&In-Reply-To=%3CAANLkTik0B7vCqP0tZRBJkArmuErT2rjNHD5NeXmna555%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Using Servlet to access iFC in HSS">mosiuoat at gmail.com
+       </A><BR>
+    <I>Tue Nov 23 17:23:37 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006749.html">[OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for	non	emergency calls (Franz Edler)
+</A></li>
+        <LI>Next message: <A HREF="006745.html">[OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for non emergency calls (Franz Edler)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6743">[ date ]</a>
+              <a href="thread.html#6743">[ thread ]</a>
+              <a href="subject.html#6743">[ subject ]</a>
+              <a href="author.html#6743">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm using Mobicents SIP servlet as an AS for IMSCore (Nov 22 2010 checkout).
+I setup the permissions in the web console to give the servlet access to
+pretty much all the user data. I am able to successfully issue the following
+SNR to the HSS:
+
++----------------------------------- HEADER
+----------------------------------+
+|<i> Version.................1
+</I>|<i> Command-Flags...........R[true] P[true] E[false] T[false]
+</I>|<i> Command-Code............308
+</I>|<i> Application-Id..........16777217
+</I>|<i> Hop-By-Hop Identifier...0
+</I>|<i> End-To-End Identifier...2018992160
+</I>+------------------------------------ AVPs
+-----------------------------------+
+|<i> AVP: Code[259] VendorID[0] Value[16777217] Flags[M=true;E=false;V=false]
+</I>|<i> AVP: Code[263] VendorID[0] Value[123sip-servlets456;1290509642367]
+</I>Flags[M=false;E=false;V=false]
+|<i> AVP: Code[260] VendorID[0] Value[&lt;Grouped&gt;] Flags[M=true;E=false;V=false]
+</I>|<i>   AVP: Code[266] VendorID[0] Value[10415] Flags[M=true;E=false;V=false]
+</I>|<i>   AVP: Code[258] VendorID[0] Value[16777217] Flags[M=true;E=false;V=false]
+</I>|<i> AVP: Code[277] VendorID[0] Value[2] Flags[M=true;E=false;V=false]
+</I>|<i> AVP: Code[264] VendorID[0] Value[sip-servlet.open-ims.test]
+</I>Flags[M=true;E=false;V=false]
+|<i> AVP: Code[296] VendorID[0] Value[open-ims.test]
+</I>Flags[M=true;E=false;V=false]
+|<i> AVP: Code[293] VendorID[0] Value[hss.open-ims.test]
+</I>Flags[M=true;E=false;V=false]
+|<i> AVP: Code[283] VendorID[0] Value[open-ims.test]
+</I>Flags[M=true;E=false;V=false]
+|<i> AVP: Code[700] VendorID[10415] Value[&lt;Grouped&gt;]
+</I>Flags[M=true;E=false;V=true]
+|<i>   AVP: Code[601] VendorID[10415] Value[sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>]
+</I>Flags[M=true;E=true;V=true]
+|<i> AVP: Code[705] VendorID[10415] Value[0] Flags[M=true;E=false;V=true]
+</I>|<i> AVP: Code[703] VendorID[10415] Value[13] Flags[M=true;E=false;V=true]
+</I>+-----------------------------------------------------------------------------+
+
+&gt;<i>From the AVP list, you can see that I requested the User Identity (700)
+</I>using the User Identity AVP and the iFC (703) using the Data-Reference AVP
+(with code 13).
+
+I get the SNA properly from the HSS server. I use Mercurio client to
+register with the IMSCore and the HSS honours the subscription, but does not
+return the iFC in the UserData vector:
+
++----------------------------------- HEADER
+----------------------------------+
+|<i> Version.................1
+</I>|<i> Command-Flags...........R[true] P[true] E[false] T[false]
+</I>|<i> Command-Code............309
+</I>|<i> Application-Id..........16777217
+</I>|<i> Hop-By-Hop Identifier...1399410761
+</I>|<i> End-To-End Identifier...3153390125
+</I>+------------------------------------ AVPs
+-----------------------------------+
+|<i> AVP: Code[264] VendorID[0] Value[hss.open-ims.test]
+</I>Flags[M=true;E=false;V=false]
+|<i> AVP: Code[296] VendorID[0] Value[open-ims.test]
+</I>Flags[M=true;E=false;V=false]
+|<i> AVP: Code[263] VendorID[0] Value[hss.open-ims.test;1290509196212;0]
+</I>Flags[M=true;E=false;V=false]
+|<i> AVP: Code[277] VendorID[0] Value[1] Flags[M=true;E=false;V=false]
+</I>|<i> AVP: Code[260] VendorID[0] Value[&lt;Grouped&gt;] Flags[M=true;E=false;V=false]
+</I>|<i>   AVP: Code[266] VendorID[0] Value[10415] Flags[M=true;E=false;V=false]
+</I>|<i>   AVP: Code[258] VendorID[0] Value[16777217] Flags[M=true;E=false;V=false]
+</I>|<i> AVP: Code[293] VendorID[0] Value[sip-servlet.open-ims.test]
+</I>Flags[M=true;E=false;V=false]
+|<i> AVP: Code[283] VendorID[0] Value[open-ims.test]
+</I>Flags[M=true;E=false;V=false]
+|<i> AVP: Code[702] VendorID[10415]
+</I>Value[&lt;Sh-Data&gt;&lt;Sh-IMS-Data&gt;&lt;IMSUserState&gt;1&lt;/IMSUserState&gt;&lt;/Sh-IMS-Data&gt;&lt;/Sh-Data&gt;]
+Flags[M=true;E=false;V=true]
+|<i> AVP: Code[700] VendorID[10415] Value[&lt;Grouped&gt;]
+</I>Flags[M=true;E=false;V=true]
+|<i>   AVP: Code[601] VendorID[10415] Value[sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>]
+</I>Flags[M=true;E=false;V=true]
++-----------------------------------------------------------------------------+
+
+So, the only thing I'm getting in the User Data (702) AVP is the
+IMSUserState and that is it.
+
+Any ideas what I'm missing?
+
+Mos
+
+P.S. Apologies for cross posting. Sent to Mobicents list but on second
+thought, thought it would be more appropriate to send it here as it may be
+an OpenIMS HSS concern.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20101123/420626a1/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20101123/420626a1/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006749.html">[OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for	non	emergency calls (Franz Edler)
+</A></li>
+	<LI>Next message: <A HREF="006745.html">[OpenIMSCore-Users] P-CSCF [Orig_Subsequent] fails for non emergency calls (Franz Edler)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6743">[ date ]</a>
+              <a href="thread.html#6743">[ thread ]</a>
+              <a href="subject.html#6743">[ subject ]</a>
+              <a href="author.html#6743">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

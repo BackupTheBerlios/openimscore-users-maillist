@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Issue in establishing call between 2	endpoints where the 2 end-points reside on the same device
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Issue%20in%20establishing%20call%20between%202%0A%09endpoints%20where%20the%202%20end-points%20reside%20on%20the%20same%20device&In-Reply-To=%3C08bf01ca7680%24fcfc11f0%24f6f435d0%24%40p%40globaledgesoft.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005954.html">
+   <LINK REL="Next"  HREF="005975.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Issue in establishing call between 2	endpoints where the 2 end-points reside on the same device</H1>
+    <B>Guhan P</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Issue%20in%20establishing%20call%20between%202%0A%09endpoints%20where%20the%202%20end-points%20reside%20on%20the%20same%20device&In-Reply-To=%3C08bf01ca7680%24fcfc11f0%24f6f435d0%24%40p%40globaledgesoft.com%3E"
+       TITLE="[OpenIMSCore-Users] Issue in establishing call between 2	endpoints where the 2 end-points reside on the same device">guhan.p at globaledgesoft.com
+       </A><BR>
+    <I>Sun Dec  6 15:32:50 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005954.html">[OpenIMSCore-Users] Facing issues running HSS
+</A></li>
+        <LI>Next message: <A HREF="005975.html">[OpenIMSCore-Users] Issue in establishing call between 2	endpoints where the 2 end-points reside on the same device
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5957">[ date ]</a>
+              <a href="thread.html#5957">[ thread ]</a>
+              <a href="subject.html#5957">[ subject ]</a>
+              <a href="author.html#5957">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Franz,
+
+ 
+
+I suggest that to match a dialog, dialog identifiers (ie. CallID, From &amp; To Tag) should be compared (as per RFC 3261) and not the IP,Port &amp; transport.
+
+ 
+
+[Franz]So I propose that you should use a more realistic scenario for your tests.
+
+ 
+
+If we consider PBX kind of Application where &#8216;n&#8217; number of endpoints (slics-subscriber line interface circuits) are connected, this scenario is a realistic scenario.
+
+I feel that a server should not restrict a hard/soft phone [which contains &#8216;n&#8217; number of slics  to support multiple user login ie. SIP Registrations] to make calls between users (IMPUs) who share the same IP, Port &amp; Transport.
+
+ 
+
+Please correct me if I miss out any aspect here.
+
+ 
+
+Regards,
+
+Guhan
+
+ 
+
+From: Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz-edler at aon.at</A>] 
+Sent: Thursday, November 12, 2009 11:54 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">veena.s at globaledgesoft.com</A>
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">guhan.p at globaledgesoft.com</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: RE: [OpenIMSCore-Users] Issue in establishing call between 2 endpointswhere the 2 end-points reside on the same device
+
+ 
+
+Hi Veena,
+
+&gt;<i> The response from the ep2 to INVITE includes RECORD-ROUTE header field 
+</I>&gt;<i> with originating pcscf and scscf and terminating scscf uris.
+</I>&gt;<i> Terminating pcscf uri is not included.
+</I>
+After a quick analysis I found that the problem comes from the fact, that the terminating INVITE request is not recognized as an initial request but as a subsequent request. The function &quot;P_is_in_dialog&quot; checks based on host, port and transport if a dialog exists already. As the same host, port and transport has already been used for the originating INVITE (and therefore exists already) the P-CSCF concludes that the request is a subsequent one.
+This leads to the problem that a Record-Route is not included anymore.
+
+So I propose that you should use a more realistic scenario for your tests.
+
+-franz 
+
+---
+Die aonKombi: unlimitiertes Highspeed-Internet + Mobiltelefonie + Festnetz um nur EUR 19,90 pro Monat - inkl. Gratis-Herstellung!* Jetzt auf Wunsch sogar mit unlimitiertem mobilem Internet!* Alle Infos und Bedingungen hier &lt;<A HREF="http://www.telekom.at/aonKombi">http://www.telekom.at/aonKombi</A>&gt; 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20091206/fbc982bd/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20091206/fbc982bd/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005954.html">[OpenIMSCore-Users] Facing issues running HSS
+</A></li>
+	<LI>Next message: <A HREF="005975.html">[OpenIMSCore-Users] Issue in establishing call between 2	endpoints where the 2 end-points reside on the same device
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5957">[ date ]</a>
+              <a href="thread.html#5957">[ thread ]</a>
+              <a href="subject.html#5957">[ subject ]</a>
+              <a href="author.html#5957">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

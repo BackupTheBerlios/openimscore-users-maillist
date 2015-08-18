@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to create a Public Service Identity
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20create%20a%20Public%20Service%20Identity&In-Reply-To=%3C46E5094A.3010700%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002623.html">
+   <LINK REL="Next"  HREF="002597.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to create a Public Service Identity</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20create%20a%20Public%20Service%20Identity&In-Reply-To=%3C46E5094A.3010700%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] How to create a Public Service Identity">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Sep 10 11:07:22 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002623.html">[OpenIMSCore-Users] Building RTP Streams
+</A></li>
+        <LI>Next message: <A HREF="002597.html">[OpenIMSCore-Users] Problems with AS initiated session
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2594">[ date ]</a>
+              <a href="thread.html#2594">[ thread ]</a>
+              <a href="subject.html#2594">[ subject ]</a>
+              <a href="author.html#2594">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>the 2 methods indicated by Peter and Joao are both for doing an
+originating call.
+
+AND the simplest way to do it is to do a terminating call - Just send
+the message from the AS to the I-CSCF, as normal routing would proceed.
+
+-Dragos
+
+JF wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> In addition, an AS can also originate calls on behalf of an user
+</I>&gt;<i> (registered or not), and in that case it uses that user's IMPU and not
+</I>&gt;<i> a PSI.
+</I>&gt;<i>
+</I>&gt;<i> JF
+</I>&gt;<i>
+</I>&gt;<i> On 8/31/07, Peter Weik &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">peter.weik at fokus.fraunhofer.de</A>&gt; wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi Han,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> when an AS wants to originate calls, it should use a PSI to do so. Add
+</I>&gt;&gt;<i> the PSI to the P-Asserted-Identity header and use the correct routing
+</I>&gt;&gt;<i> settings for an originating call.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> PSIs do not need to be registered (as they are not bound to an IMPI) and
+</I>&gt;&gt;<i> you create them in the FHoSS web console in the Public User Identity
+</I>&gt;&gt;<i> section (which shows: this should be renamed to reflect also &quot;service&quot;
+</I>&gt;&gt;<i> in there) by using the &quot;IMPU Type&quot; switch. We treat PSIs like IMPUs, so
+</I>&gt;&gt;<i> a service profile is associated to the &quot;PSI user&quot;/AS as it would be to
+</I>&gt;&gt;<i> an IMPU. This means that you also have to do a service profile for that
+</I>&gt;&gt;<i> PSI. This approach then permits:
+</I>&gt;&gt;<i> - to discriminate service routing of requests addressed to the PSI
+</I>&gt;&gt;<i> according to details of the SIP request (e.g INVITE for a voice session
+</I>&gt;&gt;<i> and an INVITE for a video session addressed to the same PSI may be
+</I>&gt;&gt;<i> routed to different specialized media servers)
+</I>&gt;&gt;<i> - to chain several ASs on the signalling path of the SIP request,
+</I>&gt;&gt;<i> instead of routing it to a unique AS
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> We dropped the rather simple PSI approach of forwarding requests to
+</I>&gt;&gt;<i> exactly one AS with the Rel.7 release of FHoSS.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Peter
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Fri, 2007-08-31 at 09:46 +0800, Han, Yang wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The application is like this:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Firstly the AS sends the initial &quot;invite&quot; to UE. I need the message correctly sent to UE and UE can response.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I did like this:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> When the AS sent the initial &quot;invite&quot; to UE, I added a uri in the P-Asserted-Identity field of the &quot;invite&quot; message. For example, I added: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at ...</A>, and registered the &quot;alice&quot; uri(public identity) in Fokus. Then it worked and the UE can receive the message and responsed.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The question is:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> When AS sends the initial &quot;invite&quot; message to UE, must I  register a uri(public identity) for AS and add the uri in P-Asserted-Identity field? And can I use a PSI as the uri of AS? If can, would you tell me how to create a PSI? And need I change the initial &quot;invite&quot; message from the AS to UE? For example the P-Asserted-Identity field or other field of the message.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;&gt;&gt;<i> Sent: 2007&#24180;8&#26376;29&#26085; 19:32
+</I>&gt;&gt;&gt;<i> To: Han, Yang
+</I>&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] How to create a Public Service Identity
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hello Han,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Would be great if you could send us a trace of the problem so that we
+</I>&gt;&gt;&gt;<i> could see where it failed.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Han, Yang wrote:
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I have a problem when I used a PSI(public service identity).
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I deployed a application on Weblogic Sip Server. And I made the AS as
+</I>&gt;&gt;&gt;&gt;<i> a public service identity. But when I run the application, the Fokus
+</I>&gt;&gt;&gt;&gt;<i> didn't response to the Invite message from the AS.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I called the PSI uri from a sip terminal but cannot connect.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I am not sure if the PSI is created rightly. Would you please tell me
+</I>&gt;&gt;&gt;&gt;<i> how to create a PSI in Fokus and how to test it?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Thank you very much!
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Regards
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002623.html">[OpenIMSCore-Users] Building RTP Streams
+</A></li>
+	<LI>Next message: <A HREF="002597.html">[OpenIMSCore-Users] Problems with AS initiated session
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2594">[ date ]</a>
+              <a href="thread.html#2594">[ thread ]</a>
+              <a href="subject.html#2594">[ subject ]</a>
+              <a href="author.html#2594">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

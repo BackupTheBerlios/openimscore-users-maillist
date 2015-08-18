@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Handling early calls problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Handling%20early%20calls%20problem&In-Reply-To=%3C0AE2132CE51D1943A20F450AA7258E5C03CB1462%40INOAVREX05.ptin.corpPT.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003648.html">
+   <LINK REL="Next"  HREF="003635.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Handling early calls problem</H1>
+    <B>Nuno Miguel Ribeiro (IT)</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Handling%20early%20calls%20problem&In-Reply-To=%3C0AE2132CE51D1943A20F450AA7258E5C03CB1462%40INOAVREX05.ptin.corpPT.com%3E"
+       TITLE="[OpenIMSCore-Users] Handling early calls problem">it-n-ribeiro at ptinovacao.pt
+       </A><BR>
+    <I>Tue Mar 18 12:26:41 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003648.html">[OpenIMSCore-Users] Save VMWare Image
+</A></li>
+        <LI>Next message: <A HREF="003635.html">[OpenIMSCore-Users] Handling early calls problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3627">[ date ]</a>
+              <a href="thread.html#3627">[ thread ]</a>
+              <a href="subject.html#3627">[ subject ]</a>
+              <a href="author.html#3627">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos and all,
+
+ 
+
+I'm having a problem related with the &quot;early&quot; CANCEL's. The scenario is the following  one :
+
+A PSTN call to a SIP phone. The PSTN caller decides to cancel the call  a few moments right after initiating, so the PSTN will send the CANCEL message. When it arrives to the I-CSCF  this one is discarded and not forwarded to the S-CSCF. So what happens is that we have a ghost call.... The PSTN has already cancelled the call but the SIP phone continues to ring.
+
+ 
+
+I have looked into SER lists and saw that there was a thread about  &quot;handling of early CANCELs&quot;. I have  contacted  Andrei ( from the SER development) about this problem and after analyzing the current scenario he answered:
+
+ 
+
+&quot;The problem is when the CANCEL arrives the INVITE transaction has not received any reply yet (if you look in the dump you'll see an 100 trying
+ from .9 long after the CANCEL is received). In ser in this case (CANCEL  received and no response yet on a branch)  the branch is dropped
+ immediately. The CANCEL is also not forwarded downstream (the  rfc says that CANCEL should be sent only on replied branches).
+
+So to make a long story short, upgrade to the latest cvs version and set  modparam(&quot;tm&quot;, &quot;cancel_b_method&quot;, 1). This will keep retransmitting
+ the INVITE if no reply was received, even after the CANCEL arrives and  it will avoid all the above problems (see modules/tm/README |grep
+ cancel_b_method for a more detailed description). If you still have problem, drop me another mail. I'm very interested if the cancel fix works properly, not only in my testbed. I'm starting to think that making this the default behavior might be a good idea (since it seems that it causes problems quite frequently). It might even become a  candidate for a backport to stable.
+
+ 
+
+Andrei &quot; 
+
+ 
+
+So now we are thinking about how we should proceed. We think that this issue (ghost call) is very important to be solved in Open IMS Core's. Do you think this issue is important enough to update the SER version to the latest?  Or  we should  create a special logic in the t_fwd.c in order to forward the CANCEL even if the provisional answer is not received (it is against the RFC but will solve the problem...)?
+
+ 
+
+Any other ideas?
+
+ 
+
+Thanks in any advance.
+
+ 
+
+Regards, 
+
+ 
+
+Nuno Ribeiro
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080318/ba4b49bd/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080318/ba4b49bd/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: CANCEL_Provisional_answer_not_received.pcap
+Type: application/octet-stream
+Size: 18680 bytes
+Desc: CANCEL_Provisional_answer_not_received.pcap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080318/ba4b49bd/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080318/ba4b49bd/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003648.html">[OpenIMSCore-Users] Save VMWare Image
+</A></li>
+	<LI>Next message: <A HREF="003635.html">[OpenIMSCore-Users] Handling early calls problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3627">[ date ]</a>
+              <a href="thread.html#3627">[ thread ]</a>
+              <a href="subject.html#3627">[ subject ]</a>
+              <a href="author.html#3627">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

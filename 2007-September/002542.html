@@ -1,0 +1,1460 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem in SCSCF,ICSCF and HSS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20in%20SCSCF%2CICSCF%20and%20HSS&In-Reply-To=%3CD2E02CBEEFC13A48B5DA038E34EE004ABF5253%40PRTRRA06-XCS05.telkom.co.za%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002535.html">
+   <LINK REL="Next"  HREF="002543.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem in SCSCF,ICSCF and HSS</H1>
+    <B>Tom Phihlela (ST)</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20in%20SCSCF%2CICSCF%20and%20HSS&In-Reply-To=%3CD2E02CBEEFC13A48B5DA038E34EE004ABF5253%40PRTRRA06-XCS05.telkom.co.za%3E"
+       TITLE="[OpenIMSCore-Users] Problem in SCSCF,ICSCF and HSS">PhihleST at telkom.co.za
+       </A><BR>
+    <I>Wed Sep  5 16:52:51 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002535.html">[OpenIMSCore-Users] Problem in SCSCF,ICSCF and HSS
+</A></li>
+        <LI>Next message: <A HREF="002543.html">[OpenIMSCore-Users] Problem in SCSCF,ICSCF and HSS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2542">[ date ]</a>
+              <a href="thread.html#2542">[ thread ]</a>
+              <a href="subject.html#2542">[ subject ]</a>
+              <a href="author.html#2542">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi
+ 
+If you are no longer using the default ip address (i.e 127.0.0.1),
+you'll have to edit /etc/hosts by adding these lines:
+ 
+  10.21.21.89 open-ims.test
+  10.21.21.89 pcscf.open-ims.test
+  10.21.21.89 scscf.open-ims.test
+  10.21.21.89 icscf.open-ims.test
+  10.21.21.89 hss.open-ims.test
+ 
+Thereafter, you can try to ping them and see if you are still getting
+the same error. That's how I solved that problem.
+ 
+regards
+Tom
+
+________________________________
+
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of
+Sabyasachi Samal
+Sent: 05 September 2007 11:51 AM
+To: Joseph Johnson
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Re: [OpenIMSCore-Users] Problem in SCSCF,ICSCF and HSS
+
+
+The open-ims.dnszone is there in /etc/named directory and the path is
+mentioned in  named.conf and PCSCF and SCSCF etc are running in same
+PC.
+
+I am going thru the link you sent hope i can get rid if this prob.
+ 
+Thanx a lot for your support.
+ 
+BR,
+Sabyasachi
+ 
+On 9/5/07, Joseph Johnson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">joseph.johnson.ie at gmail.com</A>&gt; wrote: 
+
+	1. ensure that the open-ims.dnszone file is in the same
+directory as
+	the named.conf file
+	
+	2. the P-CSCF, S-CSCF etc are running on the PC configured
+with the 
+	DNS server I presume
+	
+	after that, I'm out of ideas. Try looking at the Red Hat DNS
+FAQ to
+	get simple stuff working
+	<A HREF="http://www.redhat.com/mirrors/LDP/HOWTO/DNS-HOWTO.html">http://www.redhat.com/mirrors/LDP/HOWTO/DNS-HOWTO.html</A> 
+	
+	
+	On 9/5/07, Sabyasachi Samal &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>&gt; wrote:
+	&gt; Hello,
+	&gt;
+	&gt; i am sending my resolv.conf and named.conf present in the
+/etc. Using this 
+	&gt; while i am sending a resister message i am getting 478 error
+response. here
+	&gt; i am attaching the logs.
+	&gt;
+	&gt; PCSCF logs:
+	&gt;
+	&gt;
+	&gt; 1(4706) DBG:P-CSCF:P_check_sent_by(): Received from &lt;
+10.21.21.191&gt;
+	&gt;  1(4706) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;&gt;
+	&gt;  1(4706) DBG:P-CSCF:P_check_sent_by(): Via does not contain
+a sent-by
+	&gt; parameter
+	&gt;  1(4706) ERROR: sip_hostport2su: could not resolve hostname:
+&quot; open-ims.test&quot;
+	&gt;  1(4706) ERROR: uri2dst: failed to resolve &quot;open-ims.test&quot;
+	&gt;  1(4706) ERROR: t_forward_nonack: failure to add branches
+	&gt;
+	&gt; My runner logs:
+	&gt;
+	&gt; REGISTER sip: open-ims.test SIP/2.0
+	&gt; Via: SIP/2.0/UDP
+10.21.21.89:5070;branch=z9hG4bK1188973759437
+	&gt; Max-Forwards: 70
+	&gt; From: &quot;bob&quot;&lt; sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=1188973759437
+	&gt; To: &quot;bob&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+	&gt; Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1188973759437 at open-ims.test</A> 
+	&gt; CSeq: 55425 REGISTER
+	&gt; Authorization: Digest
+	&gt;
+username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;&quot;,uri=&quot;sip:o
+pen-ims.test &quot;,response
+	&gt; =&quot;&quot;
+	&gt; Contact: &lt;sip:10.21.21.89:5070&gt;
+	&gt; Content-Length: 0
+	&gt; Expires: 3600
+	&gt; P-Access-Network-Info:
+	&gt; 3GPP-UTRAN-TDD;utran-cell-id-3gpp=2456312354547 
+	&gt; Proxy-Require: sec-agree
+	&gt; Require: sec-agree
+	&gt; Supported:path
+	&gt; Security-Client:
+	&gt;
+ipsec-3gpp;alg=hmac-sha-1-96;spi-c=1234;spi-s=5678;port-c=9876;port-s=
+4321
+	&gt;
+	&gt;
+	&gt; SIP/2.0 478 Unresolvable destination (478/TM) 
+	&gt; Via: SIP/2.0/UDP
+	&gt; 10.21.21.89:5070;branch=z9hG4bK1188973759437;rport=5070
+	&gt; From: &quot;bob&quot;&lt; sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> &gt;;tag=1188973759437
+	&gt; To:
+	&gt;
+&quot;bob&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=57be51aad6726228603aaf1b563bc69f-1c48
+	&gt; Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1188973759437 at open-ims.test</A>
+	&gt; CSeq: 55425 REGISTER
+	&gt; Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore
+(i386/linux))
+	&gt; Content-Length: 0
+	&gt; Warning: 392 10.21.21.89:4060 &quot;Noisy feedback tells:
+pid=4707 req_src_ip=
+	&gt; 10.21.21.89 req_src_port=5070 in_uri=sip:open-ims.test
+	&gt; out_uri=sip:open-ims.test via_cnt==1&quot;
+	&gt; Pl suggest how to over come this. 
+	&gt;
+	&gt;
+	&gt; BR,
+	&gt; Sabyasachi
+	&gt;
+	&gt;
+	&gt; On 9/4/07, Joseph Johnson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">joseph.johnson.ie at gmail.com</A>&gt;
+wrote:
+	&gt; &gt; I'm still curious to know what m/c means 
+	&gt; &gt;
+	&gt; &gt; /etc/bind/named.conf only contains a reference to
+named.conf.local
+	&gt; &gt; which I have also attached
+	&gt; &gt;
+	&gt; &gt; I have never modified /etc/hosts
+	&gt; &gt;
+	&gt; &gt; On 9/4/07, Sabyasachi Samal &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>&gt;
+wrote:
+	&gt; &gt; &gt; my m/c IP&quot; is not in the file. i have put each file in
+proper location.
+	&gt; &gt; &gt; still when i am executing ping pcscf.open-ims.test it
+replies with
+	&gt; unknown
+	&gt; &gt; &gt; host.
+	&gt; &gt; &gt;
+	&gt; &gt; &gt; Can you pl let me know the entries for below files.
+	&gt; &gt; &gt;
+	&gt; &gt; &gt; /etc/named.conf
+	&gt; &gt; &gt; /etc/resolv.conf 
+	&gt; &gt; &gt; /etc/hosts
+	&gt; &gt; &gt;
+	&gt; &gt; &gt;
+	&gt; &gt; &gt; BR,
+	&gt; &gt; &gt; Sabyasachi
+	&gt; &gt; &gt;
+	&gt; &gt; &gt;
+	&gt; &gt; &gt; On 9/4/07, Joseph Johnson &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">joseph.johnson.ie at gmail.com</A>
+&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">joseph.johnson.ie at gmail.com</A>&gt; &gt; wrote:
+	&gt; &gt; &gt; &gt; I presume that that comment &quot;my m/c IP&quot; isn't in the
+actual file -
+	&gt; &gt; &gt; &gt; that would cause an error and what does m/c mean?
+	&gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; then, have you got the open-ims.dnszone file in the
+/etc/bind/zones
+	&gt; &gt; &gt; folder?
+	&gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; did you edit the named.conf file or the
+named.conf.local file in the
+	&gt; &gt; &gt; &gt; /etc/bind/ directory? I have this in named.conf.local:
+	&gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; zone &quot;open-ims.test&quot; {
+	&gt; &gt; &gt; &gt; type master; 
+	&gt; &gt; &gt; &gt; file &quot;/etc/bind/zones/open- ims.dnszone&quot;;
+	&gt; &gt; &gt; &gt; notify no;
+	&gt; &gt; &gt; &gt; }
+	&gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; On 9/4/07, Sabyasachi Samal &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A> &gt; wrote:
+	&gt; &gt; &gt; &gt; &gt; resolv.conf contains:
+	&gt; &gt; &gt; &gt; &gt; nameserver 10.21.21.89 // my m/c IP 
+	&gt; &gt; &gt; &gt; &gt; search open-ims.test
+	&gt; &gt; &gt; &gt; &gt; domain open-ims.test
+	&gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; BR,
+	&gt; &gt; &gt; &gt; &gt; Sabyasachi
+	&gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; On 9/4/07, Joseph Johnson
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">joseph.johnson.ie at gmail.com</A>&gt; wrote:
+	&gt; &gt; &gt; &gt; &gt; &gt; what does your resolv.conf file contain?
+	&gt; &gt; &gt; &gt; &gt; &gt; It it normally in the folder /etc/
+	&gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; On 9/4/07, Sabyasachi Samal &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A> &gt; wrote:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; I have tried the below things and the named
+server is running
+	&gt; fine.
+	&gt; &gt; &gt; &gt; &gt; Still i
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; am getting the below errors. 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; Is there anything more to change? i am using EL4
+OS.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; BR, 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; Sabyasachi
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; On 9/3/07, Joseph Johnson &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">joseph.johnson.ie at gmail.com</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">joseph.johnson.ie at gmail.com</A>&gt; &gt;
+wrote:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; There are a lot of things that may have gone
+wrong....
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Is your nameserver running? You can check this
+by running a 
+	&gt; &gt; &gt; command
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; (as root I think) like:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; # /etc/init.d/named restart
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; or
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; # /etc/init.d/bind9 restart 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; You should get OK.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; If this is the first time you have restarted
+the service, then
+	&gt; you 
+	&gt; &gt; &gt; may
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; now be able to resolve open-ims.test (the DNS
+server had to be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; restarted)
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; On 9/3/07, Sabyasachi Samal
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A> &gt;
+	&gt; wrote:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Yes you are right. DNS is not working. But i
+have configured 
+	&gt; as
+	&gt; &gt; &gt; per
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; step4.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; while doing ping open-ims.test it says host
+not found.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Can you pl help me in this regard. Pl give
+me some idea how
+	&gt; to
+	&gt; &gt; &gt; &gt; &gt; configure
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; DNS?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; BR,
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Sabyasachi
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; On 9/3/07, Joseph Johnson &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">joseph.johnson.ie at gmail.com</A> &gt;
+	&gt; wrote:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &quot;Peer scscf.open-ims.test can not be
+resolved&quot; implies
+	&gt; that
+	&gt; &gt; &gt; your
+	&gt; &gt; &gt; &gt; &gt; DNS
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; server is clearly not working and you can
+test it for 
+	&gt; yourself
+	&gt; &gt; &gt; by
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; running this command:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; $dig @ 127.0.0.1 scscf.open-ims.test
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; You need to ensure that you have followed
+the DNS part of 
+	&gt; step
+	&gt; &gt; &gt; 4
+	&gt; &gt; &gt; &gt; &gt; of
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; the installation process;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; <A HREF="http://openimscore.org/installation_guide#step4">http://openimscore.org/installation_guide#step4</A>
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; and there is an FAQ about the DNS server
+here too:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; <A HREF="http://openimscore.org/installation_guide#annexa">http://openimscore.org/installation_guide#annexa</A>
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; On 9/3/07, Sabyasachi Samal &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sabyasachisamal at gmail.com</A>&gt;
+	&gt; &gt; &gt; wrote:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Hello, 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I am having below problems while running
+SCSCF, ICSCF
+	&gt; and
+	&gt; &gt; &gt; HSS
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Problems in SCSCF:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3819) WARNING:peer_connect(): Error
+opening 
+	&gt; connection to
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; hss.open-ims.test :3868 &gt;Operation not
+permitted
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3819) DBG:sm_process(): Peer
+hss.open-ims.test State
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; Wait_Conn_Ack
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Event
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Rcv_Conn_NAck
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3819) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3819) S[Closed]
+hss.open-ims.test:3868 D[ ]
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3819) ------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3819) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3819) S[Closed]
+hss.open-ims.test:3868 D[ ]
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3819) ------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3819) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3819) S[Closed]
+hss.open-ims.test:3868 D[ ]
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3819) ------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 5(3812) INF:S-CSCF:---------- Registrar
+Contents begin
+	&gt; &gt; &gt; --------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 5(3812) INF:S-CSCF:---------- Registrar
+Contents end 
+	&gt; &gt; &gt; ----------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3819) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3819) S[Closed]
+hss.open-ims.test:3868 D[ ]
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Problems in ICSCF:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) DBG:I_Snd_Conn_Req(): Peer
+hss.open-ims.test
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) WARNING:peer_connect(): Error
+opening 
+	&gt; connection to
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; hss.open-ims.test:3868 &gt;Operation not
+permitted
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) DBG:sm_process(): Peer
+hss.open-ims.test State
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; Wait_Conn_Ack
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Event
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Rcv_Conn_NAck
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) S[Closed] hss.open-ims.test
+:<i>3868 D[ ]
+</I>	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) ------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) S[Closed]
+hss.open-ims.test:3868 D[ ]
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) ------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) S[Closed]
+hss.open-ims.test:3868 D[ ]
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) ------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) S[Closed]
+hss.open-ims.test:3868 D[ ]
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) ------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) S[Closed]
+hss.open-ims.test:3868 D[ ]
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) ------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) S[Closed]
+hss.open-ims.test:3868 D[ ]
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) ------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) S[Closed]
+hss.open-ims.test:3868 D[ ]
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) ------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) S[Closed]
+hss.open-ims.test:3868 D[ ]
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) ------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) S[Closed]
+hss.open-ims.test:3868 D[ ]
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) ------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) --- Peer List: ---
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) S[Closed] hss.open-ims.test
+:<i>3868 D[ ]
+</I>	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) ------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) DBG:peer_timer(): Peer
+hss.open-ims.test State
+	&gt; 0
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 12(3839) DBG:sm_process(): Peer
+hss.open-ims.test State
+	&gt; &gt; &gt; Closed
+	&gt; &gt; &gt; &gt; &gt; Event
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Start
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Problems in FHoSS:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at imstester</A> deploy]# . startup.sh
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Building Classpath 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Classpath is
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt;
+	&gt;
+lib/xml-apis.jar:lib/xercesImpl.jar:lib/xerces-2.4.0.jar:lib/xalan-2.4
+.0.jar:lib/tomcat-util.jar:lib/tomcat-http.jar:lib/tomcat-coyote.jar:l
+ib/struts.jar:lib/servlets-default.jar:lib/servlet-api.jar:lib/naming-
+resources.jar:lib/naming-factory.jar:lib/mysql-connector-java-3.1.12-b
+in.jar:lib/mx4j-3.0.1.jar:lib/log4j.jar:lib/junit.jar:lib/junitee.jar:
+lib/jta.jar:lib/jsp-api.jar:lib/jmx.jar:lib/jdp.jar:lib/jasper-runtime
+.jar:lib/jasper-compiler-jdt.jar:lib/jasper-compiler.jar:lib/hibernate
+3.jar:lib/FHoSS.jar:lib/ehcache-1.1.jar:lib/dom4j-1.6.1.jar:lib/common
+s-validator.jar:lib/commons-modeler.jar:lib/commons-logging.jar:lib/co
+mmons-logging-1.0.4.jar:lib/commons-lang.jar:lib/commons-fileupload.ja
+r:lib/commons-el.jar:lib/commons-digester.jar:lib/commons-collections-
+3.1.jar:lib/commons-beanutils.jar:lib/cglib-2.1.3.jar:lib/catalina-opt
+ional.jar:lib/catalina.jar:lib/c3p0-0.9.1.jar:lib/base64.jar:lib/asm.j
+ar:lib/asm-attrs.jar:lib/antlr-2.7.6.jar::log4j.properties: 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; .
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; .
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:33,677 INFO 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; de.fhg.fokus.hss.main.TomcatServer -
+	&gt; &gt; &gt; &gt; &gt; startTomcat
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Tomcat-Server is started.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:35,609 WARN
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; org.apache.catalina.connector.MapperListener -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; registerEngine Unknown default host:
+localhost
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:37,184 INFO 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; de.fhg.fokus.hss.web.servlet.ResponseFilter
+	&gt; &gt; &gt; -
+	&gt; &gt; &gt; &gt; &gt; init
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Response
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Filter Initialisation!
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:37,996 INFO 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; de.fhg.fokus.hss.main.TomcatServer -
+	&gt; &gt; &gt; &gt; &gt; startTomcat
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; WebConsole
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; of FHoSS was started ! 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:41,449 WARN
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; org.hibernate.impl.SessionFactoryObjectFactory
+	&gt; &gt; &gt; &gt; &gt; -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; addInstance InitialContext did not
+implement
+	&gt; EventContext
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:41,586 INFO
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer
+	&gt; &gt; &gt; &gt; &gt; - 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &lt;init&gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; FQDN: hss.open-ims.test
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:41,596 INFO 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer
+	&gt; &gt; &gt; &gt; &gt; -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &lt;init&gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Realm: open-ims.test
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:41,596 INFO
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer
+	&gt; &gt; &gt; &gt; &gt; -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &lt;init&gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Vendor_ID : 10415
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:41,596 INFO
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer
+	&gt; &gt; &gt; &gt; &gt; - 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &lt;init&gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Product Name: JavaDiameterPeer
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:41,597 INFO 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer
+	&gt; &gt; &gt; &gt; &gt; -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &lt;init&gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; AcceptUnknwonPeers: true 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:41,597 INFO
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.DiameterPeer
+	&gt; &gt; &gt; &gt; &gt; -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &lt;init&gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; DropUnknownOnDisconnect: true 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:41,634 INFO
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; de.fhg.fokus.hss.main.HSSContainer -
+	&gt; &gt; &gt; &gt; &gt; waitForExit
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Type &quot;exit&quot; to stop FHoSS!
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:41,647 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+icscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:38:41,651 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+scscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:39:11,711 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+icscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:39:11,712 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+scscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:39:41,771 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+icscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:39:41,773 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+scscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:40:11,837 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+icscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:40:11,839 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+scscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:40:41,896 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+icscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:40:41,897 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+scscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:41:11,955 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+icscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:41:11,956 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+scscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:41:42,016 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+icscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 2007-09-03 16:41:42,017 ERROR
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; de.fhg.fokus.diameter.DiameterPeer.peer.StateMachine -
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; I_Snd_Conn_Req StateMachine: Peer
+scscf.open-ims.test
+	&gt; can
+	&gt; &gt; &gt; not be
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; resolved.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Anybody can help me in this. 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; BR,
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Sabyasachi
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; On 8/21/07, Dragos Vingarzan
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+	&gt; &gt; &gt; wrote:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; It looks like the compilation step of
+the ser_ims
+	&gt; failed.
+	&gt; &gt; &gt; &gt; &gt; Please 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; do it
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; one more time and see why it fails.
+Most probably, you
+	&gt; do
+	&gt; &gt; &gt; not
+	&gt; &gt; &gt; &gt; &gt; have 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; all
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; the prerequisites, like the
+libxml2-devel.
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; -Dragos 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Sabyasachi Samal wrote:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Hello,
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  I have installed OPEN IMS as per
+the installation 
+	&gt; guide
+	&gt; &gt; &gt; in
+	&gt; &gt; &gt; &gt; &gt; a
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; Redhat
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 9.0 system. While running the
+stuffs, PCSCF is 
+	&gt; running
+	&gt; &gt; &gt; fine
+	&gt; &gt; &gt; &gt; &gt; but
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; I am
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; getting below problems:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  Problems for SCSCF:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; [ <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at IMSTESTER</A> OpenIMSCore]#
+./scscf.sh
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; ./scscf.sh: line 5: killser: command
+not found 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) ERROR: load_module: could
+not open module
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &lt;/opt/OpenIMSCore/ser_ims/modules/scscf/scscf.so&gt;:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; /opt/OpenIMSCore/ser_ims/modules/scscf/scscf.so:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; undefined symbol: 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; xmlFreeValidCtxt
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (41,13-14):
+failed to load
+	&gt; module
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching 
+	&gt; &lt;scscf&gt;
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (43,18-19):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (44,18-19):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (46,18-19):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (47,18-19):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (48,18-19):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (49,17-18):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (50,17-18):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (52,17-18):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (56,18-19):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (59,19-20):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (61,20-21):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (62,18-19):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (63,23-24):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (65,18-19):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (75,17-18):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (77,20-21):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (78,18-19):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (79,23-24):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (81,20-21):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) set_mod_param_regex: No
+module matching
+	&gt; &lt;scscf&gt; 
+	&gt; &gt; &gt; &gt; &gt; found
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (84,17-18):
+Can't set module 
+	&gt; &gt; &gt; parameter
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (115,42-43):
+unknown command,
+	&gt; &gt; &gt; missing 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (131,27-28):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (136,24-25):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (140,24-25):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (147,30-31):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (148,29-30):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (183,35-36):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (186,27-28):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (187,19-20):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (192,31-32):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (193,28-29):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (205,28-29):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (235,30-31):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (236,27-28):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (248,27-28):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (269,28-29):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (274,35-36):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (275,39-40):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (285,25-26):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (289,22-23):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (290,19-20):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (321,27-28):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (326,29-30):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (327,21-22):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (329,19-20):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (348,29-30):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (372,27-28):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (387,26-27):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (425,21-22):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (442,21-22):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (468,29-30):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (469,21-22):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (471,19-20):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (487,16-17):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (513,26-27):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (546,21-22):
+unknown command,
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule? 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) parse error (565,21-22):
+unknown command, 
+	&gt; &gt; &gt; missing
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; loadmodule?
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; ERROR: bad config file (58 errors)
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6415) INFO:cdp:cdp_exit():
+CDiameterPeer stoping
+	&gt; ...
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; ./scscf.sh: line 6:  6415
+Segmentation fault 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; LD_LIBRARY_PATH=/usr/local/lib/ser
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; /opt/OpenIMSCore/ser_ims/ser -f 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; /opt/OpenIMSCore/scscf.cfg -D -D
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; ------ Semaphore Arrays -------- 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; key        semid      owner
+	&gt; perms
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; nsems 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Problems for ICSCF:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; [ <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at IMSTESTER</A> OpenIMSCore]#
+./icscf.sh
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; ./icscf.sh: line 3: killser: command
+not found 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6427) ERROR: load_module: could
+not open module
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &lt;/opt/OpenIMSCore/ser_ims/modules/mysql/mysql.so&gt;:
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; libmysqlclient.so.15: cannot open
+shared object
+	&gt; file: No
+	&gt; &gt; &gt; &gt; &gt; such
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; file
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; or
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; directory
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6427) parse error (30,13-14):
+failed to load
+	&gt; module
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; ERROR: bad config file (1 errors)
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;  0(6427) INFO:cdp:cdp_exit():
+CDiameterPeer stoping 
+	&gt; ...
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; ./icscf.sh: line 4:  6427
+Segmentation fault
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; /opt/OpenIMSCore/ser_ims/ser -f 
+	&gt; &gt; &gt; /opt/OpenIMSCore/icscf.cfg
+	&gt; &gt; &gt; &gt; &gt; -D -D
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; ------ Semaphore Arrays --------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; key        semid      owner 
+	&gt; perms
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; nsems
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Problems for FHoSS: 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; [ <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at IMSTESTER</A> OpenIMSCore]#
+	&gt; ./FHoSS/deploy/startup.sh
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Building Classpath
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Classpath is lib/*.jar::
+log4j.properties:..
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Exception in thread &quot;main&quot;
+	&gt; &gt; &gt; java.lang.NoClassDefFoundError :
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; de/fhg/fokus/hss/main/HSSContainer
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Pl help me if anyone has idea to
+resolve this. 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Thanks n Regards,
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Sabyasachi
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt;
+	&gt;
+----------------------------------------------------------------------
+--
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; _______________________________________________
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; OpenIMSCore-Users mailing list
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt;
+	&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A> 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; -- 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; -----------------------------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Dipl. Eng. Dragos Vingarzan
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Fraunhofer FOKUS/NGNI 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Kaiserin-Augusta-Allee 31
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 10589 Berlin,Germany
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Phone +49 (0)30 - 3463 - 7385 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Mobile +49 (0)163 - 159 - 5221
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; Web www.fokus.fraunhofer.de
+www.openimscore.org
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; We could change the world if God would
+give us the
+	&gt; source
+	&gt; &gt; &gt; &gt; &gt; code... 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt;
+	&gt;
+-----------------------------------------------------------------
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; _______________________________________________ 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; OpenIMSCore-Users mailing list
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A> 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt;
+	&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt; &gt; 
+	&gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt; &gt;
+	&gt; &gt; &gt; &gt;
+	&gt; &gt; &gt;
+	&gt; &gt; &gt;
+	&gt; &gt;
+	&gt; &gt;
+	&gt;
+	&gt;
+	&gt;
+	
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This e-mail is subject to the Telkom SA electronic communication legal notice, available at :
+<A HREF="http://www.telkom.co.za/TelkomEMailLegalNotice">http://www.telkom.co.za/TelkomEMailLegalNotice</A>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070905/ecc59614/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070905/ecc59614/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002535.html">[OpenIMSCore-Users] Problem in SCSCF,ICSCF and HSS
+</A></li>
+	<LI>Next message: <A HREF="002543.html">[OpenIMSCore-Users] Problem in SCSCF,ICSCF and HSS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2542">[ date ]</a>
+              <a href="thread.html#2542">[ thread ]</a>
+              <a href="subject.html#2542">[ subject ]</a>
+              <a href="author.html#2542">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

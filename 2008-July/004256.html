@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] R&#233;f. : Re: R&#233;f. : Re:  Diameterexchanges
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%3D%3Fiso-8859-1%3Fq%3FR%3DE9f%3D2E_%3D3A_Re%3D3A_R%3DE9f%3D2E_%3F%3D%0A%20%3D%3Fiso-8859-1%3Fq%3F%3D3A_Re%3D3A__Diameterexchanges%3F%3D&In-Reply-To=%3COFD8E4EDC8.89C2395D-ONC1257483.003504FF%40frcl.bull.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004253.html">
+   <LINK REL="Next"  HREF="004296.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] R&#233;f. : Re: R&#233;f. : Re:  Diameterexchanges</H1>
+    <B>Christelle.Brouzet at bull.net</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%3D%3Fiso-8859-1%3Fq%3FR%3DE9f%3D2E_%3D3A_Re%3D3A_R%3DE9f%3D2E_%3F%3D%0A%20%3D%3Fiso-8859-1%3Fq%3F%3D3A_Re%3D3A__Diameterexchanges%3F%3D&In-Reply-To=%3COFD8E4EDC8.89C2395D-ONC1257483.003504FF%40frcl.bull.fr%3E"
+       TITLE="[OpenIMSCore-Users] R&#233;f. : Re: R&#233;f. : Re:  Diameterexchanges">Christelle.Brouzet at bull.net
+       </A><BR>
+    <I>Fri Jul 11 11:40:47 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004253.html">[OpenIMSCore-Users] IpSec Scalability
+</A></li>
+        <LI>Next message: <A HREF="004296.html">[OpenIMSCore-Users] R&#233;f. : Re: R&#233;f. : Re:  Diameter exchanges
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4256">[ date ]</a>
+              <a href="thread.html#4256">[ thread ]</a>
+              <a href="subject.html#4256">[ subject ]</a>
+              <a href="author.html#4256">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+Hi Dragos,
+Thanks for your answer,
+My problem is that all Diameter exchanges use the same IP address, while I
+have configured one IP address to each element. Now, thanks to you, I can
+identify the origin of message, because each element uses different ports,
+but IP problem persists.
+
+In VM3 I have one physical interface with IP address 172.23.10.54 and tow
+virtual interfaces with IP addresses 172.23.10.55 and 172.23.10.56. I have
+configured I-CSCF, S-CSCF1 and S-CSCF2 to work each with itself IP address
+in .cfg files and DNS.
+The xml files are:
+-For icscf:
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;DiameterPeer
+      FQDN=&quot;icscf.open-ims.test&quot;
+      Realm=&quot;open-ims.test&quot;
+      Vendor_Id=&quot;10415&quot;
+      Product_Name=&quot;CDiameterPeer&quot;
+      AcceptUnknownPeers=&quot;1&quot;
+      DropUnknownOnDisconnect=&quot;1&quot;
+      Tc=&quot;30&quot;
+      Workers=&quot;4&quot;
+      QueueLength=&quot;8&quot;
+&gt;<i>
+</I>        &lt;Peer FQDN=&quot;hss.open-ims.test&quot; Realm=&quot;open-ims.test&quot; port=&quot;3868&quot;/&gt;
+        &lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;&lt;!-- 3GPP Cx --&gt;
+        &lt;Auth id=&quot;16777216&quot; vendor=&quot;4491&quot;/&gt;&lt;!-- CableLabs Cx --&gt;
+        &lt;Auth id=&quot;16777216&quot; vendor=&quot;13019&quot;/&gt;&lt;!-- ETSI/TISPAN Cx --&gt;
+            ?
+-For scscf1:
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;DiameterPeer
+      FQDN=&quot;scscf1.open-ims.test&quot;
+      Realm=&quot;open-ims.test&quot;
+      Vendor_Id=&quot;10415&quot;
+      Product_Name=&quot;CDiameterPeer&quot;
+      AcceptUnknownPeers=&quot;1&quot;
+      DropUnknownOnDisconnect=&quot;1&quot;
+      Tc=&quot;30&quot;
+      Workers=&quot;4&quot;
+      QueueLength=&quot;8&quot;
+&gt;<i>
+</I>        &lt;Peer FQDN=&quot;hss.open-ims.test&quot; Realm=&quot;open-ims.test&quot; port=&quot;3870&quot;/&gt;
+        &lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;&lt;!-- 3GPP Cx --&gt;
+        &lt;Auth id=&quot;16777216&quot; vendor=&quot;4491&quot;/&gt;&lt;!-- CableLabs Cx --&gt;
+        &lt;Auth id=&quot;16777216&quot; vendor=&quot;13019&quot;/&gt;&lt;!-- ETSI/TISPAN Cx --&gt;
+            ?
+-For scscf2:
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;DiameterPeer
+      FQDN=&quot;scscf2.open-ims.test&quot;
+      Realm=&quot;open-ims.test&quot;
+      Vendor_Id=&quot;10415&quot;
+      Product_Name=&quot;CDiameterPeer&quot;
+      AcceptUnknownPeers=&quot;1&quot;
+      DropUnknownOnDisconnect=&quot;1&quot;
+      Tc=&quot;30&quot;
+      Workers=&quot;4&quot;
+      QueueLength=&quot;8&quot;
+&gt;<i>
+</I>        &lt;Peer FQDN=&quot;hss.open-ims.test&quot; Realm=&quot;open-ims.test&quot; port=&quot;3871&quot;/&gt;
+        &lt;Auth id=&quot;16777216&quot; vendor=&quot;10415&quot;/&gt;&lt;!-- 3GPP Cx --&gt;
+        &lt;Auth id=&quot;16777216&quot; vendor=&quot;4491&quot;/&gt;&lt;!-- CableLabs Cx --&gt;
+        &lt;Auth id=&quot;16777216&quot; vendor=&quot;13019&quot;/&gt;&lt;!-- ETSI/TISPAN Cx --&gt;
+            ?
+
+In the wireshark file attached you can see the registration seen from vm3.
+It shows that I-CSCF introduces UAR diameter request to HSS, with origin IP
+address 172.23.10.54 (packet 5 and 7), then Register was transmitted by
+I-CSCF to S-CSCF1. At the moment, S-CSCF must realize a MAR diameter
+request on HSS, and we can see in trace that MAR was realized with port
+3870 in HSS (this port corresponds to S-CSCF1 in the eyes of the
+configuration files appearing earlier), but IP address is always
+172.23.10.54 instead of 172.23.10.55 (packet 12 and 14).
+My question is how configure CSCF elements to configure IP addresses used
+in Diameter exchanges.
+
+I hope for be clearer than other times. Sorry for my improper English.
+
+Cheers,
+Christelle
+
+
+
+
+(See attached file: diamter-vm3.pcap)
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: diamter-vm3.pcap
+Type: application/octet-stream
+Size: 176616 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080711/1e7328bf/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080711/1e7328bf/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004253.html">[OpenIMSCore-Users] IpSec Scalability
+</A></li>
+	<LI>Next message: <A HREF="004296.html">[OpenIMSCore-Users] R&#233;f. : Re: R&#233;f. : Re:  Diameter exchanges
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4256">[ date ]</a>
+              <a href="thread.html#4256">[ thread ]</a>
+              <a href="subject.html#4256">[ subject ]</a>
+              <a href="author.html#4256">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

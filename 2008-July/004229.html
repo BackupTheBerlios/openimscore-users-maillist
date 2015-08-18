@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Odd CANCEL Behavior
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Odd%20CANCEL%20Behavior&In-Reply-To=%3Cdaca1e090807030727q6f2e8e3an1ab98db876e5ff35%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004306.html">
+   <LINK REL="Next"  HREF="004287.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Odd CANCEL Behavior</H1>
+    <B>Louis Alexander</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Odd%20CANCEL%20Behavior&In-Reply-To=%3Cdaca1e090807030727q6f2e8e3an1ab98db876e5ff35%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Odd CANCEL Behavior">panicked.kernel at gmail.com
+       </A><BR>
+    <I>Thu Jul  3 16:27:24 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004306.html">[OpenIMSCore-Users] OpenIMSCore r571 with OpenIC_Lite v1.2 can't make a call
+</A></li>
+        <LI>Next message: <A HREF="004287.html">[OpenIMSCore-Users] Odd CANCEL Behavior
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4229">[ date ]</a>
+              <a href="thread.html#4229">[ thread ]</a>
+              <a href="subject.html#4229">[ subject ]</a>
+              <a href="author.html#4229">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>All,
+I am attaching a wireshark capture where i see what looks like a bunch of
+extra 487/CANCEL action between my P and CSCSF, here is the scenario
+
+Alice calls Bob
+due to ISC, INVITE is forwarded to 10.239.66.205:5070 and that AS starts a
+CFNA timer for 10 seconds, then proxies the INVITE back to the SCSCF
+After 10 seconds the timer expires and the AS cancels the forwarded branch.
+Bobs phone stops ringing
+Looks like at this point cancel processing is going correctly
+AS then basically invokes a MRF to play some announcement
+Alice hangs up
+
+Well if you look, starting at frame 68 you start to see a bunch of 487/ACK
+stuff for the proxied leg to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at imsark.com.</A>  Whats going on here, is my
+mistake in not putting a Route header <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf...</A> on my outbound
+CANCEL? I snooped eyeBeam performing a CANCEL during ringing and did not see
+a Route header, the cscfs are stateful anyway, so does it matter?
+
+Any help is greatly appreciated
+
+-- 
+Thanks,
+
+Louis
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080703/3d8b6659/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080703/3d8b6659/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: odd-cancel.cap
+Type: application/octet-stream
+Size: 85824 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080703/3d8b6659/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080703/3d8b6659/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004306.html">[OpenIMSCore-Users] OpenIMSCore r571 with OpenIC_Lite v1.2 can't make a call
+</A></li>
+	<LI>Next message: <A HREF="004287.html">[OpenIMSCore-Users] Odd CANCEL Behavior
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4229">[ date ]</a>
+              <a href="thread.html#4229">[ thread ]</a>
+              <a href="subject.html#4229">[ subject ]</a>
+              <a href="author.html#4229">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

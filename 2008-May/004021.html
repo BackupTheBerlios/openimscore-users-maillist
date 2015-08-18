@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] PSTN Connectivity with Cisco Router FXO Port
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSTN%20Connectivity%20with%20Cisco%20Router%20FXO%20Port&In-Reply-To=%3C483C239B.8020709%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004008.html">
+   <LINK REL="Next"  HREF="003989.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] PSTN Connectivity with Cisco Router FXO Port</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSTN%20Connectivity%20with%20Cisco%20Router%20FXO%20Port&In-Reply-To=%3C483C239B.8020709%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] PSTN Connectivity with Cisco Router FXO Port">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue May 27 17:07:07 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004008.html">[OpenIMSCore-Users] PSTN Connectivity with Cisco Router FXO Port
+</A></li>
+        <LI>Next message: <A HREF="003989.html">[OpenIMSCore-Users] implements the &quot;follow me&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4021">[ date ]</a>
+              <a href="thread.html#4021">[ thread ]</a>
+              <a href="subject.html#4021">[ subject ]</a>
+              <a href="author.html#4021">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I had some trouble opening the trace cisco.pcap, so I just read through it.
+
+Seems that your Request-URI is different... maybe it does not like TEL 
+URL or you need to use an absolute one (the full number with a + in 
+front)...
+
+Cheers,
+-Dragos
+
+
+Jean-Benoit PAUX wrote:
+&gt;<i> Yes this is strange.
+</I>&gt;<i>
+</I>&gt;<i> Here are the traces :
+</I>&gt;<i>
+</I>&gt;<i> Trace cisco.pcap = with openims (PCSCF, ICSCF, SCSCF)
+</I>&gt;<i> Trace cisco direct.pcap = softphone calling directly to the gateway
+</I>&gt;<i>
+</I>&gt;<i> I do not see any differences in the SIP headers. Don't know what can cause this problem.
+</I>&gt;<i> I'll try with a Linksys PAP2 this afternoon hoping this will work !
+</I>&gt;<i>
+</I>&gt;<i> Thanks for your help
+</I>&gt;<i>
+</I>&gt;<i> Jean-Benoit PAUX
+</I>&gt;<i>
+</I>&gt;<i> -----Message d'origine-----
+</I>&gt;<i> De : Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;<i> Envoy&#233; : jeudi 22 mai 2008 18:06
+</I>&gt;<i> &#192; : Jean-Benoit PAUX
+</I>&gt;<i> Cc : <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Objet : Re: [OpenIMSCore-Users] PSTN Connectivity with Cisco Router FXO Port
+</I>&gt;<i>
+</I>&gt;<i> Hi Jean-Benoit,
+</I>&gt;<i>
+</I>&gt;<i> This is strange because the &quot;Contact in INVITE&quot; is filled by the client. 
+</I>&gt;<i> So then it should not work directly. Could you please provide some 
+</I>&gt;<i> comparative traces? What status-code do you get?
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Jean-Benoit PAUX wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I&#8217;d like to integrate our OpenIMS Core with the PSTN using a Cisco 
+</I>&gt;&gt;<i> 2800 Router with FXO Ports.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I set in the SCSCF config file the IP address of the Cisco and the port.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On the client, if I try to call tel:95180 for example, the SIP request 
+</I>&gt;&gt;<i> is forwarded to the Cisco but I&#8217;ve got this error from the Cisco :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Contact in INVITE cannot be resolved.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is there something that must be configured (add/modify/remove some 
+</I>&gt;&gt;<i> headers on the SCSCF before sending the request to the Cisco) ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If I configure the client to directly call to the Cisco router, the 
+</I>&gt;&gt;<i> call works so I think, it is correctly configured.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Jean-Benoit PAUX
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004008.html">[OpenIMSCore-Users] PSTN Connectivity with Cisco Router FXO Port
+</A></li>
+	<LI>Next message: <A HREF="003989.html">[OpenIMSCore-Users] implements the &quot;follow me&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4021">[ date ]</a>
+              <a href="thread.html#4021">[ thread ]</a>
+              <a href="subject.html#4021">[ subject ]</a>
+              <a href="author.html#4021">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

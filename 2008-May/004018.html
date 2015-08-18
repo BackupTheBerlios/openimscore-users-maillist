@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Set SIP communication between two	Application Servers
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Set%20SIP%20communication%20between%20two%0A%09Application%20Servers&In-Reply-To=%3C483C1841.3020807%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004005.html">
+   <LINK REL="Next"  HREF="004006.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Set SIP communication between two	Application Servers</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Set%20SIP%20communication%20between%20two%0A%09Application%20Servers&In-Reply-To=%3C483C1841.3020807%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Set SIP communication between two	Application Servers">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue May 27 16:18:41 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004005.html">[OpenIMSCore-Users] Set SIP communication between two	Application	Servers
+</A></li>
+        <LI>Next message: <A HREF="004006.html">[OpenIMSCore-Users] Set SIP communication between two Application	Servers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4018">[ date ]</a>
+              <a href="thread.html#4018">[ thread ]</a>
+              <a href="subject.html#4018">[ subject ]</a>
+              <a href="author.html#4018">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Persa,
+
+Well, an AS is not a client and as such it works differently. It does 
+not need to register for example.
+
+The 404 is because AS2 is not an user probably. To send messages towards 
+an AS, you will need to have an IFC that filters and forwards it there. 
+The IFC is executed on an S-CSCF and the IFC is saved for the originator 
+and/or terminator of the call, based on your service logic. For example 
+an outgoing calls charging AS would trigger for the originator and a 
+presence server accepting subscribes will trigger for the terminating 
+side (or else how could Bob's service find Alice's charging server, or 
+how could Alice's server know the presence server assigned to Bob?).
+
+There's one more way of routing from an IMS Core to an AS. For example 
+if you have one that would match everything for a certain identity, a 
+better way to do it might be that you configure the AS URL as an &quot;S-CSCF 
+location&quot; in the HSS for the PSI that you want redirected. Logically, 
+the core would try through the I-CSCF to find the terminating side, the 
+HSS would indicate that the S-CSCF that can handle it, but that is 
+actually the AS URL and the message gets directly there from the I-CSCF.
+
+To send messages from the AS (AS1-&gt;x), you will need to have first 
+proper identification in the request (P-Asserted-Identity header!). Then 
+you will need to decide whether you are originating or terminating the 
+&quot;call&quot;. Originating means that you also want an S-CSCF for the 
+originating side (AS1) to check services associated to AS1 (like I said 
+before, charging). For terminating, you are only interested about 
+services related to the terminating side. For originating you would need 
+to add a Route: &lt;sip:domain.of.originaing.user;lr;orig&gt;. For 
+terminating, no route is required.  Then route the message normally, 
+like the SIP RFC says, to the first Route or to Request-URI if you have 
+no Route. In both cases, the DNS would point to an I-CSCF that will find 
+the right S-CSCF to continue processing the message.
+
+I recommend that you read a book about IMS and service triggering to 
+clarify all of this better.
+
+Punctual answers:
+1. no, in no case through the S-CSCF directly (except if you are already 
+in a dialog and the dialog routes indicate so). There are multiple 
+S-CSCFs in your networks and you can not decide which is the right one 
+to use. The I-CSCF will find it for you.
+2. no, but you probably want to add a IFC to trigger for the terminating 
+side. AS do not register, so there's no such Contact in the registrar. 
+The IFC triggering is the method of routing there.
+3. The AS do not register. So the Profile Part Indicator of 
+&quot;registered&quot;, when refering to an AS of course, does not make sense. 
+They will be at most in the unregistered case. For clients, the 
+difference between unregistered and not registered is that in the 
+unregistered state, services could be applied (like a voicemail). This 
+indicator is used to discriminate between filters that would be applied 
+when the user is online and when he is not. Obviously, an IFC won't be 
+downloaded from the HSS to an S-CSCF if it indicates that it only 
+applies for the registered case, unless that identity does a registration.
+4. not all application servers would need to be contained in a service 
+profile. If you don't want messages to be filtered and sent to it then 
+it does not need it. But an AS can appear as a PSI also (e.g. you want 
+AS1 to also go through charging done by AS3, when calling AS2 for example)
+
+Cheers,
+-Dragos
+
+
+Persa Zaloshnja wrote:
+&gt;<i> Hi all,
+</I>&gt;<i>  
+</I>&gt;<i> We have 2 Application servers connected to the same Open IMS domain ( 
+</I>&gt;<i> AS1 and AS2).
+</I>&gt;<i> We would like to send a SUBSCRIBE from AS1 to AS2 through the CSCF and 
+</I>&gt;<i> then get a 200 OK answer back from AS2 to AS1 via CSCF.
+</I>&gt;<i>
+</I>&gt;<i> When we send the message from AS1 to AS2 through the S-CSCF we get 
+</I>&gt;<i> '404 Not found - destination user not found on this S-CSCF'.
+</I>&gt;<i> (We set the To-field to AS2 but we set a Route header to point to S-CSCF)
+</I>&gt;<i> We have set up both App servers in the Open IMS on different ports and 
+</I>&gt;<i> we have given them own filer criterias that are built on the To-header.
+</I>&gt;<i>
+</I>&gt;<i> Note: When we send SUBSCRIBE from a user to the servers it works 
+</I>&gt;<i> perfect. The message go througt to both of them depending on the 
+</I>&gt;<i> To-header in the message.
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> What could be wrong?
+</I>&gt;<i> 1. Should we send the message through the S-CSCF if we want to 
+</I>&gt;<i> communicate between 2 app servers in the same domain? Or should we go 
+</I>&gt;<i> through I-CSCF?
+</I>&gt;<i> 2. Is there something that has to be set in some configuration file in 
+</I>&gt;<i> the system, so the servers can find eachother?
+</I>&gt;<i> 3. Is the  Profile Part Indicator of the IFC attached to the AS 
+</I>&gt;<i> influencing whether it should be registered or unregistered?
+</I>&gt;<i> 4. Each user profile has a service profile, which contains the 
+</I>&gt;<i> respective ifc/tp - how is the application server treated in this 
+</I>&gt;<i> case, should the application server have a service profile ?
+</I>&gt;<i>  
+</I>&gt;<i> Any suggestion or feedback on the matter is greatly appreciated,
+</I>&gt;<i>  
+</I>&gt;<i> Thank you in advance,
+</I>&gt;<i>  
+</I>&gt;<i> Persa
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Get news, entertainment and everything you care about at Live.com. 
+</I>&gt;<i> Check it out! &lt;<A HREF="http://www.live.com/getstarted.aspx%20">http://www.live.com/getstarted.aspx%20</A>&gt;
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004005.html">[OpenIMSCore-Users] Set SIP communication between two	Application	Servers
+</A></li>
+	<LI>Next message: <A HREF="004006.html">[OpenIMSCore-Users] Set SIP communication between two Application	Servers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4018">[ date ]</a>
+              <a href="thread.html#4018">[ thread ]</a>
+              <a href="subject.html#4018">[ subject ]</a>
+              <a href="author.html#4018">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

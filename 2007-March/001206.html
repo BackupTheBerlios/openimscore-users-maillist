@@ -1,0 +1,302 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Authorization-header in registration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Authorization-header%20in%20registration&In-Reply-To=%3C45FA6BB4.5060104%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001202.html">
+   <LINK REL="Next"  HREF="001216.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Authorization-header in registration</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Authorization-header%20in%20registration&In-Reply-To=%3C45FA6BB4.5060104%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Authorization-header in registration">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Mar 16 11:04:36 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001202.html">[OpenIMSCore-Users] Authorization-header in registration
+</A></li>
+        <LI>Next message: <A HREF="001216.html">[OpenIMSCore-Users] Authorization-header in registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1206">[ date ]</a>
+              <a href="thread.html#1206">[ thread ]</a>
+              <a href="subject.html#1206">[ subject ]</a>
+              <a href="author.html#1206">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>this is strange... I don't remember having anything new to NAT after R130...
+
+Anyway, the thing is that you need to use only registered contact
+addresses or the P-CSCF would not let you through.
+
+-Dragos
+
+Arnold Schwarz wrote:
+&gt;<i> Of course, NAT. :) I guess sometimes you get too close to the problem and 
+</I>&gt;<i> can't see the forest from the trees no more.
+</I>&gt;<i>
+</I>&gt;<i> I tried to solve the problem with commenting out the P_NAT_request() ant 
+</I>&gt;<i> P_NAT_respone() methods, and even change the value of the NAT_enable to 0, 
+</I>&gt;<i> but still the responses get sent to the Src Port and not to the address in 
+</I>&gt;<i> the Via header. Any other suggestions how to deal with the situation? Or can 
+</I>&gt;<i> I somehow add a block to the pcscf.cfg to check, whether the two addresses 
+</I>&gt;<i> are different and to take the one from the via-header in the case? I do not 
+</I>&gt;<i> want to go back to R130 only because of one port number...
+</I>&gt;<i>
+</I>&gt;<i> Arnold
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;<i> To: Arnold Schwarz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">scharn333 at hotmail.com</A>&gt;
+</I>&gt;&gt;<i> CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Authorization-header in registration
+</I>&gt;&gt;<i> Date: Thu, 15 Mar 2007 18:28:17 +0100
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi Arnold,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This is a BIG feature. It's called NAT traversal actually ;-).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The easy way out is to comment the P_NAT_request/response functions in
+</I>&gt;&gt;<i> the pcscf.cfg
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Arnold Schwarz wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Finally it seems I have managed to identify the core problem. :)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> My client (not open source) sends the SIP REGISTER so, that &quot;UDP Src 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> Port&quot;
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> in the SIP message is different from the port defined in the added Via
+</I>&gt;&gt;&gt;<i> -header.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The SIP2IMS gateway sends the Challenge to the port number in the
+</I>&gt;&gt;&gt;<i> Via-header, but the P-CSCF sends it to the port in the &quot;Src Port&quot;. And 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> that
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> is why it works with the gateway, but not without it.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Is that a bug or a feature? and is there an easy patch I can add to get 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> P-CSCF to send the messages to the addres in the Via-field and not in 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Src Port? (since I can't access the info the client is sending)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Arnold
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Because the SIP2IMS Gateway was saving the AKA authentication into
+</I>&gt;&gt;&gt;&gt;<i> opaque. There is no need to do that if you only do MD5 directly with 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> P-CSCF.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> The username was there by mistake.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Arnold Schwarz wrote:
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> These authorization headers really seem more complex than one would
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> think...
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> I tried to switch to the newest release of IMS core, but since the
+</I>&gt;&gt;&gt;&gt;&gt;<i> authorization with MD5 did not work, I now returned back to the 
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> version
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> R177
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> (the last one with SIP2IMS) just for debugging purposes.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> It seems, that when I try to make a registration through the SIP2IMS 
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> GW,
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> in
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> the &quot;401 Challenge&quot; sent from the SIP2IMS GW to the UE the 
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> authorization
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i> header looks like this:
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> WWW-Authenticate: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,
+</I>&gt;&gt;&gt;&gt;&gt;<i> realm=&quot;open-ims.test&quot;,
+</I>&gt;&gt;&gt;&gt;&gt;<i> opaque=&quot;AKAv1-MD5|IMWfvRzVcs1qD9iO6gqvnIN9Sp+kUwAAubmOjSFHVH4=&quot;,
+</I>&gt;&gt;&gt;&gt;&gt;<i> nonce=&quot;45f9466ac76f128d294cedc616080bebe43a29c9&quot;, algorithm=MD5
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> And when I do it without the SIP2IMS GW, the message from the P-CSCF 
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> to
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> the
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> UE has a header like this:
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,
+</I>&gt;&gt;&gt;&gt;&gt;<i> nonce=&quot;346b674ad388f3d3bb4003d8dfffa69e&quot;, algorithm=MD5
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> why is the header missing some of the parameters? Is it a bug or a
+</I>&gt;&gt;&gt;&gt;&gt;<i> functionality? Since my client somehow does send the second REGISTER
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> message
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> with the longer version, but does not approve the shorter one.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> _________________________________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;<i> Mortgage rates as low as 4.625% - Refinance $150,000 loan for $579 a
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> month.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> Intro*Terms
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> <A HREF="https://www2.nextag.com/goto.jsp?product=100000035&amp;url=%2fst.jsp&amp;tm=y&amp;search=mortgage_text_links_88_h27f6&amp;disc=y&amp;vers=743&amp;s=4056&amp;p=5117">https://www2.nextag.com/goto.jsp?product=100000035&amp;url=%2fst.jsp&amp;tm=y&amp;search=mortgage_text_links_88_h27f6&amp;disc=y&amp;vers=743&amp;s=4056&amp;p=5117</A>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> _________________________________________________________________
+</I>&gt;&gt;&gt;<i> The average US Credit Score is 675. The cost to see yours: $0 by 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> Experian.
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;<i> <A HREF="http://www.freecreditreport.com/pm/default.aspx?sc=660600&amp;bcd=EMAILFOOTERAVERAGE">http://www.freecreditreport.com/pm/default.aspx?sc=660600&amp;bcd=EMAILFOOTERAVERAGE</A>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> _________________________________________________________________
+</I>&gt;<i> 5.5%* 30 year fixed mortgage rate. Good credit refinance. Up to 5 free 
+</I>&gt;<i> quotes - *Terms 
+</I>&gt;<i> <A HREF="https://www2.nextag.com/goto.jsp?product=100000035&amp;url=%2fst.jsp&amp;tm=y&amp;search=mortgage_text_links_88_h2a5d&amp;s=4056&amp;p=5117&amp;disc=y&amp;vers=910">https://www2.nextag.com/goto.jsp?product=100000035&amp;url=%2fst.jsp&amp;tm=y&amp;search=mortgage_text_links_88_h2a5d&amp;s=4056&amp;p=5117&amp;disc=y&amp;vers=910</A>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001202.html">[OpenIMSCore-Users] Authorization-header in registration
+</A></li>
+	<LI>Next message: <A HREF="001216.html">[OpenIMSCore-Users] Authorization-header in registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1206">[ date ]</a>
+              <a href="thread.html#1206">[ thread ]</a>
+              <a href="subject.html#1206">[ subject ]</a>
+              <a href="author.html#1206">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

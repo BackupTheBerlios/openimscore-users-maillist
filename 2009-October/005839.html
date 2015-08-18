@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Diversion in SIP Invite request
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Diversion%20in%20SIP%20Invite%20request&In-Reply-To=%3C01949ABCDD38EF4A95B8C347C399D1CE0AACBC67%40BLR-EC-MBX02.wipro.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005838.html">
+   <LINK REL="Next"  HREF="005841.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Diversion in SIP Invite request</H1>
+    <B>sach.jain at wipro.com</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Diversion%20in%20SIP%20Invite%20request&In-Reply-To=%3C01949ABCDD38EF4A95B8C347C399D1CE0AACBC67%40BLR-EC-MBX02.wipro.com%3E"
+       TITLE="[OpenIMSCore-Users] Diversion in SIP Invite request">sach.jain at wipro.com
+       </A><BR>
+    <I>Thu Oct 15 15:57:13 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005838.html">[OpenIMSCore-Users] time mesurements on openIMS
+</A></li>
+        <LI>Next message: <A HREF="005841.html">[OpenIMSCore-Users] Diversion in SIP Invite request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5839">[ date ]</a>
+              <a href="thread.html#5839">[ thread ]</a>
+              <a href="subject.html#5839">[ subject ]</a>
+              <a href="author.html#5839">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+ 
+How can we have &quot;Diversion&quot; in an Invite request through OpenIMS? Is
+this supported through OpenIMS?
+ 
+I am trying with a voicemail scenario like:
+- A (1111) is calling B (2222)
+- B is unreachable or not answering
+- OpenIMS should redirect Call to the voice mail server which is
+attached as an AS in FOHSS
+Voice mail access uri is : sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">9999 at 164.0.144.124</A>:5060    where
+164.0.144.124 is IP of Voicemail server ( AS)
+
+The SIP Call Trace should  be :
+FROM = 2222
+DIVERSION = 1111 
+
+An example sip invite to AS would be:
+
+ 
+INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">9999 at 164.0.144.124</A>:5060;transport=UDP;user=phone SIP/2.0.
+                        From:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">2222 at 194.0.144.99</A>:5060;user=phone&gt;;tag=-45026-180b6be-5313c708-180b
+6be.
+                        To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">9999 at 164.0.144.124</A>:5060&gt;.
+                        Call-ID:
+44e495c8109300c213c4180b6bedec9d6795f252911c692bf8-0018-4390.
+                        CSeq: 1 INVITE.
+                        User-agent: GSS/8.0.
+                        X-Profile: DEFAULT.
+                        Allow:
+ACK,BYE,CANCEL,INVITE,OPTIONS,INFO,SUBSCRIBE,REFER,NOTIFY,PRACK,UPDATE.
+                        Via: SIP/2.0/UDP
+LH01B:5060;maddr=194.0.144.99;branch=z9hG4bK-180b6be-dec9d679-200694f1.
+                        Remote-Party-ID: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">2222 at 194.0.144.99</A>&gt;;
+party=calling; privacy=off; screen=yes.
+                        Remote-Party-ID:
+&quot;1111&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">2074203077 at 194.0.144.99</A>&gt;; party=called; privacy=off;
+reason=busy; counter=1.
+                        P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">2222 at 194.0.144.99</A>&gt;.
+                        Diversion: &quot;1111&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">2074203077 at 194.0.144.99</A>&gt;;
+privacy=off; reason=user-busy; counter=1.
+                        Max-Forwards: 70.
+                        Contact: &lt;sip:194.0.144.99:5060;transport=UDP&gt;.
+                        Supported: 1rel.
+                        Content-Type: application/sdp.
+                        Content-Length: 233.
+                        .
+                        v=0.
+                        o=- 160268083 160268083 IN IP4 194.0.144.994.
+                        s=-.
+                        c=IN IP4 194.0.144.994.
+                        t=0 0.
+                        m=audio 59894 RTP/AVP 18 8 0 101.
+                        a=fmtp:18 annexb=no.
+                        a=rtpmap:101 telephone-event/8000.
+                        a=fmtp:101 0-15.
+                        a=ptime:20.
+
+Thanks, 
+Sachin 
+
+Please do not print this email unless it is absolutely necessary. 
+
+The information contained in this electronic message and any attachments to this message are intended for the exclusive use of the addressee(s) and may contain proprietary, confidential or privileged information. If you are not the intended recipient, you should not disseminate, distribute or copy this e-mail. Please notify the sender immediately and destroy all copies of this message and any attachments. 
+
+WARNING: Computer viruses can be transmitted via email. The recipient should check this email and any attachments for the presence of viruses. The company accepts no liability for any damage caused by any virus transmitted by this email. 
+
+www.wipro.com
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005838.html">[OpenIMSCore-Users] time mesurements on openIMS
+</A></li>
+	<LI>Next message: <A HREF="005841.html">[OpenIMSCore-Users] Diversion in SIP Invite request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5839">[ date ]</a>
+              <a href="thread.html#5839">[ thread ]</a>
+              <a href="subject.html#5839">[ subject ]</a>
+              <a href="author.html#5839">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

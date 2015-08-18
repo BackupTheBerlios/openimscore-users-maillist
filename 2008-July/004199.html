@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] R&#233;f. : Re:  Diameter exchanges
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%20%3D%3Fiso-8859-1%3Fq%3FR%3DE9f%3D2E_%3D3A_Re%3D3A__Diameter_e%3F%3D%0A%20%3D%3Fiso-8859-1%3Fq%3Fxchanges%3F%3D&In-Reply-To=%3C4869F287.3090703%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004198.html">
+   <LINK REL="Next"  HREF="004200.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] R&#233;f. : Re:  Diameter exchanges</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%20%3D%3Fiso-8859-1%3Fq%3FR%3DE9f%3D2E_%3D3A_Re%3D3A__Diameter_e%3F%3D%0A%20%3D%3Fiso-8859-1%3Fq%3Fxchanges%3F%3D&In-Reply-To=%3C4869F287.3090703%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] R&#233;f. : Re:  Diameter exchanges">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Jul  1 11:01:59 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004198.html">[OpenIMSCore-Users] (no subject)
+</A></li>
+        <LI>Next message: <A HREF="004200.html">[OpenIMSCore-Users] I-CSCF not responding for some	phones	re-registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4199">[ date ]</a>
+              <a href="thread.html#4199">[ thread ]</a>
+              <a href="subject.html#4199">[ subject ]</a>
+              <a href="author.html#4199">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Christelle,
+
+I am not sure that I can follow you....
+
+So the I/S-CSCF connections to the HSS are peer-to-peer. So you should 
+have about 3 diameter connections from VM3 to VM2. Then just start a 
+wireshark and look for traffic on the Diameter ports. 3868 is the 
+default port, but as for example on VM3 you have 3 Diameter peers, 
+obviously they would have different port numbers. The connections could 
+be started from either side, so your ports might be different after 
+component restarts.
+
+By default, Wireshark only decodes Diameter if one endpoint has the port 
+3868. For the traffic that is not decoded as Diameter, but comes from 
+the right configured ports (3869, 3870, etc), do a click-right on the 
+packet - decode as - choose diameter - and keep it to decode all those 
+packet with that port as Diameter.
+
+Cheers,
+-Dragos
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Christelle.Brouzet at bull.net</A> wrote:
+&gt;<i> Thanks for you answer.
+</I>&gt;<i>  I have double checked and the diameter peers were not correctly
+</I>&gt;<i> configured. I have fixed, and now I have an other question.
+</I>&gt;<i>
+</I>&gt;<i> I have the folowing configuration:
+</I>&gt;<i> 1 physical server with 4 virtual machines:
+</I>&gt;<i> VM1=presence AS
+</I>&gt;<i> VM2=FHoSS
+</I>&gt;<i> VM3=I-CSCF, S-CSCF1 and S-CSCF2.
+</I>&gt;<i> VM4=P-CSCF.
+</I>&gt;<i> I have configured VM3 with 1 physical (eth0, IPO) interface where I-CSCF
+</I>&gt;<i> listens, and two logical interfaces (eth0:1 IP1, eth0:2 IP2), where the two
+</I>&gt;<i> S-CSCFs listen.
+</I>&gt;<i> In this configuration, Diameter exchanges originated by I-CSCF or S-CSCFs
+</I>&gt;<i> used always the same interface in VM3 : the real interface (eth0 IP0)o the
+</I>&gt;<i> same address IP.
+</I>&gt;<i> But it seems that Diameter messages are correctly adressed to the S-CSCFs
+</I>&gt;<i> or I-CSCF because the registration doesn't falled. I understand Diameter
+</I>&gt;<i> stack work as an Multiplexer between the IP socket connected to HSS and
+</I>&gt;<i> I-CSCF, S-CSCF1 and S-CSCF2.
+</I>&gt;<i>
+</I>&gt;<i> What is the communication channel between Diameter multiplexer stack and
+</I>&gt;<i> the CSCF? Is a pipe, or a Unix socket or else? How is possible to trace the
+</I>&gt;<i> diameter exchanges between Diameter multiplexer stack or proxy and the
+</I>&gt;<i> CSCF?
+</I>&gt;<i>
+</I>&gt;<i> Could you help me please?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004198.html">[OpenIMSCore-Users] (no subject)
+</A></li>
+	<LI>Next message: <A HREF="004200.html">[OpenIMSCore-Users] I-CSCF not responding for some	phones	re-registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4199">[ date ]</a>
+              <a href="thread.html#4199">[ thread ]</a>
+              <a href="subject.html#4199">[ subject ]</a>
+              <a href="author.html#4199">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

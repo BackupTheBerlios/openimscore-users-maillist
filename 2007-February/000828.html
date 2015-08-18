@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] IPsec
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IPsec&In-Reply-To=%3C45D5A9CB.4090006%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000822.html">
+   <LINK REL="Next"  HREF="000824.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] IPsec</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IPsec&In-Reply-To=%3C45D5A9CB.4090006%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] IPsec">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Feb 16 13:55:39 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000822.html">[OpenIMSCore-Users] IPsec
+</A></li>
+        <LI>Next message: <A HREF="000824.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#828">[ date ]</a>
+              <a href="thread.html#828">[ thread ]</a>
+              <a href="subject.html#828">[ subject ]</a>
+              <a href="author.html#828">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Phuong Anh,
+
+yes, you are right about SHA. Fixed since r145.
+
+yes, when sending the 401, only 1 SA is created - the one allowing for
+the 2nd REGISTER to be received over a secure channel. The other 3 are
+created before sending out the 200. I can not access your network dump
+unfortunately (403 Forbidden) and can't say what is the real issue. But
+as I understand it, the 200 OK Security headers are written by the
+P-CSCF. Does your 2nd REGISTER contain the correct Security headers? The
+P_ipsec_200 searches for those in the request, not in the response:
+
+sec_cli = cscf_get_security_client(req,&amp;hdr);
+    if (!sec_cli.len){
+        LOG(L_DBG,&quot;DBG:&quot;M_NAME&quot;:P_ipsec_200: No Security-Client header
+found.\n&quot;);
+        goto error;
+    }
+
+The S-CSCF does not have anything to do with the security issues here.
+Nor does the 200 OK need to contain any Security headers. Here is the
+procedure as I see it:
+
+1. REGISTER1 UE-&gt;PCSCF
+Security-Client: ...
+
+2. 401 ICSCF-&gt;PCSCF
+
+3. Set-up SA1 (UE UAC -&gt; PCSCF UAS)
+
+4. 401 PCSCF-&gt;UE
+Security-Server: ...
+
+5. REGISTER2 UE-&gt;PCSCF (because of 3, this can be sent encrypted)
+Security-Client:...
+Security-Verify:... (with contents of previous Security-Server)
+
+6. 200 ICSCF -&gt; PCSCF
+
+7. Set-up remaining 3x SAs, drop any old ones
+
+8. 200 PCSCF-&gt;UE (over the respective SA)
+
+Am I wrong somewhere?
+
+
+-Dragos
+
+Tran Minh Phuong Anh wrote:
+&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i> I tried IPsec and noticed the following
+</I>&gt;<i>
+</I>&gt;<i> In hmac-sha1, OSIMS didn't add SA. I found the reason. s_sha_out was
+</I>&gt;<i> &quot;hmac-sha&quot;, I corrected it to &quot;hmac-sha1&quot; since setkey accepts this.
+</I>&gt;<i>
+</I>&gt;<i> static str s_sha_out={&quot;hmac-sha1&quot;,9};
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> There is another problem. As far as I understand ....
+</I>&gt;<i>
+</I>&gt;<i> ... before receiving the second, encrypted REGISTER, only incoming
+</I>&gt;<i> IPsec SA &amp; SP are created. The outgoing ones are created in
+</I>&gt;<i> P_IPSec_200() if 200 OK consists IPsec info.
+</I>&gt;<i>
+</I>&gt;<i> In the following capture and pcscf screen output ...
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://cntic90.hit.bme.hu/~tmpa/osims_log/070216ipsec.eth">http://cntic90.hit.bme.hu/~tmpa/osims_log/070216ipsec.eth</A>
+</I>&gt;<i> &lt;<A HREF="http://cntic90.hit.bme.hu/%7Etmpa/osims_log/070216ipsec.eth">http://cntic90.hit.bme.hu/%7Etmpa/osims_log/070216ipsec.eth</A>&gt;
+</I>&gt;<i> <A HREF="http://cntic90.hit.bme.hu/~tmpa/osims_log/070216pcscf.log">http://cntic90.hit.bme.hu/~tmpa/osims_log/070216pcscf.log</A>
+</I>&gt;<i> &lt;<A HREF="http://cntic90.hit.bme.hu/%7Etmpa/osims_log/070216pcscf.log">http://cntic90.hit.bme.hu/%7Etmpa/osims_log/070216pcscf.log</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> ... we can see that 200 OK is forwarded to SIP UE without encryption,
+</I>&gt;<i> but the message is sent to the private port (6280). 200 OK doesn't
+</I>&gt;<i> consist Security headers, so P-CSCF cannot create outgoing IPsec SA &amp; SP.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> So either S-CSCF should include Security headers to 200 OK answer, or
+</I>&gt;<i> P-CSCF should save dialog state and IPsec info to create outgoing
+</I>&gt;<i> IPsec SA &amp; SP.
+</I>&gt;<i>
+</I>&gt;<i> Phuong Anh
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070216/5c4a3a91/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070216/5c4a3a91/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000822.html">[OpenIMSCore-Users] IPsec
+</A></li>
+	<LI>Next message: <A HREF="000824.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#828">[ date ]</a>
+              <a href="thread.html#828">[ thread ]</a>
+              <a href="subject.html#828">[ subject ]</a>
+              <a href="author.html#828">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

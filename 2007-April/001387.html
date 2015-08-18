@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] SCSCF_Crashed (core backtrace text)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SCSCF_Crashed%20%28core%20backtrace%20text%29&In-Reply-To=%3C46137A51.9040907%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001386.html">
+   <LINK REL="Next"  HREF="001389.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] SCSCF_Crashed (core backtrace text)</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SCSCF_Crashed%20%28core%20backtrace%20text%29&In-Reply-To=%3C46137A51.9040907%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] SCSCF_Crashed (core backtrace text)">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Apr  4 12:13:37 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001386.html">[OpenIMSCore-Users] SCSCF_Crashed (core backtrace text)
+</A></li>
+        <LI>Next message: <A HREF="001389.html">[OpenIMSCore-Users] SCSCF_Crashed (core backtrace text)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1387">[ date ]</a>
+              <a href="thread.html#1387">[ thread ]</a>
+              <a href="subject.html#1387">[ subject ]</a>
+              <a href="author.html#1387">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The log below includes the XML that I wanted to see. And it looks good.
+Still, the schema checking fails.
+
+What libxml2 do you have installed on your system? The xmlschemas.c
+errors are not inside the OpenIMSCore, but in this library.
+
+What xsd file are you using for the parameter below?
+
+modparam(&quot;scscf&quot;,&quot;user_data_xsd&quot;,&quot;/opt/OpenIMSCore/ser_ims/modules/scscf/CxDataType_Rel7.xsd&quot;)
+
+Did you change this file? Could you try and used the dtd given as an
+example instead of the XSD?
+
+Also, I have just committed a patch for the save_location() to possibly
+save this crash on revision r216. However, this will just fix the crash
+but your service profile will still not be parsed and loaded.
+
+-Dragos
+
+Sam4U wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> This is what got in scscf log. i don't know where i
+</I>&gt;<i> shall find that xml file.plz do not mind if i make any
+</I>&gt;<i> mistake.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Rcv_Message
+</I>&gt;<i> Unimplemented block at xmlschemastypes.c:1928
+</I>&gt;<i> Unimplemented block at xmlschemas.c:4702
+</I>&gt;<i> Element PublicIdentity content check failed
+</I>&gt;<i> Element SPT content check failed
+</I>&gt;<i> Element SPT content check failed
+</I>&gt;<i> Element SPT content check failed
+</I>&gt;<i> Element SIPHeader content check failed
+</I>&gt;<i> Element SPT content check failed
+</I>&gt;<i> Element TriggerPoint content check failed
+</I>&gt;<i> Unimplemented block at xmlschemastypes.c:1928
+</I>&gt;<i> Element ApplicationServer content check failed
+</I>&gt;<i> Element InitialFilterCriteria content check failed
+</I>&gt;<i> Element ServiceProfile content check failed
+</I>&gt;<i> Element IMSSubscription content check failed
+</I>&gt;<i>  3(7169) ERR:S-CSCF:parse_user_data:  Verification of
+</I>&gt;<i> XML against XSD failed &lt;&lt;? xml version=&quot;1.0&quot;
+</I>&gt;<i> encoding=&quot;UTF-8&quot;?&gt;
+</I>&gt;<i> &lt;IMSSubscription&gt;&lt;PrivateID&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&lt;/PrivateID&gt;&lt;ServiceProfile&gt;&lt;Publ
+</I>&gt;<i> icIdentity&gt;&lt;BarringIndication&gt;false&lt;/BarringIndication&gt;&lt;Identity&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-</A>
+</I>&gt;<i> ims.test&lt;/Identity&gt;&lt;/PublicIdentity&gt;&lt;InitialFilterCriteria&gt;&lt;Priority&gt;0&lt;/Priority
+</I>&gt;<i>   
+</I>&gt;&gt;<i> &lt;TriggerPoint&gt;&lt;ConditionTypeCNF&gt;true&lt;/ConditionTypeCNF&gt;&lt;SPT&gt;&lt;ConditionNegated&gt;t
+</I>&gt;&gt;<i>     
+</I>&gt;<i> rue&lt;/ConditionNegated&gt;&lt;Group&gt;0&lt;/Group&gt;&lt;Method&gt;SUBSCRIBE&lt;/Method&gt;&lt;/SPT&gt;&lt;SPT&gt;&lt;Cond
+</I>&gt;<i> itionNegated&gt;true&lt;/ConditionNegated&gt;&lt;Group&gt;0&lt;/Group&gt;&lt;Method&gt;PUBLISH&lt;/Method&gt;&lt;/SP
+</I>&gt;<i> T&gt;&lt;SPT&gt;&lt;ConditionNegated&gt;false&lt;/ConditionNegated&gt;&lt;Group&gt;0&lt;/Group&gt;&lt;RequestURI&gt;&lt;/R
+</I>&gt;<i> equestURI&gt;&lt;/SPT&gt;&lt;SPT&gt;&lt;ConditionNegated&gt;true&lt;/ConditionNegated&gt;&lt;Group&gt;1&lt;/Group&gt;&lt;S
+</I>&gt;<i> IPHeader&gt;&lt;Header&gt;Event&lt;/Header&gt;&lt;Content&gt;.*presence.*&lt;/Content&gt;&lt;/SIPHeader&gt;&lt;/SPT&gt;
+</I>&gt;<i> &lt;/TriggerPoint&gt;&lt;ApplicationServer&gt;&lt;ServerName&gt;sip:localhost:5065&lt;/ServerName&gt;&lt;De
+</I>&gt;<i> faultHandling&gt;1&lt;/DefaultHandling&gt;&lt;/ApplicationServer&gt;&lt;/InitialFilterCriteria&gt;&lt;/S
+</I>&gt;<i> erviceProfile&gt;&lt;/IMSSubscription&gt;&gt;
+</I>&gt;<i>  3(7169) ERR:S-CSCF:save_location: error parsing user
+</I>&gt;<i> data
+</I>&gt;<i>  3(7169) BUG: qm_free: bad pointer 0xbfff78b8 (out of
+</I>&gt;<i> memory block!) - aborting
+</I>&gt;<i>  4(7170) Trans already in processing... skip
+</I>&gt;<i> 17(7183) ERROR: receive_fd: EOF on 8
+</I>&gt;<i>  0(7166) child process 7169 exited by a signal 6
+</I>&gt;<i>  0(7166) core was generated
+</I>&gt;<i>  0(7166) INFO: terminating due to SIGCHLD
+</I>&gt;<i>  0(7166) Process Table:
+</I>&gt;<i>  0(7166)  0. (7166) &gt; attendant
+</I>&gt;<i>  0(7166)  1. (7167) &gt; receiver child=0
+</I>&gt;<i> sock=127.0.0.1:6060
+</I>&gt;<i>  0(7166)  2. (7168) &gt; receiver child=1
+</I>&gt;<i> sock=127.0.0.1:6060
+</I>&gt;<i>  0(7166)  3. (7169) &gt; receiver child=2
+</I>&gt;<i> sock=127.0.0.1:6060
+</I>&gt;<i>  0(7166)  4. (7170) &gt; receiver child=3
+</I>&gt;<i> sock=127.0.0.1:6060
+</I>&gt;<i>  0(7166)  5. (7171) &gt; slow timer
+</I>&gt;<i>  0(7166)  6. (7172) &gt; timer
+</I>&gt;<i>  0(7166)  7. (7173) &gt; cdp_acceptor
+</I>&gt;<i>  0(7166)  8. (7174) &gt; cdp worker child=0
+</I>&gt;<i>  0(7166)  9. (7175) &gt; cdp worker child=1
+</I>&gt;<i>  0(7166) 10. (7176) &gt; cdp worker child=2
+</I>&gt;<i>  0(7166) 11. (7177) &gt; cdp worker child=3
+</I>&gt;<i>  0(7166) 12. (7178) &gt; cdp_timer
+</I>&gt;<i>  0(7166) 13. (7179) &gt; tcp receiver child=0
+</I>&gt;<i>  0(7166) 14. (7180) &gt; tcp receiver child=1
+</I>&gt;<i>  0(7166) 15. (7181) &gt; tcp receiver child=2
+</I>&gt;<i>  0(7166) 16. (7182) &gt; tcp receiver child=3
+</I>&gt;<i>  0(7166) 17. (7183) &gt; tcp main process
+</I>&gt;<i>  0(7166) 18. (7185) &gt; receiver I
+</I>&gt;<i>  1(7167) INFO: signal 15 received
+</I>&gt;<i>  2(7168) INFO: signal 15 received
+</I>&gt;<i>  4(7170) INFO: signal 15 received
+</I>&gt;<i>  5(7171) INFO: signal 15 received
+</I>&gt;<i>  7(7173) INFO: signal 15 received
+</I>&gt;<i>  8(7174) INFO: signal 15 received
+</I>&gt;<i>  9(7175) INFO: signal 15 received
+</I>&gt;<i> 10(7176) INFO: signal 15 received
+</I>&gt;<i> 11(7177) INFO: signal 15 received
+</I>&gt;<i> 12(7178) INFO: signal 15 received
+</I>&gt;<i> 13(7179) INFO: signal 15 received
+</I>&gt;<i> 14(7180) INFO: signal 15 received
+</I>&gt;<i> 15(7181) INFO: signal 15 received
+</I>&gt;<i> 16(7182) INFO: signal 15 received
+</I>&gt;<i> 17(7183) INFO: signal 15 received
+</I>&gt;<i>  6(7172) INFO: signal 15 received
+</I>&gt;<i>  0(7166) INFO:cdp:cdp_exit(): CDiameterPeer stoping
+</I>&gt;<i> ...
+</I>&gt;<i>  0(7166) INFO:destroy_diameter_peer(): Terminating all
+</I>&gt;<i> childs...
+</I>&gt;<i>  0(7166) INFO:destroy_diameter_peer(): Waiting for
+</I>&gt;<i> child [7185] to terminate...
+</I>&gt;<i>  0(7166) INFO:destroy_diameter_peer(): Waiting for
+</I>&gt;<i> child [7178] to terminate...
+</I>&gt;<i>  0(7166) INFO:destroy_diameter_peer(): Waiting for
+</I>&gt;<i> child [7177] to terminate...
+</I>&gt;<i>  0(7166) INFO:destroy_diameter_peer(): Waiting for
+</I>&gt;<i> child [7176] to terminate...
+</I>&gt;<i>  0(7166) INFO:destroy_diameter_peer(): Waiting for
+</I>&gt;<i> child [7175] to terminate...
+</I>&gt;<i>  0(7166) INFO:destroy_diameter_peer(): Waiting for
+</I>&gt;<i> child [7174] to terminate...
+</I>&gt;<i>  0(7166) INFO:destroy_diameter_peer(): Waiting for
+</I>&gt;<i> child [7173] to terminate...
+</I>&gt;<i>  0(7166) INFO:destroy_diameter_peer(): All processes
+</I>&gt;<i> terminated. Cleaning up.
+</I>&gt;<i>  0(7166) INFO:destroy_diameter_peer(): Bye Bye from C
+</I>&gt;<i> Diameter Peer test
+</I>&gt;<i>  0(7166) INFO:cdp:cdp_exit(): ... CDiameterPeer stoped
+</I>&gt;<i>  0(7166) INFO:ISC: - child exit
+</I>&gt;<i>  0(7166) INFO:S-CSCF:mod_destroy: child exit
+</I>&gt;<i>  
+</I>&gt;<i> ------ Semaphore Arrays --------
+</I>&gt;<i> key        semid      owner      perms      nsems
+</I>&gt;<i> 0x00000000 32768      apache    600        1
+</I>&gt;<i> 0x00000000 65537      apache    600        1
+</I>&gt;<i> 0x00000000 950274     root      666        1
+</I>&gt;<i> 0x00000000 983043     root      666        1
+</I>&gt;<i>  
+</I>&gt;<i> 18(7185) INFO: signal 15 received
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ast42</A> OpenIMSCore]#
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thanx &amp; Regard's
+</I>&gt;<i>     Samir Patry
+</I>&gt;<i>   AllianceComputerTelephony India
+</I>&gt;<i>   
+</I>&gt;<i>     09337040500
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i> ____________________________________________________________________________________
+</I>&gt;<i> Looking for earth-friendly autos? 
+</I>&gt;<i> Browse Top Cars by &quot;Green Rating&quot; at Yahoo! Autos' Green Center.
+</I>&gt;<i> <A HREF="http://autos.yahoo.com/green_center/">http://autos.yahoo.com/green_center/</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001386.html">[OpenIMSCore-Users] SCSCF_Crashed (core backtrace text)
+</A></li>
+	<LI>Next message: <A HREF="001389.html">[OpenIMSCore-Users] SCSCF_Crashed (core backtrace text)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1387">[ date ]</a>
+              <a href="thread.html#1387">[ thread ]</a>
+              <a href="subject.html#1387">[ subject ]</a>
+              <a href="author.html#1387">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

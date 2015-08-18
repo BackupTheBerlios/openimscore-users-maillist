@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] query about pcscf
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20query%20about%20pcscf&In-Reply-To=%3C45E8CAEF.7060902%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001016.html">
+   <LINK REL="Next"  HREF="001021.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] query about pcscf</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20query%20about%20pcscf&In-Reply-To=%3C45E8CAEF.7060902%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] query about pcscf">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Sat Mar  3 02:10:07 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001016.html">[OpenIMSCore-Users] query about pcscf
+</A></li>
+        <LI>Next message: <A HREF="001021.html">[OpenIMSCore-Users] query about pcscf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1019">[ date ]</a>
+              <a href="thread.html#1019">[ thread ]</a>
+              <a href="subject.html#1019">[ subject ]</a>
+              <a href="author.html#1019">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf...</A>&gt; has the value saved during the
+registration in the Path header, by the same P-CSCF that it refers to.
+
+This is used by the terminating S-CSCF to route the call towards the
+terminating contact, when resolving the public identity into the real
+contact address. The terminating IP address is usually in a remote
+network and the Path header indicates the way towards that. The P-CSCF
+recognizes it and identifies the case of Initial Request - Termination.
+
+Getting back to the previous e-mail about SIP interfaces :-D , this is
+actually RFC3327, if you would like to know more.
+
+As a difference, the mo (mobile originating) and mt (mobile terminating)
+markings are used inside dialogs, for subsequent requests. As the
+endpoints have already exchanged contact addresses and the routers on
+the way had the opportunity to record-route, subsequent requests no
+longer need to use the S-CSCF registrar or the Path information.
+
+BTW: Service-Route (RFC3608 :-P ) is used for routing and identification
+of Initial Request - Origination.
+
+-Dragos
+
+Katty Xiong wrote:
+&gt;<i> Could you clarify under which situations we see Route:
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf...</A>&gt;?
+</I>&gt;<i>
+</I>&gt;<i> I remember in session establishment/tear down, we see
+</I>&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf...</A>&gt;, but no sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf...</A>,
+</I>&gt;<i> right?
+</I>&gt;<i>
+</I>&gt;<i> thanks,
+</I>&gt;<i> Joy
+</I>&gt;<i>
+</I>&gt;<i> --- Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> No P_mobile_terminating should only be true when you
+</I>&gt;&gt;<i> have a Route:
+</I>&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf....</A>&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Katty Xiong wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Could you clarify which P_is_in_dialog(&quot;orig&quot;) you
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> are
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> referring to?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I think if caller receives a request,
+</I>&gt;&gt;&gt;<i> P_mobile_terminating is true. In the else {}, I
+</I>&gt;&gt;&gt;<i> couldn't find P_is_in_dialog(&quot;orig&quot;) and
+</I>&gt;&gt;&gt;<i> Orig_subsequent
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> thanks,
+</I>&gt;&gt;&gt;<i> Joy
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> ===============================================
+</I>&gt;&gt;&gt;<i>  if (!P_mobile_terminating()){
+</I>&gt;&gt;&gt;<i>            ...
+</I>&gt;&gt;&gt;<i>             snip
+</I>&gt;&gt;&gt;<i>             ...
+</I>&gt;&gt;&gt;<i>  }else{
+</I>&gt;&gt;&gt;<i>    # TODO - check if this does come from an UE and
+</I>&gt;&gt;&gt;<i> that UE is unregistered
+</I>&gt;&gt;&gt;<i>    # Request Terminated by the UE
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>      if (!P_is_in_dialog(&quot;term&quot;) &amp;&amp;
+</I>&gt;&gt;&gt;<i>         (method==&quot;INVITE&quot; ||
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> method==&quot;SUBSCRIBE&quot;)){
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>         route(Term_Initial);
+</I>&gt;&gt;&gt;<i>         break;
+</I>&gt;&gt;&gt;<i>      } else {
+</I>&gt;&gt;&gt;<i>         if (P_is_in_dialog(&quot;term&quot;)){
+</I>&gt;&gt;&gt;<i>         route(Term_Subsequent);
+</I>&gt;&gt;&gt;<i>         break;
+</I>&gt;&gt;&gt;<i>         }else{
+</I>&gt;&gt;&gt;<i>            if (method==UPDATE){
+</I>&gt;&gt;&gt;<i>                                   
+</I>&gt;&gt;&gt;<i> sl_send_reply(&quot;403&quot;,&quot;Forbidden - Target refresh
+</I>&gt;&gt;&gt;<i> outside dialog not allowed&quot;);
+</I>&gt;&gt;&gt;<i>             break;
+</I>&gt;&gt;&gt;<i>            }
+</I>&gt;&gt;&gt;<i>            if (method==&quot;BYE&quot; || method==&quot;ACK&quot; ||
+</I>&gt;&gt;&gt;<i> method==&quot;PRACK&quot;){
+</I>&gt;&gt;&gt;<i>                                        
+</I>&gt;&gt;&gt;<i> sl_send_reply(&quot;403&quot;,&quot;Forbidden - Terminating
+</I>&gt;&gt;&gt;<i> subsequent requests outside dialog not allowed&quot;);
+</I>&gt;&gt;&gt;<i>           break;
+</I>&gt;&gt;&gt;<i>           }
+</I>&gt;&gt;&gt;<i>           route(Term_Standalone);
+</I>&gt;&gt;&gt;<i>              break;
+</I>&gt;&gt;&gt;<i>                         }
+</I>&gt;&gt;&gt;<i>                 }
+</I>&gt;&gt;&gt;<i>                 break;
+</I>&gt;&gt;&gt;<i>         }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> --- Dragos Vingarzan
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Hmmm... good question :-)
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> The P_is_in_dialog(&quot;orig&quot;) would be true because
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> first route is
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.</A> So that would be Orig_subsequent...
+</I>&gt;&gt;&gt;&gt;<i> although this is a little
+</I>&gt;&gt;&gt;&gt;<i> wrong... I will have to revisit the code to
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> refresh
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> my memory.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Did you had any issues with it?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Katty Xiong wrote:
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> In the main routing logic, after a diaglog is
+</I>&gt;&gt;&gt;&gt;&gt;<i> established, 
+</I>&gt;&gt;&gt;&gt;&gt;<i> 1) If Caller generates a request within the
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> dialog,
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> caller's PCSCF calls route[Orig_Subsequent]
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> 2) If Callee generetea a request within the
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> dialog,
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> callee's PCSCF calls route[Term_Subsequent]
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> 3) If Callee receives a request within the
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> dialog,
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i> callee's PCSCF calls route[Term_Subsequent]
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> But what if the caller receives a request within
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> the
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> dialog? I couldn't find the answer in the
+</I>&gt;&gt;&gt;&gt;&gt;<i> configuration file.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Do I misunderstand something here?
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> thanks,
+</I>&gt;&gt;&gt;&gt;&gt;<i> Joy
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;<i> ____________________________________________________________________________________
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i> Need Mail bonding?
+</I>&gt;&gt;&gt;&gt;&gt;<i> Go to the Yahoo! Mail Q&amp;A for great tips from
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> Yahoo! Answers users.
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;<i> <A HREF="http://answers.yahoo.com/dir/?link=list&amp;sid=396546091">http://answers.yahoo.com/dir/?link=list&amp;sid=396546091</A>
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> -- 
+</I>&gt;&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;&gt;&gt;<i> We could change the world if God would give us
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> source code...
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> ____________________________________________________________________________________
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> Finding fabulous fares is fun.  
+</I>&gt;&gt;&gt;<i> Let Yahoo! FareChase search your favorite travel
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> sites to find flight and hotel bargains.
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> <A HREF="http://farechase.yahoo.com/promo-generic-14795097">http://farechase.yahoo.com/promo-generic-14795097</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> -- 
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;<i> We could change the world if God would give us the
+</I>&gt;&gt;<i> source code...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i> ____________________________________________________________________________________
+</I>&gt;<i> Yahoo! Music Unlimited
+</I>&gt;<i> Access over 1 million songs.
+</I>&gt;<i> <A HREF="http://music.yahoo.com/unlimited">http://music.yahoo.com/unlimited</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001016.html">[OpenIMSCore-Users] query about pcscf
+</A></li>
+	<LI>Next message: <A HREF="001021.html">[OpenIMSCore-Users] query about pcscf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1019">[ date ]</a>
+              <a href="thread.html#1019">[ thread ]</a>
+              <a href="subject.html#1019">[ subject ]</a>
+              <a href="author.html#1019">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] R&#233;f. : Re:  pcscf subscription (reg-event)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%20%3D%3Fiso-8859-1%3Fq%3FR%3DE9f%3D2E_%3D3A_Re%3D3A__pcscf_subs%3F%3D%0A%20%3D%3Fiso-8859-1%3Fq%3Fcription_%3D28reg-event%3D29%3F%3D&In-Reply-To=%3C4642FE68.2040409%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001722.html">
+   <LINK REL="Next"  HREF="001723.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] R&#233;f. : Re:  pcscf subscription (reg-event)</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%20%3D%3Fiso-8859-1%3Fq%3FR%3DE9f%3D2E_%3D3A_Re%3D3A__pcscf_subs%3F%3D%0A%20%3D%3Fiso-8859-1%3Fq%3Fcription_%3D28reg-event%3D29%3F%3D&In-Reply-To=%3C4642FE68.2040409%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] R&#233;f. : Re:  pcscf subscription (reg-event)">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu May 10 13:13:44 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001722.html">[OpenIMSCore-Users] R&#233;f. : Re:  pcscf subscription (reg-event)
+</A></li>
+        <LI>Next message: <A HREF="001723.html">[OpenIMSCore-Users] How to test OpenIMSCore with a client on	another machine
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1749">[ date ]</a>
+              <a href="thread.html#1749">[ thread ]</a>
+              <a href="subject.html#1749">[ subject ]</a>
+              <a href="author.html#1749">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yes, it is the standard way as of 24.229. In general, it's not a good
+ides to rely on the client's subscription for security issues. Maybe he
+manages to exploit some bug and subscribes only partially, or
+unsubscribes, etc....
+
+Well, if you don't like it, just change the pcscf.cfg and remove the
+P_subscribe().... but then the P-CSCF's registrar will only synchronize
+with the one on the S-CSCF through your [de|re]REGISTERs.
+
+-Dragos
+
+
+
+Daniel VIRASSAMY wrote:
+&gt;<i>
+</I>&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> I do agree but is this the standard way? I didn't look in that yet ;-)
+</I>&gt;<i>
+</I>&gt;<i> Well because the p-cscf could update its local table upon spying and
+</I>&gt;<i> thus not sending further subscription. And send subscription if the
+</I>&gt;<i> client does not do so.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Daniel
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	*Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;*
+</I>&gt;<i>
+</I>&gt;<i> 09/05/2007 10:42
+</I>&gt;<i> Remis le : 09/05/2007 10:43
+</I>&gt;<i>
+</I>&gt;<i> 	       
+</I>&gt;<i>         Pour :        Daniel VIRASSAMY &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">daniel.virassamy at sagem.com</A>&gt;
+</I>&gt;<i>         cc :        OpenCore IMS &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;<i>         Objet :        Re: [OpenIMSCore-Users] pcscf subscription
+</I>&gt;<i> (reg-event)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Yes, it is. The P-CSCF does spy on client's subscriptions but manages
+</I>&gt;<i> his own subscriptions. These are required in order to keep its own
+</I>&gt;<i> registrar in sync.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Daniel VIRASSAMY wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hello everyone,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I have noticed that the P-CSCF does a subscribe (reg-event) for the
+</I>&gt;<i> &gt; client even if the client has already done one durieng the registering
+</I>&gt;<i> &gt; session.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Is this normal?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Regards
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Daniel
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &quot; Ce courriel et les documents qui y sont attaches peuvent contenir
+</I>&gt;<i> &gt; des informations confidentielles. Si vous n'etes pas le destinataire
+</I>&gt;<i> &gt; escompte, merci d'en informer l'expediteur immediatement et de
+</I>&gt;<i> &gt; detruire ce courriel ainsi que tous les documents attaches de votre
+</I>&gt;<i> &gt; systeme informatique. Toute divulgation, distribution ou copie du
+</I>&gt;<i> &gt; present courriel et des documents attaches sans autorisation prealable
+</I>&gt;<i> &gt; de son emetteur est interdite.&quot;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &quot; This e-mail and any attached documents may contain confidential or
+</I>&gt;<i> &gt; proprietary information. If you are not the intended recipient, please
+</I>&gt;<i> &gt; advise the sender immediately and delete this e-mail and all attached
+</I>&gt;<i> &gt; documents from your computer system. Any unauthorised disclosure,
+</I>&gt;<i> &gt; distribution or copying hereof is prohibited.&quot;
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;  
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &quot; Ce courriel et les documents qui y sont attaches peuvent contenir
+</I>&gt;<i> des informations confidentielles. Si vous n'etes pas le destinataire
+</I>&gt;<i> escompte, merci d'en informer l'expediteur immediatement et de
+</I>&gt;<i> detruire ce courriel ainsi que tous les documents attaches de votre
+</I>&gt;<i> systeme informatique. Toute divulgation, distribution ou copie du
+</I>&gt;<i> present courriel et des documents attaches sans autorisation prealable
+</I>&gt;<i> de son emetteur est interdite.&quot;
+</I>&gt;<i>
+</I>&gt;<i> &quot; This e-mail and any attached documents may contain confidential or
+</I>&gt;<i> proprietary information. If you are not the intended recipient, please
+</I>&gt;<i> advise the sender immediately and delete this e-mail and all attached
+</I>&gt;<i> documents from your computer system. Any unauthorised disclosure,
+</I>&gt;<i> distribution or copying hereof is prohibited.&quot;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001722.html">[OpenIMSCore-Users] R&#233;f. : Re:  pcscf subscription (reg-event)
+</A></li>
+	<LI>Next message: <A HREF="001723.html">[OpenIMSCore-Users] How to test OpenIMSCore with a client on	another machine
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1749">[ date ]</a>
+              <a href="thread.html#1749">[ thread ]</a>
+              <a href="subject.html#1749">[ subject ]</a>
+              <a href="author.html#1749">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,565 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 6, Issue 53 Diameter Traffic SCSCF dosem't forwardsip message to	myApplication Server
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore-Users%20Digest%2C%20Vol%206%2C%0A%20Issue%2053%20Diameter%20Traffic%20SCSCF%20dosem%27t%20forwardsip%20message%0A%20to%09myApplication%20Server&In-Reply-To=%3C46434679.3090100%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001763.html">
+   <LINK REL="Next"  HREF="001679.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 6, Issue 53 Diameter Traffic SCSCF dosem't forwardsip message to	myApplication Server</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore-Users%20Digest%2C%20Vol%206%2C%0A%20Issue%2053%20Diameter%20Traffic%20SCSCF%20dosem%27t%20forwardsip%20message%0A%20to%09myApplication%20Server&In-Reply-To=%3C46434679.3090100%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 6, Issue 53 Diameter Traffic SCSCF dosem't forwardsip message to	myApplication Server">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu May 10 18:21:13 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001763.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 6,	Issue 53 Diameter Traffic SCSCF dosem't forwardsip message to	myApplication Server
+</A></li>
+        <LI>Next message: <A HREF="001679.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 6,	Issue 53 Diameter Traffic SCSCF dosem't forwardsip message to	myApplication Server
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1765">[ date ]</a>
+              <a href="thread.html#1765">[ thread ]</a>
+              <a href="subject.html#1765">[ subject ]</a>
+              <a href="author.html#1765">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Allesandro,
+
+there is no route(ACK) because it does not make sense to create such a
+route when it would be called just once and the contents are just 2 line
+long, instead of writing its contents directly where needed. As you can
+see for REGISTER there is a whole lot more to do.
+
+The route() is a kind of subroutine call. You can find the Orig_initial
+a little bit down, at the route[Orig_Initial].
+
+Then from your trace and log the issues is very puzzling. Could you
+please increase the debugging output to 5 in pcscf.cfg and send one more
+time the log?
+
+-Dragos
+
+Alessandro Stile wrote:
+&gt;<i> Hi Franz,
+</I>&gt;<i> I've started debugging PCSCF flow as you suggested. So I can see that
+</I>&gt;<i> INVITE enters in P-CSCF and it has been recognized (if(method==INVITE)
+</I>&gt;<i> {...}. When I've modified pcscf.cf  to insert debugging informations
+</I>&gt;<i> (xlog) I  've seen some strange lines like:
+</I>&gt;<i> if(method==&quot;ACK&quot;)
+</I>&gt;<i> {
+</I>&gt;<i> t_relay();
+</I>&gt;<i> break;
+</I>&gt;<i> }
+</I>&gt;<i> why is t_relay() used instead  of route (ACK)?
+</I>&gt;<i> as I can read in :
+</I>&gt;<i> if (method== &quot;REGISTER&quot;)
+</I>&gt;<i> {
+</I>&gt;<i> route(REGISTER);
+</I>&gt;<i> break;
+</I>&gt;<i> }
+</I>&gt;<i> ____
+</I>&gt;<i> for the INVITE method has been used route(Orig_Initial);
+</I>&gt;<i> where can I find route () function to debug it?
+</I>&gt;<i>
+</I>&gt;<i> I attach tese files;
+</I>&gt;<i> 1)pcscf.cfg: with debugging lines added;
+</I>&gt;<i> 2)debugging-pcscf.txt: the pcscf output;
+</I>&gt;<i> 3) register-subscribe-invite-with-debugging: a wireshark network
+</I>&gt;<i> trace  that I've captured during debugging session.
+</I>&gt;<i> What is wrong?
+</I>&gt;<i> Cheers
+</I>&gt;<i> Alessandro
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ----- Original Message ----- From: &quot;Franz Edler&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&gt;
+</I>&gt;<i> To: &quot;'Alessandro Stile'&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">a.stile at criai.it</A>&gt;
+</I>&gt;<i> Cc: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;<i> Sent: Thursday, May 10, 2007 5:58 AM
+</I>&gt;<i> Subject: RE: [OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 6,Issue
+</I>&gt;<i> 53 Diameter Traffic SCSCF dosem't forwardsip message to myApplication
+</I>&gt;<i> Server
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi Allesandor,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hi Franz, I send you the pcscf-output where you can see some error
+</I>&gt;&gt;<i> messages.
+</I>&gt;&gt;&gt;<i> I think that the problem is in my x.lite configuration : In X-Lite I
+</I>&gt;&gt;&gt;<i> 've
+</I>&gt;&gt;&gt;<i> setted to use pcscf.open-ims.test:4060 always as outbound proxy, is it
+</I>&gt;&gt;&gt;<i> right?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Yes, that's ok.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have checked your trace and log again (see the scenario attached).
+</I>&gt;&gt;<i> I see that after successful registration the INVITE is not forwarded
+</I>&gt;&gt;<i> by the
+</I>&gt;&gt;<i> P-CSCF. The pcscf.log gives no hint on what is happening.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have no idea. So normally I now would start debugging the P-CSCF
+</I>&gt;&gt;<i> flow by
+</I>&gt;&gt;<i> setting debug points in pcscf.cfg like
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   xlog(&quot;L_INFO&quot;,&quot;%Cyb%cs %rm %ru from %si:%sp From: %fu  To:
+</I>&gt;&gt;<i> %tu\n%Cxx&quot;);
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> after the &quot;route{&quot; statement in the beginning to see when a message
+</I>&gt;&gt;<i> enters
+</I>&gt;&gt;<i> the P-CSCF and then with an other statement like
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  xlog(&quot;L_INFO&quot;,&quot;%Cy: some text %Cxx\n&quot;)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> in the presumed position of the pcscf.cfg logic where the the message
+</I>&gt;&gt;<i> should
+</I>&gt;&gt;<i> pass to see what is happening.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Don't forget to include the loadmodule statement for xlog in the
+</I>&gt;&gt;<i> beginning:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  loadmodule &quot;/opt/OpenIMSCore/ser_ims/modules/xlog/xlog.so&quot;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I wonder if the INVITE ever enters the P-CSCF.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers
+</I>&gt;&gt;<i> franz
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> __________ NOD32 2085 (20070228) Information __________
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This message was checked by NOD32 antivirus system.
+</I>&gt;&gt;<i> <A HREF="http://www.eset.com">http://www.eset.com</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> __________ NOD32 2085 (20070228) Information __________
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This message was checked by NOD32 antivirus system.
+</I>&gt;&gt;<i> <A HREF="http://www.eset.com">http://www.eset.com</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at stilealesandro</A> OpenIMSCore]# ./pcscf.sh
+</I>&gt;<i> 0(7516) WARNING: fix_socket_list: could not rev. resolve 10.0.0.11
+</I>&gt;<i> 0(7516) WARNING: fix_socket_list: could not rev. resolve 10.0.0.11
+</I>&gt;<i> Listening on
+</I>&gt;<i>             udp: 10.0.0.11 [10.0.0.11]:4060
+</I>&gt;<i>             tcp: 10.0.0.11 [10.0.0.11]:4060
+</I>&gt;<i> Aliases:
+</I>&gt;<i>             *: pcscf.open-ims.test:4060
+</I>&gt;<i>
+</I>&gt;<i> 0(7516) init_tcp: using epoll_lt as the io watch method (auto detected)
+</I>&gt;<i> 0(7516) WARNING: xl_mod_init: more IP 10.0.0.11 not used
+</I>&gt;<i> 0(7516) WARNING: xl_mod_init: more IP 10.0.0.11 not used
+</I>&gt;<i> 0(7516) WARNING: xl_mod_init: more IP 10.0.0.11 not used
+</I>&gt;<i> 0(7516) WARNING: xl_mod_init: more IP 10.0.0.11 not used
+</I>&gt;<i> 0(7516) WARNING: xl_mod_init: more IP 10.0.0.11 not used
+</I>&gt;<i> 0(7516) WARNING: xl_mod_init: more IP 10.0.0.11 not used
+</I>&gt;<i> 0(7516) WARNING: xl_mod_init: more IP 10.0.0.11 not used
+</I>&gt;<i> 0(7516) WARNING: xl_mod_init: more IP 10.0.0.11 not used
+</I>&gt;<i> 0(7516) WARNING: xl_mod_init: more IP 10.0.0.11 not used
+</I>&gt;<i> 0(7516) Maxfwd module- initializing
+</I>&gt;<i> 0(7516) INFO:P-CSCF:mod_init: Initialization of module
+</I>&gt;<i> 0(7516) INFO: udp_init: SO_RCVBUF is initially 110592
+</I>&gt;<i> 0(7516) INFO: udp_init: SO_RCVBUF is finally 221184
+</I>&gt;<i> 1(7518) INFO:P-CSCF:mod_init: Initialization of module in child [1]
+</I>&gt;<i> 2(7519) INFO:P-CSCF:mod_init: Initialization of module in child [2]
+</I>&gt;<i> 3(7520) INFO:P-CSCF:mod_init: Initialization of module in child [3]
+</I>&gt;<i> 4(7521) INFO:P-CSCF:mod_init: Initialization of module in child [4]
+</I>&gt;<i> 5(7522) INFO:P-CSCF:mod_init: Initialization of module in child [-1]
+</I>&gt;<i> 6(7523) INFO:P-CSCF:mod_init: Initialization of module in child [-1]
+</I>&gt;<i> 0(7516) INFO:P-CSCF:mod_init: Initialization of module in child [0]
+</I>&gt;<i> 7(7524) INFO:P-CSCF:mod_init: Initialization of module in child [5]
+</I>&gt;<i> 8(7525) INFO:P-CSCF:mod_init: Initialization of module in child [6]
+</I>&gt;<i> 9(7526) INFO:P-CSCF:mod_init: Initialization of module in child [7]
+</I>&gt;<i> 10(7527) INFO:P-CSCF:mod_init: Initialization of module in child [8]
+</I>&gt;<i> 11(7528) INFO:P-CSCF:mod_init: Initialization of module in child [-4]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 4(7521) 62694REGISTERsip:open-ims.test from 10.0.0.154:2060
+</I>&gt;<i> From:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.0.0.154&gt;
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;&gt;
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_check_sent_by(): Via does not contain a sent-by
+</I>&gt;<i> parameter
+</I>&gt;<i> 4(7521) ERR:P-CSCF:cscf_get_authorization: Message does not contain
+</I>&gt;<i> Authorization header.
+</I>&gt;<i> 4(7521) INF:P-CSCF:P_add_integrity_protected: No authorization header
+</I>&gt;<i> found.
+</I>&gt;<i> 2(7519) 62695REGISTERsip:open-ims.test from 10.0.0.154:2060
+</I>&gt;<i> From:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> 2(7519) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.0.0.154&gt;
+</I>&gt;<i> 2(7519) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;&gt;
+</I>&gt;<i> 2(7519) DBG:P-CSCF:P_check_sent_by(): Via does not contain a sent-by
+</I>&gt;<i> parameter
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1798] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[-1178808096] Att:[ 0]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 4(7521) 10NOTIFYsip:pcscf.open-ims.test:4060 from 10.0.0.11:6060
+</I>&gt;<i> From:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> To: sip:pcscf.open-ims.test:4060
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.0.0.11&gt;
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;&gt;
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_check_sent_by(): Via does not contain a sent-by
+</I>&gt;<i> parameter
+</I>&gt;<i> 3(7520) 60009INVITEsip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">165 at asterisk2.criai.it</A> from 10.0.0.154:2060
+</I>&gt;<i> From:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>:2060 To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">165 at asterisk2.criai.it</A>
+</I>&gt;<i> 3(7520) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.0.0.154&gt;
+</I>&gt;<i> 3(7520) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;&gt;
+</I>&gt;<i> 3(7520) DBG:P-CSCF:P_check_sent_by(): Via does not contain a sent-by
+</I>&gt;<i> parameter
+</I>&gt;<i> 3(7520) DBG:P-CSCF:cscf_get_originating_contact: 1://10.0.0.154:2060
+</I>&gt;<i> 3(7520) DBG:P-CSCF:cscf_get_terminating_contact: 0://asterisk2.criai.it:0
+</I>&gt;<i> 3(7520)  method is INVITE!!!!
+</I>&gt;<i> 3(7520) &gt;&gt;       Orig_Initial
+</I>&gt;<i> 3(7520) DBG:P-CSCF:P_is_registered: Looking if registered
+</I>&gt;<i> 3(7520) DBG:P-CSCF:P_is_registered: Looking for &lt;1://10.0.0.154:2060&gt;
+</I>&gt;<i> 3(7520) INF:P-CSCF:P_assert_identity: Asserting Identity
+</I>&gt;<i> 3(7520) DBG:P-CSCF:P_assert_identity: Looking for
+</I>&gt;<i> &lt;1://10.0.0.154:2060&gt; Pref:
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1788] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1818] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 4(7521) 60009INVITEsip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">165 at asterisk2.criai.it</A> from 10.0.0.154:2060
+</I>&gt;<i> From:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>:2060 To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">165 at asterisk2.criai.it</A>
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.0.0.154&gt;
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;&gt;
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_check_sent_by(): Via does not contain a sent-by
+</I>&gt;<i> parameter
+</I>&gt;<i> 4(7521) DBG:P-CSCF:cscf_get_originating_contact: 1://10.0.0.154:2060
+</I>&gt;<i> 4(7521) DBG:P-CSCF:cscf_get_terminating_contact: 0://asterisk2.criai.it:0
+</I>&gt;<i> 4(7521)  method is INVITE!!!!
+</I>&gt;<i> 4(7521) &gt;&gt;       Orig_Initial
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_is_registered: Looking if registered
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_is_registered: Looking for &lt;1://10.0.0.154:2060&gt;
+</I>&gt;<i> 4(7521) INF:P-CSCF:P_assert_identity: Asserting Identity
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_assert_identity: Looking for
+</I>&gt;<i> &lt;1://10.0.0.154:2060&gt; Pref:
+</I>&gt;<i> 1(7518) 60009INVITEsip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">165 at asterisk2.criai.it</A> from 10.0.0.154:2060
+</I>&gt;<i> From:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>:2060 To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">165 at asterisk2.criai.it</A>
+</I>&gt;<i> 1(7518) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.0.0.154&gt;
+</I>&gt;<i> 1(7518) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;&gt;
+</I>&gt;<i> 1(7518) DBG:P-CSCF:P_check_sent_by(): Via does not contain a sent-by
+</I>&gt;<i> parameter
+</I>&gt;<i> 1(7518) DBG:P-CSCF:cscf_get_originating_contact: 1://10.0.0.154:2060
+</I>&gt;<i> 1(7518) DBG:P-CSCF:cscf_get_terminating_contact: 0://asterisk2.criai.it:0
+</I>&gt;<i> 1(7518)  method is INVITE!!!!
+</I>&gt;<i> 1(7518) &gt;&gt;       Orig_Initial
+</I>&gt;<i> 1(7518) DBG:P-CSCF:P_is_registered: Looking if registered
+</I>&gt;<i> 1(7518) DBG:P-CSCF:P_is_registered: Looking for &lt;1://10.0.0.154:2060&gt;
+</I>&gt;<i> 1(7518) INF:P-CSCF:P_assert_identity: Asserting Identity
+</I>&gt;<i> 1(7518) DBG:P-CSCF:P_assert_identity: Looking for
+</I>&gt;<i> &lt;1://10.0.0.154:2060&gt; Pref:
+</I>&gt;<i> 2(7519) 60009INVITEsip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">165 at asterisk2.criai.it</A> from 10.0.0.154:2060
+</I>&gt;<i> From:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>:2060 To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">165 at asterisk2.criai.it</A>
+</I>&gt;<i> 2(7519) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.0.0.154&gt;
+</I>&gt;<i> 2(7519) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;&gt;
+</I>&gt;<i> 2(7519) DBG:P-CSCF:P_check_sent_by(): Via does not contain a sent-by
+</I>&gt;<i> parameter
+</I>&gt;<i> 2(7519) DBG:P-CSCF:cscf_get_originating_contact: 1://10.0.0.154:2060
+</I>&gt;<i> 2(7519) DBG:P-CSCF:cscf_get_terminating_contact: 0://asterisk2.criai.it:0
+</I>&gt;<i> 2(7519)  method is INVITE!!!!
+</I>&gt;<i> 2(7519) &gt;&gt;       Orig_Initial
+</I>&gt;<i> 2(7519) DBG:P-CSCF:P_is_registered: Looking if registered
+</I>&gt;<i> 2(7519) DBG:P-CSCF:P_is_registered: Looking for &lt;1://10.0.0.154:2060&gt;
+</I>&gt;<i> 2(7519) INF:P-CSCF:P_assert_identity: Asserting Identity
+</I>&gt;<i> 2(7519) DBG:P-CSCF:P_assert_identity: Looking for
+</I>&gt;<i> &lt;1://10.0.0.154:2060&gt; Pref:
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1778] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1808] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1768] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1798] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1758] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1788] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1748] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1778] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1738] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1768] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1728] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1758] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1718] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1748] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1708] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1738] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1698] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1728] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1688] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1718] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1678] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1708] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1668] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1698] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[1658] R:[ 1]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1688] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 1(7518) 62696REGISTERsip:open-ims.test from 10.0.0.154:2060
+</I>&gt;<i> From:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> 1(7518) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.0.0.154&gt;
+</I>&gt;<i> 1(7518) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;&gt;
+</I>&gt;<i> 1(7518) DBG:P-CSCF:P_check_sent_by(): Via does not contain a sent-by
+</I>&gt;<i> parameter
+</I>&gt;<i> 1(7518) ERR:P-CSCF:cscf_get_authorization: Message does not contain
+</I>&gt;<i> Authorization header.
+</I>&gt;<i> 1(7518) INF:P-CSCF:P_add_integrity_protected: No authorization header
+</I>&gt;<i> found.
+</I>&gt;<i> 1(7518) 62697REGISTERsip:open-ims.test from 10.0.0.154:2060
+</I>&gt;<i> From:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> 1(7518) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.0.0.154&gt;
+</I>&gt;<i> 1(7518) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;&gt;
+</I>&gt;<i> 1(7518) DBG:P-CSCF:P_check_sent_by(): Via does not contain a sent-by
+</I>&gt;<i> parameter
+</I>&gt;<i> 2(7519) DBG:P-CSCF:P_subscribe: skipped because de-register
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[  29] R:[-2]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  52]      P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; D:[ 1830]
+</I>&gt;<i> E:[ 1678] Att:[-1]
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 3(7520) 11NOTIFYsip:pcscf.open-ims.test:4060 from 10.0.0.11:6060
+</I>&gt;<i> From:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> To: sip:pcscf.open-ims.test:4060
+</I>&gt;<i> 3(7520) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.0.0.11&gt;
+</I>&gt;<i> 3(7520) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;&gt;
+</I>&gt;<i> 3(7520) DBG:P-CSCF:P_check_sent_by(): Via does not contain a sent-by
+</I>&gt;<i> parameter
+</I>&gt;<i> 4(7521) 11NOTIFYsip:pcscf.open-ims.test:4060 from 10.0.0.11:6060
+</I>&gt;<i> From:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> To: sip:pcscf.open-ims.test:4060
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_check_sent_by(): Received from &lt;10.0.0.11&gt;
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;&gt;
+</I>&gt;<i> 4(7521) DBG:P-CSCF:P_check_sent_by(): Via does not contain a sent-by
+</I>&gt;<i> parameter
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[  20] R:[-2]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:[  72] C: &lt;0://10.0.0.154:2060&gt; Exp:[  10] R:[-2]
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.0.0.154</A>:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:        NAT:&lt;10.0.0.154:2060&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list begin ---------
+</I>&gt;<i> 5(7522) INF:P-CSCF:----------  Subscription list end -----------
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001763.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 6,	Issue 53 Diameter Traffic SCSCF dosem't forwardsip message to	myApplication Server
+</A></li>
+	<LI>Next message: <A HREF="001679.html">[OpenIMSCore-Users] OpenIMSCore-Users Digest, Vol 6,	Issue 53 Diameter Traffic SCSCF dosem't forwardsip message to	myApplication Server
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1765">[ date ]</a>
+              <a href="thread.html#1765">[ thread ]</a>
+              <a href="subject.html#1765">[ subject ]</a>
+              <a href="author.html#1765">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

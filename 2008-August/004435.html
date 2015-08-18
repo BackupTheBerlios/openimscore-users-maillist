@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] service indication and data reference
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20service%20indication%20and%20data%20reference&In-Reply-To=%3C1217928286.12505.4.camel%40peer1%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004434.html">
+   <LINK REL="Next"  HREF="004436.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] service indication and data reference</H1>
+    <B>Enrique de Meer</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20service%20indication%20and%20data%20reference&In-Reply-To=%3C1217928286.12505.4.camel%40peer1%3E"
+       TITLE="[OpenIMSCore-Users] service indication and data reference">enrique.demeer at inycom.es
+       </A><BR>
+    <I>Tue Aug  5 11:24:46 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004434.html">[OpenIMSCore-Users] service indication and data reference
+</A></li>
+        <LI>Next message: <A HREF="004436.html">[OpenIMSCore-Users] FW:  service indication and data reference
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4435">[ date ]</a>
+              <a href="thread.html#4435">[ thread ]</a>
+              <a href="subject.html#4435">[ subject ]</a>
+              <a href="author.html#4435">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Izaak,
+
+asnwered inlined
+
+
+El mar, 05-08-2008 a las 10:25 +0200, Izaak Muto escribi&#243;:
+&gt;<i> Hello, 
+</I>&gt;<i> 
+</I>&gt;<i> I have added into repository_data (with mysql request) some
+</I>&gt;<i> information. 
+</I>&gt;<i> I would like to get this information (an integer) with a PUR command.
+</I>
+
+First of all, PUR command stores data in HSS, so if you want to get data
+from HSS you need UDR command
+
+
+&gt;<i> My problem is i don't know what to put in the setData() method in java
+</I>&gt;<i> diameter peer (i store the information in hss_db -&gt; repository_data -&gt;
+</I>&gt;<i> id = 3):
+</I>&gt;<i> a = new AVP(704,true,10415);
+</I>&gt;<i> a.setData(?????????);
+</I>&gt;<i> udr.addAVP(a)
+</I>&gt;<i> 
+</I>
+704 is IMS_SERVICE_INDICATION and you should set the &quot;service
+indiation&quot; (normally a string with the name of your service).
+
+a.setData(&quot;myServiceName&quot;);
+
+
+&gt;<i> 
+</I>&gt;<i> More over for the data reference it's the same problem, i only
+</I>&gt;<i> understand that the data_reference must be at the value 0 because of
+</I>&gt;<i> repository_data :
+</I>&gt;<i> a = new AVP(703,true,10415);
+</I>&gt;<i> a.setData(?????????);
+</I>&gt;<i> udr.addAVP(a)
+</I>
+703 is IMS_DATA_REFERENCE and you simply should put it to 0:
+
+a.setData(0);
+
+There are several setData() methods, which arguments can be an integer,
+a string, a byte[], a char, ...
+
+
+&gt;<i> 
+</I>&gt;<i> Could somebody help me??
+</I>
+The information should come back to you in UDA command in the AVP
+IMS_USER_DATA_SH = 702 as a XML String like that:
+
+&lt;Sh-Data&gt;&lt;RepositoryData&gt;&lt;ServiceIndication&gt;&quot;yourServicenName&quot;&lt;/ServiceIndication&gt;&lt;SequenceNumber&gt;&quot;anIntegerWithTheSequenceNumber&quot;&lt;/SequenceNumber&gt;&lt;ServiceData&gt;&quot;yourData&quot;&lt;/ServiceData&gt;&lt;/RepositoryData&gt;&lt;/Sh-Data&gt;
+
+&gt;<i> 
+</I>&gt;<i> Best regards
+</I>&gt;<i> 
+</I>
+I hope it helps,
+
+Regards, 
+
+
+Enrique
+
+
+
+
+&gt;<i> 
+</I>&gt;<i> ______________________________________________________________________
+</I>&gt;<i> 
+</I>&gt;<i> Discutez sur Messenger o&#249; que vous soyez ! Mettez Messenger sur votre
+</I>&gt;<i> mobile !
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004434.html">[OpenIMSCore-Users] service indication and data reference
+</A></li>
+	<LI>Next message: <A HREF="004436.html">[OpenIMSCore-Users] FW:  service indication and data reference
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4435">[ date ]</a>
+              <a href="thread.html#4435">[ thread ]</a>
+              <a href="subject.html#4435">[ subject ]</a>
+              <a href="author.html#4435">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Prefix manipulation with ENUM or IFC
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Prefix%20manipulation%20with%20ENUM%20or%20IFC&In-Reply-To=%3C4797748E.8070001%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003228.html">
+   <LINK REL="Next"  HREF="003235.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Prefix manipulation with ENUM or IFC</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Prefix%20manipulation%20with%20ENUM%20or%20IFC&In-Reply-To=%3C4797748E.8070001%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Prefix manipulation with ENUM or IFC">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Jan 23 18:08:30 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003228.html">[OpenIMSCore-Users] Prefix manipulation with ENUM or IFC
+</A></li>
+        <LI>Next message: <A HREF="003235.html">[OpenIMSCore-Users] Prefix manipulation with ENUM or IFC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3229">[ date ]</a>
+              <a href="thread.html#3229">[ thread ]</a>
+              <a href="subject.html#3229">[ subject ]</a>
+              <a href="author.html#3229">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>yes it does:
+
+scscf.cfg:391
+
+        if (method==&quot;INVITE&quot;) {
+                route(PSTN_handling);
+    }
+
+Then see the PSTN_handling route...
+
+
+Cheers,
+-Dragos
+
+
+
+Pedro Antonio Vico Solano wrote:
+&gt;<i>
+</I>&gt;<i> But without this instruction in ORIG it does not ask ENUM:
+</I>&gt;<i>
+</I>&gt;<i>  if(!enum_query()){
+</I>&gt;<i>         log(1,&quot; ------- ENUM error o no ENUM entry\n&quot;);
+</I>&gt;<i>   }
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> *Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;*
+</I>&gt;<i> Enviado por: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i>
+</I>&gt;<i> 23/01/2008 17:19
+</I>&gt;<i>
+</I>&gt;<i> 	
+</I>&gt;<i> Para
+</I>&gt;<i> 	ketzal devims &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ketzaldevims at gmail.com</A>&gt;
+</I>&gt;<i> cc
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Asunto
+</I>&gt;<i> 	Re: [OpenIMSCore-Users] Prefix manipulation with ENUM or IFC
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The enum part should be already integrated in the scscf.cfg and you
+</I>&gt;<i> should not need this special part....
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> ketzal devims wrote:
+</I>&gt;<i> &gt; Hi Pedro...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; You just have to add an enum query when the message arrives to your
+</I>&gt;<i> &gt; scscf :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; In scscf.cfg : (originating)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  if(!enum_query()){
+</I>&gt;<i> &gt;            log(1,&quot; ------- Entry doesn't exist \n&quot;);
+</I>&gt;<i> &gt;            route(...don't know where users who don't have ENUM entry
+</I>&gt;<i> &gt; are routed in your testbed);   &lt;- maybe route(PSTN);
+</I>&gt;<i> &gt;            break;
+</I>&gt;<i> &gt; }
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; And add entries in your ENUM DNS :
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 1.0.0.0.5.5.5.e164.arpa .         IN NAPTR 10 10 &quot;u&quot; &quot;sip+e2u&quot;
+</I>&gt;<i> &gt; &quot;!^.*$!sip:0001@ other-domain.test &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">0001 at other-domain.test</A>&gt; !&quot; .
+</I>&gt;<i> &gt; 3.0.0.0.4.4.4.e164.arpa.         IN NAPTR 10 10 &quot;u&quot; &quot;sip+e2u&quot;
+</I>&gt;<i> &gt; &quot;!^.*$!sip:0003@ open-ims.test &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">0001 at other-domain.test</A>&gt; !&quot; .
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; best regards,
+</I>&gt;<i> &gt; Ketzal
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 2008/1/21, Pedro Antonio Vico Solano &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pvsolano at amper.es</A>
+</I>&gt;<i> &gt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pvsolano at amper.es</A>&gt;&gt;:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     Hello,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     I'm trying to do prefix match in IMS in order to select the
+</I>&gt;<i> &gt;     correct S-CSCF. That is, if the client calls:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     *555*<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">0001 at open-ims.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">0001 at open-ims.test</A>&gt;   --&gt;
+</I>&gt;<i> &gt;     translated to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">0001 at other-domain.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">0001 at other-domain.test</A>&gt;
+</I>&gt;<i> &gt;     *444*<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">0003 at open-ims.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">0003 at open-ims.test</A>&gt;  --&gt; it's
+</I>&gt;<i> &gt;     local so <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">0003 at open-ims.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">0003 at open-ims.test</A>&gt; should be
+</I>&gt;<i> &gt;     called
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     How can I do that?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     Can IFCs modify URIs and then route them?
+</I>&gt;<i> &gt;     Can I specify a rule like this: match 555****@open-ims.test
+</I>&gt;<i> &gt;     &lt;mailto:555****@open-ims.test&gt; (wildcarded)?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     or can S-CSCF (or other entity) look for an ENUM resolution?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     Best regards.
+</I>&gt;<i> &gt;     Pedro
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     _______________________________________________
+</I>&gt;<i> &gt;     OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i> &gt;     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;  
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003228.html">[OpenIMSCore-Users] Prefix manipulation with ENUM or IFC
+</A></li>
+	<LI>Next message: <A HREF="003235.html">[OpenIMSCore-Users] Prefix manipulation with ENUM or IFC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3229">[ date ]</a>
+              <a href="thread.html#3229">[ thread ]</a>
+              <a href="subject.html#3229">[ subject ]</a>
+              <a href="author.html#3229">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ODP: IPv6 registration problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ODP%3A%20IPv6%20registration%20problem&In-Reply-To=%3CE18A1094031577469E868EEA7620B255D0CBB766F8%40orlik2.itl.waw.pl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006860.html">
+   <LINK REL="Next"  HREF="006862.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ODP: IPv6 registration problem</H1>
+    <B>Waldemar Latoszek</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ODP%3A%20IPv6%20registration%20problem&In-Reply-To=%3CE18A1094031577469E868EEA7620B255D0CBB766F8%40orlik2.itl.waw.pl%3E"
+       TITLE="[OpenIMSCore-Users] ODP: IPv6 registration problem">W.Latoszek at itl.waw.pl
+       </A><BR>
+    <I>Fri Feb  4 10:26:46 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006860.html">[OpenIMSCore-Users] IPv6 registration problem
+</A></li>
+        <LI>Next message: <A HREF="006862.html">[OpenIMSCore-Users] PCSCF respond BYE request with 403 Forbidden
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6861">[ date ]</a>
+              <a href="thread.html#6861">[ thread ]</a>
+              <a href="subject.html#6861">[ subject ]</a>
+              <a href="author.html#6861">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+I send logs from wireshark:
+(I send only register 10 times and give Timeout from server)
+No.     Time        Source                Destination           Protocol Info
+    196 267.224638  2607:f0d0:1002:11::2  2607:f0d0:1002:11::1  SIP      Request: REGISTER sip:open-ims.test
+
+Frame 196: 664 bytes on wire (5312 bits), 664 bytes captured (5312 bits)
+Ethernet II, Src: Dell_e7:c6:78 (00:26:b9:e7:c6:78), Dst: Giga-Byt_36:92:5f (1c:6f:65:36:92:5f)
+Internet Protocol Version 6, Src: 2607:f0d0:1002:11::2 (2607:f0d0:1002:11::2), Dst: 2607:f0d0:1002:11::1 (2607:f0d0:1002:11::1)
+User Datagram Protocol, Src Port: sip (5060), Dst Port: dsmeter_iatc (4060)
+Session Initiation Protocol
+    Request-Line: REGISTER sip:open-ims.test SIP/2.0
+        Method: REGISTER
+        Request-URI: sip:open-ims.test
+            Request-URI Host Part: open-ims.test
+        [Resent Packet: False]
+    Message Header
+        Via: SIP/2.0/UDP [2607:f0d0:1002:11::2]:5060;branch=z9hG4bK757444884
+        From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=733379067
+            SIP from address: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+                SIP from address User Part: alice
+                SIP from address Host Part: open-ims.test
+            SIP tag: 733379067
+        To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+            SIP to address: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+                SIP to address User Part: alice
+                SIP to address Host Part: open-ims.test
+        Call-ID: 149638912
+        CSeq: 1 REGISTER
+            Sequence Number: 1
+            Method: REGISTER
+        Contact: &lt;sip:alice@[2607:f0d0:1002:11::2]:5060;line=b49a6b5c8de61c2&gt;;+sip.instance=&quot;&lt;urn:uuid:a00ae0ec-3039-11e0-be49-0d0de23a7ff8&gt;&quot;
+            Contact-URI: sip:alice@[2607:f0d0:1002:11::2]:5060;line=b49a6b5c8de61c2
+            Contact parameter: line=b49a6b5c8de61c2&gt;
+            Contact parameter: +sip.instance=&quot;&lt;urn:uuid:a00ae0ec-3039-11e0-be49-0d0de23a7ff8&gt;&quot;
+        Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;, realm=&quot;open-ims.test&quot;, nonce=&quot; &quot;, uri=&quot;sip:open-ims.test&quot;, response=&quot; &quot;
+            Authentication Scheme: Digest
+            username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;
+            realm=&quot;open-ims.test&quot;
+            nonce=&quot; &quot;
+            uri=&quot;sip:open-ims.test&quot;
+            response=&quot; &quot;
+        Max-Forwards: 70
+        User-Agent: UCT IMS Client
+        Expires: 600000
+        Supported: path
+        Supported: gruu
+        Content-Length: 0
+
+
+(more register trials)
+
+answer from server
+
+No.     Time        Source                Destination           Protocol Info
+    231 329.232489  2607:f0d0:1002:11::1  2607:f0d0:1002:11::2  SIP      Status: 504 Server Time-Out    (0 bindings)
+
+Frame 231: 649 bytes on wire (5192 bits), 649 bytes captured (5192 bits)
+Ethernet II, Src: Giga-Byt_36:92:5f (1c:6f:65:36:92:5f), Dst: Dell_e7:c6:78 (00:26:b9:e7:c6:78)
+Internet Protocol Version 6, Src: 2607:f0d0:1002:11::1 (2607:f0d0:1002:11::1), Dst: 2607:f0d0:1002:11::2 (2607:f0d0:1002:11::2)
+User Datagram Protocol, Src Port: dsmeter_iatc (4060), Dst Port: sip (5060)
+Session Initiation Protocol
+    Status-Line: SIP/2.0 504 Server Time-Out
+        Status-Code: 504
+        [Resent Packet: False]
+        [Request Frame: 196]
+        [Response Time (ms): 62007]
+    Message Header
+        Via: SIP/2.0/UDP [2607:f0d0:1002:11::2]:5060;branch=z9hG4bK757444884;rport=5060;received=2607:F0D0:1002:11:0:0:0:2
+        From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=733379067
+            SIP from address: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+                SIP from address User Part: alice
+                SIP from address Host Part: open-ims.test
+            SIP tag: 733379067
+        To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=567fd8787207f8693c07f0df340b5d5c-fc56
+            SIP to address: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+                SIP to address User Part: alice
+                SIP to address Host Part: open-ims.test
+            SIP tag: 567fd8787207f8693c07f0df340b5d5c-fc56
+        Call-ID: 149638912
+        CSeq: 1 REGISTER
+            Sequence Number: 1
+            Method: REGISTER
+        Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+        Content-Length: 0
+        Warning: 392 2607:F0D0:1002:11:0:0:0:1:4060 &quot;Noisy feedback tells:  pid=10529 req_src_ip=2607:F0D0:1002:11:0:0:0:2 req_src_port=5060 in_uri=sip:open-ims.test out_uri=sip:open-ims.test via_cnt==0&quot;
+
+
+I would be grateful for the help
+________________________________________
+Od: Waldemar Latoszek
+Wys&#322;ano: 3 lutego 2011 15:54
+Do: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Temat: IPv6 registration problem
+
+I recompiled UCT IMS Client to support IPv6 and I have problem with registration proces
+The same problem i have using monster with supports ipv6.
+For IPv4 I registred bot clients (UCT and Monster)
+
+
+Logs of my servers:
+
+hss
+
+2011-02-03 15:30:54,484 INFO  de.fhg.fokus.hss.main.TomcatServer -
+startTomcat Tomcat-Server is started.
+2011-02-03 15:30:54,904 WARN  org.apache.catalina.connector.MapperListener -
+registerEngine Unknown default host: 127.0.0.1
+2011-02-03 15:30:55,275 INFO  de.fhg.fokus.hss.web.servlet.ResponseFilter -
+init Response Filter Initialisation!
+2011-02-03 15:30:55,633 INFO  de.fhg.fokus.hss.main.TomcatServer -
+startTomcat WebConsole of FHoSS was started !
+2011-02-03 15:30:57,283 WARN  org.hibernate.impl.SessionFactoryObjectFactory
+- addInstance InitialContext did not implement EventContext
+2011-02-03 15:30:57,315 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; FQDN:
+hss.open-ims.test
+2011-02-03 15:30:57,315 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Realm:
+open-ims.test
+2011-02-03 15:30:57,316 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Vendor_ID : 10415
+2011-02-03 15:30:57,316 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; Product Name:
+JavaDiameterPeer
+2011-02-03 15:30:57,316 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; AcceptUnknwonPeers:
+true
+2011-02-03 15:30:57,316 INFO
+de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+DropUnknownOnDisconnect: true
+2011-02-03 15:30:57,423 INFO  de.fhg.fokus.hss.main.HSSContainer -
+waitForExit
+Type &quot;exit&quot; to stop FHoSS!
+2011-02-03 15:32:15,820 DEBUG de.fhg.fokus.hss.main.Task - execute
+Processing UAR!
+2011-02-03 15:32:47,890 DEBUG de.fhg.fokus.hss.main.Task - execute
+Processing MAR!
+2011-02-03 15:32:47,906 DEBUG de.fhg.fokus.hss.cx.op.MAR -
+generateAuthVector Auth-Scheme is Digest-MD5
+
+
+
+
+pcscf
+
+ DBG:P-CSCF:P_emergency_flag: Check if the user made an Emergency
+Registration
+ 1(10525) DBG:P-CSCF:P_verify_security: Looking for
+&lt;1://[2607:f0d0:1002:11::2]:5060&gt;
+ 5(10529) INF:P-CSCF:----------  P-CSCF Dialog List begin --------------
+ 5(10529) INF:P-CSCF:----------  P-CSCF Dialog List end   --------------
+ 5(10529) INF:P-CSCF:----------  Registrar Contents begin --------
+ 5(10529) INF:P-CSCF:----------  Registrar Contents end ----------
+ 5(10529) INF:P-CSCF:----------  Subscription list begin ---------
+ 5(10529) INF:P-CSCF:----------  Subscription list end -----------
+ 5(10529) INF:P-CSCF:----------  Registrar Contents begin --------
+ 5(10529) INF:P-CSCF:----------  Registrar Contents end ----------
+ 5(10529) INF:P-CSCF:----------  Subscription list begin ---------
+ 5(10529) INF:P-CSCF:----------  Subscription list end -----------
+ 5(10529) INF:P-CSCF:----------  Registrar Contents begin --------
+ 5(10529) INF:P-CSCF:----------  Registrar Contents end ----------
+ 5(10529) INF:P-CSCF:----------  Subscription list begin ---------
+ 5(10529) INF:P-CSCF:----------  Subscription list end -----------
+ 1(10525) DBG:P-CSCF:cscf_get_pref_security_header: No known Security header
+ found.
+
+scscf
+
+ DBG:S-CSCF:S_is_authorized: uri=sip:open-ims.test nonce=  response=  qop=
+nc= cnonce= hbody=
+ 1(10506) ERR:S-CSCF:S_is_authorized: no matching auth vector found - maybe
+timer expired
+
+icscf
+
+ INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+ 2(10539) INFO:I-CSCF:Cx_get_capabilities: Failed finding avp
+ 2(10539) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf.open-ims.test:6060&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006860.html">[OpenIMSCore-Users] IPv6 registration problem
+</A></li>
+	<LI>Next message: <A HREF="006862.html">[OpenIMSCore-Users] PCSCF respond BYE request with 403 Forbidden
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6861">[ date ]</a>
+              <a href="thread.html#6861">[ thread ]</a>
+              <a href="subject.html#6861">[ subject ]</a>
+              <a href="author.html#6861">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

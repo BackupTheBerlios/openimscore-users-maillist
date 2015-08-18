@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Hss diameter traffic problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Hss%20diameter%20traffic%20problems&In-Reply-To=%3C489111358B3C664891E5591205E0B830AD7CAB%40exbe04.ad.hosteam.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003838.html">
+   <LINK REL="Next"  HREF="003845.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Hss diameter traffic problems</H1>
+    <B>Arnaud Paulus</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Hss%20diameter%20traffic%20problems&In-Reply-To=%3C489111358B3C664891E5591205E0B830AD7CAB%40exbe04.ad.hosteam.fr%3E"
+       TITLE="[OpenIMSCore-Users] Hss diameter traffic problems">arnaud.paulus at arismore.fr
+       </A><BR>
+    <I>Mon Apr 28 12:18:10 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003838.html">[OpenIMSCore-Users] Hss diameter traffic problems
+</A></li>
+        <LI>Next message: <A HREF="003845.html">[OpenIMSCore-Users] Hss diameter traffic problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3840">[ date ]</a>
+              <a href="thread.html#3840">[ thread ]</a>
+              <a href="subject.html#3840">[ subject ]</a>
+              <a href="author.html#3840">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thank you for the tip.
+
+But it still doesn't work. There is any flow on hss.open-ims.test:3868
+
+I have decided to see if the diameter peer on S-CSCF:3870 and I-CSCF:3869 work correctly. The S-CSCF and the I-CSCF have the right ports and send diameter request but not to the right port of HSS.
+The worst thing is that...the registration of users works.
+
+I have attached the wireshark file of the diameter flow between the S-CSCF:3870 and the HSS. As a matter of fact, this is not the right port of the hss.
+I have attached also the HSS configuration file DiameterPeerHSS.xml and the hss.properties, and the S-CSCF diameter configuration file s-cscf.xml
+Finally I have attached my DNS zone file for the open-ims.test subnetwork.
+
+The problem is the same on the diameter peer port of the I-CSCF!
+
+Any Idea?
+
+Regards.
+
+
+
+
+-----Message d'origine-----
+De&#160;: Enrique de Meer [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">enrique.demeer at inycom.es</A>] 
+Envoy&#233;&#160;: lundi 28 avril 2008 09:01
+&#192;&#160;: Arnaud Paulus
+Cc&#160;: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Objet&#160;: Re: [OpenIMSCore-Users] Hss diameter traffic problems
+
+Hi Arnaud,
+
+&gt;<i> Hi all,
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i> I'm not able to monitor diameter traffic on the hss local port
+</I>&gt;<i> (diameter port of hss 3868)?
+</I>&gt;<i> 
+</I>&gt;<i> Is anybody able to help me?
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>
+I&#180;m not sure if I understand but I guess you mean you can't see the
+packets in wireshark as diameter ones.
+
+you should filter with &quot;tcp.port == 3868&quot;(for hss)...and click right in
+the packet...then &quot;decode as...&quot;, choose transport label and then
+DIAMETER and OK...Then you should see the diameter  messages...
+
+I hope it helps
+
+Regards, Enrique
+
+
+AVISO LEGAL 
+
+Este mensaje y los archivos que en su caso lleve adjuntos son privados y confidenciales y se dirigen exclusivamente a su destinatario. Por ello, se informa a quien lo reciba por error que la informaci&#243;n contenida en el mismo es reservada y su utilizaci&#243;n, copia o distribuci&#243;n est&#225; prohibida, por lo que en tal caso le rogamos que nos lo comunique por esta misma v&#237;a o por tel&#233;fono (+34976013300) y proceda a borrarlo de inmediato. 
+
+
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: Diameter.pcap
+Type: application/octet-stream
+Size: 3500 bytes
+Desc: Diameter.pcap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080428/ec9b07c7/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080428/ec9b07c7/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: open-ims.dnszone
+Type: application/octet-stream
+Size: 462 bytes
+Desc: open-ims.dnszone
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080428/ec9b07c7/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080428/ec9b07c7/attachment-0001.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: scscf.xml
+Type: text/xml
+Size: 1140 bytes
+Desc: scscf.xml
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080428/ec9b07c7/attachment.xml">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080428/ec9b07c7/attachment.xml</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: DiameterPeerHSS.xml
+Type: text/xml
+Size: 776 bytes
+Desc: DiameterPeerHSS.xml
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080428/ec9b07c7/attachment-0001.xml">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080428/ec9b07c7/attachment-0001.xml</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: hss.properties
+Type: application/octet-stream
+Size: 2178 bytes
+Desc: hss.properties
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080428/ec9b07c7/attachment-0002.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080428/ec9b07c7/attachment-0002.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003838.html">[OpenIMSCore-Users] Hss diameter traffic problems
+</A></li>
+	<LI>Next message: <A HREF="003845.html">[OpenIMSCore-Users] Hss diameter traffic problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3840">[ date ]</a>
+              <a href="thread.html#3840">[ thread ]</a>
+              <a href="subject.html#3840">[ subject ]</a>
+              <a href="author.html#3840">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

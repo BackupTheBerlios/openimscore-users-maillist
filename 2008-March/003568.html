@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] how to create icscf database
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20how%20to%20create%20icscf%20database&In-Reply-To=%3C47CD9308.7000503%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003567.html">
+   <LINK REL="Next"  HREF="003571.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] how to create icscf database</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20how%20to%20create%20icscf%20database&In-Reply-To=%3C47CD9308.7000503%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] how to create icscf database">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Mar  4 19:20:56 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003567.html">[OpenIMSCore-Users] how to create icscf database
+</A></li>
+        <LI>Next message: <A HREF="003571.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3568">[ date ]</a>
+              <a href="thread.html#3568">[ thread ]</a>
+              <a href="subject.html#3568">[ subject ]</a>
+              <a href="author.html#3568">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Oh man....
+
+You were not supposed to run dbdump.sh before you actually created the
+db... what did you expected it to dump?
+
+Take again the original icscf.sql from svn and do what the installation
+guide tells you:
+
+Here I am citing:
+&quot;
+MySQL
+
+    * Run the SQL dumps (mysql -u root -p -h localhost &lt; dump.sql):
+      * New!!! * &quot;hssdb.sql&quot; was replaced by &quot;hss_db.sql&quot; !!!
+
+      mysql -u root -p -h localhost &lt; ser_ims/cfg/icscf.sql
+      mysql -u root -p -h localhost &lt; FHoSS/scripts/hss_db.sql  
+      mysql -u root -p -h localhost &lt; FHoSS/scripts/userdata.sql
+          
+
+    * Check if the databases are in there and accessible
+
+&quot;
+There was no dbdump.sh there! That one is just an utility for advanced
+users that want for example to move their existing and populated
+database to somewhere else than the original installation place.
+
+-Dragos
+
+
+arunk wrote:
+&gt;<i>
+</I>&gt;<i>   Hi Franz,
+</I>&gt;<i> I ran the icscf.sql file. But , the content of the file is as follows:
+</I>&gt;<i> ========================================================
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">imsusr at imsusr-desktop</A>:/opt/OpenIMSCore/ser_ims/cfg$ cat icscf.sql
+</I>&gt;<i> # DB access rights
+</I>&gt;<i> grant delete,insert,select,update on icscf.* to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">icscf at localhost</A>
+</I>&gt;<i> identified by 'heslo';
+</I>&gt;<i> grant delete,insert,select,update on icscf.* to <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">provisioning at localhost</A>
+</I>&gt;<i> identified by 'provi';
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">imsusr at imsusr-desktop</A>:/opt/OpenIMSCore/ser_ims/cfg$
+</I>&gt;<i> ========================================================
+</I>&gt;<i>
+</I>&gt;<i> This sql script is gerereted by dbdump.sh.
+</I>&gt;<i> If icscf database is not craeted, the db_init cannot happen.
+</I>&gt;<i> There is something wrong in script or original script that is
+</I>&gt;<i> overwritten by dbdump.sh file while trying to install.
+</I>&gt;<i>
+</I>&gt;<i> That is the reason icscf database is not created.
+</I>&gt;<i>
+</I>&gt;<i> Please help.
+</I>&gt;<i>
+</I>&gt;<i> I have read the install guide. There is no step tell to create
+</I>&gt;<i> databases as icscf.
+</I>&gt;<i>
+</I>&gt;<i> Can you tell me what should be right content of icscf.sql file?
+</I>&gt;<i> Or which script helps creating icscf database?
+</I>&gt;<i>
+</I>&gt;<i> Thanks and Regards,
+</I>&gt;<i> arun
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Tue, 04 Mar 2008 Franz Edler wrote :
+</I>&gt;<i> &gt;Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; Can anyone tell me how icscf data created for OpenIMSCore.
+</I>&gt;<i> &gt; &gt; Is there any script to create database as icscf.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Just follow <A HREF="http://www.openimscore.org/installation_guide">http://www.openimscore.org/installation_guide</A>  (as Peter
+</I>&gt;<i> already
+</I>&gt;<i> &gt;mentioned)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;mysql -u root -p &lt; ser_ims/cfg/icscf.sql
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Franz
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Monster
+</I>&gt;<i> &lt;<A HREF="http://adworks.rediff.com/cgi-bin/AdWorks/click.cgi/www.rediff.com/signature-home.htm/1050715198@Middle5/2047758_2040452/2047768/1?PARTNER=3&amp;OAS_QUERY=null">http://adworks.rediff.com/cgi-bin/AdWorks/click.cgi/www.rediff.com/signature-home.htm/1050715198@Middle5/2047758_2040452/2047768/1?PARTNER=3&amp;OAS_QUERY=null</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003567.html">[OpenIMSCore-Users] how to create icscf database
+</A></li>
+	<LI>Next message: <A HREF="003571.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3568">[ date ]</a>
+              <a href="thread.html#3568">[ thread ]</a>
+              <a href="subject.html#3568">[ subject ]</a>
+              <a href="author.html#3568">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

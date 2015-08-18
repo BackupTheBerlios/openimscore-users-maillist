@@ -1,0 +1,416 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Issue with Security Mechanism Agreement (with TLS, IPSec)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Issue%20with%20Security%20Mechanism%20Agreement%0A%20%28with%20TLS%2C%20IPSec%29&In-Reply-To=%3C4A4C7B8E.70105%40globaledgesoft.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005576.html">
+   <LINK REL="Next"  HREF="005578.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Issue with Security Mechanism Agreement (with TLS, IPSec)</H1>
+    <B>prashanth.me</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Issue%20with%20Security%20Mechanism%20Agreement%0A%20%28with%20TLS%2C%20IPSec%29&In-Reply-To=%3C4A4C7B8E.70105%40globaledgesoft.com%3E"
+       TITLE="[OpenIMSCore-Users] Issue with Security Mechanism Agreement (with TLS, IPSec)">prashanth.me at globaledgesoft.com
+       </A><BR>
+    <I>Thu Jul  2 11:19:10 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005576.html">[OpenIMSCore-Users] Issue with Security Mechanism Agreement (with TLS, IPSec)
+</A></li>
+        <LI>Next message: <A HREF="005578.html">[OpenIMSCore-Users] Issue with Security Mechanism Agreement (with TLS, IPSec)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5577">[ date ]</a>
+              <a href="thread.html#5577">[ thread ]</a>
+              <a href="subject.html#5577">[ subject ]</a>
+              <a href="author.html#5577">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi MarkE,
+
+Thanks for reply,
+
+As per your suggestion, when we analyzed 
+code(/opt/OpenIMSCore/ser_ims/modules/pcscf/security.c).
+Adding to your comments,Following is our observation:
+if security-client header has multiple mechanisms separated by the comma 
+between them,
+ex:
+ Security-Client:tls,ipsec-3gpp;prot=esp;alg=hmac-sha-1-96;ealg=des-ede3-cbc;spi-c=5906;spi-s=1826;port-c=4060;port-s=4060
+
+the function 'cscf_get_next_header()'will fetch the complete security 
+header  and this  is passed to
+a function  'cscf_get_security_type()' which will search for occurrence 
+of  &quot;;&quot;.
+This will results in security type &quot;tls,ipsec-3gpp&quot;  (from above example) .
+and this is compared with  s_tls.s (which is  &quot;tls&quot;)  and  
+cscf_get_security_type()  returns SEC_NONE.
+
+it look's that, before calling cscf_get_security_type() in function 
+cscf_get_next_header(),
+logic to separate the mechanisms  is missing and resulting in Unknown 
+security mechanism.
+
+as per your suggestion, when we analyzed  the log.
+Log message &quot;cscf_get_pref_security_header: No known Security header 
+found.&quot; was printed.
+
+Regards
+Prashanth M E
+
+Evans, Mark [IT] wrote:
+&gt;<i>
+</I>&gt;<i> Just had a very quick look at 
+</I>&gt;<i>  /opt/OpenIMSCore/ser_ims/modules/security.c.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> This is not a thorough analysis but it look's to me like:
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> 1) That your original header security-client:tls,ipsec; will not work 
+</I>&gt;<i> it. It will not match what the code is looking for, which is  EITHER 
+</I>&gt;<i>  ipsec-3gpp or tls. Not both.
+</I>&gt;<i>
+</I>&gt;<i> 2) The code takes the first security-client header in the list and 
+</I>&gt;<i> uses it, therefore no preference list is returned.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> This kind of confirms the behaviour you see.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Maybe Dragos could confirm this.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> /ME
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> *From:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> 
+</I>&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] *On Behalf Of 
+</I>&gt;<i> *Evans, Mark [IT]
+</I>&gt;<i> *Sent:* Wednesday, July 01, 2009 9:21 AM
+</I>&gt;<i> *To:* prashanth.me
+</I>&gt;<i> *Cc:* IMS
+</I>&gt;<i> *Subject:* Re: [OpenIMSCore-Users] Issue with Security Mechanism 
+</I>&gt;<i> Agreement (with TLS, IPSec)
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Thanks for your really long reprint of RFC3329.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> 1)       My comment about preference was that the system (i.e. Server 
+</I>&gt;<i> has to state preference) which would be obvious if you had read the RFC
+</I>&gt;<i>
+</I>&gt;<i> 2)       Like I said, there  may be others on this list who have 
+</I>&gt;<i> attempted to try this (define more than one option in the sec-client 
+</I>&gt;<i> list and then have the openimscore send a preferred list)
+</I>&gt;<i>
+</I>&gt;<i> 3)       Try looking at /opt/OpenIMSCore/ser_ims/modules/security.c 
+</I>&gt;<i> this will probably help you work out what the code is doing
+</I>&gt;<i>
+</I>&gt;<i> 4)       Look at the P-CSCF log output.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Rgds
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> MarkE
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> *From:* prashanth.me [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">prashanth.me at globaledgesoft.com</A>]
+</I>&gt;<i> *Sent:* Wednesday, July 01, 2009 7:13 AM
+</I>&gt;<i> *To:* Evans, Mark [IT]
+</I>&gt;<i> *Cc:* IMS
+</I>&gt;<i> *Subject:* Re: [OpenIMSCore-Users] Issue with Security Mechanism 
+</I>&gt;<i> Agreement (with TLS, IPSec)
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Hi MarkE,
+</I>&gt;<i> Thanks for your Reply.
+</I>&gt;<i>
+</I>&gt;<i> Please see the inline comments.
+</I>&gt;<i>  
+</I>&gt;<i> Evans, Mark [IT] wrote:
+</I>&gt;<i>
+</I>&gt;<i> Hi
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I've never tried this with openimscore  but I'm certain that your 
+</I>&gt;<i> error is in the Security Client Header. If your client supports more 
+</I>&gt;<i> than one security method you need a line for each and you have to 
+</I>&gt;<i> specify preference
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> E.g
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Security-Client:ipsec-3gpp;prot=esp;alg=hmac-sha-1-96;ealg=des-ede3-cbc;spi-c=5906;spi-s=1826;port-c=4060;port-s=4060
+</I>&gt;<i>
+</I>&gt;<i> Security-Client: tls
+</I>&gt;<i>
+</I>&gt;<i> Secuity-Client:digest
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> In RFC 3329 syntax of security client header is as bellow.
+</I>&gt;<i> security-client = &quot;Security-Client&quot; HCOLON
+</I>&gt;<i>                   sec-mechanism *(COMMA sec-mechanism)
+</I>&gt;<i> This means that supported security-mechanism can be  added
+</I>&gt;<i>  in a single security-client  header with ',(COMMA)' separated between 
+</I>&gt;<i> them.
+</I>&gt;<i>
+</I>&gt;<i> And  from Section 2.3.1 'Client Initiated'  of RFC 3329
+</I>&gt;<i>
+</I>&gt;<i> A client wishing to use the security agreement of this specification
+</I>&gt;<i> MUST add a Security-Client header field to a request addressed to its
+</I>&gt;<i> first-hop proxy (i.e., the destination of the request is the first-
+</I>&gt;<i> hop proxy). This header field contains a list of all the security
+</I>&gt;<i> mechanisms that the client supports. The client SHOULD NOT add
+</I>&gt;<i> preference parameters to this list. The client MUST add both a
+</I>&gt;<i> Require and Proxy-Require header field with the value &quot;sec-agree&quot; to
+</I>&gt;<i> its request.
+</I>&gt;<i> So , we can not specify the preference.
+</I>&gt;<i>
+</I>&gt;<i> As per your suggestion, 
+</I>&gt;<i> when we tried by listing the supported security mechanisms in 
+</I>&gt;<i> different security-client header,
+</I>&gt;<i> OpenIMS server selected the mechanism specified in first 
+</I>&gt;<i> security-client header(as below) even though
+</I>&gt;<i> server is configured to support both TLS and IPsec.(Form  SIP Message 
+</I>&gt;<i> only security-client header is specified for simplicity)
+</I>&gt;<i>
+</I>&gt;<i> 1. Security-client header in REGISTER Message to OpenIMS server
+</I>&gt;<i>     
+</I>&gt;<i> Security-Client:ipsec-3gpp;prot=esp;alg=hmac-sha-1-96;ealg=des-ede3-cbc;spi-c=5906;spi-s=1826;port-c=4060;port-s=4060
+</I>&gt;<i>     Security-Client: tls
+</I>&gt;<i>
+</I>&gt;<i>     Security-Server Header in 401 response from Server
+</I>&gt;<i>     Security-Server: ipsec-3gpp; ealg=des-ede3-cbc; alg=hmac-sha-1-96; 
+</I>&gt;<i> spi-c=5018; spi-s=5019; port-c=4060; port-s=4060; prot=esp; 
+</I>&gt;<i> mod=trans;q=0.1
+</I>&gt;<i> (please note &quot;q&quot; value is specified by the server in  case 1)
+</I>&gt;<i>
+</I>&gt;<i> 2. Security-client header in REGISTER Message to OpenIMS server
+</I>&gt;<i>     Security-Client: tls
+</I>&gt;<i>     
+</I>&gt;<i> Security-Client:ipsec-3gpp;prot=esp;alg=hmac-sha-1-96;ealg=des-ede3-cbc;spi-c=5906;spi-s=1826;port-c=4060;port-s=4060
+</I>&gt;<i>
+</I>&gt;<i>     Security-Server Header in 401 response form Server
+</I>&gt;<i>     Security-Server: tls
+</I>&gt;<i>
+</I>&gt;<i>     (please note &quot;q&quot; value is not specified in  case 2)
+</I>&gt;<i>
+</I>&gt;<i> But from Section 2.3.1 Client Initiated of RFC 3329
+</I>&gt;<i>
+</I>&gt;<i> A server receiving an unprotected request that contains a Require or
+</I>&gt;<i> Proxy-Require header field with the value &quot;sec-agree&quot; MUST respond to
+</I>&gt;<i> the client with a 494 (Security Agreement Required) response. The
+</I>&gt;<i> server MUST add a Security-Server header field to this response
+</I>&gt;<i> listing the security mechanisms that the server supports. The server
+</I>&gt;<i> MUST add its list to the response even if there are no common
+</I>&gt;<i> security mechanisms in the client's and server's lists. The server's
+</I>&gt;<i> list MUST NOT depend on the contents of the client's list.
+</I>&gt;<i>
+</I>&gt;<i> The server MUST compare the list received in the Security-Client
+</I>&gt;<i> header field with the list to be sent in the Security-Server header
+</I>&gt;<i> field. When the client receives this response, it will choose the
+</I>&gt;<i> common security mechanism with the highest &quot;q&quot; value. Therefore, the
+</I>&gt;<i> server MUST add the necessary information so that the client can
+</I>&gt;<i> initiate that mechanism (e.g., a Proxy-Authenticate header field for
+</I>&gt;<i> HTTP Digest).
+</I>&gt;<i> When the client receives a response with a Security-Server header
+</I>&gt;<i> field, it MUST choose the security mechanism in the server's list
+</I>&gt;<i> with the highest &quot;q&quot; value among all the mechanisms that are known to
+</I>&gt;<i> the client. Then, it MUST initiate that particular security
+</I>&gt;<i> mechanism as described in Section 3.5. This initiation may be
+</I>&gt;<i> carried out without involving any SIP message exchange (e.g.,
+</I>&gt;<i> establishing a TLS connection).
+</I>&gt;<i>
+</I>&gt;<i> Is their any problem in server configuration(refer attachments) while 
+</I>&gt;<i> enabling both TLS and IPsec support?....
+</I>&gt;<i> How should we configure the server so that it can specify the 
+</I>&gt;<i> preference for supported mechanism?.....
+</I>&gt;<i>
+</I>&gt;<i> Please help us  to resolve this issue.
+</I>&gt;<i>
+</I>&gt;<i> However I'm not sure that the openimscore can actually perform 
+</I>&gt;<i> security negotiation as defined in RFC3329 so I'm not sure exactly 
+</I>&gt;<i> what would happen if you did  this. (Any one else have any ideas).
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Rgds
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> MarkE
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> *From:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> 
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>&gt; 
+</I>&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] *On Behalf Of 
+</I>&gt;<i> *prashanth.me
+</I>&gt;<i> *Sent:* Tuesday, June 30, 2009 9:00 AM
+</I>&gt;<i> *To:* IMS
+</I>&gt;<i> *Subject:* [OpenIMSCore-Users] Issue with Security Mechanism Agreement 
+</I>&gt;<i> (with TLS, IPSec)
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> When we try to negotiate the security mechanisms (tls, ipsec-3gpp) 
+</I>&gt;<i> with openIMSCore ,
+</I>&gt;<i> IMS server is not adding the security-server header in 401 response.
+</I>&gt;<i>
+</I>&gt;<i> Is their any mistake in the initial Register Request or
+</I>&gt;<i> in server configuration(please refer attachments for P-CSCF, S-CSCF 
+</I>&gt;<i> configurations).
+</I>&gt;<i> please help us to resolve this issue.
+</I>&gt;<i>
+</I>&gt;<i> Initial Register Message to openIMSCore
+</I>&gt;<i>
+</I>&gt;<i> REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; 
+</I>&gt;<i> &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=1166545482412920224
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> Call-ID: 1566774052813148796
+</I>&gt;<i> CSeq: 1 REGISTER
+</I>&gt;<i> Via: SIP/2.0/UDP 172.16.8.91:7660;rport;branch=z9hG4bK1163584702409959450
+</I>&gt;<i> Max-Forwards: 70
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 172.16.8.91</A>:7660&gt; &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 172.16.8.91</A>:7660&gt;
+</I>&gt;<i> Expires: 300
+</I>&gt;<i> P-Access-Network-Info: 3GPP-UTRAN-TDD; 3GPP-UTRAN-TDD=234151D0FCE11
+</I>&gt;<i> Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot; 
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;, realm=&quot;&quot;, nonce=&quot;&quot;, 
+</I>&gt;<i> uri=&quot;sip:open-ims.test&quot;, response=&quot;&quot;
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i> Supported: path,timer
+</I>&gt;<i> Require: sec-agree
+</I>&gt;<i> Proxy-Require: sec-agree
+</I>&gt;<i> Security-Client: 
+</I>&gt;<i> tls,ipsec-3gpp;prot=esp;alg=hmac-sha-1-96;ealg=des-ede3-cbc;spi-c=5906;spi-s=1826;port-c=4060;port-s=4060
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Received Data  from openIMSCore
+</I>&gt;<i> SIP/2.0 401 Unauthorized - Challenging the UE
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; 
+</I>&gt;<i> &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=1166545482412920224
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; 
+</I>&gt;<i> &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=f9277a0f4b586d0f98b5b62af8fbebe2-162f
+</I>&gt;<i> Call-ID: 1566774052813148796
+</I>&gt;<i> CSeq: 1 REGISTER
+</I>&gt;<i> Via: SIP/2.0/UDP 
+</I>&gt;<i> 172.16.8.91:7660;rport=7660;branch=z9hG4bK1163584702409959450
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt; 
+</I>&gt;<i> &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt; 
+</I>&gt;<i> &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, 
+</I>&gt;<i> PUBLISH, MESSAGE, INFO
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i> Warning: 392 172.16.8.95:6060 &quot;Noisy feedback tells:  pid=32215 
+</I>&gt;<i> req_src_ip=172.16.8.95 req_src_port=5060 
+</I>&gt;<i> in_uri=sip:scscf.open-ims.test:6060 
+</I>&gt;<i> out_uri=sip:scscf.open-ims.test:6060 via_cnt==3&quot;
+</I>&gt;<i> WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;, 
+</I>&gt;<i> nonce=&quot;3386ded8ab384f361a2a70110430f057&quot;, algorithm=MD5, 
+</I>&gt;<i> qop=&quot;auth,auth-int&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thanks &amp; Regards
+</I>&gt;<i> Prashanth M E
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> This e-mail may contain Sprint Nextel Company proprietary information 
+</I>&gt;<i> intended for the sole use of the recipient(s). Any use by others is 
+</I>&gt;<i> prohibited. If you are not the intended recipient, please contact the 
+</I>&gt;<i> sender and delete all copies of the message.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> This e-mail may contain Sprint Nextel Company proprietary information 
+</I>&gt;<i> intended for the sole use of the recipient(s). Any use by others is 
+</I>&gt;<i> prohibited. If you are not the intended recipient, please contact the 
+</I>&gt;<i> sender and delete all copies of the message.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> This e-mail may contain Sprint Nextel Company proprietary information 
+</I>&gt;<i> intended for the sole use of the recipient(s). Any use by others is 
+</I>&gt;<i> prohibited. If you are not the intended recipient, please contact the 
+</I>&gt;<i> sender and delete all copies of the message.
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090702/22ae4989/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090702/22ae4989/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005576.html">[OpenIMSCore-Users] Issue with Security Mechanism Agreement (with TLS, IPSec)
+</A></li>
+	<LI>Next message: <A HREF="005578.html">[OpenIMSCore-Users] Issue with Security Mechanism Agreement (with TLS, IPSec)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5577">[ date ]</a>
+              <a href="thread.html#5577">[ thread ]</a>
+              <a href="subject.html#5577">[ subject ]</a>
+              <a href="author.html#5577">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

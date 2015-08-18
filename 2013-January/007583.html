@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] 403 for SUBSCRIBE methos
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2013-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20403%20for%20SUBSCRIBE%20methos&In-Reply-To=%3CCAGntp__DkeHcrenx3h%2BRc3UBPBSqCzN2-D30iFGZgvzT73WCDg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="007584.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] 403 for SUBSCRIBE methos</H1>
+    <B>isshed</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20403%20for%20SUBSCRIBE%20methos&In-Reply-To=%3CCAGntp__DkeHcrenx3h%2BRc3UBPBSqCzN2-D30iFGZgvzT73WCDg%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] 403 for SUBSCRIBE methos">isshed.sip at gmail.com
+       </A><BR>
+    <I>Thu Jan 10 14:04:33 CET 2013</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="007584.html">[OpenIMSCore-Users] Asterisk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7583">[ date ]</a>
+              <a href="thread.html#7583">[ thread ]</a>
+              <a href="subject.html#7583">[ subject ]</a>
+              <a href="author.html#7583">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All,
+
+
+I want to test dnd sevice using openims and asterisk. I have registered my
+sip client with openims server. I have configured asterisk as an
+application server on openims server. When I register my client with
+openims server it sends subscription for reg event and ua-profile event for
+registration and dnd respectively. scscf sends 200 ok fir reg eevet
+subscribe and sends notification but for for ua-profile event scscf
+forwords the subscribe to asterisk. Asterisk sends 401 and my client sends
+resubscribe for the ssame with auth data. to which asterisk responds 403
+forbidden.
+
+below is the sip.conf entry.
+-------------------------------------------------------------------------------
+[general]
+port=5060
+bindport=5060
+bindaddr=0.0.0.0
+realm=open-ims.test
+disallow=all
+allowsubscribe=yes
+subscribecontext=default
+subscribewmi=yes
+notifyringing=yes
+notifyhold=yes
+allow=ulaw
+context=users
+svrlookup=yes
+canreinvite=no
+dynamic_exclude_static=yes
+[7200000001]
+username=7200000001
+type=peer
+host=dynamic
+secret=7200000001
+context=users
+mailbox=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">7200000001 at default</A>
+callerid=7200000001
+-------------------------------------------------------------------------------
+extension.conf
+=============================================
+exten =&gt; 7200000001,1,Macro(stdexten)
+
+
+[app-dnd-activate]
+; create list
+exten =&gt; s,1,Set(i=1)
+exten =&gt; s,n,while($[${i}&lt;10])
+exten =&gt; s,n,Set(DB(DND_LIST${i}/${CALLERID(NUM)})=999)
+exten =&gt; s,n,Set(i=$[${i}+1])
+exten =&gt; s,n,EndWhile()
+exten =&gt; s,n,Set(DB(DND/${CALLERID(NUM)})=1)
+exten =&gt; s,n,Playback(do-not-disturb&amp;activated)
+exten =&gt; s,n,Hangup
+[app-dnd-deactivate]
+exten =&gt; s,1,dbDel(DND/${CALLERID(NUM)})
+exten =&gt; s,n,Playback(do-not-disturb&amp;de-activated)
+exten =&gt; s,n,Hangup
+
+[app-dnd-list-add]
+exten =&gt; s,1,Playback(extension-toadd)
+exten =&gt; s,n,Set(TIMEOUT(digit)=5)
+exten =&gt; s,n,Set(TIMEOUT(response)=60)
+exten =&gt; s,n,Read(blacknr,then-press-pound,,,,)
+exten =&gt; s,n,SayDigits(${blacknr})
+exten =&gt; s,n,Playback(if-correct-press&amp;digits/1)
+exten =&gt; s,n,Noop(Waiting for input)
+exten =&gt; s,n(end),WaitExten(60,)
+exten =&gt; s,n,Playback(sorry-youre-having-problems&amp;goodbye)
+;addlist
+exten =&gt; 1,1,Set(i=1)
+exten =&gt; 1,n,while($[${i}&lt;10])
+exten =&gt; 1,n,Set(extn=${DB(DND_LIST${i}/${CALLERID(NUM)})})
+exten =&gt; 1,n,GotoIf($[&quot;${extn}&quot;=&quot;999&quot;]?add:next)
+exten =&gt; 1,n(add),Set(DB(DND_LIST${i}/${CALLERID(NUM)})=${blacknr})
+exten =&gt; 1,n,Playback(num-was-successfully&amp;added)
+exten =&gt; 1,n,Wait(1)
+exten =&gt; 1,n,Return()
+exten =&gt; 1,n(next),Set(i=$[${i}+1])
+exten =&gt; 1,n,EndWhile()
+exten =&gt; 1,n,Return()
+[app-dnd-list-remove]
+exten =&gt; s,1,Playback(extension-toremove)
+exten =&gt; s,n,Set(TIMEOUT(digit)=5)
+exten =&gt; s,n,Set(TIMEOUT(response)=60)
+exten =&gt; s,n,Read(blacknr,then-press-pound,,,,)
+exten =&gt; s,n,SayDigits(${blacknr})
+exten =&gt; s,n,Playback(if-correct-press&amp;digits/1)
+exten =&gt; s,n,Noop(Waiting for input)
+exten =&gt; s,n(end),WaitExten(60,)
+exten =&gt; s,n,Playback(sorry-youre-having-problems&amp;goodbye)
+;removelist
+exten =&gt; 1,1,Set(i=1)
+exten =&gt; 1,n,while($[${i}&lt;10])
+exten =&gt; 1,n,Set(extn=${DB(DND_LIST${i}/${CALLERID(NUM)})})
+exten =&gt; 1,n,GotoIf($[&quot;${extn}&quot;=&quot;${blacknr}&quot;]?remove:next)
+exten =&gt; 1,n(remove),Set(DB(DND_LIST${i}/${CALLERID(NUM)})=999)
+exten =&gt; 1,n,Playback(num-was-successfully&amp;removed)
+exten =&gt; 1,n,Wait(1)
+exten =&gt; 1,n,Return()
+exten =&gt; 1,n(next),Set(i=$[${i}+1])
+exten =&gt; 1,n,EndWhile()
+exten =&gt; 1,n,Return()
+
+[app-dnd-list-review]
+;exten =&gt; s,1,Playback(entries-present-in-list)
+exten =&gt; s,1,Set(i=1)
+exten =&gt; s,n,while($[${i}&lt;10])
+exten =&gt; s,n,Set(extn=${DB(DND_LIST${i}/${CALLERID(NUM)})})
+exten =&gt; s,n,GotoIf($[&quot;${extn}&quot;=&quot;999&quot;]?next:process)
+exten =&gt; s,n(process),Playback(extension)
+exten =&gt; s,n,SayNumber(${extn})
+exten =&gt; s,n(next),Set(i=$[${i}+1])
+exten =&gt; s,n,EndWhile()
+
+
+[app-dnd-total-list-entries]
+;total-list-member
+exten =&gt; s,1,Set(i=1)
+exten =&gt; s,n,Set(count=0)
+exten =&gt; s,n,while($[${i}&lt;10])
+exten =&gt; s,n,Set(extn=${DB(DND_LIST${i}/${CALLERID(NUM))})
+exten =&gt; s,n,GotoIf($[&quot;${extn}&quot;=&quot;999&quot;]?next:count)
+exten =&gt; s,n(count),Set(count=$[${count}+1])
+exten =&gt; s,n(next),Set(i=$[${i}+1])
+exten =&gt; s,n,EndWhile()
+exten =&gt; s,n,SayNumber(${count})
+exten =&gt; s,n,Return()
+=============================================
+could anyone please help me to subscribe the dnd with asterisk.
+
+Thanks in advance!!
+
+tTanks.
+Isshed
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130110/76b32aec/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130110/76b32aec/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="007584.html">[OpenIMSCore-Users] Asterisk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7583">[ date ]</a>
+              <a href="thread.html#7583">[ thread ]</a>
+              <a href="subject.html#7583">[ subject ]</a>
+              <a href="author.html#7583">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

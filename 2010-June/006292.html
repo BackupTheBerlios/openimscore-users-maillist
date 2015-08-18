@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20no%20answer%20from%20DNS%20server%20for%20query%0A%20SRV_sip._udp&In-Reply-To=%3C20100629160534.33610%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006291.html">
+   <LINK REL="Next"  HREF="006285.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp</H1>
+    <B>Werner.Jager at gmx.net</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20no%20answer%20from%20DNS%20server%20for%20query%0A%20SRV_sip._udp&In-Reply-To=%3C20100629160534.33610%40gmx.net%3E"
+       TITLE="[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp">Werner.Jager at gmx.net
+       </A><BR>
+    <I>Tue Jun 29 18:05:34 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006291.html">[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+</A></li>
+        <LI>Next message: <A HREF="006285.html">[OpenIMSCore-Users] 200 OK after an INVITE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6292">[ date ]</a>
+              <a href="thread.html#6292">[ thread ]</a>
+              <a href="subject.html#6292">[ subject ]</a>
+              <a href="author.html#6292">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Franz,
+
+now it works!
+
+I have to use &quot;INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+my_phone_number at my_realm</A> SIP/2.0&quot;.
+
+Thank you very much!
+
+Regards,
+Werner
+
+
+-------- Original-Nachricht --------
+&gt;<i> Datum: Tue, 29 Jun 2010 10:40:14 +0200
+</I>&gt;<i> Von: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Werner.Jager at gmx.net</A>
+</I>&gt;<i> An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Betreff: Re: [OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+</I>
+&gt;<i> Hi Fanz,
+</I>&gt;<i> 
+</I>&gt;<i> in trace file I found IMS to IMS calls with Subscriber Bob and Alice.
+</I>&gt;<i> This call scenario is on my OpenIMSCore also ok.
+</I>&gt;<i> 
+</I>&gt;<i> I would like to perform the following test:
+</I>&gt;<i> First I Register the IMS Subscriber Bob.
+</I>&gt;<i> This Register Procedure is ok.
+</I>&gt;<i> Then I try a call from Bob to a PSTN tel number. 
+</I>&gt;<i> I use SIPp 2.0 for tests. 
+</I>&gt;<i> 
+</I>&gt;<i> The Realm of Bob is &quot;open-ims.test&quot;.
+</I>&gt;<i>  
+</I>&gt;<i> XML config of the Register Request:
+</I>&gt;<i> 
+</I>&gt;<i> &lt;send retrans=&quot;500&quot;&gt;
+</I>&gt;<i> &lt;![CDATA[
+</I>&gt;<i> REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i> Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+</I>&gt;<i> Max-Forwards: 20
+</I>&gt;<i> From: &quot;bob&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=[call_number]
+</I>&gt;<i> To: &quot;bob&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> P-Access-Network-Info: 3GPP-UTRAN-TDD;utran-cell-id-3gpp=C359A3913B20E
+</I>&gt;<i> Call-ID: reg///[call_id]
+</I>&gt;<i> CSeq: 1 REGISTER
+</I>&gt;<i> Contact: &lt;sip:bob@[local_ip]:[local_port]&gt;
+</I>&gt;<i> Expires: 300
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i> User-Agent: Sipp v1.1-TLS, version 20061124
+</I>&gt;<i> Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;, realm=&quot;open-ims.test&quot;
+</I>&gt;<i> Supported: path
+</I>&gt;<i> ]]&gt;
+</I>&gt;<i> &lt;/send&gt;
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> XML config of the Invite Request:
+</I>&gt;<i> 
+</I>&gt;<i> &lt;send retrans=&quot;500&quot;&gt;
+</I>&gt;<i> &lt;![CDATA[
+</I>&gt;<i> INVITE tel:+43-664-2043311 SIP/2.0
+</I>&gt;<i> Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+</I>&gt;<i> Max-Forwards: 20
+</I>&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> P-Preferred-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> Privacy: none
+</I>&gt;<i> P-Access-Network-Info: 3GPP-UTRAN-TDD;utran-cell-id-3gpp=C359A3913B20E
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;;tag=[call_number]
+</I>&gt;<i> To: &lt;tel:+43-664-2043311&gt;
+</I>&gt;<i> Call-ID: [call_id]
+</I>&gt;<i> CSeq: 10 INVITE
+</I>&gt;<i> Supported: 100rel
+</I>&gt;<i> Contact: &lt;sip:bob@[local_ip]:[local_port]&gt;
+</I>&gt;<i> User-Agent: Sipp v1.1-TLS, version 20061124
+</I>&gt;<i> Allow: ACK, BYE, CANCEL, INVITE, REFER, OPTIONS, INFO, REGISTER, NOTIFY,
+</I>&gt;<i> UPDATE, SUBSCRIBE, PRACK
+</I>&gt;<i> Content-Type: application/sdp
+</I>&gt;<i> Content-Length: [len]
+</I>&gt;<i> 
+</I>&gt;<i> v=0
+</I>&gt;<i> o=user1 53655765 2353687637 IN IP4 [local_ip]
+</I>&gt;<i> s=-
+</I>&gt;<i> c=IN IP4 [local_ip]
+</I>&gt;<i> t=0 0
+</I>&gt;<i> m=audio 30000 RTP/AVP 0 8
+</I>&gt;<i> a=rtpmap:0 PCMU/8000
+</I>&gt;<i> a=sendrecv
+</I>&gt;<i> ]]&gt;
+</I>&gt;<i> &lt;/send&gt;
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Regards,
+</I>&gt;<i> Werner 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> -------- Original-Nachricht --------
+</I>&gt;<i> &gt; Datum: Mon, 28 Jun 2010 21:41:28 +0200
+</I>&gt;<i> &gt; Von: &quot;Franz Edler&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+</I>&gt;<i> &gt; An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Werner.Jager at gmx.net</A>, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>,
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; Betreff: AW: [OpenIMSCore-Users] no answer from DNS server for query
+</I>&gt;<i> SRV_sip._udp
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Hi Werner,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &gt; 1)INVITE tel:+43-664-2043311 SIP/2.0 is sent to P-CSCF.
+</I>&gt;<i> &gt; &gt; 2)P-CSCF needs to find the I-CSCF via service request &quot;_sip._udp&quot;.
+</I>&gt;<i> &gt; &gt; 3)P-CSCF calls resolver routine &quot;res_search&quot; for SRV &quot;_sip._udp&quot;.
+</I>&gt;<i> &gt; &gt; 4)resolver routine with resolv.conf generates query &quot;_sip._udp.open-
+</I>&gt;<i> &gt; &gt; ims.test&quot;.
+</I>&gt;<i> &gt; &gt; 5)DNS query &quot;type SRV, _sip._udp.open-ims.test&quot; is sent to DNS Server.
+</I>&gt;<i> &gt; &gt; 6)DNS Server response with &quot;type SRV, port 5060, target icscf.open-
+</I>&gt;<i> &gt; &gt; ims.test&quot;.
+</I>&gt;<i> &gt; &gt; 7)P-CSCF sent the INVITE to I-CSCF.
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; Could someone tell me if this expected message flow is correct.
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; I think the problem is that the DNS query &quot;_sip._udp&quot; is sent to the
+</I>&gt;<i> DNS
+</I>&gt;<i> &gt; &gt; server instead of the query &quot;_sip._udp.open-ims.test&quot;.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Yes, indeed, that's wrong.
+</I>&gt;<i> &gt; It would be interesting, what is in the realm-parameter of the REGISTER
+</I>&gt;<i> &gt; request.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I attach a tracefile from one of my tests. There you can compare the
+</I>&gt;<i> flow
+</I>&gt;<i> &gt; of
+</I>&gt;<i> &gt; messages.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; BR
+</I>&gt;<i> &gt; franz
+</I>&gt;<i> 
+</I>&gt;<i> -- 
+</I>&gt;<i> GRATIS f&#252;r alle GMX-Mitglieder: Die maxdome Movie-FLAT!
+</I>&gt;<i> Jetzt freischalten unter <A HREF="http://portal.gmx.net/de/go/maxdome01">http://portal.gmx.net/de/go/maxdome01</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+-- 
+GRATIS f&#252;r alle GMX-Mitglieder: Die maxdome Movie-FLAT!
+Jetzt freischalten unter <A HREF="http://portal.gmx.net/de/go/maxdome01">http://portal.gmx.net/de/go/maxdome01</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006291.html">[OpenIMSCore-Users] no answer from DNS server for query SRV_sip._udp
+</A></li>
+	<LI>Next message: <A HREF="006285.html">[OpenIMSCore-Users] 200 OK after an INVITE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6292">[ date ]</a>
+              <a href="thread.html#6292">[ thread ]</a>
+              <a href="subject.html#6292">[ subject ]</a>
+              <a href="author.html#6292">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

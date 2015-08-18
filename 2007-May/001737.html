@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to test OpenIMSCore with a client	onanother machine
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20test%20OpenIMSCore%20with%20a%20client%0A%09onanother%20machine&In-Reply-To=%3CBAY112-F216190F41FAB586C02E168DE3B0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001734.html">
+   <LINK REL="Next"  HREF="001726.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to test OpenIMSCore with a client	onanother machine</H1>
+    <B>Nelson Dinis</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20test%20OpenIMSCore%20with%20a%20client%0A%09onanother%20machine&In-Reply-To=%3CBAY112-F216190F41FAB586C02E168DE3B0%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] How to test OpenIMSCore with a client	onanother machine">dinis_7 at hotmail.com
+       </A><BR>
+    <I>Wed May  9 17:31:10 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001734.html">[OpenIMSCore-Users] How to test OpenIMSCore with a client	onanother machine
+</A></li>
+        <LI>Next message: <A HREF="001726.html">[OpenIMSCore-Users] ipsec and charging question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1737">[ date ]</a>
+              <a href="thread.html#1737">[ thread ]</a>
+              <a href="subject.html#1737">[ subject ]</a>
+              <a href="author.html#1737">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The CSCFS send queries to the DNS that i have in computer A (OpenIms). I 
+create a DNS only for OpenIMS, and make that primary in the computer A. Only 
+  A go to that DNS server.....
+
+to external DNS server i can not give you any help :(
+
+I'm using the sipXezPhone of the sipfoundry.... but whit many changes, 
+because of the service thar i want to implement.
+
+Regards
+Nelson
+
+
+
+&gt;<i>Thanks Nelson,
+</I>&gt;<i>so do the various CSCFS processes send DNS queries to DNS server on the 
+</I>&gt;<i>machine where the client is running?
+</I>&gt;<i>I've also tried something similar with an external unique DNS server which 
+</I>&gt;<i>resolves hss.open-ims.test to 127.0.0.1.
+</I>&gt;<i>Which client do you use?
+</I>&gt;<i>
+</I>&gt;<i>Regards,
+</I>&gt;<i>Claudio
+</I>
+
+
+&gt;<i>I've impemented that.
+</I>&gt;<i>- the client need to send to xxx.xxx.xxx.xxx:4060 all the sip messages for
+</I>&gt;<i>that go to P-CSCF, verify that...
+</I>&gt;<i>- I configure my client whit the IP, don't have any DNS server in B
+</I>&gt;<i>- I configure the P,I,S-CSCF to listen in the IP xxx.xxx.xxx.xxx and not in
+</I>&gt;<i>127.0.0.0
+</I>&gt;<i>- I have the folowing DNS configuration in A:
+</I>&gt;<i>#############################################
+</I>&gt;<i>$ORIGIN nok052.noksys.lan.
+</I>&gt;<i>$TTL 1W
+</I>&gt;<i>@                       IN SOA       localhost. root.localhost. (
+</I>&gt;<i>                                         2006101001      ; serial
+</I>&gt;<i>                                         3H              ; refresh
+</I>&gt;<i>                                         15M             ; retry
+</I>&gt;<i>                                         1W              ; expiry
+</I>&gt;<i>                                         1D )            ; minimum
+</I>&gt;<i>
+</I>&gt;<i>                         IN NS        ns
+</I>&gt;<i>ns                      IN A         127.0.0.1
+</I>&gt;<i>
+</I>&gt;<i>pcscf                   IN A         172.16.1.97
+</I>&gt;<i>
+</I>&gt;<i>nok052.noksys.lan.       	IN A         172.16.1.97
+</I>&gt;<i>icscf                   IN A         172.16.1.97
+</I>&gt;<i>_sip                    SRV 0 0 5060 icscf
+</I>&gt;<i>_sip._udp               SRV 0 0 5060 icscf
+</I>&gt;<i>_sip._tcp               SRV 0 0 5060 icscf
+</I>&gt;<i>
+</I>&gt;<i>nok052.noksys.lan.		IN NAPTR 10 50 &quot;s&quot;
+</I>&gt;<i>&quot;SIP+D2U&quot;	&quot;&quot;	_sip._udp.nok052.noksys.lan.
+</I>&gt;<i>nok052.noksys.lan.		IN NAPTR 20 50 &quot;s&quot;
+</I>&gt;<i>&quot;SIP+D2T&quot;	&quot;&quot;	_sip._tcp.nok052.noksys.lan.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>scscf                   IN A         172.16.1.97
+</I>&gt;<i>
+</I>&gt;<i>hss                     IN A         127.0.0.1
+</I>&gt;<i>
+</I>&gt;<i>ue                      IN A         172.16.1.97
+</I>&gt;<i>
+</I>&gt;<i>presence				IN A			172.16.1.58
+</I>&gt;<i>#############################################
+</I>&gt;<i>
+</I>&gt;<i>I hope that help you...
+</I>&gt;<i>Regards
+</I>&gt;<i>Nelson
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &gt;From: &quot;Cavalera Claudio&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">claudio.cavalera at nsn.com</A>&gt;
+</I>&gt;<i> &gt;To: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;<i> &gt;Subject: [OpenIMSCore-Users] How to test OpenIMSCore with a client
+</I>&gt;<i> &gt;onanother machine
+</I>&gt;<i> &gt;Date: Wed, 9 May 2007 12:11:14 +0200
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Hello,
+</I>&gt;<i> &gt;I'm trying to set up the following testbed.
+</I>&gt;<i> &gt;Openims core platform installed on machine A which has the IP address
+</I>&gt;<i> &gt;172.31.77.140.
+</I>&gt;<i> &gt;One client reaching network interface of A from another machine B.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Now what I've done is the following:
+</I>&gt;<i> &gt;-adjusted pcscf.cfg, scscf.cfg, icscf.cfg with the line
+</I>&gt;<i> &gt;listen=127.0.0.1 172.31.77.140
+</I>&gt;<i> &gt;to make them listen not only on loopback interface but also on the 
+</I>&gt;<i>network
+</I>&gt;<i> &gt;interface (172.31.77.140)
+</I>&gt;<i> &gt;(I've verified and now ports 4060,5060,6060 are opened both tcp and udp 
+</I>&gt;<i>on
+</I>&gt;<i> &gt;both ip addresses)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;-adjusted the dns server used by machine B with an entry
+</I>&gt;<i> &gt;pcscf.open-ims.test which resolvs to 172.31.77.140,
+</I>&gt;<i> &gt;also there is an alias open-ims.test to the same 172.31.77.140
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;The machine A with openimscore platform uses a locally installed DNS 
+</I>&gt;<i>server
+</I>&gt;<i> &gt;which resolves every openimscore component to 127.0.0.1 (it is the
+</I>&gt;<i> &gt;suggested DNS configuration coming with openimscore documentation).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Is this configuration correct to trying register and messaging from 
+</I>&gt;<i>machine
+</I>&gt;<i> &gt;B towards machine A?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Thanks
+</I>&gt;<i> &gt;Claudio
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &gt;_______________________________________________
+</I>&gt;<i> &gt;OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>_________________________________________________________________
+</I>&gt;<i>MSN Busca: f&#225;cil, r&#225;pido, direto ao ponto.  <A HREF="http://search.msn.com.br">http://search.msn.com.br</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+_________________________________________________________________
+MSN Busca: f&#225;cil, r&#225;pido, direto ao ponto.  <A HREF="http://search.msn.com.br">http://search.msn.com.br</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001734.html">[OpenIMSCore-Users] How to test OpenIMSCore with a client	onanother machine
+</A></li>
+	<LI>Next message: <A HREF="001726.html">[OpenIMSCore-Users] ipsec and charging question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1737">[ date ]</a>
+              <a href="thread.html#1737">[ thread ]</a>
+              <a href="subject.html#1737">[ subject ]</a>
+              <a href="author.html#1737">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

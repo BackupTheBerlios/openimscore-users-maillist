@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] IPSec-Problem: ICMP &quot;dst. unreachable (protocol unreachable)&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IPSec-Problem%3A%20ICMP%20%22dst.%20unreachable%0A%20%28protocol%20unreachable%29%22&In-Reply-To=%3C20070910093558.136920%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002598.html">
+   <LINK REL="Next"  HREF="002530.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] IPSec-Problem: ICMP &quot;dst. unreachable (protocol unreachable)&quot;</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IPSec-Problem%3A%20ICMP%20%22dst.%20unreachable%0A%20%28protocol%20unreachable%29%22&In-Reply-To=%3C20070910093558.136920%40gmx.net%3E"
+       TITLE="[OpenIMSCore-Users] IPSec-Problem: ICMP &quot;dst. unreachable (protocol unreachable)&quot;">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Mon Sep 10 11:35:58 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002598.html">[OpenIMSCore-Users] IPSec-Problem: ICMP &quot;dst. unreachable (protocol unreachable)&quot;
+</A></li>
+        <LI>Next message: <A HREF="002530.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2606">[ date ]</a>
+              <a href="thread.html#2606">[ thread ]</a>
+              <a href="subject.html#2606">[ subject ]</a>
+              <a href="author.html#2606">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+
+because packet 11 is sent encrypted I can't be 100% sure...
+the SIPp-scenario is started with 12345 as client-port and, more convincing, the IPsec SAs are set up only for the security-* header parameters (ip 192.168.0.7, port 12345/3062 &amp;&amp; ip 192.168.0.5 port 3060). So if the client would still use 3061 as client-port the message would not be sent via ESP...
+
+thanks and br, Klemens
+
+-------- Original-Nachricht --------
+&gt;<i> Datum: Mon, 10 Sep 2007 11:21:41 +0200
+</I>&gt;<i> Von: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> An: Klemens Schragel &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt;
+</I>&gt;<i> CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Betreff: Re: [OpenIMSCore-Users] IPSec-Problem: ICMP &quot;dst. unreachable (protocol unreachable)&quot;
+</I>
+&gt;<i> Hello Klemens,
+</I>&gt;<i> 
+</I>&gt;<i> Can't say exactly what the problem is... but there is a port-c=12345 in
+</I>&gt;<i> the first REGISTER message. Does packet 11 originate from this port? or
+</I>&gt;<i> is still 3061 (the same SIPp session)?
+</I>&gt;<i> 
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> Klemens Schragel wrote:
+</I>&gt;<i> &gt; Hi all,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I have a problem registrating over IPSec with the SIPp-tool (TLS/IPSec -
+</I>&gt;<i> patched). The encrypted second Register is not accepted by my OSIMS-server
+</I>&gt;<i> and I have no clue why...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I've used the runIPSEC.sh-scenario with some modifications:
+</I>&gt;<i> &gt; 1) 5 sec timer bevor sending the 2nd REGISTER (ensure that UE&amp;PCSCF had
+</I>&gt;<i> time to create the IPSec SAs and time to verify if the 2nd xml-scenario is
+</I>&gt;<i> realy executed (weiredly not always the case))
+</I>&gt;<i> &gt; 2) Remove the IPSec SAs at the end of the scenario (I'd be happy if at
+</I>&gt;<i> least the registration works, not to think of some ongoing communication
+</I>&gt;<i> over IPSec)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Anyway, a trace is worth a thousand words =&gt; attachment
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Did anyone encounter the same behaviour (and found a solution)?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; br, Klemens
+</I>&gt;<i> &gt;   
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;   
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> -- 
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>
+-- 
+Psssst! Schon vom neuen GMX MultiMessenger geh&#246;rt?
+Der kanns mit allen: <A HREF="http://www.gmx.net/de/go/multimessenger">http://www.gmx.net/de/go/multimessenger</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002598.html">[OpenIMSCore-Users] IPSec-Problem: ICMP &quot;dst. unreachable (protocol unreachable)&quot;
+</A></li>
+	<LI>Next message: <A HREF="002530.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2606">[ date ]</a>
+              <a href="thread.html#2606">[ thread ]</a>
+              <a href="subject.html#2606">[ subject ]</a>
+              <a href="author.html#2606">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

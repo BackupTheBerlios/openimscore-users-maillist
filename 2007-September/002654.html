@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to register UA without loopback ??
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20register%20UA%20without%20loopback%20%3F%3F&In-Reply-To=%3C031201c7fb43%2477e4ea60%247429320a%40telxsi.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002685.html">
+   <LINK REL="Next"  HREF="002655.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to register UA without loopback ??</H1>
+    <B>Amol D Pise</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20register%20UA%20without%20loopback%20%3F%3F&In-Reply-To=%3C031201c7fb43%2477e4ea60%247429320a%40telxsi.com%3E"
+       TITLE="[OpenIMSCore-Users] How to register UA without loopback ??">amolpise at tataelxsi.co.in
+       </A><BR>
+    <I>Thu Sep 20 07:02:38 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002685.html">[OpenIMSCore-Users] Error starting FHoSS!!!
+</A></li>
+        <LI>Next message: <A HREF="002655.html">[OpenIMSCore-Users] How to register UA without loopback ??
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2654">[ date ]</a>
+              <a href="thread.html#2654">[ thread ]</a>
+              <a href="subject.html#2654">[ subject ]</a>
+              <a href="author.html#2654">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks for your reply.....
+my UE is giving me &quot;awaiting Proxy login information&quot; message when I am
+trying to register.
+I tried with outbound proxy 10.50.41.171:4060  but no success.
+I am getting &quot;fix_socket_list:Could not rev. resolve 10.50.41.171&quot; warning
+on my server side too.
+I think its problem with my DNS, can you please check my dns setting and
+tell me whats wrong with it.
+ 
+1) In /etc/resolve.conf
+     
+search open-ims.test
+nameserver 10.50.41.171
+
+2) In /etc/named.conf
+ 
+zone &quot;open-ims.test&quot; IN {
+        type master;
+        file &quot;open-ims.dnszone&quot;;
+        notify no;
+};
+ 
+zone &quot;41.50.10.in-addr.arpa.&quot; IN {
+ 
+         type master;
+ 
+        file &quot;10-50-41.dnszone&quot;;
+ 
+        allow-update { none; };
+ 
+     }
+ 
+Note : &quot;open-ims.dnszone&quot; for forward dns and &quot;10-50-41.dnszone&quot; for reverse
+dns is attached here
+ 
+Please guide me, how do I register UA running on machine (IP add.
+10.50.41.196) to the open-ims-servers(CSCF's) running on
+machine ( IP add. 10.50.41.71)
+ 
+Thank You,
+Amol Pise
+ 
+ 
+
+-----Original Message-----
+From: Klemens Schragel [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>]
+Sent: Wednesday, September 19, 2007 9:33 PM
+To: Amol D Pise; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: RE: [OpenIMSCore-Users] How to register UA without loopback ??
+
+
+
+Hi Amol Pise,
+
+I guess there is a problem with DNS... it would be interesting to get a
+trace (what does your UE do when you try to register?)
+
+You can also try to register to outboundproxy 10.50.41.171:4060 instead of
+pcscf.open-ims.test:4060 (I think p-cscf modul should also listen to
+that)...
+
+BR, Klemens
+
+_____________________________________________
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [
+mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>&gt; ] On Behalf Of Amol D
+Pise
+Sent: Mittwoch, 19. September 2007 15:28
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: [OpenIMSCore-Users] How to register UA without loopback ??
+
+Hi all
+
+we installed openimscore ser_ims,hss,icscf,pcscf,scscf on fedrocore5 and
+able to register using  X-lite client on same PC
+
+successfully. But now I want to change ip address from loopback 127.0.0.1 to
+10.50.41.171 on same domain &quot;open-ims.test&quot;
+
+so,I used configurator.sh, keeping   DSDOMAIN=&quot;open-ims\\\.test
+
+                                      DDOMAIN=&quot;open-ims\.test&quot;
+
+ 
+DEFAULTIP=&quot;127\.0\.0\.1&quot; 
+
+ and changes ip-address to 10.50.41.171
+
+ in scscf.cfg,icscf.cfg
+,pcscf.cfg,scscf.xml,icscf.xml,DiameterPeerHSS.xml,open-ims-dnszone
+
+hss_db.sql and hss.properties
+
+Now my problem is I want to keep all CSCF and HSS on one machine and UA on
+another machine( 10.50.41.196) and , and UA should register to my
+servers(CSCF)which are running on 10.50.41.171. 
+
+How should I make it possible, Only on same machine (loopback) its working
+but not on separate machine .
+
+X-lite configuration is given below :
+
+Display Name : alice
+
+Domain : open-ims.test
+
+sipproxy : open-ims.test
+
+OutBoundProxy : pcscf.open-ims.test:4060
+
+Is it require, that system running UA should also  be in open-ims.test
+domain ???
+
+Please help me in this matter ...........
+
+Waiting for help .............................................
+
+Thank You,
+
+Amol Pise
+
+
+  &lt;&lt; File: ATT00003.txt &gt;&gt; 
+
+
+The information contained in this electronic message and any attachments to this message are intended for the exclusive use of the addressee(s) and may contain proprietary, confidential or privileged information. If you are not the intended recipient, you should not disseminate, distribute or copy this e-mail. Please notify the sender immediately and destroy all copies of this message and any attachments contained in it.
+
+Contact your Administrator for further information.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: winmail.dat
+Type: application/ms-tnef
+Size: 19838 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070920/969a206e/attachment.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070920/969a206e/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002685.html">[OpenIMSCore-Users] Error starting FHoSS!!!
+</A></li>
+	<LI>Next message: <A HREF="002655.html">[OpenIMSCore-Users] How to register UA without loopback ??
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2654">[ date ]</a>
+              <a href="thread.html#2654">[ thread ]</a>
+              <a href="subject.html#2654">[ subject ]</a>
+              <a href="author.html#2654">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

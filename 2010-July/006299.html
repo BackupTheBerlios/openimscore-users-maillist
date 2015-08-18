@@ -1,0 +1,312 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Connect between OpenIMSCore and Mobicents AS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Connect%20between%20OpenIMSCore%20and%20Mobicents%20AS&In-Reply-To=%3CAANLkTin7JFnzjxtxju45e8C7_1kB1L4czu9Peh8KpILl%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006298.html">
+   <LINK REL="Next"  HREF="006302.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Connect between OpenIMSCore and Mobicents AS</H1>
+    <B>tran quoc tuan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Connect%20between%20OpenIMSCore%20and%20Mobicents%20AS&In-Reply-To=%3CAANLkTin7JFnzjxtxju45e8C7_1kB1L4czu9Peh8KpILl%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Connect between OpenIMSCore and Mobicents AS">tuantq84 at gmail.com
+       </A><BR>
+    <I>Mon Jul  5 16:26:52 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006298.html">[OpenIMSCore-Users] Connect between OpenIMSCore and Mobicents AS
+</A></li>
+        <LI>Next message: <A HREF="006302.html">[OpenIMSCore-Users] Connect between OpenIMSCore and Mobicents AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6299">[ date ]</a>
+              <a href="thread.html#6299">[ thread ]</a>
+              <a href="subject.html#6299">[ subject ]</a>
+              <a href="author.html#6299">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>This is my scenario :
+uac-tran-ims.xml
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot; ?&gt;
+&lt;!DOCTYPE scenario SYSTEM &quot;sipp.dtd&quot;&gt;
+
+&lt;scenario name=&quot;Session for conference&quot;&gt;
+    &lt;send retrans=&quot;500&quot;&gt;
+        &lt;![CDATA[
+        REGISTER sip:open-ims.test SIP/2.0
+        Via: SIP/2.0/[transport] [local_ip]:[local_port];
+branch=[branch]
+        Max-Forwards: 20
+        From: &quot;tran&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>&gt;;tag=[call_number]
+        To: &quot;tran&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>&gt;
+        P-Access-Network-Info:
+3GPP-UTRAN-TDD;utran-cell-id-3gpp=C359A3913B20E
+        Call-ID: [call_id]
+        CSeq: 1 REGISTER
+        Contact: &lt;sip:tran@[local_ip]:[local_port]&gt;
+        Expires: 300
+        Content-Length: 0
+        User-Agent: Sipp v1.1-TLS, version 20061124
+        Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>&quot;,
+realm=&quot;open-ims.test&quot;
+        Supported: path
+        ]]&gt;
+    &lt;/send&gt;
+
+    &lt;recv response=&quot;401&quot; auth=&quot;true&quot;&gt;
+    &lt;/recv&gt;
+
+    &lt;send retrans=&quot;500&quot;&gt;
+        &lt;![CDATA[
+        REGISTER sip:open-ims.test SIP/2.0
+        Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+        Route: [$1]
+        Max-Forwards: 20
+        From: &quot;tran&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>&gt;;tag=[call_number]
+        To: &quot;tran&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>&gt;
+        P-Access-Network-Info:
+3GPP-UTRAN-TDD;utran-cell-id-3gpp=C359A3913B20E
+        Call-ID: [call_id]
+        CSeq: 1 REGISTER
+        Contact: &lt;sip:tran@[local_ip]:[local_port]&gt;
+        Expires: 300
+        Content-Length: 0
+        User-Agent: Sipp v1.1-TLS, version 20061124
+        Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>&quot;,
+realm=&quot;open-ims.test&quot;
+        Supported: path
+        ]]&gt;
+    &lt;/send&gt;
+
+    &lt;recv response=&quot;200&quot;&gt;
+        &lt;action&gt;
+            &lt;ereg regexp=&quot;.*&quot; search_in=&quot;hdr&quot; header=&quot;Service-Route:&quot;
+assign_to=&quot;1&quot; /&gt;
+        &lt;/action&gt;
+
+    &lt;/recv&gt;
+
+    &lt;pause milliseconds=&quot;5000&quot; crlf=&quot;true&quot; /&gt;
+
+    &lt;send retrans=&quot;500&quot;&gt;
+        &lt;![CDATA[
+            INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sip-servlets-conference at localhost</A>:5080 SIP/2.0
+            Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+            Max-Forwards: 20
+            Route: &lt;sip:pcscf.open-ims.test:4060;lr&gt;,[$1]
+            P-Preferred-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>&gt;
+            Privacy: none
+            P-Access-Network-Info:
+3GPP-UTRAN-TDD;utran-cell-id-3gpp=C359A3913B20E
+            From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>&gt;;tag=[call_number]
+            To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sip-servlets-conference at localhost</A>:5080&gt;
+            Call-ID: [call_id]
+            CSeq: 10 INVITE
+            Contact: &lt;sip:tran@[local_ip]:[local_port]&gt;
+            User-Agent: Sipp v1.1-TLS, version 20061124
+            Allow: ACK, BYE, CANCEL, INVITE, REFER, OPTIONS, INFO, REGISTER,
+NOTIFY, UPDATE, SUBSCRIBE, PRACK
+            Content-Type: application/sdp
+            Content-Length: [len]
+
+            v=0
+            o=- 3487063231 3487063231 IN IP4 127.0.0.1
+            s=SJphone
+            c=IN IP4 127.0.0.1
+            t=0 0
+            a=direction:active
+            m=audio 49152 RTP/AVP 3 97 98 110 8 0 101
+            a=rtpmap:3 GSM/8000
+            a=rtpmap:97 iLBC/8000
+            a=rtpmap:98 iLBC/8000
+            a=fmtp:98 mode=20
+            a=rtpmap:110 speex/8000
+            a=rtpmap:8 PCMA/8000
+            a=rtpmap:0 PCMU/8000
+            a=rtpmap:101 telephone-event/8000
+            a=fmtp:101 0-11,16
+        ]]&gt;
+    &lt;/send&gt;
+
+    &lt;recv response=&quot;100&quot; optional=&quot;true&quot;&gt;
+    &lt;/recv&gt;
+
+    &lt;recv response=&quot;180&quot; optional=&quot;true&quot;&gt;
+    &lt;/recv&gt;
+
+    &lt;recv response=&quot;403&quot; optional=&quot;true&quot; next=&quot;1&quot;&gt;
+    &lt;/recv&gt;
+
+    &lt;recv response=&quot;404&quot; optional=&quot;true&quot; next=&quot;1&quot;&gt;
+    &lt;/recv&gt;
+
+    &lt;recv response=&quot;408&quot; optional=&quot;true&quot; next=&quot;1&quot;&gt;
+    &lt;/recv&gt;
+
+    &lt;recv response=&quot;200&quot; rrs=&quot;true&quot;&gt;
+    &lt;/recv&gt;
+
+    &lt;send crlf=&quot;true&quot;&gt;
+        &lt;![CDATA[
+            ACK [next_url] SIP/2.0
+            [last_Via:]
+            Max-Forwards: 20
+            From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>&gt;;tag=[call_number]
+            [last_To:]
+            Call-ID: [call_id]
+            CSeq: 10 ACK
+            Content-Length: 0
+        ]]&gt;
+    &lt;/send&gt;
+
+    &lt;pause milliseconds=&quot;20000&quot; crlf=&quot;true&quot; /&gt;
+
+    &lt;send retrans=&quot;500&quot;&gt;
+        &lt;![CDATA[
+            BYE [next_url] SIP/2.0
+            [last_Via:]
+            Max-Forwards: 20
+            From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>&gt;;tag=[call_number]
+            [last_To:]
+            Call-ID: [call_id]
+            CSeq: 11 BYE
+            Contact: &lt;sip:tran@[local_ip]:[local_port]&gt;
+            Content-Length: 0
+        ]]&gt;
+    &lt;/send&gt;
+
+    &lt;recv response=&quot;200&quot; crlf=&quot;true&quot; next=&quot;2&quot;&gt;
+    &lt;/recv&gt;
+
+    &lt;label id=&quot;1&quot;/&gt;
+
+    &lt;send crlf=&quot;true&quot;&gt;
+        &lt;![CDATA[
+            ACK sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sip-servlets-conference at open-ims.test</A> SIP/2.0
+            [last_Via:]
+            Max-Forwards: 20
+            From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>&gt;;tag=[call_number]
+            [last_To:]
+            Call-ID: [call_id]
+            CSeq: 10 ACK
+            Content-Length: 0
+        ]]&gt;
+    &lt;/send&gt;
+
+    &lt;label id=&quot;2&quot;/&gt;
+
+
+    &lt;!-- definition of the response time repartition table (unit is ms)
+--&gt;
+    &lt;ResponseTimeRepartition value=&quot;10, 20, 30, 40, 50, 100, 150, 200&quot;/&gt;
+
+    &lt;!-- definition of the call length repartition table (unit is ms)
+--&gt;
+    &lt;CallLengthRepartition value=&quot;10, 50, 100, 500, 1000, 5000, 10000&quot;/&gt;
+
+
+&lt;/scenario&gt;
+
+
+On Mon, Jul 5, 2010 at 4:24 PM, tran quoc tuan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tuantq84 at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> To connect OpenIMSCore and Mobicents in one computer, I have configured
+</I>&gt;<i> some steps following :
+</I>&gt;<i> - I created &quot;Application Servers&quot; with a lot of parameters :
+</I>&gt;<i>    +  Name : MSS
+</I>&gt;<i>    +  Server Name : sip : [iplocal]:5080
+</I>&gt;<i>    + Diameter FQDN : mobicents.open-ims.test
+</I>&gt;<i>    + Default Handling : Session Terminated
+</I>&gt;<i>    + Service Info : empty
+</I>&gt;<i>    + Rep-Data Limit : 1024
+</I>&gt;<i>    + Check all Allowed Request: UDR| PUR | SNR
+</I>&gt;<i>
+</I>&gt;<i> - I created &quot;Trigger Points&quot; with a lots of parameters :
+</I>&gt;<i>    + Name : MSS TP
+</I>&gt;<i>    + Conjunction Type CNF : Disjunctive Normal Format
+</I>&gt;<i>    + Add SPTs to the Trigger point, SIP Method : REGISTER AND INVITE AND
+</I>&gt;<i> Session Case : Origin - Session
+</I>&gt;<i>
+</I>&gt;<i> - I created &quot;Initial Filter Criteria&quot; (iFC) with some parameters :
+</I>&gt;<i>    + Name : MSS iFC
+</I>&gt;<i>    + Trigger Point : MSS TP
+</I>&gt;<i>    + Application Server : MSS
+</I>&gt;<i>    + Profile Part Indicator : Any
+</I>&gt;<i>
+</I>&gt;<i> - I created &quot;Service Profile&quot; :
+</I>&gt;<i>    + Name : MSS SP
+</I>&gt;<i>    + Core Network Service Auth  : 0
+</I>&gt;<i>    + Attached iFCs : MSS iFC
+</I>&gt;<i>
+</I>&gt;<i> And I have created a scenario to test connect Mobicent AS and OpenIMSCore
+</I>&gt;<i> with client Sipp but OpenIMSCore didn't forwarded message REGISTER from
+</I>&gt;<i> client to Mobicents AS.
+</I>&gt;<i> This is error of Sipp:
+</I>&gt;<i> 2010-07-05    15:30:13:855    1278336613.855996: Aborting call on
+</I>&gt;<i> unexpected message for Call-Id '<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-8755 at 157.159.16.91</A>': while expecting
+</I>&gt;<i> '200' (index 3), received 'SIP/2.0 401 Unauthorized - Challenging the UE
+</I>&gt;<i> Via: SIP/2.0/UDP 157.159.16.91:7682;rport=7682;
+</I>&gt;<i> branch=z9hG4bK-8755-1-2
+</I>&gt;<i> From: &quot;tran&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>&gt;;tag=1
+</I>&gt;<i> To: &quot;tran&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tran at open-ims.test</A>
+</I>&gt;<i> &gt;;tag=cafb408f4106b91f321a940503e3d367-25f6
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-8755 at 157.159.16.91</A>
+</I>&gt;<i> CSeq: 1 REGISTER
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY,
+</I>&gt;<i> PUBLISH, MESSAGE, INFO
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i> Warning: 392 157.159.16.91:6060 &quot;Noisy feedback tells:  pid=8355
+</I>&gt;<i> req_src_ip=157.159.16.91 req_src_port=5060
+</I>&gt;<i> in_uri=sip:scscf.open-ims.test:6060 out_uri=sip:scscf.open-ims.test:6060
+</I>&gt;<i> via_cnt==3&quot;
+</I>&gt;<i> WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,
+</I>&gt;<i> nonce=&quot;VsjPIfYhr7t7Fr0+eVF9wYgPbTza3AAAFqtl4F9r+5Y=&quot;, algorithm=AKAv1-MD5,
+</I>&gt;<i> qop=&quot;auth,auth-int&quot;
+</I>&gt;<i>
+</I>&gt;<i> What are  additives parameters that I must configure OpenIMSCore and
+</I>&gt;<i> Mobicents AS ?
+</I>&gt;<i>
+</I>&gt;<i> Thank in advance for all your helps!
+</I>&gt;<i> T.Q.Tuan
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100705/e0303c42/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100705/e0303c42/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006298.html">[OpenIMSCore-Users] Connect between OpenIMSCore and Mobicents AS
+</A></li>
+	<LI>Next message: <A HREF="006302.html">[OpenIMSCore-Users] Connect between OpenIMSCore and Mobicents AS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6299">[ date ]</a>
+              <a href="thread.html#6299">[ thread ]</a>
+              <a href="subject.html#6299">[ subject ]</a>
+              <a href="author.html#6299">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

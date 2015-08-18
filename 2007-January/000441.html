@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [Bug #9864] reg event package data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BBug%20%239864%5D%20reg%20event%20package%20data&In-Reply-To=%3Cab0001110701050640ta09e875p1c473cee42b99ff%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000440.html">
+   <LINK REL="Next"  HREF="000439.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [Bug #9864] reg event package data</H1>
+    <B>M&#225;rio Ferreira</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BBug%20%239864%5D%20reg%20event%20package%20data&In-Reply-To=%3Cab0001110701050640ta09e875p1c473cee42b99ff%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] [Bug #9864] reg event package data">mariojvp at gmail.com
+       </A><BR>
+    <I>Fri Jan  5 15:40:49 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000440.html">[OpenIMSCore-Users] [Bug #9864] reg event package data
+</A></li>
+        <LI>Next message: <A HREF="000439.html">[OpenIMSCore-Users] [Bug #9870] HSS Push Events for Profile Update
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#441">[ date ]</a>
+              <a href="thread.html#441">[ thread ]</a>
+              <a href="subject.html#441">[ subject ]</a>
+              <a href="author.html#441">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i> 4. I am not sure that I understand... could you please detail a little?
+</I>an example/trace would really help.
+
+When the notification was produced due to an occurrence of a reg event, this
+reg event is placed in the xml.
+When the notification was produced due to a SUBSCRIBE reception or a
+subscription expiration, I think that the last event that brings the contact
+to the current state must be placed in the xml.
+For example, if one SUBSCRIBE arrives (renewal or termination of the
+subscription), the event is unknown, and then the scscf of openimscore puts
+&quot;registered&quot; for all contacts that are in the active state, but if the last
+event (that cause the previous NOTIFY) was &quot;shortened&quot;, I think that this
+last event must be placed in the xml instead of &quot;registered&quot;.
+I am not sure about this, because I haven't read this anywhere, is just an
+opinion.
+
+On 1/5/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Hi Mario,
+</I>&gt;<i>
+</I>&gt;<i> 1. version - fixed in r82.
+</I>&gt;<i> 2. no more contacts in active state - fixed in r83.
+</I>&gt;<i> 3. partial containing just one public (registration element). TS 24.229
+</I>&gt;<i> - 5.4.2.1.2 says that all should be sent. However, I do not see why (and
+</I>&gt;<i> couldn't confirm from RFC3680) this info should be present in partial
+</I>&gt;<i> notifications if there
+</I>&gt;<i> was no change on those publics. As I understand, the partial
+</I>&gt;<i> notification only contains changes. One client could interpret an empty
+</I>&gt;<i> registration tag as meaning that the attached contacts were dropped, or?
+</I>&gt;<i> I guess it depend on how do you interpret it, but I think that the
+</I>&gt;<i> current implementation is better.
+</I>&gt;<i> 4. I am not sure that I understand... could you please detail a little?
+</I>&gt;<i> an example/trace would really help.
+</I>&gt;<i> 5. You are right... unfortunately this information is not stored at the
+</I>&gt;<i> moment and as such this is not possible. Maybe one solution would be to
+</I>&gt;<i> create this new identities afterwards and send for each a partial
+</I>&gt;<i> notification.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">admin at berlios.de</A> wrote:
+</I>&gt;<i> &gt; Bug #9864, was updated on 2007-Jan-04 12:18
+</I>&gt;<i> &gt; Here is a current snapshot of the bug.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Project: Open IMS Core
+</I>&gt;<i> &gt; Category: S-CSCF
+</I>&gt;<i> &gt; Status: Open
+</I>&gt;<i> &gt; Resolution: None
+</I>&gt;<i> &gt; Bug Group: None
+</I>&gt;<i> &gt; Priority: 5
+</I>&gt;<i> &gt; Submitted by: mariojvp
+</I>&gt;<i> &gt; Assigned to : none
+</I>&gt;<i> &gt; Summary: reg event package data
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Details: The version of the xml document in the NOTIFY message is always
+</I>&gt;<i> 0.
+</I>&gt;<i> &gt; When there are no more contacts in the active state, the state of the
+</I>&gt;<i> element registration in the xml appears &quot;active&quot; instead of &quot;terminated&quot;.
+</I>&gt;<i> &gt; When the document is partial, only one public is taken for the xml, but
+</I>&gt;<i> in the spec 24.229, all publics that the scscf is aware that the user owns
+</I>&gt;<i> shall be included in any NOTIFY. Partial implies to include only one contact
+</I>&gt;<i> instead of all contacts. This doesn&#180;t apply to the publics.
+</I>&gt;<i> &gt; The last event that made the transition for the current state is not
+</I>&gt;<i> stored, which is necessary when the notification was not produced by a reg
+</I>&gt;<i> event, but by a SUBSCRIBE reception or a subscription expiration.
+</I>&gt;<i> &gt; The contact event is equal for all publics, but there are differences,
+</I>&gt;<i> because one public implicitly registered must be associated with the event
+</I>&gt;<i> &quot;created&quot;, instead of &quot;registered&quot;, which the scscf is now doing.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; For detailed info, follow this link:
+</I>&gt;<i> &gt;
+</I>&gt;<i> <A HREF="http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=9864&amp;group_id=7589">http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=9864&amp;group_id=7589</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070105/c2f505ca/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070105/c2f505ca/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000440.html">[OpenIMSCore-Users] [Bug #9864] reg event package data
+</A></li>
+	<LI>Next message: <A HREF="000439.html">[OpenIMSCore-Users] [Bug #9870] HSS Push Events for Profile Update
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#441">[ date ]</a>
+              <a href="thread.html#441">[ thread ]</a>
+              <a href="subject.html#441">[ subject ]</a>
+              <a href="author.html#441">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Unable to register Nokia's E71 built-in	SIPclient with OpenIMSCore
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Unable%20to%20register%20Nokia%27s%20E71%20built-in%0A%09SIPclient%20with%20OpenIMSCore&In-Reply-To=%3CB04E1DB949F54FAFAC70C8E7128371C0%40notebook%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005413.html">
+   <LINK REL="Next"  HREF="005426.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Unable to register Nokia's E71 built-in	SIPclient with OpenIMSCore</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Unable%20to%20register%20Nokia%27s%20E71%20built-in%0A%09SIPclient%20with%20OpenIMSCore&In-Reply-To=%3CB04E1DB949F54FAFAC70C8E7128371C0%40notebook%3E"
+       TITLE="[OpenIMSCore-Users] Unable to register Nokia's E71 built-in	SIPclient with OpenIMSCore">franz-edler at aon.at
+       </A><BR>
+    <I>Fri May 22 08:11:02 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005413.html">[OpenIMSCore-Users] Unable to register Nokia's E71 built-in SIP	client with OpenIMSCore
+</A></li>
+        <LI>Next message: <A HREF="005426.html">[OpenIMSCore-Users] Unable to register Nokia's E71 built-in	SIPclient with OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5420">[ date ]</a>
+              <a href="thread.html#5420">[ thread ]</a>
+              <a href="subject.html#5420">[ subject ]</a>
+              <a href="author.html#5420">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Mihnea,
+
+&gt;<i> Any advice from you regarding this problem is much appreciated. Please
+</I>&gt;<i> find below the packet trace between the Wi-Fi Router (10.244.53.27) and
+</I>&gt;<i> the OpenIMS platform (10.250.11.181). The Nokia E71 client IP is 
+</I>&gt;<i> 192.168.2.100.
+</I>
+I guess it is the qop=&quot;auth,auth-int&quot;.... parameter in the
+&quot;WWW-Authenticate&quot; header field, which has been added to OpenIMSCore later
+then the mentioned hint. Some clients cannot handle the qop parameter
+accordingly.
+
+To disable the qop parameter you have to modify in scscf.cfg the line:
+	modparam(&quot;scscf&quot;,&quot;registration_qop&quot;,&quot;auth,auth-int&quot;)
+to
+	modparam(&quot;scscf&quot;,&quot;registration_qop&quot;,&quot;&quot;)
+
+maybe that helps.
+
+regards
+Franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005413.html">[OpenIMSCore-Users] Unable to register Nokia's E71 built-in SIP	client with OpenIMSCore
+</A></li>
+	<LI>Next message: <A HREF="005426.html">[OpenIMSCore-Users] Unable to register Nokia's E71 built-in	SIPclient with OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5420">[ date ]</a>
+              <a href="thread.html#5420">[ thread ]</a>
+              <a href="subject.html#5420">[ subject ]</a>
+              <a href="author.html#5420">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

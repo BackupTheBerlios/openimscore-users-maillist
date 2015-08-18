@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to configure S-CSCF ISC interface listen port
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20configure%20S-CSCF%20ISC%20interface%0A%20listen%20port&In-Reply-To=%3C49360326.6010003%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004895.html">
+   <LINK REL="Next"  HREF="004913.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to configure S-CSCF ISC interface listen port</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20configure%20S-CSCF%20ISC%20interface%0A%20listen%20port&In-Reply-To=%3C49360326.6010003%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] How to configure S-CSCF ISC interface listen port">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Dec  3 04:55:18 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004895.html">[OpenIMSCore-Users] IPSec Problem
+</A></li>
+        <LI>Next message: <A HREF="004913.html">[OpenIMSCore-Users] How to configure S-CSCF ISC interface	listen port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4896">[ date ]</a>
+              <a href="thread.html#4896">[ thread ]</a>
+              <a href="subject.html#4896">[ subject ]</a>
+              <a href="author.html#4896">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>To add more listening ports:
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at stan</A>:/opt/OpenIMSCore/ser_ims] # ./ser --help
+version: ser 2.1.0-dev1 OpenIMSCore (i386/linux)
+Usage: ser -l address [-p port] [-l address [-p port]...] [options]
+Options:
+...
+   -l address   Listen on the specified address/interface (multiple -l
+                 mean listening on more addresses).  The address format is
+                 [proto:]addr[:port], where proto=udp|tcp and
+                 addr= host|ip_address|interface_name. E.g: -l locahost,
+                 -l udp:127.0.0.1:5080, -l eth0:5062 The default behavior
+                 is to listen on all the interfaces.
+...
+
+
+But... with the current underlying version of SER you can not select the 
+outbound interface for sending messages, but it is chosen automatically. 
+Sometime we will have to do an upgrade, but I would rather wait until 
+the new SIP Router comes out and move then.
+
+Then... why would you want to do this? It seems like a lot of effort 
+required without a big benefit...
+
+Cheers,
+-Dragos
+
+NC Reddy wrote:
+&gt;<i> Hi,
+</I>&gt;<i>     I am wondering how to to configure more than one SIP Listen server 
+</I>&gt;<i> port on Open IMS S-CSCF?.
+</I>&gt;<i> One port towards Client side  and  other on ISC interface.
+</I>&gt;<i>  
+</I>&gt;<i> In Open IMS, i could find S-CSCF used 6060 port as server listen port  
+</I>&gt;<i> for both  ISC-AS and UE Interfaces.
+</I>&gt;<i>  
+</I>&gt;<i> Thanks in advance.
+</I>&gt;<i>  
+</I>&gt;<i> Regards
+</I>&gt;<i> Channa
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004895.html">[OpenIMSCore-Users] IPSec Problem
+</A></li>
+	<LI>Next message: <A HREF="004913.html">[OpenIMSCore-Users] How to configure S-CSCF ISC interface	listen port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4896">[ date ]</a>
+              <a href="thread.html#4896">[ thread ]</a>
+              <a href="subject.html#4896">[ subject ]</a>
+              <a href="author.html#4896">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

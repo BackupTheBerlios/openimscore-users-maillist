@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Strange address flipping
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Strange%20address%20flipping&In-Reply-To=%3CB3BCF3465D5E014EA432F2E6EEC4618E03EAB885%40TOR-MSG-02.cgiclients.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004131.html">
+   <LINK REL="Next"  HREF="004133.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Strange address flipping</H1>
+    <B>Zarbock, Markus</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Strange%20address%20flipping&In-Reply-To=%3CB3BCF3465D5E014EA432F2E6EEC4618E03EAB885%40TOR-MSG-02.cgiclients.com%3E"
+       TITLE="[OpenIMSCore-Users] Strange address flipping">markus.zarbock at cgi.com
+       </A><BR>
+    <I>Mon Jun 16 13:16:14 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004131.html">[OpenIMSCore-Users] Could not start process for OpenIC lite on	windows mobile
+</A></li>
+        <LI>Next message: <A HREF="004133.html">[OpenIMSCore-Users] Strange address flipping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4132">[ date ]</a>
+              <a href="thread.html#4132">[ thread ]</a>
+              <a href="subject.html#4132">[ subject ]</a>
+              <a href="author.html#4132">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi everybody,
+
+I just installed the latest version of OpenIMSCore and there is a strange problem. DNS setup seems to be ok so far (see dig result below) and with IMS communicator user can be registered. When sends an INVITE something weird is happening. I attached a wireshark trace to demonstrate the problem. Until the call leg reaches the s-cscf everything is fine but then the scscf sends the invite to himself and after that the domain is replaced by the ip-adress i.e. <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> becomes <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at ip-address</A> which cause a lot of trouble - every HSS-request fails as there is no user <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at ip-address.</A> What could be wrong? 
+Kind regards,
+
+Markus Zarbock
+
+Dig Result
+
+$ dig @127.0.0.1 open-ims.test ANY
+
+; &lt;&lt;&gt;&gt; DiG 9.2.4 &lt;&lt;&gt;&gt; @127.0.0.1 open-ims.test ANY
+; (1 server found)
+;; global options:  printcmd
+;; Got answer:
+;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 47346
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 5, AUTHORITY: 0, ADDITIONAL: 4
+
+;; QUESTION SECTION:
+;open-ims.test.                 IN      ANY
+
+;; ANSWER SECTION:
+open-ims.test.          86400   IN      NAPTR   10 50 &quot;s&quot; &quot;SIP+D2U&quot; &quot;&quot; _sip._udp.open-ims.test.
+open-ims.test.          86400   IN      NAPTR   20 50 &quot;s&quot; &quot;SIP+D2T&quot; &quot;&quot; _sip._tcp.open-ims.test.
+open-ims.test.          86400   IN      A       10.171.4.49
+open-ims.test.          86400   IN      SOA     localhost. root.localhost. 2006101001 10800 900 604800 86400
+open-ims.test.          86400   IN      NS      ns.open-ims.test.
+
+;; ADDITIONAL SECTION:
+icscf.open-ims.test.    86400   IN      A       10.171.4.49
+ns.open-ims.test.       86400   IN      A       10.171.4.49
+_sip._udp.open-ims.test. 86400  IN      SRV     0 0 5060 icscf.open-ims.test.
+_sip._tcp.open-ims.test. 86400  IN      SRV     0 0 5060 icscf.open-ims.test.
+
+;; Query time: 13 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: Fri Jun 13 13:52:54 2008
+;; MSG SIZE  rcvd: 334
+
+
+--------------------------------------------------------------------------
+Markus Zarbock
+
+Consultant
+
+T: +49 211 5355 367
+F: +49 211 5355 155
+
+CGI Information Systems and Management Consultants (Deutschland) GmbH
+Niederkasseler Lohweg 175 - 40547 D&#252;sseldorf - Germany
+Registergericht/Company Number: AG D&#252;sseldorf (HRB 51806) - Gesch&#228;ftsf&#252;hrer/Managing Directors: Paule Dor&#233;, Serge Godin, Andr&#233; Imbeau - Steuernummer/Tax No.: 103/5717/1949 | USt-Id.-Nr. DE 114 118 368 -
+<A HREF="http://www.cgi.com">http://www.cgi.com</A>
+CONFIDENTIALITY NOTICE: Proprietary/Confidential Information belonging to CGI Group Inc. and its affiliates may be contained in this message. If you are not a recipient indicated or intended in this message (or responsible for delivery of this message to such person), or you think for any reason that this message may have been addressed to you in error, you may not use or copy or deliver this message to anyone  &lt;&lt;dialproblem&gt;&gt; else. In such case, you should destroy this message and are asked to notify the sender by reply email.
+ 
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: dialproblem
+Type: application/octet-stream
+Size: 32582 bytes
+Desc: dialproblem
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080616/76d90134/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080616/76d90134/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004131.html">[OpenIMSCore-Users] Could not start process for OpenIC lite on	windows mobile
+</A></li>
+	<LI>Next message: <A HREF="004133.html">[OpenIMSCore-Users] Strange address flipping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4132">[ date ]</a>
+              <a href="thread.html#4132">[ thread ]</a>
+              <a href="subject.html#4132">[ subject ]</a>
+              <a href="author.html#4132">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

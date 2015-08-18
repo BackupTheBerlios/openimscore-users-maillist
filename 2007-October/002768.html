@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ipsec security association problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ipsec%20security%20association%20problem&In-Reply-To=%3C4717555C.4090800%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002762.html">
+   <LINK REL="Next"  HREF="002829.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ipsec security association problem</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ipsec%20security%20association%20problem&In-Reply-To=%3C4717555C.4090800%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] ipsec security association problem">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Oct 18 14:45:16 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002762.html">[OpenIMSCore-Users] ipsec security association problem
+</A></li>
+        <LI>Next message: <A HREF="002829.html">[OpenIMSCore-Users] ipsec security association problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2768">[ date ]</a>
+              <a href="thread.html#2768">[ thread ]</a>
+              <a href="subject.html#2768">[ subject ]</a>
+              <a href="author.html#2768">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Soshant,
+
+I think that the SAs are always created, just that it is not used if the
+2nd contact is different.
+
+Well, you shouldn't change the contact between the 2 messages - the 2nd
+REGISTER should basically be a resend of the first with the extra
+authorization information.
+
+Anyway, the fact that this might happen means that it might be a
+security issue.  So the way it works is that on the 401 just one SA is
+set, for receiving the next 401. This is because the client might  not
+know the secret anyway and this might just be a DoS attach. The other 3
+SAs are set just before the 200 OK is sent.
+
+In your case, the problem is that the IPSec info is saved on the first
+REGISTER and then re-used on the 2nd to set the SAs, but those were
+wrong and as such not used. So we need to actually update the IPSec info
+based on the info in the 200 OK, which is the info to trust as the
+REGISTER was authenticated.
+
+I have filled a bug report here: <A HREF="http://www.openimscore.org/node/115">http://www.openimscore.org/node/115</A>
+
+But in any case, I would recommend that you do not change the Contact
+during the registration.
+
+Cheers,
+-Dragos
+
+Soshant Bali wrote:
+&gt;<i> We are trying to register a UE with OpenIMS using IPSec/AKA. On
+</I>&gt;<i> receiving the 401 challenge from pcscf, the UE sends second Register
+</I>&gt;<i> to pcscf that is encrypted using ipsec. This register is decrypted
+</I>&gt;<i> fine by the pcscf. However the pcscf does not encrypt the 200ok it
+</I>&gt;<i> sends back to the UE. The 200 ok is sent in plain text to the UE. We
+</I>&gt;<i> checked and found out that the pcscf does not create a security
+</I>&gt;<i> association in the direction from pcscf to the UE. It only creates
+</I>&gt;<i> security association in the direction from the UE to the pcscf. The
+</I>&gt;<i> attached trace, trace1.pcap shows this.
+</I>&gt;<i>
+</I>&gt;<i> We changed the contact field in the first register to match the
+</I>&gt;<i> contact field in the second register and in this case the security
+</I>&gt;<i> associations are created fine in both directions. This is shown in
+</I>&gt;<i> trace2.pcap that is attached.
+</I>&gt;<i>
+</I>&gt;<i> Is this expected behavior? What is the reasoning for making the pcscf
+</I>&gt;<i> match the contact field of the two register messages before deciding
+</I>&gt;<i> whether or not to create a security association in the reverse direction?
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002762.html">[OpenIMSCore-Users] ipsec security association problem
+</A></li>
+	<LI>Next message: <A HREF="002829.html">[OpenIMSCore-Users] ipsec security association problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2768">[ date ]</a>
+              <a href="thread.html#2768">[ thread ]</a>
+              <a href="subject.html#2768">[ subject ]</a>
+              <a href="author.html#2768">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

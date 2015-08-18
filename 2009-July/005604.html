@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] OpenIMS and OpenSIPS authentication problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMS%20and%20OpenSIPS%20authentication%20problem&In-Reply-To=%3C4A5D9665.30305%40orange-ftgroup.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005603.html">
+   <LINK REL="Next"  HREF="005628.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] OpenIMS and OpenSIPS authentication problem</H1>
+    <B>Olivier Dugeon</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMS%20and%20OpenSIPS%20authentication%20problem&In-Reply-To=%3C4A5D9665.30305%40orange-ftgroup.com%3E"
+       TITLE="[OpenIMSCore-Users] OpenIMS and OpenSIPS authentication problem">Olivier.Dugeon at orange-ftgroup.com
+       </A><BR>
+    <I>Wed Jul 15 10:42:13 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005603.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] Multiples forwardings	issue
+</A></li>
+        <LI>Next message: <A HREF="005628.html">[OpenIMSCore-Users] OpenIMS and OpenSIPS authentication problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5604">[ date ]</a>
+              <a href="thread.html#5604">[ thread ]</a>
+              <a href="subject.html#5604">[ subject ]</a>
+              <a href="author.html#5604">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello all,
+
+I have some problems to interconnect OpenSIPS and OpenIMS.
+
+My setup is a follow:
+
+UA &lt;--&gt; HGW (embedded both OpenSIPS and NAT stuff) &lt;--&gt; P-CSCF (OpenIMS)
+
+I used different UA (mainly Twinkle and X-Lite). The HGW (Home GateWay)
+is running under OpenWRT on which I compile and install OpenSIPS. The
+P-CSCF, S-CSCF and I-CSCF are all running on the same PC (standard
+configuration from OpenIMS installation).
+
+My OpenSIPS is just used to manage local message (perform some security
+check) and manage the NAT/FireWall configuration of the HGW. So, from the
+OpenIMS core point of view, is a transparent proxy.
+
+My problem come from the fact that the P-CSCF (and subsequently the
+S-CSCF) is registered my UA with its private @IP address and not the
+public @IP address of the HGW. So, each time I sent a SIP message to the
+IMS Core, the P-CSCF  reject my messages with a 403 &quot;Forbidden. You must
+registered first in the P-CSCF&quot;. I understand that the P-CSCF check
+who is sending the SIP message based on the source @IP. In my case, the
+source @IP address is the public one (i.e. the HGW public one). However,
+this public @IP address is not know by the P-CSCF i.e. it doesn't
+correspond to a registered UA. So, Outgoing call are not working.
+Fortunately, Incoming call (i.e. from a UA which is directly connected
+to the IMS Core) are working well.
+
+I try several configuration using nathelper module, but I just got a
+negative reply from the S-CSCF instead of the P-CSCF (I.e. I pass the
+P-CSCF checking by using force_rport in register and invite message)).
+
+In twinkle, I also try to modify the IP address used for the Contact field.
+I not used a STUN server, but simply configured by hand the public IP address
+twinkle must used. I effectively saw registered message with appropriate
+public IP address in the register message. But, I can't anymore make a
+call: INVITE message are again block by the P-CSCF and I got a &quot;403&quot; reply.
+
+The same UA behind the same HGW, but without opensips active, register
+perfectly in openIMS and could make call without problem (except that the
+FireWall on the HGW is not correctly open for media flows).
+
+I make a capture with wireshark of both REGISTER &amp; INVITE sequences in
+both case (with and without opensips). The only difference come from the
+additional VIA and record_route inserted by the opensips.
+
+Is somebody have already try to interconnect OpenSIPS with OpenIMS ? Is it
+feasible ?
+
+Thanks a lot for your help.
+
+Olivier
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005603.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] Multiples forwardings	issue
+</A></li>
+	<LI>Next message: <A HREF="005628.html">[OpenIMSCore-Users] OpenIMS and OpenSIPS authentication problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5604">[ date ]</a>
+              <a href="thread.html#5604">[ thread ]</a>
+              <a href="subject.html#5604">[ subject ]</a>
+              <a href="author.html#5604">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Troubles with AS initiated NOTIFY message
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Troubles%20with%20AS%20initiated%20NOTIFY%20message&In-Reply-To=%3C478D6895431D45F8B62C36DBFE5A3D4C%40FRANZNOTEBOOK%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005987.html">
+   <LINK REL="Next"  HREF="005989.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Troubles with AS initiated NOTIFY message</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Troubles%20with%20AS%20initiated%20NOTIFY%20message&In-Reply-To=%3C478D6895431D45F8B62C36DBFE5A3D4C%40FRANZNOTEBOOK%3E"
+       TITLE="[OpenIMSCore-Users] Troubles with AS initiated NOTIFY message">franz-edler at aon.at
+       </A><BR>
+    <I>Sat Jan  2 21:08:06 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005987.html">[OpenIMSCore-Users] Troubles with AS initiated NOTIFY message
+</A></li>
+        <LI>Next message: <A HREF="005989.html">[OpenIMSCore-Users] Troubles with AS initiated NOTIFY message
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5988">[ date ]</a>
+              <a href="thread.html#5988">[ thread ]</a>
+              <a href="subject.html#5988">[ subject ]</a>
+              <a href="author.html#5988">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Matyas,
+
+&gt;<i> The OpenIMS is running on a vmware on 192.168.126.128 (:4060-pcscf, :5060
+</I>&gt;<i> i-cscf, 6060-scscf)
+</I>&gt;<i> The persense server is listening on the host OS on 192.168.126.1:5065
+</I>&gt;<i> I am testing the AS with two mercuro IMS client.The first one is running
+</I>&gt;<i> on the host OS too and the second one is in an other vmware which IP is
+</I>&gt;<i> 192.168.126.129
+</I>&gt;<i> The outgoing TCP/UDP ports of the IMS clients and the AS are reserved by
+</I>&gt;<i> the OS and though a little bit confusing.
+</I>
+Yes, that's o.k. and clear now.
+
+&gt;<i> To clarify the flow please do the following. Try to find the 403 - Not
+</I>&gt;<i> registered.... response in wireshark. The first one is sent by the P-CSCF.
+</I>&gt;<i> Right click on the call-id header and apply as filter. This will select
+</I>&gt;<i> the corresponding SIP messages with the same call-id. I hope this will
+</I>&gt;<i> help you understand the message flow.
+</I>
+It was no problem to find the &quot;403 Forbidden - Not Registered!...&quot; response.
+To clarify the issue I wanted see the SUBSCRIBE request received by the
+presence server and the NOTIFY sent by the presence server to check the
+Route header fields. Both messages are not included in the trace-file.
+
+But also without theses two messages I can see that the Route header field
+is missing in packet 142 (NOTIFY request) received by the P-CSCF. If you
+compare this with packet 125 (SUBSCRIBE request forwarded by S-CSCF) you can
+see some Record-Route header fields in particular &quot; Record-Route:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;&quot; this has to be reflected in a Route
+header field of the NOTIFY request.
+
+The issue would be evident if I could see the SUBSCRIBE request received by
+the presence server and the NOTIFY sent by the presence server as mentioned
+above.
+
+Regards
+Franz
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005987.html">[OpenIMSCore-Users] Troubles with AS initiated NOTIFY message
+</A></li>
+	<LI>Next message: <A HREF="005989.html">[OpenIMSCore-Users] Troubles with AS initiated NOTIFY message
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5988">[ date ]</a>
+              <a href="thread.html#5988">[ thread ]</a>
+              <a href="subject.html#5988">[ subject ]</a>
+              <a href="author.html#5988">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

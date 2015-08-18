@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] PacketCable support - Bug in	modules/scscf/registration.c
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PacketCable%20support%20-%20Bug%20in%0A%09modules/scscf/registration.c&In-Reply-To=%3C153306.64751.qm%40web56114.mail.re3.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002818.html">
+   <LINK REL="Next"  HREF="002816.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] PacketCable support - Bug in	modules/scscf/registration.c</H1>
+    <B>Sudhakar Patil</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PacketCable%20support%20-%20Bug%20in%0A%09modules/scscf/registration.c&In-Reply-To=%3C153306.64751.qm%40web56114.mail.re3.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] PacketCable support - Bug in	modules/scscf/registration.c">spatil4572 at yahoo.com
+       </A><BR>
+    <I>Tue Oct 23 17:08:20 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002818.html">[OpenIMSCore-Users] How does IMS Core make a trusted domain ie	how it believes that the request is coming from trusted	domain and processes it
+</A></li>
+        <LI>Next message: <A HREF="002816.html">[OpenIMSCore-Users] PacketCable support - Bug	in	modules/scscf/registration.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2815">[ date ]</a>
+              <a href="thread.html#2815">[ thread ]</a>
+              <a href="subject.html#2815">[ subject ]</a>
+              <a href="author.html#2815">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Dragos, 
+
+For the issues related to PacketCable, the changes are fairly small and fall into bug fixes nature than enhancements. I would be gald to submit a patch. But I am not sure how to do that. Can you please provide me some guidance? 
+
+Regards,
+Sudhakar.
+
+
+----- Original Message ----
+From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+To: Sudhakar Patil &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">spatil4572 at yahoo.com</A>&gt;
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Sent: Tuesday, October 23, 2007 8:42:39 AM
+Subject: Re: [OpenIMSCore-Users] PacketCable support - Bug in modules/scscf/registration.c
+
+Hello Sudhakar,
+
+It might have been that our implementation was based on a different
+version of the standards as there are so many differences. Anyway, great
+that somebody can provide us with some inter-op feedback as this feature
+is quite new and untested.
+
+It looks like you already did a lot of changes. Would be great if you
+could send me a patch with these. Could you also indicate the standards
+version that you work on?
+
+Cheers,
+-Dragos
+
+
+Sudhakar Patil wrote:
+&gt;<i> Hello Dragos et al, 
+</I>&gt;<i> Can you please provide your thoughts on this? 
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Sudhakar.
+</I>&gt;<i>
+</I>&gt;<i> ----- Original Message ----
+</I>&gt;<i> From: Sudhakar Patil &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">spatil4572 at yahoo.com</A>&gt;
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Sent: Wednesday, October 17, 2007 4:40:31 PM
+</I>&gt;<i> Subject: [OpenIMSCore-Users] PacketCable support - Bug in modules/scscf/registration.c
+</I>&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i> According to PacketCable specifications HA1 in Digest-HA1 AVP is sent as OctectString. 
+</I>&gt;<i>
+</I>&gt;<i> In new_auth_vector function, for the case of AUTH_DIGEST, HA1 is being converted to base 16 in the code below:
+</I>&gt;<i>  x-&gt;authorization.len = authorization.len*2;
+</I>&gt;<i>  x-&gt;authorization.s = shm_malloc(x-&gt;authorization.len);
+</I>&gt;<i>  if (!x-&gt;authorization.s){
+</I>&gt;<i>    LOG(L_ERR,&quot;ERR:&quot;M_NAME&quot;:new_auth_vector: error allocating mem\n&quot;);
+</I>&gt;<i>    x-&gt;authorization.len=0;
+</I>&gt;<i>    goto done;
+</I>&gt;<i>  }  
+</I>&gt;<i>  x-&gt;authorization.len = bin_to_base16(authorization.s,authorization.len,x-&gt;authorization.s);        
+</I>&gt;<i>  break; 
+</I>&gt;<i>
+</I>&gt;<i> Since HA1 according to PacketCable specs is already in OctectString format, bin to base 16 conversion is not needed. Hence the code can be changed to 
+</I>&gt;<i>  x-&gt;authorization.len = authorization.len*2;
+</I>&gt;<i>  x-&gt;authorization.s = shm_malloc(x-&gt;authorization.len);
+</I>&gt;<i>  if (!x-&gt;authorization.s){
+</I>&gt;<i>    LOG(L_ERR,&quot;ERR:&quot;M_NAME&quot;:new_auth_vector: error allocating mem\n&quot;);
+</I>&gt;<i>    x-&gt;authorization.len=0;
+</I>&gt;<i>    goto done;
+</I>&gt;<i>  }  
+</I>&gt;<i>
+</I>&gt;<i>  memcpy(x-&gt;authorization.s,authorization.s,authorization.len);        
+</I>&gt;<i>  x-&gt;authorization.len = authorization.len;
+</I>&gt;<i>
+</I>&gt;<i>  break; 
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Sudhakar.
+</I>&gt;<i>
+</I>&gt;<i> __________________________________________________
+</I>&gt;<i> Do You Yahoo!?
+</I>&gt;<i> Tired of spam?  Yahoo! Mail has the best spam protection around 
+</I>&gt;<i> <A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i> __________________________________________________
+</I>&gt;<i> Do You Yahoo!?
+</I>&gt;<i> Tired of spam?  Yahoo! Mail has the best spam protection around 
+</I>&gt;<i> <A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002818.html">[OpenIMSCore-Users] How does IMS Core make a trusted domain ie	how it believes that the request is coming from trusted	domain and processes it
+</A></li>
+	<LI>Next message: <A HREF="002816.html">[OpenIMSCore-Users] PacketCable support - Bug	in	modules/scscf/registration.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2815">[ date ]</a>
+              <a href="thread.html#2815">[ thread ]</a>
+              <a href="subject.html#2815">[ subject ]</a>
+              <a href="author.html#2815">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

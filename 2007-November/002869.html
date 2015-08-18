@@ -1,0 +1,786 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ipsec security association problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ipsec%20security%20association%20problem&In-Reply-To=%3C472F3A1A.2010607%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002864.html">
+   <LINK REL="Next"  HREF="002854.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ipsec security association problem</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ipsec%20security%20association%20problem&In-Reply-To=%3C472F3A1A.2010607%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] ipsec security association problem">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Nov  5 16:43:22 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002864.html">[OpenIMSCore-Users] ipsec security association problem
+</A></li>
+        <LI>Next message: <A HREF="002854.html">[OpenIMSCore-Users] About The 600 Error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2869">[ date ]</a>
+              <a href="thread.html#2869">[ thread ]</a>
+              <a href="subject.html#2869">[ subject ]</a>
+              <a href="author.html#2869">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Soshant,
+
+The code for calling the P_is_integrity_protected() is commented - look
+at pcscf.cfg:145:152.
+
+You are right about what should be checked in the
+P_is_integrity_protected() function. This is more of a stub right now
+and requires some work, like all the IPSec stuff does, to build-up a
+secure solution. One thing that certainly is missing is an IPSec SA
+manager between our P-CSCF and the kernel implementation of IPSec. What
+is in there now is just for prototype trialling and certainly not for a
+deployment in an hostile environment.
+
+Well, in any case, much could be improved with little efforts. Keeping
+in mind that these changes would probably break the usage of non-3GPP
+clients or NATed ones, I would be in favor of having 2 separate
+pcscf.cfg - one for the strict case and one for the relaxed one. So if
+you do any changes, we would greatly appreciate your contributions. If
+those changes could be integrated without upseting other people - like
+having some flags to control the whole operations, it would be even better.
+
+-Dragos
+
+Soshant Bali wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> Is P_is_integrity_protected() called when an INVITE is received from
+</I>&gt;<i> the UE? If this function is not called then this can be a security
+</I>&gt;<i> vulnerability. Let there be two UEs (UE1 and UE2), and UE1 registers
+</I>&gt;<i> successfully. UE 2 is a malicious UE and is not registered but knows
+</I>&gt;<i> UE1s Contact info. Then UE2 can send an invite to pcscf, with Via
+</I>&gt;<i> header that is exactly the same as Via header coming from UE1. Since,
+</I>&gt;<i> P_is_integrity_protected is not called when INVITE is received, pcscf
+</I>&gt;<i> will not check whether or not the INVITE arrived protected. Also,
+</I>&gt;<i> since pcscf only compares Via to see whether UE is registered or not,
+</I>&gt;<i> and since via of UE2 INVITE is same as that of UE1, the INVITE will
+</I>&gt;<i> pass through pcscf.
+</I>&gt;<i>
+</I>&gt;<i> Also, the correct way to make sure that any message arrived protected
+</I>&gt;<i> is to check the (Source IP, Source Port, Destination IP and
+</I>&gt;<i> Destination Port) and see if these four match the security association
+</I>&gt;<i> that was created for this UE. The code for P_is_integrity_protected is
+</I>&gt;<i> only matching the port number in the Via to the port number in the
+</I>&gt;<i> created security association. In this case, it is very easy for a
+</I>&gt;<i> malicious UE to make the pcscf believe that the message arrived
+</I>&gt;<i> integrity protected, since all the malicious UE has to do is to form
+</I>&gt;<i> the Via header correctly.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Soshant
+</I>&gt;<i>
+</I>&gt;<i> On 11/2/07, Dragos Vingarzan &lt;    <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A> &gt; wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hello Soshant,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Well... yes and no.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So, I committed it by mistake in 473 as port_uc. Then I changed it in
+</I>&gt;&gt;<i> 474 as port_us. So it should work now. But....
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> .... this is not a good solution and it's something to remember. Let me
+</I>&gt;&gt;<i> explain why.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I really meant port_uc because the client sends from port_uc and this is
+</I>&gt;&gt;<i> how it should be identified (btw: on the other direction, the
+</I>&gt;&gt;<i> P_security_relay will use the port_us to send out messages). But I
+</I>&gt;&gt;<i> forgot to include the fix for cscf_get_ue_via, which should take the
+</I>&gt;&gt;<i> rport and not the port that the client filled in the header, which is
+</I>&gt;&gt;<i> port_us and as such the hack on the other side works. So the good fix
+</I>&gt;&gt;<i> would be to save the port_uc and check the received port... yet... this
+</I>&gt;&gt;<i> would make quite a lot of users unhappy as it would break any client
+</I>&gt;&gt;<i>  behind NAT.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So, I have just exposed a major security flaw :-p, that it is enough to
+</I>&gt;&gt;<i> forge a Via header. Good thing that our target is just for
+</I>&gt;&gt;<i> experimentation...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I am thinking now if it would be possible to identify the NAT case and
+</I>&gt;&gt;<i> make the hack for that case and not for the IPSec one.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Soshant Bali wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi Dragos,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thank you for sending this patch.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> We think that port_uc should be changed to port_us in the command you
+</I>&gt;&gt;&gt;<i> added.  We think that the patch should be
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>                                       ealg_setkey,ealg,
+</I>&gt;&gt;&gt;<i> ck_esp,alg_setkey,alg, ik_esp);
+</I>&gt;&gt;&gt;<i>                                if (!ipsec) goto error;
+</I>&gt;&gt;&gt;<i>                                s-&gt;data.ipsec = ipsec;
+</I>&gt;&gt;&gt;<i> +
+</I>&gt;&gt;&gt;<i> +                               puri.port_no = ipsec-&gt;port_us;
+</I>&gt;&gt;&gt;<i>                        }
+</I>&gt;&gt;&gt;<i>                                break;
+</I>&gt;&gt;&gt;<i>                }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> port_us should be used instead of port_uc because when the UE sends
+</I>&gt;&gt;&gt;<i> the 2 REGISTER, the contact header in this REGISTER will have the port
+</I>&gt;&gt;&gt;<i> number &quot;port_us&quot; and not &quot;port_uc&quot; because this is the protected port
+</I>&gt;&gt;&gt;<i> where UE expects to receive INVITEs in future. I am attaching a
+</I>&gt;&gt;&gt;<i> reference trace collected at pcscf.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> If we use port_uc, then pcscf does not create a security association
+</I>&gt;&gt;&gt;<i> in the direction from pcscf to UE and sends the 200ok unprotected. But
+</I>&gt;&gt;&gt;<i> when we use port_us, the pcscf creates a security association and
+</I>&gt;&gt;&gt;<i> sends 200ok protected.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Please let us know what you think.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thanks and Regards,
+</I>&gt;&gt;&gt;<i> Soshant
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>     &gt; On 10/31/07, *Dragos Vingarzan* &lt;  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> &lt;mailto:    <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;&gt; wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     Hello Mark, Soshant,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     I am attaching a small patch that might solve the issue. Normally, I
+</I>&gt;&gt;&gt;<i>     should test it myself and commit it and I would do so soon. But
+</I>&gt;&gt;&gt;<i>     maybe it
+</I>&gt;&gt;&gt;<i>     would be faster for you to try it. Please tell me if it solves the
+</I>&gt;&gt;&gt;<i>     issue.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     I know it's 1 line :). It should be simple :-p.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     Cheers,
+</I>&gt;&gt;&gt;<i>     -Dragos
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>      &gt;
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>     Evans, Mark [CTO] wrote:
+</I>&gt;&gt;&gt;<i>     &gt; Hi Dragos
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt; Thanks for the reply and feedback. I think the proposed fix will
+</I>&gt;&gt;&gt;<i>     help
+</I>&gt;&gt;&gt;<i>     &gt; somewhat. Now just to get the P-CSCF (SER) to use different
+</I>&gt;&gt;&gt;<i>     ports for
+</I>&gt;&gt;&gt;<i>     &gt; the protected and unprotected messages..... :-(
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt; I don't think we really disagree on anything major here now that you
+</I>&gt;&gt;&gt;<i>     &gt; know that we have a very heavy 3GPP(2) bias :-)
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt; We don't see port exhaustion as a risk or issue we have to deal
+</I>&gt;&gt;&gt;<i>     with
+</I>&gt;&gt;&gt;<i>     &gt; this with Media Relays and Media Gateways so using more IPs or other
+</I>&gt;&gt;&gt;<i>     &gt; techniques are not huge issue.
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt; I've registered for the IMS Workshop next month so we could discuss
+</I>&gt;&gt;&gt;<i>     &gt; further if necessary
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt; Cheers
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt; Mark
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt; Mark Evans
+</I>&gt;&gt;&gt;<i>     &gt; Sprint
+</I>&gt;&gt;&gt;<i>     &gt; Advanced Technology Labs
+</I>&gt;&gt;&gt;<i>     &gt; 1 Adrian Ct
+</I>&gt;&gt;&gt;<i>     &gt; Burlingame CA 94010
+</I>&gt;&gt;&gt;<i>     &gt;     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mark.x.evans at sprint.com</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mark.x.evans at sprint.com</A>&gt;
+</I>&gt;&gt;&gt;<i>     &gt; 650 375 4375
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  -----Original Message-----
+</I>&gt;&gt;&gt;<i>     &gt;  From:  <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i>     &lt;mailto:    <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> &gt;
+</I>&gt;&gt;&gt;<i>     &gt; [mailto: openimscore-users- &lt;mailto:openimscore-users-&gt;
+</I>&gt;&gt;&gt;<i>     &gt;      <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bounces at lists.berlios.de</A> &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bounces at lists.berlios.de</A>&gt;] On
+</I>&gt;&gt;&gt;<i>     Behalf Of Dragos Vingarzan
+</I>&gt;&gt;&gt;<i>     &gt;  Sent: Friday, October 26, 2007 5:18 AM
+</I>&gt;&gt;&gt;<i>     &gt;  To: Evans, Mark [CTO]
+</I>&gt;&gt;&gt;<i>     &gt;  Cc: openIMScore
+</I>&gt;&gt;&gt;<i>     &gt;  Subject: Re: [OpenIMSCore-Users] ipsec security association problem
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  Hello Mark,
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  No problem for the bug report. I am sorry though that I filled
+</I>&gt;&gt;&gt;<i>     one and
+</I>&gt;&gt;&gt;<i>     &gt;  not just fixed the issue immediately, but unfortunately we do
+</I>&gt;&gt;&gt;<i>     not have
+</I>&gt;&gt;&gt;<i>     &gt;  all the resources we would like to.
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  I agree with you on the specs, yet you are a little too much 3GPP
+</I>&gt;&gt;&gt;<i>     &gt;  centric ;-). We are also trying to look at what
+</I>&gt;&gt;&gt;<i>     TISPAN/CableLabs think
+</I>&gt;&gt;&gt;<i>     &gt;  about the registration process and also what actually is
+</I>&gt;&gt;&gt;<i>     required at
+</I>&gt;&gt;&gt;<i>     &gt; the
+</I>&gt;&gt;&gt;<i>     &gt;  moment in the real world. And the reality is that only a very small
+</I>&gt;&gt;&gt;<i>     &gt;  percentage of our users have actually such 3GPP clients that
+</I>&gt;&gt;&gt;<i>     support
+</I>&gt;&gt;&gt;<i>     &gt; the
+</I>&gt;&gt;&gt;<i>     &gt;  IPSec SAs. I would say that overall there were just a couple of
+</I>&gt;&gt;&gt;<i>     such
+</I>&gt;&gt;&gt;<i>     &gt; UEs
+</I>&gt;&gt;&gt;<i>     &gt;  that have been tested with the OpenIMSCore, so obviously there are
+</I>&gt;&gt;&gt;<i>     &gt; still
+</I>&gt;&gt;&gt;<i>     &gt;  things to fix.
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  Although I am not sure on what precisely we disagree as I agree
+</I>&gt;&gt;&gt;<i>     with
+</I>&gt;&gt;&gt;<i>     &gt;  most of your comments, I will try to answer.
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  On Contact header: if you just read the 3GPP standards, your
+</I>&gt;&gt;&gt;<i>     reasoning
+</I>&gt;&gt;&gt;<i>     &gt;  is somehow correct. But I would still insist that according to
+</I>&gt;&gt;&gt;<i>     pure SIP
+</I>&gt;&gt;&gt;<i>     &gt;  methodology, you are wrong a little wrong if you would change the
+</I>&gt;&gt;&gt;<i>     &gt;  Contact header. The Contact header is used during registration to
+</I>&gt;&gt;&gt;<i>     &gt;  indicate to a registrar what is the mapping between an identity
+</I>&gt;&gt;&gt;<i>     and a
+</I>&gt;&gt;&gt;<i>     &gt;  reachable network address. The 2 (or 3 for AKA SQN synchronization)
+</I>&gt;&gt;&gt;<i>     &gt; step
+</I>&gt;&gt;&gt;<i>     &gt;  process is specific to 3GPP. The general case is that if the
+</I>&gt;&gt;&gt;<i>     registrar
+</I>&gt;&gt;&gt;<i>     &gt;  accepts the registration it should save and map the found contact
+</I>&gt;&gt;&gt;<i>     &gt;  addresses to the identity communicated. If it does not trust the
+</I>&gt;&gt;&gt;<i>     &gt;  message, it could choose to challenge the originator. Then the
+</I>&gt;&gt;&gt;<i>     &gt;  originator should &quot;resubmit&quot; (this is term used by RFC3261) the
+</I>&gt;&gt;&gt;<i>     request
+</I>&gt;&gt;&gt;<i>     &gt;  with a challenge response. Yes, it is not mandatory that you do not
+</I>&gt;&gt;&gt;<i>     &gt;  change the headers and actually you must for some, yet I
+</I>&gt;&gt;&gt;<i>     interpret this
+</I>&gt;&gt;&gt;<i>     &gt;  as meaning that I should just resend what I sent before, but
+</I>&gt;&gt;&gt;<i>     this time
+</I>&gt;&gt;&gt;<i>     &gt;  with authentication data.
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  Why would you actually benefit from using different contact
+</I>&gt;&gt;&gt;<i>     addresses?
+</I>&gt;&gt;&gt;<i>     &gt;  If you think about opening the ports later on the UE on a
+</I>&gt;&gt;&gt;<i>     need-only
+</I>&gt;&gt;&gt;<i>     &gt;  basis, well, it might be that you fail later and it's too late
+</I>&gt;&gt;&gt;<i>     as you
+</I>&gt;&gt;&gt;<i>     &gt;  already fixed them in the 1st REGISTER.
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  And the thing is that the core could decide to accept your 1st
+</I>&gt;&gt;&gt;<i>     REGISTER
+</I>&gt;&gt;&gt;<i>     &gt;  without challenging you, like it does in Early-IMS or NASS-Bundled
+</I>&gt;&gt;&gt;<i>     &gt;  authentication or if you disable the authentication. So you must
+</I>&gt;&gt;&gt;<i>     &gt; present
+</I>&gt;&gt;&gt;<i>     &gt;  a real Contact as you don't know how or even if you will be
+</I>&gt;&gt;&gt;<i>     challenged?
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  Well, anyway. This was just a recommendation from me. Take as a
+</I>&gt;&gt;&gt;<i>     free
+</I>&gt;&gt;&gt;<i>     &gt;  developer insight and disregard if you think that I am wrong.
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  But let's see why it works when you don't change this. This
+</I>&gt;&gt;&gt;<i>     contact
+</I>&gt;&gt;&gt;<i>     &gt; data
+</I>&gt;&gt;&gt;<i>     &gt;  is used and saved mainly on the S-CSCF.The thing is that in our
+</I>&gt;&gt;&gt;<i>     &gt;  particular implementation the P-CSCF data is kept in a reversed
+</I>&gt;&gt;&gt;<i>     &gt;  registrar. That means that for efficiency as the P-CSCF identifies
+</I>&gt;&gt;&gt;<i>     &gt; users
+</I>&gt;&gt;&gt;<i>     &gt;  by originating addresses (not identities) and as such the data is
+</I>&gt;&gt;&gt;<i>     &gt;  indexed (hashed actually) by (host,port). In the first REGISTER
+</I>&gt;&gt;&gt;<i>     step,
+</I>&gt;&gt;&gt;<i>     &gt;  because we need to keep the data until the 2nd step, an entry is
+</I>&gt;&gt;&gt;<i>     &gt; created
+</I>&gt;&gt;&gt;<i>     &gt;  in the registrar and the user is set to a not-registered state
+</I>&gt;&gt;&gt;<i>     (if it
+</I>&gt;&gt;&gt;<i>     &gt;  was not registered before). Attached to this, the initial SA
+</I>&gt;&gt;&gt;<i>     data is
+</I>&gt;&gt;&gt;<i>     &gt;  saved. On the 2nd step, the P-CSCF will try to identify the
+</I>&gt;&gt;&gt;<i>     originator
+</I>&gt;&gt;&gt;<i>     &gt;  by the Via header. So this would have to match the contact address
+</I>&gt;&gt;&gt;<i>     &gt; saved
+</I>&gt;&gt;&gt;<i>     &gt;  in the first step. Well, it doesn't, so the P-CSCF probably
+</I>&gt;&gt;&gt;<i>     thinks that
+</I>&gt;&gt;&gt;<i>     &gt;  this is a new user and creates a new contact entry. The first SA
+</I>&gt;&gt;&gt;<i>     &gt;  succeeded because the other entry was there, but this new one
+</I>&gt;&gt;&gt;<i>     has no
+</I>&gt;&gt;&gt;<i>     &gt;  IPSec entries as the first step of the negotiation process was
+</I>&gt;&gt;&gt;<i>     lost for
+</I>&gt;&gt;&gt;<i>     &gt;  this new contact.
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  Ideally, the P-CSCF should be able to identify the UE by the SA
+</I>&gt;&gt;&gt;<i>     channel
+</I>&gt;&gt;&gt;<i>     &gt;  only. Yet this is not enough for non-3GPP IMS use. And
+</I>&gt;&gt;&gt;<i>     unfortunately
+</I>&gt;&gt;&gt;<i>     &gt; our
+</I>&gt;&gt;&gt;<i>     &gt;  P-CSCF does not have this capability at all as this data is not
+</I>&gt;&gt;&gt;<i>     relayed
+</I>&gt;&gt;&gt;<i>     &gt;  from the Linux kernel IPSec implementation to SER.
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>      &gt;     &gt;
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>     &gt;  To conclude: Yes, there is a bug in handling such cases. I did not
+</I>&gt;&gt;&gt;<i>     &gt;  thought about this case when you would not come with 2 different
+</I>&gt;&gt;&gt;<i>     &gt; Contact
+</I>&gt;&gt;&gt;<i>     &gt;  addresses when this was implemented. The bug is not in setting
+</I>&gt;&gt;&gt;<i>     the SAs,
+</I>&gt;&gt;&gt;<i>     &gt;  but in identifying the UE. I have also updated the bug-tracker to
+</I>&gt;&gt;&gt;<i>     &gt; better
+</I>&gt;&gt;&gt;<i>     &gt;  describe the actual issue. Sorry, but I am just making assumptions
+</I>&gt;&gt;&gt;<i>     &gt; until
+</I>&gt;&gt;&gt;<i>     &gt;  I will have the time to actually replicate the scenario and
+</I>&gt;&gt;&gt;<i>     debug it.
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  This I hope this closes the first of your conclusions (that the
+</I>&gt;&gt;&gt;<i>     &gt;  UE/P-CSCF should use the ports in the Security Headers for
+</I>&gt;&gt;&gt;<i>     SAs). Yes,
+</I>&gt;&gt;&gt;<i>     &gt;  this is what happens. The issue was different.
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  Then on 2nd conclusion (different ports for protected/unprotected).
+</I>&gt;&gt;&gt;<i>     &gt; Yes,
+</I>&gt;&gt;&gt;<i>     &gt;  the client should do that. The P-CSCF - the story is a little more
+</I>&gt;&gt;&gt;<i>     &gt; complex:
+</I>&gt;&gt;&gt;<i>     &gt;  1. by default configuration provided, just 1 port is used for all
+</I>&gt;&gt;&gt;<i>     &gt;  messages. This seems to be enough for most cases
+</I>&gt;&gt;&gt;<i>     &gt;  2. you can reconfigure the P-CSCF to use 2 ports, yet it is
+</I>&gt;&gt;&gt;<i>     impossible
+</I>&gt;&gt;&gt;<i>     &gt;  for now to decide on which one to use when sending out data, due to
+</I>&gt;&gt;&gt;<i>     &gt; core
+</I>&gt;&gt;&gt;<i>     &gt;  SER architectural design. I think that I have seen some changes
+</I>&gt;&gt;&gt;<i>     in the
+</I>&gt;&gt;&gt;<i>     &gt;  SER CVS lately related to this, but I don't know much about it.
+</I>&gt;&gt;&gt;<i>     Again,
+</I>&gt;&gt;&gt;<i>     &gt;  it is unfeasible and not worth for our purposes for now to do
+</I>&gt;&gt;&gt;<i>     this.
+</I>&gt;&gt;&gt;<i>     &gt;  3. using 1 port for unprotected and 1 or 2 ports for each
+</I>&gt;&gt;&gt;<i>     client - this
+</I>&gt;&gt;&gt;<i>     &gt;  is quite bad from the scaling perspective as you run out quite
+</I>&gt;&gt;&gt;<i>     soon of
+</I>&gt;&gt;&gt;<i>     &gt;  ports (yes, you can have more IPs, do some hacks, but if you can
+</I>&gt;&gt;&gt;<i>     &gt;  without, it's worth saving the trouble). The only case when this is
+</I>&gt;&gt;&gt;<i>     &gt;  required is for when you have multiple clients using the same
+</I>&gt;&gt;&gt;<i>     IP:port,
+</I>&gt;&gt;&gt;<i>     &gt;  but this is unrealistic.
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  If you choose options 1 for the P-CSCF as we do now, the UE
+</I>&gt;&gt;&gt;<i>     must use
+</I>&gt;&gt;&gt;<i>     &gt;  different ports or else it won't work. So, of course that we
+</I>&gt;&gt;&gt;<i>     are not
+</I>&gt;&gt;&gt;<i>     &gt;  forcing the UE to use the same port.
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  The actual issue at hand is more related to handling the
+</I>&gt;&gt;&gt;<i>     contact. The
+</I>&gt;&gt;&gt;<i>     &gt;  P-CSCF tries to do a NAT forward, towards the source of the
+</I>&gt;&gt;&gt;<i>     request. It
+</I>&gt;&gt;&gt;<i>     &gt;  was not supposed to do this if there are IPSec SAs there, but
+</I>&gt;&gt;&gt;<i>     obviously
+</I>&gt;&gt;&gt;<i>     &gt;  the P_security_relay() fails and P_NAT_relay() is overzealous
+</I>&gt;&gt;&gt;<i>     &gt; (pcscf.cfg
+</I>&gt;&gt;&gt;<i>     &gt;  - lines 315-316).
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  Cheers,
+</I>&gt;&gt;&gt;<i>     &gt;  -Dragos
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  Evans, Mark [CTO] wrote:
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; Hi Dragos
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; Thanks for including a bug report. However we don't entirely
+</I>&gt;&gt;&gt;<i>     agree
+</I>&gt;&gt;&gt;<i>     &gt; with
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; your synopsis.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; Based on 3GPP 33.203 it is reasonable to assume that UE will use
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; different ports for Secured and Un Secured messages.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; This being the case the Initial Registration message will be
+</I>&gt;&gt;&gt;<i>     sent
+</I>&gt;&gt;&gt;<i>     &gt; from
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; the unsecured port. This from TS 33.203 para 7.1
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>      &gt;     &gt;  &gt;
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; &lt;snip&gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; 2. The UE associates two ports, called port_us and port_uc,
+</I>&gt;&gt;&gt;<i>     with each
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; pair of security associations established in an authenticated
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; registration. The ports port_us and port_uc are different
+</I>&gt;&gt;&gt;<i>     from the
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; standard SIP ports 5060 and 5061.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; No unprotected messages shall be sent from or received on the
+</I>&gt;&gt;&gt;<i>     ports
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; port_us and port_uc.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; &gt;From a security point of view, unprotected messages may be
+</I>&gt;&gt;&gt;<i>     received
+</I>&gt;&gt;&gt;<i>     &gt; on
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; any port which is different from the ports port_us and port_uc.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; The number of the ports port_us and port_uc are communicated
+</I>&gt;&gt;&gt;<i>     to the
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; P-CSCF during the security mode set-up procedure, cf. clause 7.2.
+</I>&gt;&gt;&gt;<i>     &gt; These
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; ports are used with both, UDP and TCP
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; &lt;/snip&gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; There is a similar requirement for the P-CSCF.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; Additionally, the ports declared in the Via and Contact in the 1
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; REGISTER and 2 REGISTER messages will very likely be different.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; When the UE initially registers (i.e. no security
+</I>&gt;&gt;&gt;<i>     associations exist)
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; the first REGISTER message will contain
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; a) in the Via header - the IP Address and Port number that
+</I>&gt;&gt;&gt;<i>     the UE
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; is expecting the P-SCSF to send it's (401) response (the port
+</I>&gt;&gt;&gt;<i>     number
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; will be an unprotected port)
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; b) in the Contact header - the IP address that the UE would
+</I>&gt;&gt;&gt;<i>     expect
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; future Requests to be sent to. A port number IS NOT required,
+</I>&gt;&gt;&gt;<i>     but if
+</I>&gt;&gt;&gt;<i>     &gt; it
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; is included it should be set to the same port as described in a)
+</I>&gt;&gt;&gt;<i>     &gt; above.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; In the Second REGISTER message (in response to the P-CSCFs
+</I>&gt;&gt;&gt;<i>     challenge
+</I>&gt;&gt;&gt;<i>     &gt; to
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; the first REGISTER)  will contain
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; c) in the Via Header - the IP Address and Port number that the UE
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; is expecting the P-SCSF to send it's response (the port
+</I>&gt;&gt;&gt;<i>     number will
+</I>&gt;&gt;&gt;<i>     &gt; be
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; the UEs protected Server port port_us, assuming UDP is used)
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; d) in the Contact header - the IP address that UE would expect
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; future Requests to be sent to. A port number IS required (by 3GPP
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; standards) and will be the UEs protected Server port port_us,
+</I>&gt;&gt;&gt;<i>     for the
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; UDP case) This is specified in  TS 24.229 para    5.1.1.2
+</I>&gt;&gt;&gt;<i>     &lt; <A HREF="http://5.1.1.2">http://5.1.1.2</A>&gt;. d)
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; &lt;snip&gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; a Contact header set to include SIP URI(s) containing the IP
+</I>&gt;&gt;&gt;<i>     address
+</I>&gt;&gt;&gt;<i>     &gt; of
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; the UE in the hostport parameter or FQDN. ............If the
+</I>&gt;&gt;&gt;<i>     REGISTER
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; request is protected by a security association, the UE shall also
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; include the protected server port value in the hostport
+</I>&gt;&gt;&gt;<i>     parameter;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; &lt;/snip&gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; So in conclusion;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; The Security associations used by the UE and P-CSCF should
+</I>&gt;&gt;&gt;<i>     use the
+</I>&gt;&gt;&gt;<i>     &gt; ports
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; defined in the Security Client and Security Server headers
+</I>&gt;&gt;&gt;<i>     and NOT
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; Contacts or Vias. The contact and vias in the protected 2nd
+</I>&gt;&gt;&gt;<i>     REGISTER
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; will reflect this. The unprotected and protected REGISTER
+</I>&gt;&gt;&gt;<i>     messages
+</I>&gt;&gt;&gt;<i>     &gt; WILL
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; come from different ports.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>      &gt;     &gt;  &gt; The UE and P-CSCF MUST used different ports for protected and
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; unprotected messages as defined in TS 33.203.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; When the P-CSCF receives the 401 challenge from the S-CSCF it
+</I>&gt;&gt;&gt;<i>     should
+</I>&gt;&gt;&gt;<i>     &gt; set
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; up temporary security associations (based on Sec server/sec
+</I>&gt;&gt;&gt;<i>     client).
+</I>&gt;&gt;&gt;<i>     &gt; The
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; P-CSCF should expect the 2 REGISTER message to arrive
+</I>&gt;&gt;&gt;<i>     (protected) at
+</I>&gt;&gt;&gt;<i>     &gt; its
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; protected Server port from the UEs Protected Client port.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; The 200OK from S-CSCF to the P-CSCF should be used to convert the
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; temporary SAs to new SAs (update the SA expiry).
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; Your BUG fix when implemented should support the above
+</I>&gt;&gt;&gt;<i>     operation and
+</I>&gt;&gt;&gt;<i>     &gt; not
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>  &gt;     &gt;  &gt; force the UE to use the same ports for protected and unprotected
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; messages. The P-CSCF should use different ports for protected and
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; unprotected messages.
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>      &gt;     &gt;  &gt;
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; Thanks
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; Mark Evans
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; Sprint
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; Advanced Technology Labs
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  -----Original Message-----
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  From: Dragos Vingarzan [mailto:
+</I>&gt;&gt;&gt;<i>        <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;]
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Sent: Thursday, October 18, 2007 5:45 AM
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  To: Soshant Bali
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Cc: openIMScore; Evans, Mark [CTO]
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Subject: Re: [OpenIMSCore-Users] ipsec security association
+</I>&gt;&gt;&gt;<i>     problem
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Hello Soshant,
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  I think that the SAs are always created, just that it is not
+</I>&gt;&gt;&gt;<i>     used if
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; the
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  2nd contact is different.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Well, you shouldn't change the contact between the 2
+</I>&gt;&gt;&gt;<i>     messages - the
+</I>&gt;&gt;&gt;<i>     &gt; 2nd
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  REGISTER should basically be a resend of the first with the
+</I>&gt;&gt;&gt;<i>     extra
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  authorization information.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Anyway, the fact that this might happen means that it might be a
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  security issue.  So the way it works is that on the 401 just
+</I>&gt;&gt;&gt;<i>     one SA
+</I>&gt;&gt;&gt;<i>     &gt; is
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  set, for receiving the next 401. This is because the client
+</I>&gt;&gt;&gt;<i>     might
+</I>&gt;&gt;&gt;<i>     &gt; not
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  know the secret anyway and this might just be a DoS attach. The
+</I>&gt;&gt;&gt;<i>     &gt; other 3
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  SAs are set just before the 200 OK is sent.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  In your case, the problem is that the IPSec info is saved on the
+</I>&gt;&gt;&gt;<i>     &gt; first
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  REGISTER and then re-used on the 2nd to set the SAs, but
+</I>&gt;&gt;&gt;<i>     those were
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  wrong and as such not used. So we need to actually update
+</I>&gt;&gt;&gt;<i>     the IPSec
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; info
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  based on the info in the 200 OK, which is the info to trust
+</I>&gt;&gt;&gt;<i>     as the
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  REGISTER was authenticated.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  I have filled a bug report here:
+</I>&gt;&gt;&gt;<i>     <A HREF="http://www.openimscore.org/node/115">http://www.openimscore.org/node/115</A>
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  But in any case, I would recommend that you do not change the
+</I>&gt;&gt;&gt;<i>     &gt; Contact
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  during the registration.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Cheers,
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  -Dragos
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Soshant Bali wrote:
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; We are trying to register a UE with OpenIMS using
+</I>&gt;&gt;&gt;<i>     IPSec/AKA. On
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; receiving the 401 challenge from pcscf, the UE sends second
+</I>&gt;&gt;&gt;<i>     &gt; Register
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; to pcscf that is encrypted using ipsec. This register is
+</I>&gt;&gt;&gt;<i>     decrypted
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; fine by the pcscf. However the pcscf does not encrypt the
+</I>&gt;&gt;&gt;<i>     200ok it
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; sends back to the UE. The 200 ok is sent in plain text to
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>      &gt;     the UE.
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>     &gt; We
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; checked and found out that the pcscf does not create a
+</I>&gt;&gt;&gt;<i>     security
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; association in the direction from pcscf to the UE. It only
+</I>&gt;&gt;&gt;<i>     creates
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; security association in the direction from the UE to the
+</I>&gt;&gt;&gt;<i>     pcscf.
+</I>&gt;&gt;&gt;<i>     &gt; The
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; attached trace, trace1.pcap shows this.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; We changed the contact field in the first register to
+</I>&gt;&gt;&gt;<i>     match the
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; contact field in the second register and in this case the
+</I>&gt;&gt;&gt;<i>     security
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; associations are created fine in both directions. This is
+</I>&gt;&gt;&gt;<i>     shown in
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; trace2.pcap that is attached.
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; Is this expected behavior? What is the reasoning for
+</I>&gt;&gt;&gt;<i>     making the
+</I>&gt;&gt;&gt;<i>     &gt; pcscf
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; match the contact field of the two register messages before
+</I>&gt;&gt;&gt;<i>     &gt; deciding
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; whether or not to create a security association in the reverse
+</I>&gt;&gt;&gt;<i>     &gt;  &gt; direction?
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; _______________________________________________
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i>     &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  --
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  -----------------------------------------
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  10589 Berlin,Germany
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  Web  www.fokus.fraunhofer.de &lt;    <A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;&gt;<i>     www.openimscore.org  &lt;<A HREF="http://www.openimscore.org">http://www.openimscore.org</A>&gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  We could change the world if God would give us the source
+</I>&gt;&gt;&gt;<i>     code...
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;  -----------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  &gt;
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  --
+</I>&gt;&gt;&gt;<i>     &gt;  -----------------------------------------
+</I>&gt;&gt;&gt;<i>     &gt;  Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;<i>     &gt;  Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;&gt;<i>     &gt;  Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;<i>     &gt;  10589 Berlin,Germany
+</I>&gt;&gt;&gt;<i>     &gt;  Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>      &gt;     &gt;  Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>     &gt;  Web www.fokus.fraunhofer.de &lt;    <A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>  &gt;     www.openimscore.org &lt;    <A HREF="http://www.openimscore.org">http://www.openimscore.org</A>&gt;
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>     &gt;  We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;<i>     &gt;  -----------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;  _______________________________________________
+</I>&gt;&gt;&gt;<i>     &gt;  OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>     &gt;     &gt;   <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>     &lt;mailto:    <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;&gt;&gt;<i>     &gt;    <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>     &gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>  &gt;     --
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>     -----------------------------------------
+</I>&gt;&gt;&gt;<i>     Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;<i>     Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;&gt;<i>     Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;<i>     10589 Berlin,Germany
+</I>&gt;&gt;&gt;<i>     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;<i>     Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;<i>     Web www.fokus.fraunhofer.de &lt;    <A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;&gt;<i>      www.openimscore.org &lt;    <A HREF="http://www.openimscore.org">http://www.openimscore.org</A>&gt;
+</I>&gt;&gt;&gt;<i>     We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;<i>     -----------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     Index: modules/pcscf/security.c
+</I>&gt;&gt;&gt;<i>     ===================================================================
+</I>&gt;&gt;&gt;<i>     --- modules/pcscf/security.c    (revision 433)
+</I>&gt;&gt;&gt;<i>     +++ modules/pcscf/security.c    (working copy)
+</I>&gt;&gt;&gt;<i>     @@ -447,6 +447,8 @@
+</I>&gt;&gt;&gt;<i>                                             ealg_setkey,ealg,
+</I>&gt;&gt;&gt;<i>     ck_esp,alg_setkey,alg, ik_esp);
+</I>&gt;&gt;&gt;<i>                                     if (!ipsec) goto error;
+</I>&gt;&gt;&gt;<i>                                     s-&gt; data.ipsec = ipsec;
+</I>&gt;&gt;&gt;<i>     +
+</I>&gt;&gt;&gt;<i>     +                               puri.port_no = ipsec-&gt;port_uc;
+</I>&gt;&gt;&gt;<i>                             }
+</I>&gt;&gt;&gt;<i>                                     break;
+</I>&gt;&gt;&gt;<i>                     }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i>      Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de    www.openimscore.org
+</I>&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002864.html">[OpenIMSCore-Users] ipsec security association problem
+</A></li>
+	<LI>Next message: <A HREF="002854.html">[OpenIMSCore-Users] About The 600 Error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2869">[ date ]</a>
+              <a href="thread.html#2869">[ thread ]</a>
+              <a href="subject.html#2869">[ subject ]</a>
+              <a href="author.html#2869">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

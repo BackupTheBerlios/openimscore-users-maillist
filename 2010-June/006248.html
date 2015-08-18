@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] &quot;403 Forbidden! Not Registered - You	mustregister first with a S_CSCF&quot; when sending NOTIFY	fromPresence Server
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%22403%20Forbidden%21%20Not%20Registered%20-%20You%0A%09mustregister%20first%20with%20a%20S_CSCF%22%20when%20sending%20NOTIFY%0A%09fromPresence%20Server&In-Reply-To=%3CF47E136CEA6C4BB7AFFFC4485A6E0BE3%40FranzEdlerPC%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006247.html">
+   <LINK REL="Next"  HREF="006249.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] &quot;403 Forbidden! Not Registered - You	mustregister first with a S_CSCF&quot; when sending NOTIFY	fromPresence Server</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%22403%20Forbidden%21%20Not%20Registered%20-%20You%0A%09mustregister%20first%20with%20a%20S_CSCF%22%20when%20sending%20NOTIFY%0A%09fromPresence%20Server&In-Reply-To=%3CF47E136CEA6C4BB7AFFFC4485A6E0BE3%40FranzEdlerPC%3E"
+       TITLE="[OpenIMSCore-Users] &quot;403 Forbidden! Not Registered - You	mustregister first with a S_CSCF&quot; when sending NOTIFY	fromPresence Server">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Mon Jun  7 21:46:49 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006247.html">[OpenIMSCore-Users] &quot;403 Forbidden! Not Registered - You	mustregister first with a S_CSCF&quot; when sending NOTIFY	fromPresence Server
+</A></li>
+        <LI>Next message: <A HREF="006249.html">[OpenIMSCore-Users] Open IMS error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6248">[ date ]</a>
+              <a href="thread.html#6248">[ thread ]</a>
+              <a href="subject.html#6248">[ subject ]</a>
+              <a href="author.html#6248">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>It is necessary to have a log-file and a message trace-file (not only one
+file) to correlate messages with errors in the log.
+
+ 
+
+Franz
+
+ 
+
+  _____  
+
+Von: Ngoc Son [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">technology789 at gmail.com</A>] 
+Gesendet: Montag, 07. Juni 2010 13:50
+An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Betreff: Re: [OpenIMSCore-Users] &quot;403 Forbidden! Not Registered - You
+mustregister first with a S_CSCF&quot; when sending NOTIFY fromPresence Server
+
+ 
+
+Hi Franz, 
+
+I'm sorry for tardy response. I tried to log output of P-CSCF to log file
+but i cannot see anything unusual in that log. And a weird thing is if i use
+Monster as IMS client, NOTIFY will be sent successful from my Presence
+Server and Monster also responses with 200 OK but with Mercuro, it's not.
+Can you skim log file of P-CSCF i attached and give me some advise? This is
+log file when i use Mecuro to SUBSCRIBE to my Presence Server. Thank you. 
+
+2010/6/4 Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+
+Hi Ngoc,
+
+ 
+
+the best way to capture all messages also the internal is to use tcpdump on
+Linux.
+
+Try the command &quot;tcpdump -i any -s 3000 -w /var/tmp/tracefile.pcap&quot; and you
+will get all messages in pcap-format (readable with Wireshark).
+
+ 
+
+With logfile I meant the console-log. You should try to log all output of
+the P-CSCF console (e.g. by setting &quot;log_stderror=no&quot; to direct the log to
+syslog).
+
+ 
+
+BR
+
+Franz 
+
+ 
+
+  _____  
+
+Von: Ngoc Son [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">technology789 at gmail.com</A>] 
+Gesendet: Freitag, 04. Juni 2010 07:48
+An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>
+Betreff: Re: [OpenIMSCore-Users] &quot;403 Forbidden! Not Registered - You
+mustregister first with a S_CSCF&quot; when sending NOTIFY fromPresence Server
+
+ 
+
+Hi Franz, 
+
+   You're right. This 403 message come from P-CSCF. The last trace file I
+captured in Ethernet interface, not loopback interface, and all components
+of Open IMS reside in 1 host, so messages between P-CSCF and S-CSCF are not
+showed. But now i see that P-CSCF reply this &quot;403 Forbidden&quot; message after
+capturing in loopback interface. I've tried to find log file of  P-CSCF in
+/var/log and /opt/OpenIMSCore folder but it 's not there.
+   Can you tell me where is this log file?
+
+2010/6/3 Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+
+The failure response &quot; 403 Forbidden - Not Registered! You must register
+first with a S-CSCF&quot; comes from P-CSCF.
+
+A P-CSCF-log would help to see what P-CSCF expects.
+
+ 
+
+BTW: Why are messages between P-CSCF and S-CSCF missing in your tracefile?
+
+ 
+
+BR
+
+Franz
+
+ 
+
+  _____  
+
+Von: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] Im Auftrag von Ngoc Son
+Gesendet: Donnerstag, 03. Juni 2010 07:03
+An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Betreff: [OpenIMSCore-Users] &quot;403 Forbidden! Not Registered - You
+mustregister first with a S_CSCF&quot; when sending NOTIFY fromPresence Server
+
+ 
+
+Hi everybody,
+
+ 
+
+     I'm developing Presence Server for IMS and using Open IMS Core as my
+testbed. But, i encountered with &quot;403 Fobidden&quot; when NOTIFY is sent to
+S-CSCF from Presence Server. Dialog states which is created for SUBSCRIBE
+are handled as specified in RFC 3261. It means that remote target, route
+set, local URI, remote URI, local tag, remote tag, call ID, local and remote
+CSeq are all managed and NOTIFY request is created rely on that dialog
+state. I saw in Wireshark capture file that 200 OK for SUBSCRIBE is routed
+to IMS client through IMS core but it's not with NOTIFY. 
+
+     I also attach Wireshark capture file below. And I'm using Mercuro as
+IMS client.
+
+    
+
+    Can you explain me why it doesn't work with NOTIFY? And how can i
+resolve this problem? 
+
+    Thanks in advance.
+
+-- 
+Regards!
+DinhNgocSon
+Email: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">technology789 at gmail.com</A>
+Developer at Xener Systems
+
+
+
+
+-- 
+Regards!
+DinhNgocSon
+Email: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">technology789 at gmail.com</A>
+Developer at Xener Systems
+
+
+
+
+-- 
+Regards!
+DinhNgocSon
+Email: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">technology789 at gmail.com</A>
+Developer at Xener Systems
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100607/974eafe3/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100607/974eafe3/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006247.html">[OpenIMSCore-Users] &quot;403 Forbidden! Not Registered - You	mustregister first with a S_CSCF&quot; when sending NOTIFY	fromPresence Server
+</A></li>
+	<LI>Next message: <A HREF="006249.html">[OpenIMSCore-Users] Open IMS error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6248">[ date ]</a>
+              <a href="thread.html#6248">[ thread ]</a>
+              <a href="subject.html#6248">[ subject ]</a>
+              <a href="author.html#6248">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

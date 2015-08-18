@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [SR-Users] OpenIMSCore and Kamalio	Integration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BSR-Users%5D%20OpenIMSCore%20and%20Kamalio%0A%09Integration&In-Reply-To=%3CAANLkTi%3DofohdjkjRLQ1Q0wLr1Y0_WRQ2RSsKMuUztse2%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006839.html">
+   <LINK REL="Next"  HREF="006840.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [SR-Users] OpenIMSCore and Kamalio	Integration</H1>
+    <B>Carsten Bock</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BSR-Users%5D%20OpenIMSCore%20and%20Kamalio%0A%09Integration&In-Reply-To=%3CAANLkTi%3DofohdjkjRLQ1Q0wLr1Y0_WRQ2RSsKMuUztse2%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] [SR-Users] OpenIMSCore and Kamalio	Integration">lists at bock.info
+       </A><BR>
+    <I>Mon Jan 17 19:09:24 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006839.html">[OpenIMSCore-Users] RLS SUBSCRIBE
+</A></li>
+        <LI>Next message: <A HREF="006840.html">[OpenIMSCore-Users] openims on ipv6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6838">[ date ]</a>
+              <a href="thread.html#6838">[ thread ]</a>
+              <a href="subject.html#6838">[ subject ]</a>
+              <a href="author.html#6838">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Andres,
+
+no problem ;-)
+
+See my answers inline.
+
+2011/1/17 &quot;Andr&#233;s S. Garc&#237;a Ruiz&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">asgarcia at um.es</A>&gt;:
+&gt;<i>
+</I>&gt;<i> Hi Carsten,
+</I>&gt;<i>
+</I>&gt;<i> Thanks a lot for all the information and the access to your developments.
+</I>&gt;<i>
+</I>&gt;<i> I haven't been able to answer last week cause I got the flu. I'm fine right
+</I>&gt;<i> now.
+</I>&gt;<i>
+</I>&gt;<i> In a previous mail you wrote:
+</I>&gt;<i>
+</I>&gt;<i> &quot;The goal of the project is to create a stable, fast, open-source,
+</I>&gt;<i> feature-rich IMS implementation based on Kamailio and the
+</I>&gt;<i> OpenIMS-Core.&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I suppose that you've chosen Kamailio as a Sip Server for XCAP, Presence,
+</I>&gt;<i> RLS, presence-rules, etc. and OpenIMSCore as the heart of the IMS. So your
+</I>&gt;<i> work aims -I think- to make an easy integration of Kamailio with the
+</I>&gt;<i> OpenIMSCore. Is that true?
+</I>
+No, not exactly. I've replaced the SER-Core from the OpenIMS-Core with
+the Kamailio-Core and we are in the progress of creating a new
+OpenIMS-Core (based on the &quot;old&quot; one). We do not continue to use the
+existing OpenIMS-Core as such.
+The OpenIMS-Core implementation has some limitations and has some
+aspects, which i personally  do not like and which i am trying to
+change (don't misunderstand me here: For a research project, there was
+really great work done). However, there are a few parts, which i want
+to change, in order to make the OpenIMS-Core more flexible (and in
+some issues more stable):
+
+- The current OpenIMS-Core borrowed some code from other modules, e.g.
+there was some code taken from the dialog module, from the Nathelper
+module and maybe others, in order to implement the CSCF-Components. As
+the intented show-case and prototype, that is totally acceptable.
+However, this results in improvements and fixes done to those modules
+not necessarily leading to fixes in the OpenIMS-Modules
+- The used Core is SER 2.1-dev1. I think, that was the version of SER
+when the OpenIMS-Core was released. I wanted to replace the core with
+a more current core (in my case Kamailio 3.1/3.2), in order to bring
+the OpenIMS-Core forward.
+- many aspects of the implementation can be replaced in the current
+version with Core-Functions (e.g. header manipulation), that will make
+the code easier to maintain
+- i want to add the missing documentation for the modules
+- i wanted to include the modules in the Kamailio/sip-router.org
+project, in order to keep them maintained
+
+My work has nothing to do with integrating a Kamailio-Server (e.g.
+Presence) into a system consisting of the OpenIMS-Core, but it has
+something to do with improving the OpenIMS-Core. First i want to
+improve the OpenIMS-Core, and then we will see, what's next.
+
+All i did so far, in order to make a Kamailio-based-Presence-Server
+work with the IMS-Core, was to modify the Trigger-Point on my HSS a
+little bit... (but more a dirty hack and nothing, were i am sure if it
+is the currect or even safe to do; i made it work rather than thinking
+of, if it was correct...).
+You need to reconfigure your trigger-points (check the Session Case)
+in order to make this work.
+I have attached my trigger-point for presence, may this will help you...
+
+
+&gt;<i> I'm trying to design and implement a similar architecture, but I've had some
+</I>&gt;<i> issues, mainly with how the OpenIMSCore communicates with the external SIP
+</I>&gt;<i> presence servers. For example, when I send a RLS SUBSCRIBE to the IMS core,
+</I>&gt;<i> it does the following:
+</I>&gt;<i> - If the subscribed URI is an user of the domain, it translates its SIP URI
+</I>&gt;<i> to the sip contact uri.
+</I>&gt;<i> - If the subscribed URI is not an user, it answers with &quot;HSS User unknown&quot;.
+</I>&gt;<i>
+</I>&gt;<i> Could you tell me what kind of problems have you solved till now?
+</I>&gt;<i>
+</I>&gt;<i> Kind regards,
+</I>&gt;<i> &#160;Andr&#233;s.
+</I>&gt;<i>
+</I>&gt;<i> PS: I'm using Ubuntu. Is Ubuntu compatible with your distribution?
+</I>
+Since Ubuntu is based on Debian, i think that should work out of the
+box (but no warranty for that).
+
+Kind regards,
+Carsten
+
+P.S: Please always use the reply to all button, in order to keep the
+lists in CC.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: Ausgabe.pdf
+Type: application/pdf
+Size: 47537 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20110117/a1d7d604/attachment.pdf">https://lists.berlios.de/pipermail/openimscore-users/attachments/20110117/a1d7d604/attachment.pdf</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006839.html">[OpenIMSCore-Users] RLS SUBSCRIBE
+</A></li>
+	<LI>Next message: <A HREF="006840.html">[OpenIMSCore-Users] openims on ipv6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6838">[ date ]</a>
+              <a href="thread.html#6838">[ thread ]</a>
+              <a href="subject.html#6838">[ subject ]</a>
+              <a href="author.html#6838">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

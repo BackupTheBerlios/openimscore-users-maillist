@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P/I/S-CSCF..
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P/I/S-CSCF..&In-Reply-To=%3C4566CC94.1000804%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000060.html">
+   <LINK REL="Next"  HREF="000094.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P/I/S-CSCF..</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P/I/S-CSCF..&In-Reply-To=%3C4566CC94.1000804%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] P/I/S-CSCF..">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Nov 24 11:42:28 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000060.html">[OpenIMSCore-Users] P/I/S-CSCF..
+</A></li>
+        <LI>Next message: <A HREF="000094.html">[OpenIMSCore-Users] P/I/S-CSCF..
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#66">[ date ]</a>
+              <a href="thread.html#66">[ thread ]</a>
+              <a href="subject.html#66">[ subject ]</a>
+              <a href="author.html#66">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Ravi,
+
+Ravi ***** wrote:
+&gt;<i> Hi Guys,
+</I>&gt;<i>
+</I>&gt;<i>         I downloaded and somehow installed  OpenIMSCore in my Fedora 
+</I>&gt;<i> Machine, The thing I need to know is :-)
+</I>&gt;<i> Please Answer the following questions in one or other way :-)
+</I>&gt;<i>
+</I>&gt;<i>   1)    For every CSCF execution I can see that SER instances are 
+</I>&gt;<i> started , So, for 3 CSCF and               one   deploy there are 4 
+</I>&gt;<i> SER instances running (with 32 pid's) It seems for me some thing      
+</I>&gt;<i>            wrong,, Is it correct or I am correct.
+</I>&gt;<i>
+</I>I am not sure what you mean by deploy.
+The number of SER processes can be controlled from the *.cfg files in 
+the children field and in the *.xml files in the workers field.
+&gt;<i>  2)    and in place of &quot;FQDN&quot; and &quot;REALM&quot; do I need to change my 
+</I>&gt;<i> IP-address so that all can                  communicate properly.
+</I>&gt;<i>
+</I>no, that should be changed with your desired DNS names, that you should 
+also change in the DNS.
+you should change the IP addresses in the *.cfg files in the listen 
+field and in the *.xml files in the acceptor element - where should the 
+DiameterPeer listen on for connections
+&gt;<i>          
+</I>&gt;<i>  3)    And What about SER ? Do i need to start it as normal action 
+</I>&gt;<i> (serctl start).?
+</I>we are providing the *.sh scripts that starts it and keeps it 
+foreground, for debugging reasons.
+&gt;<i>
+</I>&gt;<i>  4)    So , we need to add user in two places one is SER and another 
+</I>&gt;<i> in Hss (For end user who want         IMS)    is it right ?
+</I>&gt;<i>
+</I>No, only in the HSS. You need to add them also in the sip2ims database 
+if you would use them through that gateway (same password and public-id 
+must &quot;sip:&quot;+private-id!). If you use an IMS client, it is enough in the 
+HSS, of course.
+&gt;<i>
+</I>&gt;<i>   5)    And I am Using Mediaproxy as my mediaserver does it support 
+</I>&gt;<i> all types of media this IMS               protocols.?
+</I>&gt;<i>
+</I>the IMS core does not deal with any media, except when you would enable 
+the RTPProxy - then obviously only the RTP media is proxied through 
+there. I am not sure what do you mean here - the core components only 
+deal with signaling.
+&gt;<i>
+</I>&gt;<i>    6)  Is there any particular Order to execute 
+</I>&gt;<i> Proxy,Interogate,Service -CSCF's .
+</I>&gt;<i>
+</I>no, except that you need them all running at the moment ;-)
+&gt;<i>
+</I>&gt;<i>     7) Please fill some more questions If you know
+</I>&gt;<i>
+</I>he? How is the Open IMS Core for you, any good ?:)
+
+Cheers,
+Dragos
+&gt;<i>                                 
+</I>&gt;<i>                        Thank You.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Ravi,
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000060.html">[OpenIMSCore-Users] P/I/S-CSCF..
+</A></li>
+	<LI>Next message: <A HREF="000094.html">[OpenIMSCore-Users] P/I/S-CSCF..
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#66">[ date ]</a>
+              <a href="thread.html#66">[ thread ]</a>
+              <a href="subject.html#66">[ subject ]</a>
+              <a href="author.html#66">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Revision411, scscf doesn't crash any more, but still sends request to AS for
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Revision411%2C%20scscf%20doesn%27t%20crash%20any%20more%2C%0A%20but%20still%20sends%20request%20to%20AS%20for&In-Reply-To=%3CBAY126-W114332AE9D85926CB6F406C4F20%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002241.html">
+   <LINK REL="Next"  HREF="002250.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Revision411, scscf doesn't crash any more, but still sends request to AS for</H1>
+    <B>KevinKinnan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Revision411%2C%20scscf%20doesn%27t%20crash%20any%20more%2C%0A%20but%20still%20sends%20request%20to%20AS%20for&In-Reply-To=%3CBAY126-W114332AE9D85926CB6F406C4F20%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] Revision411, scscf doesn't crash any more, but still sends request to AS for">kinnan2224 at hotmail.com
+       </A><BR>
+    <I>Thu Jul 26 15:28:02 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002241.html">[OpenIMSCore-Users] Revision411, scscf doesn't crash any more, but still sends request to AS for
+</A></li>
+        <LI>Next message: <A HREF="002250.html">[OpenIMSCore-Users] Revision411, scscf doesn't crash any more, but still sends request to AS for
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2242">[ date ]</a>
+              <a href="thread.html#2242">[ thread ]</a>
+              <a href="subject.html#2242">[ subject ]</a>
+              <a href="author.html#2242">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,I might find the
+reason for repeatly sending PUBLISH request to the AS. I simplified the
+xml content, and Presence server works! But dont know why! The data
+type of body column(openser.presentity) is TEXT which is a string with
+a maximum length of 65535 characters. The length of the previous xml
+data in the PUBLISH request is only 1058.The Here is the previous xml data which is followed by the simple one. ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------&lt;?xml
+version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&lt;presence
+xmlns=&quot;urn:ietf:params:xml:ns:pidf&quot;
+xmlns:dm=&quot;urn:ietf:params:xml:ns:pidf:data-model&quot;
+xmlns:r=&quot;urn:ietf:params:xml:ns:pidf:rpid&quot;
+xmlns:xsi=&quot;<A HREF="http://www.w3.org/2001/XMLSchema-instance">http://www.w3.org/2001/XMLSchema-instance</A>&quot;
+entity=&quot;pres:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at example.com</A>&quot;&gt;&lt;tuple
+id=&quot;3bfua&quot;&gt;&lt;status&gt;&lt;basic/&gt;&lt;/status&gt;&lt;r:deviceID&gt;Online&lt;/r:deviceID&gt;&lt;r:service-class&gt;&lt;r:electronic/&gt;&lt;/r:service-class&gt;&lt;r:status-icon&gt;<A HREF="http://www.dcs.lancs.ac.uk/staff/icon.jpg&lt;/r:status-icon">http://www.dcs.lancs.ac.uk/staff/icon.jpg&lt;/r:status-icon</A>&gt;&lt;contact
+priority=&quot;0.8&quot;&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&lt;/contact&gt;&lt;timestamp&gt;2007-6-26T2:25:20Z&lt;/timestamp&gt;&lt;/tuple&gt;&lt;dm:device
+id=&quot;vjsa43&quot;&gt;&lt;r:user-input idle-threshold=&quot;300&quot;
+last-input=&quot;&quot;/&gt;&lt;dm:deviceID/&gt;&lt;dm:note&gt;idle&lt;/dm:note&gt;&lt;/dm:device&gt;&lt;dm:person
+id=&quot;alice&quot;&gt;&lt;r:activities&gt;&lt;r:away/&gt;&lt;/r:activities&gt;&lt;r:mood&gt;&lt;r:happy/&gt;&lt;/r:mood&gt;&lt;r:place-is&gt;&lt;r:audio&gt;&lt;r:quiet/&gt;&lt;/r:audio&gt;&lt;r:video&gt;&lt;r:quiet/&gt;&lt;/r:video&gt;&lt;/r:place-is&gt;&lt;r:place-type&gt;&lt;r:home/&gt;&lt;/r:place-type&gt;&lt;r:privacy&gt;&lt;r:audio/&gt;&lt;r:video/&gt;&lt;r:text/&gt;&lt;/r:privacy&gt;&lt;r:sphere&gt;&lt;r:home/&gt;&lt;/r:sphere&gt;&lt;/dm:person&gt;&lt;note&gt;I
+have some visitors at home.&lt;/note&gt;&lt;/presence&gt;----------------------------------------------------------------------------------------------------------------------------------------------------------------------------&lt;?xml
+version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;presence
+xmlns=&quot;urn:ietf:params:xml:ns:cpim-pidf&quot;
+entity=&quot;pres:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">presentity at domain.com</A>&quot;&gt;&lt;tuple
+id=&quot;mobile-phone&quot;&gt;&lt;status&gt;&lt;basic&gt;closed&lt;/basic&gt;&lt;/status&gt;&lt;/tuple&gt;&lt;/presence&gt;----------------------------------------------------------------------------------------------------------------------------------------------------------------------------Kevin,&gt; Date: Thu, 26 Jul 2007 14:27:33 +0200&gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kinnan2224 at hotmail.com</A>&gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt; Subject: Re: [OpenIMSCore-Users] Revision411, scscf doesn't crash any more, but still sends request to AS for&gt; &gt; I think that you might be referring to the errors for some ACK requests.&gt; Those were not critical, but updating one more time might fix it - I did&gt; fix something similar last night.&gt; &gt; -Dragos&gt; &gt; KevinKinnan wrote:&gt; &gt;&gt; &gt; Hi JF,&gt; &gt;&gt; &gt; What I am doing when I upgrade IMS core is deleting the OpenIMSCore&gt; &gt; folder, and then follow the installation guide to rebuild the core. I&gt; &gt; think I am using the latest scscf.cfg. But still cannot figure out&gt; &gt; asserted-identity header missing problem.&gt; &gt;&gt; &gt; Kevin,&gt; &gt;&gt; &gt;&gt; &gt;&gt; &gt; ------------------------------------------------------------------------&gt; &gt;&gt; &gt; &gt; Date: Wed, 25 Jul 2007 16:34:56 +0100&gt; &gt; &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">jfkavaka at gmail.com</A>&gt; &gt; &gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kinnan2224 at hotmail.com</A>&gt; &gt; &gt; Subject: Re: [OpenIMSCore-Users] Revision411, scscf doesn't crash&gt; &gt; any more, but still sends request to AS for 4 times, and &quot;Asserted&gt; &gt; &gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt; &gt; &gt;&gt; &gt; &gt; Hi Kevin,&gt; &gt; &gt;&gt; &gt; &gt; There were some changes to these functions, and also on the script, so&gt; &gt; &gt; you should update your script to the latest one also.&gt; &gt; &gt; Are you using the latest scscf.cfg?&gt; &gt; &gt;&gt; &gt; &gt; Regards,&gt; &gt; &gt; JF&gt; &gt; &gt;&gt; &gt; &gt; On 7/25/07, KevinKinnan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kinnan2224 at hotmail.com</A>&gt; wrote:&gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; Hi, Dragos.&gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; I just upgrade IMS core to r411. S-CSCF doesnt crashes any more&gt; &gt; when sending&gt; &gt; &gt; &gt; PUBLISH request to AS. But scscf shows the following error:&gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;&gt; &gt; -----------------------------------------------------------------------------&gt; &gt; &gt; &gt; ERR:S-CSCF:S_orig_not_r egistered: Asserted Identity not&gt; &gt; &gt; &gt; found!&gt; &gt; &gt; &gt; &gt;&gt; Orig&gt; &gt; &gt; &gt; ERR:S-CSCF:S_originating_barred: Asserted Identity not&gt; &gt; &gt; &gt; found!&gt; &gt; &gt; &gt;&gt; &gt; -----------------------------------------------------------------------------&gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; and I even cannot find P-Assert-Identity header in the trace when&gt; &gt; &gt; &gt; registerring with IMS core. Does the r441 remove asserted-identity&gt; &gt; header?&gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; Kevin,&gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; ________________________________&gt; &gt; &gt; &gt; &#36890;&#36807; Windows Live Spaces &#19982;&#26379;&#21451;&#36731;&#26494;&#20849;&#20139;&#24744;&#30340;&#29983;&#27963;&#12290; &#31435;&#21363;&#23581;&#35797;&#65281;&gt; &gt; &gt; &gt; _______________________________________________&gt; &gt; &gt; &gt; OpenIMSCore-Users mailing list&gt; &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt; &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>&gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;&gt; &gt;&gt; &gt;&gt; &gt; ------------------------------------------------------------------------&gt; &gt; &#36890;&#36807; Windows Live Spaces &#19982;&#26379;&#21451;&#36731;&#26494;&#20849;&#20139;&#24744;&#30340;&#29983;&#27963;&#12290; &#31435;&#21363;&#23581;&#35797;&#65281;&gt; &gt; &lt;<A HREF="http://spaces.live.com/spacesapi.aspx?wx_%0A%20action=create&amp;wx_url=/friends.aspx&amp;mkt=zh-cn">http://spaces.live.com/spacesapi.aspx?wx_%0A%20action=create&amp;wx_url=/friends.aspx&amp;mkt=zh-cn</A>&gt;&gt; &gt;&gt; &gt; ------------------------------------------------------------------------&gt; &gt;&gt; &gt; _______________________________________________&gt; &gt; OpenIMSCore-Users mailing list&gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>&gt; &gt;   &gt; &gt; &gt; -- &gt; -----------------------------------------&gt; Dipl. Eng. Dragos Vingarzan&gt; Fraunhofer FOKUS/NGNI&gt; Kaiserin-Augusta-Allee 31&gt; 10589 Berlin,Germany&gt; Phone +49 (0)30 - 3463 - 7385&gt; Mobile +49 (0)163 - 159 - 5221&gt; Web www.fokus.fraunhofer.de www.openimscore.org&gt; We could change the world if God would give us the source code...&gt; -----------------------------------------------------------------&gt; 
+_________________________________________________________________
+&#20351;&#29992;&#19979;&#19968;&#20195;&#30340; MSN Messenger&#12290;
+<A HREF="http://imagine-msn.com/messenger/launch80/default.aspx?locale=zh-cn&amp;source=wlmailtagline">http://imagine-msn.com/messenger/launch80/default.aspx?locale=zh-cn&amp;source=wlmailtagline</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070726/8b10d0ad/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070726/8b10d0ad/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002241.html">[OpenIMSCore-Users] Revision411, scscf doesn't crash any more, but still sends request to AS for
+</A></li>
+	<LI>Next message: <A HREF="002250.html">[OpenIMSCore-Users] Revision411, scscf doesn't crash any more, but still sends request to AS for
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2242">[ date ]</a>
+              <a href="thread.html#2242">[ thread ]</a>
+              <a href="subject.html#2242">[ subject ]</a>
+              <a href="author.html#2242">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

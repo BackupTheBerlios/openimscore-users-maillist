@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Existing Application Servers?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Existing%20Application%20Servers%3F&In-Reply-To=%3C45D5C81D.5010905%40teigre.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000836.html">
+   <LINK REL="Next"  HREF="000838.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Existing Application Servers?</H1>
+    <B>Greger V. Teigre</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Existing%20Application%20Servers%3F&In-Reply-To=%3C45D5C81D.5010905%40teigre.com%3E"
+       TITLE="[OpenIMSCore-Users] Existing Application Servers?">greger at teigre.com
+       </A><BR>
+    <I>Fri Feb 16 16:05:01 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000836.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+        <LI>Next message: <A HREF="000838.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#837">[ date ]</a>
+              <a href="thread.html#837">[ thread ]</a>
+              <a href="subject.html#837">[ subject ]</a>
+              <a href="author.html#837">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I just want to chip in some comments here:
+ * A great thing as well as a challenge with SER is indeed it's 
+flexibility. You can indeed implement B2BUAish functionality in SER. The 
+basic stance is that if you can do it in a module, you are welcome to 
+that. However, SER's core value proposition is based on its performance 
+and flexibility, not its abilities as a B2BUA. Thus, the core of SER is 
+&quot;defended&quot; against any  movement towards B2BUA, AS functionality. The 
+belief is that this will endanger SER's core value proposition without 
+necessary making a good B2BUA or AS
+ * SER does have its cousin SEMS, which is by now a full B2BUA. I have 
+difficulty seeing why it shouldn't be called an AS (it also uses SER's 
+SIP stack as a front-end). SEMS can either stay in the SIP dialog path 
+or both in SIP and media.
+ * A rule of thumb (as of today) is that anything that requires full 
+dialog state should not be done in SER. SER's configuration logic does 
+not lend itself easily to handle dialogs and it is easier to do using SEMS
+ * There are grey areas, presence is one.  There will always be grey 
+areas and my guess is that we will see SER covering more of them as time 
+goes.  Maybe even a new ser-dialog.cfg that can handle dialogs on a 
+dialog, not transaction level (this is not an authoritative statement, 
+just my personal feeling)
+ * I also hope that we can see SER as a front-end (just like SEMS is 
+using SER) for more AS-type solutions. I know that a company has created 
+a (commercial) JSLEEish SER module. Personally, I believe extending SER 
+application interface is important. The upcoming SER user group meeting 
+in Prague will probably see a presentation of work in progress on this
+
+g-)
+
+Dragos Vingarzan wrote:
+&gt;<i> Hi Andrey,
+</I>&gt;<i>
+</I>&gt;<i> First, let me make some things clear. The best way to integrate an AS
+</I>&gt;<i> into Open IMS Core (or any other IMS network) is to make use of the ISC
+</I>&gt;<i> interface and not by changing the scscf.cfg. You can define in the
+</I>&gt;<i> user's service profile on the HSS different filters and on match, the
+</I>&gt;<i> initial request will be forwarded to the indicated application servers.
+</I>&gt;<i> The scscf.cfg should not be changed except for operator specific
+</I>&gt;<i> settings (some things are optional, customizable, etc). We did modify it
+</I>&gt;<i> slightly for example to route to PSTN as this something usually common
+</I>&gt;<i> for all users, but Shared IFC is on the roadmap and will be there to do
+</I>&gt;<i> just that.
+</I>&gt;<i>
+</I>&gt;<i> I am saying the things above, just to rule out misunderstandings. I
+</I>&gt;<i> guess that you did not mean that, but I just want to be sure
+</I>&gt;<i>
+</I>&gt;<i> Then, regarding the use of SER as an application server (or SER+cdp
+</I>&gt;<i> module, if you'd like to call it OpenIMS). Recently I have questioned
+</I>&gt;<i> the targeted usage of SER on the development list there. One relevant
+</I>&gt;<i> conclusion stands out: SER is a SIP proxy and should no be abused as an
+</I>&gt;<i> AS. Now I know that this is contradictory with what happens actually in
+</I>&gt;<i> SER, as there are application server modules in the main tree  (e.g.
+</I>&gt;<i> presence application server), but this is the position of the core
+</I>&gt;<i> developers there. So considered yourself warned ;-) and prepare yourself
+</I>&gt;<i> to be disappointed if you want to do barring with a B2BUA by using SER.
+</I>&gt;<i> If you have lots of programming resources, you can do it, no pb.
+</I>&gt;<i>
+</I>&gt;<i> However, SER does have great performance and flexibility, so a simple AS
+</I>&gt;<i> would be very easy to hack in. The CDP module offers you support for
+</I>&gt;<i> Diameter but you still need a module/functionality for the Sh interface
+</I>&gt;<i> with the HSS if you want that. I was thinking about it, but so far
+</I>&gt;<i> nobody was interested. If we get some more interest here, we could put
+</I>&gt;<i> it on the road-map.
+</I>&gt;<i>
+</I>&gt;<i> I am not sure that I was clear enough, but I am very interested in
+</I>&gt;<i> continuing this thread.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Andrey Kuprianov wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Has anyone tried to implement or implemented AS's of any kind on OpenIMS?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> For instance, Call Barring AS. As I understand (and, please, correct
+</I>&gt;&gt;<i> me if im wrong), many other AS's are already available on OpenIMS:
+</I>&gt;&gt;<i> like presence or IM. These servers can be implemented by playing with
+</I>&gt;&gt;<i> ser.cfg. However, some cannot be. Therefore, I am interested in the
+</I>&gt;&gt;<i> most *efficient* (quick) way to implement AS's on OpenIMS. Would it be
+</I>&gt;&gt;<i> trying accomplish this with my ser.cfg or would it be adding an extra
+</I>&gt;&gt;<i> module to SER or both?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If im not clear (i am actually confused myself), please, let me know.
+</I>&gt;&gt;<i> I would be happy to clarify my problem.
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070216/46c1088b/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070216/46c1088b/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000836.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+	<LI>Next message: <A HREF="000838.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#837">[ date ]</a>
+              <a href="thread.html#837">[ thread ]</a>
+              <a href="subject.html#837">[ subject ]</a>
+              <a href="author.html#837">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

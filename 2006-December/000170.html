@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Cannot establish call: ACK message not
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Cannot%20establish%20call%3A%20ACK%20message%20not&In-Reply-To=%3C7C26F4EEB99BE34A8408A9B5E9C4853801A36E2D%40swsmsx411.ger.corp.intel.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000164.html">
+   <LINK REL="Next"  HREF="000174.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Cannot establish call: ACK message not</H1>
+    <B>Verbeiren, David</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Cannot%20establish%20call%3A%20ACK%20message%20not&In-Reply-To=%3C7C26F4EEB99BE34A8408A9B5E9C4853801A36E2D%40swsmsx411.ger.corp.intel.com%3E"
+       TITLE="[OpenIMSCore-Users] Cannot establish call: ACK message not">david.verbeiren at intel.com
+       </A><BR>
+    <I>Tue Dec  5 10:03:39 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000164.html">[OpenIMSCore-Users] [Bug #9615] The P-CSCF SUBSCRIBEs to &quot;reg&quot; on	de-registration
+</A></li>
+        <LI>Next message: <A HREF="000174.html">[OpenIMSCore-Users] Cannot establish call: ACK message not
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#170">[ date ]</a>
+              <a href="thread.html#170">[ thread ]</a>
+              <a href="subject.html#170">[ subject ]</a>
+              <a href="author.html#170">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>It is indeed the same problem. Although I had looked at that email
+thread, because I really just started with OpenIMSCore, it did not
+strike me as being the same issue. Thanks a lot for pointing me back at
+it!
+
+BTW, the only error (or rather warning) reported is far from being
+directly related with the problem. Maybe we should add debug entries to
+the log for such cases, because otherwise, in case sending the reply
+fails, no evidence of the root cause is given:
+
+route[Orig_Subsequent]
+{
+	...
+	if (method!=&quot;CANCEL&quot; &amp;&amp; !P_follows_dialog_routes(&quot;orig&quot;)){
+--&gt;		log(1,&quot;&gt;&gt;       Orig_Subsequent: Request not following
+indicated dialog routes\n&quot;);
+		#Variant 1 - deny access to the network
+		sl_send_reply(&quot;400&quot;,&quot;Bad Request - Not following
+indicated dialog routes&quot;);
+		break;
+	...
+}
+
+Thanks again,
+-David
+
+
+-----Original Message-----
+From: Jose Silva [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">joesilvas at gmail.com</A>] 
+Sent: 04 December 2006 18:43
+To: Verbeiren, David
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Cannot establish call: ACK message not
+
+Hi,
+
+Take a look at
+<A HREF="https://lists.berlios.de/pipermail/openimscore-users/2006-November/00012">https://lists.berlios.de/pipermail/openimscore-users/2006-November/00012</A>
+4.html
+for a description of the problem and a possible patch.
+
+Regards,
+Jose Carlos Silva
+
+------------------------------------------------------------------------
+----Date: Mon, 4 Dec 2006 17:23:31 -0000
+From: &quot;Verbeiren, David&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">david.verbeiren at intel.com</A>&gt;
+Subject: [OpenIMSCore-Users] Cannot establish call: ACK message not
+       propagated beyond P-CSCF
+To: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+
+Hi,
+
+I have the CSCFs and the HSS running with default users Alice and Bob
+registered, but when I try to place a call between both users, I see
+that the ACK message sent by the caller in response to the 200 OK does
+not propagate beyond the P-CSCF. Also when any party disconnects, the
+other one doesn't see the BYE message. Ethernet capture is attached. All
+the OpenIMSCore pieces run on 192.168.64.2 with the Diameter connection
+over the loopback interface (127.0.0.1) while the client phones are on
+other systems (192.168.1.204 and 192.168.64.5). The *.cfg files have
+been adjusted accordingly (at least I think so and the successful
+registration seems to indicate so).
+
+Also, the P-CSCF shows the following warning:
+      sl_send_reply: I won't send a reply for ACK!!
+
+Any idea where the problem could be? Something the sip2ims gw doesn't do
+properly or a problem in P-CSCF?
+
+Thanks,
+-David
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000164.html">[OpenIMSCore-Users] [Bug #9615] The P-CSCF SUBSCRIBEs to &quot;reg&quot; on	de-registration
+</A></li>
+	<LI>Next message: <A HREF="000174.html">[OpenIMSCore-Users] Cannot establish call: ACK message not
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#170">[ date ]</a>
+              <a href="thread.html#170">[ thread ]</a>
+              <a href="subject.html#170">[ subject ]</a>
+              <a href="author.html#170">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

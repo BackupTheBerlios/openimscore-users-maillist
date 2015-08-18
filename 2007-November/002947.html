@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Openser AS cannot pass through S-CSCF a MESSAGE request
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Openser%20AS%20cannot%20pass%20through%20S-CSCF%20a%0A%20MESSAGE%20request&In-Reply-To=%3C473D90E6.4080209%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002946.html">
+   <LINK REL="Next"  HREF="002950.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Openser AS cannot pass through S-CSCF a MESSAGE request</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Openser%20AS%20cannot%20pass%20through%20S-CSCF%20a%0A%20MESSAGE%20request&In-Reply-To=%3C473D90E6.4080209%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Openser AS cannot pass through S-CSCF a MESSAGE request">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Nov 16 13:45:26 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002946.html">[OpenIMSCore-Users] Openser AS cannot pass through S-CSCF a MESSAGE	request
+</A></li>
+        <LI>Next message: <A HREF="002950.html">[OpenIMSCore-Users] Openser AS cannot pass through S-CSCF a MESSAGE request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2947">[ date ]</a>
+              <a href="thread.html#2947">[ thread ]</a>
+              <a href="subject.html#2947">[ subject ]</a>
+              <a href="author.html#2947">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Alvaro,
+
+I am afraid that the MESSAGE request does not open any dialog, as it
+looks-like from your trace (or???). There the MESSAGE from the AS looks
+like a subsequent message in a dialog :-/ (using the contact address
+from a previous request)...
+
+
+The Request-URI is wrong (there is no sip:138.4.7.163:6060 user in the
+network) - you should use <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at amd-openims.test.</A>
+
+Why the Route header?
+
+
+Cheers,
+-Dragos
+
+
+
+Alvaro Mari Diego wrote:
+&gt;<i> Hi everyone!
+</I>&gt;<i>
+</I>&gt;<i> I've got a HelloWorld SIP-Servlet running on WeSIP over OpenSER AS, which
+</I>&gt;<i> is configured as deflault AS in OpenIMSCore. Any request excepto REGISTER
+</I>&gt;<i> is forwarded by the SCSCF to OpenSER.
+</I>&gt;<i>
+</I>&gt;<i> The HelloWorldServlet takes any client incoming MESSAGE request, responses
+</I>&gt;<i> a 200 OK and a new MESSAGE request with content = &quot;Hello World&quot;. The thing
+</I>&gt;<i> is, the 200 OK respones reaches my client sucecssfully, but the &quot;Hello,
+</I>&gt;<i> World!&quot; MESSAGE request get stuck in the S-CSCF, getting in my AS a &quot;403
+</I>&gt;<i> Forbidden - Dialog not found on S-CSCF or Terminating user not suitable
+</I>&gt;<i> for unregistered services&quot; response. The MESSAGE request from the AS has
+</I>&gt;<i> got a header to get permission without register in the network, like this:
+</I>&gt;<i>
+</I>&gt;<i> messageRequest.addHeader(&quot;p-asserted-identity&quot;,
+</I>&gt;<i>
+</I>&gt;<i>                 &quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">helloworld at amd-openims.test</A>&quot;);
+</I>&gt;<i>
+</I>&gt;<i> But it's not working. I also tried to add a push-route header to the
+</I>&gt;<i> P-CSCF, but it responses a &quot;403 Forbidden Not Registered&quot; because of not
+</I>&gt;<i> going through the SCSCF first.
+</I>&gt;<i>
+</I>&gt;<i> I attach you a capture of one example of the message flow of the problem.
+</I>&gt;<i> the IPs are:
+</I>&gt;<i>
+</I>&gt;<i> - 138.4.7.149:1748: client (X-Lite), outside the network.
+</I>&gt;<i> - 138.4.7.163:4060: OpenIMSCore P-CSCF
+</I>&gt;<i> - 138.4.7.163:6060: OpenIMSCore S-CSCF
+</I>&gt;<i> - 138.4.7.163:5080: OpenSER+WeSIP AS
+</I>&gt;<i>
+</I>&gt;<i> I wonder if  maybe i've got to configure the S-CSCF or the USER PROFILE in
+</I>&gt;<i> the FoHSS web UI to make the SCSCF allow the MESSAGE request, but i dont'
+</I>&gt;<i> know how to do it. Any idea of what's going on?
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002946.html">[OpenIMSCore-Users] Openser AS cannot pass through S-CSCF a MESSAGE	request
+</A></li>
+	<LI>Next message: <A HREF="002950.html">[OpenIMSCore-Users] Openser AS cannot pass through S-CSCF a MESSAGE request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2947">[ date ]</a>
+              <a href="thread.html#2947">[ thread ]</a>
+              <a href="subject.html#2947">[ subject ]</a>
+              <a href="author.html#2947">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

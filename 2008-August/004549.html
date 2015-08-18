@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Framed-IP-Address
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Framed-IP-Address&In-Reply-To=%3C48B3D3C1.1090203%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004535.html">
+   <LINK REL="Next"  HREF="004536.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Framed-IP-Address</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Framed-IP-Address&In-Reply-To=%3C48B3D3C1.1090203%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Framed-IP-Address">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Aug 26 11:58:25 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004535.html">[OpenIMSCore-Users] Framed-IP-Address
+</A></li>
+        <LI>Next message: <A HREF="004536.html">[OpenIMSCore-Users] Call java code in C code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4549">[ date ]</a>
+              <a href="thread.html#4549">[ thread ]</a>
+              <a href="subject.html#4549">[ subject ]</a>
+              <a href="author.html#4549">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Jianjun,
+
+I see now. I fixed the HSS in r580 and the S-CSCF in r581.
+
+Thanx for the explanation!
+
+Cheers,
+-Dragos
+
+Jianjun Zhang wrote:
+&gt;<i> Also see the pcap.
+</I>&gt;<i> 2008-08-22
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Jianjun Zhang
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> *&#21457;&#20214;&#20154;&#65306;* Jianjun Zhang
+</I>&gt;<i> *&#21457;&#36865;&#26102;&#38388;&#65306;* 2008-08-22 22:21:16
+</I>&gt;<i> *&#25910;&#20214;&#20154;&#65306;* Dragos Vingarzan
+</I>&gt;<i> *&#25220;&#36865;&#65306;* openimscore-users
+</I>&gt;<i> *&#20027;&#39064;&#65306;* Re: Re: [OpenIMSCore-Users] Framed-IP-Address
+</I>&gt;<i> Hi Dragos,
+</I>&gt;<i> Not include TL, I mean the V.
+</I>&gt;<i> Look at UtilAVP.java, about line 558.
+</I>&gt;<i> if(((av.getAuth_scheme() &amp; CxConstants.Auth_Scheme_Early) != 0)){
+</I>&gt;<i> AVP ip = new AVP(DiameterConstants.AVPCode.FRAMED_IP_ADDRESS, true, 0);
+</I>&gt;<i> String sip = av.getIp();
+</I>&gt;<i> if (sip != null)
+</I>&gt;<i> {
+</I>&gt;<i> byte fIpLen = 6;
+</I>&gt;<i> int poz = 0,k = 2;
+</I>&gt;<i> byte [] result = new byte[fIpLen] ;
+</I>&gt;<i> result[0] = 0;
+</I>&gt;<i> result[1] = 1;
+</I>&gt;<i> 2008-08-22
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Jianjun Zhang
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> *&#21457;&#20214;&#20154;&#65306;* Dragos Vingarzan
+</I>&gt;<i> *&#21457;&#36865;&#26102;&#38388;&#65306;* 2008-08-22 19:03:37
+</I>&gt;<i> *&#25910;&#20214;&#20154;&#65306;* Jianjun Zhang
+</I>&gt;<i> *&#25220;&#36865;&#65306;* openimscore-users
+</I>&gt;<i> *&#20027;&#39064;&#65306;* Re: [OpenIMSCore-Users] Framed-IP-Address
+</I>&gt;<i> Hi Jianjun,
+</I>&gt;<i> Isn't it that there are 2 more octets at the beginning indicating the
+</I>&gt;<i> type and the length? So for IPv4 2+4=6 bytes...
+</I>&gt;<i> Could you please send a network trace with the MAR and MAA?
+</I>&gt;<i> Thanx,
+</I>&gt;<i> -Dragos
+</I>&gt;<i> Jianjun Zhang wrote:
+</I>&gt;<i> &gt; Hi
+</I>&gt;<i> &gt; The Framed-IP-Address defined in RFC 2865 is 4 octets.
+</I>&gt;<i> &gt; I send MAR(&quot;Early-IMS-Security&quot;) to openIMS; The Framed-IP-Address in
+</I>&gt;<i> &gt; MAA is 6 octets, it seems that its type is &quot;Address&quot;.
+</I>&gt;<i> &gt; I think it is wrong?
+</I>&gt;<i> &gt; RFC 4005
+</I>&gt;<i> &gt; Framed-IP-Address 8 6.11.1 OctetString| M | P | | V | Y |
+</I>&gt;<i> &gt; RFC 2865
+</I>&gt;<i> &gt; 5.8. Framed-IP-Address
+</I>&gt;<i> &gt; Description
+</I>&gt;<i> &gt; This Attribute indicates the address to be configured for the
+</I>&gt;<i> &gt; user. It MAY be used in Access-Accept packets. It MAY be used in
+</I>&gt;<i> &gt; an Access-Request packet as a hint by the NAS to the server that
+</I>&gt;<i> &gt; it would prefer that address, but the server is not required to
+</I>&gt;<i> &gt; honor the hint.
+</I>&gt;<i> &gt; A summary of the Framed-IP-Address Attribute format is shown below.
+</I>&gt;<i> &gt; The fields are transmitted from left to right.
+</I>&gt;<i> &gt; 0 1 2 3
+</I>&gt;<i> &gt; 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+</I>&gt;<i> &gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</I>&gt;<i> &gt; | Type | Length | Address
+</I>&gt;<i> &gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</I>&gt;<i> &gt; Address (cont) |
+</I>&gt;<i> &gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</I>&gt;<i> &gt; Type
+</I>&gt;<i> &gt; 8 for Framed-IP-Address.
+</I>&gt;<i> &gt; Length
+</I>&gt;<i> &gt; 6
+</I>&gt;<i> &gt; Address
+</I>&gt;<i> &gt; The Address field is four octets. The value 0xFFFFFFFF indicates
+</I>&gt;<i> &gt; that the NAS Should allow the user to select an address (e.g.
+</I>&gt;<i> &gt; Negotiated). The value 0xFFFFFFFE indicates that the NAS should
+</I>&gt;<i> &gt; select an address for the user (e.g. Assigned from a pool of
+</I>&gt;<i> &gt; addresses kept by the NAS). Other valid values indicate that the
+</I>&gt;<i> &gt; NAS should use that value as the user's IP address.
+</I>&gt;<i> &gt; 2008-08-05
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt; Jianjun Zhang
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> -- 
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004535.html">[OpenIMSCore-Users] Framed-IP-Address
+</A></li>
+	<LI>Next message: <A HREF="004536.html">[OpenIMSCore-Users] Call java code in C code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4549">[ date ]</a>
+              <a href="thread.html#4549">[ thread ]</a>
+              <a href="subject.html#4549">[ subject ]</a>
+              <a href="author.html#4549">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

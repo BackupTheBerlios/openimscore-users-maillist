@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] N95, after SUBSCRIBE, NOTIFY request cannot be received by N95?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20N95%2C%20after%20SUBSCRIBE%2C%0A%20NOTIFY%20request%20cannot%20be%20received%20by%20N95%3F&In-Reply-To=%3C4847E075.1030505%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004054.html">
+   <LINK REL="Next"  HREF="004043.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] N95, after SUBSCRIBE, NOTIFY request cannot be received by N95?</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20N95%2C%20after%20SUBSCRIBE%2C%0A%20NOTIFY%20request%20cannot%20be%20received%20by%20N95%3F&In-Reply-To=%3C4847E075.1030505%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] N95, after SUBSCRIBE, NOTIFY request cannot be received by N95?">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Jun  5 14:47:49 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004054.html">[OpenIMSCore-Users] N95, after SUBSCRIBE, NOTIFY request cannot be received by N95?
+</A></li>
+        <LI>Next message: <A HREF="004043.html">[OpenIMSCore-Users] 480 temporarily unavailable- diameter Cx	interface failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4061">[ date ]</a>
+              <a href="thread.html#4061">[ thread ]</a>
+              <a href="subject.html#4061">[ subject ]</a>
+              <a href="author.html#4061">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Kevin,
+
+the messages look better now and I see that they are at least properly
+routed through the IMS core.
+
+About the N95 unfortunately I don't think that I can help you... Others
+maybe?
+
+By logs I meant anything that might output some debugging information.
+
+Cheers,
+-Dragos
+
+KevinKinnan wrote:
+&gt;<i> I got mistake. Here is the right trace.I think that the problem might
+</I>&gt;<i> be from the code. Is there any limits on SUBSCRIBE request sending or
+</I>&gt;<i> NOTIFY request receiving?
+</I>&gt;<i> It seems the method of acceptAndOpen() hangs when got a incoming
+</I>&gt;<i> NOTIFY, which doesn't happen on MESSAGE request. I tried SUBSCRIBE
+</I>&gt;<i> first, and had received MESSAGE during a loop of NOTIFY request. I've
+</I>&gt;<i> also tried the code on S60(fp1) emulator, but the same error happened.
+</I>&gt;<i> when you say searching the N95 log, are you mean that I should connect
+</I>&gt;<i> N95 to serial port on the pc and read the logs when I am testing the code?
+</I>&gt;<i>
+</I>&gt;<i> Kevin
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> &gt; Date: Wed, 4 Jun 2008 11:17:18 +0200
+</I>&gt;<i> &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kinnan2224 at hotmail.com</A>
+</I>&gt;<i> &gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; Subject: Re: [OpenIMSCore-Users] N95, after SUBSCRIBE, NOTIFY
+</I>&gt;<i> request cannot be received by N95?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hi Kevin,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; No clue about why it rejects the NOTIFY - try searching on the N95 logs.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Then the SUBSCRIBE has several errors:
+</I>&gt;<i> &gt; - It should be Route and not Router the header names there
+</I>&gt;<i> &gt; - Not :lr, but ;lr because lr (loose route) is a parameter, not a port
+</I>&gt;<i> &gt; number
+</I>&gt;<i> &gt; - you should route your messages through the P-CSCF, not directly to the
+</I>&gt;<i> &gt; I-CSCF... if you fix the previous points, this will probably also be
+</I>&gt;<i> &gt; fixed, but you should check anyway.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Cheers,
+</I>&gt;<i> &gt; -Dragos
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; KevinKinnan wrote:
+</I>&gt;<i> &gt; &gt; After sending subscribe request, a 200 response replies which is
+</I>&gt;<i> &gt; &gt; follow ed by a NOTIFY request. I can trace this NOTIFY request from
+</I>&gt;<i> &gt; &gt; wireshark. But, it seems the N95 doesnot accept it. A loop of sending
+</I>&gt;<i> &gt; &gt; NOTIFY from server shows in the trace. I also test the subscribe
+</I>&gt;<i> &gt; &gt; example code from nokia api. It is also seems no to be working. the
+</I>&gt;<i> &gt; &gt; trace is attached.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Regards,
+</I>&gt;<i> &gt; &gt; Kevin
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt; &#8220;&#19971;&#20214;&#27494;&#22120;&#65292;&#19971;&#31181;&#23436;&#32654;&#8221; &#31435;&#21051;&#20307;&#39564;&#65281; &lt;<A HREF="http://get.live.cn">http://get.live.cn</A>&gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; _______________________________________________
+</I>&gt;<i> &gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt; -----------------------------------------
+</I>&gt;<i> &gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt; Fraunhofer FOKUS/NGNI
+</I>&gt;<i> &gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt; Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i> &gt; Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> &gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Windows Live Writer&#65292;&#25903;&#25345;&#31163;&#32447;&#25776;&#20889;&#21338;&#23458;&#20869;&#23481;&#65292;&#38543;&#26102;&#38543;&#22320;&#24819;&#20889;&#23601;&#20889;&#12290; &#31435;&#21363;&#20351;
+</I>&gt;<i> &#29992;&#65281; &lt;<A HREF="http://get.live.cn/product/writer.html">http://get.live.cn/product/writer.html</A>&gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004054.html">[OpenIMSCore-Users] N95, after SUBSCRIBE, NOTIFY request cannot be received by N95?
+</A></li>
+	<LI>Next message: <A HREF="004043.html">[OpenIMSCore-Users] 480 temporarily unavailable- diameter Cx	interface failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4061">[ date ]</a>
+              <a href="thread.html#4061">[ thread ]</a>
+              <a href="subject.html#4061">[ subject ]</a>
+              <a href="author.html#4061">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

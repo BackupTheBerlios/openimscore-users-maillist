@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] OpenIMSCore :: &quot;fatal error: OpenXCAP needs a backend to be specified in order to run&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2013-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore%20%3A%3A%20%22fatal%20error%3A%20OpenXCAP%20needs%20a%0A%20backend%20to%20be%20specified%20in%20order%20to%20run%22&In-Reply-To=%3CCALxVSSSu9mdK-AnZngN3AQ9antg9Rq45DrqDZvCqcw4t2qza%3DQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007657.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] OpenIMSCore :: &quot;fatal error: OpenXCAP needs a backend to be specified in order to run&quot;</H1>
+    <B>Usman Akram</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore%20%3A%3A%20%22fatal%20error%3A%20OpenXCAP%20needs%20a%0A%20backend%20to%20be%20specified%20in%20order%20to%20run%22&In-Reply-To=%3CCALxVSSSu9mdK-AnZngN3AQ9antg9Rq45DrqDZvCqcw4t2qza%3DQ%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] OpenIMSCore :: &quot;fatal error: OpenXCAP needs a backend to be specified in order to run&quot;">muhammadusmanakram at gmail.com
+       </A><BR>
+    <I>Sun Mar 17 18:25:35 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007657.html">[OpenIMSCore-Users] Regarding registration  failure in openIMS
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7658">[ date ]</a>
+              <a href="thread.html#7658">[ thread ]</a>
+              <a href="subject.html#7658">[ subject ]</a>
+              <a href="author.html#7658">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I am trying to configure OpenXcap as XDM Server with OpenIMS core but the
+things are not working as good as i thought, Need help !!
+
+I tried to run the openxcap by following the instruction form :
+<A HREF="http://openxcap.org/projects/openxcap/wiki/Configuration#Add-MySQL-user">http://openxcap.org/projects/openxcap/wiki/Configuration#Add-MySQL-user</A>
+
+But unformtunately recieved &quot;fatal error: OpenXCAP needs a backend to be
+specified in order to run&quot;
+------------------------------------------------------------------------------------------
+
+xxx-ThinkPad-T43:/etc/openxcap$ sudo ./openxcap --no-fork
+[sudo] password for usman:
+Starting OpenXCAP 2.1.0
+using set_wakeup_fd
+fatal error: OpenXCAP needs a backend to be specified in order to run
+-------------------------------------------------------------------------------------------
+
+
+I am in a real need for a help as i am struggling with this problem from a
+long time........ I would really appreciate that if someone could assist a
+solution.
+
+Below mentioned are the steps with I have done so far.
+1. Downloaded the onxcap (tar file) and unzip it and placed it in
+/etc/openxcap
+2. create database for subscriber &amp; xcap as per instruction [
+<A HREF="http://openxcap.org/projects/openxcap/wiki/Configuration#Add-MySQL-user">http://openxcap.org/projects/openxcap/wiki/Configuration#Add-MySQL-user</A>]
+3. I have done some customization in the config.ini.sample file because I
+am running openxcap on my local machine, here is the file:
+
+==================== config.ini.sample =========================
+;
+; Configuration file for OpenXCAP
+;
+; The values in the commented lines represent the defaults built in the
+; server software
+;
+
+[Server]
+
+; IP address to listen for requests
+; 0.0.0.0 means any address of this host
+
+ address = 127.0.0.1:8000
+; address = 0.0.0.0
+; This is a comma separated list of XCAP root URIs. The first is the
+; primary XCAP root URI, while the others (if specified) are aliases.
+; The primary root URI is used when generating xcap-diff
+; If the scheme is https, then the server will listen for requests in TLS
+mode.
+
+;root = <A HREF="http://xcap.example.com/xcap-root">http://xcap.example.com/xcap-root</A>
+root = <A HREF="http://127.0.0.1/xcap-root">http://127.0.0.1/xcap-root</A>
+; The backend to be used for storage and authentication. Current supported
+; values are Database and OpenSIPS. OpenSIPS backend inherits all the
+settings
+; from the Database backend but performs extra actions related to the
+; integration with OpenSIPS for which it read the settings from [OpenSIPS]
+; section
+
+backend = OpenSIPS
+;backend = Database
+; Validate XCAP documents against XML schemas
+
+ document_validation = Yes
+
+; Allow URIs in pres-rules and resource-lists to point to lists not served
+; by this server
+
+allow_external_references = No
+
+; List os applications that won't be enabled on the server
+;disabled_applications = test-app, org.openxcap.dialog-rules
+
+[Logging]
+
+; Start, stop and major server error messages are always logged to syslog.
+
+; This section can be used to log more details about XCAP clients accessing
+; the server. The values in the commented lines represent the defaults
+built
+; in the server software
+
+; Directory where to write access.log file that will contain requests
+and/or
+; responses to OpenXCAP server in Apache style. If set to an empty string,
+; access logs will be printed to stdout if the server runs in no-fork mode
+; or to syslog if the server runs in the background
+
+ directory=/var/log/openxcap
+
+; The following parameters control what kind of information (like
+; stacktrace, body or headers) is logged for which response codes. The
+; values must be a comma-separated list of HTTP response codes or the
+; keyword 'any' that matches all response codes.
+
+; log_stacktrace=500
+; log_response_headers=500
+; log_response_body=500
+; log_request_headers=500
+; log_request_body=500
+
+ log_stacktrace=500
+ log_response_headers=500
+ log_response_body=500
+ log_request_headers=500
+ log_request_body=500
+
+[Authentication]
+
+; The HTTP authentication type, this can be either 'basic' or 'digest'. The
+; standard states 'digest' as the mandatory, however it can be changed to
+; basic
+
+; type = digest
+ type = digest
+
+; Specify if the passwords are stored as plain text - Yes
+; or in a hashed format MD5('username:domain:password') - No
+; cleartext_passwords = Yes
+
+; The default authentication realm, if none indicated in the HTTP request
+; URI
+;default_realm = example.com
+default_realm = 127.0.0.1
+
+; A comma-separated list of hosts or networks to trust.
+; The elements can be an IP address in CIDR format, a
+; hostname or an IP address (in the latter 2 a mask of 32
+; is assumed), or the special keywords 'any' and 'none'
+; (being equivalent to 0.0.0.0/0 and 0.0.0.0/32
+; respectively).
+; trusted_peers =
+
+
+[TLS]
+
+; Location of X509 certificate and private key that identify this server.
+; The path is relative to /etc/openxcap, or it can be given as an absolute
+; path.
+
+; Server X509 certificate
+; certificate =
+
+; Server X509 private key
+; private_key =
+
+
+[Database]
+
+; The database connection URI for the datase with subscriber accounts
+;authentication_db_uri = <A HREF="mysql://opensips:opensipsrw@localhost/opensips">mysql://opensips:opensipsrw@localhost/opensips</A>
+authentication_db_uri = <A HREF="mysql://root:root@127.0.0.1/openxcap">mysql://root:root@127.0.0.1/openxcap</A>
+
+; The database connection URI for the database that stores the XCAP
+documents
+;storage_db_uri = <A HREF="mysql://opensips:opensipsrw@localhost/opensips">mysql://opensips:opensipsrw@localhost/opensips</A>
+storage_db_uri = <A HREF="mysql://root:root@127.0.0.1/openxcap">mysql://root:root@127.0.0.1/openxcap</A>
+
+; Authentication and storage tables
+; subscriber_table = subscriber
+; xcap_table = xcap
+ subscriber_table = subscriber
+ xcap_table = xcap
+
+[OpenSIPS]
+
+; The address and port of the xml-rpc management interface
+;xmlrpc_url = <A HREF="http://sip.example.com:8080">http://sip.example.com:8080</A>
+xmlrpc_url = <A HREF="http://127.0.0.1:8080">http://127.0.0.1:8080</A>
+
+; Publish xcap-diff event via OpenSIPS management interface
+; enable_publish_xcapdiff = yes
+enable_publish_xcapdiff = yes
+==========================================================
+
+Question 1: How can I connect &amp; test my OpenSips or Database , what should
+be appropriate steps ?
+
+Question 2: for XDM server how many components we actually need to have in
+order to integrate it with open IMS core.  ( openSips , SER or any other)?
+
+A comprehensive answer would be highly appreciated.
+
+Thanks in advance
+
+Best regards,
+
+Usman
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130317/0f765048/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130317/0f765048/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: config.ini.sample
+Type: application/octet-stream
+Size: 4242 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130317/0f765048/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130317/0f765048/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007657.html">[OpenIMSCore-Users] Regarding registration  failure in openIMS
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7658">[ date ]</a>
+              <a href="thread.html#7658">[ thread ]</a>
+              <a href="subject.html#7658">[ subject ]</a>
+              <a href="author.html#7658">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

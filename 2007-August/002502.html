@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] how to reduce Expires value in INVITE on isc	interface
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20how%20to%20reduce%20Expires%20value%20in%20INVITE%20on%0A%20isc%09interface&In-Reply-To=%3C46D5586D.6080907%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002471.html">
+   <LINK REL="Next"  HREF="002472.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] how to reduce Expires value in INVITE on isc	interface</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20how%20to%20reduce%20Expires%20value%20in%20INVITE%20on%0A%20isc%09interface&In-Reply-To=%3C46D5586D.6080907%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] how to reduce Expires value in INVITE on isc	interface">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Aug 29 13:28:45 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002471.html">[OpenIMSCore-Users] how to reduce Expires value in INVITE on isc	interface
+</A></li>
+        <LI>Next message: <A HREF="002472.html">[OpenIMSCore-Users] SIPP Scripts repository
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2502">[ date ]</a>
+              <a href="thread.html#2502">[ thread ]</a>
+              <a href="subject.html#2502">[ subject ]</a>
+              <a href="author.html#2502">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Vishwadeepak,
+
+The parameter that you are looking for is this one:
+modparam(&quot;tm&quot;, &quot;fr_timer&quot;, 5000)
+
+This indicates how long the S-CSCF waits for ANY (NOT JUST ISC!!!)
+transaction to complete until declaring a timeout, 5000ms in this case.
+This is why you get 4 messages (at 0, 0.5, 1 and 2 seconds).
+
+The parameters below are not related to this, but to the 3rd party
+registration and what is the amount of time with which the registration
+towards the app servers would be bigger than the real one.
+
+In the end, I would really not recommend you to reduce the fr_timer to
+500 ms as this would mean that !ANY! transaction not finished in this
+amount will timeout.
+
+-Dragos
+
+Vishwadeepak Agarwal wrote:
+&gt;<i>
+</I>&gt;<i> Hi all,
+</I>&gt;<i> i am sending INVITE to my application server from UCTIMSCLIENT via
+</I>&gt;<i> imscore.
+</I>&gt;<i> The imscore is sending four INVITEs to my application server till
+</I>&gt;<i> timeout.
+</I>&gt;<i> I want to restrict it to one INVITE.
+</I>&gt;<i> I have done changes in the scscf.cfg file but it didnt help.
+</I>&gt;<i>
+</I>&gt;<i> changes in scscf.cfg :
+</I>&gt;<i> #modparam(&quot;isc&quot;,&quot;expires_grace&quot;,120)
+</I>&gt;<i> modparam(&quot;isc&quot;,&quot;expires_grace&quot;,30)
+</I>&gt;<i>
+</I>&gt;<i> can somebody help? Thanks in advance.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Vishwa Deepak Agarwal
+</I>&gt;<i>
+</I>&gt;<i> *
+</I>&gt;<i> *
+</I>&gt;<i> ______________________________________________________________________
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002471.html">[OpenIMSCore-Users] how to reduce Expires value in INVITE on isc	interface
+</A></li>
+	<LI>Next message: <A HREF="002472.html">[OpenIMSCore-Users] SIPP Scripts repository
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2502">[ date ]</a>
+              <a href="thread.html#2502">[ thread ]</a>
+              <a href="subject.html#2502">[ subject ]</a>
+              <a href="author.html#2502">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

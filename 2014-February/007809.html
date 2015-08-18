@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] getting Audio or video port from INVITE Message
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2014-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20getting%20Audio%20or%20video%20port%20from%20INVITE%20Message&In-Reply-To=%3CCADXK2ai%3D0C7qnZENjkCvBjW061YSnZ4F7SsrpzYoDQg4hr9P5g%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] getting Audio or video port from INVITE Message</H1>
+    <B>Vinod Pandey</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20getting%20Audio%20or%20video%20port%20from%20INVITE%20Message&In-Reply-To=%3CCADXK2ai%3D0C7qnZENjkCvBjW061YSnZ4F7SsrpzYoDQg4hr9P5g%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] getting Audio or video port from INVITE Message">vinodkrpandey at gmail.com
+       </A><BR>
+    <I>Thu Feb  6 17:54:03 CET 2014</I>
+    <P><UL>
+        
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7809">[ date ]</a>
+              <a href="thread.html#7809">[ thread ]</a>
+              <a href="subject.html#7809">[ subject ]</a>
+              <a href="author.html#7809">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dear Group,
+
+
+Is it possible to extract *audio port* from INVITE message or whole INVITE
+message content (as mentioned below)  from  the Open IMS Source code?
+
+
+I am not much familiar with the code base of Open IMS source code....so
+required some expert help here.
+
+
+Currently, I have deployed Application server at IMS to catch the INVITE
+req. method. Which doesn't seems to be a good solution to me. Since this
+required further work to develop B2BUA application to have END-to-END VOIP
+call.
+
+The purpose of getting audio port from INVITE message is to create a
+dedicated bearer on that port for VOLTE testing.
+
+
+
+received INVITE request: INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at test.3gpp.com</A> SIP/2.0
+
+P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd52f2000400000008&quot;;icid-generated-at=10.120.4.206;orig-ioi=&quot;
+test.3gpp.com&quot;
+
+Accept-Contact:
+*;+g.3gpp.icsi-ref=&quot;urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel&quot;
+
+P-Access-Network-Info: ADSL;utran-cell-id-3gpp=00000000
+
+CSeq: 29394 INVITE
+
+Supported: 100rel
+
+Route: &lt;
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.test.3gpp.com</A>:6060;lr;s=2;h=1;d=0;a=7369703a616c69636540746573742e336770702e636f6d
+&gt;<i>
+</I>
+Call-ID: 005181bc-327a-f0e8-3114-0f148adaafed
+
+Via: SIP/2.0/UDP 10.120.4.206:6060;branch=z9hG4bK8b46.adfe9302.0
+
+Via: SIP/2.0/UDP 10.120.4.206;branch=z9hG4bK8b46.3a77e2d7.0;i=1
+
+Via: SIP/2.0/TCP 10.120.6.190:20245;branch=z9hG4bK415938319;rport=20245
+
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at test.3gpp.com</A>&gt;;tag=415934853
+
+Content-Type: application/sdp
+
+Allow: INVITE, ACK, CANCEL, BYE, MESSAGE, OPTIONS, NOTIFY, PRACK, UPDATE,
+REFER
+
+Privacy: none
+
+To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at test.3gpp.com</A>
+
+P-Preferred-Service: urn:urn-7:3gpp-service.ims.icsi.mmtel
+
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.120.6.190</A>:20245;transport=tcp
+&gt;<i>;+g.oma.sip-im;language=&quot;en,fr&quot;;+g.3gpp.icsi-ref=&quot;urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel&quot;
+</I>
+Content-Length: 270
+
+User-Agent: IM-client/OMA1.0 Boghe/v2.0.97.687
+
+Wlss-Popped-Route: sip:test.3gpp.com:5080;lr
+
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.test.3gpp.com</A>:6060;lr&gt;
+
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.test.3gpp.com</A>:5060;lr&gt;
+
+Max-Forwards: 15
+
+
+
+v=0
+
+o=doubango 1983 678901 IN IP4 10.120.6.190
+
+s=-
+
+c=IN IP4 10.120.6.190
+
+t=0 0
+
+m=audio *27538* RTP/AVP 111 8 101
+
+a=ptime:20
+
+a=rtpmap:111 AMR/8000/1
+
+a=fmtp:111 octet-align=0
+
+a=rtpmap:8 PCMA/8000/1
+
+a=rtpmap:101 telephone-event/8000/1
+
+a=fmtp:101 0-15
+
+a=sendrecv
+
+Regards,
+
+Vinod P
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20140206/a911d341/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20140206/a911d341/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7809">[ date ]</a>
+              <a href="thread.html#7809">[ thread ]</a>
+              <a href="subject.html#7809">[ subject ]</a>
+              <a href="author.html#7809">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

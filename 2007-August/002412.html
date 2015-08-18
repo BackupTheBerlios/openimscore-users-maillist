@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Calling with the Movial Communicator 6
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Calling%20with%20the%20Movial%20Communicator%206&In-Reply-To=%3C28dc25250708201327rf346c6fk21beb79998468e79%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002411.html">
+   <LINK REL="Next"  HREF="002438.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Calling with the Movial Communicator 6</H1>
+    <B>jeff endicott</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Calling%20with%20the%20Movial%20Communicator%206&In-Reply-To=%3C28dc25250708201327rf346c6fk21beb79998468e79%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Calling with the Movial Communicator 6">endy21osu at gmail.com
+       </A><BR>
+    <I>Mon Aug 20 22:27:58 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002411.html">[OpenIMSCore-Users] Calling with the Movial Communicator 6
+</A></li>
+        <LI>Next message: <A HREF="002438.html">[OpenIMSCore-Users] Calling with the Movial Communicator 6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2412">[ date ]</a>
+              <a href="thread.html#2412">[ thread ]</a>
+              <a href="subject.html#2412">[ subject ]</a>
+              <a href="author.html#2412">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+this is a pcap of the register and 2 call tries . hopefully this will help
+in the tracking down of this problem.
+
+also in a possibly related matter i just realized a few days ago that the
+icscf should find an scscf. this is not the case for me. i have to manually
+go into the hssdb and change the scscf_addr feild in the impi table
+everytime i want to register with a uctimscleint or movial communicator 6.
+attached also is a pcap of the 600 busy everywhere error i reseive in this
+case. i have no idea why this is not working for me.  if it was a diameter
+problem shouldnt the uctclient not register or complete calls? well i hope i
+didnt give you folks too much to think about.
+
+Thanks All
+
+Jeff
+
+On 8/20/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Actually it looks like those 2 come from some other client? the last
+</I>&gt;<i> SUBSCRIBE, which has the Via contents the same as the data saved in the
+</I>&gt;<i> Contact in the 200 OK for REGISTER, goes through normally.
+</I>&gt;<i>
+</I>&gt;<i> Then for the call, the Via header is not the one that we can see in the
+</I>&gt;<i> registration traffic. Either you used another client that did not
+</I>&gt;<i> register or your client jumps ports and uses un-registered addresses.
+</I>&gt;<i>
+</I>&gt;<i> Please send a trace showing both register and call, done with the same
+</I>&gt;<i> client instance.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Franz Edler wrote:
+</I>&gt;<i> &gt; Jeff,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I now have looked at the scenario (attached) and found:
+</I>&gt;<i> &gt; - The registration goes ok (200 OK)
+</I>&gt;<i> &gt; - But the PUBLISH and SUBSCRIBE requests after REGISTER are rejected
+</I>&gt;<i> with
+</I>&gt;<i> &gt;   &quot;403 Forbidden - Not Registered! You must register first with a
+</I>&gt;<i> S-CSCF&quot;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The function &quot;P_is_registered()&quot; checks if the originator contact of
+</I>&gt;<i> this
+</I>&gt;<i> &gt; message is registered at a S-CSCF. The check is based on the Contact
+</I>&gt;<i> header
+</I>&gt;<i> &gt; field. In both cases the result is negative because (my quick guess):
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; - PUBLISH does not contain a Contact header field
+</I>&gt;<i> &gt; - SUBSCRIBE has a Contact header field but now uses TCP instead of UDP
+</I>&gt;<i> as
+</I>&gt;<i> &gt; with REGISTER.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; cheers
+</I>&gt;<i> &gt; -franz
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070820/5eccdeed/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070820/5eccdeed/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: reg_and_call_movial.pcap
+Type: application/octet-stream
+Size: 88431 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070820/5eccdeed/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070820/5eccdeed/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 600.pcap
+Type: application/octet-stream
+Size: 31829 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070820/5eccdeed/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070820/5eccdeed/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002411.html">[OpenIMSCore-Users] Calling with the Movial Communicator 6
+</A></li>
+	<LI>Next message: <A HREF="002438.html">[OpenIMSCore-Users] Calling with the Movial Communicator 6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2412">[ date ]</a>
+              <a href="thread.html#2412">[ thread ]</a>
+              <a href="subject.html#2412">[ subject ]</a>
+              <a href="author.html#2412">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

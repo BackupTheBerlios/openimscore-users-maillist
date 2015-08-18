@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> No subject
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.10.1331735656.7444.openimscore-users%40lists.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000964.html">
+   <LINK REL="Next"  HREF="007281.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>No subject</H1>
+    <B></B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.10.1331735656.7444.openimscore-users%40lists.berlios.de%3E"
+       TITLE="No subject">
+       </A><BR>
+    <I>Wed Mar 14 15:33:54 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000964.html">No subject
+</A></li>
+        <LI>Next message: <A HREF="007281.html">[OpenIMSCore-Users] UCTIMS CLIENT
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#981">[ date ]</a>
+              <a href="thread.html#981">[ thread ]</a>
+              <a href="subject.html#981">[ subject ]</a>
+              <a href="author.html#981">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>you would have another contact registered, then the trace in correct.
+
+Anyway, in r163 I have applied a patch that should help you. However,
+that introduces 2 new bugs:
+- when a client has more than 1 contact, bogus and incorrect 3rd party
+registrations are sent
+- when a the contact expiration is not within the S-CSCF limits,
+incorrect 3rd party registrations are sent
+
+If you would have time to fix these issue, we would all appreciate. The
+issue is that the isc module needs to synchronize the contacts with what
+is actually in the registrar, or the 3rd party registration needs to be
+more tightly coupled in the SCSCF module.
+
+-Dragos
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Stefan.Brozinski at materna.de</A> wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> I have tested deregistration with r158 now. I can't see that anything
+</I>&gt;<i> changed regarding the deregistration.
+</I>&gt;<i>
+</I>&gt;<i> See the attached wireshark trace.
+</I>&gt;<i>
+</I>&gt;<i> 1. Client (X-Lite) to sip2ims
+</I>&gt;<i> 2. sip2ims to pcscf
+</I>&gt;<i> 3. pcscf to icscf
+</I>&gt;<i> 4. icscf to scscf
+</I>&gt;<i> 5. scscf to as
+</I>&gt;<i>
+</I>&gt;<i> Packet 1..4 still have an expires=0 parameter at the Contact header,
+</I>&gt;<i> Packet 5 still has a nonzero Expires header.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Stefan
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;&gt;<i> Sent: Tuesday, February 27, 2007 8:52 PM
+</I>&gt;&gt;<i> To: Brozinski, Stefan
+</I>&gt;&gt;<i> Cc: Bornemann, Sven; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] SIP deregistration with 
+</I>&gt;&gt;<i> strange&quot;Expires&quot;-header
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi Stefan, Sven,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> OK, so I did a big fix for this in r158. I tested a little 
+</I>&gt;&gt;<i> and it seems
+</I>&gt;&gt;<i> that there are no more issues when registering with multiple contacts
+</I>&gt;&gt;<i> with or without the expires header. This is quite a big change, so I
+</I>&gt;&gt;<i> would appreciate any feedback on it.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>     
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000964.html">No subject
+</A></li>
+	<LI>Next message: <A HREF="007281.html">[OpenIMSCore-Users] UCTIMS CLIENT
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#981">[ date ]</a>
+              <a href="thread.html#981">[ thread ]</a>
+              <a href="subject.html#981">[ subject ]</a>
+              <a href="author.html#981">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,337 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] reg: X-lite registration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20reg%3A%20X-lite%20registration&In-Reply-To=%3C45F01084.50102%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001138.html">
+   <LINK REL="Next"  HREF="001120.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] reg: X-lite registration</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20reg%3A%20X-lite%20registration&In-Reply-To=%3C45F01084.50102%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] reg: X-lite registration">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Mar  8 14:32:52 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001138.html">[OpenIMSCore-Users] reg: X-lite registration
+</A></li>
+        <LI>Next message: <A HREF="001120.html">[OpenIMSCore-Users] Domain settings for OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1139">[ date ]</a>
+              <a href="thread.html#1139">[ thread ]</a>
+              <a href="subject.html#1139">[ subject ]</a>
+              <a href="author.html#1139">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>That's what I was saying all the time :). But I guess that the fact that
+we had a SIP2IMS gateway meant that this was the way to do MD5
+authentication. Well, since r178, the SIP2IMS gateway is history!
+
+That means no more trouble when calling through the SIP2IMS Gateway :)
+
+Another good news would be that I think that we could do an automatic
+selection of the algorithm - if you don't present an Authorization
+header in the first request, then the S-CSCF should do MD5 or
+Early-IMS... I still have to figure a way to distinguish between these
+two though...
+
+In any case, if you want to use a specific scheme, just put in the first
+Authorization header (no need to change the scscf.cfg).
+
+-Dragos
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Stefan.Brozinski at materna.de</A> wrote:
+&gt;<i> I have good news for everyone who uses sip2ims and experiences the 401
+</I>&gt;<i> problem.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Solution: Don't use sip2ims anymore.
+</I>&gt;<i>
+</I>&gt;<i> 1. Configure your SIP client to connect to the P-CSCF on port 4060
+</I>&gt;<i> directly.
+</I>&gt;<i>
+</I>&gt;<i> 2. In the HSS, navigate to User Profiles / Private Identity /
+</I>&gt;<i> Authorization Scheme and change this from &quot;Digest-AKAv1-MD5&quot; to
+</I>&gt;<i> &quot;Digest-MD5&quot;.
+</I>&gt;<i>
+</I>&gt;<i> 3. In scscf.cfg, find &quot;MD5&quot;. Make sure the line that ends with &quot;MD5&quot; is
+</I>&gt;<i> active now and the line ending with &quot;AKAv1-MD5&quot; is commented out.
+</I>&gt;<i>
+</I>&gt;<i> Now you can connect X-Lite or whatever SIP client you like.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Stefan
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;&gt;<i> Sent: Thursday, March 08, 2007 11:18 AM
+</I>&gt;&gt;<i> To: Brozinski, Stefan
+</I>&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Rajeswari.Routhu at cognizant.com</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] reg: X-lite registration
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I am not ruling out X-Lite just because it is not Open Source but
+</I>&gt;&gt;<i> because I do not think that we should adapt IMS for SIP but SIP to IMS
+</I>&gt;&gt;<i> and we can't do that with X-Lite. It is not our target to have a core
+</I>&gt;&gt;<i> that would inter-work with SIP clients that do not have the required
+</I>&gt;&gt;<i> functionality. Or?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> As I previously said in another thread, we are discontinuing 
+</I>&gt;&gt;<i> support for
+</I>&gt;&gt;<i> the SIP2IMS Gw. It might be broken in the latest revisions 
+</I>&gt;&gt;<i> and I for one
+</I>&gt;&gt;<i> do not see the benefit of fixing it when I can do MD5 authentication
+</I>&gt;&gt;<i> without it. Attached you have a trace of a successful MD5 
+</I>&gt;&gt;<i> authentication
+</I>&gt;&gt;<i> without it.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Unfortunately I can't run this with X-Lite because the latest versions
+</I>&gt;&gt;<i> are windows only and the trouble of running it is too big, 
+</I>&gt;&gt;<i> compared to a
+</I>&gt;&gt;<i> SIPp script.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Stefan.Brozinski at materna.de</A> wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> For the records: X-Lite used to work up to (at least) r158.
+</I>&gt;&gt;&gt;<i> Now that I have upgraded OpenIMSCore to r172, registration 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> fails with a
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> 401 error.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Before ruling out X-Lite just because it isn't open source, 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> I suggest to
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> have a look at the network trace -- just in case it could 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> help to reveal
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> a bug in OpenIMSCore.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The IP addresses in this trace are:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> *.*.*.124 = client (running X-Lite)
+</I>&gt;&gt;&gt;<i> *.*.*.138 = sip2ims
+</I>&gt;&gt;&gt;<i> *.*.*.129 = p-cscf
+</I>&gt;&gt;&gt;<i> *.*.*.128 = i-cscf
+</I>&gt;&gt;&gt;<i> *.*.*.136 = s-cscf
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> &gt;From this trace, I cant's see what's wrong with X-Lite's behaviour.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Stefan
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> 
+</I>&gt;&gt;&gt;&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf 
+</I>&gt;&gt;&gt;&gt;<i> Of Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;<i> Sent: Thursday, March 08, 2007 9:41 AM
+</I>&gt;&gt;&gt;&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Rajeswari.Routhu at cognizant.com</A>
+</I>&gt;&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>; 
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-request at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] reg: X-lite registration
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> X-lite is a SIP UE with closed source. As such there is 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> now practical
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> way that we could support it.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I would suggest the UCT IMS Client 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> <A HREF="http://uctimsclient.berlios.de/">http://uctimsclient.berlios.de/</A> -
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> which is developed and maintained by people also 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> monitoring this list.
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Rajeswari.Routhu at cognizant.com</A> wrote:
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> Hi
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Iam using x-lite as my client but not able to register and 
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> getting 401
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> error.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Is X-lite compatible with open ims core.?
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Somebody suggest the solution.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Thanks in advance
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> *Thanks &amp; Regards*
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> *Rajeswari.R*
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> *Programmer Analyst *
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> *Cognizant Technology Solutions*
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> *Hyderabad***
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> *V-net:63149 | Ph.no.:40122721 | mobile:9247747498*
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> This e-mail and any files transmitted with it are for the 
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> sole use of
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> the intended recipient(s) and may contain confidential and 
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> privileged
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> information.
+</I>&gt;&gt;&gt;&gt;&gt;<i> If you are not the intended recipient, please contact the 
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> sender by
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i> reply e-mail and destroy all copies of the original message.
+</I>&gt;&gt;&gt;&gt;&gt;<i> Any unauthorised review, use, disclosure, dissemination, 
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> forwarding,
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i> printing or copying of this email or any action taken in 
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> reliance on
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i> this e-mail is strictly
+</I>&gt;&gt;&gt;&gt;&gt;<i> prohibited and may be unlawful.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> --------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i> ----------
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> -- 
+</I>&gt;&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> -- 
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001138.html">[OpenIMSCore-Users] reg: X-lite registration
+</A></li>
+	<LI>Next message: <A HREF="001120.html">[OpenIMSCore-Users] Domain settings for OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1139">[ date ]</a>
+              <a href="thread.html#1139">[ thread ]</a>
+              <a href="subject.html#1139">[ subject ]</a>
+              <a href="author.html#1139">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

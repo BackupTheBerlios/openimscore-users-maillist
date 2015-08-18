@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> No subject
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.63.1331735752.7444.openimscore-users%40lists.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005892.html">
+   <LINK REL="Next"  HREF="006085.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>No subject</H1>
+    <B></B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.63.1331735752.7444.openimscore-users%40lists.berlios.de%3E"
+       TITLE="No subject">
+       </A><BR>
+    <I>Wed Mar 14 15:33:54 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005892.html">No subject
+</A></li>
+        <LI>Next message: <A HREF="006085.html">No subject
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5944">[ date ]</a>
+              <a href="thread.html#5944">[ thread ]</a>
+              <a href="subject.html#5944">[ subject ]</a>
+              <a href="author.html#5944">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>the same for each dialog that would be active in parallel.
+  &lt;br&gt;
+  &lt;br&gt;
+Cheers,
+  &lt;br&gt;
+-Dragos
+  &lt;br&gt;
+  &lt;br&gt;
+Dushyant Dhalia wrote:
+  &lt;br&gt;
+  &lt;blockquote type=&quot;cite&quot;&gt;After looking for the problem/solution on
+google, i found that the print &quot;ERROR: sip_msg_cloner: cannot allocate
+memory&quot; is related to OpenSER which has now become OpenSIPS. A lot of
+people who use OpenSIPS as underlying platform face this problem.
+    &lt;br&gt;
+    &lt;br&gt;
+The solution is to increase shared memory and PKG memory (for malloc).
+The same can be done through changes in the following parameters -
+    &lt;br&gt;
+#define PKG_MEM_POOL_SIZE 16*1024*1024
+    &lt;br&gt;
+#define SHM_MEM_SIZE 64
+    &lt;br&gt;
+    &lt;br&gt;
+These parameters are defined in ser_ims/trunk/config.h file. Change
+these parameters and recompile / install ser and it will work.
+    &lt;br&gt;
+    &lt;br&gt;
+Dushyant P S Dhalia,
+    &lt;br&gt;
+Rancore Technologies, Gurgaon, INDIA
+    &lt;br&gt;
+    &lt;br&gt;
+Dushyant Dhalia wrote:
+    &lt;br&gt;
+    &lt;blockquote type=&quot;cite&quot;&gt;Putting the same question again. If anybody
+can suggest some thing.
+      &lt;br&gt;
+      &lt;br&gt;
+Dushyant Dhalia wrote:
+      &lt;br&gt;
+      &lt;blockquote type=&quot;cite&quot;&gt;I am using IMS_Bench as IMS UE and
+I-CSCF, S-CSCF and HSS of OpenIMS/FOKUS.
+        &lt;br&gt;
+i-cscf, s-cscf and hss running on the same machine. Configuration of
+machine are -
+        &lt;br&gt;
+#uname -a
+        &lt;br&gt;
+Linux TestLab-6 2.6.18-8.el5 #1 SMP Fri Jan 26 14:15:21 EST 2007 i686
+athlon i386 GNU/Linux
+        &lt;br&gt;
+        &lt;br&gt;
+The configuration for my load test are -
+        &lt;br&gt;
+Total number of subscribers = 2500, registration rate 10 reg/sec
+        &lt;br&gt;
+After registration -
+        &lt;br&gt;
+calls per second = 50; since originating and terminating s-cscf are
+same it would be 100 calls/sec for s-cscf.
+        &lt;br&gt;
+cal hold time is 10 seconds i.e at any point of time ideally there
+should be a maximum of 500 calls and with orig/term it would be 1000
+dialog contexts.
+        &lt;br&gt;
+        &lt;br&gt;
+After few minutes the calls start failing (with 514 Originating dialog
+save failure - S-CSCF maximum dialog count reached! and 514 Terminating
+dialog save failure - S-CSCF maximum dialog count reached! as response
+code). In s-cscf we are getting the following prints (multiple times)-
+        &lt;br&gt;
+3(28049) ERR:S-CSCF:S_save_dialog: dialog already exists!
+        &lt;br&gt;
+2(28048) ERROR: sip_msg_cloner: cannot allocate memory
+        &lt;br&gt;
+2(28048) ERROR: new_t: out of mem:
+        &lt;br&gt;
+        &lt;br&gt;
+The above load runs absolutely if call rate is 30 calls/sec&nbsp; i.e. 60
+calls with orig/term.
+        &lt;br&gt;
+        &lt;br&gt;
+My question is how to configure scscf.cfg and icscf.cfg. I have already
+disabled logging in icscf, scscf and hss. i have modified the following
+parameters -
+        &lt;br&gt;
+(&quot;scscf&quot;,&quot;registrar_hash_size&quot;,10240)
+        &lt;br&gt;
+(&quot;scscf&quot;,&quot;dialogs_hash_size&quot;,10240)
+        &lt;br&gt;
+(&quot;scscf&quot;,&quot;max_dialog_count&quot;,5000)
+        &lt;br&gt;
+(&quot;icscf&quot;,&quot;hash_size&quot;,10240)
+        &lt;br&gt;
+        &lt;br&gt;
+What else do i need to do? icscf.cfg and scscf.cfg are attached.
+        &lt;br&gt;
+        &lt;br&gt;
+Dushyant P S Dhalia
+        &lt;br&gt;
+        &lt;br&gt;
+&quot;When work is a pleasure, life is a joy! When work is duty, life is
+slavery.&quot; &nbsp; _______________________________________________
+        &lt;br&gt;
+OpenIMSCore-Users mailing list
+        &lt;br&gt;
+&lt;a class=&quot;moz-txt-link-abbreviated&quot; href=&quot;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&quot;&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&lt;/a&gt;
+        &lt;br&gt;
+&lt;a class=&quot;moz-txt-link-freetext&quot; href=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>&quot;&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users&lt;/a">https://lists.berlios.de/mailman/listinfo/openimscore-users&lt;/a</A>&gt;
+        &lt;br&gt;
+      &lt;/blockquote&gt;
+      &lt;br&gt;
+--&nbsp;&lt;br&gt;
+&quot;When work is a pleasure, life is a joy! When work is duty, life is
+slavery.&quot; &nbsp; _______________________________________________
+      &lt;br&gt;
+OpenIMSCore-Users mailing list
+      &lt;br&gt;
+&lt;a class=&quot;moz-txt-link-abbreviated&quot; href=&quot;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&quot;&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&lt;/a&gt;
+      &lt;br&gt;
+&lt;a class=&quot;moz-txt-link-freetext&quot; href=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>&quot;&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users&lt;/a">https://lists.berlios.de/mailman/listinfo/openimscore-users&lt;/a</A>&gt;
+      &lt;br&gt;
+&nbsp; &lt;/blockquote&gt;
+    &lt;br&gt;
+--&nbsp;&lt;br&gt;
+&quot;When work is a pleasure, life is a joy! When work is duty, life is
+slavery.&quot; &nbsp; _______________________________________________
+    &lt;br&gt;
+OpenIMSCore-Users mailing list
+    &lt;br&gt;
+&lt;a class=&quot;moz-txt-link-abbreviated&quot; href=&quot;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&quot;&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&lt;/a&gt;
+    &lt;br&gt;
+&lt;a class=&quot;moz-txt-link-freetext&quot; href=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>&quot;&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users&lt;/a">https://lists.berlios.de/mailman/listinfo/openimscore-users&lt;/a</A>&gt;
+    &lt;br&gt;
+&nbsp; &lt;/blockquote&gt;
+  &lt;br&gt;
+  &lt;br&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;pre class=&quot;moz-signature&quot; cols=&quot;72&quot;&gt;-- 
+&quot;When work is a pleasure, life is a joy! When work is duty, life is slavery.&quot; 
+&lt;/pre&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+--------------080405050100060303010006
+Content-Type: text/x-vcard; charset=utf-8;
+ name=&quot;dushyant_dhalia.vcf&quot;
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename=&quot;dushyant_dhalia.vcf&quot;
+
+begin:vcard
+fn:Dushyant P S  Dhalia
+n:Dhalia;Dushyant P S 
+org:Rancore Technologies Pvt. Ltd.
+adr:;;;Gurgaon;;;INDIA
+email;internet:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">dushyant.dhalia at rancoretech.com</A>
+tel;work:+91-0124-4200690
+version:2.1
+end:vcard
+
+
+--------------080405050100060303010006--
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005892.html">No subject
+</A></li>
+	<LI>Next message: <A HREF="006085.html">No subject
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5944">[ date ]</a>
+              <a href="thread.html#5944">[ thread ]</a>
+              <a href="subject.html#5944">[ subject ]</a>
+              <a href="author.html#5944">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

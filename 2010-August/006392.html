@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] SUBSCRIBE Method Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SUBSCRIBE%20Method%20Problems&In-Reply-To=%3CCOL117-DS187BA3C462EBC62D4D6E93F7AF0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006418.html">
+   <LINK REL="Next"  HREF="006393.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] SUBSCRIBE Method Problems</H1>
+    <B>Patricio Latini</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SUBSCRIBE%20Method%20Problems&In-Reply-To=%3CCOL117-DS187BA3C462EBC62D4D6E93F7AF0%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] SUBSCRIBE Method Problems">p_latini at hotmail.com
+       </A><BR>
+    <I>Wed Aug  4 22:59:04 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006418.html">[OpenIMSCore-Users] Fwd: Error &quot;Registration failed: 479	-Regretfully, we were not able to process the URI (479/SL)&quot;&quot;
+</A></li>
+        <LI>Next message: <A HREF="006393.html">[OpenIMSCore-Users] SUBSCRIBE Method Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6392">[ date ]</a>
+              <a href="thread.html#6392">[ thread ]</a>
+              <a href="subject.html#6392">[ subject ]</a>
+              <a href="author.html#6392">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Franz:
+	While I understand your point however I do not understand the point
+that if you cannot register either as tel-uri or sip-uri with user=phone
+parameters, how UEs supporting phone-services (INVITEs or SUBSCRIBEs) can
+use this P-SCSF using tel-uri or sip-uri.
+
+On the other side some SPECs that are based on 3GPP as Pakcetcable 2.0
+specify this...
+
+Here is part 7.2.1.1 PacketCable 2.0 RSFT
+
+&quot;The UE SHOULD populate the P-Preferred-Identity header with either a TEL
+URI, or a SIP URI with a parameter
+of 'user=phone', otherwise PSTN interoperability may not function correctly.
+&quot;
+
+On the other side some other commercial IMS implementations that I tested,
+consider &quot;user=phone&quot; a parameter so in order to verify if the identity has
+been registered before is not part of the comparison.
+
+Given this, and given the UE is in compliance with the specs and I cannot
+ask to change that, I think that in order to be able to support INVITEs and
+SUSCRIBEs in my testbed I would need to strip user=phone on the openser
+script processing before the P_assert_identity function or put a SBC.
+
+Does anybody has a script to do this, I researched but just found a
+add_uri_param function but not a rem_uri_param?
+
+Thanks
+
+Patricio
+
+
+-----Original Message-----
+From: Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>] 
+Sent: Monday, July 26, 2010 12:45 AM
+To: 'Patricio Latini'; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: RE: [OpenIMSCore-Users] SUBSCRIBE Method Problems
+
+Hi Patricio,
+
+&gt;<i> 	Thanks a lot for confirming my guess that the user=phone was the
+</I>&gt;<i> issue. The UE should be either registering with user=phone or subscribing
+</I>&gt;<i> without that parameter if it is not included on the Register.
+</I>
+I also checked that and found that registering with user=phone is not an
+option. You can create a PUID with the parameter &quot;user=phone&quot; but that
+parameter cannot be mapped to diameter AVP (UAR) for registration, only the
+canonical form of the SIP URI (with all URI parameters removed). Therefore
+you cannot get a match. Only SIP-URI in canonical form and TEL-URIs can be
+handled in diamter. This is also reflected in TS 23.003 &#167;13.4: The Public
+User Identity shall take the form of either a SIP URI  or a Tel URI. A SIP
+URI for a Public User Identity shall take the canonical form
+&quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">username at domain</A>&quot;.
+
+As a next step I tried to use a TEL-URI for registration, but there is a
+problem in the implementation: The P-CSCF does not find the entry point to
+the home network (an I-CSCF). It obviously does not use the &quot;home network
+domain name&quot; from the realm-parameter of the Authorization header field for
+DNS lookup but the request URI which does not contain the domain in that
+case.
+
+Therefore as a summary you actually have only one option: registering and
+subscribing without user=phone parameter.
+
+BR
+Franz
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006418.html">[OpenIMSCore-Users] Fwd: Error &quot;Registration failed: 479	-Regretfully, we were not able to process the URI (479/SL)&quot;&quot;
+</A></li>
+	<LI>Next message: <A HREF="006393.html">[OpenIMSCore-Users] SUBSCRIBE Method Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6392">[ date ]</a>
+              <a href="thread.html#6392">[ thread ]</a>
+              <a href="subject.html#6392">[ subject ]</a>
+              <a href="author.html#6392">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] configuration with two S-CSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20configuration%20with%20two%20S-CSCF&In-Reply-To=%3CBAY105-F11ADBABAF3D692D0B235A8C0500%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001503.html">
+   <LINK REL="Next"  HREF="001505.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] configuration with two S-CSCF</H1>
+    <B>&#23002; &#39134;</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20configuration%20with%20two%20S-CSCF&In-Reply-To=%3CBAY105-F11ADBABAF3D692D0B235A8C0500%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] configuration with two S-CSCF">ada_545 at hotmail.com
+       </A><BR>
+    <I>Wed Apr 18 03:39:33 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001503.html">[OpenIMSCore-Users] How to use the OpenIMS
+</A></li>
+        <LI>Next message: <A HREF="001505.html">[OpenIMSCore-Users] configuration with two S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1504">[ date ]</a>
+              <a href="thread.html#1504">[ thread ]</a>
+              <a href="subject.html#1504">[ subject ]</a>
+              <a href="author.html#1504">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dear Dragos,
+Thank you for your suggestion, at last, the call session can be established 
+between a SIP client(X-Lite3.0) and an IMS client(UCT IMS Client).But there 
+are still two problems.
+
+One problem is: although the call can be set up, there is no voice through. 
+(And I am confirm the the mis and ear phone is good.)
+
+The other problem is: it seems that it is very unstable, because the 
+configuration of hss would be changed automaticly after releasing the call 
+sometimes.
+For example:
++---------------------+---------+---------+-------------------------+-------------------------------+----------------------------------+------------------+------+-----------+----------------------------------+--------------+---------+----------+-------------+
+
+|<i> impi_string         | imsu_id | impi_id | imsi                    | 
+</I>scscf_name                    | s_key                            | 
+auth_scheme      | amf  | algorithm | operator_id                      | 
+sqn          | chrg_id | uiccType | keyLifeTime |
++---------------------+---------+---------+-------------------------+-------------------------------+----------------------------------+------------------+------+-----------+----------------------------------+--------------+---------+----------+-------------+
+
+|<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>   |       2 |       2 | bob_ISDN_User_part_ID   | 
+</I>sip:scscf.open-ims.test:6060  | 626f6200000000000000000000000000 | 
+Digest-AKAv1-MD5 | 0000 | AKAv1     | 00000000000000000000000000000000 | 
+0000000005ee |       1 |        1 |        3600 |
+|<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fei at open-ims.test</A>   |       3 |       3 | fei_ISDN_User_part_ID   | 
+</I>sip:scscf2.open-ims.test:4060 | 66656900000000000000000000000000 | 
+Digest-MD5       | 0000 | NULL      | 00000000000000000000000000000000 | 
+000000000000 |       1 |        1 |        3600 |
++---------------------+---------+---------+-------------------------+-------------------------------+----------------------------------+------------------+------+-----------+----------------------------------+--------------+---------+----------+-------------+
+
+this table is the right one, and it would be changed as follows:
++---------------------+---------+---------+-------------------------+-------------------------------+----------------------------------+------------------+------+-----------+----------------------------------+--------------+---------+----------+-------------+
+
+|<i> impi_string         | imsu_id | impi_id | imsi                    | 
+</I>scscf_name                    | s_key                            | 
+auth_scheme      | amf  | algorithm | operator_id                      | 
+sqn          | chrg_id | uiccType | keyLifeTime |
++---------------------+---------+---------+-------------------------+-------------------------------+----------------------------------+------------------+------+-----------+----------------------------------+--------------+---------+----------+-------------+
+
+|<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>   |       2 |       2 | bob_ISDN_User_part_ID   | 
+</I>sip:scscf.open-ims.test:6060  | 626f6200000000000000000000000000 | 
+Digest-AKAv1-MD5 | 0000 | AKAv1     | 00000000000000000000000000000000 | 
+0000000005ee |       1 |        1 |        3600 |
+|<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fei at open-ims.test</A>   |       3 |       3 | fei_ISDN_User_part_ID   | 
+</I>sip:scscf.open-ims.test:6060 | 66656900000000000000000000000000 | 
+Digest-AKAv1-MD5  | 0000 | AKAv1     | 00000000000000000000000000000000 | 
+000000000000 |       1 |        1 |        3600 |
++---------------------+---------+---------+-------------------------+-------------------------------+----------------------------------+------------------+------+-----------+----------------------------------+--------------+---------+----------+-------------+
+
+this change is one case, and it could be changed as other situation 
+randomly.
+
+Please give me some suggestions about these problems!
+
+regards,
+Fei
+17 Apr 2007
+
+&gt;<i>From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>To: &#23002; &#39134; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ada_545 at hotmail.com</A>&gt;
+</I>&gt;<i>CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>Subject: Re: [OpenIMSCore-Users] configuration with two S-CSCF
+</I>&gt;<i>Date: Mon, 16 Apr 2007 13:17:32 +0200
+</I>&gt;<i>
+</I>&gt;<i>The capability codes are operator specific. That means that you should
+</I>&gt;<i>define your own meaning for them. Like 0 means AKA and 1 MD5 and 2 means
+</I>&gt;<i>both and 3 means S-CSCF with PSTN gateway configuration or whatever else
+</I>&gt;<i>you want.
+</I>&gt;<i>
+</I>&gt;<i>I don't think that it would be good for us to push some standards on
+</I>&gt;<i>this numbers as we are not IANA ;-), so use whatever you want.
+</I>&gt;<i>
+</I>&gt;<i>-Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>&#23002; &#39134; wrote:
+</I>&gt;<i> &gt; hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; we consider to use two S-CSCF which support different authentication
+</I>&gt;<i> &gt; algorithms, one S-CSCF supports &#8216;AKAv1-MD5&#8217; for IMS Client, and the 
+</I>other
+&gt;<i> &gt; supports &#8216;MD5&#8217; for SIP Client, so that the SIP Client and IMS Client 
+</I>can
+&gt;<i> &gt; register at the same time, and implement some IMS services between 
+</I>them.
+&gt;<i> &gt;
+</I>&gt;<i> &gt; last time,you said we could edit the icscf database and insert the new 
+</I>one,
+&gt;<i> &gt; define some capabilities for the S-CSCFs and assign those to different
+</I>&gt;<i> &gt; users.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; therefore, we installed the s-cscf2 in the other computer, and also 
+</I>added
+&gt;<i> &gt; it in hss. we also edit the icscf and insert the new one for 
+</I>s-cscf2.but
+&gt;<i> &gt; when we insert the new capablities for the s-cscf2, we don't know what 
+</I>are
+&gt;<i> &gt; the numbers meaning: 0,1. could you tell me about that.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; and from the trace, we always get 504 server time out, and both of the 
+</I>sip
+&gt;<i> &gt; client and the ims client can just send the REGISTER request, but 
+</I>without
+&gt;<i> &gt; any replys.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; please give me some suggestion about how to solve the problem.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; regards,
+</I>&gt;<i> &gt; fei
+</I>&gt;<i> &gt; 14.4.2007
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _________________________________________________________________
+</I>&gt;<i> &gt; &#20139;&#29992;&#19990;&#30028;&#19978;&#26368;&#22823;&#30340;&#30005;&#23376;&#37038;&#20214;&#31995;&#32479;&#8213; MSN Hotmail&#12290;  <A HREF="http://www.hotmail.com">http://www.hotmail.com</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>--
+</I>&gt;<i>-----------------------------------------
+</I>&gt;<i>Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>FOKUS/NGNI
+</I>&gt;<i>Kaiserin-Augusta-Allee 31
+</I>&gt;<i>10589 Berlin,Germany
+</I>&gt;<i>Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>Web www.fokus.fraunhofer.de
+</I>&gt;<i>We could change the world if God would give us the source code...
+</I>&gt;<i>-----------------------------------------------------------------
+</I>&gt;<i>
+</I>
+_________________________________________________________________
+&#20139;&#29992;&#19990;&#30028;&#19978;&#26368;&#22823;&#30340;&#30005;&#23376;&#37038;&#20214;&#31995;&#32479;&#8213; MSN Hotmail&#12290;  <A HREF="http://www.hotmail.com">http://www.hotmail.com</A>  
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001503.html">[OpenIMSCore-Users] How to use the OpenIMS
+</A></li>
+	<LI>Next message: <A HREF="001505.html">[OpenIMSCore-Users] configuration with two S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1504">[ date ]</a>
+              <a href="thread.html#1504">[ thread ]</a>
+              <a href="subject.html#1504">[ subject ]</a>
+              <a href="author.html#1504">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

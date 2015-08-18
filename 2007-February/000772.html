@@ -1,0 +1,382 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AKA%20authentication%20fails%20-%20Keep%20getting%20401&In-Reply-To=%3C382767.61033.qm%40web56110.mail.re3.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000790.html">
+   <LINK REL="Next"  HREF="000774.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] AKA authentication fails - Keep getting 401</H1>
+    <B>Sudhakar Patil</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AKA%20authentication%20fails%20-%20Keep%20getting%20401&In-Reply-To=%3C382767.61033.qm%40web56110.mail.re3.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] AKA authentication fails - Keep getting 401">spatil4572 at yahoo.com
+       </A><BR>
+    <I>Mon Feb 12 20:46:35 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000790.html">[OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+</A></li>
+        <LI>Next message: <A HREF="000774.html">[OpenIMSCore-Users] [Bug #10322] Roaming networks should be linked	to IMPU, not IMPI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#772">[ date ]</a>
+              <a href="thread.html#772">[ thread ]</a>
+              <a href="subject.html#772">[ subject ]</a>
+              <a href="author.html#772">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+This problem continues even after upgrading to latest
+version. sip2ims continues to fail digest response
+from the client. I changed to code to force successful
+authorization. Sip2ims seems to send proper
+authentication response to S-CSCF but the comparison
+fails at S-CSCF as shown below:
+
+==== sip2ims output =================
+ 4(3659) INF:SIP2IMS:sip2ims_get_public_identity:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+ 4(3659) INF:SIP2IMS:Gw_AKA_to_MD5:
++++
+Digest realm=&quot;open-ims.test&quot;,
+nonce=&quot;En9FUxtbP9nhlueOfmxmjOGtQPNMOAAAazX7WrVHIiI=&quot;,
+algorithm=AKAv1-MD5
+---
+WWW-Authenticate: Digest
+username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;, realm=&quot;open-ims.test&quot;,
+opaque=&quot;AKAv1-MD5En9FUxtbP9nhlueOfmxmjOGtQPNMOAAAazX7WrVHIiI=&quot;,
+nonce=&quot;45d0c2f754636459902a6bb429a5092e56f66379&quot;,
+algorithm=MD5
++++
+ 4(3659) INF:SIP2IMS:translate_authorization:
+
+ AUTHORIZED
+
+
+ 4(3659) INF:SIP2IMS:sip2ims_get_public_identity:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+ 4(3659) INF:SIP2IMS:Gw_MD5_to_AKA:
+===
+Digest
+username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;45d0c2f754636459902a6bb429a5092e56f66379&quot;,uri=&quot;sip:open-ims.test&quot;,response=&quot;deaf30d9173bed126c03ab6d46794d83&quot;,algorithm=MD5,opaque=&quot;AKAv1-MD5En9FUxtbP9nhlueOfmxmjOGtQPNMOAAAazX7WrVHIiI=&quot;
+---
+Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;,
+realm=&quot;open-ims.test&quot;,
+nonce=&quot;En9FUxtbP9nhlueOfmxmjOGtQPNMOAAAazX7WrVHIiI=&quot;,
+uri=&quot;sip:open-ims.test&quot;,
+response=&quot;bd03c4e93540c8a2d27b3a861d1bd060&quot;,
+algorithm=&quot;AKAv1-MD5&quot;,
+===
+ 4(3659) INFO: t_fwd.c:700: sent to
+192.168.123.250:4060 (1)
+ 4(3659) INFO: t_funcs.c:307: SER: new transaction
+fwd'ed
+ 3(3658) DBG:SIP2IMS:Gw_AKA_to_MD5: 401
+ 3(3658) INF:SIP2IMS:sip2ims_get_public_identity:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+ 3(3658) INF:SIP2IMS:Gw_AKA_to_MD5:
++++
+Digest realm=&quot;open-ims.test&quot;,
+nonce=&quot;Tmy2acTSmP/ZIdR5rMIt2I+z29ifzAAAuylzIE37KDg=&quot;,
+algorithm=AKAv1-MD5
+---
+WWW-Authenticate: Digest
+username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;, realm=&quot;open-ims.test&quot;,
+opaque=&quot;AKAv1-MD5Tmy2acTSmP/ZIdR5rMIt2I+z29ifzAAAuylzIE37KDg=&quot;,
+nonce=&quot;45d0c2f754636459902a6bb429a5092e56f66379&quot;,
+algorithm=MD5
++++
+
+============ S-CSCF output ======================
+ 1(3643) ERR:S-CSCF:cscf_get_integrity_protected:
+Message does not contain Authorization header.
+ 1(3643) ERR:S-CSCF:cscf_get_nonce: Message does not
+contain Authorization header.
+ 1(3643) ERR:S-CSCF:cscf_get_private_identity: Message
+does not contain Authorization header.
+ 1(3643) INF:S-CSCF:cscf_get_private_identity: Falling
+back to private_id=stripped(public_id)
+-&gt; Message did not contain a valid Authorization
+Header!!! This fallback is deprecated!
+ 1(3643) ERR:S-CSCF:cscf_get_algorithm: Message does
+not contain Authorization header.
+ 1(3643) ERR:S-CSCF:cscf_get_auts: Message does not
+contain Authorization header
+.
+12(3667) DBG:sm_process(): Peer hss.open-ims.test   
+State R_Open    Event R_Rcv_Message
+ 1(3643) DBG:S-CSCF:S_is_authorized: UE said:
+5e09768271eeb167271b696ee1ca085b and we  expect
+5f76b95548ceaf473361befc6eb87fbe ha1
+58df8044b6c5b23fd2fb71c8b2f10f09
+ 1(3643) DBG:S-CSCF:S_is_authorized: UE said:
+5e09768271eeb167271b696ee1ca085b,
+but we have 5f76b95548ceaf473361befc6eb87fbe and
+expect 58df8044b6c5b23fd2fb71c8b2f10f09
+
+Regards,
+Sudhakar.
+
+--- Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+wrote:
+
+&gt;<i> Hi all,
+</I>&gt;<i> 
+</I>&gt;<i> it seems that the r98 commit was a rushed one. FHoSS
+</I>&gt;<i> was changed and
+</I>&gt;<i> Anonimity Key usage was enabled then. I have just
+</I>&gt;<i> enabled it also in the
+</I>&gt;<i> SIP2IMS in r132.
+</I>&gt;<i> 
+</I>&gt;<i> Please do a svn update and try again.
+</I>&gt;<i> 
+</I>&gt;<i> Again, sorry for the inconsistency.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> Sudhakar Patil wrote:
+</I>&gt;<i> &gt; Hi, 
+</I>&gt;<i> &gt; I was having problems with sip2ims during
+</I>&gt;<i> &gt; registration. As suggested by Babu and David, I by
+</I>&gt;<i> &gt; passed sip2ims and accessed pcscf directly. I had
+</I>&gt;<i> &gt; changed authentication scheme and algorithm
+</I>&gt;<i> &gt; accordingly. I was able to successfully register
+</I>&gt;<i> and
+</I>&gt;<i> &gt; make calls.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I would like to re-investigate why sip2ims is
+</I>&gt;<i> unable
+</I>&gt;<i> &gt; to authenticate &quot;alice&quot; or &quot;bob&quot; using Digest-MD5
+</I>&gt;<i> &gt; where as S-CSCF is able to. Also, I forced a
+</I>&gt;<i> &gt; successful authentication betwen sip2ims and SIP
+</I>&gt;<i> &gt; client to initiate AKA authentication at S-CSCF.
+</I>&gt;<i> &gt; However this fails too. Here is the output at
+</I>&gt;<i> sip2ims
+</I>&gt;<i> &gt; after the first REGISTER is sent to sip2ims from
+</I>&gt;<i> SIP
+</I>&gt;<i> &gt; client. S-CSCF output follows sip2ims. SQL dumps
+</I>&gt;<i> of
+</I>&gt;<i> &gt; hssdb (impi) and sip2ims (credentials) is at the
+</I>&gt;<i> &gt; bottom. sip2ims (gm.c) is dated as $Id: gm.c 2
+</I>&gt;<i> &gt; 2006-11-14 22:37:20Z vingarzan $. Any ideas on how
+</I>&gt;<i> to
+</I>&gt;<i> &gt; debig/solve this problem? Has this issue been
+</I>&gt;<i> &gt; addressed in a later version of sip2ims?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ===== sip2ims ==========================
+</I>&gt;<i> &gt;  2(1688) Got 401...
+</I>&gt;<i> &gt;  2(1688) DBG:SIP2IMS:Gw_AKA_to_MD5: 401
+</I>&gt;<i> &gt;  2(1688) INF:SIP2IMS:sip2ims_get_public_identity:
+</I>&gt;<i> &gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> &gt;  2(1688) INF:SIP2IMS:Gw_AKA_to_MD5:
+</I>&gt;<i> &gt; +++
+</I>&gt;<i> &gt; Digest realm=&quot;open-ims.test&quot;,
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>nonce=&quot;RY3/lW7oiLGQlKUEpFYyUZHTIc5xIQAAc9HibZec8oM=&quot;,
+&gt;<i> &gt; algorithm=AKAv1-MD5
+</I>&gt;<i> &gt; ---
+</I>&gt;<i> &gt; WWW-Authenticate: Digest
+</I>&gt;<i> username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,
+</I>&gt;<i> &gt; realm=&quot;open-ims.test&quot;,
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>opaque=&quot;AKAv1-MD5RY3/lW7oiLGQlKUEpFYyUZHTIc5xIQAAc9HibZec8oM=&quot;,
+&gt;<i> &gt; nonce=&quot;45d09f1fb1df7b3452d4abfc74609a451a2aa0a6&quot;,
+</I>&gt;<i> &gt; algorithm=MD5
+</I>&gt;<i> &gt; +++
+</I>&gt;<i> &gt;  2(1688) INF:SIP2IMS:translate_authorization:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  AUTHORIZED
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  2(1688) INF:SIP2IMS:sip2ims_get_public_identity:
+</I>&gt;<i> &gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> &gt;  2(1688) INF:SIP2IMS:Gw_MD5_to_AKA:
+</I>&gt;<i> &gt; ===
+</I>&gt;<i> &gt; Digest
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;45d09f1fb1df7b3452d4abfc74609a451a2aa0a6&quot;,uri=&quot;sip:open-ims.test&quot;,response=&quot;1f842d881e1343a1ec9e2f61f785ab8d&quot;,algorithm=&quot;MD5&quot;,opaque=&quot;AKAv1-MD5RY3/lW7oiLGQlKUEpFYyUZHTIc5xIQAAc9HibZec8oM=&quot;
+&gt;<i> &gt; ---
+</I>&gt;<i> &gt; Authorization: Digest
+</I>&gt;<i> username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,
+</I>&gt;<i> &gt; realm=&quot;open-ims.test&quot;,
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>nonce=&quot;RY3/lW7oiLGQlKUEpFYyUZHTIc5xIQAAc9HibZec8oM=&quot;,
+&gt;<i> &gt; uri=&quot;sip:open-ims.test&quot;,
+</I>&gt;<i> &gt; response=&quot;67ba31f56a6fb81a42860010c9d0a78e&quot;,
+</I>&gt;<i> &gt; algorithm=&quot;AKAv1-MD5&quot;,
+</I>&gt;<i> &gt; ===
+</I>&gt;<i> &gt;  2(1688) INFO: t_fwd.c:700: sent to
+</I>&gt;<i> &gt; 192.168.123.250:4060 (1)
+</I>&gt;<i> &gt;  2(1688) INFO: t_funcs.c:307: SER: new transaction
+</I>&gt;<i> &gt; fwd'ed
+</I>&gt;<i> &gt;  4(1690) Got 401...
+</I>&gt;<i> &gt;  4(1690) DBG:SIP2IMS:Gw_AKA_to_MD5: 401
+</I>&gt;<i> &gt;  4(1690) INF:SIP2IMS:sip2ims_get_public_identity:
+</I>&gt;<i> &gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;
+</I>&gt;<i> &gt;  4(1690) INF:SIP2IMS:Gw_AKA_to_MD5:
+</I>&gt;<i> &gt; +++
+</I>&gt;<i> &gt; Digest realm=&quot;open-ims.test&quot;,
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>nonce=&quot;gvaloZHQrIS8hLHXs6DcHtvICbbXQgAArQ5Hx8j8yMQ=&quot;,
+&gt;<i> &gt; algorithm=AKAv1-MD5
+</I>&gt;<i> &gt; ---
+</I>&gt;<i> &gt; WWW-Authenticate: Digest
+</I>&gt;<i> username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,
+</I>&gt;<i> &gt; realm=&quot;open-ims.test&quot;,
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>opaque=&quot;AKAv1-MD5gvaloZHQrIS8hLHXs6DcHtvICbbXQgAArQ5Hx8j8yMQ=&quot;,
+&gt;<i> &gt; nonce=&quot;45d09f1fb1df7b3452d4abfc74609a451a2aa0a6&quot;,
+</I>&gt;<i> &gt; algorithm=MD5
+</I>&gt;<i> &gt; +++
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ================ scscf =======================
+</I>&gt;<i> &gt; 12(2198) DBG:sm_process(): Peer hss.open-ims.test 
+</I>&gt;<i>  
+</I>&gt;<i> &gt; State R_Open    Event R_Rcv_Message
+</I>&gt;<i> &gt;  1(2187) DBG:S-CSCF:S_is_authorized: UE said:
+</I>&gt;<i> &gt; 60e77be18dab27a1d65edc71101822ce and we  expect
+</I>&gt;<i> &gt; bac42061012715567ebfa1e85168e5bf ha1
+</I>&gt;<i> &gt; 37399e00cd38b2220e1b95e745d488af
+</I>&gt;<i> &gt;  1(2187) DBG:S-CSCF:S_is_authorized: UE said:
+</I>&gt;<i> &gt; 60e77be18dab27a1d65edc71101822ce, but we have
+</I>&gt;<i> &gt; bac42061012715567ebfa1e85168e5bf and expect
+</I>&gt;<i> &gt; 37399e00cd38b2220e1b95e745d488af
+</I>&gt;<i> &gt; 12(2198) DBG:sm_process(): Peer hss.open-ims.test 
+</I>&gt;<i>  
+</I>&gt;<i> &gt; State R_Open    Event R_Rcv_Message
+</I>&gt;<i> &gt; 11(2197) --- Peer List: ---
+</I>&gt;<i> &gt; 11(2197)  S[R_Open] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i> &gt; 11(2197) ------------------
+</I>&gt;<i> &gt; 11(2197) --- Peer List: ---
+</I>&gt;<i> &gt; 11(2197)  S[R_Open] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ============== hssdb - impi table ===============
+</I>&gt;<i> &gt; mysql&gt; select * from impi where imsu_id=2;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>+-------------------+---------+---------+-----------------------+------------------------------+----------------------------------+------------------+------+-----------+----------------------------------+--------------+---------+----------+-------------+
+&gt;<i> &gt; | impi_string       | imsu_id | impi_id | imsi    
+</I>&gt;<i>    
+</I>&gt;<i> &gt;          | scscf_name                   | s_key   
+</I>&gt;<i>    
+</I>&gt;<i> &gt;                     | auth_scheme      | amf  |
+</I>&gt;<i> &gt; algorithm | operator_id                      | sqn
+</I>&gt;<i>    
+</I>&gt;<i> &gt;      | chrg_id | uiccType | keyLifeTime |
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>+-------------------+---------+---------+-----------------------+------------------------------+----------------------------------+------------------+------+-----------+----------------------------------+--------------+---------+----------+-------------+
+&gt;<i> &gt; | <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> |       2 |       2 |
+</I>&gt;<i> &gt; bob_ISDN_User_part_ID |
+</I>&gt;<i> sip:scscf.open-ims.test:6060 |
+</I>&gt;<i> &gt; 626f6200000000000000000000000000 |
+</I>&gt;<i> Digest-AKAv1-MD5 |
+</I>&gt;<i> &gt; 0000 | AKAv1     |
+</I>&gt;<i> 00000000000000000000000000000000 |
+</I>&gt;<i> &gt; 000000000e51 |       1 |        0 |        3600 |
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>+-------------------+---------+---------+-----------------------+------------------------------+----------------------------------+------------------+------+-----------+----------------------------------+--------------+---------+----------+-------------+
+&gt;<i> &gt; 1 row in set (0.01 sec)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ==================== sip2ims credentials table
+</I>&gt;<i> ====
+</I>&gt;<i> &gt; mysql&gt; select * from credentials where uid=2;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>+---------------+-------+---------------+----------+-------+----------------------------------+----------------------------------+-----+
+&gt;<i> &gt; | auth_username | did   | realm         | password
+</I>&gt;<i> |
+</I>&gt;<i> &gt; flags | ha1                              | ha1b   
+</I>&gt;<i>    
+</I>&gt;<i> &gt;                      | uid |
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>+---------------+-------+---------------+----------+-------+----------------------------------+----------------------------------+-----+
+&gt;<i> &gt; | bob           | _none | open-ims.test | bob     
+</I>&gt;<i> |  
+</I>&gt;<i> &gt;   1 | d7404d478d7ea2d230739464f0314fbb |
+</I>&gt;<i> &gt; b0342795e048d7e9f4e2432285776dd3 | 2   |
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>+---------------+-------+---------------+----------+-------+----------------------------------+----------------------------------+-----+
+&gt;<i> &gt; 1 row in set (0.00 sec)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Regards,
+</I>&gt;<i> &gt; Sudhakar.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>____________________________________________________________________________________
+&gt;<i> &gt; Need Mail bonding?
+</I>&gt;<i> &gt; Go to the Yahoo! Mail Q&amp;A for great tips from
+</I>&gt;<i> Yahoo! Answers users.
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I><A HREF="http://answers.yahoo.com/dir/?link=list&amp;sid=396546091">http://answers.yahoo.com/dir/?link=list&amp;sid=396546091</A>
+&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I><A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>=== message truncated ===
+
+
+
+ 
+____________________________________________________________________________________
+Do you Yahoo!?
+Everyone is raving about the all-new Yahoo! Mail beta.
+<A HREF="http://new.mail.yahoo.com">http://new.mail.yahoo.com</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000790.html">[OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+</A></li>
+	<LI>Next message: <A HREF="000774.html">[OpenIMSCore-Users] [Bug #10322] Roaming networks should be linked	to IMPU, not IMPI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#772">[ date ]</a>
+              <a href="thread.html#772">[ thread ]</a>
+              <a href="subject.html#772">[ subject ]</a>
+              <a href="author.html#772">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

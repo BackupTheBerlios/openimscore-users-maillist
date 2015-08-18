@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Eyebeam with OpenIMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Eyebeam%20with%20OpenIMS&In-Reply-To=%3C20090506154029.201190%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005337.html">
+   <LINK REL="Next"  HREF="005344.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Eyebeam with OpenIMS</H1>
+    <B>Michael Ciupka</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Eyebeam%20with%20OpenIMS&In-Reply-To=%3C20090506154029.201190%40gmx.net%3E"
+       TITLE="[OpenIMSCore-Users] Eyebeam with OpenIMS">openims at michael-ciupka.de
+       </A><BR>
+    <I>Wed May  6 17:40:29 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005337.html">[OpenIMSCore-Users] Eyebeam with OpenIMS
+</A></li>
+        <LI>Next message: <A HREF="005344.html">[OpenIMSCore-Users] Eyebeam with OpenIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5341">[ date ]</a>
+              <a href="thread.html#5341">[ thread ]</a>
+              <a href="subject.html#5341">[ subject ]</a>
+              <a href="author.html#5341">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Franz,
+
+i get your email. thanks. i have configure with the HSS GUI the private user f.e. alice and make the default route to Digest-MD5 also I make a in Digest-MD5 and configure the scscf.cfg, i commented the line out with:
+modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;AKAv1-MD5&quot;)
+  
+and activate the line with 
+modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;HSS-Selected&quot;)
+
+i get the error in the scscf console:
+ 1(14133) ERR:S-CSCF:cscf_get_nonce: Message does not contain Authorization header.
+ 1(14133) ERR:S-CSCF:cscf_get_private_identity: Message does not contain Authorization header.
+ 1(14133) INF:S-CSCF:cscf_get_private_identity: Falling back to private_id=stripped(public_id)
+-&gt; Message did not contain a valid Authorization Header!!! This fallback is deprecated outside Early-IMS or NASS-Bundled!
+ 1(14133) ERR:S-CSCF:cscf_get_auts: Message does not contain Authorization header.
+18(14263) DBG:sm_process(): Peer hss.open-ims.test 	State R_Open 	Event R_Rcv_Message
+ 2(14134)  body &lt;0&gt;
+]2(14134) ERROR:parse_content_length: parse error near char [13][
+ 2(14134) DBG:S-CSCF:S_is_authorized: uri=sip:open-ims.test nonce=fd0519df89c15764dc581ecfc5a8d95f response=592517139a1c089a4154c03b929c60ce qop=auth-int nc=00000001 cnonce=29aba6783dfb28a4ec1c3109545ef5ba hbody=d41d8cd98f00b204e9800998ecf8427e
+ 2(14134) DBG:S-CSCF:S_is_authorized: UE said: 592517139a1c089a4154c03b929c60ce and we  expect 7c5ba8eb03dadc9879daa13b3f2e18db ha1 cfb72f3f73c6b6850b2f1e1faa57b9a2
+18(14263) DBG:sm_process(): Peer hss.open-ims.test 	State R_Open 	Event R_Rcv_Message
+
+
+
+
+a have also paste a trace from wireshark with the error:
+
+REGISTER sip:open-ims.test SIP/2.0
+Via: SIP/2.0/UDP 192.168.2.5:34514;branch=z9hG4bK-d8754z-d06dd434b373b35d-1---d8754z-
+Max-Forwards: 70
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at 192.168.2.5</A>:34514;rinstance=b9384a152872515c&gt;
+To: &quot;Alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at open-ims.test</A>&gt;
+From: &quot;Alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at open-ims.test</A>&gt;;tag=b650d724
+Call-ID: NGFkYjEzMDM4YjAwMDI3Mjc5MDBmN2QzNjI4ODI1OTI.
+CSeq: 1 REGISTER
+Expires: 3600
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, NOTIFY, MESSAGE, SUBSCRIBE, INFO
+User-Agent: eyeBeam release 1102q stamp 51814
+Content-Length: 0
+
+SIP/2.0 401 Unauthorized - Challenging the UE
+Via: SIP/2.0/UDP 192.168.2.5:34514;rport=34514;branch=z9hG4bK-d8754z-d06dd434b373b35d-1---d8754z-
+To: &quot;Alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at open-ims.test</A>&gt;;tag=410f858a40e58b2fcf0c29c64a203f31-7af6
+From: &quot;Alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at open-ims.test</A>&gt;;tag=b650d724
+Call-ID: NGFkYjEzMDM4YjAwMDI3Mjc5MDBmN2QzNjI4ODI1OTI.
+CSeq: 1 REGISTER
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, PUBLISH, MESSAGE, INFO
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+Content-Length: 0
+Warning: 392 192.168.2.6:6060 &quot;Noisy feedback tells:  pid=14133 req_src_ip=192.168.2.6 req_src_port=5060 in_uri=sip:scscf.open-ims.test:6060 out_uri=sip:scscf.open-ims.test:6060 via_cnt==3&quot;
+WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;, nonce=&quot;fd0519df89c15764dc581ecfc5a8d95f&quot;, algorithm=MD5, qop=&quot;auth,auth-int&quot;
+
+
+
+
+
+
+---------------------------------------------------------------------------
+&gt;<i> Various authentication methods (for different access networks) have been
+</I>&gt;<i> defined for IMS and are also implemented in OpenIMS. According to 3GPP
+</I>&gt;<i> only
+</I>&gt;<i> IMS AKA (TS 33.203 $6.1) has to be used in 3GPP networks, which is the
+</I>&gt;<i> default method provisioned in OpenIMSCore (Digest-AKAv1-MD5). This method
+</I>&gt;<i> is
+</I>&gt;<i> obviously not supported by Eyebeam.
+</I>&gt;<i> 
+</I>&gt;<i> But there are other methods available in OpenIMSCore. Look at the HSS GUI
+</I>&gt;<i> at
+</I>&gt;<i> Private User Identities - Authentication schemes. For Eyebeam you may
+</I>&gt;<i> select
+</I>&gt;<i> Digest-MD5. In parallel you also have to change the
+</I>&gt;<i> &quot;registration_default_algorithm&quot; parameter in scscf.cfg to &quot;HSS-Selected&quot;.
+</I>&gt;<i> 	modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;HSS-Selected&quot;)
+</I>&gt;<i> 
+</I>&gt;<i> I hope that works for you.
+</I>&gt;<i> Just an additional info: The &quot;Authorization user name&quot; parameter in
+</I>&gt;<i> Eyebeam
+</I>&gt;<i> has to be in full NAI format (Network Attachment Identifier) which
+</I>&gt;<i> includes
+</I>&gt;<i> the realm like &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at net1.test</A>&quot;.
+</I>&gt;<i> 
+</I>&gt;<i> Regards
+</I>&gt;<i> Franz
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005337.html">[OpenIMSCore-Users] Eyebeam with OpenIMS
+</A></li>
+	<LI>Next message: <A HREF="005344.html">[OpenIMSCore-Users] Eyebeam with OpenIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5341">[ date ]</a>
+              <a href="thread.html#5341">[ thread ]</a>
+              <a href="subject.html#5341">[ subject ]</a>
+              <a href="author.html#5341">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

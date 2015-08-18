@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem while using TCP transport
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20while%20using%20TCP%20transport&In-Reply-To=%3Cde593f410807170001i6a7de038ta1d6b6d1c84c1cf1%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004304.html">
+   <LINK REL="Next"  HREF="004310.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem while using TCP transport</H1>
+    <B>Sabyasachi Samal</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20while%20using%20TCP%20transport&In-Reply-To=%3Cde593f410807170001i6a7de038ta1d6b6d1c84c1cf1%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Problem while using TCP transport">sabyasachisamal at gmail.com
+       </A><BR>
+    <I>Thu Jul 17 09:01:06 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004304.html">[OpenIMSCore-Users] Problem while using TCP transport
+</A></li>
+        <LI>Next message: <A HREF="004310.html">[OpenIMSCore-Users] Problem while using TCP transport
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4309">[ date ]</a>
+              <a href="thread.html#4309">[ thread ]</a>
+              <a href="subject.html#4309">[ subject ]</a>
+              <a href="author.html#4309">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Dragos,
+
+Thanx for the clarification. I have a doubt regarding the current
+implementation. As you said Pings are sent by PCSCF to UE at regular
+interval. But as per &quot;draft-ietf-sip-outbound-14&quot; draft, Ping (CR LF CR
+LF) should be sent by UE and after receiving the Ping, server will respond
+through Pong (CR LF).
+
+So in current implementation if user has ping=1 in the pcscf.cfg then PCSCF
+will wait for ping if received then send pong else do nothing.
+
+Please correct me if i am wrong.
+
+Regards,
+Sabyasachi
+
+
+On 7/16/08, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Hi Sabyasachi,
+</I>&gt;<i>
+</I>&gt;<i> Hmm... I don't know... I think that the server-side mechanism that we have
+</I>&gt;<i> now is better and lighter, cause you don't have to rely on the client. There
+</I>&gt;<i> are many clients out there and it's hard to require all of them to support
+</I>&gt;<i> this feature. We're rather going for an P-CSCF help&amp;enforce way. So, in no
+</I>&gt;<i> case we will replace completely the current feature that sends at regular
+</I>&gt;<i> intervals pings from the P-CSCF to the UE (you can though disable it from
+</I>&gt;<i> configuration as you wish). So far, together with the RTPProxy, we dodged
+</I>&gt;<i> quite well most of the NATs...
+</I>&gt;<i>
+</I>&gt;<i> If we'd see it as an extension, there's no downside to supporting this. Yet
+</I>&gt;<i> it is a little bit out of scope here as it should be implemented in the
+</I>&gt;<i> lower layers of SER (see iptel.org for the underlying software for our
+</I>&gt;<i> CSCFs). So maybe a request there would be better targeted.
+</I>&gt;<i>
+</I>&gt;<i> In any case, we would gladly accept such help/patches even just here, as it
+</I>&gt;<i> is an obvious improvement. I for one though, realistically speaking, don't
+</I>&gt;<i> think that I have enough best-effort time slots in the next weeks to
+</I>&gt;<i> implement it myself.
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Sabyasachi Samal wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Thanks a lot Franz.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Dragos, is there any plan for support Ping-Pong in Open IMS Core in near
+</I>&gt;&gt;<i> future? Kindly let me know if there is any plan.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i> Sabyasachi
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On 7/15/08, Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> UE sends the Ping request but PCSCF does not reply with pong.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> As I said: P-CSCF does not respond to pings (there is no pong). It only
+</I>&gt;&gt;&gt;<i> supports ping actively.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Franz
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  ------------------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+Regards,
+  Sabyasachi Samal
+  IMS Testing Solution
+  Nethawk Networks India Pvt. Ltd.
+  Bhubaneswar
+  Orissa, India
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080717/d9efd975/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080717/d9efd975/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004304.html">[OpenIMSCore-Users] Problem while using TCP transport
+</A></li>
+	<LI>Next message: <A HREF="004310.html">[OpenIMSCore-Users] Problem while using TCP transport
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4309">[ date ]</a>
+              <a href="thread.html#4309">[ thread ]</a>
+              <a href="subject.html#4309">[ subject ]</a>
+              <a href="author.html#4309">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

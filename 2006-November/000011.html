@@ -1,0 +1,352 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] RV:  SIP2IMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20RV%3A%20%20SIP2IMS&In-Reply-To=%3C045f01c70cb3%2457416010%2401595f0a%40hi.inet%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000010.html">
+   <LINK REL="Next"  HREF="000013.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] RV:  SIP2IMS</H1>
+    <B>Gustavo Garc&#237;a Bernardo</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20RV%3A%20%20SIP2IMS&In-Reply-To=%3C045f01c70cb3%2457416010%2401595f0a%40hi.inet%3E"
+       TITLE="[OpenIMSCore-Users] RV:  SIP2IMS">ggb at tid.es
+       </A><BR>
+    <I>Mon Nov 20 15:51:19 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000010.html">[OpenIMSCore-Users] RV:  SIP2IMS
+</A></li>
+        <LI>Next message: <A HREF="000013.html">[OpenIMSCore-Users] RV:  SIP2IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#11">[ date ]</a>
+              <a href="thread.html#11">[ thread ]</a>
+              <a href="subject.html#11">[ subject ]</a>
+              <a href="author.html#11">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+
+&gt;<i> First, I have limited the post message sizes to 512K. More will probably
+</I>&gt;<i> make people unsubscripted ;-). Try limiting the capture to ports 3060,
+</I>&gt;<i> 4060, 5060, 6060, 3868, 3869, 3870.
+</I>
+Yes, I've seen you rejected my first mail :-P, but in the second one I only
+included the SIP traffic (ports X060)
+
+&gt;<i> Ethereal and wireshark should be compatible. It's probably just that
+</I>&gt;<i> that specific format is somehow buggy. I had the same problem with
+</I>&gt;<i> ethereal and not even the same ethereal was able to load it.
+</I>&gt;<i> 
+</I>&gt;<i> Your change to the script will be commited soon. Thanx for the fix.
+</I>
+It's nice to test and help in this interesting project.  Good work.
+
+&gt;<i> And now your questions:
+</I>&gt;<i> 1. Well, the originating S-CSCF knows the terminating S-CSCF as both
+</I>&gt;<i> users are registered at the same one. Look at scscf.cfg:320
+</I>&gt;<i> 
+</I>&gt;<i> # Do not loop through the I-CSCF if the terminating user is here
+</I>&gt;<i> # might not work if other routes are present
+</I>&gt;<i> if (S_term_registered()){
+</I>&gt;<i> t_relay_to_udp(&quot;127.0.0.1&quot;,6060);
+</I>&gt;<i> exit;
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> If you want to disable it, go ahead. However, as I remember this is
+</I>&gt;<i> recommended in 24.229.
+</I>
+I guess I haven't explained it well.  I was trying to say that now the
+message is going this way:
+
+Client -&gt; SIP2IMS -&gt; PCSCF -&gt; SCSCF -&gt; SCSCF -&gt; PCSCF -&gt; SIP2IMS -&gt; Client
+
+I thought that it should be:
+
+Client -&gt; SIP2IMS -&gt; PCSCF -&gt; ICSCF -&gt; SCSCF -&gt; SCSCF -&gt; PCSCF -&gt; SIP2IMS -&gt;
+Client
+
+Reading more about it, it seems that it is standard to bypass the I-CSCF,
+but anyway I think that it could be needed if you have 2 S-CSCF.
+i) Is that environment supported (2 S-CSCF)?
+ii) Can I force that messages will go through I-CSCF?  Can I change the
+Service-Route in S-CSCF? How?
+
+
+&gt;<i> 2. Yes. The first time we do origination and the 2nd time termination.
+</I>&gt;<i> Dealing with SER's way of altering messages is a real pain if you want
+</I>&gt;<i> to do it all in 1 step, as you do not see changes directly, but they are
+</I>&gt;<i> written in the lumps and only applied on send. Too much optimizations
+</I>&gt;<i> here for my taste ... in fact I wonder how much speed did SER gain by
+</I>&gt;<i> not offering direct modifications and if it was justified by the
+</I>&gt;<i> ugliness of the code that uses the lumps :(....
+</I>
+Ok, it's perfect for me. 
+
+&gt;<i> Cheers,
+</I>&gt;<i> Dragos
+</I>
+BR,
+G.
+&gt;<i> 
+</I>&gt;<i> Gustavo Garc&#237;a Bernardo wrote:
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I'm sorry Dragos, I though that wireshark and Ethereal were compatible
+</I>&gt;<i> in
+</I>&gt;<i> &gt; their file format.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; After changing the address in pcscf
+</I>&gt;<i> &gt; (&quot;modparam(&quot;pcscf&quot;,&quot;sip2ims_via&quot;,&quot;127.0.0.1:3060&quot;)&quot;) the response
+</I>&gt;<i> changed
+</I>&gt;<i> &gt; (now is 477).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I think that the problem is in the sip2ims, when it receives the INVITE
+</I>&gt;<i> the
+</I>&gt;<i> &gt; second time to forward it to the destination, it forwards it again to
+</I>&gt;<i> the
+</I>&gt;<i> &gt; PCSCF (find the capture attached).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I changed this in sip2ims.cfg in the route[PCSCF] block:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; if (uri == myself || method==&quot;REGISTER&quot;) {
+</I>&gt;<i> &gt;     if (!t_relay_to_udp(&quot;127.0.0.1&quot;,&quot;4060&quot;)) {
+</I>&gt;<i> &gt;          sl_send_reply(&quot;500&quot;,&quot;Error forwarding to P-CSCF&quot;);
+</I>&gt;<i> &gt;     };
+</I>&gt;<i> &gt; } else {
+</I>&gt;<i> &gt;     if (!t_relay()) {
+</I>&gt;<i> &gt;          sl_reply_error();
+</I>&gt;<i> &gt;     };
+</I>&gt;<i> &gt; }
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Now it works fine.  I think it's the usual check in a standard SIP
+</I>&gt;<i> platform
+</I>&gt;<i> &gt; (i.e. default SER), I don't know if there are other standard way of
+</I>&gt;<i> doing it
+</I>&gt;<i> &gt; in IMS.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I have more questions according to the capture attached:
+</I>&gt;<i> &gt; 1. It seems that INVITE message never goes through the I-CSCF.
+</I>&gt;<i> &gt; 2. It seems that the INVITE message pass twice by the S-CSCF.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thank you for your help.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; BR,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; G.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; -----Mensaje original-----
+</I>&gt;<i> &gt;&gt; De: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;<i> &gt;&gt; Enviado el: domingo, 19 de noviembre de 2006 23:33
+</I>&gt;<i> &gt;&gt; Para: Gustavo Garc&#237;a Bernardo
+</I>&gt;<i> &gt;&gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; Asunto: Re: [OpenIMSCore-Users] SIP2IMS
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Hi Gustavo,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Unfortunately your trace is recognized by my wireshark as a &quot;Nokia
+</I>&gt;<i> &gt;&gt; tcpdump - libpcap&quot; and wireshark fails to load it past the first
+</I>&gt;<i> &gt;&gt; packet... Please next time try to save it in another format (the Redhat
+</I>&gt;<i> &gt;&gt; one seems pretty good).
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; However, I looked over it directly. It is quite hard to see exactly the
+</I>&gt;<i> &gt;&gt; ports that the message go and come from, but I suspect that the problem
+</I>&gt;<i> &gt;&gt; is in the pcscf.cfg.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; You see, the P-CSCF should usually identify a client by the first Via
+</I>&gt;<i> &gt;&gt; header in the message. However, when using the SIP2IMS gateway which
+</I>&gt;<i> &gt;&gt; unfortunately is working in proxy mode and not yet into a B2BUA mode,
+</I>&gt;<i> &gt;&gt; the first via is the SIP2IMS Gateway and not the client's one. So this
+</I>&gt;<i> &gt;&gt; is hacked for now on the P-CSCF, until we fix the sip2ims gateway: the
+</I>&gt;<i> &gt;&gt; sip2ims ip address is configured and when the P-CSCF sees it, it will
+</I>&gt;<i> &gt;&gt; look in the last via instead of the first one. To look always in the
+</I>&gt;<i> &gt;&gt; last via would not help because it will conflict with the terminating
+</I>&gt;<i> &gt;&gt; case.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; As you use a client from a different IP, then you probably changed the
+</I>&gt;<i> &gt;&gt; IP in the sip2ims.cfg. Change it also in the pcscf.cfg in the following
+</I>&gt;<i> &gt;&gt; line: &quot;modparam(&quot;pcscf&quot;,&quot;sip2ims_via&quot;,&quot;127.0.0.1:3060&quot;)&quot;.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; I would recommend that you change the 127.0.0.1 in all config files
+</I>&gt;<i> (and
+</I>&gt;<i> &gt;&gt; all occurences) to the IP of the box that you are running the core on.
+</I>&gt;<i> &gt;&gt; For changing the diameter connections, change the icscf.xml and
+</I>&gt;<i> &gt;&gt; scscf.xml files and also the DiameterPeerHSS.xml. Don't forget to
+</I>&gt;<i> change
+</I>&gt;<i> &gt;&gt; the DNS zone file, too! Then your box would be fully accessible from
+</I>&gt;<i> &gt;&gt; outside the box.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; In a couple of days we will commit in the SVN &quot;pattern&quot; config files
+</I>&gt;<i> and
+</I>&gt;<i> &gt;&gt; a configuration script that walks you through the config and lets you
+</I>&gt;<i> &gt;&gt; configure it directly to your preferences.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Let us know how it goes as your feedback is valuable in making the life
+</I>&gt;<i> &gt;&gt; easier for the next users.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Cheers,
+</I>&gt;<i> &gt;&gt; Dragos
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Gustavo Garc&#237;a Bernardo wrote:
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Hi Dragos,
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; The client is our own SIP standard softphone.  I'm using this client
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; from
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; other PC (different from the one that runs OpenIMS).  The Registration
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; with
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Authentication works fine but if fails in the call establishment.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Via matches the Contact in the 200 Ok for registration.   Find a
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; Ethereal
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; capture attached (between the PC and OpenIMS).
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Thank you very much in advance.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; G.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; -----Mensaje original-----
+</I>&gt;<i> &gt;&gt;&gt;&gt; De: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;<i> &gt;&gt;&gt;&gt; Enviado el: domingo, 19 de noviembre de 2006 18:27
+</I>&gt;<i> &gt;&gt;&gt;&gt; Para: Gustavo Garc&#237;a Bernardo
+</I>&gt;<i> &gt;&gt;&gt;&gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt;&gt;&gt; Asunto: Re: [OpenIMSCore-Users] SIP2IMS
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; Hi Gustavo,
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; Most probably you will have to set a strict outbound proxy on your
+</I>&gt;<i> &gt;&gt;&gt;&gt; client to the sip2ims gateway - 127.0.0.1:3060. The P-CSCF checks if
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; the
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; Via header matches a contact received in the 200 OK for registration.
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; If it still doesn't work, please post a wireshark trace, including
+</I>&gt;<i> the
+</I>&gt;<i> &gt;&gt;&gt;&gt; registration and message/call. What exact client are you using?
+</I>&gt;<i> Latest
+</I>&gt;<i> &gt;&gt;&gt;&gt; eyebeam as I remember is somehow broken and Ekiga has a bug in
+</I>&gt;<i> &gt;&gt;&gt;&gt; authentication and doesn't work.
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; Cheers,
+</I>&gt;<i> &gt;&gt;&gt;&gt; Dragos
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; Gustavo Garc&#237;a Bernardo wrote:
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; Hi all,
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; I have all compiled and running (X-CSCF, HSS, SIP2IMS). I&#146;m trying
+</I>&gt;<i> to
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; test it with a SIP standard terminal, the registration goes perfect
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; (using alice and bob users), but when I send a INVITE or MESSAGE
+</I>&gt;<i> from
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; one user to the other one, the response is &#147;403 Forbidden &#150; Not
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; registered! You must register first with S-CSCF&#148;.
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; Somebody has tested it? (I mean with sip2ims) What could be wrong?
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; Thank you very much.
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; Regards
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; --------------------------------------------------------------------
+</I>&gt;<i> --
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; --
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; _______________________________________________
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; --
+</I>&gt;<i> &gt;&gt;&gt;&gt; -----------------------------------------
+</I>&gt;<i> &gt;&gt;&gt;&gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt;&gt;&gt;&gt; FOKUS/NGNI
+</I>&gt;<i> &gt;&gt;&gt;&gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt;&gt;&gt;&gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt;&gt;&gt;&gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt;&gt;&gt;&gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt;&gt;&gt;&gt; eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt;&gt;&gt;&gt; Web www.fokus.fraunhofer.de
+</I>&gt;<i> &gt;&gt;&gt;&gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt;&gt;&gt;&gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; --
+</I>&gt;<i> &gt;&gt; -----------------------------------------
+</I>&gt;<i> &gt;&gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt;&gt; FOKUS/NGNI
+</I>&gt;<i> &gt;&gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt;&gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt;&gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt;&gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt;&gt; eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt;&gt; Web www.fokus.fraunhofer.de
+</I>&gt;<i> &gt;&gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt;&gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000010.html">[OpenIMSCore-Users] RV:  SIP2IMS
+</A></li>
+	<LI>Next message: <A HREF="000013.html">[OpenIMSCore-Users] RV:  SIP2IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#11">[ date ]</a>
+              <a href="thread.html#11">[ thread ]</a>
+              <a href="subject.html#11">[ subject ]</a>
+              <a href="author.html#11">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] IMS IPSec/AKA: 100 Trying incorrectly sent to	Port-C instead of Port-S
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IMS%20IPSec/AKA%3A%20100%20Trying%20incorrectly%20sent%20to%0A%09Port-C%20instead%20of%20Port-S&In-Reply-To=%3Cdf9c67450805231034v60865a6foebe7c009542932b%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004009.html">
+   <LINK REL="Next"  HREF="004022.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] IMS IPSec/AKA: 100 Trying incorrectly sent to	Port-C instead of Port-S</H1>
+    <B>Soshant Bali</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IMS%20IPSec/AKA%3A%20100%20Trying%20incorrectly%20sent%20to%0A%09Port-C%20instead%20of%20Port-S&In-Reply-To=%3Cdf9c67450805231034v60865a6foebe7c009542932b%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] IMS IPSec/AKA: 100 Trying incorrectly sent to	Port-C instead of Port-S">soshant.bali at gmail.com
+       </A><BR>
+    <I>Fri May 23 19:34:49 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004009.html">[OpenIMSCore-Users] Building Debian Package
+</A></li>
+        <LI>Next message: <A HREF="004022.html">[OpenIMSCore-Users] IMS IPSec/AKA: 100 Trying incorrectly sent to	Port-C instead of Port-S
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4010">[ date ]</a>
+              <a href="thread.html#4010">[ thread ]</a>
+              <a href="subject.html#4010">[ subject ]</a>
+              <a href="author.html#4010">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>We are trying to make a call using IMS IPsec/AKA and we noticed that
+the 100 Trying in response to the INVITE is sent using SPI-C instead
+of SPI-S. Two traces are attached, Client_Capture.pcap and
+PCSCF_Capture.pcap. The details are as follows: -
+
+In the Client_Capture.pcap trace: -
+1. Terminating client (144.230.110.224, user: 16503751111) registers
+first: Frames 1-4 in the trace
+2. Originating client (144.230.110.223, user: 16503752222) registers
+next: Frames 5-8 in the trace
+3. Originating client advertises SPI-C of 1050 (0x41A) and SPI-S of
+2050 (0x802): Frame 5, and Frame 7
+4. OpenIMS PCSCF uses the correct security association to send 200OK
+to originating client, i.e. it uses client SPI-S 0x802: Frame 8
+5. Originating client sends INVITE to PCSCF: Frame 9
+6. OpenIMS PCSCF sends 100 Trying to Originating client using
+incorrect SPI, i.e., SPI-C of 0x41A instead of SPI-S of 0x802: Frame
+10
+
+Also, attached is the PCSCF trace, PCSCF_Capture.pcap.
+
+The PCSCF should have sent the 100 Trying to Port-S and should have used SPI-S.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: Client_Capture.pcap
+Type: application/octet-stream
+Size: 17986 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080523/e27593ad/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080523/e27593ad/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: PCSCF_Capture.pcap
+Type: application/octet-stream
+Size: 37501 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080523/e27593ad/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080523/e27593ad/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004009.html">[OpenIMSCore-Users] Building Debian Package
+</A></li>
+	<LI>Next message: <A HREF="004022.html">[OpenIMSCore-Users] IMS IPSec/AKA: 100 Trying incorrectly sent to	Port-C instead of Port-S
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4010">[ date ]</a>
+              <a href="thread.html#4010">[ thread ]</a>
+              <a href="subject.html#4010">[ subject ]</a>
+              <a href="author.html#4010">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

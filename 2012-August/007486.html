@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] IMS, 408 Request Timed out
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IMS%2C%20408%20Request%20Timed%20out&In-Reply-To=%3C001b01cd82d3%248cbe6250%24a63b26f0%24%40technikum-wien.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007485.html">
+   <LINK REL="Next"  HREF="007487.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] IMS, 408 Request Timed out</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IMS%2C%20408%20Request%20Timed%20out&In-Reply-To=%3C001b01cd82d3%248cbe6250%24a63b26f0%24%40technikum-wien.at%3E"
+       TITLE="[OpenIMSCore-Users] IMS, 408 Request Timed out">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Sat Aug 25 17:08:57 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007485.html">[OpenIMSCore-Users] openIMS and PSTN termination.
+</A></li>
+        <LI>Next message: <A HREF="007487.html">[OpenIMSCore-Users] openIMS and PSTN termination.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7486">[ date ]</a>
+              <a href="thread.html#7486">[ thread ]</a>
+              <a href="subject.html#7486">[ subject ]</a>
+              <a href="author.html#7486">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+ 
+
+I had a look at the tracefile with your S-CSCF at 172.17.8.27 (trace3.pcap).
+
+ 
+
+The issue I see is that for the physical link between originating S-CSCF and terminating S-CSCF a TLS connection is used.
+
+Packet 578 contains the incoming INVITE at SCSCF and packet 634 contains the outgoing INVITE at SCSCF. In between the INVITE is transferred from originating side to terminating side. This is not readable in the tracefile because it is SSH encrypted.
+
+ 
+
+In the problem case with S-CSCF at 172.17.8.26 (trace1.pcap) I see the same procedure. For the INVITE request between both S-CSCF (originating side to terminating side) again a TLS connection is used. But in this case the INVITE does not arrive at the  terminating S-CSCF.
+
+ 
+
+I suggest that you should get rid of the TLS connections (avoid it if not necessary) then I assume that the SIP messages can flow as expected.
+
+ 
+
+BR
+
+Franz
+
+ 
+
+ 
+
+Von: Maedeh Taheri [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">maedehtaheri at ymail.com</A>] 
+Gesendet: Samstag, 25. August 2012 09:57
+An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>
+Betreff: Re: AW: AW: AW: IMS, 408 Request Timed out
+
+ 
+
+ 
+
+I test call between 2user by another scscf with 172.17.8.27(scscf2).
+
+I don't have any problem, but I need this scscf (172.17.8.26).
+
+I attache trace file.
+
+plz help me!
+
+  _____  
+
+From: Franz Edler &lt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+To: 'Maedeh Taheri' &lt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">maedehtaheri at ymail.com</A>&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">maedehtaheri at ymail.com</A>&gt; 
+Sent: Wednesday, August 22, 2012 4:07 PM
+Subject: AW: AW: AW: IMS, 408 Request Timed out
+
+ 
+
+It can be read with Wireshark.
+
+ 
+
+It looks like there is no S-CSCF where P-CSCF sends the request.
+
+Are you sure the S-CSCF address is 172.17.8.26:6060 instead of 172.17.8.22:6060 ?
+
+ 
+
+See attach&#233; a nice message flow diagram.
+
+ 
+
+BR
+
+Franz
+
+ 
+
+Von: Maedeh Taheri [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">maedehtaheri at ymail.com</A>] 
+Gesendet: Mittwoch, 22. August 2012 12:14
+An:  &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>
+Betreff: Re: AW: AW: IMS, 408 Request Timed out
+
+ 
+
+ 
+
+I can't read it. It's binary file.
+
+I attach this file.
+
+  _____  
+
+From: Franz Edler &lt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+To: 'Maedeh Taheri' &lt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">maedehtaheri at ymail.com</A>&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">maedehtaheri at ymail.com</A>&gt; 
+Sent: Wednesday, August 22, 2012 12:08 PM
+Subject: AW: AW: IMS, 408 Request Timed out
+
+ 
+
+tcpdump is a Linux SW package. Just install it (in case of Debian-Linux: apt-get install tcpdump).
+
+Then execute to command mentioned below. The file at /var/tmp/trace.pcap contains the tracefile which can also be loaded into wireshark.
+
+ 
+
+Von: Maedeh Taheri [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">maedehtaheri at ymail.com</A>] 
+Gesendet: Mittwoch, 22. August 2012 09:34
+An:  &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>
+Betreff: Re: AW: IMS, 408 Request Timed out
+
+ 
+
+I generate traffic with sipp, I can't work with tcpdump.
+How do I do this?
+
+ 
+
+ 
+
+  _____  
+
+From: Franz Edler &lt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+To: 'Maedeh Taheri' &lt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">maedehtaheri at ymail.com</A>&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">maedehtaheri at ymail.com</A>&gt; 
+Sent: Wednesday, August 22, 2012 10:40 AM
+Subject: AW: IMS, 408 Request Timed out
+
+ 
+
+Just attach a tracefile generated with &#8222; tcpdump -i any -s 3000 -w /var/tmp/trace.pcap&#8221;.
+
+This tracefile also shows the IMS internal messages.
+
+ 
+
+BR
+
+Franz
+
+ 
+
+Von: Maedeh Taheri [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">maedehtaheri at ymail.com</A>] 
+Gesendet: Mittwoch, 22. August 2012 06:57
+An:  &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>
+Betreff: IMS, 408 Request Timed out
+
+ 
+
+Hi
+I&#8217;m working at the university doing some research about IMS.
+
+ 
+
+After successfully being able to register alice and bob (wireshark shows 200
+OK), I am trying to place a call from Alice to Bob.
+I go though INVITE, 100 Trying, but end up with 408 Request Timed out.
+
+I run wireshark and I see that the INVITE request is not forwarded to I-CSCF.
+
+Can you help me in this?
+
+ 
+
+TaheriPanah
+
+ 
+
+ 
+
+ 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120825/47632de9/attachment-0001.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120825/47632de9/attachment-0001.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: Tracefiles.zip
+Type: application/x-zip-compressed
+Size: 290651 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120825/47632de9/attachment-0001.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120825/47632de9/attachment-0001.bin</A>&gt;
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007485.html">[OpenIMSCore-Users] openIMS and PSTN termination.
+</A></li>
+	<LI>Next message: <A HREF="007487.html">[OpenIMSCore-Users] openIMS and PSTN termination.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7486">[ date ]</a>
+              <a href="thread.html#7486">[ thread ]</a>
+              <a href="subject.html#7486">[ subject ]</a>
+              <a href="author.html#7486">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

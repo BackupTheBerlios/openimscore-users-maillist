@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Creating a PSI that Doesnt Register
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Creating%20a%20PSI%20that%20Doesnt%20Register&In-Reply-To=%3C5A340241E2AE4F10AB20C6BFB99C11A5%40notebook%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004271.html">
+   <LINK REL="Next"  HREF="004280.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Creating a PSI that Doesnt Register</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Creating%20a%20PSI%20that%20Doesnt%20Register&In-Reply-To=%3C5A340241E2AE4F10AB20C6BFB99C11A5%40notebook%3E"
+       TITLE="[OpenIMSCore-Users] Creating a PSI that Doesnt Register">franz.edler at inode.at
+       </A><BR>
+    <I>Tue Jul 15 20:33:59 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004271.html">[OpenIMSCore-Users] Creating a PSI that Doesnt Register
+</A></li>
+        <LI>Next message: <A HREF="004280.html">[OpenIMSCore-Users] Creating a PSI that Doesnt Register
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4279">[ date ]</a>
+              <a href="thread.html#4279">[ thread ]</a>
+              <a href="subject.html#4279">[ subject ]</a>
+              <a href="author.html#4279">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Louis,
+
+&gt;<i> ... but of course this doesn't work, and the
+</I>&gt;<i> ims core complains that the user <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">voicemail at foo.com</A> &quot;is not registered on
+</I>&gt;<i> this SCSCF&quot;.  So am i trying to accomplish this incorrectly? or what
+</I>&gt;<i> exactly?
+</I>
+A few months ago Alberto has published a &quot;how-to&quot; for creating PSIs, see
+below. Maybe this should be added to the FAQs (Provisioning Services).
+
+---------------- How to provision distinct and wildcarded PSIs -------------
+
+PSIs are implemented and work. There are several issues.
+
+Provisioning a PSI in the HSS is not easy, so you'll need to play around a
+bit.
+
+If you want I-CSCF routing is a bit easier and there wont be any S-CSCF
+involved, this procedure is defined by 3GPP for trusted AS that don't need 
+to go through the S-CSCF.
+
+I-CSCF routing
+--------------
+
+- Put the address of your AS as a preferred-SCSCF (and set priority to 1 at
+least)
+- Create an IMSU for your AS and assign the preferred-SCSCF to it
+- Create IMPI and IMPU  and attach the whole thing  IMSU-IMPI-IMPU
+
+UE--{SIP INVITE}----&gt;I-CSCF----{Diameter LIR}---&gt;HSS--{-Diameter
+LIA}---&gt;I-CSCF----{SIP INVITE}--&gt;AS
+
+
+S-CSCF routing
+--------------
+
+- Create Application Server with your settings for the AS that hosts the PSI
+- Create iFC with no Trigger point (that means it matches everything) and
+profile part indicator Any or Unregistered
+- Attach iFC to AS
+- Create a service profile and attach iFC created
+- Create an IMSU and assign a normal preferred-SCSCF to it (but assign one!
+if not it wont work)
+- Create an IMPI
+- Create an IMPU choosing Distinct or Wildcard and write the wildcard in the
+appropriate format 
+    (sip:your*wildcarded?expre??<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ion at open-ims.test</A>), 
+    It would be logical to click in the can Register thing and don't let
+this IMPU to register and of course you have to click the 
+    PSI Activation to activate it and select the created service profile for
+that PSI
+- Attach IMPU to IMPI and IMPI to IMSU
+
+UE--{SIP INVITE}----&gt;I-CSCF----{Diameter LIR}---&gt;HSS---{Diameter
+LIA}---&gt;I-CSCF----{SIP INVITE}--&gt;S-CSCF---{Diameter SAR}--&gt;HSS---&gt;{Diameter
+SAA}--&gt;S-CSCF---{SIP INVITE}--&gt;AS 
+
+--------------------------- End of How-To ----------------------------------
+
+I hope that helps.
+
+Franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004271.html">[OpenIMSCore-Users] Creating a PSI that Doesnt Register
+</A></li>
+	<LI>Next message: <A HREF="004280.html">[OpenIMSCore-Users] Creating a PSI that Doesnt Register
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4279">[ date ]</a>
+              <a href="thread.html#4279">[ thread ]</a>
+              <a href="subject.html#4279">[ subject ]</a>
+              <a href="author.html#4279">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

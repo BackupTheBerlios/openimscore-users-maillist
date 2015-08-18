@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Error establishing calls
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20establishing%20calls&In-Reply-To=%3C456B224F.9030607%40stromslovakia.sk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000109.html">
+   <LINK REL="Next"  HREF="000111.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Error establishing calls</H1>
+    <B>Andrej Vrabel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Error%20establishing%20calls&In-Reply-To=%3C456B224F.9030607%40stromslovakia.sk%3E"
+       TITLE="[OpenIMSCore-Users] Error establishing calls">andrej.vrabel at stromslovakia.sk
+       </A><BR>
+    <I>Mon Nov 27 18:37:19 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000109.html">[OpenIMSCore-Users] Error establishing calls
+</A></li>
+        <LI>Next message: <A HREF="000111.html">[OpenIMSCore-Users] Error establishing calls
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#110">[ date ]</a>
+              <a href="thread.html#110">[ thread ]</a>
+              <a href="subject.html#110">[ subject ]</a>
+              <a href="author.html#110">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+is there any open source IMS client (or simulation) available?
+Andrej
+
+Dragos Vingarzan wrote:
+
+&gt;<i> Hi Jose,
+</I>&gt;<i>
+</I>&gt;<i> I have just replied to Sebastian. It's the same issue. I have tried a 
+</I>&gt;<i> fix, but I don't know...
+</I>&gt;<i>
+</I>&gt;<i> This is NOT a P-CSCF issue though. The whole SIP-to-IMS is a big hack. 
+</I>&gt;<i> If anyone on the list wants to take up the task of rebuilding the 
+</I>&gt;<i> SIP-to-IMS Gateway to work in B2B-UA mode, I will offer my support. 
+</I>&gt;<i> Unfortunately there is no other easy way around the problem as you can 
+</I>&gt;<i> not clearly identify the direction of the requests, nor that you 
+</I>&gt;<i> should send it through the SIP2IMS Gateway.
+</I>&gt;<i>
+</I>&gt;<i> The right and simple solution would be to use an IMS client.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Jos&#233; Carlos Amorim wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi, I&#8217;ve got openimscore running but when I try to make a call the 
+</I>&gt;&gt;<i> Invites are not properly routed and the call isn&#8217;t established.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The problem is when the Invite reaches the P-cscf and is Mobile 
+</I>&gt;&gt;<i> Terminated, the P-cscf relays the Invite to sip2ims but there is no 
+</I>&gt;&gt;<i> Route Header indicating that it should relay to the sip2ims nor does 
+</I>&gt;&gt;<i> the request URI indicates the IP of the sip2ims.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Can you explain what I am doing wrong?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I send in annex the capture and the log on the P-cscf for this Invite.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Jose Carlos Silva
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>   
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>#
+</I>&gt;<i># $Id: sip2ims.cfg 6 2006-11-22 12:43:28Z vingarzan $
+</I>&gt;<i>#
+</I>&gt;<i># SIP2IMS Gateway configuration script
+</I>&gt;<i>#
+</I>&gt;<i>
+</I>&gt;<i># ----------- global configuration parameters ------------------------
+</I>&gt;<i>
+</I>&gt;<i>debug=3
+</I>&gt;<i>log_stderror=yes
+</I>&gt;<i>memlog=4
+</I>&gt;<i>sip_warning=yes
+</I>&gt;<i>
+</I>&gt;<i>fork=yes
+</I>&gt;<i>children=4
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>listen=127.0.0.1
+</I>&gt;<i>port=3060
+</I>&gt;<i>alias=sip2ims.open-ims.test
+</I>&gt;<i>
+</I>&gt;<i>check_via=no	# (cmd. line: -v)
+</I>&gt;<i>dns=no			# (cmd. line: -r)
+</I>&gt;<i>rev_dns=no		# (cmd. line: -R)
+</I>&gt;<i>
+</I>&gt;<i># ------------------ module loading ----------------------------------
+</I>&gt;<i>
+</I>&gt;<i># Uncomment this if you want to use SQL database
+</I>&gt;<i>loadmodule &quot;/opt/OpenIMSCore/ser_ims/modules/mysql/mysql.so&quot;
+</I>&gt;<i>
+</I>&gt;<i>loadmodule &quot;/opt/OpenIMSCore/ser_ims/modules/sl/sl.so&quot;
+</I>&gt;<i>loadmodule &quot;/opt/OpenIMSCore/ser_ims/modules/tm/tm.so&quot;
+</I>&gt;<i>loadmodule &quot;/opt/OpenIMSCore/ser_ims/modules/maxfwd/maxfwd.so&quot;
+</I>&gt;<i>loadmodule &quot;/opt/OpenIMSCore/ser_ims/modules/textops/textops.so&quot;
+</I>&gt;<i>loadmodule &quot;/opt/OpenIMSCore/ser_ims/modules/auth/auth.so&quot;
+</I>&gt;<i>
+</I>&gt;<i>loadmodule &quot;/opt/OpenIMSCore/ser_ims/modules/auth_db/auth_db.so&quot;
+</I>&gt;<i>modparam(&quot;auth_db&quot;,&quot;db_url&quot;,&quot;<A HREF="mysql://sip2ims:heslo@localhost/sip2ims">mysql://sip2ims:heslo@localhost/sip2ims</A>&quot;)
+</I>&gt;<i>modparam(&quot;auth_db&quot;,&quot;use_did&quot;,0)
+</I>&gt;<i>
+</I>&gt;<i>loadmodule &quot;/opt/OpenIMSCore/ser_ims/modules/rr/rr.so&quot;
+</I>&gt;<i>modparam(&quot;rr&quot;, &quot;enable_full_lr&quot;, 1)
+</I>&gt;<i>
+</I>&gt;<i>loadmodule &quot;/opt/OpenIMSCore/ser_ims/modules/sip2ims/sip2ims.so&quot;
+</I>&gt;<i>
+</I>&gt;<i>modparam(&quot;sip2ims&quot;,&quot;db_url&quot;,&quot;<A HREF="mysql://sip2ims:heslo@localhost/sip2ims">mysql://sip2ims:heslo@localhost/sip2ims</A>&quot;)
+</I>&gt;<i>modparam(&quot;sip2ims&quot;,&quot;db_table&quot;,&quot;credentials&quot;)
+</I>&gt;<i>#modparam(&quot;sip2ims&quot;,&quot;secret&quot;,&quot;alabala&quot;)
+</I>&gt;<i>modparam(&quot;sip2ims&quot;,&quot;nonce_expire&quot;,300)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i># -------------------------  request routing logic -------------------
+</I>&gt;<i>
+</I>&gt;<i># main routing logic
+</I>&gt;<i>
+</I>&gt;<i>route{
+</I>&gt;<i>	
+</I>&gt;<i>	route(Sanity_Checks);
+</I>&gt;<i>	
+</I>&gt;<i>#	if (uri==myself){
+</I>&gt;<i>#		sl_send_reply(&quot;400&quot;,&quot;The SIP-to-IMS Gateway only works in proxy mode (no UAC/S)&quot;);
+</I>&gt;<i>#		break;
+</I>&gt;<i>#	}
+</I>&gt;<i>
+</I>&gt;<i>	if (method==REGISTER){
+</I>&gt;<i>		route(REGISTER);
+</I>&gt;<i>	}
+</I>&gt;<i>	route(PCSCF);	
+</I>&gt;<i>}
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>route[Sanity_Checks]
+</I>&gt;<i>{
+</I>&gt;<i>	# initial sanity checks -- messages with
+</I>&gt;<i>	# max_forwards==0, or excessively long requests
+</I>&gt;<i>	if (!mf_process_maxfwd_header(&quot;11&quot;)) {
+</I>&gt;<i>		sl_send_reply(&quot;483&quot;,&quot;Too Many Hops&quot;);
+</I>&gt;<i>		exit;
+</I>&gt;<i>	};
+</I>&gt;<i>	if (msg:len &gt;=  max_len ) {
+</I>&gt;<i>		sl_send_reply(&quot;513&quot;, &quot;Message too big&quot;);
+</I>&gt;<i>		exit;
+</I>&gt;<i>	};
+</I>&gt;<i>}
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>route[REGISTER]
+</I>&gt;<i>{
+</I>&gt;<i>	if (www_authorize(&quot;open-ims.test&quot;,&quot;credentials&quot;)) {
+</I>&gt;<i>		if (!Gw_MD5_to_AKA(&quot;1&quot;)){
+</I>&gt;<i>			sl_send_reply(&quot;500&quot;,&quot;Error translating MD5-&gt;AKA authorized REGISTER&quot;);
+</I>&gt;<i>			exit;
+</I>&gt;<i>		}
+</I>&gt;<i>	}else{ 
+</I>&gt;<i>		if (!Gw_MD5_to_AKA(&quot;0&quot;)){
+</I>&gt;<i>			sl_send_reply(&quot;500&quot;,&quot;Error translating MD5-&gt;AKA unauthorized REGISTER&quot;);
+</I>&gt;<i>			exit;
+</I>&gt;<i>		}				
+</I>&gt;<i>	}
+</I>&gt;<i>	
+</I>&gt;<i>	t_on_reply(&quot;REGISTER_reply&quot;);
+</I>&gt;<i>	#t_on_failure(&quot;REGISTER_failure&quot;);
+</I>&gt;<i>	route(PCSCF);		
+</I>&gt;<i>	exit;
+</I>&gt;<i>}
+</I>&gt;<i>
+</I>&gt;<i>onreply_route[REGISTER_reply]
+</I>&gt;<i>{
+</I>&gt;<i>	if (t_check_status(&quot;401&quot;)){
+</I>&gt;<i>		if (!Gw_AKA_to_MD5()){
+</I>&gt;<i>			log(1,&quot;Error translating from AKA to MD5&quot;);
+</I>&gt;<i>			#sl_send_reply(&quot;500&quot;,&quot;Error translating AKA-&gt;MD5 challenge&quot;);
+</I>&gt;<i>			break;
+</I>&gt;<i>		}	
+</I>&gt;<i>	}	
+</I>&gt;<i>}
+</I>&gt;<i>
+</I>&gt;<i>route[PCSCF]
+</I>&gt;<i>{
+</I>&gt;<i>    if (method==&quot;INVITE&quot; ||method==&quot;SUBCRIBE&quot;){
+</I>&gt;<i>		record_route();
+</I>&gt;<i>	}
+</I>&gt;<i>	if (method==&quot;ACK&quot;||method==&quot;BYE&quot;||method==&quot;NOTIFY&quot;){
+</I>&gt;<i>		loose_route();
+</I>&gt;<i>		t_relay();
+</I>&gt;<i>		exit;
+</I>&gt;<i>	}
+</I>&gt;<i>	loose_route();
+</I>&gt;<i>	if (!search(&quot;.*sip:127.0.0.1:3060.*&quot;)||method==&quot;REGISTER&quot;) {
+</I>&gt;<i>		if (!t_relay_to_udp(&quot;127.0.0.1&quot;,&quot;4060&quot;)) {
+</I>&gt;<i>		    sl_send_reply(&quot;500&quot;,&quot;Error forwarding to P-CSCF&quot;);
+</I>&gt;<i>		}
+</I>&gt;<i>	} else {
+</I>&gt;<i>	    if (!t_relay()) {
+</I>&gt;<i>    	     sl_reply_error();
+</I>&gt;<i>    	}
+</I>&gt;<i>    }
+</I>&gt;<i>    exit;
+</I>&gt;<i>}
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>_______________________________________________
+</I>&gt;<i>OpenIMSCore-Users mailing list
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>
+-- 
+--------------------------------------------------
+Ing. Andrej Vrabel
+SW developement group
+
+Mail:	STROM Slovakia a.s.
+	L. Fullu 7a, 841 05 Bratislava, Slovakia
+
+Mobile: +421 902 929 664
+
+E-mail: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">andrej.vrabel at stromslovakia.sk</A>
+--------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000109.html">[OpenIMSCore-Users] Error establishing calls
+</A></li>
+	<LI>Next message: <A HREF="000111.html">[OpenIMSCore-Users] Error establishing calls
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#110">[ date ]</a>
+              <a href="thread.html#110">[ thread ]</a>
+              <a href="subject.html#110">[ subject ]</a>
+              <a href="author.html#110">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

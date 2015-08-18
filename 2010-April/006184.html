@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registration failed with Ipsec enabled
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20failed%20with%20Ipsec%20enabled&In-Reply-To=%3C97083DFAC8827841B568A86D40354C4A03D70CF8%40ZMY16EXM66.ds.mot.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006179.html">
+   <LINK REL="Next"  HREF="006187.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registration failed with Ipsec enabled</H1>
+    <B>Sunil Suraj-a22975</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20failed%20with%20Ipsec%20enabled&In-Reply-To=%3C97083DFAC8827841B568A86D40354C4A03D70CF8%40ZMY16EXM66.ds.mot.com%3E"
+       TITLE="[OpenIMSCore-Users] Registration failed with Ipsec enabled">surajsunil at motorola.com
+       </A><BR>
+    <I>Wed Apr  7 09:12:28 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006179.html">[OpenIMSCore-Users] PCSCF
+</A></li>
+        <LI>Next message: <A HREF="006187.html">[OpenIMSCore-Users] Registration failed with Ipsec enabled
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6184">[ date ]</a>
+              <a href="thread.html#6184">[ thread ]</a>
+              <a href="subject.html#6184">[ subject ]</a>
+              <a href="author.html#6184">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All,
+ 
+ 
+       Following behaviour is observed while testing the Registration
+with IPsec Secuirity agreement
+ 
+       First REGISTER message sent with security client header
+ 
+      Security-Client:
+ipsec-3gpp;alg=hmac-md5-96;prot=esp;ealg=des-ede3-cbc;spi-c=3030;spi-s=3
+031;port-c=7071;port-s=7072
+
+      Server challenges the request with 401 with Security server header
+
+ 
+      Security-Server: ipsec-3gpp; ealg=des-ede3-cbc; alg=hmac-md5-96;
+spi-c=5000; spi-s=5001; port-c=4060; port-s=4060; prot=esp; mod=trans;
+q=0.1
+ 
+      Our client sends reRegister with Security verify header with local
+port 7071 to remote port 4060. Message is as follows
+ 
+ 
+REGISTER sip:open-ims.test SIP/2.0
+To: Satya &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kaushik at open-ims.test</A>&gt;
+From: Satya
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kaushik at open-ims.test</A>&gt;;tag=18-161236328-0-d7d614b7-00000001
+Route: &lt;sip:10.232.15.41:4060;lr&gt;
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">d7d614b7099d64081 at 3621131447</A>
+Expires: 3600
+CSeq: 2 REGISTER
+Via: SIP/2.0/UDP 10.232.14.119:7072;rport;branch=z9hG4bK7042b057ef1f66
+Supported: timer,timer,path,sec-agree
+Allow:
+ACK,BYE,CANCEL,INVITE,OPTIONS,REGISTER,INFO,PRACK,SUBSCRIBE,NOTIFY,UPDAT
+E,MESSAGE,REFER,PUBLISH
+Accept-Encoding: identity
+Accept:
+application/sdp,multipart/mixed,application/reginfo+xml,message/sipfrag,
+application/simple-message-summary,application/dialog-info+xml,applicati
+on/server-call-feature-status+xml,application/xml
+Content-Length: 0
+Max-Forwards: 70
+P-Access-Network-Info: LAN
+User-Agent: Symphony UA
+History-Info: sip:open-ims.test;index=1
+Require: sec-agree
+Proxy-Require: sec-agree
+Authorization: Digest
+algorithm=AKAv1-MD5,cnonce=&quot;d7d61596&quot;,nc=00000001,nonce=&quot;kSOd4x/87l2AfLx
+kpnyfg4jcucuJHAAASZEB5wJsBMQ=&quot;,qop=auth,realm=&quot;open-ims.test&quot;,response=&quot;
+93b8abc08d7e4e403e231616bcfa8794&quot;,uri=&quot;sip:open-ims.test&quot;,username=&quot;
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kaushik at open-ims.test</A>&quot;
+Security-Client:
+ipsec-3gpp;alg=hmac-md5-96;prot=esp;ealg=des-ede3-cbc;spi-c=3030;spi-s=3
+031;port-c=7071;port-s=7072
+Security-Verify:
+ipsec-3gpp;q=0.1;alg=hmac-md5-96;prot=esp;ealg=des-ede3-cbc;spi-c=5000;s
+pi-s=5001;port-c=4060;port-s=4060
+Contact: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kaushik at 10.232.14.119</A>:7072
+ 
+     Server sends 494 Security Agreement Required.
+ 
+ 
+  Please anyone let me know the reason for this.
+ 
+ 
+Attached ethereal logs from OpenIms side.
+ 
+Regards,
+Suraj
+
+    
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100407/0646f9c9/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100407/0646f9c9/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: openims.pcap
+Type: application/octet-stream
+Size: 295365 bytes
+Desc: openims.pcap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100407/0646f9c9/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100407/0646f9c9/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006179.html">[OpenIMSCore-Users] PCSCF
+</A></li>
+	<LI>Next message: <A HREF="006187.html">[OpenIMSCore-Users] Registration failed with Ipsec enabled
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6184">[ date ]</a>
+              <a href="thread.html#6184">[ thread ]</a>
+              <a href="subject.html#6184">[ subject ]</a>
+              <a href="author.html#6184">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] S-CSCF not transmitting INVITE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20not%20transmitting%20INVITE&In-Reply-To=%3Cd957a47f0801070133l43cd9c95p7707155baabb24ce%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003146.html">
+   <LINK REL="Next"  HREF="003148.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] S-CSCF not transmitting INVITE</H1>
+    <B>Leonard Broman</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20not%20transmitting%20INVITE&In-Reply-To=%3Cd957a47f0801070133l43cd9c95p7707155baabb24ce%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] S-CSCF not transmitting INVITE">firepiper at gmail.com
+       </A><BR>
+    <I>Mon Jan  7 10:33:48 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003146.html">[OpenIMSCore-Users] TLS Problem
+</A></li>
+        <LI>Next message: <A HREF="003148.html">[OpenIMSCore-Users] S-CSCF not transmitting INVITE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3145">[ date ]</a>
+              <a href="thread.html#3145">[ thread ]</a>
+              <a href="subject.html#3145">[ subject ]</a>
+              <a href="author.html#3145">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi!
+
+I've been trying to locate an error in my openimscore setup for some
+time now and ran out of options hoping you could point me in the right
+direction. I have an setup on two machines, PCSCF and AS on one and
+I-S-CSCF and HSS on the other. They are modified to handling the
+domain &quot;ims.ao&quot; (fictious).
+My problems arise when I try to establish an msrp session between
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at ims.ao</A> and sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">msrpecho at ims.ao</A> were msrpecho is an msrp echo
+bot running as a standalone application.
+The invite from the alice arrives at the S-CSCF which perfoms iFC
+processing without problems (no AS matched) and locates the
+destination sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">msrpecho at ims.ao</A> but the INVITE never leaves the
+S-CSCF. A 100 Trying is response is sent directly and a few seconds
+later a 408 Timeout, successfully delivered to alice.
+
+Here's a snippet of debug which is confusing me, should it really
+rewrite the request URI??
+
+ 1(10868) DBG:S-CSCF:S_term_not_registered: Looking if registered
+ 1(10868) DBG:S-CSCF:cscf_get_terminating_identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">msrpecho at ims.ao</A>&gt;
+ 1(10868) DBG:S-CSCF:S_term_not_registered: Looking for &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">msrpecho at ims.ao</A>&gt;
+ 1(10868) DBG:S-CSCF:S_is_not_registered_id: Looking if NOT registered
+ 1(10868) &gt;&gt;       Term
+ 1(10868) DBG:S-CSCF:S_terminating_barred: Looking if barred
+ 1(10868) DBG:S-CSCF:cscf_get_terminating_identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">msrpecho at ims.ao</A>&gt;
+ 1(10868) DBG:S-CSCF:S_terminating_barred: Looking for &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">msrpecho at ims.ao</A>&gt;
+ 1(10868) DBG:S-CSCF:S_is_not_registered_id: Looking if NOT registered
+ 1(10868) parse_headers: flags=200
+ 1(10868) grep_sock_info - checking if host==us: 6==14 &amp;&amp;  [ims.ao] ==
+[172.23.115.137]
+ 1(10868) grep_sock_info - checking if port 6060 matches port 5060
+ 1(10868) grep_sock_info - checking if host==us: 6==14 &amp;&amp;  [ims.ao] ==
+[172.23.115.137]
+ 1(10868) grep_sock_info - checking if port 6060 matches port 5060
+ 1(10868) check_self: host != me
+ 1(10868) loose_route: RURI is NOT myself
+ 1(10868) grep_sock_info - checking if host==us: 12==14 &amp;&amp;
+[pcscf.ims.ao] == [172.23.115.137]
+ 1(10868) grep_sock_info - checking if port 6060 matches port 8060
+ 1(10868) grep_sock_info - checking if host==us: 12==14 &amp;&amp;
+[pcscf.ims.ao] == [172.23.115.137]
+ 1(10868) grep_sock_info - checking if port 6060 matches port 8060
+ 1(10868) check_self: host != me
+ 1(10868) after_loose: Topmost URI is NOT myself
+ 1(10868) after_loose: URI to be processed: 'sip:pcscf.ims.ao:8060;lr'
+ 1(10868) after_loose: Next URI is a loose router
+ 1(10868) INFO:ISC:ISC_match_filter(term): Checking triggers
+ 1(10868) DBG:S-CSCF:S_lookup: Looking up for contacts
+ 1(10868) DBG:S-CSCF:cscf_get_terminating_identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">msrpecho at ims.ao</A>&gt;
+ 1(10868) DBG:S-CSCF:S_lookup: Looking for &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">msrpecho at ims.ao</A>&gt;
+ 1(10868) DBG:S-CSCF:S_lookup: Found at &lt;sip:172.23.115.137:8060&gt;
+ 1(10868) rewrite_uri: Rewriting Request-URI with 'sip:172.23.115.137:8060'
+ 1(10868) parse_headers: flags=ffffffffffffffff
+ 1(10868) DEBUG: t_newtran: msg id=21344 , global msg id=21343 , T on
+entrance=0xffffffff
+ 1(10868) parse_headers: flags=ffffffffffffffff
+ 1(10868) parse_headers: flags=78
+ 1(10868) t_lookup_request: start searching: hash=61275, isACK=1
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003146.html">[OpenIMSCore-Users] TLS Problem
+</A></li>
+	<LI>Next message: <A HREF="003148.html">[OpenIMSCore-Users] S-CSCF not transmitting INVITE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3145">[ date ]</a>
+              <a href="thread.html#3145">[ thread ]</a>
+              <a href="subject.html#3145">[ subject ]</a>
+              <a href="author.html#3145">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

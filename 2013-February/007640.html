@@ -1,0 +1,738 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] End points registered but calls not working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2013-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20End%20points%20registered%20but%20calls%20not%20working&In-Reply-To=%3CCAHNHaH_z%2BP16JmX_OY833hs0tmLSnOv5RQj_WK9E%3D3XLSFWeZw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007632.html">
+   <LINK REL="Next"  HREF="007643.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] End points registered but calls not working</H1>
+    <B>Arshkit Dullat</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20End%20points%20registered%20but%20calls%20not%20working&In-Reply-To=%3CCAHNHaH_z%2BP16JmX_OY833hs0tmLSnOv5RQj_WK9E%3D3XLSFWeZw%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] End points registered but calls not working">arshkit.dullat at gmail.com
+       </A><BR>
+    <I>Mon Feb 25 06:54:24 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007632.html">[OpenIMSCore-Users] big problem
+</A></li>
+        <LI>Next message: <A HREF="007643.html">[OpenIMSCore-Users] End points registered but calls not working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7640">[ date ]</a>
+              <a href="thread.html#7640">[ thread ]</a>
+              <a href="subject.html#7640">[ subject ]</a>
+              <a href="author.html#7640">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I am new to the Open IMS core so this maybe a basic question. I have a
+setup where I have the open IMS core setup(10.193.18.2) and a BroadWorks
+SIP Application server (10.193.18.3). The 2 softclients (XLITE 5 and
+Zoiper), I am using for testing, successfully register with the IMS core at
+10.193.18.2:4060 but when I try to make a call from one softclient
+(02343439) to another sofctlient (02343440) the calls don't work at all.
+
+Upon looking further at the logs from the AS, I see a SIP 403 Forbidden
+because of route header issues. Snippet of this is as under (full logs
+attached):
+
+2013.02.24 14:39:22:991 PST | Info       | Sip | +102343439 | callhalf-19:0
+
+udp 492 Bytes OUT to 10.193.18.2:6060
+SIP/2.0 403 Forbidden because Route header issues
+Via:SIP/2.0/UDP 10.193.18.2:6060;branch=z9hG4bKcf96.36ac1343.0,SIP/2.0/UDP
+10.193.18.3;branch=z9hG4bKBroadWorks.-1j5gac4-10.193.18.2V6060-0-120465076-924880571-1361745562983-
+From:&quot;arshkit 39&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343439 at 10.193.18.3</A>
+;user=phone&gt;;tag=924880571-1361745562983-
+To:&quot;arshkit 40&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>
+;user=phone&gt;;tag=1379010924-1361745562991
+Call-ID:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">BW143922983240213-1131204192 at 10.193.18.3</A>
+CSeq:120465076 INVITE
+Content-Length:0
+
+I have re-started the fhoss.sh, icscf, pcscf and scscf scripts on the IMS
+core but the behavior stays the same.
+
+Any ideas on how this can be resolved are welcome.
+
+thank you
+
+-Arshkit
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130224/f550528e/attachment-0001.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130224/f550528e/attachment-0001.html</A>&gt;
+-------------- next part --------------
+Via:SIP/2.0/UDP 10.193.2.24:5060;branch=z9hG4bK0ia0pd30bgeckn1ne0q1
+From:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ping at 10.193.2.24</A>&gt;;tag=c2b38a3b2d10d3ed78ec199a73ab4d62000skq3
+To:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ping at adullat1</A>&gt;;tag=1040032799-1361745550032
+Call-ID:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">c721ef652ff63ec949665cd28883bdfe000skq3 at 10.193.2.24</A>
+CSeq:20213 OPTIONS
+Allow-Events:call-info,line-seize,dialog,message-summary,as-feature-event,x-broadworks-hoteling,x-broadworks-call-center-status
+Content-Length:0
+
+
+
+2013.02.24 14:39:22:973 PST | Info       | Sip | +102343439 | callhalf-13
+
+	$ new CHSS &gt; +102343439 &gt;  &gt; callhalf-13
+
+2013.02.24 14:39:22:973 PST | FieldDebug | StateReplication | +102343439 | callhalf-13
+
+	Session added to wrapper callhalf-11 in state STANDALONE
+
+2013.02.24 14:39:22:974 PST | Info       | Sip | +102343439 | callhalf-13:0
+
+	udp 1364 Bytes IN from 10.193.18.2:6060
+INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343440 at open-ims.test</A> SIP/2.0
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Route: &lt;sip:10.193.18.3:5060;lr&gt;, &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=1;d=0;a=7369703a3032333433343339406f70656e2d696d732e74657374&gt;
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+Via: SIP/2.0/UDP 10.193.18.2:6060;branch=z9hG4bKcfe6.06f19f54.0
+Via: SIP/2.0/UDP 10.193.18.2:4060;branch=z9hG4bKcfe6.6011bb71.0
+Via: SIP/2.0/UDP 10.193.3.118:5060;branch=z9hG4bK-d8754z-e12ad72c6709bf33-1---d8754z-;rport=5060
+Max-Forwards: 15
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343439 at 10.193.3.118</A>:5060&gt;
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343440 at open-ims.test</A>&gt;
+From: &quot;02343439&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343439 at open-ims.test</A>&gt;;tag=fffbc45c
+Call-ID: YmViMzQxZDRhYjc2MWVhYTA0ZWU4NDM1NTBhNWNmODI.
+CSeq: 1 INVITE
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, NOTIFY, MESSAGE, SUBSCRIBE, INFO
+Content-Type: application/sdp
+Supported: replaces
+User-Agent: X-Lite release 5.0.0 stamp 67284
+Content-Length: 242
+P-Asserted-Identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343439 at open-ims.test</A>&gt;
+P-Charging-Vector: icid-value=&quot;P-CSCFabcd00000000512a969b00000006&quot;;icid-generated-at=10.193.18.2;orig-ioi=&quot;open-ims.test&quot;
+
+v=0
+o=- 13006219162668985 1 IN IP4 10.193.3.118
+s=CounterPath X-Lite 5.0.0
+c=IN IP4 10.193.3.118
+b=AS:1638
+t=0 0
+m=audio 5062 RTP/AVP 107 0 8 101
+a=rtpmap:107 BV32/16000
+a=rtpmap:101 telephone-event/8000
+a=fmtp:101 0-15
+a=sendrecv
+
+
+2013.02.24 14:39:22:975 PST | Info       | CallP | SIP Endpoint | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Processing Event: com.broadsoft.events.sip.SipInviteEvent
+
+2013.02.24 14:39:22:976 PST | Info       | CallP | SIP Endpoint | +102343439 | IMSGrp3 | callhalf-13:0
+
+	call: 1  old State: IDLE  new State: INVITING
+
+2013.02.24 14:39:22:976 PST | Info       | CallP | SIP Endpoint | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Transforming Event: com.broadsoft.events.sip.SipInviteEvent
+
+2013.02.24 14:39:22:976 PST | Info       | Sip | +102343439 | callhalf-13:0
+
+	udp 415 Bytes OUT to 10.193.18.2:6060
+SIP/2.0 100 Trying
+Via:SIP/2.0/UDP 10.193.18.2:6060;branch=z9hG4bKcfe6.06f19f54.0,SIP/2.0/UDP 10.193.18.2:4060;branch=z9hG4bKcfe6.6011bb71.0,SIP/2.0/UDP 10.193.3.118:5060;branch=z9hG4bK-d8754z-e12ad72c6709bf33-1---d8754z-;rport=5060
+From:&quot;02343439&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343439 at open-ims.test</A>&gt;;tag=fffbc45c
+To:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343440 at open-ims.test</A>&gt;
+Call-ID:YmViMzQxZDRhYjc2MWVhYTA0ZWU4NDM1NTBhNWNmODI.
+CSeq:1 INVITE
+Content-Length:0
+
+
+
+2013.02.24 14:39:22:976 PST | Info       | CallP | SIP Endpoint | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Connection - old State: IDLE  new State: NEGOTIATING_WAITING_FOR_ANSWER
+
+2013.02.24 14:39:22:977 PST | Info       | CallP | Call Manager | +102343439 | IMSGrp3 | callhalf-13
+
+	Processing Event: com.broadsoft.events.iwp.ConnectRequestEvent {SipEndpoint.callhalf-13:0,CHCallManager.callhalf-13}
+
+2013.02.24 14:39:22:977 PST | Info       | CallP | SIP Endpoint | +102343439 | IMSGrp3 | callhalf-13:0
+
+	old State: IDLE  new State: ALERTING
+
+2013.02.24 14:39:22:977 PST | Info       | Generic
+
+	Agent Availability for 159596727 set to BUSY_OFFHOOK
+
+2013.02.24 14:39:22:978 PST | Info       | CallP | Call | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Processing Event: com.broadsoft.events.callhalf.InvitationEvent {CHCallManager.callhalf-13,CHCall.callhalf-13:0}
+
+2013.02.24 14:39:22:978 PST | Info       | CallP | Call | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Connection - old State: IDLE  new State: NEGOTIATING_WAITING_FOR_ANSWER
+
+2013.02.24 14:39:22:978 PST | FieldDebug | CallP | Call | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Location-Based Calling Data
+	Network: Roaming Disabled
+	Zone: Zones Disabled
+
+2013.02.24 14:39:22:978 PST | Info       | CallP | Call | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Address = +102343440 , Call Type = Group
+
+2013.02.24 14:39:22:978 PST | Info       | CallP | Call | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Event: com.broadsoft.events.callhalf.InvitationEvent
+	Consumed by: com.broadsoft.services.translation.TranslationServiceOrigInstance
+
+2013.02.24 14:39:22:979 PST | Info       | CallP | Call | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Processing Event: com.broadsoft.apm.asservicemanagement.ResumeEvent
+
+2013.02.24 14:39:22:979 PST | Info       | CallP | Call | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Resuming Event: com.broadsoft.events.callhalf.InvitationEvent {CHCallManager.callhalf-13,CHCall.callhalf-13:0}
+	After Service Instance: com.broadsoft.services.translation.TranslationServiceOrigInstance
+
+2013.02.24 14:39:22:980 PST | Info       | CallP | Call | +102343439 | IMSGrp3 | callhalf-13:0
+
+	old State: IDLE  new State: ALERTING
+
+2013.02.24 14:39:22:980 PST | Notice     | CallLog
+
+	Dropped Event: Enhanced Call Log Reporting IO Controller not activated!
+	PlacedCallEvent
+	User ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343439 at open-ims.test</A>
+	Log ID: 13d0e5c4d590000013e71d3f68c
+	Call ID: 13:0
+
+2013.02.24 14:39:22:980 PST | Info       | Sip | +102343440 | callhalf-15
+
+	$ new CHSS &gt; +102343440 &gt; callhalf-13:0 &gt; callhalf-15
+
+2013.02.24 14:39:22:980 PST | FieldDebug | StateReplication | +102343440 | callhalf-15
+
+	Session added to wrapper callhalf-11 in state STANDALONE
+
+2013.02.24 14:39:22:980 PST | FieldDebug | StateReplication | +102343439 | callhalf-13
+
+	Wrapper locally queued event com.broadsoft.events.callhalf.TerminationEvent : callhalf-13:0
+
+2013.02.24 14:39:22:981 PST | Info       | CallP | Call Manager | +102343440 | PSTN | callhalf-15
+
+	Processing Event: com.broadsoft.events.callhalf.TerminationEvent : callhalf-13:0 {CHCall.callhalf-13:0,CHCallManager.callhalf-15}
+
+2013.02.24 14:39:22:981 PST | Info       | CallP | Call | +102343440 | PSTN | callhalf-15:0
+
+	Processing Event: com.broadsoft.events.callhalf.InvitationEvent {CHCall.callhalf-13:0,CHCall.callhalf-15:0}
+
+2013.02.24 14:39:22:981 PST | Info       | CallP | Call | +102343440 | PSTN | callhalf-15:0
+
+	Connection - old State: IDLE  new State: NEGOTIATING_WAITING_FOR_ANSWER
+
+2013.02.24 14:39:22:981 PST | FieldDebug | StateReplication | +102343440 | callhalf-15
+
+	Wrapper locally queued event com.broadsoft.events.callhalf.LinkRemoteCallEvent : callhalf-15:0
+
+2013.02.24 14:39:22:981 PST | Info       | CallP | Call | +102343440 | PSTN | callhalf-15:0
+
+	old State: IDLE  new State: ALERTING
+
+2013.02.24 14:39:22:981 PST | Info       | CallP | Call Manager | +102343440 | PSTN | callhalf-15
+
+	Processing Event: com.broadsoft.events.callhalf.InvitationEvent {CHCall.callhalf-15:0,CHCallManager.callhalf-15}
+
+2013.02.24 14:39:22:982 PST | FieldDebug | NameService
+
+	NameService lookup result for name=scscf.open-ims.test, recordType=ANameRecord: RecordSet: source=file /etc/hosts, records=[[DefaultANameRecord: address=scscf.open-ims.test/10.193.18.2]]
+
+2013.02.24 14:39:22:982 PST | Info       | CallP | Service | Network Routing | +102343440 | PSTN | callhalf-15:0
+
+	Network Device Selected: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>
+
+2013.02.24 14:39:22:982 PST | Info       | CallP | SIP Endpoint | +102343440 | callhalf-15:0
+
+	old State: IDLE  new State: ALERTING
+
+2013.02.24 14:39:22:982 PST | Info       | CallP | SIP Endpoint | +102343440 | PSTN | callhalf-15:0
+
+	Connection - old State: IDLE  new State: NEGOTIATING_WAITING_FOR_ANSWER
+
+2013.02.24 14:39:22:982 PST | Info       | CallP | SIP Endpoint | +102343440 | PSTN | callhalf-15:0
+
+	Transforming Event: com.broadsoft.events.iwp.ConnectRequestEvent {CHCallManager.callhalf-15,SipEndpoint.callhalf-15:0}
+
+2013.02.24 14:39:22:983 PST | Info       | CallP | SIP Endpoint | +102343440 | PSTN | callhalf-15:0
+
+	call: 1  old State: IDLE  new State: INVITING
+
+2013.02.24 14:39:22:984 PST | Info       | CallP | Call Manager | +102343440 | PSTN | callhalf-15
+
+	Processing Event: com.broadsoft.events.callhalf.AccountingInfoEvent {SipEndpoint.callhalf-15:0,CHCallManager.callhalf-15}
+
+2013.02.24 14:39:22:984 PST | Info       | CallP | Call | +102343440 | PSTN | callhalf-15:0
+
+	Processing Event: com.broadsoft.events.callhalf.AccountingInfoEvent {CHCallManager.callhalf-15,CHCall.callhalf-15:0}
+
+2013.02.24 14:39:22:984 PST | FieldDebug | StateReplication | +102343440 | callhalf-15
+
+	Wrapper locally queued event com.broadsoft.events.callhalf.AccountingInfoEvent
+
+2013.02.24 14:39:22:984 PST | Info       | Sip | +102343440 | callhalf-15:0
+
+	udp 1371 Bytes OUT to 10.193.18.2:6060
+INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone SIP/2.0
+Via:SIP/2.0/UDP 10.193.18.3;branch=z9hG4bKBroadWorks.-1j5gac4-10.193.18.2V6060-0-120465076-924880571-1361745562983-
+From:&quot;arshkit 39&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343439 at 10.193.18.3</A>;user=phone&gt;;tag=924880571-1361745562983-
+To:&quot;arshkit 40&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone&gt;
+Call-ID:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">BW143922983240213-1131204192 at 10.193.18.3</A>
+CSeq:120465076 INVITE
+Contact:&lt;sip:10.193.18.3:5060&gt;
+P-Asserted-Identity:&quot;arshkit 39&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343439 at open-ims.test</A>&gt;,&quot;arshkit 39&quot;&lt;tel:+102343439&gt;
+Privacy:none
+Route:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=1;d=0;a=7369703a3032333433343339406f70656e2d696d732e74657374&gt;
+P-Charging-Vector:icid-value=&quot;P-CSCFabcd00000000512a969b00000006&quot;;icid-generated-at=10.193.18.2;orig-ioi=&quot;open-ims.test&quot;;bw-speid=&quot;IMS&quot;;bw-calltype=local
+Allow:ACK,BYE,CANCEL,INFO,INVITE,OPTIONS,PRACK,REFER,NOTIFY
+X-BroadWorks-DGC:user-id=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343439 at open-ims.test</A>&quot;;term-user-id=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343440 at open-ims.test</A>&quot;;ext-tracking-id=&quot;2:1&quot;
+Accept:application/media_control+xml,application/sdp,application/x-broadworks-call-center+xml,multipart/mixed
+Supported:
+Max-Forwards:10
+Content-Type:application/sdp
+Content-Length:212
+
+v=0
+o=BroadWorks 5 1 IN IP4 10.193.3.118
+s=-
+c=IN IP4 10.193.3.118
+b=AS:1638
+t=0 0
+m=audio 5062 RTP/AVP 107 0 8 101
+a=rtpmap:107 BV32/16000
+a=rtpmap:101 telephone-event/8000
+a=fmtp:101 0-15
+a=sendrecv
+
+
+2013.02.24 14:39:22:984 PST | Info       | CallP | Call | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Processing Event: com.broadsoft.events.callhalf.LinkRemoteCallEvent : callhalf-15:0 {CHCall.callhalf-15:0,CHCall.callhalf-13:0}
+
+2013.02.24 14:39:22:984 PST | Info       | CallP | Call | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Processing Event: com.broadsoft.events.callhalf.AccountingInfoEvent {CHCall.callhalf-15:0,CHCall.callhalf-13:0}
+
+2013.02.24 14:39:22:987 PST | Info       | Sip | +102343440 | callhalf-15:0
+
+	udp 683 Bytes IN from 10.193.18.2:6060
+SIP/2.0 100 trying -- your call is important to us
+Via:SIP/2.0/UDP 10.193.18.3;branch=z9hG4bKBroadWorks.-1j5gac4-10.193.18.2V6060-0-120465076-924880571-1361745562983-
+From:&quot;arshkit 39&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343439 at 10.193.18.3</A>;user=phone&gt;;tag=924880571-1361745562983-
+To:&quot;arshkit 40&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone&gt;
+Call-ID:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">BW143922983240213-1131204192 at 10.193.18.3</A>
+CSeq:120465076 INVITE
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (x86_64/linux))
+Content-Length: 0
+Warning: 392 10.193.18.2:6060 &quot;Noisy feedback tells:  pid=3608 req_src_ip=10.193.18.3 req_src_port=58798 in_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone out_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone via_cnt==1&quot;
+
+
+
+2013.02.24 14:39:22:987 PST | Info       | CallP | SIP Endpoint | +102343440 | PSTN | callhalf-15:0
+
+	Processing Event: com.broadsoft.events.sip.Sip100InfoEvent
+
+2013.02.24 14:39:22:987 PST | Info       | CallP | SIP Endpoint | +102343440 | PSTN | callhalf-15:0
+
+	call: 1  old State: INVITING  new State: INVITING
+
+2013.02.24 14:39:22:987 PST | Info       | CallP | SIP Endpoint | +102343440 | PSTN | callhalf-15:0
+
+	Transforming Event: com.broadsoft.events.sip.Sip100InfoEvent
+
+2013.02.24 14:39:22:987 PST | Info       | CallP | Call Manager | +102343440 | PSTN | callhalf-15
+
+	Processing Event: com.broadsoft.events.iwp.ConnectRequestAckEvent {SipEndpoint.callhalf-15:0,CHCallManager.callhalf-15}
+
+2013.02.24 14:39:22:988 PST | Info       | CallP | Call Manager | +102343440 | PSTN | callhalf-15
+
+	Event: com.broadsoft.events.iwp.ConnectRequestAckEvent
+	Consumed by: com.broadsoft.services.networkrouting.NetworkRoutingServiceInstance
+
+2013.02.24 14:39:22:988 PST | Info       | Sip | +102343439 | callhalf-19
+
+	$ new CHSS &gt; +102343439 &gt;  &gt; callhalf-19
+
+2013.02.24 14:39:22:988 PST | FieldDebug | StateReplication | +102343439 | callhalf-19
+
+	Session added to wrapper callhalf-17 in state STANDALONE
+
+2013.02.24 14:39:22:989 PST | Info       | Sip | +102343439 | callhalf-19:0
+
+	udp 1372 Bytes IN from 10.193.18.2:6060
+INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone SIP/2.0
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+Via: SIP/2.0/UDP 10.193.18.2:6060;branch=z9hG4bKcf96.36ac1343.0
+Via:SIP/2.0/UDP 10.193.18.3;branch=z9hG4bKBroadWorks.-1j5gac4-10.193.18.2V6060-0-120465076-924880571-1361745562983-
+From:&quot;arshkit 39&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343439 at 10.193.18.3</A>;user=phone&gt;;tag=924880571-1361745562983-
+To:&quot;arshkit 40&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone&gt;
+Call-ID:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">BW143922983240213-1131204192 at 10.193.18.3</A>
+CSeq:120465076 INVITE
+Contact:&lt;sip:10.193.18.3:5060&gt;
+P-Asserted-Identity:&quot;arshkit 39&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343439 at open-ims.test</A>&gt;,&quot;arshkit 39&quot;&lt;tel:+102343439&gt;
+Privacy:none
+P-Charging-Vector:icid-value=&quot;P-CSCFabcd00000000512a969b00000006&quot;;icid-generated-at=10.193.18.2;orig-ioi=&quot;open-ims.test&quot;;bw-speid=&quot;IMS&quot;;bw-calltype=local
+Allow:ACK,BYE,CANCEL,INFO,INVITE,OPTIONS,PRACK,REFER,NOTIFY
+X-BroadWorks-DGC:user-id=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343439 at open-ims.test</A>&quot;;term-user-id=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343440 at open-ims.test</A>&quot;;ext-tracking-id=&quot;2:1&quot;
+Accept:application/media_control+xml,application/sdp,application/x-broadworks-call-center+xml,multipart/mixed
+Supported:
+Max-Forwards: 9
+Content-Type:application/sdp
+Content-Length:212
+
+v=0
+o=BroadWorks 5 1 IN IP4 10.193.3.118
+s=-
+c=IN IP4 10.193.3.118
+b=AS:1638
+t=0 0
+m=audio 5062 RTP/AVP 107 0 8 101
+a=rtpmap:107 BV32/16000
+a=rtpmap:101 telephone-event/8000
+a=fmtp:101 0-15
+a=sendrecv
+
+
+2013.02.24 14:39:22:989 PST | Info       | CallP | SIP Endpoint | +102343439 | PSTN | callhalf-19:0
+
+	Processing Event: com.broadsoft.events.sip.SipInviteEvent
+
+2013.02.24 14:39:22:990 PST | Info       | CallP | SIP Endpoint | +102343439 | PSTN | callhalf-19:0
+
+	call: 1  old State: IDLE  new State: INVITING
+
+2013.02.24 14:39:22:990 PST | Info       | CallP | SIP Endpoint | +102343439 | PSTN | callhalf-19:0
+
+	Transforming Event: com.broadsoft.events.sip.SipInviteEvent
+
+2013.02.24 14:39:22:990 PST | Info       | Sip | +102343439 | callhalf-19:0
+
+	udp 432 Bytes OUT to 10.193.18.2:6060
+SIP/2.0 100 Trying
+Via:SIP/2.0/UDP 10.193.18.2:6060;branch=z9hG4bKcf96.36ac1343.0,SIP/2.0/UDP 10.193.18.3;branch=z9hG4bKBroadWorks.-1j5gac4-10.193.18.2V6060-0-120465076-924880571-1361745562983-
+From:&quot;arshkit 39&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343439 at 10.193.18.3</A>;user=phone&gt;;tag=924880571-1361745562983-
+To:&quot;arshkit 40&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone&gt;
+Call-ID:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">BW143922983240213-1131204192 at 10.193.18.3</A>
+CSeq:120465076 INVITE
+Content-Length:0
+
+
+
+2013.02.24 14:39:22:991 PST | Info       | CallP | SIP Endpoint | +102343439 | PSTN | callhalf-19:0
+
+	Route issue: no Route received
+
+2013.02.24 14:39:22:991 PST | Info       | CallP | SIP Endpoint | +102343439 | PSTN | callhalf-19:0
+
+	call: 1  old State: INVITING  new State: REJECTING
+
+2013.02.24 14:39:22:991 PST | Info       | CallP | SIP Endpoint | +102343439 | PSTN | callhalf-19:0
+
+	Transformer Consumed Event: com.broadsoft.events.sip.SipInviteEvent
+
+2013.02.24 14:39:22:991 PST | Info       | Sip | +102343439 | callhalf-19:0
+
+	udp 492 Bytes OUT to 10.193.18.2:6060
+SIP/2.0 403 Forbidden because Route header issues
+Via:SIP/2.0/UDP 10.193.18.2:6060;branch=z9hG4bKcf96.36ac1343.0,SIP/2.0/UDP 10.193.18.3;branch=z9hG4bKBroadWorks.-1j5gac4-10.193.18.2V6060-0-120465076-924880571-1361745562983-
+From:&quot;arshkit 39&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343439 at 10.193.18.3</A>;user=phone&gt;;tag=924880571-1361745562983-
+To:&quot;arshkit 40&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone&gt;;tag=1379010924-1361745562991
+Call-ID:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">BW143922983240213-1131204192 at 10.193.18.3</A>
+CSeq:120465076 INVITE
+Content-Length:0
+
+
+
+2013.02.24 14:39:22:994 PST | Info       | Sip | +102343439 | callhalf-19:0
+
+	udp 566 Bytes IN from 10.193.18.2:6060
+ACK sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone SIP/2.0
+Via: SIP/2.0/UDP 10.193.18.2:6060;branch=z9hG4bKcf96.36ac1343.0
+From:&quot;arshkit 39&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343439 at 10.193.18.3</A>;user=phone&gt;;tag=924880571-1361745562983-
+Call-ID:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">BW143922983240213-1131204192 at 10.193.18.3</A>
+To:&quot;arshkit 40&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone&gt;;tag=1379010924-1361745562991
+CSeq:120465076 ACK
+Route:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=1;d=0;a=7369703a3032333433343339406f70656e2d696d732e74657374&gt;
+User-Agent: Sip EXpress router(2.1.0-dev1 OpenIMSCore (x86_64/linux))
+Content-Length: 0
+
+
+
+2013.02.24 14:39:22:994 PST | Info       | CallP | SIP Endpoint | +102343439 | PSTN | callhalf-19:0
+
+	Processing Event: com.broadsoft.events.sip.SipAckEvent
+
+2013.02.24 14:39:22:994 PST | Info       | CallP | SIP Endpoint | +102343439 | PSTN | callhalf-19:0
+
+	call: 1  old State: REJECTING  new State: RELEASED
+
+2013.02.24 14:39:22:994 PST | Info       | Sip | +102343440 | callhalf-15:0
+
+	udp 433 Bytes IN from 10.193.18.2:6060
+SIP/2.0 403 Forbidden because Route header issues
+Via:SIP/2.0/UDP 10.193.18.3;branch=z9hG4bKBroadWorks.-1j5gac4-10.193.18.2V6060-0-120465076-924880571-1361745562983-
+From:&quot;arshkit 39&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343439 at 10.193.18.3</A>;user=phone&gt;;tag=924880571-1361745562983-
+To:&quot;arshkit 40&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone&gt;;tag=1379010924-1361745562991
+Call-ID:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">BW143922983240213-1131204192 at 10.193.18.3</A>
+CSeq:120465076 INVITE
+Content-Length:0
+
+
+
+2013.02.24 14:39:22:994 PST | Info       | CallP | SIP Endpoint | +102343440 | PSTN | callhalf-15:0
+
+	Processing Event: com.broadsoft.events.sip.Sip400RequestFailureEvent
+
+2013.02.24 14:39:22:994 PST | Info       | CallP | SIP Endpoint | +102343440 | PSTN | callhalf-15:0
+
+	call: 1  old State: INVITING  new State: RELEASED
+
+2013.02.24 14:39:22:995 PST | Info       | CallP | SIP Endpoint | +102343440 | PSTN | callhalf-15:0
+
+	Transforming Event: com.broadsoft.events.sip.Sip400RequestFailureEvent
+
+2013.02.24 14:39:22:995 PST | Info       | Sip | +102343440 | callhalf-15:0
+
+	udp 563 Bytes OUT to 10.193.18.2:6060
+ACK sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone SIP/2.0
+Via:SIP/2.0/UDP 10.193.18.3;branch=z9hG4bKBroadWorks.-1j5gac4-10.193.18.2V6060-0-120465076-924880571-1361745562983-
+From:&quot;arshkit 39&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343439 at 10.193.18.3</A>;user=phone&gt;;tag=924880571-1361745562983-
+To:&quot;arshkit 40&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+102343440 at 10.193.18.3</A>;user=phone&gt;;tag=1379010924-1361745562991
+Call-ID:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">BW143922983240213-1131204192 at 10.193.18.3</A>
+CSeq:120465076 ACK
+Route:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=1;d=0;a=7369703a3032333433343339406f70656e2d696d732e74657374&gt;
+Max-Forwards:10
+Content-Length:0
+
+
+
+2013.02.24 14:39:22:995 PST | FieldDebug | CallP | Endpoint | +102343440 | PSTN | callhalf-15:0
+
+	ReleaseWithCauseEvent (cause=FORBIDDEN) created
+	Thread &quot;Call Half Input Adapter 0&quot; stack elements:
+	1:	com.broadsoft.events.callhalf.ReleaseWithCauseEvent.&lt;init&gt;(ReleaseWithCauseEvent.java:259)
+	2:	com.broadsoft.events.callhalf.ReleaseWithCauseEvent.&lt;init&gt;(ReleaseWithCauseEvent.java:196)
+	3:	com.broadsoft.sessionmanagers.sipcallhalf.transformer.Sip400RequestFailureEventTransformer.buildCHEvent(Sip400RequestFailureEventTransformer.java:208)
+	4:	com.broadsoft.sessionmanagers.sipcallhalf.transformer.Sip400RequestFailureEventTransformer.transformImpl(Sip400RequestFailureEventTransformer.java:101)
+	5:	com.broadsoft.sessionmanagers.sipcallhalf.transformer.SipResponseEventTransformer.doTransform(SipResponseEventTransformer.java:40)
+	6:	com.broadsoft.sessionmanagers.sipcallhalf.transformer.SipEventTransformer.transform(SipEventTransformer.java:18)
+	7:	com.broadsoft.sessionmanagers.sipcallhalf.SipCHEventTransformer.sipCHtransform(SipCHEventTransformer.java:253)
+	8:	com.broadsoft.sessionmanagers.sipcallhalf.SipCHEventTransformer.transform(SipCHEventTransformer.java:260)
+	9:	com.broadsoft.sessionmanagers.sipcallhalf.SipEndpoint.sendEventToCallManager(SipEndpoint.java:1265)
+	10:	com.broadsoft.sessionmanagers.sipcallhalf.SipEndpoint.processSessionEvent(SipEndpoint.java:865)
+	11:	com.broadsoft.apm.callp.Endpoint.processEvent(Endpoint.java:269)
+	12:	com.broadsoft.sessionmanagers.callhalf.CallHalfServiceSession.deliverEvent(CallHalfServiceSession.java:1623)
+	13:	com.broadsoft.apm.statereplication.StateReplicationSessionWrapper.deliverEventToSession(StateReplicationSessionWrapper.java:619)
+	14:	com.broadsoft.apm.statereplication.StateReplicationSessionWrapper.deliverEvent(StateReplicationSessionWrapper.java:465)
+	15:	com.broadsoft.apm.session.InputAdapter.distributeEvent(InputAdapter.java:127)
+	16:	com.broadsoft.sessionmanagers.callhalf.CHInputAdapter.distributeEvent(CHInputAdapter.java:43)
+	17:	com.broadsoft.apm.session.SimpleQAdapter.processInput(SimpleQAdapter.java:226)
+	18:	com.broadsoft.apm.session.SimpleQAdapter.processInput(SimpleQAdapter.java:27)
+	19:	com.broadsoft.util.watchdog.WatchedThread.run(WatchedThread.java:278)
+	20:	java.lang.Thread.run(Thread.java:722)
+
+
+2013.02.24 14:39:22:995 PST | Info       | CallP | Call Manager | +102343440 | PSTN | callhalf-15
+
+	Processing Event: com.broadsoft.events.callhalf.ReleaseWithCauseEvent : FORBIDDEN {SipEndpoint.callhalf-15:0,CHCallManager.callhalf-15}
+
+2013.02.24 14:39:22:996 PST | Info       | CallP | SIP Endpoint | +102343440 | PSTN | callhalf-15:0
+
+	old State: ALERTING  new State: IDLE
+
+2013.02.24 14:39:22:996 PST | Info       | CallP | Call | +102343440 | PSTN | callhalf-15:0
+
+	Processing Event: com.broadsoft.events.callhalf.ReleaseWithCauseEvent : FORBIDDEN {CHCallManager.callhalf-15,CHCall.callhalf-15:0}
+
+2013.02.24 14:39:22:996 PST | FieldDebug | StateReplication | +102343440 | callhalf-15
+
+	Wrapper locally queued event com.broadsoft.events.callhalf.ReleaseWithCauseEvent : FORBIDDEN
+
+2013.02.24 14:39:22:996 PST | Info       | CallP | Call | +102343440 | PSTN | callhalf-15:0
+
+	old State: ALERTING  new State: RELEASED
+
+2013.02.24 14:39:22:996 PST | Info       | CallP | Call | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Processing Event: com.broadsoft.events.callhalf.ReleaseWithCauseEvent : FORBIDDEN {CHCall.callhalf-15:0,CHCall.callhalf-13:0}
+
+2013.02.24 14:39:22:996 PST | Info       | CallP | Service | Treatments | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Playing file: <A HREF="http://10.193.18.3/media/en/TrtCallFailure.wav">http://10.193.18.3/media/en/TrtCallFailure.wav</A>
+
+2013.02.24 14:39:22:996 PST | Notice     | CallP | Media Manager | MSS Router | +102343439 | IMSGrp3 | callhalf-13
+
+	No Routes for MediaRequest
+
+2013.02.24 14:39:22:996 PST | Warn       | CallP | Service | Treatments | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Unable to play media - NO_MEDIA_DEVICE
+
+2013.02.24 14:39:22:997 PST | Notice     | CallLog
+
+	Dropped Event: Enhanced Call Log Reporting IO Controller not activated!
+	ReleasedCallEvent
+	User ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343439 at open-ims.test</A>
+	Log ID: 13d0e5c4d590000013e71d3f68c
+
+2013.02.24 14:39:22:997 PST | Info       | CallP | Call | +102343439 | IMSGrp3 | callhalf-13:0
+
+	old State: ALERTING  new State: RELEASED
+
+2013.02.24 14:39:22:997 PST | Info       | Generic
+
+	Agent Availability for 159596727 set to BUSY_OFFHOOK
+
+2013.02.24 14:39:22:997 PST | Info       | CallP | Call | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Processing Event: com.broadsoft.events.callhalf.ResetDialogsEvent
+
+2013.02.24 14:39:22:997 PST | Info       | CallP | Call Manager | +102343439 | IMSGrp3 | callhalf-13
+
+	Processing Event: com.broadsoft.events.callhalf.ReleaseWithCauseEvent : FORBIDDEN {CHCall.callhalf-13:0,CHCallManager.callhalf-13}
+
+2013.02.24 14:39:22:997 PST | Info       | CallP | SIP Endpoint | +102343439 | IMSGrp3 | callhalf-13:0
+
+	old State: ALERTING  new State: IDLE
+
+2013.02.24 14:39:22:998 PST | Info       | CallP | Call Manager | +102343439 | IMSGrp3 | callhalf-13
+
+	Processing Event: com.broadsoft.events.callhalf.ResetDialogsEvent {CHCall.callhalf-13:0,CHCallManager.callhalf-13}
+
+2013.02.24 14:39:22:998 PST | Info       | CallP | SIP Endpoint | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Transforming Event: com.broadsoft.events.callhalf.ReleaseWithCauseEvent : FORBIDDEN {CHCallManager.callhalf-13,SipEndpoint.callhalf-13:0}
+
+2013.02.24 14:39:22:998 PST | Info       | CallP | SIP Endpoint | +102343439 | IMSGrp3 | callhalf-13:0
+
+	call: 1  old State: INVITING  new State: REJECTING
+
+2013.02.24 14:39:22:998 PST | Info       | Sip | +102343439 | callhalf-13:0
+
+	udp 446 Bytes OUT to 10.193.18.2:6060
+SIP/2.0 403 Forbidden
+Via:SIP/2.0/UDP 10.193.18.2:6060;branch=z9hG4bKcfe6.06f19f54.0,SIP/2.0/UDP 10.193.18.2:4060;branch=z9hG4bKcfe6.6011bb71.0,SIP/2.0/UDP 10.193.3.118:5060;branch=z9hG4bK-d8754z-e12ad72c6709bf33-1---d8754z-;rport=5060
+From:&quot;02343439&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343439 at open-ims.test</A>&gt;;tag=fffbc45c
+To:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343440 at open-ims.test</A>&gt;;tag=491596908-1361745562998
+Call-ID:YmViMzQxZDRhYjc2MWVhYTA0ZWU4NDM1NTBhNWNmODI.
+CSeq:1 INVITE
+Content-Length:0
+
+
+
+2013.02.24 14:39:23:000 PST | Info       | Sip | +102343439 | callhalf-13:0
+
+	udp 432 Bytes IN from 10.193.18.2:6060
+ACK sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343440 at open-ims.test</A> SIP/2.0
+Via: SIP/2.0/UDP 10.193.18.2:6060;branch=z9hG4bKcfe6.06f19f54.0
+From: &quot;02343439&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343439 at open-ims.test</A>&gt;;tag=fffbc45c
+Call-ID: YmViMzQxZDRhYjc2MWVhYTA0ZWU4NDM1NTBhNWNmODI.
+To:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">02343440 at open-ims.test</A>&gt;;tag=491596908-1361745562998
+CSeq: 1 ACK
+Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+User-Agent: Sip EXpress router(2.1.0-dev1 OpenIMSCore (x86_64/linux))
+Content-Length: 0
+
+
+
+2013.02.24 14:39:23:000 PST | Info       | CallP | SIP Endpoint | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Processing Event: com.broadsoft.events.sip.SipAckEvent
+
+2013.02.24 14:39:23:001 PST | Info       | CallP | SIP Endpoint | +102343439 | IMSGrp3 | callhalf-13:0
+
+	call: 1  old State: REJECTING  new State: RELEASED
+
+2013.02.24 14:39:23:001 PST | Info       | Generic
+
+	Agent Availability for 159596727 set to AVAILABLE
+
+2013.02.24 14:39:27:994 PST | Info       | CallP | SIP Endpoint | +102343440 | PSTN | callhalf-15:0
+
+	Processing Event: com.broadsoft.events.timer.TimerTimeOutEvent
+
+2013.02.24 14:39:27:994 PST | Info       | CallP | SIP Endpoint | +102343439 | PSTN | callhalf-19:0
+
+	Processing Event: com.broadsoft.events.timer.TimerTimeOutEvent
+
+2013.02.24 14:39:27:994 PST | Info       | CallP | SIP Endpoint | +102343440 | PSTN | callhalf-15:0
+
+	call: 1  old State: RELEASED  new State: DEAD
+
+2013.02.24 14:39:27:994 PST | Info       | CallP | SIP Endpoint | +102343439 | PSTN | callhalf-19:0
+
+	call: 1  old State: RELEASED  new State: DEAD
+
+2013.02.24 14:39:27:994 PST | Info       | CallP | Call Manager | +102343440 | PSTN | callhalf-15
+
+	Processing Event: com.broadsoft.events.iwp.EndpointCompletedEvent {SipEndpoint.callhalf-15:0,CHCallManager.callhalf-15}
+
+2013.02.24 14:39:27:994 PST | Info       | CallP | Call Manager | +102343439 | PSTN | callhalf-19
+
+	Processing Event: com.broadsoft.events.iwp.EndpointCompletedEvent {SipEndpoint.callhalf-19:0,CHCallManager.callhalf-19}
+
+2013.02.24 14:39:27:995 PST | Info       | CallP | CallP | +102343440 | PSTN | callhalf-15
+
+	Session Completed
+
+2013.02.24 14:39:27:995 PST | Info       | CallP | CallP | +102343439 | PSTN | callhalf-19
+
+	Session Completed
+
+2013.02.24 14:39:28:001 PST | Info       | CallP | SIP Endpoint | +102343439 | IMSGrp3 | callhalf-13:0
+
+	Processing Event: com.broadsoft.events.timer.TimerTimeOutEvent
+
+2013.02.24 14:39:28:001 PST | Info       | CallP | SIP Endpoint | +102343439 | IMSGrp3 | callhalf-13:0
+
+	call: 1  old State: RELEASED  new State: DEAD
+
+2013.02.24 14:39:28:002 PST | Info       | CallP | Call Manager | +102343439 | IMSGrp3 | callhalf-13
+
+	Processing Event: com.broadsoft.events.iwp.EndpointCompletedEvent {SipEndpoint.callhalf-13:0,CHCallManager.callhalf-13}
+
+2013.02.24 14:39:28:002 PST | Info       | CallP | CallP | +102343439 | IMSGrp3 | callhalf-13
+
+	Session Completed
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007632.html">[OpenIMSCore-Users] big problem
+</A></li>
+	<LI>Next message: <A HREF="007643.html">[OpenIMSCore-Users] End points registered but calls not working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7640">[ date ]</a>
+              <a href="thread.html#7640">[ thread ]</a>
+              <a href="subject.html#7640">[ subject ]</a>
+              <a href="author.html#7640">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

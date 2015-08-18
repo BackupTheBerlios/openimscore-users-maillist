@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] When user register, SCSCF return &quot;SIP/2.0 403 Forbidden =?GB2312?B?qEMgRG9tYWluIG5vdCBzZXJ2aWNlZCI=?=
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20When%20user%20register%2C%0A%20SCSCF%20return%20%22SIP/2.0%20403%20Forbidden%0A%20%3D%3FGB2312%3FB%3FqEMgRG9tYWluIG5vdCBzZXJ2aWNlZCI%3D%3F%3D&In-Reply-To=%3COF8E8CB65B.B14413CA-ON4825723C.00356E72-4825723C.00388EE2%40cn.ibm.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000182.html">
+   <LINK REL="Next"  HREF="000178.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] When user register, SCSCF return &quot;SIP/2.0 403 Forbidden =?GB2312?B?qEMgRG9tYWluIG5vdCBzZXJ2aWNlZCI=?=</H1>
+    <B>Yin Ben Xia</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20When%20user%20register%2C%0A%20SCSCF%20return%20%22SIP/2.0%20403%20Forbidden%0A%20%3D%3FGB2312%3FB%3FqEMgRG9tYWluIG5vdCBzZXJ2aWNlZCI%3D%3F%3D&In-Reply-To=%3COF8E8CB65B.B14413CA-ON4825723C.00356E72-4825723C.00388EE2%40cn.ibm.com%3E"
+       TITLE="[OpenIMSCore-Users] When user register, SCSCF return &quot;SIP/2.0 403 Forbidden =?GB2312?B?qEMgRG9tYWluIG5vdCBzZXJ2aWNlZCI=?=">xiayb at cn.ibm.com
+       </A><BR>
+    <I>Wed Dec  6 11:21:22 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000182.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] Compile error of ser_ims
+</A></li>
+        <LI>Next message: <A HREF="000178.html">[OpenIMSCore-Users] =?GB2312?B?UmU6IFtPcGVuSU1TQ29yZS1Vc2Vyc10gV2hlbiB1c2VyIHJlZ2lzdA==?= =?GB2312?B?ZXIsIFNDU0NGIHJldHVybiAiU0lQLzIuMCA0MDMgRm9yYmlkZGVuIKhDIERvbQ==?= =?GB2312?B?YWluIG5vdCBzZXJ2aWNlZCI=?=
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#177">[ date ]</a>
+              <a href="thread.html#177">[ thread ]</a>
+              <a href="subject.html#177">[ subject ]</a>
+              <a href="author.html#177">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi,
+
+I want to setup a IMS-core test bed, I run all the program in one machine
+(p/i/sCSCF,sip2ims,FHoSS).
+Because I don't have DNS, I add a new user as sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">xyb at 192.168.0.8</A> and set
+its SCSCF as sip:192.168.0.8:6060 through web.
+
+First, I want to do a registration. I issue a register request from
+sip-simulator. I monitor network traffic, I find its process as following:
+
+1, sip-simualtor --&gt; sip2ims(3060)
+2, sip2ims --&gt; pcscf (4060)
+3, pcscf --&gt; icscf (5060)
+4, icscf(3869) --&gt; FHoSS (authentication and get scscf info)
+5, FHoSS --&gt;icscf
+6, icscf --&gt;scscf(6060)
+
+      REGISTER sip:192.168.0.8:6060 SIP/2.0
+      Max-Forwards:  9
+      Via: SIP/2.0/UDP 0.0.0.0;branch=z9hG4bK084f.36d7d522.0
+      Via: SIP/2.0/UDP
+0.0.0.0:4060;received=192.168.0.8;branch=z9hG4bK084f.81416d06.0
+      Via: SIP/2.0/UDP
+0.0.0.0:3060;rport=3060;received=127.0.0.1;branch=z9hG4bK084f.6a7999c6.0
+      Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+      Require: path
+      P-Charging-Vector: icid-value=&quot;abcd457502e900000003&quot;;
+icid-gen-addr=&quot;127.0.0.1&quot;; orig-ioi=&quot;open-ims.test&quot;
+      Via: SIP/2.0/UDP 192.168.0.8:20311;branch=z9hG4bK-28-1
+      From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">xia at 192.168.0.8</A>&gt;;tag=5a58585584d83c31
+      To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">xia at 192.168.0.8</A>&gt;
+      Call-ID: 128158220-192.168.0.6
+      CSeq: 1 REGISTER
+      Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">xia at 192.168.0.6</A>:20311&gt;
+      Expires: 3600
+      Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, NOTIFY, MESSAGE,
+SUBSCRIBE, INFO
+      User-Agent: IBM Sip Simulator
+      Content-Length: 0
+
+7, scscf --&gt; icscf (SIP/2.0 403 Forbidden &#168;C Domain not serviced)
+
+      SIP/2.0 403 Forbidden - Domain not serviced
+      Via: SIP/2.0/UDP
+0.0.0.0;branch=z9hG4bK084f.36d7d522.0;received=192.168.0.8
+      Via: SIP/2.0/UDP
+0.0.0.0:4060;received=192.168.0.8;branch=z9hG4bK084f.81416d06.0
+      Via: SIP/2.0/UDP
+0.0.0.0:3060;rport=3060;received=127.0.0.1;branch=z9hG4bK084f.6a7999c6.0
+      Via: SIP/2.0/UDP 192.168.0.6:20311;branch=z9hG4bK-28-1
+      From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">xia at 192.168.0.8</A>&gt;;tag=5a58585584d83c31
+      To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">xia at 192.168.0.8</A>&gt;;tag=602fbe8006ba0184a6ab2c41c7a00f2f.1caa
+      Call-ID: 128158220-192.168.0.6
+      CSeq: 1 REGISTER
+      Server: Sip EXpress router (0.10.99-dev53-tm_fixes (i386/linux))
+      Content-Length: 0
+      Warning: 392 0.0.0.0:6060 &quot;Noisy feedback tells:  pid=8388
+req_src_ip=192.168.0.8 req_src_port=5060 in_uri=sip:192.168.0.8:6060
+out_uri=sip:192.168.0.8:6060 via_cnt==4&quot;
+
+Dose anybody have idea?
+
+Thanks in advance.
+
+Best Regards,
+
+
+________________________________________________________________________
+
+
+                                                                           
+ &#207;&#196;&#210;&#250;&#234;&#218;  &#178;&#169;       IBM                                                      
+     &#202;&#191;           IBM China Research Lab, China                            
+ Dr.  Yinben                                                               
+     Xia                                                                   
+                  3/F, ZuanShi Building,Zhongguancun Software Park,        
+             Shangdi,                                                      
+                  Haidian District, Beijing, 100094, PRC China             
+                  TEL: 86-10-58748421                                      
+                  FAX: 86-10-58748330                                      
+                  E-mail: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">xiayb at cn.ibm.com</A>                                 
+                                                                          
+                                                                           
+
+
+
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20061206/7a6cc46c/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20061206/7a6cc46c/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000182.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] Compile error of ser_ims
+</A></li>
+	<LI>Next message: <A HREF="000178.html">[OpenIMSCore-Users] =?GB2312?B?UmU6IFtPcGVuSU1TQ29yZS1Vc2Vyc10gV2hlbiB1c2VyIHJlZ2lzdA==?= =?GB2312?B?ZXIsIFNDU0NGIHJldHVybiAiU0lQLzIuMCA0MDMgRm9yYmlkZGVuIKhDIERvbQ==?= =?GB2312?B?YWluIG5vdCBzZXJ2aWNlZCI=?=
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#177">[ date ]</a>
+              <a href="thread.html#177">[ thread ]</a>
+              <a href="subject.html#177">[ subject ]</a>
+              <a href="author.html#177">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

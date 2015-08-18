@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Debian &amp; Ubuntu Package
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Debian%20%26%20Ubuntu%20Package&In-Reply-To=%3C2e66ff2b0904020116n240a0158h9a30398cf3c4cece%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005225.html">
+   <LINK REL="Next"  HREF="005236.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Debian &amp; Ubuntu Package</H1>
+    <B>Arnaud MORIN</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Debian%20%26%20Ubuntu%20Package&In-Reply-To=%3C2e66ff2b0904020116n240a0158h9a30398cf3c4cece%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Debian &amp; Ubuntu Package">arnaud.morin at gmail.com
+       </A><BR>
+    <I>Thu Apr  2 10:16:24 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005225.html">[OpenIMSCore-Users] PSTN To IMS calls
+</A></li>
+        <LI>Next message: <A HREF="005236.html">[OpenIMSCore-Users] Debian &amp; Ubuntu Package
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5222">[ date ]</a>
+              <a href="thread.html#5222">[ thread ]</a>
+              <a href="subject.html#5222">[ subject ]</a>
+              <a href="author.html#5222">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I am currently working on the debian-ization of the openimscore (CSCF &amp;
+HSS). I am not able to use the current scripts. I follow that how-to :
+
+# Prearation
+1. sudo apt-get install dpkg-dev
+
+2. cd /usr/local/src
+# Checkout ser_ims
+3. svn co <A HREF="http://svn.berlios.de/svnroot/repos/openimscore/ser_ims/trunk">http://svn.berlios.de/svnroot/repos/openimscore/ser_ims/trunk</A>
+ser_ims
+4. cd ser_ims
+
+5. make deb
+6. cd ..
+# Install default ser packages
+7. sudo dpkg -i ser_0.9.4-0.2-svn573_i386.deb
+ser-mysql-module_0.9.4-0.2-svn573_i386.deb
+ser-presence-module_0.9.4-0.2-svn573_i386.deb
+ser-xmlrpc-module_0.9.4-0.2-svn573_i386.deb
+
+# Remove ser service
+8. /etc/init.d/ser stop
+9. update-rc.d ser remove
+# Install Open IMS core pcscf, icscf, scscf
+10. dpkg -i ser-scscf_0.9.4-0.2-svn573_i386.deb
+ser-pcscf_0.9.4-0.2-svn573_i386.deb ser-icscf_0.9.4-0.2-svn573_i386.deb
+
+ser-cscf_0.9.4-0.2-svn573_i386.deb
+
+Edit configuration files in /etc/ser and restart services in
+/etc/init.d/ser-pcscf, /etc/init.d/ser-icscf, and /etc/init.d/ser-scscf
+
+
+At 5 (make deb), no error but there are no .deb in the parent directory.
+
+My question is, where can I found these deb archive ?
+Is there any error in the how-to ?
+
+Cheers,
+Arnaud.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20090402/3bf3a62d/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20090402/3bf3a62d/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005225.html">[OpenIMSCore-Users] PSTN To IMS calls
+</A></li>
+	<LI>Next message: <A HREF="005236.html">[OpenIMSCore-Users] Debian &amp; Ubuntu Package
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5222">[ date ]</a>
+              <a href="thread.html#5222">[ thread ]</a>
+              <a href="subject.html#5222">[ subject ]</a>
+              <a href="author.html#5222">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

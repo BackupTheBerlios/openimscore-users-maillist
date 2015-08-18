@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Compile error of FHoSS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Compile%20error%20of%20FHoSS&In-Reply-To=%3COFD932E7AC.FFF09276-ONC12572AE.00515A6F-C12572AE.0052064C%40go.com.mt%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001338.html">
+   <LINK REL="Next"  HREF="001342.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Compile error of FHoSS</H1>
+    <B>Josef.Bajada at go.com.mt</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Compile%20error%20of%20FHoSS&In-Reply-To=%3COFD932E7AC.FFF09276-ONC12572AE.00515A6F-C12572AE.0052064C%40go.com.mt%3E"
+       TITLE="[OpenIMSCore-Users] Compile error of FHoSS">Josef.Bajada at go.com.mt
+       </A><BR>
+    <I>Fri Mar 30 16:55:55 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001338.html">[OpenIMSCore-Users] Compile error of FHoSS
+</A></li>
+        <LI>Next message: <A HREF="001342.html">[OpenIMSCore-Users] Compile error of FHoSS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1341">[ date ]</a>
+              <a href="thread.html#1341">[ thread ]</a>
+              <a href="subject.html#1341">[ subject ]</a>
+              <a href="author.html#1341">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sam,
+
+Your Java is correctly installed, but when you are executing javac, you 
+are not executing it from the right installation. Linux comes with a GNU 
+Java bundled with it, which will not do the job you need.
+
+Edit your /etc/profile file on unix and add the path to your NEW java 
+installation to the PATH. Something like this:
+
+PATH=/usr/local/java/jdk1.6.0/bin:$PATH
+
+Then logout and login again. If you do which javac it should then point to 
+the path to your JDK installation.
+
+regards,
+Josef
+
+
+
+
+
+Sam4U &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sam_0056 at yahoo.com</A>&gt; 
+Sent by: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+30/03/2007 12:39
+
+To
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+cc
+
+Subject
+[OpenIMSCore-Users] Compile error of FHoSS
+
+
+
+
+
+
+Hi Josef
+
+As per ur instuction i configure all the prerequestise
+,but still facing the problem.
+
+java
+java version &quot;1.6.0_01&quot;
+Java(TM) SE Runtime Environment (build 1.6.0_01-b06)
+Java HotSpot(TM) Client VM (build 1.6.0_01-b06, mixed
+mode, sharing)
+
+mysql
+mysql  Ver 12.22 Distrib 4.0.21, for pc-linux (i686)
+
+error
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ast42</A> FHoSS]# ant cleanall
+Buildfile: build.xml
+ 
+clean-gen:
+   [delete] Deleting directory
+/opt/OpenIMSCore/FHoSS/src-gen
+ 
+cleanall:
+   [delete] Deleting directory
+/opt/OpenIMSCore/FHoSS/bin
+ 
+BUILD SUCCESSFUL
+Total time: 0 seconds
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ast42</A> FHoSS]# ant gen
+Buildfile: build.xml
+ 
+init:
+    [mkdir] Created dir: /opt/OpenIMSCore/FHoSS/bin
+    [mkdir] Created dir:
+/opt/OpenIMSCore/FHoSS/src-gen
+ 
+clean-gen:
+   [delete] Deleting directory
+/opt/OpenIMSCore/FHoSS/src-gen
+ 
+gen:
+     [java] gij: unrecognized option -- `-classpath'
+     [java] Try `gij --help' for more information.
+     [java] Java Result: 1
+     [java] gij: unrecognized option -- `-classpath'
+     [java] Try `gij --help' for more information.
+     [java] Java Result: 1
+     [java] gij: unrecognized option -- `-classpath'
+     [java] Try `gij --help' for more information.
+     [java] Java Result: 1
+ 
+BUILD SUCCESSFUL
+Total time: 0 seconds
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at ast42</A> FHoSS]# ant compile
+Buildfile: build.xml
+ 
+init:
+    [mkdir] Created dir:
+/opt/OpenIMSCore/FHoSS/src-gen
+ 
+compile:
+    [javac] Compiling 282 source files to
+/opt/OpenIMSCore/FHoSS/bin
+ 
+BUILD FAILED
+file:/opt/OpenIMSCore/FHoSS/build.xml:91: Compiler
+Adapter 'javac' can't be found.
+ 
+Total time: 0 seconds
+
+
+i found that it will create a folder called scr_gen
+but there is no file present there. i could not figure
+out the problem.can u plz help me on the same.its my
+4th day on setting up the FHoSS.
+
+
+
+
+
+
+ 
+____________________________________________________________________________________
+Need Mail bonding?
+Go to the Yahoo! Mail Q&amp;A for great tips from Yahoo! Answers users.
+<A HREF="http://answers.yahoo.com/dir/?link=list&amp;sid=396546091">http://answers.yahoo.com/dir/?link=list&amp;sid=396546091</A>
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070330/ec5a16b6/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070330/ec5a16b6/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001338.html">[OpenIMSCore-Users] Compile error of FHoSS
+</A></li>
+	<LI>Next message: <A HREF="001342.html">[OpenIMSCore-Users] Compile error of FHoSS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1341">[ date ]</a>
+              <a href="thread.html#1341">[ thread ]</a>
+              <a href="subject.html#1341">[ subject ]</a>
+              <a href="author.html#1341">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

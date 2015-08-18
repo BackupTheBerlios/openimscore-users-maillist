@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users]	FW:	Diameter_error_transparent_data_out_of_sync
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%09FW%3A%09Diameter_error_transparent_data_out_of_sync&In-Reply-To=%3C1219310558.6161.8.camel%40peer1%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004508.html">
+   <LINK REL="Next"  HREF="004512.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users]	FW:	Diameter_error_transparent_data_out_of_sync</H1>
+    <B>Enrique de Meer</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%09FW%3A%09Diameter_error_transparent_data_out_of_sync&In-Reply-To=%3C1219310558.6161.8.camel%40peer1%3E"
+       TITLE="[OpenIMSCore-Users]	FW:	Diameter_error_transparent_data_out_of_sync">enrique.demeer at inycom.es
+       </A><BR>
+    <I>Thu Aug 21 11:22:38 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004508.html">[OpenIMSCore-Users] FW: Diameter_error_transparent_data_out_of_sync
+</A></li>
+        <LI>Next message: <A HREF="004512.html">[OpenIMSCore-Users] Asterisk as PBX...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4509">[ date ]</a>
+              <a href="thread.html#4509">[ thread ]</a>
+              <a href="subject.html#4509">[ subject ]</a>
+              <a href="author.html#4509">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi, 
+
+i dont think you can add a new column or a new tag in RepositoryData
+
+
+you should put you information in ServiceData and then you should divide
+your information as you want (if you divide it in xml format (inside
+ServiceData) you should scape it with:
+
+&lt;ServiceData&gt;[CDATA[&quot;your information in xml format&quot;]]&lt;/ServiceData&gt;
+
+Regards,
+
+Enrique
+
+El jue, 21-08-2008 a las 11:16 +0200, Izaak Muto escribi&#243;:
+&gt;<i> You are right Franz, i forget the Service Data. 
+</I>&gt;<i> Now I send this xml file : 
+</I>&gt;<i> 
+</I>&gt;<i> &lt;Sh-Data&gt;
+</I>&gt;<i> &lt;RepositoryData&gt;
+</I>&gt;<i> &lt;ServiceIndication&gt;essai&lt;/ServiceIndication&gt;
+</I>&gt;<i> &lt;SequenceNumber&gt;2&lt;/SequenceNumber&gt;
+</I>&gt;<i> &lt;ServiceData&gt;
+</I>&gt;<i> &lt;Container&gt;
+</I>&gt;<i> &lt;Name&gt;xxxxxxx&lt;/Name&gt;
+</I>&gt;<i> &lt;/Container&gt;
+</I>&gt;<i> &lt;/ServiceData&gt;
+</I>&gt;<i> &lt;/RepositoryData&gt;
+</I>&gt;<i> &lt;/Sh-Data&gt;
+</I>&gt;<i> 
+</I>&gt;<i> So the xxxx information is written in the rep_data column, but i want
+</I>&gt;<i> it be written in video_position column.
+</I>&gt;<i> What is the xml file i must send?
+</I>&gt;<i> 
+</I>&gt;<i> &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>
+</I>&gt;<i> &gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">izaak at hotmail.fr</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">enrique.demeer at inycom.es</A>
+</I>&gt;<i> &gt; Subject: RE: Diameter_error_transparent_data_out_of_sync
+</I>&gt;<i> &gt; Date: Thu, 21 Aug 2008 10:44:32 +0200
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Hi Izaak,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &gt; ...and i send the PUR command with sequence number equals to 2 and
+</I>&gt;<i> service
+</I>&gt;<i> &gt; &gt; indication &quot;essai&quot;, i have a PUA with diameter success (code 2001)
+</I>&gt;<i> and the
+</I>&gt;<i> &gt; &gt; HSS deletes the row ...
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; ...
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; Somebody understand what is happening?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; This might be o.k., depending on the content of the PUR command (if
+</I>&gt;<i> Service
+</I>&gt;<i> &gt; Data are missing). 3GPP TS 29.328 says in &#167;6.1.2:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &quot;If both of the above premises are true, then check whether or not
+</I>&gt;<i> Service
+</I>&gt;<i> &gt; Data is received within the Sh-Update Req.&quot;
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; and
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &quot;If Service Data is not received, the data stored in the repository
+</I>&gt;<i> at the
+</I>&gt;<i> &gt; HSS shall be removed, and as a consequence the Service Indication
+</I>&gt;<i> and the
+</I>&gt;<i> &gt; Sequence Number associated with the removed data shall also be
+</I>&gt;<i> removed.&quot;
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Did you include Service Data?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Regards
+</I>&gt;<i> &gt; Franz
+</I>&gt;<i> &gt; 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> ______________________________________________________________________
+</I>&gt;<i> Avec Windows Live Messenger restez en contact avec tous vos amis !
+</I>&gt;<i> T&#233;l&#233;chargez Messenger, c'est gratuit !
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004508.html">[OpenIMSCore-Users] FW: Diameter_error_transparent_data_out_of_sync
+</A></li>
+	<LI>Next message: <A HREF="004512.html">[OpenIMSCore-Users] Asterisk as PBX...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4509">[ date ]</a>
+              <a href="thread.html#4509">[ thread ]</a>
+              <a href="subject.html#4509">[ subject ]</a>
+              <a href="author.html#4509">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

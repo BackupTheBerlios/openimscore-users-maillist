@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] XML Parse Error During Registration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20XML%20Parse%20Error%20During%20Registration&In-Reply-To=%3Cdaca1e090806050728i3276977bpd5f62baa7e977653%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004065.html">
+   <LINK REL="Next"  HREF="004071.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] XML Parse Error During Registration</H1>
+    <B>Louis Alexander</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20XML%20Parse%20Error%20During%20Registration&In-Reply-To=%3Cdaca1e090806050728i3276977bpd5f62baa7e977653%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] XML Parse Error During Registration">panicked.kernel at gmail.com
+       </A><BR>
+    <I>Thu Jun  5 16:28:56 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004065.html">[OpenIMSCore-Users] Handling early calls problem
+</A></li>
+        <LI>Next message: <A HREF="004071.html">[OpenIMSCore-Users] XML Parse Error During Registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4066">[ date ]</a>
+              <a href="thread.html#4066">[ thread ]</a>
+              <a href="subject.html#4066">[ subject ]</a>
+              <a href="author.html#4066">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>All,
+
+I have searched through the archives and have found some similar problems
+but nothing that matches or solves my current issue.  I got a snapshot from
+svn on Wednesday and have installed it using all of the default
+configuration values with the exception of replacing 127.0.0.1 with my
+machine's IP address.  It is of course behind a firewall and is natted.  I
+have configured the SCSCF to use simple MD5 authentication and enabled
+&quot;early ims functionality&quot;.  My test UAC is eyeBeam 1.5 configured as
+specified in the getting started guide.
+
+the registration appears to complete just fine, however it is the
+transmission of the UserData XML document from HSS to SCSCF that appears to
+be causing the problem.  The HSS doesn't log any errors, however my SCSCF
+terminal shows:
+
+ 1(19264) ERR:S-CSCF:cscf_get_integrity_protected: Message does not contain
+Authorization header.
+ 1(19264) ERR:S-CSCF:cscf_get_private_identity: Message does not contain
+Authorization header.
+ 1(19264) INF:S-CSCF:cscf_get_private_identity: Falling back to
+private_id=stripped(public_id)
+-&gt; Message did not contain a valid Authorization Header!!! This fallback is
+deprecated outside Early-IMS or NASS-Bundled!
+ 1(19264) DBG:S-CSCF:S_is_authorized: Possible Early-IMS identified
+ 1(19264) get_r_public (Trying wildcard PSI) found no match
+18(19282) DBG:sm_process(): Peer hss.open-ims.test      State I_Open
+Event I_Rcv_Message
+ 1(19264) DBG:S-CSCF:S_is_authorized: IP address in MAA was &lt;0.0.0.0&gt;
+ 1(19264) ERR:S-CSCF:cscf_get_private_identity: Message does not contain
+Authorization header.
+ 1(19264) INF:S-CSCF:cscf_get_private_identity: Falling back to
+private_id=stripped(public_id)
+-&gt; Message did not contain a valid Authorization Header!!! This fallback is
+deprecated outside Early-IMS or NASS-Bundled!
+ 1(19264) ERR:S-CSCF:cscf_get_auts: Message does not contain Authorization
+header.
+18(19282) DBG:sm_process(): Peer hss.open-ims.test      State I_Open
+Event I_Rcv_Message
+ 3(19266) DBG:S-CSCF:S_is_authorized: UE said:
+46823ab742fa9a4ff1b2e869796ae891 and we  expect
+46823ab742fa9a4ff1b2e869796ae891 ha1 a3da98c9b36dde1f17e3f713225dc4d1
+ 3(19266) get_r_public (Trying wildcard PSI) found no match
+ 3(19266) get_r_public (Trying wildcard PSI) found no match
+18(19282) DBG:sm_process(): Peer hss.open-ims.test      State I_Open
+Event I_Rcv_Message
+Unimplemented block at xmlschemastypes.c:1928
+Unimplemented block at xmlschemas.c:4702
+*Element PublicIdentity content check failed
+Element SPT content check failed
+Element SPT content check failed
+Element SIPHeader content check failed
+Element SPT content check failed
+Element TriggerPoint content check failed
+Unimplemented block at xmlschemastypes.c:1928
+Element ApplicationServer content check failed
+Element InitialFilterCriteria content check failed
+Element ServiceProfile content check failed
+Element IMSSubscription content check failed
+ 3(19266) ERR:S-CSCF:parse_user_data:  Verification of XML against XSD
+failed &lt;&lt;?xml version=&quot;1.0&quot;
+encoding=&quot;UTF-8&quot;?&gt;&lt;IMSSubscription&gt;&lt;PrivateID&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+&lt;/PrivateID&gt;&lt;ServiceProfile&gt;&lt;PublicIdentity&gt;&lt;Identity&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+&lt;/Identity&gt;&lt;Extension&gt;&lt;IdentityType&gt;0&lt;/IdentityType&gt;&lt;/Extension&gt;&lt;/PublicIdentity&gt;&lt;InitialFilterCriteria&gt;&lt;Priority&gt;0&lt;/Priority&gt;&lt;TriggerPoint&gt;&lt;ConditionTypeCNF&gt;1&lt;/ConditionTypeCNF&gt;&lt;SPT&gt;&lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;&lt;Group&gt;0&lt;/Group&gt;&lt;Method&gt;PUBLISH&lt;/Method&gt;&lt;Extension&gt;&lt;/Extension&gt;&lt;/SPT&gt;&lt;SPT&gt;&lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;&lt;Group&gt;0&lt;/Group&gt;&lt;Method&gt;SUBSCRIBE&lt;/Method&gt;&lt;Extension&gt;&lt;/Extension&gt;&lt;/SPT&gt;&lt;SPT&gt;&lt;ConditionNegated&gt;0&lt;/ConditionNegated&gt;&lt;Group&gt;1&lt;/Group&gt;&lt;SIPHeader&gt;&lt;Header&gt;Event&lt;/Header&gt;&lt;Content&gt;.*presence.*&lt;/Content&gt;&lt;/SIPHeader&gt;&lt;Extension&gt;&lt;/Extension&gt;&lt;/SPT&gt;&lt;/TriggerPoint&gt;&lt;ApplicationServer&gt;&lt;ServerName&gt;sip:
+127.0.0.1:5065
+&lt;/ServerName&gt;&lt;DefaultHandling&gt;0&lt;/DefaultHandling&gt;&lt;/ApplicationServer&gt;&lt;/InitialFilterCriteria&gt;&lt;/ServiceProfile&gt;&lt;/IMSSubscription&gt;&gt;
+ 3(19266) ERR:S-CSCF:save_location: error parsing user data*
+
+can anyone offer any advice?
+-- 
+Thanks,
+
+Louis
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080605/3c6ac6c6/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080605/3c6ac6c6/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004065.html">[OpenIMSCore-Users] Handling early calls problem
+</A></li>
+	<LI>Next message: <A HREF="004071.html">[OpenIMSCore-Users] XML Parse Error During Registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4066">[ date ]</a>
+              <a href="thread.html#4066">[ thread ]</a>
+              <a href="subject.html#4066">[ subject ]</a>
+              <a href="author.html#4066">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

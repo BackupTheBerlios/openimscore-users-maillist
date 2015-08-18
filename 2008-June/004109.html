@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] session establishment,	P-CSCF doesn't forwart the ACK
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20session%20establishment%2C%0A%09P-CSCF%20doesn%27t%20forwart%20the%20ACK&In-Reply-To=%3C489111358B3C664891E5591205E0B830CAD0C4%40exbe04.ad.hosteam.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004108.html">
+   <LINK REL="Next"  HREF="004128.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] session establishment,	P-CSCF doesn't forwart the ACK</H1>
+    <B>Arnaud Paulus</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20session%20establishment%2C%0A%09P-CSCF%20doesn%27t%20forwart%20the%20ACK&In-Reply-To=%3C489111358B3C664891E5591205E0B830CAD0C4%40exbe04.ad.hosteam.fr%3E"
+       TITLE="[OpenIMSCore-Users] session establishment,	P-CSCF doesn't forwart the ACK">arnaud.paulus at arismore.fr
+       </A><BR>
+    <I>Thu Jun 12 13:31:51 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004108.html">[OpenIMSCore-Users] session establishment,	P-CSCF doesn't forwart the ACK
+</A></li>
+        <LI>Next message: <A HREF="004128.html">[OpenIMSCore-Users] session establishment, P-CSCF doesn't forwart the ACK
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4109">[ date ]</a>
+              <a href="thread.html#4109">[ thread ]</a>
+              <a href="subject.html#4109">[ subject ]</a>
+              <a href="author.html#4109">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have forgotten to join the wireshark files
+
+ 
+
+________________________________
+
+De : <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] De la part de Arnaud Paulus
+Envoy&#233; : jeudi 12 juin 2008 13:28
+&#192; : <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Objet : [OpenIMSCore-Users] session establishment,P-CSCF doesn't forwart the ACK
+
+ 
+
+Hi all,
+
+ 
+
+I'm trying to develop an IMS client.
+
+I have a problem at the session establishment point.
+
+ 
+
+The ACK message I have constructed is not forwarded through the IMS core network. The P-CSCSF stops the message and does nothing.
+
+The logs of the P-CSCF about the ACK processing
+
+ 
+
+[00m 2(2980) ^[[01;32mINF:P-CSCF:----------  P-CSCF Dialog List end   --------------
+
+^[[00m 2(2980) ^[[01;32mINFO:P-CSCF:P_NAT_relay: &lt;sip:10.1.2.11:5080&gt;
+
+^[[00m 3(2981) ^[[01;32mDBG:P-CSCF:cscf_get_originating_contact: 1://10.1.2.11:5080
+
+^[[00m 3(2981) ^[[01;34m&gt;&gt;       Orig_Subsequent
+
+^[[00m 3(2981) ^[[01;32mDBG:P-CSCF:P_is_registered: Looking if registered
+
+^[[00m 3(2981) ^[[01;32mDBG:P-CSCF:P_is_registered: Looking for &lt;1://10.1.2.11:5080&gt;
+
+^[[00m 3(2981) ^[[01;32mINF:P-CSCF:P_assert_identity: Asserting Identity
+
+^[[00m 3(2981) ^[[01;32mDBG:P-CSCF:P_assert_identity: Looking for &lt;1://10.1.2.11:5080&gt; Pref:
+
+^[[00m 3(2981) ^[[01;32mDBG:P-CSCF:cscf_get_originating_contact: 1://10.1.2.11:5080
+
+^[[00m 3(2981) ^[[01;34m&gt;&gt;       Orig_Subsequent: Request not following indicated dialog routes
+
+^[[00m 3(2981) ^[[01;34m&gt;&gt;      Orig_Subsequent: ACK not following dialog routes discarded silently!!!
+
+^[[00m 4(2982) ^[[01;34m&gt;&gt;       Term_Initial_reply
+
+^[[00m 4(2982) ^[[01;32mINF:P-CSCF:P_assert_called_identity: Asserting Identity
+
+^[[00m 4(2982) ^[[01;32mDBG:P-CSCF:cscf_get_terminating_contact: 0://10.1.2.11:5060
+
+^[[00m 4(2982) ^[[01;32mDBG:P-CSCF:P_update_dialog(term): Call-ID &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">e3949c6b3c33e846a71d491c4aff50c5 at 10.1.2.11</A>
+
+ 
+
+I don't understand why the following error occurs:
+
+     Orig_Subsequent: Request not following indicated dialog routes
+
+ 
+
+I have constructed the ACK request on the same model of OpenIC_Lite :
+
+The route header in the ACK in based on the 200OK record-route header. But the INVITE route header is not the same.
+
+Is this normal?
+
+Any idea of how to iron out the problem?
+
+ 
+
+ 
+
+I have attached the wireshark file: with bob registration, alice registration and alice to bob call session.
+
+ 
+
+inviteAlicetoBob_insideCore.pcap: the call setup inside the OpenIMSCore (there is no ACK)
+
+inviteAlicetoBob.pcap: the call setup between the clients and the OpenIMSCore
+
+XXXRegistration_ClientToInCore.pcap : registration between XXX Client and the OpenIMSCore
+
+XXXRegistration_insideCore.pcap: XXX registration inside the OpenIMSCore
+
+ 
+
+Configuration
+
+ 
+
+Bob : OpenIC_Lite
+
+10.1.2.11:5060
+
+ 
+
+Alice : 10.1.2.11:5080 (the client we are trying to build)
+
+ 
+
+The IMS core is deployed on a server (10.40.51.58)
+
+P-CSCF:5060
+
+I-CSCF:4060
+
+S-CSCF:6060
+
+It's not the original configuration, but this configuration has been tested and everything is OK with the OpenIC_Lite and ims-communicator client.
+
+ 
+
+Thanks for your help.
+
+Regards
+
+ 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: aliceRegistration_ClientToIMSCore.pcap
+Type: application/octet-stream
+Size: 3892 bytes
+Desc: aliceRegistration_ClientToIMSCore.pcap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: aliceregistration_insideCore.pcap
+Type: application/octet-stream
+Size: 11192 bytes
+Desc: aliceregistration_insideCore.pcap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment-0001.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: bobRegistration_ClientToIMSCore.pcap
+Type: application/octet-stream
+Size: 3695 bytes
+Desc: bobRegistration_ClientToIMSCore.pcap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment-0002.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment-0002.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: bobregistration_insideCore.pcap
+Type: application/octet-stream
+Size: 11887 bytes
+Desc: bobregistration_insideCore.pcap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment-0003.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment-0003.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: inviteAlicetoBob.pcap
+Type: application/octet-stream
+Size: 16364 bytes
+Desc: inviteAlicetoBob.pcap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment-0004.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment-0004.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: inviteAlicetoBob_insideCore.pcap
+Type: application/octet-stream
+Size: 26530 bytes
+Desc: inviteAlicetoBob_insideCore.pcap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment-0005.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080612/b8faa925/attachment-0005.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004108.html">[OpenIMSCore-Users] session establishment,	P-CSCF doesn't forwart the ACK
+</A></li>
+	<LI>Next message: <A HREF="004128.html">[OpenIMSCore-Users] session establishment, P-CSCF doesn't forwart the ACK
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4109">[ date ]</a>
+              <a href="thread.html#4109">[ thread ]</a>
+              <a href="subject.html#4109">[ subject ]</a>
+              <a href="author.html#4109">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

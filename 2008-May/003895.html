@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P-CSCF with QoS on Term-side issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20with%20QoS%20on%20Term-side%20issue&In-Reply-To=%3COFBE90B256.BD289682-ONC1257441.003B28FC-C1257441.003C14EB%40amper.es%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003881.html">
+   <LINK REL="Next"  HREF="003979.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P-CSCF with QoS on Term-side issue</H1>
+    <B>Pedro Antonio Vico Solano</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20with%20QoS%20on%20Term-side%20issue&In-Reply-To=%3COFBE90B256.BD289682-ONC1257441.003B28FC-C1257441.003C14EB%40amper.es%3E"
+       TITLE="[OpenIMSCore-Users] P-CSCF with QoS on Term-side issue">pvsolano at amper.es
+       </A><BR>
+    <I>Tue May  6 12:53:07 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003881.html">[OpenIMSCore-Users] P-CSCF with QoS on Term-side
+</A></li>
+        <LI>Next message: <A HREF="003979.html">[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3895">[ date ]</a>
+              <a href="thread.html#3895">[ thread ]</a>
+              <a href="subject.html#3895">[ subject ]</a>
+              <a href="author.html#3895">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Alberto and everyone,
+
+We are doing tests with your enhanced  &quot;P-CSCF + Rx interface&quot; (branch) 
+and we have realized that when the session is terminated by the called, 
+the STR has no &quot;Destination Realm&quot; AVP.
+
+I attach you two captures. The first is when the called ends the call and 
+the second when the caller ends the call.
+
+Best Regards
+Pedro
+
+
+
+
+
+
+Alberto Diez &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>&gt; 
+05/05/2008 11:43
+
+Para
+Pedro Antonio Vico Solano &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pvsolano at amper.es</A>&gt;
+cc
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Asunto
+Re: [OpenIMSCore-Users] P-CSCF with QoS on Term-side
+
+
+
+
+
+
+Pedro Antonio Vico Solano wrote:
+&gt;<i>
+</I>&gt;<i> Hello Alberto &amp; all,
+</I>&gt;<i>
+</I>&gt;<i> Thanks a lot for the new version. Just some questions:
+</I>&gt;<i>
+</I>&gt;<i> - If I enable the
+</I>&gt;<i>
+</I>&gt;<i>         modparam(&quot;pcscf&quot;,&quot;qos_side&quot;,2)
+</I>&gt;<i>
+</I>&gt;<i> Do I have still to change anything on the routing functions?
+</I>&gt;<i>
+</I>Yes
+&gt;<i> - Where can I find descriptions for the following functions?:
+</I>&gt;<i>
+</I>&gt;<i> end_media_session();
+</I>&gt;<i> P_NAT_relay();
+</I>&gt;<i> use_media_proxy();
+</I>&gt;<i> P_SDP_manipulate();
+</I>&gt;<i> P_security_relay();
+</I>&gt;<i>
+</I>&gt;<i>
+</I>I guess you can just take a look at the source code
+
+&gt;<i> Best Regards.
+</I>&gt;<i> Pedro
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> *Alberto Diez &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>&gt;*
+</I>&gt;<i> Enviado por: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i>
+</I>&gt;<i> 30/04/2008 11:28
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i> Para
+</I>&gt;<i>                <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> cc
+</I>&gt;<i> 
+</I>&gt;<i> Asunto
+</I>&gt;<i>                [OpenIMSCore-Users] P-CSCF with QoS on Term-side
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi pedro antonio,
+</I>&gt;<i>
+</I>&gt;<i> There is a new version of the 08_cdp_sessions branch that includes a
+</I>&gt;<i> P-CSCF that deals better with the originating and terminating issues.
+</I>&gt;<i> With the one before you could generate AAR in the originating and
+</I>&gt;<i> terminating side but depending on which sent the BYE there would be an
+</I>&gt;<i> issue (it was possible that the session for the terminating side was
+</I>&gt;<i> dropped by the originating and the other way around)
+</I>&gt;<i>
+</I>&gt;<i> Nevertheless, it is already solved, only have to consider that the
+</I>&gt;<i> P_generates_AAR function now takes a parameter 0 or 1 depending if
+</I>&gt;<i> originating or terminating , and there is a new config variable to state
+</I>&gt;<i> where do you want reservation of resources to happen  if you set it to 2
+</I>&gt;<i> than its in both sides.
+</I>&gt;<i>
+</I>&gt;<i> just re-read the README.PCC
+</I>&gt;<i>
+</I>&gt;<i> the other question
+</I>&gt;<i>
+</I>&gt;<i> Initial means that this requests starts a dialog
+</I>&gt;<i> initial_reply is a reply for such a request...
+</I>&gt;<i> subsequent it means that its a subsequent request within an already
+</I>&gt;<i> known dialog
+</I>&gt;<i> standalone is the route part for standalone SIP transactions (like
+</I>&gt;<i> OPTIONS or MESSAGE that dont need a dialog)
+</I>&gt;<i> failure is when a failure reply is received...
+</I>&gt;<i>
+</I>&gt;<i> with the mediaproxy thing i cant help you because i dont use it
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080506/946f42c5/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080506/946f42c5/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: no_missing_dest_realm.pcap
+Type: application/octet-stream
+Size: 1760 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080506/946f42c5/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080506/946f42c5/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: missing_dest_realm.pcap
+Type: application/octet-stream
+Size: 2512 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080506/946f42c5/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080506/946f42c5/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003881.html">[OpenIMSCore-Users] P-CSCF with QoS on Term-side
+</A></li>
+	<LI>Next message: <A HREF="003979.html">[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3895">[ date ]</a>
+              <a href="thread.html#3895">[ thread ]</a>
+              <a href="subject.html#3895">[ subject ]</a>
+              <a href="author.html#3895">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

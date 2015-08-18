@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Troubles during registration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Troubles%20during%20registration&In-Reply-To=%3C45844555.4070905%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000323.html">
+   <LINK REL="Next"  HREF="000269.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Troubles during registration</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Troubles%20during%20registration&In-Reply-To=%3C45844555.4070905%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Troubles during registration">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Sat Dec 16 20:13:25 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000323.html">[OpenIMSCore-Users] Troubles during registration
+</A></li>
+        <LI>Next message: <A HREF="000269.html">[OpenIMSCore-Users] [Bug #9698] Segmentation Fault in	peerstatemachine.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#326">[ date ]</a>
+              <a href="thread.html#326">[ thread ]</a>
+              <a href="subject.html#326">[ subject ]</a>
+              <a href="author.html#326">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Jamal,
+
+Your trace is quite long and it is hard to explain all problems in
+there... I will try and explain some of them
+
+- 480 Temporarily Unavailable - Diameter Cx interface failed - for
+REGISTER - most probably you have tried to register before the diameter
+peers had the time to connect to each-other - either you did not start
+the HSS yet, or you tried too soon. It takes about 3-4 seconds for the
+connection. In any case, the REGISTER request-uri is wrong, it should be
+&quot;sip:open-ims.test&quot;.
+
+- 483 for OPTIONS - because again, the req-uri is sip:127.0.0.1:3060.
+The SIP2IMS gateway does not work in UAS mode, so do not send requests
+for it.
+
+- I see MARs, further down. There is no SAR because that only happens
+when a registration is successful. Yours ended with 403.
+
+- 403 Forbidden - HSS User Unknown for REGISTER - because you present a
+username &quot;anonymous&quot; in the Authorization header (equivalent to the IMPI
+(Private Identity)). Please re-check the installation guide for more
+information on how to provision the User Endpoints (the first REGISTER
+in the transaction does not fail because the SIP2IMS fills the
+Authorization header with a private identity with the public identity
+value and that is filled correctly in the initial database contents).
+
+-Dragos
+
+
+Jamal Basrire wrote:
+&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i> I analyzed more deeply the traffic I attached to my previous mail and I noticed that there are no MAR/MAA and SAR/SAA messages. Can somebody explain me why ?
+</I>&gt;<i>
+</I>&gt;<i> For those who haven't analyzed it yet, you will find the captured traffic in attachment of this mail. This traffic was captured by wireshark/ethereal.
+</I>&gt;<i>
+</I>&gt;<i> Thank you all.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Jamal.
+</I>&gt;<i>
+</I>&gt;<i> ----------------------------------------
+</I>&gt;<i>   
+</I>&gt;&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">j_basrire at hotmail.com</A>
+</I>&gt;&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">xiayb at cn.ibm.com</A>
+</I>&gt;&gt;<i> CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: RE: [OpenIMSCore-Users]  Troubles during registration
+</I>&gt;&gt;<i> Date: Tue, 12 Dec 2006 10:20:37 +0100
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi all,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> You will find enclosed the traffic resulting from an attempt of registration. My problem is described in the previous mails ; you will se that there is a problem somewhere...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This traffic was captured by wireshark/ethereal.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thank you for your help.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Jamal.
+</I>&gt;&gt;<i> ________________________________
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Troubles during registration
+</I>&gt;&gt;&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">j_basrire at hotmail.com</A>
+</I>&gt;&gt;&gt;<i> CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">xiayb at cn.ibm.com</A>
+</I>&gt;&gt;&gt;<i> Date: Mon, 11 Dec 2006 22:11:37 +0800
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hi Jamal,
+</I>&gt;&gt;&gt;<i> Base on your description, I guess you set your domain/realm as &quot;open-ims.test:3060&quot;, please set it as &quot;open-ims.test&quot; .
+</I>&gt;&gt;&gt;<i> BTW you had better attached your traffic, it include more information to diagnose the problem.
+</I>&gt;&gt;&gt;<i> Best Regards,
+</I>&gt;&gt;&gt;<i> Ben
+</I>&gt;&gt;&gt;<i> --------------------
+</I>&gt;&gt;&gt;<i> Dr. Yin Ben Xia
+</I>&gt;&gt;&gt;<i> IBM China Research Laboratory
+</I>&gt;&gt;&gt;<i> [<A HREF="http://by118w.bay118.mail.live.com/mail/SafeRedirect.aspx?hm__tg=http://207.46.8.249/att/GetAttachment.aspx&amp;hm__qs=file%3d7d23e648-8e3e-4e16-a4b3-84d12e51a256.gif%26ct%3dimage%252fgif%26name%3dgraycol.gif%26inline%3d1%26rfc%3d0%26empty%3dFalse&amp;oneredir=1&amp;ip=10.1.106.216&amp;d=d1303&amp;mf=0">http://by118w.bay118.mail.live.com/mail/SafeRedirect.aspx?hm__tg=http://207.46.8.249/att/GetAttachment.aspx&amp;hm__qs=file%3d7d23e648-8e3e-4e16-a4b3-84d12e51a256.gif%26ct%3dimage%252fgif%26name%3dgraycol.gif%26inline%3d1%26rfc%3d0%26empty%3dFalse&amp;oneredir=1&amp;ip=10.1.106.216&amp;d=d1303&amp;mf=0</A>]Jamal Basrire &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">j_basrire at hotmail.com</A>&gt;
+</I>&gt;&gt;&gt;<i> Jamal Basrire &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">j_basrire at hotmail.com</A>&gt;
+</I>&gt;&gt;&gt;<i> Sent by: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> 2006-12-11 21:46
+</I>&gt;&gt;&gt;<i> To
+</I>&gt;&gt;&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;&gt;&gt;<i> cc
+</I>&gt;&gt;&gt;<i> Subject
+</I>&gt;&gt;&gt;<i> [OpenIMSCore-Users] Troubles during registration
+</I>&gt;&gt;&gt;<i> Hi all,
+</I>&gt;&gt;&gt;<i> As a follow-up to my registration problem, I have captured the network traffic by ethereal/wireshark. Thus, we can notice that SIP packets are looping on the SIP2IMS Gateway. In fact, the SIP2IMS Gateway sends to himself the following error: &quot;Status: 483 Too Many Hops&quot;. Did you meet this problem ? Can somebody help me ?
+</I>&gt;&gt;&gt;<i> Otherwise, I met an other trouble : I-CSCF returns a &quot;Status: 403 Forbidden - HSS User Unknown (0 bindings)&quot; for &quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;. Is it normal ?
+</I>&gt;&gt;&gt;<i> Thank you for your help.
+</I>&gt;&gt;&gt;<i> Best regards,
+</I>&gt;&gt;&gt;<i> Jamal.
+</I>&gt;&gt;&gt;<i> _________________________________________________________________
+</I>&gt;&gt;&gt;<i> Essayez Live.com, votre nouvelle page d'accueil ! Personnalisez-la en quelques clics pour retrouver tout ce qui vous int&#233;resse au m&#234;me endroit.
+</I>&gt;&gt;&gt;<i> <A HREF="http://www.live.com/getstarted">http://www.live.com/getstarted</A>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> _________________________________________________________________
+</I>&gt;&gt;<i> Essayez Live.com, votre nouvelle page d'accueil ! Personnalisez-la en quelques clics pour retrouver tout ce qui vous int&#233;resse au m&#234;me endroit.
+</I>&gt;&gt;<i> <A HREF="http://www.live.com/getstarted">http://www.live.com/getstarted</A>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> _________________________________________________________________
+</I>&gt;<i> Essayez Live.com et cr&#233;ez l'Internet qui vous ressemble : infos, sports, m&#233;t&#233;o et bien plus encore !
+</I>&gt;<i> <A HREF="http://www.live.com/getstarted">http://www.live.com/getstarted</A>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000323.html">[OpenIMSCore-Users] Troubles during registration
+</A></li>
+	<LI>Next message: <A HREF="000269.html">[OpenIMSCore-Users] [Bug #9698] Segmentation Fault in	peerstatemachine.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#326">[ date ]</a>
+              <a href="thread.html#326">[ thread ]</a>
+              <a href="subject.html#326">[ subject ]</a>
+              <a href="author.html#326">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] error in MySQL
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20error%20in%20MySQL&In-Reply-To=%3CCOL103-W53B339CE19885A36F8977ADC060%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="004882.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] error in MySQL</H1>
+    <B>John Barry</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20error%20in%20MySQL&In-Reply-To=%3CCOL103-W53B339CE19885A36F8977ADC060%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] error in MySQL">jbarry74 at hotmail.com
+       </A><BR>
+    <I>Mon Dec  1 00:04:49 CET 2008</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="004882.html">[OpenIMSCore-Users] Registration over IPsec issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4881">[ date ]</a>
+              <a href="thread.html#4881">[ thread ]</a>
+              <a href="subject.html#4881">[ subject ]</a>
+              <a href="author.html#4881">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+Hi Mosbah,
+
+I had a similar issue when using the add-imscore-user_newdb.sh script. The problem is the way the amf and op values insert by the sql query in lines 133-134 are encoded. The values &quot;\0\0...&quot;, cause the script to break and therefore the  sql scripts files are not created completely. 
+
+To solve this issue. I replace the &quot;\0&quot; values by &quot;0&quot; values, execute modified add-imscore-user_newdb.sh, and then I run separate sql queries to update the amf and op values in the hss_db database (if you don't do this, the user will not register properly):
+
+ update impi set op='\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0' where op='0000000000000000';
+ update impi set amf='\0\0' where amf='00';
+
+
+In summary, the problem is with the encoding of the x0 values in the script.  A better solution is to find a different way to encode the x0 values that do not break the sql script generation but I didn't find one (I guess this should be also related with the environment you are using. I am using Ubuntu)
+
+Hope it helps
+
+JB
+
+
+Date: Sun, 30 Nov 2008 01:14:30 -0800
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mmaass79 at yahoo.com</A>
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: [OpenIMSCore-Users] error in MySQL
+
+
+
+    Hi,
+
+
+I try to add new users to the test-bed but we have this error
+
+regards,
+Mosbah.
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">qwerty at qwerty-desktop</A>:/opt/OpenIMSCore$ ./add-imscore-user_newdb.sh -u mos1 -r hii1-ims.test -p qwerty -a
+Successfully wrote add-user-mos1.sql
+Successfully wrote delete-user-mos1.sql
+Apply add-user-mos1.sql as user root...
+Enter password: 
+ERROR 1064 (42000) at line 6: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''' at line 14
+ERROR: Failed to apply add-user-mos1.sql
+
+
+
+_________________________________________________________________
+Express yourself instantly with MSN Messenger! Download today it's FREE!
+<A HREF="http://messenger.msn.click-url.com/go/onm00200471ave/direct/01/">http://messenger.msn.click-url.com/go/onm00200471ave/direct/01/</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20081201/1ce36273/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20081201/1ce36273/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="004882.html">[OpenIMSCore-Users] Registration over IPsec issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4881">[ date ]</a>
+              <a href="thread.html#4881">[ thread ]</a>
+              <a href="subject.html#4881">[ subject ]</a>
+              <a href="author.html#4881">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

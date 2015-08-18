@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] PSTN and IMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSTN%20and%20IMS&In-Reply-To=%3C006001c8801a%249d662040%240200a8c0%40notebook%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003583.html">
+   <LINK REL="Next"  HREF="003588.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] PSTN and IMS</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSTN%20and%20IMS&In-Reply-To=%3C006001c8801a%249d662040%240200a8c0%40notebook%3E"
+       TITLE="[OpenIMSCore-Users] PSTN and IMS">franz.edler at inode.at
+       </A><BR>
+    <I>Fri Mar  7 07:15:17 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003583.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+        <LI>Next message: <A HREF="003588.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3584">[ date ]</a>
+              <a href="thread.html#3584">[ thread ]</a>
+              <a href="subject.html#3584">[ subject ]</a>
+              <a href="author.html#3584">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+&gt;<i> We can call outside to PSTN network. We have problem with incoming calls.
+</I>
+Fine.
+ 
+&gt;<i> We don't understand how to configure Cisco router and its FXO-port (or
+</I>&gt;<i> IMS-system to handle Cisco's messages). Should it register to IMS-system
+</I>&gt;<i> (and to some CSCF there) or not (like in FXO &lt;-&gt; Asterisk system)?
+</I>
+I am no expert in configuring Cisco equipment, but I can answer the IMS part
+of the question.
+Look to TS 23.228 &#167;5.6.3 (PSTN-O) PSTN origination. You can see that in case
+of PSTN origination the MGCF (your gateway) takes the tasks of the P-CSCF in
+case of mobile origination. You do not need to register your gateway, but if
+the Cisco gateway does all a MGCF should do is another question.
+
+&gt;<i> We have configured to Cisco 3600:
+</I>&gt;<i> - &quot;connection plar 'spesific user in openims database'&quot; (for voice port)
+</I>&gt;<i> (INVITE sip:'spesific user'@sip-server)
+</I>&gt;<i> - &quot;session target sip-server&quot; (to dial-peer voice x voip) and
+</I>&gt;<i> - &quot;registrar&quot; and &quot;sip-server&quot; as a P-CSCF or S-CSCF and authentication
+</I>&gt;<i> for &quot;router user&quot; (to sip-ua)
+</I>
+In case you register your Cisco Box as a user than you have to connect to a
+P-CSCF instead of the S-CSCF. You have to decide if your box should act as a
+user or as a gateway.
+
+&gt;<i> Doesn't work and we have no idea why. Is it possible to send INVITE from
+</I>&gt;<i> router to some spesific user (who use this pstn phone number) to system
+</I>&gt;<i> without registering router to system as user?
+</I>
+Yes, if it is added as a gateway (MGCF) into the architecture.
+
+So you have to decide: user or gateway. Don&#146;t use a mixed mode (originating
+as a MGCF, terminating as a user).
+
+In case it does not work a trace would help to find the problem.
+
+regards
+Franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003583.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+	<LI>Next message: <A HREF="003588.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3584">[ date ]</a>
+              <a href="thread.html#3584">[ thread ]</a>
+              <a href="subject.html#3584">[ subject ]</a>
+              <a href="author.html#3584">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

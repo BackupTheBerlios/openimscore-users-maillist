@@ -1,0 +1,344 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] BYE requests
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20BYE%20requests&In-Reply-To=%3C45D045B1.8040103%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000758.html">
+   <LINK REL="Next"  HREF="000764.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] BYE requests</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20BYE%20requests&In-Reply-To=%3C45D045B1.8040103%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] BYE requests">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Feb 12 11:47:13 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000758.html">[OpenIMSCore-Users]  BYE requests
+</A></li>
+        <LI>Next message: <A HREF="000764.html">[OpenIMSCore-Users] Error 600: Busy everywhere - Forwarding to	S-CSCF failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#759">[ date ]</a>
+              <a href="thread.html#759">[ thread ]</a>
+              <a href="subject.html#759">[ subject ]</a>
+              <a href="author.html#759">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Frederic,
+
+The first example looks wrong to me - there is no Record-Route for the
+P-CSCF. Also, the trace shows a known problem with the SIP2IMS gateway,
+but that is solvable.
+
+All other traces are plagued by the SIP2IMS issue that it is not a
+B2BUA. This is somehow hacked in the P-CSCF, but I think that you might
+have an issue there. The best thing would be if you could drop the
+SIP2IMS gateway and X-Lite ;-). The core supports MD5 if that is the
+problem. Then you need a UE with Service-Route support.
+
+-Dragos
+
+frederic moulis wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> Actually, we have two users &quot;fred&quot; and &quot;romain&quot;. Fred uses an X-Lite (10.1.0.105:46342), Romain uses a sip-phone based on PJSIP stack (10.1.0.100:5065).
+</I>&gt;<i> The Open-IMS Core is at 10.1.0.201.
+</I>&gt;<i> And messages go through an AS at 10.1.0.105:5065
+</I>&gt;<i>
+</I>&gt;<i> Here are the four cases :
+</I>&gt;<i>
+</I>&gt;<i> -------------------------------------------------------------
+</I>&gt;<i> -    1st case : ROMAIN calls FRED, ROMAIN hangs up          -
+</I>&gt;<i> -           This is the only case that works.               -
+</I>&gt;<i> -------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> - When FRED answers the call, ROMAIN receives the following OK message :
+</I>&gt;<i> SIP/2.0 200 OK
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at open-ims.test</A>&gt;;tag=ef178890
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i> Contact: &lt;sip:10.1.0.105:5065;transport=udp;wlsscid=17c7ea142;appsessionid=app-1ftnpiem4rovn&gt;
+</I>&gt;<i> CSeq: 1984769042 INVITE
+</I>&gt;<i> Call-ID: 62d10018f76ec3063477
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.100:5065;rport=5065;branch=z9hG4bKPj62d10019f76ec3063477
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>&gt;;tag=62d10017f76ec3063477
+</I>&gt;<i> Content-Type: message/external-body; ACCESS-TYPE=URL; URL=&quot;<A HREF="http://10.1.0.105:7001/ACIL/portal/index.jsp?user=romain%40open-ims.test&amp;other=fred%40open-ims.test">http://10.1.0.105:7001/ACIL/portal/index.jsp?user=romain%40open-ims.test&amp;other=fred%40open-ims.test</A>&quot;
+</I>&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> Record-Route: &lt;sip:10.1.0.201:3060;ftag=62d10017f76ec3063477;lr=on&gt;
+</I>&gt;<i>
+</I>&gt;<i> - When ROMAIN hangs up, here is the BYE request :
+</I>&gt;<i> BYE sip:10.1.0.105:5065;transport=udp;wlsscid=17c7ea142;appsessionid=app-1ftnpiem4rovn SIP/2.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.100:5065;rport;branch=z9hG4bKPj62d1001cf76ec3063477
+</I>&gt;<i> Max-Forwards: 70
+</I>&gt;<i> From: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>;tag=62d10017f76ec3063477
+</I>&gt;<i> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at open-ims.test</A>;tag=ef178890
+</I>&gt;<i> Call-ID: 62d10018f76ec3063477
+</I>&gt;<i> CSeq: 1984769043 BYE
+</I>&gt;<i> Route: &lt;sip:10.1.0.201:3060;lr;ftag=62d10017f76ec3063477&gt;
+</I>&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> User-Agent: SIPphone ACIL/0.1
+</I>&gt;<i> Accept: application/sdp, application/pidf+xml, application/xpidf+xml, message/sipfrag;version=2.0, application/im-iscomposing+xml, text/plain, message/external-body
+</I>&gt;<i> Content-Length:  0
+</I>&gt;<i>
+</I>&gt;<i> THIS CASE WORKS, FRED receives the BYE request
+</I>&gt;<i>
+</I>&gt;<i> -------------------------------------------------------------
+</I>&gt;<i> -    2nd case : ROMAIN calls FRED, FRED hangs up            -
+</I>&gt;<i> -------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> - INVITE message received by FRED :
+</I>&gt;<i> INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at 10.1.0.105</A>:46342;rinstance=cbeffaa0518af43b SIP/2.0
+</I>&gt;<i> Record-Route: &lt;sip:10.1.0.201:3060;ftag=6b06bf93;lr=on&gt;
+</I>&gt;<i> Record-Route: &lt;sip:10.1.0.201:3060;ftag=6b06bf93;lr=on&gt;
+</I>&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at open-ims.test</A>
+</I>&gt;<i> Content-Length: 388
+</I>&gt;<i> Contact: &lt;sip:10.1.0.105:5065;transport=udp;wlsscid=17c7ea142;appsessionid=app-1hmbgeup45h7&gt;
+</I>&gt;<i> CSeq: 1 INVITE
+</I>&gt;<i> Call-ID: wlss3aae280e26981133b278066c2ebb0cdcwl(62d1000df76ec3063477%)<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wl at 10.1.0.105</A>
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.201:3060;branch=z9hG4bK4ce.ed6c8026.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.201:4060;branch=z9hG4bK4ce.4209d186.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.201:3060;rport=3060;branch=z9hG4bK4ce.dd6c8026.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.201:4060;branch=z9hG4bK4ce.3209d186.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.201:6060;rport=6060;branch=z9hG4bK4ce.dcd8793.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.105:5065;wlsscid=17c7ea142;branch=z9hG4bK2f5a7b97436dad4a51252aa59df893d5
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>&gt;;tag=6b06bf93
+</I>&gt;<i> Content-Type: application/sdp
+</I>&gt;<i> P-Asserted-Identity: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>
+</I>&gt;<i> Max-Forwards: 12
+</I>&gt;<i> P-Called-Party-ID: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at open-ims.test</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> v=0
+</I>&gt;<i> o=- 3380004842 3380004842 IN IP4 10.1.0.100
+</I>&gt;<i> s=pjmedia
+</I>&gt;<i> c=IN IP4 10.1.0.100
+</I>&gt;<i> t=0 0
+</I>&gt;<i> m=audio 4000 RTP/AVP 0 8 102 117 103 3 101
+</I>&gt;<i> a=rtcp:4001 IN IP4 10.1.0.100
+</I>&gt;<i> a=rtpmap:0 PCMU/8000
+</I>&gt;<i> a=rtpmap:8 PCMA/8000
+</I>&gt;<i> a=rtpmap:102 speex/8000
+</I>&gt;<i> a=rtpmap:117 iLBC/8000
+</I>&gt;<i> a=fmtp:117 mode=20
+</I>&gt;<i> a=rtpmap:103 speex/16000
+</I>&gt;<i> a=rtpmap:3 GSW
+</I>&gt;<i>
+</I>&gt;<i> - When FRED hangs up, here is the BYE request :
+</I>&gt;<i> BYE sip:10.1.0.105:5065;transport=udp;wlsscid=17c7ea142;appsessionid=app-1hmbgeup45h7 SIP/2.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.105:46342;branch=z9hG4bK-d87543-be438f719d791325-1--d87543-;rport
+</I>&gt;<i> Max-Forwards: 70
+</I>&gt;<i> Route: &lt;sip:10.1.0.201:3060;lr;ftag=6b06bf93&gt;
+</I>&gt;<i> Route: &lt;sip:10.1.0.201:3060;ftag=6b06bf93;lr=on&gt;
+</I>&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at 10.1.0.105</A>:46342;rinstance=cbeffaa0518af43b&gt;
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>&gt;;tag=6b06bf93
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at open-ims.test</A>&gt;;tag=293b2020
+</I>&gt;<i> Call-ID: wlss3aae280e26981133b278066c2ebb0cdcwl(62d1000df76ec3063477%)<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wl at 10.1.0.105</A>
+</I>&gt;<i> CSeq: 2 BYE
+</I>&gt;<i> User-Agent: X-Lite release 1006e stamp 34025
+</I>&gt;<i> Reason: SIP;description=&quot;User Hung Up&quot;
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i>
+</I>&gt;<i> - FRED then receives this message, ROMAIN does not receive anything :
+</I>&gt;<i> SIP/2.0 400 Bad Request - Not following indicated dialog routes
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.105:46342;branch=z9hG4bK-d87543-be438f719d791325-1--d87543-;rport=46342
+</I>&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>&gt;;tag=6b06bf93
+</I>&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at open-ims.test</A>&gt;;tag=293b2020
+</I>&gt;<i> Call-ID: wlss3aae280e26981133b278066c2ebb0cdcwl(62d1000df76ec3063477%)<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wl at 10.1.0.105</A>
+</I>&gt;<i> CSeq: 2 BYE
+</I>&gt;<i> Server: Sip EXpress router (0.10.99-dev53-tm_fixes (i386/linux))
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i>
+</I>&gt;<i> -------------------------------------------------------------
+</I>&gt;<i> -    3rd case : FRED calls ROMAIN, FRED hangs up            -
+</I>&gt;<i> -------------------------------------------------------------
+</I>&gt;<i> - When ROMAIN answers the call, FRED receives the following OK message :
+</I>&gt;<i> SIP/2.0 200 OK
+</I>&gt;<i> To: romain &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>&gt;;tag=228976ca
+</I>&gt;<i> Contact: &lt;sip:10.1.0.105:5065;transport=udp;wlsscid=17c7ea142;appsessionid=app-11hhzdov8r6te&gt;
+</I>&gt;<i> Content-Length: 234
+</I>&gt;<i> CSeq: 1 INVITE
+</I>&gt;<i> Call-ID: MzY3ZDdlOGY3OWE3YmQ0NTUwYTEyODEzMDEwNWZmZGQ.
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.105:46342;branch=z9hG4bK-d87543-5f015f5f193d7629-1--d87543-;rport=46342
+</I>&gt;<i> From: fred &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at open-ims.test</A>&gt;;tag=737dc302
+</I>&gt;<i> Content-Type: application/sdp
+</I>&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> Record-Route: &lt;sip:10.1.0.201:3060;ftag=737dc302;lr=on&gt;
+</I>&gt;<i>
+</I>&gt;<i> v=0
+</I>&gt;<i> o=- 3380004715 3380004716 IN IP4 10.1.0.100
+</I>&gt;<i> s=pjmedia
+</I>&gt;<i> c=IN IP4 10.1.0.100
+</I>&gt;<i> t=0 0
+</I>&gt;<i> m=audio 4000 RTP/AVP 0 101
+</I>&gt;<i> a=rtcp:4001 IN IP4 10.1.0.100
+</I>&gt;<i> a=rtpmap:0 PCMU/8000
+</I>&gt;<i> a=rtpmap:101 telephone-event/8000
+</I>&gt;<i> a=fmtp:101 0-15
+</I>&gt;<i> a=sendrecv
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> - When FRED hangs up, here is the BYE request :
+</I>&gt;<i> BYE sip:10.1.0.105:5065;transport=udp;wlsscid=17c7ea142;appsessionid=app-11hhzdov8r6te SIP/2.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.105:46342;branch=z9hG4bK-d87543-0455121af86d8f5c-1--d87543-;rport
+</I>&gt;<i> Max-Forwards: 70
+</I>&gt;<i> Route: &lt;sip:10.1.0.201:3060;lr;ftag=737dc302&gt;
+</I>&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at 10.1.0.105</A>:46342&gt;
+</I>&gt;<i> To: &quot;romain&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>&gt;;tag=228976ca
+</I>&gt;<i> From: &quot;fred&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at open-ims.test</A>&gt;;tag=737dc302
+</I>&gt;<i> Call-ID: MzY3ZDdlOGY3OWE3YmQ0NTUwYTEyODEzMDEwNWZmZGQ.
+</I>&gt;<i> CSeq: 2 BYE
+</I>&gt;<i> User-Agent: X-Lite release 1006e stamp 34025
+</I>&gt;<i> Reason: SIP;description=&quot;User Hung Up&quot;
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i>
+</I>&gt;<i> - FRED then receives this message, ROMAIN does not receive anything :
+</I>&gt;<i> SIP/2.0 400 Bad Request - Not following indicated dialog routes
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.105:46342;branch=z9hG4bK-d87543-0455121af86d8f5c-1--d87543-;rport=46342
+</I>&gt;<i> To: &quot;romain&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>&gt;;tag=228976ca
+</I>&gt;<i> From: &quot;fred&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at open-ims.test</A>&gt;;tag=737dc302
+</I>&gt;<i> Call-ID: MzY3ZDdlOGY3OWE3YmQ0NTUwYTEyODEzMDEwNWZmZGQ.
+</I>&gt;<i> CSeq: 2 BYE
+</I>&gt;<i> Server: Sip EXpress router (0.10.99-dev53-tm_fixes (i386/linux))
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i>
+</I>&gt;<i> -------------------------------------------------------------
+</I>&gt;<i> -    4th case : FRED calls ROMAIN, ROMAIN hangs up          -
+</I>&gt;<i> -------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> - INVITE message received by ROMAIN :
+</I>&gt;<i> INVITE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at 10.1.0.100</A>:5065;transport=UDP SIP/2.0
+</I>&gt;<i> Record-Route: &lt;sip:10.1.0.201:3060;ftag=650be566;lr=on&gt;
+</I>&gt;<i> Record-Route: &lt;sip:10.1.0.201:3060;ftag=650be566;lr=on&gt;
+</I>&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> To: romain &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>&gt;
+</I>&gt;<i> Content-Length: 367
+</I>&gt;<i> Contact: &lt;sip:10.1.0.105:5065;transport=udp;wlsscid=17c7ea142;appsessionid=app-1vnd2v0l8s20s&gt;
+</I>&gt;<i> CSeq: 1 INVITE
+</I>&gt;<i> Call-ID: wlsse00cefd70e1ce0a5e388ab4afdfa2d76wl(OTkxYmU1M2QwMTZmY2M1MmE1OGY4NjM2OGEyZmNiZTM.%)<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wl at 10.1.0.105</A>
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.201:3060;branch=z9hG4bK0d7.e9b894c7.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.201:4060;branch=z9hG4bK0d7.6bb965f.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.201:3060;rport=3060;branch=z9hG4bK0d7.d9b894c7.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.201:4060;branch=z9hG4bK0d7.5bb965f.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.201:6060;rport=6060;branch=z9hG4bK0d7.2e5cffd.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.201:6060;branch=z9hG4bK0d7.1e5cffd.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.105:5065;wlsscid=17c7ea142;branch=z9hG4bK8a66028f04f92998a6a045a8bb622c8a
+</I>&gt;<i> From: fred &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at open-ims.test</A>&gt;;tag=650be566
+</I>&gt;<i> Content-Type: application/sdp
+</I>&gt;<i> P-Asserted-Identity: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at open-ims.test</A>
+</I>&gt;<i> Max-Forwards: 11
+</I>&gt;<i> P-Called-Party-ID: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> v=0
+</I>&gt;<i> o=- 9 2 IN IP4 10.1.0.105
+</I>&gt;<i> s=CounterPath X-Lite 3.0
+</I>&gt;<i> c=IN IP4 10.1.0.105
+</I>&gt;<i> t=0 0
+</I>&gt;<i> m=audio 8046 RTP/AVP 107 119 0 98 8 3 101
+</I>&gt;<i> a=alt:1 2 : Q8/uW/1o Wq0RWFHk 10.1.0.105 8046
+</I>&gt;<i> aFC&#204;E&#201;*
+</I>&gt;<i>  &#224;   &#224;    	-&#210;J$ 
+</I>&gt;<i> &#233;b&#205;' E &#210;&#203;4 &#185;@~&#239;
+</I>&gt;<i>  &#201;
+</I>&gt;<i>  d=alt:2 1 : rIHPSY4N HYTVabon 192.168.1.190 8046
+</I>&gt;<i> a=fmtp:101 0-15
+</I>&gt;<i> a=rtpmap:107 BV32/16000
+</I>&gt;<i> a=rtpmap:119 BV32-FEC/16000
+</I>&gt;<i> a=rtpmap:98 iLBC/8000
+</I>&gt;<i> a=rtpmap:101 telephone-event/8000
+</I>&gt;<i> a=sendrecv
+</I>&gt;<i>
+</I>&gt;<i> - When ROMAIN hangs up, here is the BYE request :
+</I>&gt;<i> BYE sip:10.1.0.105:5065;transport=udp;wlsscid=17c7ea142;appsessionid=app-1vnd2v0l8s20s SIP/2.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.100:5065;rport;branch=z9hG4bKPj62d10020f76ec3063477
+</I>&gt;<i> Max-Forwards: 70
+</I>&gt;<i> From: &quot;romain&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>&gt;;tag=62d1001ff76ec3063477
+</I>&gt;<i> To: &quot;fred&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at open-ims.test</A>&gt;;tag=650be566
+</I>&gt;<i> Call-ID: wlsse00cefd70e1ce0a5e388ab4afdfa2d76wl(OTkxYmU1M2QwMTZmY2M1MmE1OGY4NjM2OGEyZmNiZTM.%)<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wl at 10.1.0.105</A>
+</I>&gt;<i> CSeq: 1767006096 BYE
+</I>&gt;<i> Route: &lt;sip:10.1.0.201:3060;lr;ftag=650be566&gt;
+</I>&gt;<i> Route: &lt;sip:10.1.0.201:3060;lr;ftag=650be566&gt;
+</I>&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> User-Agent: SIPphone ACIL/0.1
+</I>&gt;<i> Accept: application/sdp, application/pidf+xml, application/xpidf+xml, message/sipfrag;version=2.0, application/im-iscomposing+xml, text/plain, message/external-body
+</I>&gt;<i> Content-Length:  0
+</I>&gt;<i>
+</I>&gt;<i> - ROMAIN then receives this message, FRED does not receive anything :
+</I>&gt;<i> SIP/2.0 400 Bad Request - Not following indicated dialog routes
+</I>&gt;<i> Via: SIP/2.0/UDP 10.1.0.100:5065;rport=5065;branch=z9hG4bKPj62d10020f76ec3063477
+</I>&gt;<i> From: &quot;romain&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">romain at open-ims.test</A>&gt;;tag=62d1001ff76ec3063477
+</I>&gt;<i> To: &quot;fred&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">fred at open-ims.test</A>&gt;;tag=650be566
+</I>&gt;<i> Call-ID: wlsse00cefd70e1ce0a5e388ab4afdfa2d76wl(OTkxYmU1M2QwMTZmY2M1MmE1OGY4NjM2OGEyZmNiZTM.%)<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wl at 10.1.0.105</A>
+</I>&gt;<i> CSeq: 1767006096 BYE
+</I>&gt;<i> Server: Sip EXpress router (0.10.99-dev53-tm_fixes (i386/linux))
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i>
+</I>&gt;<i> -----------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Thank you for your help,
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Frederic
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000758.html">[OpenIMSCore-Users]  BYE requests
+</A></li>
+	<LI>Next message: <A HREF="000764.html">[OpenIMSCore-Users] Error 600: Busy everywhere - Forwarding to	S-CSCF failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#759">[ date ]</a>
+              <a href="thread.html#759">[ thread ]</a>
+              <a href="subject.html#759">[ subject ]</a>
+              <a href="author.html#759">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

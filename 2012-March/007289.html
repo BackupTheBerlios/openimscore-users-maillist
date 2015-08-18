@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] AUthorizing request using TCP protocol
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AUthorizing%20request%20using%20TCP%20protocol&In-Reply-To=%3CB318ABF8F76F5847AC543EF3451DE05103714525FC%40EXCHANGE.alerant.local%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007288.html">
+   <LINK REL="Next"  HREF="007290.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] AUthorizing request using TCP protocol</H1>
+    <B>Hal&#225;sz B&#225;lint</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AUthorizing%20request%20using%20TCP%20protocol&In-Reply-To=%3CB318ABF8F76F5847AC543EF3451DE05103714525FC%40EXCHANGE.alerant.local%3E"
+       TITLE="[OpenIMSCore-Users] AUthorizing request using TCP protocol">Halasz.Balint at alerant.hu
+       </A><BR>
+    <I>Wed Mar 21 17:35:45 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007288.html">[OpenIMSCore-Users] problem with iptv channel request
+</A></li>
+        <LI>Next message: <A HREF="007290.html">[OpenIMSCore-Users] Error with channel request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7289">[ date ]</a>
+              <a href="thread.html#7289">[ thread ]</a>
+              <a href="subject.html#7289">[ subject ]</a>
+              <a href="author.html#7289">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+We are using Open-IMS platform to test our IMS based solution and currently we are facing the problem that we are not able to send SIP SUBSCRIBE and INVITE Request using TCP protocol. Please see the attached call flow. We have analyzed the configuration and the source code and we have identified the code that checks and reject our request. 
+We have used the configuration as it was suggested at <A HREF="http://www.openimscore.org/docs/ser_ims/PCSCF.html">http://www.openimscore.org/docs/ser_ims/PCSCF.html</A> with the following route logic: 
+
+if (method==&quot;INVITE&quot; || method==&quot;SUBSCRIBE&quot;){
+            route(Orig_Initial);
+            break;
+        }else{
+....
+
+route function uses the logic
+
+route[Orig_Initial]
+{
+    log(1,&quot;&gt;&gt;       Orig_Initial\n&quot;);
+    if (!P_is_registered()){
+            sl_send_reply(&quot;403&quot;,&quot;Forbidden - Not Registered! You must register first with a S-CSCF&quot;);
+            break;
+    };
+    if (!P_assert_identity()){
+            sl_send_reply(&quot;403&quot;,&quot;Forbidden - You must register first with a S-CSCF&quot;);
+            break;
+    };
+
+And as far as we understood  P_is_registered at the end checks that the contact was sent in the REGISTER message is the same in the proper via header, the equality is checked based on the host and port. 
+
+r_is_registered
+<A HREF="http://www.openimscore.org/docs/ser_ims/pcscf_2registrar_8c.html#688534a6d4e64319d6e1b01ed71856a1">http://www.openimscore.org/docs/ser_ims/pcscf_2registrar_8c.html#688534a6d4e64319d6e1b01ed71856a1</A>
+
+00421 {
+00422     int ret=0;
+00423     r_contact *c;
+00424 
+00425     if (port==0) port=5060;
+00426 //  LOG(L_ERR,&quot;DBG:&quot;M_NAME&quot;:r_is_registered: Looking if registered &lt;%<A HREF="d://%.*s:%d">d://%.*s:%d</A>&gt;\n&quot;,
+00427 //      transport,host.len,host.s,port);
+00428 
+00429 //  print_r(L_INFO);
+00430     c = get_r_contact(host,port,transport);
+00431 
+00432     if (!c){        
+00433         return 0;
+00434     }   
+00435     r_act_time();
+00436     if (r_reg_contact(c)){
+00437         ret = 1;
+00438     }
+00439     r_unlock(c-&gt;hash);
+00440     
+00441     return ret;
+00442 }
+
+and at get_r_contact 
+<A HREF="http://www.openimscore.org/docs/ser_ims/pcscf_2registrar__storage_8c.html#c3a1b6a2d85098a91a3f2c927c638b9e">http://www.openimscore.org/docs/ser_ims/pcscf_2registrar__storage_8c.html#c3a1b6a2d85098a91a3f2c927c638b9e</A>
+
+00506 {
+00507     r_contact *c=0;
+00508     unsigned int hash;
+00509     if (!registrar) return 0;
+00510     hash = get_contact_hash(host,port,transport,r_hash_size);
+00511     r_lock(hash);
+00512     c = registrar[hash].head;
+00513     while(c){
+00514         if (c-&gt;port == port &amp;&amp;
+00515 //          c-&gt;transport == transport &amp;&amp; /* because xten doesn't care about protocols */ 
+00516             c-&gt;host.len == host.len &amp;&amp;
+00517             strncasecmp(c-&gt;host.s,host.s,host.len)==0) return c;
+00518         c = c-&gt;next;
+00519     }
+00520     r_unlock(hash);
+00521     return 0;
+00522 }
+
+However we think that in case of TCP protocol the sending port is not a fix one but it can change at each request.
+Is our assumption about usage of TCP at client side correct? If this is the case could you please suggest a way how the routing configuration should be set up?
+
+Thank you for your answer in advance!
+
+Best Regards,
+
+Balint Halasz
+-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: call_flow_on_tcp.txt
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120321/0b58c6c3/attachment.txt">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120321/0b58c6c3/attachment.txt</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007288.html">[OpenIMSCore-Users] problem with iptv channel request
+</A></li>
+	<LI>Next message: <A HREF="007290.html">[OpenIMSCore-Users] Error with channel request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7289">[ date ]</a>
+              <a href="thread.html#7289">[ thread ]</a>
+              <a href="subject.html#7289">[ subject ]</a>
+              <a href="author.html#7289">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

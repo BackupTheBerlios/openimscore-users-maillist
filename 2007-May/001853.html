@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Changing FHoSS listening interface: db	problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Changing%20FHoSS%20listening%20interface%3A%20db%0A%09problems&In-Reply-To=%3C5D2516775DB7B940825E484E50FC055F0BD58C%40MILVB542A.icn.siemens.it%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001841.html">
+   <LINK REL="Next"  HREF="001858.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Changing FHoSS listening interface: db	problems</H1>
+    <B>Cavalera Claudio</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Changing%20FHoSS%20listening%20interface%3A%20db%0A%09problems&In-Reply-To=%3C5D2516775DB7B940825E484E50FC055F0BD58C%40MILVB542A.icn.siemens.it%3E"
+       TITLE="[OpenIMSCore-Users] Changing FHoSS listening interface: db	problems">claudio.cavalera at nsn.com
+       </A><BR>
+    <I>Mon May 28 11:00:06 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001841.html">[OpenIMSCore-Users] Changing FHoSS listening interface: db	problems
+</A></li>
+        <LI>Next message: <A HREF="001858.html">[OpenIMSCore-Users] Changing FHoSS listening interface: db	problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1853">[ date ]</a>
+              <a href="thread.html#1853">[ thread ]</a>
+              <a href="subject.html#1853">[ subject ]</a>
+              <a href="author.html#1853">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Franz,
+I have dropped all the involved dbs (I also dropped an old sip2ims db which was still on the platform).
+Than I've recreated the databases with the .sql dumps.
+
+Now I've got these:
+mysql&gt; show databases;
++--------------------+
+|<i> Database           |
+</I>+--------------------+
+|<i> information_schema | 
+</I>|<i> hssdb              | 
+</I>|<i> icscf              | 
+</I>|<i> mysql              | 
+</I>|<i> test               | 
+</I>+--------------------+
+5 rows in set (0.00 sec)
+
+and they also seem populated to me if I query the tables.
+
+There must be a commuication problem between FHoSS and mysql somewhere cause I get this java exception on the web interface:
+de.fhg.fokus.hss.util.InfrastructureException: org.hibernate.exception.GenericJDBCException: Cannot open connection
+	at de.fhg.fokus.hss.util.HibernateUtil.beginTransaction(HibernateUtil.java:142)
+	at de.fhg.fokus.hss.action.ImsuSearchAction.execute(ImsuSearchAction.java:79)
+	at org.apache.struts.action.RequestProcessor.processActionPerform(RequestProcessor.java:419)
+	at org.apache.struts.action.RequestProcessor.process(RequestProcessor.java:224)
+	at org.apache.struts.action.ActionServlet.process(ActionServlet.java:1194)
+	at org.apache.struts.action.ActionServlet.doPost(ActionServlet.java:432)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:709)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:802)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:252)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:173)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:213)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:178)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:126)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:105)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:107)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:148)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:856)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.processConnection(Http11Protocol.java:744)
+	at org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpoint.java:527)
+	at org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFollowerWorkerThread.java:80)
+	at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:684)
+	at java.lang.Thread.run(Thread.java:595)
+Caused by: org.hibernate.exception.GenericJDBCException: Cannot open connection
+	at org.hibernate.exception.ErrorCodeConverter.handledNonSpecificException(ErrorCodeConverter.java:92)
+	at org.hibernate.exception.ErrorCodeConverter.convert(ErrorCodeConverter.java:80)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:43)
+	at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:29)
+	at org.hibernate.jdbc.ConnectionManager.openConnection(ConnectionManager.java:301)
+	at org.hibernate.jdbc.ConnectionManager.getConnection(ConnectionManager.java:110)
+	at org.hibernate.jdbc.JDBCContext.connection(JDBCContext.java:137)
+	at org.hibernate.transaction.JDBCTransaction.begin(JDBCTransaction.java:49)
+	at org.hibernate.transaction.JDBCTransactionFactory.beginTransaction(JDBCTransactionFactory.java:24)
+	at org.hibernate.jdbc.JDBCContext.beginTransaction(JDBCContext.java:271)
+	at org.hibernate.impl.SessionImpl.beginTransaction(SessionImpl.java:1079)
+	at de.fhg.fokus.hss.util.HibernateUtil.beginTransaction(HibernateUtil.java:135)
+	... 22 more
+Caused by: java.sql.SQLException: Connections could not be acquired from the underlying database!
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:106)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:529)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:128)
+	at org.hibernate.connection.C3P0ConnectionProvider.getConnection(C3P0ConnectionProvider.java:35)
+	at org.hibernate.jdbc.ConnectionManager.openConnection(ConnectionManager.java:298)
+	... 29 more
+Caused by: com.mchange.v2.resourcepool.CannotAcquireResourceException: A ResourcePool could not acquire a resource from its primary factory or source.
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1319)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:557)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:477)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:525)
+	... 32 more
+
+
+Any hint on how to diagnose the problem?
+
+Thanks a lot,
+Claudio
+
+
+
+-----Original Message-----
+From: ext Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>]
+Sent: Fri 5/25/2007 5:28 AM
+To: Cavalera Claudio; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: RE: [OpenIMSCore-Users] Changing FHoSS listening interface: db problems
+ 
+Hi Claudio,
+
+&gt;<i> what do you mean by running the db-scripts?
+</I>I mean the three scripts below. Two of them (hssdb.sql and icscf.sql) create
+the database table and the third (userdata.sql) fills in the example data. 
+
+&gt;<i> Are userdata.sql, hssdb.sql and icscf.sql the only dumps to reload in
+</I>&gt;<i> mysql database or are there others?
+</I>No. That's all.
+As a further hint: If you already have a previous installation (I sometimes
+actualize my platform and delete the ser_ims and FHoSS directory) then I
+drop the two database tables before reinstallation.
+
+&gt;<i> Using your procedure I got this output from configurator.sh:
+</I>&gt;<i> 
+</I>&gt;<i> File to change [&quot;all&quot; for everything, &quot;exit&quot; to quit]:all
+</I>&gt;<i> changing: icscf.cfg icscf.sql icscf.thig.cfg icscf.xml pcscf.cfg
+</I>persist_my.sql persist_pg.sql scscf.cfg scscf.xml
+&gt;<i> and
+</I>&gt;<i> changing: DiameterPeerHSS.xml c3p0.properties hibernate.properties
+</I>hss.properties hssdb.sql log4j.properties userdata.sql
+Yes. Exactly.
+
+cheers
+Franz
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070528/98e895ff/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070528/98e895ff/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001841.html">[OpenIMSCore-Users] Changing FHoSS listening interface: db	problems
+</A></li>
+	<LI>Next message: <A HREF="001858.html">[OpenIMSCore-Users] Changing FHoSS listening interface: db	problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1853">[ date ]</a>
+              <a href="thread.html#1853">[ thread ]</a>
+              <a href="subject.html#1853">[ subject ]</a>
+              <a href="author.html#1853">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

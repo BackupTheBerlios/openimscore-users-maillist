@@ -1,0 +1,282 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AKA%20authentication%20fails%20-%20Keep%20getting%20401&In-Reply-To=%3C658211.15987.qm%40web56110.mail.re3.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000773.html">
+   <LINK REL="Next"  HREF="000790.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] AKA authentication fails - Keep getting 401</H1>
+    <B>Sudhakar Patil</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AKA%20authentication%20fails%20-%20Keep%20getting%20401&In-Reply-To=%3C658211.15987.qm%40web56110.mail.re3.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] AKA authentication fails - Keep getting 401">spatil4572 at yahoo.com
+       </A><BR>
+    <I>Mon Feb 12 23:15:55 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000773.html">[OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+</A></li>
+        <LI>Next message: <A HREF="000790.html">[OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#775">[ date ]</a>
+              <a href="thread.html#775">[ thread ]</a>
+              <a href="subject.html#775">[ subject ]</a>
+              <a href="author.html#775">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dragos,
+Scenario MD5 registration, without SIP2IMS works for
+me. I cant test &quot;AKA registration, without SIP2IMS&quot; as
+I dont have the client that can do AKA. 
+
+Does &quot;MD5 registration, with SIP2IMS&quot; mean MD5 between
+client and sip2ims and AKA between sip2ims and SCSCF?
+If not, can you please verify this scenario? 
+
+Regards,
+Sudhakar.
+
+--- Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+wrote:
+
+&gt;<i> Hi Sudhakar,
+</I>&gt;<i> 
+</I>&gt;<i> I have just tried 3 scenarios and all worked just
+</I>&gt;<i> fine with the lastest
+</I>&gt;<i> svn revision:
+</I>&gt;<i> 1. AKA registration, without SIP2IMS
+</I>&gt;<i> 2. MD5 registration, without SIP2IMS
+</I>&gt;<i> 3. MD5 registration, with SIP2IMS
+</I>&gt;<i> 
+</I>&gt;<i> the rest of my response inlined....
+</I>&gt;<i> 
+</I>&gt;<i> Sudhakar Patil wrote:
+</I>&gt;<i> &gt; Hi Dragos,
+</I>&gt;<i> &gt; After updating to latest version I have few more
+</I>&gt;<i> &gt; problems. 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Problem #1:
+</I>&gt;<i> &gt; ===========
+</I>&gt;<i> &gt; S-CSCF tries to use &quot;Digest-MD5&quot; when users are
+</I>&gt;<i> &gt;   
+</I>&gt;<i> then it means that you have configured it as such...
+</I>&gt;<i> &gt; actually configured to use &quot;Digest-AKAv1-MD5&quot; in
+</I>&gt;<i> &gt;   
+</I>&gt;<i> no, that is the HSS, not the S-CSCF
+</I>&gt;<i> &gt; hssdb. Similarly if users are configured to use
+</I>&gt;<i> &gt; &quot;Digest-MD5&quot;, S-CSCF requests authentication
+</I>&gt;<i> vectors
+</I>&gt;<i> &gt; for &quot;Digest-AKAv1-MD5&quot;. I have configured S-CSCF
+</I>&gt;<i> to
+</I>&gt;<i> &gt; use AKAv1-MD5 as the default algorithm. Does
+</I>&gt;<i> S-CSCF
+</I>&gt;<i> &gt; read hssdb, impi table? HSS output is shown below:
+</I>&gt;<i> &gt;   
+</I>&gt;<i> it doesn't read that database. The S-CSCF is not
+</I>&gt;<i> connected to any database.
+</I>&gt;<i> &gt; 2007-02-12 13:11:04,869 DEBUG
+</I>&gt;<i> &gt; de.fhg.fokus.hss.server.cx.op.AuthCxOperation -
+</I>&gt;<i> &gt; generateAuthenticationVectors Auth-Scheme
+</I>&gt;<i> Supported by
+</I>&gt;<i> &gt; the HSS: Digest-AKAv1-MD5
+</I>&gt;<i> &gt; 2007-02-12 13:11:04,871 DEBUG
+</I>&gt;<i> &gt; de.fhg.fokus.hss.server.cx.op.AuthCxOperation -
+</I>&gt;<i> &gt; generateAuthenticationVectors Auth-Scheme asked by
+</I>&gt;<i> &gt; S-CSCF: Digest-MD5
+</I>&gt;<i> &gt; 2007-02-12 13:11:04,878 ERROR
+</I>&gt;<i> &gt; de.fhg.fokus.hss.server.cx.op.AuthCxOperation -
+</I>&gt;<i> &gt; generateAuthenticationVectors
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I><A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">de.fhg.fokus.hss.server.cx.op.AuthCxOperation at 192d604</A>[
+&gt;<i> &gt;   scscfName=sip:scscf.open-ims.test:6060
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>authenticationVector=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">de.fhg.fokus.cx.AuthenticationVector at 120b2da</A>
+&gt;<i> &gt;   numberOfAuthVectors=1
+</I>&gt;<i> &gt; ]
+</I>&gt;<i> &gt; java.security.NoSuchAlgorithmException
+</I>&gt;<i> &gt;         at
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>de.fhg.fokus.hss.server.cx.op.AuthCxOperation.generateAuthenticationVectors(AuthCxOperation.java:195)
+&gt;<i> &gt;         at
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>de.fhg.fokus.hss.server.cx.op.AuthCxOperation.execute(AuthCxOperation.java:148)
+&gt;<i> &gt;         at
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>de.fhg.fokus.hss.server.cx.HSScxOperationsImpl.cxAuthData(HSScxOperationsImpl.java:153)
+&gt;<i> &gt;         at
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>de.fhg.fokus.hss.diam.cx.MARCommandListener.recvMessage(MARCommandListener.java:119)
+&gt;<i> &gt;         at
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>de.fhg.fokus.diameter.DiameterPeer.DiameterWorker.run(DiameterWorker.java:100)
+&gt;<i> &gt; 2007-02-12 13:11:04,891 DEBUG
+</I>&gt;<i> &gt; de.fhg.fokus.hss.server.cx.HSScxOperationsImpl -
+</I>&gt;<i> &gt; cxAuthData exiting
+</I>&gt;<i> &gt;   
+</I>&gt;<i> This is very strange... which svn revision are using
+</I>&gt;<i> for FHoSS? I hope
+</I>&gt;<i> that the last one...Did you recompiled it, etc? 
+</I>&gt;<i> Then have you actually
+</I>&gt;<i> configured the user to be allowed to use MD5?
+</I>&gt;<i> &gt; Problem #2:
+</I>&gt;<i> &gt; ===========
+</I>&gt;<i> &gt; sip2ims mentions &quot;MD5&quot; as the algorithm while
+</I>&gt;<i> &gt; generating AKA response as shown below, even when
+</I>&gt;<i> it
+</I>&gt;<i> &gt; is getting AKAv1-MD5 as the algorithm to be used:
+</I>&gt;<i> &gt; +++
+</I>&gt;<i> &gt; Digest realm=&quot;open-ims.test&quot;,
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>nonce=&quot;CrH9CpJSzFKN6EoGWdPTx7TrgL8aawAAM4qjtk7zESg=&quot;,
+&gt;<i> &gt; algorithm=AKAv1-MD5
+</I>&gt;<i> &gt; ---
+</I>&gt;<i> &gt;   
+</I>&gt;<i> this is the AKA challenge from the S-CSCF
+</I>&gt;<i> &gt; WWW-Authenticate: Digest
+</I>&gt;<i> username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,
+</I>&gt;<i> &gt; realm=&quot;open-ims.test&quot;,
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>opaque=&quot;AKAv1-MD5CrH9CpJSzFKN6EoGWdPTx7TrgL8aawAAM4qjtk7zESg=&quot;,
+&gt;<i> &gt; nonce=&quot;45d0be2416837d07ed5cf972452d4d06964422ea&quot;,
+</I>&gt;<i> &gt; algorithm=MD5
+</I>&gt;<i> &gt;   
+</I>&gt;<i> and it is replaced by this, at the SIP2IMS, towards
+</I>&gt;<i> the client
+</I>&gt;<i> &gt; +++
+</I>&gt;<i> &gt;  4(3101) INF:SIP2IMS:Gw_MD5_to_AKA:
+</I>&gt;<i> &gt; ===
+</I>&gt;<i> &gt; Digest
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;45d0be2416837d07ed5cf972452d4d06964422ea&quot;,uri=&quot;sip:open-ims.test&quot;,response=&quot;7109b9decb3d18fee450bc16ae3784d8&quot;,algorithm=&quot;MD5&quot;,opaque=&quot;AKAv1-MD5CrH9CpJSzFKN6EoGWdPTx7TrgL8aawAAM4qjtk7zESg=&quot;
+&gt;<i> &gt;   
+</I>&gt;<i> this is the response of the user
+</I>&gt;<i> &gt; ---
+</I>&gt;<i> &gt; Authorization: Digest
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;45d0be2416837d07ed5cf972452d4d06964422ea&quot;,uri=&quot;sip:open-ims.test&quot;,response=&quot;7109b9decb3d18fee450bc16ae3784d8&quot;,algorithm=&quot;MD5&quot;,opaque=&quot;AKAv1-MD5CrH9CpJSzFKN6EoGWdPTx7TrgL8aawAAM4qjtk7zESg=&quot;
+&gt;<i> &gt; ===
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> but as this is still MD5, it means that your client
+</I>&gt;<i> does not do MD5
+</I>&gt;<i> correctly, so it is not replacing it with a AKA
+</I>&gt;<i> response.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Overall, I am not able to register. Appreciate
+</I>&gt;<i> your
+</I>&gt;<i> &gt; help.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Regards,
+</I>&gt;<i> &gt; Sudhakar.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; Hi all,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; it seems that the r98 commit was a rushed one.
+</I>&gt;<i> FHoSS
+</I>&gt;<i> &gt;&gt; was changed and
+</I>&gt;<i> &gt;&gt; Anonimity Key usage was enabled then. I have just
+</I>&gt;<i> &gt;&gt; enabled it also in the
+</I>&gt;<i> &gt;&gt; SIP2IMS in r132.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Please do a svn update and try again.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Again, sorry for the inconsistency.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>____________________________________________________________________________________
+&gt;<i> &gt; Don't get soaked.  Take a quick peak at the
+</I>&gt;<i> forecast
+</I>&gt;<i> &gt; with the Yahoo! Search weather shortcut.
+</I>&gt;<i> &gt;
+</I>&gt;<i> <A HREF="http://tools.search.yahoo.com/shortcuts/#loc_weather">http://tools.search.yahoo.com/shortcuts/#loc_weather</A>
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I><A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> -- 
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the
+</I>&gt;<i> source code...
+</I>&gt;<i>
+</I>-----------------------------------------------------------------
+&gt;<i> 
+</I>&gt;<i> 
+</I>
+
+
+ 
+____________________________________________________________________________________
+Food fight? Enjoy some healthy debate 
+in the Yahoo! Answers Food &amp; Drink Q&amp;A.
+<A HREF="http://answers.yahoo.com/dir/?link=list&amp;sid=396545367">http://answers.yahoo.com/dir/?link=list&amp;sid=396545367</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000773.html">[OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+</A></li>
+	<LI>Next message: <A HREF="000790.html">[OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#775">[ date ]</a>
+              <a href="thread.html#775">[ thread ]</a>
+              <a href="subject.html#775">[ subject ]</a>
+              <a href="author.html#775">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

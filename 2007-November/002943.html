@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Implementing many HSSs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Implementing%20many%20HSSs&In-Reply-To=%3COF7CE04D28.D8300563-ONC1257394.002FBD08-C1257394.00348168%40amper.es%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002941.html">
+   <LINK REL="Next"  HREF="002956.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Implementing many HSSs</H1>
+    <B>Pedro Antonio Vico Solano</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Implementing%20many%20HSSs&In-Reply-To=%3COF7CE04D28.D8300563-ONC1257394.002FBD08-C1257394.00348168%40amper.es%3E"
+       TITLE="[OpenIMSCore-Users] Implementing many HSSs">pvsolano at amper.es
+       </A><BR>
+    <I>Thu Nov 15 10:27:53 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002941.html">[OpenIMSCore-Users] Implementing many HSSs
+</A></li>
+        <LI>Next message: <A HREF="002956.html">[OpenIMSCore-Users] Implementing many HSSs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2943">[ date ]</a>
+              <a href="thread.html#2943">[ thread ]</a>
+              <a href="subject.html#2943">[ subject ]</a>
+              <a href="author.html#2943">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Drago,
+
+Thanks a lot.
+
+I'm trying to test it but I get a error. I have two HSSs, one with metric 
+10 that is off and one with metric 20 that is on. Both are peers of the 
+I-CSCF &amp; S-CSCF. But I get the following error on the I-CSCF log when a 
+user tries to register:
+
+
+12(2817) --- Peer List: ---
+12(2817)  S[Closed] hss1.open-ims.test:3868 D[ ]
+12(2817)  S[I_Open] hss.open-ims.test:3868 D[ ]
+12(2817)         [16777216,10415]
+12(2817)         [16777216,4491]
+12(2817)         [16777216,13019]
+12(2817)         [16777217,10415]
+12(2817)         [16777221,10415]
+12(2817) ------------------
+ 3(2808) ERR:I-CSCF:cscf_get_private_identity: Message does not contain 
+Authorization header.
+ 3(2808) INF:I-CSCF:cscf_get_private_identity: Falling back to 
+private_id=stripped(public_id)
+-&gt; Message did not contain a valid Authorization Header!!! This fallback 
+is deprecated outside Early-IMS or NASS-Bundled!
+ 3(2808) ERROR:get_routing_peer(): No connected DefaultRoute peer found.
+ 3(2808) ERROR:AAASendRecvMessage(): Can't find a suitable connected peer 
+in the routing table.
+ 3(2808) ERR:I-CSCF:I_UAR: Error creating/sending UAR or UAR time-out
+
+
+And the XML file for I-CSCF is the following:
+
+
+
+have I missed anything?
+
+Thanks.
+Pedro.
+
+
+
+
+
+
+Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; 
+14/11/2007 20:32
+
+Para
+Pedro Antonio Vico Solano &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pvsolano at amper.es</A>&gt;
+cc
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Asunto
+Re: [OpenIMSCore-Users] Implementing many HSSs
+
+
+
+
+
+
+Hello Pedro,
+
+Here is some text from our workshop tomorrow here at FOKUS:
+
+
+&lt;Realm&gt;  defines routing for a specific realm
+    &lt;Route&gt; - defines a specific route point, with an attached metric
+
+&lt;DefaultRoute&gt; - defines a default route with an attached metric to be
+used in case a Realm-specific  route is not found or not available
+
+Message are routed based on, in order
+1. Presence of a Destination-Host AVP in the message
+2. Presence of a Destination-Realm AVP in the message
+2.1 If this realm is defined in the configuration, the shortest metric
+connected and suitable peer is selected
+2.2 If this realm is not defined or the previous point fails, a similar
+selection is performed on the default routes
+
+The selection is based on
+1. Connection status
+2. Advertised support for the Application ID for the message
+
+
+So, the idea is that if there is no destination-host or we are not
+connected to the destination-host, another peer is selected by looking
+first in the realm-specific section and if not found there, in the
+default-routes. The peers are ordered by metric and only selected if
+connected and supporting the required application.
+
+Hope this explains it.
+
+Cheers,
+-Dragos
+
+
+Pedro Antonio Vico Solano wrote:
+&gt;<i>
+</I>&gt;<i> Hello all,
+</I>&gt;<i>
+</I>&gt;<i> I was wondering about the functionality of 'Realm Routing' or many
+</I>&gt;<i> 'Default Routes' on I-CSCF &amp; S-CSCF XMLs. What is the difference
+</I>&gt;<i> between them?
+</I>&gt;<i>
+</I>&gt;<i> Can I do some of the following on a domain?:
+</I>&gt;<i>
+</I>&gt;<i> - Configure some users in a HSS and some others in another HSS and let
+</I>&gt;<i> the I-CSCF &amp; S-CSCF search for the correct one. [i.e. pseudo SLF
+</I>&gt;<i> function]
+</I>&gt;<i>
+</I>&gt;<i> - Configure the same users in two HSSs and give network relialibility
+</I>&gt;<i> when one of them fails. In this case, when a HSS fails, registration
+</I>&gt;<i> states are lost, aren't they?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Best regards
+</I>&gt;<i> Pedro
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> 
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071115/db08a099/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071115/db08a099/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: icscf.xml
+Type: application/octet-stream
+Size: 1192 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071115/db08a099/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071115/db08a099/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002941.html">[OpenIMSCore-Users] Implementing many HSSs
+</A></li>
+	<LI>Next message: <A HREF="002956.html">[OpenIMSCore-Users] Implementing many HSSs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2943">[ date ]</a>
+              <a href="thread.html#2943">[ thread ]</a>
+              <a href="subject.html#2943">[ subject ]</a>
+              <a href="author.html#2943">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

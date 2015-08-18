@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] AKA Authentication between OpenIMS and IMS	Communicator fails
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AKA%20Authentication%20between%20OpenIMS%20and%20IMS%0A%09Communicator%20fails&In-Reply-To=%3C15184ca00804040703j35ecce1gdaab2603a67b2a3e%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003760.html">
+   <LINK REL="Next"  HREF="003731.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] AKA Authentication between OpenIMS and IMS	Communicator fails</H1>
+    <B>Devdutt Patnaik</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AKA%20Authentication%20between%20OpenIMS%20and%20IMS%0A%09Communicator%20fails&In-Reply-To=%3C15184ca00804040703j35ecce1gdaab2603a67b2a3e%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] AKA Authentication between OpenIMS and IMS	Communicator fails">xendevid at gmail.com
+       </A><BR>
+    <I>Fri Apr  4 16:03:55 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003760.html">[OpenIMSCore-Users] Unable to start I-CSCF and S-CSCF on a G4 powerpc
+</A></li>
+        <LI>Next message: <A HREF="003731.html">[OpenIMSCore-Users] Editing open-ims.dnszone
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3729">[ date ]</a>
+              <a href="thread.html#3729">[ thread ]</a>
+              <a href="subject.html#3729">[ subject ]</a>
+              <a href="author.html#3729">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All,
+
+I have been trying to get IMS Communicator ( downloaded binaries for linux )
+to OpenIMS using AKAv1_MD5, but havent got it to work yet.
+
+The steps I followed were :
+
+1 &gt; Set the authentication type to AKAv1-MD5 in the scscf.cfg. Do I need to
+change anything in the hss.properties file ? Start the core.
+2 &gt; Change the HSS entries in the Web Console for this user to AKAv1-MD5.
+3 &gt; Set the IMS Communicator values to :
+
+&lt;ims&gt;
+                &lt;IMS_CLIENT value=&quot;true&quot;/&gt;
+                &lt;PRIVATE_ADDRESS value=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at ims.gtisc.gatech.edu</A>&quot;/&gt;
+                &lt;PREFERRED_ADDRESS value=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at ims.gtisc.gatech.edu</A>&quot;/&gt;
+                &lt;PREFERRED_DISPLAY_NAME value=&quot;bob&quot;/&gt;
+                &lt;ACCEPT_REFER_WITHOUT_SESSION_ON value=&quot;true&quot;/&gt;
+                &lt;REFER_TIMEOUT value=&quot;60000&quot;/&gt;
+                &lt;REG_EVENT_SUBSCRIPTION_TIMEOUT value=&quot;600000&quot;/&gt;
+                &lt;ACCESS_TYPE value=&quot;IEEE-802.11&quot;/&gt;
+                &lt;DEFAULT_LOCAL_PRECONDITION value=&quot;sendrecv&quot;/&gt;
+                &lt;VIDEO_BANDWIDTH value=&quot;75&quot;/&gt;
+                &lt;AUDIO_BANDWIDTH value=&quot;25&quot;/&gt;
+
+                &lt;!-- testing feature --&gt;
+                &lt;PCSCF_DYNAMIC_DISCOVERY value=&quot;false&quot;/&gt;
+
+                &lt;sec&gt;
+                    &lt;PRIVACY value=&quot;none&quot;/&gt;
+                    &lt;AUTH_ALGORITHM value=&quot;AKAv1_MD5&quot;/&gt;
+                    &lt;!-- operator ID : 16 bytes (32 hex char) --&gt;
+                    &lt;OPERATOR_ID value=&quot;00000000000000000000000000000000&quot;/&gt;
+                    &lt;!-- if SECURITY_AGREEMENT value is empty,
+Security-Client header is not sent and IPSec not setup --&gt;
+                    &lt;!--SECURITY_AGREEMENT value=&quot;ipsec-3gpp&quot;/--&gt;
+                    &lt;SECURITY_AGREEMENT value=&quot;&quot;/&gt;
+                    &lt;SECURITY_ALGORITHM value=&quot;hmac-sha-1-96&quot;/&gt;
+                    &lt;SECURITY_ENCRYPT_ALG value=&quot;&quot;/&gt;
+                    &lt;SECURITY_SPI_C value=&quot;10002&quot;/&gt;
+                    &lt;SECURITY_SPI_S value=&quot;10004&quot;/&gt;
+                    &lt;!-- if SECURITY_PORT_C empty, port-c parameter is
+filled with PREFERRED_LOCAL_PORT--&gt;
+                    &lt;SECURITY_PORT_C value=&quot;&quot;/&gt;
+                    &lt;SECURITY_PORT_S value=&quot;5064&quot;/&gt;
+
+                    &lt;REJECT_MALFORMED_NONCE value=&quot;false&quot;/&gt;
+                &lt;/sec&gt;
+            &lt;/ims&gt;
+
+ However the authentication fails. Are my steps correct or have I missed out
+any step ? Please let me know.
+
+Thanks,
+Devdutt.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080404/d92eb6a8/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080404/d92eb6a8/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003760.html">[OpenIMSCore-Users] Unable to start I-CSCF and S-CSCF on a G4 powerpc
+</A></li>
+	<LI>Next message: <A HREF="003731.html">[OpenIMSCore-Users] Editing open-ims.dnszone
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3729">[ date ]</a>
+              <a href="thread.html#3729">[ thread ]</a>
+              <a href="subject.html#3729">[ subject ]</a>
+              <a href="author.html#3729">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

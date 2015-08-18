@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] I-CSCF crashes at processing UAR
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20I-CSCF%20crashes%20at%20processing%20UAR&In-Reply-To=%3C50EFF3ABF0D84385BA3D371C490996F4%40FRANZNOTEBOOK%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006115.html">
+   <LINK REL="Next"  HREF="006117.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] I-CSCF crashes at processing UAR</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20I-CSCF%20crashes%20at%20processing%20UAR&In-Reply-To=%3C50EFF3ABF0D84385BA3D371C490996F4%40FRANZNOTEBOOK%3E"
+       TITLE="[OpenIMSCore-Users] I-CSCF crashes at processing UAR">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Sun Mar  7 07:47:45 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006115.html">[OpenIMSCore-Users] Add Timestamp to SIP messages
+</A></li>
+        <LI>Next message: <A HREF="006117.html">[OpenIMSCore-Users] I-CSCF crashes at processing UAR
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6116">[ date ]</a>
+              <a href="thread.html#6116">[ thread ]</a>
+              <a href="subject.html#6116">[ subject ]</a>
+              <a href="author.html#6116">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I have just made a fresh installation of OpenIMSCore (revision 921) and
+repeatedly found that I-CSCF crashes at processing UAR.
+
+Please find attached a tracefile (SIP and Diameter messages) and the I-CSCF
+log-file including a gdb backtrace at the bottom. Lines 82+83 in the logfile
+shows the tracepoint where the REGISTER messages are received.
+
+The backtrace at the bottom of the log-file shows:
+
+(gdb) bt
+#0  0xb7b42612 in <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">sem_post at GLIBC_2.0</A> () from /lib/i686/cmov/libpthread.so.0
+#1  0xb78ccd07 in worker_poison_queue () at worker.c:365
+#2  0xb78b8e58 in diameter_peer_destroy () at diameter_peer.c:500
+#3  0xb78bada6 in cdp_exit () at mod.c:226
+#4  0x080b1055 in destroy_modules () at sr_module.c:392
+#5  0x08078d52 in cleanup (show_status=1) at main.c:439
+#6  0x08079503 in shutdown_children (sig=&lt;value optimized out&gt;,
+show_status=1) at main.c:561
+#7  0x08079e7e in handle_sigs () at main.c:634
+#8  0x0807a2ce in main_loop () at main.c:1110
+#9  0x0807c29d in main (argc=Cannot access memory at address 0x4) at
+main.c:1614
+
+Any ideas?
+
+Best regards
+Franz
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: I-CSCF-crash.zip
+Type: application/x-zip-compressed
+Size: 13339 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100307/7bef5c06/attachment.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100307/7bef5c06/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006115.html">[OpenIMSCore-Users] Add Timestamp to SIP messages
+</A></li>
+	<LI>Next message: <A HREF="006117.html">[OpenIMSCore-Users] I-CSCF crashes at processing UAR
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6116">[ date ]</a>
+              <a href="thread.html#6116">[ thread ]</a>
+              <a href="subject.html#6116">[ subject ]</a>
+              <a href="author.html#6116">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

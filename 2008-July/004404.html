@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] SER Compile problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SER%20Compile%20problems&In-Reply-To=%3C489050B4.4030200%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004402.html">
+   <LINK REL="Next"  HREF="004405.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] SER Compile problems</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SER%20Compile%20problems&In-Reply-To=%3C489050B4.4030200%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] SER Compile problems">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Jul 30 13:29:56 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004402.html">[OpenIMSCore-Users] SER Compile problems
+</A></li>
+        <LI>Next message: <A HREF="004405.html">[OpenIMSCore-Users] SER Compile problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4404">[ date ]</a>
+              <a href="thread.html#4404">[ thread ]</a>
+              <a href="subject.html#4404">[ subject ]</a>
+              <a href="author.html#4404">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hmm... actually this issue has already been solved since r574, with 
+hopefully a more general patch. Please see: 
+<A HREF="http://svn.berlios.de/viewcvs/openimscore/ser_ims/trunk/modules/cdp/peerstatemachine.c?rev=574&amp;view=diff&amp;r1=574&amp;r2=573">http://svn.berlios.de/viewcvs/openimscore/ser_ims/trunk/modules/cdp/peerstatemachine.c?rev=574&amp;view=diff&amp;r1=574&amp;r2=573</A>
+
+Cheers,
+-Dragos
+
+Naveen Kumashi wrote:
+&gt;<i> Hi patrick.
+</I>&gt;<i>
+</I>&gt;<i> I had faced the same problem too...
+</I>&gt;<i>
+</I>&gt;<i> Change the line 552 and 923 with the following line -
+</I>&gt;<i>
+</I>&gt;<i> memcpy(x+2,addr.sin6_addr.__in6_u.__u6_addr8,16);
+</I>&gt;<i>
+</I>&gt;<i> This should solve your problem.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Naveen.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Wed, Jul 30, 2008 at 2:49 PM, Patrick Vetsch 
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Patrick.Vetsch at telecom.co.nz</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Patrick.Vetsch at telecom.co.nz</A>&gt;&gt; 
+</I>&gt;<i> wrote:
+</I>&gt;<i>
+</I>&gt;<i>     Hi All
+</I>&gt;<i>
+</I>&gt;<i>     Im running into problems with compiling SER  - ive checked all
+</I>&gt;<i>     dependancies, and im sure ive got them all,
+</I>&gt;<i>
+</I>&gt;<i>     When i got to run
+</I>&gt;<i>     [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at localhost</A> ser_ims]# make install-libs all
+</I>&gt;<i>
+</I>&gt;<i>     i get the following errors,
+</I>&gt;<i>
+</I>&gt;<i>     [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at localhost</A> ser_ims]# make install-libs all
+</I>&gt;<i>     make -C lib -f Makefile.ser install
+</I>&gt;<i>     make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/lib'
+</I>&gt;<i>     Making install in binrpc
+</I>&gt;<i>     make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/binrpc'
+</I>&gt;<i>     touch           /usr/local/lib/ser/libbinrpc.so
+</I>&gt;<i>     install  -m 755 libbinrpc.so /usr/local/lib/ser
+</I>&gt;<i>     make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/binrpc'
+</I>&gt;<i>     Making install in cds
+</I>&gt;<i>     make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/cds'
+</I>&gt;<i>     touch           /usr/local/lib/ser/lib_ser_cds.so
+</I>&gt;<i>     install  -m 755 lib_ser_cds.so /usr/local/lib/ser
+</I>&gt;<i>     make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/cds'
+</I>&gt;<i>     Making install in xcap
+</I>&gt;<i>     make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/xcap'
+</I>&gt;<i>     touch           /usr/local/lib/ser/lib_ser_xcap.so
+</I>&gt;<i>     install  -m 755 lib_ser_xcap.so /usr/local/lib/ser
+</I>&gt;<i>     make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/xcap'
+</I>&gt;<i>     Making install in presence
+</I>&gt;<i>     make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/presence'
+</I>&gt;<i>     touch           /usr/local/lib/ser/lib_ser_presence.so
+</I>&gt;<i>     install  -m 755 lib_ser_presence.so /usr/local/lib/ser
+</I>&gt;<i>     make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/presence'
+</I>&gt;<i>     make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib'
+</I>&gt;<i>     make -C lib -f Makefile.ser
+</I>&gt;<i>     make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/lib'
+</I>&gt;<i>     Making  in binrpc
+</I>&gt;<i>     make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/binrpc'
+</I>&gt;<i>     make[2]: `libbinrpc.so' is up to date.
+</I>&gt;<i>     make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/binrpc'
+</I>&gt;<i>     Making  in cds
+</I>&gt;<i>     make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/cds'
+</I>&gt;<i>     make[2]: `lib_ser_cds.so' is up to date.
+</I>&gt;<i>     make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/cds'
+</I>&gt;<i>     Making  in xcap
+</I>&gt;<i>     make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/xcap'
+</I>&gt;<i>     make[2]: `lib_ser_xcap.so' is up to date.
+</I>&gt;<i>     make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/xcap'
+</I>&gt;<i>     Making  in presence
+</I>&gt;<i>     make[2]: Entering directory `/opt/OpenIMSCore/ser_ims/lib/presence'
+</I>&gt;<i>     make[2]: `lib_ser_presence.so' is up to date.
+</I>&gt;<i>     make[2]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib/presence'
+</I>&gt;<i>     make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/lib'
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/acc_db'
+</I>&gt;<i>     make[1]: `acc_db.so' is up to date.
+</I>&gt;<i>     make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/acc_db'
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     make[1]: Entering directory
+</I>&gt;<i>     `/opt/OpenIMSCore/ser_ims/modules/acc_syslog'
+</I>&gt;<i>     make[1]: `acc_syslog.so' is up to date.
+</I>&gt;<i>     make[1]: Leaving directory
+</I>&gt;<i>     `/opt/OpenIMSCore/ser_ims/modules/acc_syslog'
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/auth'
+</I>&gt;<i>     make[1]: `auth.so' is up to date.
+</I>&gt;<i>     make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/auth'
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/auth_db'
+</I>&gt;<i>     make[1]: `auth_db.so' is up to date.
+</I>&gt;<i>     make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/auth_db'
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/avp'
+</I>&gt;<i>     make[1]: `avp.so' is up to date.
+</I>&gt;<i>     make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/avp'
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/avp_db'
+</I>&gt;<i>     make[1]: `avp_db.so' is up to date.
+</I>&gt;<i>     make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/avp_db'
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/avpops'
+</I>&gt;<i>     make[1]: `avpops.so' is up to date.
+</I>&gt;<i>     make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/avpops'
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     make[1]: Entering directory `/opt/OpenIMSCore/ser_ims/modules/cdp'
+</I>&gt;<i>     gcc -fPIC -DPIC -g -O9 -funroll-loops -Wcast-align
+</I>&gt;<i>     -minline-all-stringops -falign-loops -ftree-vectorize
+</I>&gt;<i>     -mtune=athlon64 -Wall     -DNAME='&quot;ser&quot;' -DVERSION='&quot;2.1.0-dev1
+</I>&gt;<i>     OpenIMSCore&quot;' -DARCH='&quot;i386&quot;' -DOS='linux_' -DOS_QUOTED='&quot;linux&quot;'
+</I>&gt;<i>     -DCOMPILER='&quot;gcc 4.3.0&quot;' -D__CPU_i386 -D__OS_linux
+</I>&gt;<i>     -DSER_VER=2001000 -DCFG_DIR='&quot;/usr/local/etc/ser/&quot;' -DPKG_MALLOC
+</I>&gt;<i>     -DSHM_MEM  -DSHM_MMAP -DDNS_IP_HACK -DUSE_IPV6 -DUSE_MCAST
+</I>&gt;<i>     -DUSE_TCP -DDISABLE_NAGLE -DHAVE_RESOLV_RES -DDBG_QM_MALLOC
+</I>&gt;<i>     -DUSE_DNS_CACHE -DUSE_DNS_FAILOVER -DUSE_DST_BLACKLIST -ggdb
+</I>&gt;<i>      -DUSE_TLS -DTLS_HOOKS -DFAST_LOCK -DADAPTIVE_WAIT
+</I>&gt;<i>     -DADAPTIVE_WAIT_LOOPS=1024  -DCC_GCC_LIKE_ASM
+</I>&gt;<i>     -DHAVE_GETHOSTBYNAME2 -DHAVE_UNION_SEMUN -DHAVE_SCHED_YIELD
+</I>&gt;<i>     -DHAVE_MSG_NOSIGNAL -DHAVE_MSGHDR_MSG_CONTROL -DHAVE_ALLOCA_H
+</I>&gt;<i>     -DHAVE_TIMEGM -DHAVE_EPOLL -DHAVE_SIGIO_RT -DSIGINFO64_WORKARROUND
+</I>&gt;<i>     -DHAVE_SELECT -I/usr/include/libxml2 -DCDP_FOR_SER -c
+</I>&gt;<i>     peerstatemachine.c -o peerstatemachine.o
+</I>&gt;<i>     peerstatemachine.c: In function 'I_Snd_CER':
+</I>&gt;<i>     peerstatemachine.c:552: error: 'struct in6_addr' has no member
+</I>&gt;<i>     named 'in6_u'
+</I>&gt;<i>     peerstatemachine.c: In function 'Snd_CEA':
+</I>&gt;<i>     peerstatemachine.c:923: error: 'struct in6_addr' has no member
+</I>&gt;<i>     named 'in6_u'
+</I>&gt;<i>     make[1]: *** [peerstatemachine.o] Error 1
+</I>&gt;<i>     make[1]: Leaving directory `/opt/OpenIMSCore/ser_ims/modules/cdp'
+</I>&gt;<i>     make: *** [modules] Error 1
+</I>&gt;<i>     [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at localhost</A> ser_ims]# cd ../
+</I>&gt;<i>     [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at localhost</A> OpenIMSCore]# ls -lart
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     The only thought i had was that perhaps i cant compile this as root?
+</I>&gt;<i>
+</I>&gt;<i>     Any ideas much appreciated - this is about the 4 night ive been
+</I>&gt;<i>     working on this!!
+</I>&gt;<i>
+</I>&gt;<i>     Thanks
+</I>&gt;<i>
+</I>&gt;<i>     Patrick Vetsch
+</I>&gt;<i>
+</I>&gt;<i>     Alcatel - Lucent NZ
+</I>&gt;<i>
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">patrick.vetsch at telecom.co.nz</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">patrick.vetsch at telecom.co.nz</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i>     _______________________________________________
+</I>&gt;<i>     OpenIMSCore-Users mailing list
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004402.html">[OpenIMSCore-Users] SER Compile problems
+</A></li>
+	<LI>Next message: <A HREF="004405.html">[OpenIMSCore-Users] SER Compile problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4404">[ date ]</a>
+              <a href="thread.html#4404">[ thread ]</a>
+              <a href="subject.html#4404">[ subject ]</a>
+              <a href="author.html#4404">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

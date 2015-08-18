@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem with registration using USIM
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20registration%20using%20USIM&In-Reply-To=%3C4669024F.3000205%40sitronicsts.sk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001934.html">
+   <LINK REL="Next"  HREF="001937.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem with registration using USIM</H1>
+    <B>Andrej Vrabel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20registration%20using%20USIM&In-Reply-To=%3C4669024F.3000205%40sitronicsts.sk%3E"
+       TITLE="[OpenIMSCore-Users] Problem with registration using USIM">Andrej.Vrabel at sitronicsts.sk
+       </A><BR>
+    <I>Fri Jun  8 09:16:31 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001934.html">[OpenIMSCore-Users] how to do barred public user identity?
+</A></li>
+        <LI>Next message: <A HREF="001937.html">[OpenIMSCore-Users] Problem with registration using USIM
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1935">[ date ]</a>
+              <a href="thread.html#1935">[ thread ]</a>
+              <a href="subject.html#1935">[ subject ]</a>
+              <a href="author.html#1935">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+we are trying to register IMS UE using USIM application. From IMSI
+resided in USIM application we generate public, private identity and
+home network domain URI according to 3GPP TS 23.003. So our public
+identity is
+&quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">230989900000104 at ims.mnc098.mcc230.IMSI.3gppnetwork.org</A>&quot;, and
+private identity is
+&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">230989900000104 at ims.mnc098.mcc230.IMSI.3gppnetwork.org</A>&quot; and home
+network domain URI is &quot;sip:ims.mnc098.mcc230.IMSI.3gppnetwok.org&quot;. We
+are using the newest version of OIMS core.
+our configuration - the ip address of
+P-cscf is 10.0.1.11
+S-cscf is 10.0.1.13
+I-cscf is 10.0.1.12
+we are using our HSS and the ip is 10.0.1.14
+The realm of our  network is ims.sitronicsts.sk.
+
+   DNS for IMSI.3gppnetwork.org is set like this:
+
+$ORIGIN IMSI.3gppnetwork.org.
+$TTL 1W
+@                       1D IN SOA       localhost. root.localhost. (
+                                       2006101001      ; serial
+                                       3H              ; refresh
+                                       15M             ; retry
+                                       1W              ; expiry
+                                       1D )            ; minimum
+
+                       1D IN NS        ns
+ns                      1D IN A         192.168.200.66
+
+pcscf                   1D IN A         10.0.1.11
+icscf                   1D IN A         10.0.1.12
+IMSI.3gppnetwork.org.     1D IN A         10.0.1.12
+
+_sip                    1D SRV 0 0 5060 icscf
+_sip._udp               1D SRV 0 0 5060 icscf
+_sip._tcp               1D SRV 0 0 5060 icscf
+
+IMSI.3gppnetwork.org.    1D IN NAPTR 10 50 &quot;s&quot; &quot;SIP+D2U&quot;    &quot;&quot;
+_sip._udp.IMSI.3gppnetwork.org.
+IMSI.3gppnetwork.org.    1D IN NAPTR 20 50 &quot;s&quot; &quot;SIP+D2T&quot;    &quot;&quot;
+_sip._tcp.IMSI.3gppnetwork.org.
+
+ims.mnc098.mcc230                   1D IN A        10.0.1.12
+
+ue                      1D IN A         127.0.0.1
+
+presence        1D IN A            127.0.0.1
+
+---------------------------------------------------------------------------------------------------------------------------------------------------- 
+
+
+
+   On our HSS, the realm is set to ims.sitronicsts.sk. But the i-cscf
+sends by registration of our temporary Private User Identity the
+diameter message (UAR command) to realm (Destination-Realm AVP)
+ims.mnc098.mcc230.IMSI.3gppnetwok.org so the diameter message fails to
+deliver.
+We are sending you a log file from OIMS core see attachment.
+
+   We would like to ask you if the OIMS core shouldnt have changed the
+realm ims.mnc098.mcc230.IMSI.3gppnetwok.org to ims.sitronicsts.sk
+because our primary realm in HSS is set to ims.sitronicsts.sk. And we
+are not sure which part of the OIMS core is responsible for this. The
+configuration files for cscf entities are also attached.
+Stefan
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: cscf_cfg.rar
+Type: application/octet-stream
+Size: 8890 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070608/8595bb36/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070608/8595bb36/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: USIM_REGISTRATION.pcap
+Type: application/octet-stream
+Size: 6131 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070608/8595bb36/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070608/8595bb36/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001934.html">[OpenIMSCore-Users] how to do barred public user identity?
+</A></li>
+	<LI>Next message: <A HREF="001937.html">[OpenIMSCore-Users] Problem with registration using USIM
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1935">[ date ]</a>
+              <a href="thread.html#1935">[ thread ]</a>
+              <a href="subject.html#1935">[ subject ]</a>
+              <a href="author.html#1935">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

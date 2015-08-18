@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Application Server as B2BUA
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Application%20Server%20as%20B2BUA&In-Reply-To=%3C45A3BD41.7050009%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000450.html">
+   <LINK REL="Next"  HREF="000454.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Application Server as B2BUA</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Application%20Server%20as%20B2BUA&In-Reply-To=%3C45A3BD41.7050009%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Application Server as B2BUA">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Jan  9 17:05:21 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000450.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+        <LI>Next message: <A HREF="000454.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#451">[ date ]</a>
+              <a href="thread.html#451">[ thread ]</a>
+              <a href="subject.html#451">[ subject ]</a>
+              <a href="author.html#451">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Arnold,
+
+Yes, this functionality was used and it works.
+
+However, if you get a 403, you get it from the P-CSCF. Then I might ask:
+How come the AS contacts the P-CSCF directly?
+
+If your AS does origination you should use the Route that you have seen
+in a 3rd party REGISTER in the Service-Route field:
+AS-&gt;S_orig-&gt;I_term-&gt;S_term-&gt;P_term-&gt;UE_term
+
+If your AS does termination, just use the normal DNS. You will end-up in
+the I-CSCF: AS-&gt;I_term-&gt;S_term-&gt;P_term-&gt;UE_term
+
+As you can see, in neither case the AS should send a message to a P-CSCF
+directly.
+
+
+-Dragos
+
+Arnold Schwarz wrote:
+&gt;<i> Has anyone tested the OSIMS with an Application Server, which works as a 
+</I>&gt;<i> Back-to-Back User Agent? And also succeeded with the tests?
+</I>&gt;<i>
+</I>&gt;<i> At the moment my messages go:  UE1 --&gt; core --&gt; AS
+</I>&gt;<i>
+</I>&gt;<i> But when the AS tries to create a new session and send a message via: AS --&gt; 
+</I>&gt;<i> core --&gt; UE2
+</I>&gt;<i>
+</I>&gt;<i> I get &quot;Status: 403 Forbidden - Not Registered! You must register first with 
+</I>&gt;<i> a S-CSCF.
+</I>&gt;<i>
+</I>&gt;<i> Should the AS be registered like the &quot;normal UE&quot;s? Or is that kind of 
+</I>&gt;<i> functionality not supported? Or where should I add the information, that it 
+</I>&gt;<i> is ok that the AS acts as the originator?
+</I>&gt;<i>
+</I>&gt;<i> _________________________________________________________________
+</I>&gt;<i> Communicate instantly! Use your Hotmail address to sign into Windows Live 
+</I>&gt;<i> Messenger now. <A HREF="http://get.live.com/messenger/overview">http://get.live.com/messenger/overview</A>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000450.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+	<LI>Next message: <A HREF="000454.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#451">[ date ]</a>
+              <a href="thread.html#451">[ thread ]</a>
+              <a href="subject.html#451">[ subject ]</a>
+              <a href="author.html#451">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registeration over IPSec fails
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registeration%20over%20IPSec%20fails&In-Reply-To=%3C20070907151949.56C1B69980%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002578.html">
+   <LINK REL="Next"  HREF="002612.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registeration over IPSec fails</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registeration%20over%20IPSec%20fails&In-Reply-To=%3C20070907151949.56C1B69980%40mail.berlios.de%3E"
+       TITLE="[OpenIMSCore-Users] Registeration over IPSec fails">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Fri Sep  7 17:18:42 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002578.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+        <LI>Next message: <A HREF="002612.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2577">[ date ]</a>
+              <a href="thread.html#2577">[ thread ]</a>
+              <a href="subject.html#2577">[ subject ]</a>
+              <a href="author.html#2577">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Divya,
+
+ 
+
+if you use automatic keying, how do you (as UE) verify that the p-cscf is
+really the p-cscf of your service provider and not a MITM?
+
+ 
+
+Br, Klemens
+
+ 
+
+  _____  
+
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Divya Singh
+Sent: Freitag, 07. September 2007 16:03
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+Subject: Re: [OpenIMSCore-Users] Registeration over IPSec fails
+
+ 
+
+
+I am using automatic keying for ipsec and did not add any SA's manually. I
+defined only the security policies. 
+I observed that the windows and linux m/c exchange ISAKMP packets on the
+defaulted port (500). 
+This establishes SA between the 2 m/cs. Thus Register msg is not the first
+msg exchanged between them 
+and thus is sent as an ESP packet. Once the security handshake is done over
+SIP using the 1st register and the 401 
+new SAs are created. 
+Unfortunately the call logs I last shared do not have it captured. I am
+sending the registration logs again. 
+This should make things more clear. 
+
+Jamal, 
+ if you look at the logs that i sent to the group when ipsec was not working
+and all msgs were exchanged in 
+plain text... u will observe that the 
+UE does send the 1st Register msg with a security-client header 
+P-CSCF inserting a security-server header in 401 
+the 2nd Register msg with security-verify header ( constructed from the
+security-server header of 401). 
+
+(24.229)The P-CSCF shall remove and store the Security-Client header before
+forwarding the request to the S-CSCF; 
+Due to which the security headers cannot be seen in the logs. 
+
+  
+
+
+
+
+
+
+Jamal Hadi Salim &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">hadi at znyx.com</A>&gt; 
+
+09/07/2007 06:01 PM 
+
+
+Please respond to
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">hadi at znyx.com</A>
+
+
+To
+
+Divya Singh/<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">HSS at HSS</A> 
+
+
+cc
+
+Purna Chandar M &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">cmongusagusa at gmail.com</A>&gt;, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+
+
+
+Subject
+
+Re: [OpenIMSCore-Users] Registeration over IPSec fails
+
+ 
+
+
+ 
+
+ 
+
+
+
+
+On Fri, 2007-07-09 at 13:17 +0530, Divya Singh wrote:
+&gt;<i> 
+</I>&gt;<i> I also read the same ( and expected the 2nd register to start using
+</I>&gt;<i> ipsec). But I observed differently and brought it up.  
+</I>&gt;<i> I used IMS communicator as UE on windows. It provides the option of
+</I>&gt;<i> filling in the security params including spi-c &amp; spi-s. 
+</I>&gt;<i> Would be great if you can throw some more light on how to look for
+</I>&gt;<i> SA's on windows and should be set in UE config. 
+</I>&gt;<i> 
+</I>&gt;<i> I tried registering 2 UEs and established call between them. Attached
+</I>&gt;<i> are the requested logs.  
+</I>&gt;<i> IMS core is running on 138 and UE on 132. 
+</I>&gt;<i> 
+</I>Hi Divya,
+Looking at your pcap traces, it does not seem possible that the tunnel
+was created by SIP; the setup on the PCSCF side appears to have the
+correct SA/SP values - so somehow the IPSEC scripts got run there. Did
+you do that manually?
+&gt;<i>From the UE side, it seems the tunnel was created by hand first then a
+</I>session was run across? The SIP messages are visible in clear text and
+neither does any side advertise their ipsec properties via sip
+security-* headers.
+Lastly: I dont think that the UE client you used is capable of IPSEC;
+you said it can take ipsec parameters - it just doesnt seem to use them
+on SIP.
+
+cheers,
+jamal
+
+
+
+
+
+
+***********************  Aricent-Unclassified   *********************** 
+
+
+&quot;DISCLAIMER: This message is proprietary to Aricent  and is intended solely
+for the use of 
+the individual to whom it is addressed. It may contain privileged or
+confidential information and should not be 
+circulated or used for any purpose other than for what it is intended. If
+you have received this message in error, 
+please notify the originator immediately. If you are not the intended
+recipient, you are notified that you are strictly
+prohibited from using, copying, altering, or disclosing the contents of this
+message. Aricent accepts no responsibility for 
+loss or damage arising from the use of the information transmitted by this
+email including damage from virus.&quot;
+
+ 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070907/b1958944/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070907/b1958944/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002578.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+	<LI>Next message: <A HREF="002612.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2577">[ date ]</a>
+              <a href="thread.html#2577">[ thread ]</a>
+              <a href="subject.html#2577">[ subject ]</a>
+              <a href="author.html#2577">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

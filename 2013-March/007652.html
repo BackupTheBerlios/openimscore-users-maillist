@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Fwd: Open-IMS 403 Forbidden (Not Registered &#8211; You Must First Register with SCSCF) Problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2013-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%3D%3Fwindows-1252%3Fq%3FFwd%3D3A_Open-IMS_403_Forbidde%3F%3D%0A%09%3D%3Fwindows-1252%3Fq%3Fn_%3D28Not_Registered_%3D96_You_Must_First_Register_w%3F%3D%0A%09%3D%3Fwindows-1252%3Fq%3Fith_SCSCF%3D29_Problem%3F%3D&In-Reply-To=%3CCA%2BrtSmhe3sjG6dDE4SvzPPkcVNp76_d9-aUMK4rK%2BhmxyKvmDA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007651.html">
+   <LINK REL="Next"  HREF="007653.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Fwd: Open-IMS 403 Forbidden (Not Registered &#8211; You Must First Register with SCSCF) Problem</H1>
+    <B>CHD ISS</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%3D%3Fwindows-1252%3Fq%3FFwd%3D3A_Open-IMS_403_Forbidde%3F%3D%0A%09%3D%3Fwindows-1252%3Fq%3Fn_%3D28Not_Registered_%3D96_You_Must_First_Register_w%3F%3D%0A%09%3D%3Fwindows-1252%3Fq%3Fith_SCSCF%3D29_Problem%3F%3D&In-Reply-To=%3CCA%2BrtSmhe3sjG6dDE4SvzPPkcVNp76_d9-aUMK4rK%2BhmxyKvmDA%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Fwd: Open-IMS 403 Forbidden (Not Registered &#8211; You Must First Register with SCSCF) Problem">chdiss123 at gmail.com
+       </A><BR>
+    <I>Thu Mar  7 07:55:55 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007651.html">[OpenIMSCore-Users] Integration Pcscf.qos and PCRF problem
+</A></li>
+        <LI>Next message: <A HREF="007653.html">[OpenIMSCore-Users] iptv plus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7652">[ date ]</a>
+              <a href="thread.html#7652">[ thread ]</a>
+              <a href="subject.html#7652">[ subject ]</a>
+              <a href="author.html#7652">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>*Hi All, *
+
+*Could you please help in solving following Issue:*
+
+*Device ----------------------  OpenIMS*
+
+*           --------------------**&#224; REGISTER*
+
+*          **&#223;-------------------- 401 Unauthorized &#8211; Challenging the UE*
+
+*           --------------------**&#224; REGISTER  (REGISTER Request. **Contact
+Header IP:Port(**5060)*
+
+*          **&#223;-------------------- 200OK                            *
+
+*           --------------------**&#224; SUBSCRIBE (Top-Via Header SentBy
+IP:Port(Actual TCP PortNum)*
+
+*          **&#223;-------------------- 403 Forbidden (Not Registered &#8211; You Must
+First Register with SCSCF)*
+
+* *
+
+*My Observation:*
+
+*When Register comes OpenIMS stores the information in Contact Header of
+REGISTER Request. (IP:5060)*
+
+*When SUBSCRIBE comes it checks Top-Via Header to retrieve SentBy
+IP:Port(Actual TCP PortNum (14162)) and checks whether this is registered.*
+
+*Since it does not match 403 Forbidden is returned by Open-Ims Server. *
+
+*Code Reference:*
+
+Step1: P_is_registered ()*
+*
+
+*Step2:*     vb =
+cscf_get_ue_via&lt;<A HREF="http://www.openimscore.org/docs/ser_ims/icscf_2sip_8c.html#9171087d9f08af56d335d6814858741e">http://www.openimscore.org/docs/ser_ims/icscf_2sip_8c.html#9171087d9f08af56d335d6814858741e</A>&gt;
+(msg);
+
+if (msg-&gt;first_line.type==SIP_REQUEST) vb = cscf_get_first_via
+&lt;<A HREF="http://www.openimscore.org/docs/ser_ims/icscf_2sip_8c.html#fca36a52e87adb4ff624260e1629db68">http://www.openimscore.org/docs/ser_ims/icscf_2sip_8c.html#fca36a52e87adb4ff624260e1629db68</A>&gt;(msg,0);02200
+    else vb = cscf_get_last_via
+&lt;<A HREF="http://www.openimscore.org/docs/ser_ims/icscf_2sip_8c.html#f6f4d5b9198bd2188e17a309ddf23bb5">http://www.openimscore.org/docs/ser_ims/icscf_2sip_8c.html#f6f4d5b9198bd2188e17a309ddf23bb5</A>&gt;(msg);
+
+*Step3: *if (r_is_registered&lt;<A HREF="http://www.openimscore.org/docs/ser_ims/pcscf_2registrar_8c.html#688534a6d4e64319d6e1b01ed71856a1">http://www.openimscore.org/docs/ser_ims/pcscf_2registrar_8c.html#688534a6d4e64319d6e1b01ed71856a1</A>&gt;
+(vb-&gt;host,vb-&gt;port,vb-&gt;proto)
+
+*Step4:*      c =
+get_r_contact&lt;<A HREF="http://www.openimscore.org/docs/ser_ims/pcscf_2registrar__storage_8c.html#c3a1b6a2d85098a91a3f2c927c638b9e">http://www.openimscore.org/docs/ser_ims/pcscf_2registrar__storage_8c.html#c3a1b6a2d85098a91a3f2c927c638b9e</A>&gt;
+(host,port,transport);
+
+            if (r_reg_contact&lt;<A HREF="http://www.openimscore.org/docs/ser_ims/pcscf_2registrar__storage_8c.html#d9fc3f061d99ff29f64d53d87609ae65">http://www.openimscore.org/docs/ser_ims/pcscf_2registrar__storage_8c.html#d9fc3f061d99ff29f64d53d87609ae65</A>&gt;
+(c)){ret = 1;}
+
+*Is this understanding Correct? Why OpenIMS is comparing with Top-Via
+Header Sent-By Information? *
+
+*How to solve this Issue?*
+
+*
+*
+
+*Thanks and Regards*
+
+CHDISS
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130307/c1ca4769/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130307/c1ca4769/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007651.html">[OpenIMSCore-Users] Integration Pcscf.qos and PCRF problem
+</A></li>
+	<LI>Next message: <A HREF="007653.html">[OpenIMSCore-Users] iptv plus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7652">[ date ]</a>
+              <a href="thread.html#7652">[ thread ]</a>
+              <a href="subject.html#7652">[ subject ]</a>
+              <a href="author.html#7652">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

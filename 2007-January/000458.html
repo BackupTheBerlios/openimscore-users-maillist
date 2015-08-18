@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Application Server as B2BUA
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Application%20Server%20as%20B2BUA&In-Reply-To=%3C45A4EE65.9030809%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000456.html">
+   <LINK REL="Next"  HREF="000468.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Application Server as B2BUA</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Application%20Server%20as%20B2BUA&In-Reply-To=%3C45A4EE65.9030809%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Application Server as B2BUA">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Jan 10 14:47:17 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000456.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+        <LI>Next message: <A HREF="000468.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#458">[ date ]</a>
+              <a href="thread.html#458">[ thread ]</a>
+              <a href="subject.html#458">[ subject ]</a>
+              <a href="author.html#458">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ah, I thought that was the full path of the request... now I see - the
+S-CSCF and AS were the same and the 2nd half was the answer. Well, as
+99% of today's proxies are statefull I always assume that the response
+will follow the same path back and I don't draw all of it.
+
+So you have some kind of a b2b-ua? or? And the issue is that the P-CSCF
+in the 2nd flow below answer and does not fwd. I think that a network
+dump would help the most. Clearly there is something that upsets the
+P-CSCF and makes it think that you are an UE attacking somehow.
+
+but your usage case is very strange. It's neither origination nor
+termination. Is the request the same, just modified (AS working as a
+proxy)? Look below for the 2 cases that I have explained - origination
+and termination - and choose one.
+
+The P-CSCF identifies the message by the presence of a Route header
+containing the Path value saved at registration. That should be filled
+by the S-CSCF and the AS is not concerned, so there must be something
+wrong in your messages. Practically speaking the P-CSCF does not
+recognize the message as being in terminating mode neither does it
+accept the S-CSCF to do origination as the S-CSCF did not and does not
+register through it to another S-CSCF (my mind blows up now;-) ).
+
+And don't worry, I think that this is the right forum to ask these
+questions. I think that a detailed explanation and a network dump would
+help resolve this issues quicker and better. Please explain better what
+are you trying to do - message flows, triggers, routing headers, etc so
+that we could help you further.
+
+-Dragos
+
+Arnold Schwarz wrote:
+&gt;<i> The reason there wasn't any UEs mentioned was the fact the messages never 
+</I>&gt;<i> got that far... :D
+</I>&gt;<i>
+</I>&gt;<i> But the scenario in theory would be, that there is a session 1 with the 
+</I>&gt;<i> following signaling:
+</I>&gt;<i>
+</I>&gt;<i> UE1 -&gt; PCSCF -&gt; SCSCF -&gt; AS
+</I>&gt;<i>
+</I>&gt;<i> which triggers the AS to make the session 2
+</I>&gt;<i>
+</I>&gt;<i> AS -&gt; SCSCF -&gt; PCSCF -&gt; UE2
+</I>&gt;<i>
+</I>&gt;<i> and now the latter one from those sessions fails and goes like I wrote in 
+</I>&gt;<i> the previous message:
+</I>&gt;<i>
+</I>&gt;<i> AS -&gt; SCSCF -&gt; PCSCF -&gt; SCSCF -&gt; AS
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> So could someone maybe provide me the basic difference between a message 
+</I>&gt;<i> (for instance a SIP MESSAGE) sent from a UE to a UE or from an AS to a UE. 
+</I>&gt;<i> How is the PCSCF suppose to know the difference, or does it have to? Is 
+</I>&gt;<i> there some field in the message, which should/shouldn't be present? Or why 
+</I>&gt;<i> does it in my case want to check if the registration to a SCSCF is done or 
+</I>&gt;<i> not.
+</I>&gt;<i>
+</I>&gt;<i> I know, this is more about IMS itself than the OpenSourceCore, but is there 
+</I>&gt;<i> a better forum somewhere to ask questions like this?
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i>
+</I>&gt;<i> Arnold
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;<i> To: Arnold Schwarz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">scharn333 at hotmail.com</A>&gt;
+</I>&gt;&gt;<i> CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Application Server as B2BUA
+</I>&gt;&gt;<i> Date: Wed, 10 Jan 2007 14:04:41 +0100
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi Arnold,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The message flow that your are giving is quite odd. The P-CSCF is
+</I>&gt;&gt;<i> usually involved only when talking with a UE as that is its function in
+</I>&gt;&gt;<i> IMS. If you would detail a little bit more your scenario and provide
+</I>&gt;&gt;<i> some signaling flows, maybe we could understand better what you are
+</I>&gt;&gt;<i> actually trying to do.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regarding the AS trusting. Well, it's up to the service provider to
+</I>&gt;&gt;<i> create the policy. You have SER's script available to any kind of
+</I>&gt;&gt;<i> modifications like this one. You can from there create and enforce your
+</I>&gt;&gt;<i> own policy.In our examples, the core is pretty insecure and accepting
+</I>&gt;&gt;<i> all kinds of traffic, including any AS.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In a normal flow, from the P-CSCF the message should go towards the
+</I>&gt;&gt;<i> client if it comes from a non-client node and it is not targeted to the
+</I>&gt;&gt;<i> P-CSCF itself. However, I think that you missed something,
+</I>&gt;&gt;<i> architecturally speaking. The P-CSCF behaves as it should and refuses
+</I>&gt;&gt;<i> messages that it does not recognize as coming from trusted UEs or as
+</I>&gt;&gt;<i> part of established registrations, towards the UEs.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Also, you are talking about AS and UE, but I don't see any UE in your flow.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Arnold Schwarz wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> As I see it, the AS does not contact the P-CSCF directly, but it does
+</I>&gt;&gt;&gt;<i> it through the S-CSCF. But I still end up with the 403. :(
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The messages go respectively AS -&gt; S-CSCF -&gt; P-CSCF -&gt; S-CSCF -&gt; AS
+</I>&gt;&gt;&gt;<i> and both the AS and the UEs are connecting to the same S-CSCF
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> A couple of questions about the functionality: is it expected, that
+</I>&gt;&gt;&gt;<i> the ASs are trusted by the core networks, and can include a
+</I>&gt;&gt;&gt;<i> P-asserted-identity, or should there be some authentication mechanism
+</I>&gt;&gt;&gt;<i> implemented between the S-CSCF and the AS? And how do I tell the
+</I>&gt;&gt;&gt;<i> S-CSCF, that it is ok for it to let the AS send messages to a UE? Or
+</I>&gt;&gt;&gt;<i> should the UE first make a registration to a specific AS? (which is
+</I>&gt;&gt;&gt;<i> not needed at the moment for my AS implementation) Or what should the
+</I>&gt;&gt;&gt;<i> S-CSCF do to the message before sending it further to the P-CSCF so
+</I>&gt;&gt;&gt;<i> that it wouldn't end up as &quot;403 Forbidden - Not Registered! You must
+</I>&gt;&gt;&gt;<i> register first with a S-CSCF&quot; ?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Cheers,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Arnold
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i> To: Arnold Schwarz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">scharn333 at hotmail.com</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i> CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Application Server as B2BUA
+</I>&gt;&gt;&gt;&gt;<i> Date: Tue, 09 Jan 2007 17:05:21 +0100
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Hi Arnold,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Yes, this functionality was used and it works.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> However, if you get a 403, you get it from the P-CSCF. Then I might 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> ask:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> How come the AS contacts the P-CSCF directly?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> If your AS does origination you should use the Route that you have seen
+</I>&gt;&gt;&gt;&gt;<i> in a 3rd party REGISTER in the Service-Route field:
+</I>&gt;&gt;&gt;&gt;<i> AS-&gt;S_orig-&gt;I_term-&gt;S_term-&gt;P_term-&gt;UE_term
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> If your AS does termination, just use the normal DNS. You will end-up 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> in
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> the I-CSCF: AS-&gt;I_term-&gt;S_term-&gt;P_term-&gt;UE_term
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> As you can see, in neither case the AS should send a message to a 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> P-CSCF
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> directly.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Arnold Schwarz wrote:
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> Has anyone tested the OSIMS with an Application Server, which works
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> as a
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> Back-to-Back User Agent? And also succeeded with the tests?
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> At the moment my messages go:  UE1 --&gt; core --&gt; AS
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> But when the AS tries to create a new session and send a message
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> via: AS --&gt;
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> core --&gt; UE2
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> I get &quot;Status: 403 Forbidden - Not Registered! You must register
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> first with
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> a S-CSCF.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Should the AS be registered like the &quot;normal UE&quot;s? Or is that kind of
+</I>&gt;&gt;&gt;&gt;&gt;<i> functionality not supported? Or where should I add the information,
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> that it
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> is ok that the AS acts as the originator?
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;<i>
+</I>&gt;<i> _________________________________________________________________
+</I>&gt;<i> Fixing up the home? Live Search can help 
+</I>&gt;<i> <A HREF="http://imagine-windowslive.com/search/kits/default.aspx?kit=improve&amp;locale=en-US&amp;source=hmemailtaglinenov06&amp;FORM=WLMTAG">http://imagine-windowslive.com/search/kits/default.aspx?kit=improve&amp;locale=en-US&amp;source=hmemailtaglinenov06&amp;FORM=WLMTAG</A>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000456.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+	<LI>Next message: <A HREF="000468.html">[OpenIMSCore-Users] Application Server as B2BUA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#458">[ date ]</a>
+              <a href="thread.html#458">[ thread ]</a>
+              <a href="subject.html#458">[ subject ]</a>
+              <a href="author.html#458">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

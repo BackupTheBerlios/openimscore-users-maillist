@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] IPSec Problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IPSec%20Problem&In-Reply-To=%3C491AB103.8000106%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004822.html">
+   <LINK REL="Next"  HREF="004819.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] IPSec Problem</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IPSec%20Problem&In-Reply-To=%3C491AB103.8000106%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] IPSec Problem">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Nov 12 11:33:39 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004822.html">[OpenIMSCore-Users] Query for Online Charging
+</A></li>
+        <LI>Next message: <A HREF="004819.html">[OpenIMSCore-Users] IPSec Problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4815">[ date ]</a>
+              <a href="thread.html#4815">[ thread ]</a>
+              <a href="subject.html#4815">[ subject ]</a>
+              <a href="author.html#4815">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Veena,
+
+In our P-CSCF implementation we were restricted by the functionality of
+the underlying SIP Express Router, so we could not use dynamic ports for
+IPsec SAs. You can use a different port for the P-CSCF, but not open
+dynamic ones during runtime.
+
+However, this should not be a problem, as the identification of each SA
+is based on (IP UE, port UE, IP P-CSCF, port P-CSCF) and no 2 clients
+could use the same IP and port.
+
+In your test I see that both clients use port 4060 for both c and s SAs
+and the same IP address (please don't confuse the UE port 4060 with the
+P-CSCF port 4060). Why is this? Couldn't you just use a different (IP
+UE, port UE) on the client side?
+
+
+
+Cheers,
+-Dragos
+
+Veena S wrote:
+&gt;<i> Hi All,
+</I>&gt;<i>  
+</I>&gt;<i> We are facing IPSec issue in the following scenario:
+</I>&gt;<i>  
+</I>&gt;<i> Consider two users(UAC) running on the same system at different terminals.
+</I>&gt;<i>  
+</I>&gt;<i> User A gets REGISTERED using IPSec to OpenIMSServer(version 576)
+</I>&gt;<i>  
+</I>&gt;<i> User B tries to REGISTER using IPSec to OpenIMSServer,SAs are created
+</I>&gt;<i> but connection to the secured fails since the port 4060(*Other port
+</I>&gt;<i> numbers cannot be used in this version*)  is already in use.
+</I>&gt;<i>  
+</I>&gt;<i> If User A tries to DEREGISTER(ESP) , *494 error or no response* is
+</I>&gt;<i> generated.
+</I>&gt;<i>  
+</I>&gt;<i> This case is not seen when only one person tries registration from a
+</I>&gt;<i> system.Please analyse the same and let me know if the problem is on
+</I>&gt;<i> Client side or Server side.Traces are attached.
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> We are considering the above scenario, since we want to know if
+</I>&gt;<i> Different SAs get created for different applications running on the
+</I>&gt;<i> same system, please suggest us if we are doing anything wrong.
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> In the latest version of OpenIMSCore, is it possibe to use port number
+</I>&gt;<i> other than 4060 for IPSec establishment?
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> Regards,
+</I>&gt;<i> Veena
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004822.html">[OpenIMSCore-Users] Query for Online Charging
+</A></li>
+	<LI>Next message: <A HREF="004819.html">[OpenIMSCore-Users] IPSec Problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4815">[ date ]</a>
+              <a href="thread.html#4815">[ thread ]</a>
+              <a href="subject.html#4815">[ subject ]</a>
+              <a href="author.html#4815">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

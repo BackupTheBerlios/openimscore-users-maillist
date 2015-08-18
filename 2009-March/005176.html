@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [OpenIMSCore-CSCF] Patch for IPSec support
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BOpenIMSCore-CSCF%5D%20Patch%20for%20IPSec%20support&In-Reply-To=%3C49B8FBBF.8000800%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005167.html">
+   <LINK REL="Next"  HREF="005177.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [OpenIMSCore-CSCF] Patch for IPSec support</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BOpenIMSCore-CSCF%5D%20Patch%20for%20IPSec%20support&In-Reply-To=%3C49B8FBBF.8000800%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] [OpenIMSCore-CSCF] Patch for IPSec support">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Mar 12 13:10:39 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005167.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] Patch for IPSec support
+</A></li>
+        <LI>Next message: <A HREF="005177.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] Patch for IPSec support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5176">[ date ]</a>
+              <a href="thread.html#5176">[ thread ]</a>
+              <a href="subject.html#5176">[ subject ]</a>
+              <a href="author.html#5176">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gemi,
+
+if it crashed, it should've left a core file behind ( /core or
+/opt/OpenIMSCore/core, etc). If not, do a unlimit -c unlimited and then
+try again to replicate the crash. Once you have the core file, please
+run gdb /opt/OpenIMSCore/ser_ims/ser &lt;core_file&gt;. Inside there please
+type bt and give us the output, so that we could pinpoint the issue.
+Also attaching a trace would be helpful.
+
+Cheers,
+-Dragos
+
+Gemi Tsai &#34081;&#22283;&#27888; wrote:
+&gt;<i> Hi Laurent,
+</I>&gt;<i>
+</I>&gt;<i> Thanks for your response and verification very much!
+</I>&gt;<i> I tried the latest version Open IMS Core (r627), and still met this
+</I>&gt;<i> problem.  :-(
+</I>&gt;<i>
+</I>&gt;<i> The P-CSCF will crash when the other UE sent any request (INVITE,
+</I>&gt;<i> MESSAGE...) to my UE.
+</I>&gt;<i> The flow is in the following, the other UE used UDP, not use TLS,  and
+</I>&gt;<i> My UE used TLS:
+</I>&gt;<i>
+</I>&gt;<i> [The other UE] --&gt; PCSCF --&gt; SCSCF --&gt; SCSCF--&gt; PCSCF (crash!!) -X-&gt;  [My UE]
+</I>&gt;<i>
+</I>&gt;<i> Could you please help to capture the wireshark trace in the Open IMS
+</I>&gt;<i> Core side (CSCF) for my reference?
+</I>&gt;<i> I'll keep to trace the Open IMS Core and my UE.
+</I>&gt;<i>
+</I>&gt;<i> I have tried the Mercuro IMS Client, but only BRONZE version...(no TLS support)
+</I>&gt;<i> Thank you for providing this information.
+</I>&gt;<i>
+</I>&gt;<i> Best Regards,
+</I>&gt;<i> Gemi
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 2009/3/6 Laurent Etiemble &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">laurent.etiemble at inexbee.com</A>&gt;:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have just made some tests with the Mercuro IMS Client against OpenIMSCore
+</I>&gt;&gt;<i> r626. I have no problem to register, create an outgoing session
+</I>&gt;&gt;<i> (audio/video), receive an incoming session (audio/video). Subscriptions and
+</I>&gt;&gt;<i> notifications also work.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regarding the empty Session Id, the RFC 4346 (7.4.1.3. Server Hello) says:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> session_id
+</I>&gt;&gt;<i>      This is the identity of the session corresponding to this
+</I>&gt;&gt;<i>      connection.  If the ClientHello.session_id was non-empty, the
+</I>&gt;&gt;<i>      server will look in its session cache for a match.  If a match is
+</I>&gt;&gt;<i>      found and the server is willing to establish the new connection
+</I>&gt;&gt;<i>      using the specified session state, the server will respond with
+</I>&gt;&gt;<i>      the same value as was supplied by the client.  This indicates a
+</I>&gt;&gt;<i>      resumed session and dictates that the parties must proceed
+</I>&gt;&gt;<i>      directly to the finished messages.  Otherwise this field will
+</I>&gt;&gt;<i>      contain a different value identifying the new session.  The server
+</I>&gt;&gt;<i>      may return an empty session_id to indicate that the session will
+</I>&gt;&gt;<i>      not be cached and therefore cannot be resumed.  If a session is
+</I>&gt;&gt;<i>      resumed, it must be resumed using the same cipher suite it was
+</I>&gt;&gt;<i>      originally negotiated with.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So I don't think an empty Session Id sould be a problem.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards, Laurent Etiemble.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Need an IMS Client ? Why don't you try out Mercuro IMS Client.
+</I>&gt;&gt;<i> More information at <A HREF="http://www.mercuro.net/">http://www.mercuro.net/</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 2009/3/5 Gemi Tsai &#34081;&#22283;&#27888; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">gemi.tsai at gmail.com</A>&gt;:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi Laurent, Dragos, and all,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Could anyone provide experience for using TLS in Open IMS Core?
+</I>&gt;&gt;&gt;<i> I used libraries Osip2 v3.2.0, eXosip2 v3.2.0, and OpenSSL v0.9.8j to
+</I>&gt;&gt;&gt;<i> develop the IMS Client.
+</I>&gt;&gt;&gt;<i> Any response would be appreciated!
+</I>&gt;&gt;&gt;<i> Thanks,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Gemi
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> 2009/3/1 Gemi Tsai &#34081;&#22283;&#27888; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">gemi.tsai at gmail.com</A>&gt;:
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Hi Laurent and Dragos,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> About the TLS, I found some issues in the Open IMS Core, and report to
+</I>&gt;&gt;&gt;&gt;<i> you:
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> 1.  The Open IMS Core doesn't contain Session ID in the Server Hello
+</I>&gt;&gt;&gt;&gt;<i> when Handshake.
+</I>&gt;&gt;&gt;&gt;<i>     You can see wireshark traces in Open IMS Core web site:
+</I>&gt;&gt;&gt;&gt;<i>     <A HREF="http://openimscore.org/docs/tls.pcap">http://openimscore.org/docs/tls.pcap</A>
+</I>&gt;&gt;&gt;&gt;<i>     <A HREF="http://openimscore.org/docs/tls_from_begining.pcap">http://openimscore.org/docs/tls_from_begining.pcap</A>
+</I>&gt;&gt;&gt;&gt;<i>     And I verified this in the other UE, the result is the same.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> 2. If no Session ID, the Open IMS Core will not create the TLS
+</I>&gt;&gt;&gt;&gt;<i> container, you can see the code:
+</I>&gt;&gt;&gt;&gt;<i>    In the file &quot;ser_ims/modules/pcscf/security.c&quot;
+</I>&gt;&gt;&gt;&gt;<i>    In the function P_security_200 (...)
+</I>&gt;&gt;&gt;&gt;<i>        case SEC_TLS:
+</I>&gt;&gt;&gt;&gt;<i>        ...
+</I>&gt;&gt;&gt;&gt;<i>        s_hash = get_tls_session_hash(req);
+</I>&gt;&gt;&gt;&gt;<i>        if (!s_hash){
+</I>&gt;&gt;&gt;&gt;<i>                LOG(L_ERR,&quot;ERR:&quot;M_NAME&quot;:P_security_200: Session Hash could
+</I>&gt;&gt;&gt;&gt;<i> not be
+</I>&gt;&gt;&gt;&gt;<i> obtained !\n&quot;);
+</I>&gt;&gt;&gt;&gt;<i>                r_unlock(c-&gt;hash);
+</I>&gt;&gt;&gt;&gt;<i>                goto error;
+</I>&gt;&gt;&gt;&gt;<i>        }
+</I>&gt;&gt;&gt;&gt;<i>        tls = new_r_tls(port_tls, s_hash);
+</I>&gt;&gt;&gt;&gt;<i>        ...
+</I>&gt;&gt;&gt;&gt;<i>    So, if we don't get the Session ID, the TLS container will be not
+</I>&gt;&gt;&gt;&gt;<i> created.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> 3. If no Session ID, the PCSCF will crash in the code:
+</I>&gt;&gt;&gt;&gt;<i>    In the file &quot;ser_ims/modules/pcscf/registration.c&quot;
+</I>&gt;&gt;&gt;&gt;<i>    In the function P_security_relay (...)
+</I>&gt;&gt;&gt;&gt;<i>        case SEC_TLS:
+</I>&gt;&gt;&gt;&gt;<i>        ...
+</I>&gt;&gt;&gt;&gt;<i>                dst.len += sprintf(dst.s + dst.len, &quot;:%d;transport=tls&quot;,
+</I>&gt;&gt;&gt;&gt;<i> c-&gt;security-&gt;data.tls-&gt;port_tls);
+</I>&gt;&gt;&gt;&gt;<i>                break;
+</I>&gt;&gt;&gt;&gt;<i>        ...
+</I>&gt;&gt;&gt;&gt;<i>   Because we don't have any &quot;data.tls&quot; container.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> In the latest Open IMS Core version, I can make a successful
+</I>&gt;&gt;&gt;&gt;<i> registration, but can't make a call setup or instant message over TLS.
+</I>&gt;&gt;&gt;&gt;<i> Could you or anyone check or fix these issue?
+</I>&gt;&gt;&gt;&gt;<i> Any help would be appreciated!
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Best Regards,
+</I>&gt;&gt;&gt;&gt;<i> Gemi
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> 2009/2/16 Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;:
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> Hi Laurent,
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> great work! Don't worry about the coding style. You actually followed it
+</I>&gt;&gt;&gt;&gt;&gt;<i> very well (do we have a coding style :-p?).
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> I will commit it first time tomorrow morning when I will be back to
+</I>&gt;&gt;&gt;&gt;&gt;<i> work. What I think that is still missing, are the changes to the
+</I>&gt;&gt;&gt;&gt;&gt;<i> ipsec_E_* scripts. I know that those are not used directly by the
+</I>&gt;&gt;&gt;&gt;&gt;<i> project, but it makes for great counterpart examples and could be used
+</I>&gt;&gt;&gt;&gt;&gt;<i> when testing. Would be great if you could extend those too. It's not
+</I>&gt;&gt;&gt;&gt;&gt;<i> much, but I would feel more confident if you change those than if I do
+</I>&gt;&gt;&gt;&gt;&gt;<i> it.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> BTW: have you tried the TLS thing against Mercuro? I don't think that we
+</I>&gt;&gt;&gt;&gt;&gt;<i> had any other feedback on this, so I hope that we understood/improvised
+</I>&gt;&gt;&gt;&gt;&gt;<i> on the standards well...
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Cheers,
+</I>&gt;&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Laurent Etiemble wrote:
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Here is a patch for the IPSec support. We have made the diff against
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> the r612 of the ser_ims svn.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Here waht the patch prodives:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> - add IPSec protocol (AH/ESP) and mode (Transport/Tunnel) storage in
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> the r_ipsec structure
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> - add extraction of protocol and mode from the Security-Client header
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> - rewrite of the SA/SPD scripts to support IPv4 and IPv6 networks and
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> addresses.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> - rewrite of the SA/SPD scripts to support AH/ESP protocols and
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Transport/Tunnel modes.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> We have successfully tested the following combinations with Mercuro IMS
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Client:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> - AH/Transport with MD5/SHA-1 integrity algorithms
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> - ESP/Transport with NULL/3DES/AES encryption algorithms
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Although the scripts supports the tunnel mode, we haven't push testing
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> further. For now, the tunnel endpoints are the UE and the P-CSCF
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> addresses.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> We have tried to follow the coding style of the P-CSCF module, but a
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> code review is necessary. In addition, any tests with other clients
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> are welcomed.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Regards, Laurent Etiemble.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Need an IMS Client ? Why don't you try out Mercuro IMS Client.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> More information at <A HREF="http://www.mercuro.net/">http://www.mercuro.net/</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-CSCF mailing list
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-CSCF at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-cscf">https://lists.berlios.de/mailman/listinfo/openimscore-cscf</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;&gt;&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;&gt;&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;&gt;&gt;&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i>     
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005167.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] Patch for IPSec support
+</A></li>
+	<LI>Next message: <A HREF="005177.html">[OpenIMSCore-Users] [OpenIMSCore-CSCF] Patch for IPSec support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5176">[ date ]</a>
+              <a href="thread.html#5176">[ thread ]</a>
+              <a href="subject.html#5176">[ subject ]</a>
+              <a href="author.html#5176">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

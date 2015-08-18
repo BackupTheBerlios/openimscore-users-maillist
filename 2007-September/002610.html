@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problems related to ser_ims
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problems%20related%20to%20ser_ims&In-Reply-To=%3C46E51312.7010802%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002572.html">
+   <LINK REL="Next"  HREF="002574.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problems related to ser_ims</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problems%20related%20to%20ser_ims&In-Reply-To=%3C46E51312.7010802%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Problems related to ser_ims">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Sep 10 11:49:06 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002572.html">[OpenIMSCore-Users] Problems related to ser_ims
+</A></li>
+        <LI>Next message: <A HREF="002574.html">[OpenIMSCore-Users] ACK forwarded to I-CSCF:5060?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2610">[ date ]</a>
+              <a href="thread.html#2610">[ thread ]</a>
+              <a href="subject.html#2610">[ subject ]</a>
+              <a href="author.html#2610">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yes, you could very easily see the message by using a capture tool like
+wireshark. Because of wireshark also decodes the protocols and indicates
+when there is something wrong, it is useless to log the messages in the
+CSCFs.
+
+-Dragos
+
+
+Sabyasachi Samal wrote:
+&gt;<i> Hello,
+</I>&gt;<i>  
+</I>&gt;<i> I am trying to simulate UEs using script in one system and use OPEN
+</I>&gt;<i> IMS as SUT (for PCSCF,ICSCF,SCSCF and HSS) in another system. While i
+</I>&gt;<i> am sending a REGISTER request to PCSCF i am getting 401 Unauthorized -
+</I>&gt;<i> Challenging the UE. After that while sending REGISTER with
+</I>&gt;<i> authenticate credentials still i am getting 401.
+</I>&gt;<i>  
+</I>&gt;<i> I have one query here regarding logging.
+</I>&gt;<i>  
+</I>&gt;<i> Is there any way to see the message between each entities? i mean to
+</I>&gt;<i> say like UE sends REGISTER request to PCSCF, it is showing all dumps.
+</I>&gt;<i> Then PCSCF sends that request to SCSCF so here same dump should
+</I>&gt;<i> displayed in the runner logs of SCSCF as below.
+</I>&gt;<i> Received from PCSCF IP xxxx and Port yyyy.
+</I>&gt;<i> .....
+</I>&gt;<i> .....
+</I>&gt;<i> .....
+</I>&gt;<i>  
+</I>&gt;<i> Here is the logs for SCSCF:
+</I>&gt;<i> 18(11653) DBG:sm_process(): Peer hss.open-ims.test      State
+</I>&gt;<i> R_Open    Event
+</I>&gt;<i> R_Rcv_Message
+</I>&gt;<i>  2(11596) DBG:S-CSCF:S_is_authorized: UE said:
+</I>&gt;<i> 50d6c4e6ec5e093f3d59de77608ceac4 and we  expect
+</I>&gt;<i> e26ec06ce8a39bf44d5e240a3786d628 ha1 cde7d3b47392ae5c2fef334361e10a55
+</I>&gt;<i> 18(11653) DBG:sm_process(): Peer hss.open-ims.test      State
+</I>&gt;<i> R_Open    Event
+</I>&gt;<i> R_Rcv_Message
+</I>&gt;<i>  
+</I>&gt;<i> Logs For ICSCF:
+</I>&gt;<i> 18(11737) DBG:sm_process(): Peer hss.open-ims.test      State
+</I>&gt;<i> I_Open    Event
+</I>&gt;<i> I_Rcv_Message
+</I>&gt;<i>  1(11719) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i>  1(11719) INFO:I-CSCF:Cx_get_capabilities: Failed finding avp
+</I>&gt;<i> 12(11730) --- Peer List: ---
+</I>&gt;<i>  
+</I>&gt;<i> Logs for UE:
+</I>&gt;<i>
+</I>&gt;<i> REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.21.21.191:5070
+</I>&gt;<i> &lt;<A HREF="http://10.21.21.191:5070">http://10.21.21.191:5070</A>&gt;;branch=z9hG4bK1189155963619
+</I>&gt;<i> Max-Forwards: 70
+</I>&gt;<i> From: &quot;bob&quot;&lt; sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;&gt;;tag=1189155963619
+</I>&gt;<i> To: &quot;bob&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A> &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;&gt;
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1189155963619 at open-ims.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1189155963619 at open-ims.test</A>&gt;
+</I>&gt;<i> CSeq: 32703 REGISTER
+</I>&gt;<i> Authorization: Digest
+</I>&gt;<i> username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;&quot;,uri=&quot;sip:open-ims.test&quot;,response
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>%22,realm=%22open-ims.test%22,nonce=%22%22,uri=%22sip:open-ims.test%22,response&gt;=&quot;&quot;
+</I>&gt;<i> Contact: &lt;sip:10.21.21.191:5070 &lt;<A HREF="http://10.21.21.191:5070">http://10.21.21.191:5070</A>&gt;&gt;
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i> Expires: 3600
+</I>&gt;<i> Supported:path
+</I>&gt;<i>
+</I>&gt;<i> SIP/2.0 401 Unauthorized - Challenging the UE
+</I>&gt;<i> Via: SIP/2.0/UDP 10.21.21.191:5070
+</I>&gt;<i> &lt;<A HREF="http://10.21.21.191:5070">http://10.21.21.191:5070</A>&gt;;received=10.21.21.191
+</I>&gt;<i> &lt;<A HREF="http://10.21.21.191">http://10.21.21.191</A>&gt;;rport=5070;branch=z9hG4bK1189155963619
+</I>&gt;<i> From: &quot;bob&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;&gt;;tag=1189155963619
+</I>&gt;<i> To: &quot;bob&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;&gt;;tag=c783cbc7acb47f2a4931aa4abdb9f2d2-fc0c
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1189155963619 at open-ims.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1189155963619 at open-ims.test</A>&gt;
+</I>&gt;<i> CSeq: 32703 REGISTER
+</I>&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+</I>&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i> Warning: 392 10.21.21.89:6060 &lt;<A HREF="http://10.21.21.89:6060">http://10.21.21.89:6060</A>&gt; &quot;Noisy
+</I>&gt;<i> feedback tells:  pid=11597 req_src_ip= 10.21.21.89
+</I>&gt;<i> &lt;<A HREF="http://10.21.21.89">http://10.21.21.89</A>&gt; req_src_port=5060
+</I>&gt;<i> in_uri=sip:scscf.open-ims.test:6060
+</I>&gt;<i> out_uri=sip:scscf.open-ims.test:6060 via_cnt==3&quot;
+</I>&gt;<i> WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,
+</I>&gt;<i> nonce=&quot;OwdDjP2lINNiDNSjoXq0QmDojTMyYQAAy26ItODcVs4=&quot;, algorithm=AKAv1-MD5
+</I>&gt;<i>
+</I>&gt;<i>  REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i> Via: SIP/2.0/UDP 10.21.21.191:5070
+</I>&gt;<i> &lt;<A HREF="http://10.21.21.191:5070">http://10.21.21.191:5070</A>&gt;;branch=z9hG4bK1189155963619
+</I>&gt;<i> Max-Forwards: 70
+</I>&gt;<i> From: &quot;bob&quot;&lt; sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;&gt;;tag=1189155963619
+</I>&gt;<i> To: &quot;bob&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt;&gt;;tag=c783cbc7acb47f2a4931aa4abdb9f2d2-fc0c
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1189155963619 at open-ims.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1189155963619 at open-ims.test</A>&gt;
+</I>&gt;<i> CSeq: 32704 REGISTER
+</I>&gt;<i> Authorization: Digest username=&quot;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;OwdDjP2lINNiDNSjoXq0QmDojTMyYQAAy26ItODcVs4=&quot;,uri=&quot;sip:open-ims.test&quot;,response=&quot;50d6c4e6ec5e093f3d59de77608ceac4&quot;,algorithm=AKAv1-MD5
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>%22,realm=%22open-ims.test%22,nonce=%22OwdDjP2lINNiDNSjoXq0QmDojTMyYQAAy26ItODcVs4=%22,uri=%22sip:open-ims.test%22,response=%2250d6c4e6ec5e093f3d59de77608ceac4%22,algorithm=AKAv1-MD5&gt;
+</I>&gt;<i> Contact: &lt;sip:10.21.21.191:5070 &lt;<A HREF="http://10.21.21.191:5070">http://10.21.21.191:5070</A>&gt;&gt;
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i> Expires: 3600
+</I>&gt;<i> Supported:path
+</I>&gt;<i>
+</I>&gt;<i> Query 2:
+</I>&gt;<i>
+</I>&gt;<i> Is it possible to run PCSCF in one system and SCSCF in other system,
+</I>&gt;<i> if the ans is yes then which config file i have to update?
+</I>&gt;<i>
+</I>&gt;<i> If anybody can suggest a way to get rid of this. It will great.
+</I>&gt;<i>
+</I>&gt;<i> -Sabyasachi
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002572.html">[OpenIMSCore-Users] Problems related to ser_ims
+</A></li>
+	<LI>Next message: <A HREF="002574.html">[OpenIMSCore-Users] ACK forwarded to I-CSCF:5060?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2610">[ date ]</a>
+              <a href="thread.html#2610">[ thread ]</a>
+              <a href="subject.html#2610">[ subject ]</a>
+              <a href="author.html#2610">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

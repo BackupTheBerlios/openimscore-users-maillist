@@ -1,0 +1,484 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SIP%20deregistration%20with%0A%09strange%22Expires%22-header&In-Reply-To=%3C45DF0344.5030203%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000902.html">
+   <LINK REL="Next"  HREF="000943.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20SIP%20deregistration%20with%0A%09strange%22Expires%22-header&In-Reply-To=%3C45DF0344.5030203%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Feb 23 16:07:48 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000902.html">[OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header
+</A></li>
+        <LI>Next message: <A HREF="000943.html">[OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#930">[ date ]</a>
+              <a href="thread.html#930">[ thread ]</a>
+              <a href="subject.html#930">[ subject ]</a>
+              <a href="author.html#930">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Before trying to fix this... I have a question:
+
+If a REGISTER contains 2 contacts - one with expires=0 and another one
+with expires!=0... is this a registration or a de-registration? Because
+of the treatment that it gets in the nodes, I can't be both, I guess...
+
+-Dragos
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Stefan.Brozinski at materna.de</A> wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> 3GPP 24.229 v7.6.0 allows both (an 'Expires' header or an 'expires' parameter of the 'Contact' header) for the user agent (see 5.1.1.6, subclause f, or 5.2.5.1, or A.2.1.4.12).
+</I>&gt;<i>
+</I>&gt;<i> In contrast, the proxies are required to generate an 'Expires' header (see A.2.2.4.12).
+</I>&gt;<i>
+</I>&gt;<i> So it looks to me as if it was the P-CSCF's task to ensure that the REGISTER request that is passed on the the remaining *-CSCF's contains an &quot;Expires:&quot;-Header.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Best fix - put an Expires: 0 header if
+</I>&gt;&gt;<i> you have a de-registration.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> I don't have access to the source code of X-Lite.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i> Stefan
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;&gt;<i> Sent: Wednesday, February 21, 2007 3:58 PM
+</I>&gt;&gt;<i> To: Brozinski, Stefan
+</I>&gt;&gt;<i> Cc: Bornemann, Sven; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] SIP deregistration with 
+</I>&gt;&gt;<i> strange&quot;Expires&quot;-header
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi Stefan,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The problem is that as there is no clear deregistration - Expires: 0
+</I>&gt;&gt;<i> header is missing - the S-CSCF does not identify your request 
+</I>&gt;&gt;<i> properly.
+</I>&gt;&gt;<i> The 3rd party REGISTER generated contains another contact address, the
+</I>&gt;&gt;<i> S-CSCF one, as per specifications. The Expires header is equal to the
+</I>&gt;&gt;<i> remaining period time for registration (because of the false
+</I>&gt;&gt;<i> identification, this is the expiration time before the update 
+</I>&gt;&gt;<i> caused by
+</I>&gt;&gt;<i> the REGISTER) plus a configurable grace period that would prevent the
+</I>&gt;&gt;<i> status in the AS to expire before the expiration in the S-CSCF.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Best fix - put an Expires: 0 header if you have a 
+</I>&gt;&gt;<i> de-registration. I am
+</I>&gt;&gt;<i> not sure, but I think that this is mandatory in IMS (should 
+</I>&gt;&gt;<i> be somewhere
+</I>&gt;&gt;<i> in the SIP profiles in 24.229).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Stefan.Brozinski at materna.de</A> wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi all,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I would like to follow up on this issue.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Attached is a Wireshark trace that shows the deregistration 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> process. The packets in this trace are:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> 1. Client (X-Lite) to sip2ims
+</I>&gt;&gt;&gt;<i> 2. sip2ims to pcscf
+</I>&gt;&gt;&gt;<i> 3. pcscf to icscf
+</I>&gt;&gt;&gt;<i> 4. icscf to scscf
+</I>&gt;&gt;&gt;<i> 5. scscf to as
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> In packets 1 to 4, a 'Contact' header with an &quot;expires=0&quot; 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> parameter can be observed.
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> In the last packet, no &quot;expires=0&quot; parameter is present at 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> the 'Contact' header.
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Instead an 'Expires' header with a nonzero value is passed 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> to the AS.
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> This makes it impossible for the AS to recognize the 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> deregistration of user bob.
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Any idea what's going on and how to fix this?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Stefan
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> 
+</I>&gt;&gt;&gt;&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf 
+</I>&gt;&gt;&gt;&gt;<i> Of <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Sven.Bornemann at materna.de</A>
+</I>&gt;&gt;&gt;&gt;<i> Sent: Thursday, February 08, 2007 6:09 PM
+</I>&gt;&gt;&gt;&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] SIP deregistration with 
+</I>&gt;&gt;&gt;&gt;<i> strange&quot;Expires&quot;-header
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Hi Dragos!
+</I>&gt;&gt;&gt;&gt;<i> I forgot to tell you, that X-Lite sent &quot;expires=0&quot; as Contact
+</I>&gt;&gt;&gt;&gt;<i> header attribute instead of a separate Expires header on SIP 
+</I>&gt;&gt;&gt;&gt;<i> deregistration.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Session Initiation Protocol
+</I>&gt;&gt;&gt;&gt;<i>     Request-Line: REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;&gt;&gt;&gt;<i>     Message Header
+</I>&gt;&gt;&gt;&gt;<i>         Via: SIP/2.0/UDP 
+</I>&gt;&gt;&gt;&gt;<i> 139.2.245.134:27904;branch=z9hG4bK-d87543-950c512ed9753d38-1--
+</I>&gt;&gt;&gt;&gt;<i> d87543-;rport
+</I>&gt;&gt;&gt;&gt;<i>         Max-Forwards: 70
+</I>&gt;&gt;&gt;&gt;<i>         Contact: 
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 139.2.245.134</A>:27904;rinstance=65bcef4f23404a17&gt;;expires=0
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         To: &quot;alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i>         From: &quot;alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=21353e66
+</I>&gt;&gt;&gt;&gt;<i>         Call-ID: NTkyZDk4NTU0ZTg4MGNjNmVjNWMxMzRkZTZhMGQ1ZjE.
+</I>&gt;&gt;&gt;&gt;<i>         CSeq: 3 REGISTER
+</I>&gt;&gt;&gt;&gt;<i>         Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, 
+</I>&gt;&gt;&gt;&gt;<i> NOTIFY, MESSAGE, SUBSCRIBE, INFO
+</I>&gt;&gt;&gt;&gt;<i>         User-Agent: X-Lite release 1006e stamp 34025
+</I>&gt;&gt;&gt;&gt;<i>         Authorization: Digest 
+</I>&gt;&gt;&gt;&gt;<i> username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;45
+</I>&gt;&gt;&gt;&gt;<i> cb5904b06e7cfa36c882f44d695a133e6d8c3b&quot;,uri=&quot;sip:open-ims.test
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> &quot;,response=&quot;59aad5dc705be5656c1e061f3d8c3c2b&quot;,al&gt; 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> gorithm=MD5,opaque=&quot;AKAv1-MD5HF/x6NKgvgfBZb
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i>         Content-Length: 0
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> And that should also be o.k. as mentioned in to RFC 3261:
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> ------------------snip------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> 10.2.1.1 Setting the Expiration Interval of Contact Addresses
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>    When a client sends a REGISTER request, it MAY suggest an 
+</I>&gt;&gt;&gt;&gt;<i> expiration
+</I>&gt;&gt;&gt;&gt;<i>    interval that indicates how long the client would like the
+</I>&gt;&gt;&gt;&gt;<i>    registration to be valid.  (As described in Section 10.3, the
+</I>&gt;&gt;&gt;&gt;<i>    registrar selects the actual time interval based on its local
+</I>&gt;&gt;&gt;&gt;<i>    policy.)
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>    There are two ways in which a client can suggest an expiration
+</I>&gt;&gt;&gt;&gt;<i>    interval for a binding: through an Expires header field or an
+</I>&gt;&gt;&gt;&gt;<i>    &quot;expires&quot; Contact header parameter.  The latter allows 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> expiration
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>    intervals to be suggested on a per-binding basis when 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> more than one
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>    binding is given in a single REGISTER request, whereas 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> the former
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>    suggests an expiration interval for all Contact header 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> field values
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>    that do not contain the &quot;expires&quot; parameter.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> ------------------snap------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Dragos, what is your opinion?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Bye,
+</I>&gt;&gt;&gt;&gt;<i> Sven
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> -----Urspr&#252;ngliche Nachricht-----
+</I>&gt;&gt;&gt;&gt;&gt;<i> Von: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;&gt;&gt;&gt;&gt;<i> Gesendet: Mittwoch, 7. Februar 2007 11:39
+</I>&gt;&gt;&gt;&gt;&gt;<i> An: Bornemann, Sven
+</I>&gt;&gt;&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Betreff: Re: [OpenIMSCore-Users] SIP deregistration with strange
+</I>&gt;&gt;&gt;&gt;&gt;<i> &quot;Expires&quot;-header
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Hi Sven,
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> so the additional &quot;120&quot; seconds is there so that the 
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> expiration on the
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> AS would be at a later time than on the S-CSCF. You can 
+</I>&gt;&gt;&gt;&gt;&gt;<i> change this from
+</I>&gt;&gt;&gt;&gt;&gt;<i> the scscf.cfg as we have exported it as a parameter:
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> modparam(&quot;isc&quot;,&quot;expires_grace&quot;,120)
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> For the 2nd part, I think that the S-CSCF can not 
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;<i> determine a clear
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;<i> de-registration as there is no Expires: 0 header as there 
+</I>&gt;&gt;&gt;&gt;&gt;<i> should be. So
+</I>&gt;&gt;&gt;&gt;&gt;<i> it thinks it is a re-registration and gets the expiration 
+</I>&gt;&gt;&gt;&gt;&gt;<i> time from the
+</I>&gt;&gt;&gt;&gt;&gt;<i> registrar, and I guess in your case there were 3005 seconds 
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> left + 120
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> graced.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Sven.Bornemann at materna.de</A> wrote:
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi all!
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Our AS intercepts SIP REGISTER messages sent by S-CSCF 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;<i> in order to
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> detect the SIP client registration state 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;<i> (registered/deregistered).
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> The original - by X-Lite sent - expiry time (3600 seconds) 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;<i> will always be 
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> increased by 120s to 3720s (-&gt; Expires: 3720)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> REGISTER sip:192.168.38.131:5070 SIP/2.0
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Via: SIP/2.0/UDP 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;<i> 192.168.38.131:6060;branch=z9hG4bK5704.fde0a342.0
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> From: 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;<i> sip:scscf.open-ims.test:6060;tag=4c985cfd8cad9767c3c3ed1e493a07b9-15a9
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> CSeq: 10 REGISTER
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">7e39adce-23299 at 192.168.38.131</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> User-Agent: Sip EXpress router(0.10.99-dev53-tm_fixes 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;<i> (i386/linux))
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Event: registration
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Content-Length: 0
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Max-Forwards: 10
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Expires: 3720
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Contact: &lt;sip:scscf.open-ims.test:6060&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> P-Charging-Vector: icid-value=&quot;abcd45c9977f000002aa&quot;; 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;<i> icid-generated-at=&quot;192.168.38.131&quot;; orig-ioi=&quot;open-ims.test&quot;
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> That not a big problem, but the subsequent deregistration 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;<i> received by the AS
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> still contains a Expiry header, but with a value &gt; 0 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;<i> (inital value - interval the
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> client was registered -&gt; Expires: 3125). The original 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;<i> REGISTER message, received
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> by the SIP2IMS GW, contains no &quot;Expires&quot;-header.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> recv 579 bytes from udp/[192.168.38.131]:6060 at 09:20:18.557611:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> REGISTER sip:192.168.38.131:5070 SIP/2.0
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Via: SIP/2.0/UDP 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;<i> 192.168.38.131:6060;branch=z9hG4bK6704.6c5c1d15.0
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> From: 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;<i> sip:scscf.open-ims.test:6060;tag=4c985cfd8cad9767c3c3ed1e493a07b9-7a96
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> CSeq: 10 REGISTER
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">7e39adcf-23299 at 192.168.38.131</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> User-Agent: Sip EXpress router(0.10.99-dev53-tm_fixes 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;<i> (i386/linux))
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Event: registration
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Content-Length: 0
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Max-Forwards: 10
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Expires: 3125
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Contact: &lt;sip:scscf.open-ims.test:6060&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> P-Charging-Vector: icid-value=&quot;abcd45c999d2000002b3&quot;; 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;<i> icid-generated-at=&quot;192.168.38.131&quot;; orig-ioi=&quot;open-ims.test&quot;
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> We would expect no &quot;Expires&quot;-header or at least a value of 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;<i> 0 for that.
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> What is the reason for this behaviour? A bug?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Thanks in advance,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Sven
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;<i> -- 
+</I>&gt;&gt;&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;&gt;&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> -- 
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000902.html">[OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header
+</A></li>
+	<LI>Next message: <A HREF="000943.html">[OpenIMSCore-Users] SIP deregistration with	strange&quot;Expires&quot;-header
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#930">[ date ]</a>
+              <a href="thread.html#930">[ thread ]</a>
+              <a href="subject.html#930">[ subject ]</a>
+              <a href="author.html#930">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] how to check AS in openimscore works
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20how%20to%20check%20AS%20in%20openimscore%20works&In-Reply-To=%3C48AE98DD.8040901%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004437.html">
+   <LINK REL="Next"  HREF="004439.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] how to check AS in openimscore works</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20how%20to%20check%20AS%20in%20openimscore%20works&In-Reply-To=%3C48AE98DD.8040901%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] how to check AS in openimscore works">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Aug 22 12:45:49 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004437.html">[OpenIMSCore-Users] how to check AS in openimscore works
+</A></li>
+        <LI>Next message: <A HREF="004439.html">[OpenIMSCore-Users] Framed-IP-Address
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4530">[ date ]</a>
+              <a href="thread.html#4530">[ thread ]</a>
+              <a href="subject.html#4530">[ subject ]</a>
+              <a href="author.html#4530">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Reza,
+
+Not sure if I understand your questions exactly....
+
+The client &lt;-&gt; IMS communication should always go through the core. So
+the client should talk only with the P-CSCF, always.
+
+In your case, the AS should probably create a B2B call by sending 2
+INVITEs, one towards each client. All should be routed through the Open
+IMS Core. Normal routing would do just fine.
+
+In case of AS doing origination, you will need to also fill in a Route
+header with something like: &lt;sip:open-ims.test;orig&gt;. For termination,
+just forward the request to the I-CSCF.
+
+Cheers,
+-Dragos
+
+reza adinata wrote:
+&gt;<i> Hi,,
+</I>&gt;<i>
+</I>&gt;<i> I am trying to integrate sailfin with openimscore
+</I>&gt;<i>
+</I>&gt;<i> I have attached the sailfin (simple ClickToDial module) on to the IMS
+</I>&gt;<i> core using the FHoSS web interface.
+</I>&gt;<i>
+</I>&gt;<i> But, suddenly I am confused.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> the chronology of the event that I want to be is like this :
+</I>&gt;<i>
+</I>&gt;<i> the client check to a website, click to opponents number via web, and
+</I>&gt;<i> the opponents' phone will ring, and they can communicate.
+</I>&gt;<i> I just want a call flow as simple as
+</I>&gt;<i>
+</I>&gt;<i>  client (clicktodial via web, ring opponent) -&gt; openimscore-&gt; choose
+</I>&gt;<i> sailfin as the AS -&gt; other client ring 
+</I>&gt;<i>
+</I>&gt;<i> Client 1 use ip : 192.168.0.2 &lt;<A HREF="http://192.168.0.2">http://192.168.0.2</A>&gt;
+</I>&gt;<i> Core IMS use ip : 192.168.0.3 &lt;<A HREF="http://192.168.0.3">http://192.168.0.3</A>&gt;
+</I>&gt;<i> Sailfin use IP : 192.168.0.4 &lt;<A HREF="http://192.168.0.4">http://192.168.0.4</A>&gt;
+</I>&gt;<i> Client 2 use IP : 192.168.0.5 &lt;<A HREF="http://192.168.0.5">http://192.168.0.5</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> How should I configure the IMS Client (or Xlite?) ? Should the client
+</I>&gt;<i> refer to sailfin ip and port address (192.168.0.4:5060
+</I>&gt;<i> &lt;<A HREF="http://192.168.0.4:5060">http://192.168.0.4:5060</A>&gt;) , or it should refer to pcscf openimscore
+</I>&gt;<i> IP and port (192.168.0.3:4060 &lt;<A HREF="http://192.168.0.3:4060">http://192.168.0.3:4060</A>&gt;)?  How do I
+</I>&gt;<i> check if this works just fine, working as the call flow that I have
+</I>&gt;<i> mentioned above?
+</I>&gt;<i>
+</I>&gt;<i> Plase guide me in this matter, I am new in this.. Sorry for my bad english
+</I>&gt;<i>
+</I>&gt;<i> Regards,,
+</I>&gt;<i> Reza
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004437.html">[OpenIMSCore-Users] how to check AS in openimscore works
+</A></li>
+	<LI>Next message: <A HREF="004439.html">[OpenIMSCore-Users] Framed-IP-Address
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4530">[ date ]</a>
+              <a href="thread.html#4530">[ thread ]</a>
+              <a href="subject.html#4530">[ subject ]</a>
+              <a href="author.html#4530">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

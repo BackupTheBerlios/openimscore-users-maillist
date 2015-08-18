@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registration problem with internet tablet	client
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20problem%20with%20internet%20tablet%0A%09client&In-Reply-To=%3C4000a84f0812030724r4dc210aen89f710333b0fabfe%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004899.html">
+   <LINK REL="Next"  HREF="004900.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registration problem with internet tablet	client</H1>
+    <B>ritesh kalle</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20problem%20with%20internet%20tablet%0A%09client&In-Reply-To=%3C4000a84f0812030724r4dc210aen89f710333b0fabfe%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Registration problem with internet tablet	client">ritesh.kalle at gmail.com
+       </A><BR>
+    <I>Wed Dec  3 16:24:28 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004899.html">[OpenIMSCore-Users] Registration problem with internet tablet client
+</A></li>
+        <LI>Next message: <A HREF="004900.html">[OpenIMSCore-Users] Disappearing IPsec security associations
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4914">[ date ]</a>
+              <a href="thread.html#4914">[ thread ]</a>
+              <a href="subject.html#4914">[ subject ]</a>
+              <a href="author.html#4914">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+
+Well I have not done anything really special to get this work..but it took a
+lot of time for me to locate why N810 was not getting registered. The
+problem is Nokia N810 uses Sofia SIP Stack and it is not really a IMS
+client.
+
+I found that it does not insert EXPIRES field in the REGISTER message like
+OpenIClite/ other clients use. Actually in sip.c file within
+ser_ims/modules/scscf you have a method int cscf_get_max_expires(struct
+sip_msg *msg)
+/**
+ * Returns the expires value from the message.
+ * First it searches into the Expires header and if not found it also looks
+ * into the expires parameter in the contact header
+ * @param msg - the SIP message
+ * @returns the value of the expire or the default 3600 if none found
+ */
+Though it says it returns 3600 default under this case it was not doing for
+me.
+
+I ended up writing an exception for this useragent there...though I am not
+sure whether that would be the most correct thing to do...;) At a later
+point I will ask one of the students here to alter the SIP client on the
+device.
+
+So now my function looks like this
+int cscf_get_max_expires(struct sip_msg *msg)
+{
+    unsigned int exp;
+    int max_expires = -1;
+    struct hdr_field *h;
+    contact_t *c;
+       str useragent;
+    /*first search in Expires header */
+    max_expires = cscf_get_expires_hdr(msg);
+    useragent=cscf_get_user_agent(msg);
+    cscf_parse_contacts(msg);
+    for(h=msg-&gt;contact;h;h=h-&gt;next){
+        if (h-&gt;type==HDR_CONTACT_T &amp;&amp; h-&gt;parsed) {
+            for(c=((contact_body_t *) h-&gt;parsed)-&gt;contacts;c;c=c-&gt;next){
+                if(c-&gt;expires){
+                    if (!str2int(&amp;(c-&gt;expires-&gt;body), (unsigned int*)&amp;exp)
+&amp;&amp; (int)exp&gt;max_expires) max_expires = exp;
+                }
+            }
+        }
+    }
+
+/*-------------Added the following logic to detect the UA to be
+Telepathy-SofiaSIP which from Nokia on Maemo Platform...................*/
+    if ((strncmp(useragent.s,&quot;Telepathy-SofiaSIP&quot;,9)==0)&amp;&amp; max_expires!=0)
+                max_expires = 55555;//No. is not special ;)
+        LOG(L_INFO,&quot;DBG:&quot;M_NAME&quot;:UA Name
+&lt;%.*s&gt;\n&quot;,useragent.len,useragent.s);
+        LOG(L_INFO,&quot;DBG:&quot;M_NAME&quot;:cscf_get_max_expires: &lt;%d&gt;
+\n&quot;,max_expires);//To ensure its doing what it is supposed to do
+/*.............Will need to remove once client is stabilized........*/
+    return max_expires;
+}
+
+
+The method is called from registrar.c file
+
+Let me know if there are better ways...I dont have much experience on this.
+I am able to IM, voice and video call through this. Regarding settings on
+N810, I can write separately.
+
+With Regards
+Ritesh
+On Wed, Dec 3, 2008 at 9:38 AM, Dragos Vingarzan &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+
+&gt;<i> Hi Ritesh,
+</I>&gt;<i>
+</I>&gt;<i> could you maybe contribute your patch back? Maybe we can add a FAQ for how
+</I>&gt;<i> to use the OpenIMSCore with the N810... or maybe a workaround fix integrated
+</I>&gt;<i> in the S-CSCF...
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> ritesh kalle wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Yes, since this was my first time I didnot realize that. Next time I will
+</I>&gt;&gt;<i> post with the pcap dump. However I could solve the present problem. It is
+</I>&gt;&gt;<i> with a section of the registrar.c code where it checks EXPIRES&gt;0. However
+</I>&gt;&gt;<i> this device doesn't add any EXPIRES in the sent digest. So the registrar
+</I>&gt;&gt;<i> removes all users !
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks and Regards
+</I>&gt;&gt;<i> Ritesh
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Wed, Nov 19, 2008 at 10:43 AM, Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&lt;mailto:
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&gt;&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>    Hi Ritesh!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>    &gt; I am resending the trace file in txt format. Kindly look into
+</I>&gt;&gt;<i>    the same
+</I>&gt;&gt;<i>    &gt; and provide inputs.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>    A Wireshark/tcpdump based tracefile makes it more easy to analyze.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>    Franz
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20081203/0dc17f68/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20081203/0dc17f68/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004899.html">[OpenIMSCore-Users] Registration problem with internet tablet client
+</A></li>
+	<LI>Next message: <A HREF="004900.html">[OpenIMSCore-Users] Disappearing IPsec security associations
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4914">[ date ]</a>
+              <a href="thread.html#4914">[ thread ]</a>
+              <a href="subject.html#4914">[ subject ]</a>
+              <a href="author.html#4914">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

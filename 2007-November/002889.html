@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem changing location of S-CSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20changing%20location%20of%20S-CSCF&In-Reply-To=%3C4731B52D.8070609%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002886.html">
+   <LINK REL="Next"  HREF="002890.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem changing location of S-CSCF</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20changing%20location%20of%20S-CSCF&In-Reply-To=%3C4731B52D.8070609%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Problem changing location of S-CSCF">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Nov  7 13:53:01 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002886.html">[OpenIMSCore-Users] Problem changing location of S-CSCF
+</A></li>
+        <LI>Next message: <A HREF="002890.html">[OpenIMSCore-Users] Problem changing location of S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2889">[ date ]</a>
+              <a href="thread.html#2889">[ thread ]</a>
+              <a href="subject.html#2889">[ subject ]</a>
+              <a href="author.html#2889">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Pedro,
+
+Each user can have a set of mandatory and optional capabilities
+assigned. This is saved on the HSS, where the user profile is stored.
+
+Then the I-CSCF has knowledge about the network topology in the form of
+a table of S-CSCFs and each with the capabilities that it has.
+
+When doing an UAR or LIR for unregistered users, the HSS can send the
+capabilities set for that user, that were stored on the HSS. From this
+set and the internal network topology information, the I-CSCF can create
+a list of ordered S-CSCFs to be contacted in order until one handles the
+request. Obviously, this list contains only S-CSCFs that satisfy all the
+mandatory capabilities and then order by the number of optional
+capabilities supported.
+
+Extra, the HSS can store for a user a preferred HSS. This will be placed
+by the I-CSCF at the top of the list. Also, the S-CSCF saves in SAR the
+S-CSCF assigned. This will have of course, the highest priority in the
+list in any case.
+
+This last preferred HSS feature could be used for example to do a
+load-balancing between S-CSCFs, coordinated by the HSS, which knows all
+the user-S-CSCF associations valid at the moment. Or simply to force the
+use of certain S-CSCFs for certain users in a proprietary capabilities
+selection...
+
+If the user does not have capabilities or preferred S-CSCF associated,
+then the choice is all up to the I-CSCF and the S-CSCF list will contain
+all the provisioned S-CSCFs in the icscf db. There is no load-balancing
+mechanism implemented at the moment, so the first one will be quite
+loaded, until it can no longer respond in a timely manner.
+
+The I-CSCF needs the network topology information for exactly the case
+above. For example, if the HSS does not care at all about the network
+topology, the I-CSCF will need to choose an S-CSCF from a list.
+
+Yes, the I-CSCF can receive the preferred S-CSCF in the UAA/LIA, like
+the capabilities set.
+
+-Dragos
+
+Pedro Antonio Vico Solano wrote:
+&gt;<i>
+</I>&gt;<i> Hello Dragos,
+</I>&gt;<i>
+</I>&gt;<i> Just some questions regarding my previous one:
+</I>&gt;<i>
+</I>&gt;<i> The relation between 'capabilities set' received from HSS and
+</I>&gt;<i> 'S-CSCFs' resides in icscf database, doesn't it?
+</I>&gt;<i>
+</I>&gt;<i> If yes, what is the function of &quot;preferred scscf&quot; in HSS then?
+</I>&gt;<i>
+</I>&gt;<i> What happens if the IMSU doesn't have a 'capabities set' or a
+</I>&gt;<i> 'preferred scscf' associated?
+</I>&gt;<i>
+</I>&gt;<i> Can the I-CSCF work without a database connection? Why?
+</I>&gt;<i>
+</I>&gt;<i> Can the I-CSCF recibe the list of 'preferred S-CSCFs' from HSS in an
+</I>&gt;<i> independent way from its database?
+</I>&gt;<i>
+</I>&gt;<i> Best regards
+</I>&gt;<i> Pedro
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> *Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;*
+</I>&gt;<i>
+</I>&gt;<i> 06/11/2007 15:38
+</I>&gt;<i>
+</I>&gt;<i> 	
+</I>&gt;<i> Para
+</I>&gt;<i> 	Pedro Antonio Vico Solano &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pvsolano at amper.es</A>&gt;
+</I>&gt;<i> cc
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Asunto
+</I>&gt;<i> 	Re: [OpenIMSCore-Users] Problem changing location of S-CSCF
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> You have missed the icscf database probably. There you have the S-CSCF
+</I>&gt;<i> network topology.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Pedro Antonio Vico Solano wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hello again,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I'm trying to separate the location of S-CSCF from the HSS and
+</I>&gt;<i> &gt; I/P-CSCF. Thus I've changed the &quot;Preferred S-CSCF Set&quot; on HSS for all
+</I>&gt;<i> &gt; user to a new server called &quot;scscf*1*.open-ims.test&quot;. Its address is
+</I>&gt;<i> &gt; also included on DNS.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The problem is that when a users registers itself, the I-CSCF gets the
+</I>&gt;<i> &gt; old S-CSCF name (scscf.open-ims.test) or none on the UAA response. The
+</I>&gt;<i> &gt; first UAA does not include any server-name and following responses
+</I>&gt;<i> &gt; include old server. Anyway I think I-CSCF is getting the server name
+</I>&gt;<i> &gt; from the icscf database.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I attach you the image from HSS and a capture.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Maybe I've missed something &#191;?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks in advance.
+</I>&gt;<i> &gt; Pedro
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; First try on I-CSCF:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  3(31338) ERR:I-CSCF:cscf_get_private_identity: Message does not
+</I>&gt;<i> &gt; contain Authorization header.
+</I>&gt;<i> &gt;  3(31338) INF:I-CSCF:cscf_get_private_identity: Falling back to
+</I>&gt;<i> &gt; private_id=stripped(public_id)
+</I>&gt;<i> &gt; -&gt; Message did not contain a valid Authorization Header!!! This
+</I>&gt;<i> &gt; fallback is deprecated outside Early-IMS or NASS-Bundled!
+</I>&gt;<i> &gt; 18(31378) DBG:sm_process(): Peer hss.open-ims.test      State R_Open  
+</I>&gt;<i> &gt;  Event R_Rcv_Message
+</I>&gt;<i> &gt;  3(31338) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> &gt;  3(31338) INFO:I-CSCF:*Cx_get_server_name: Failed finding avp*
+</I>&gt;<i> &gt;  3(31338) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf.open-ims.test:6060&gt;
+</I>&gt;<i> &gt;  3(31338) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf1.open-ims.test:6060&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Second try on S-CSCF:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 18(31378) DBG:sm_process(): Peer hss.open-ims.test      State R_Open  
+</I>&gt;<i> &gt;  Event R_Rcv_Message
+</I>&gt;<i> &gt;  3(31338) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+</I>&gt;<i> &gt;  3(31338) INFO:I-CSCF:*Cx_get_capabilities: Failed finding avp*
+</I>&gt;<i> &gt;  3(31338) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf.open-ims.test:6060&gt;
+</I>&gt;<i> &gt;  3(31338) INFO:I-CSCF:new_scscf_entry:  &lt;sip:scscf1.open-ims.test:6060&gt;
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;  
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002886.html">[OpenIMSCore-Users] Problem changing location of S-CSCF
+</A></li>
+	<LI>Next message: <A HREF="002890.html">[OpenIMSCore-Users] Problem changing location of S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2889">[ date ]</a>
+              <a href="thread.html#2889">[ thread ]</a>
+              <a href="subject.html#2889">[ subject ]</a>
+              <a href="author.html#2889">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

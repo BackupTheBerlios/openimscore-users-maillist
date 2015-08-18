@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ACK forwarded to I-CSCF:5060?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ACK%20forwarded%20to%20I-CSCF%3A5060%3F&In-Reply-To=%3C46E512AB.7090703%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002574.html">
+   <LINK REL="Next"  HREF="002614.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ACK forwarded to I-CSCF:5060?</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ACK%20forwarded%20to%20I-CSCF%3A5060%3F&In-Reply-To=%3C46E512AB.7090703%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] ACK forwarded to I-CSCF:5060?">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Sep 10 11:47:23 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002574.html">[OpenIMSCore-Users] ACK forwarded to I-CSCF:5060?
+</A></li>
+        <LI>Next message: <A HREF="002614.html">[OpenIMSCore-Users] ACK forwarded to I-CSCF:5060?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2609">[ date ]</a>
+              <a href="thread.html#2609">[ thread ]</a>
+              <a href="subject.html#2609">[ subject ]</a>
+              <a href="author.html#2609">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello campo,
+
+That was not a bug, but a feature :).
+
+The filters should only be checked for initial requests (INVITE,
+MESSAGE, SUBSCRIBE, PUBLISH,etc) and not subsequent ones (ACK,
+BYE,NOTIFY, PRACK, UPDATE,etc). If you want your AS to see these
+requests, you should trigger on INVITE as you did and then Record-Route.
+Every subsequent request will have to include a Route header that will
+include the AS recorded URI.
+
+-Dragos
+
+
+campo wrote:
+&gt;<i> Update:
+</I>&gt;<i>
+</I>&gt;<i> It seems that ACKs are never routed to AS. The function
+</I>&gt;<i> 'ISC_match_filter' that is called
+</I>&gt;<i> in scscf.cfg is never called for ACK so they never get sent to AS.
+</I>&gt;<i>
+</I>&gt;<i> I've changed the S-CSCF file to include a filter for ACK coming in
+</I>&gt;<i> from user.
+</I>&gt;<i> I've also removed an 'if' loop that blocks ACKs being filtered in
+</I>&gt;<i> 'ser_ims/modules/isc/sip.c', line 114.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On 8/31/07, * campo* &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">robcampo at gmail.com</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">robcampo at gmail.com</A>&gt;&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     Hi all,
+</I>&gt;<i>
+</I>&gt;<i>     I have an AS set up to work with OpenIMSCore. Using two clients I
+</I>&gt;<i>     can register correctly, i.e. trigger point works correctly.
+</I>&gt;<i>     I have been getting problems when trying to connect a call.
+</I>&gt;<i>
+</I>&gt;<i>     INVITEs work correctly and I get a RINGING status. When the callee
+</I>&gt;<i>     accepts the call a 200 OK is sent to caller.
+</I>&gt;<i>     The caller responds with an ACK but the ACK is eventually sent to
+</I>&gt;<i>     I-CSCF (5060) instead of AS (7060).
+</I>&gt;<i>
+</I>&gt;<i>     ACK route:
+</I>&gt;<i>     caller   -&gt;   P-CSCF   -&gt;    S-CSCF     -&gt;     I-CSCF
+</I>&gt;<i>
+</I>&gt;<i>     I've attached a wireshark trace. Ports are as usual, AS is located
+</I>&gt;<i>     at 7060.
+</I>&gt;<i>
+</I>&gt;<i>     Any ideas?
+</I>&gt;<i>     Thanks
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002574.html">[OpenIMSCore-Users] ACK forwarded to I-CSCF:5060?
+</A></li>
+	<LI>Next message: <A HREF="002614.html">[OpenIMSCore-Users] ACK forwarded to I-CSCF:5060?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2609">[ date ]</a>
+              <a href="thread.html#2609">[ thread ]</a>
+              <a href="subject.html#2609">[ subject ]</a>
+              <a href="author.html#2609">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Changing FHoSS listening interface: db problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Changing%20FHoSS%20listening%20interface%3A%20db%20problems&In-Reply-To=%3C5D2516775DB7B940825E484E50FC055F0BD566%40MILVB542A.icn.siemens.it%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001836.html">
+   <LINK REL="Next"  HREF="001834.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Changing FHoSS listening interface: db problems</H1>
+    <B>Cavalera Claudio</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Changing%20FHoSS%20listening%20interface%3A%20db%20problems&In-Reply-To=%3C5D2516775DB7B940825E484E50FC055F0BD566%40MILVB542A.icn.siemens.it%3E"
+       TITLE="[OpenIMSCore-Users] Changing FHoSS listening interface: db problems">claudio.cavalera at nsn.com
+       </A><BR>
+    <I>Wed May 23 10:58:24 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001836.html">[OpenIMSCore-Users] AKA authentication - HSS and SCSF
+</A></li>
+        <LI>Next message: <A HREF="001834.html">[OpenIMSCore-Users] Changing FHoSS listening interface: db	problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1823">[ date ]</a>
+              <a href="thread.html#1823">[ thread ]</a>
+              <a href="subject.html#1823">[ subject ]</a>
+              <a href="author.html#1823">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hello!
+I've managed to set up an OpenIMS configuration which works with X-lite and Presence Server OpenSER.
+Now I'm trying to change the default configuration (Domain and IP Addresses).
+Besides setting up proper DNS entries (at least I suppose they are :-)
+I've done the following:
+1) executed from /opt/OpenIMSCore directory ./configurator.sh without parameters
+2) executed from /opt/OpenIMSCore directory ./configurator.sh FHoSS/deploy/hssdb.sql FHoSS/deploy/hss.properties
+3) executed mysql -u root -p -h localhost &lt; FHoSS/scripts/hssdb.sql to overwrite the DB (I also did this sometime ago when following openims installation guidelines)
+4) modified the file FHoSS/deploy/hss.properties with the line host=172.31.77.49 insted of host=localhost (otherwise FHoSS was not listening on external network interface)
+
+
+Is this procedure correct?
+
+
+Now the problem is that when I log in in the FHoSS web interface with hssAdmin / hss I cannot find the data anymore.
+For example when searching IMS Subscription I get:
+No data found.
+
+I've also tried to rerun 
+mysql -u root -p -h localhost &lt; ser_ims/cfg/icscf.sql
+mysql -u root -p -h localhost &lt; FHoSS/scripts/userdata.sql
+but without success.
+
+
+I get this warnings when starting FHoSS:
+
+2007-05-23 11:01:03,758 WARN  org.apache.catalina.connector.MapperListener - registerEngine Unknown default host: localhost
+
+2007-05-23 11:01:07,735 WARN  org.hibernate.impl.SessionFactoryObjectFactory - addInstance InitialContext did not implement EventContext
+
+
+Any hints? :-)
+
+Regards,
+Claudio
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070523/f1d5ddf6/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070523/f1d5ddf6/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001836.html">[OpenIMSCore-Users] AKA authentication - HSS and SCSF
+</A></li>
+	<LI>Next message: <A HREF="001834.html">[OpenIMSCore-Users] Changing FHoSS listening interface: db	problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1823">[ date ]</a>
+              <a href="thread.html#1823">[ thread ]</a>
+              <a href="subject.html#1823">[ subject ]</a>
+              <a href="author.html#1823">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

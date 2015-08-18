@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] OpenIMSCore + OpenSER as Presence AS: got 405	&quot;Invalid Method&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore%20%2B%20OpenSER%20as%20Presence%20AS%3A%20got%20405%0A%09%22Invalid%20Method%22&In-Reply-To=%3C4391.84.79.165.156.1192802728.squirrel%40jungla.dit.upm.es%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002840.html">
+   <LINK REL="Next"  HREF="002786.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] OpenIMSCore + OpenSER as Presence AS: got 405	&quot;Invalid Method&quot;</H1>
+    <B>Alvaro Mari Diego</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20OpenIMSCore%20%2B%20OpenSER%20as%20Presence%20AS%3A%20got%20405%0A%09%22Invalid%20Method%22&In-Reply-To=%3C4391.84.79.165.156.1192802728.squirrel%40jungla.dit.upm.es%3E"
+       TITLE="[OpenIMSCore-Users] OpenIMSCore + OpenSER as Presence AS: got 405	&quot;Invalid Method&quot;">amdiego at dit.upm.es
+       </A><BR>
+    <I>Fri Oct 19 16:05:28 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002840.html">[OpenIMSCore-Users] Problem with Aplication Service
+</A></li>
+        <LI>Next message: <A HREF="002786.html">[OpenIMSCore-Users] OpenIMSCore + OpenSER as Presence AS: got 405	&quot;Invalid Method&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2785">[ date ]</a>
+              <a href="thread.html#2785">[ thread ]</a>
+              <a href="subject.html#2785">[ subject ]</a>
+              <a href="author.html#2785">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi everyone!
+
+I've set up the OpenIMSCore (in the address 138.4.7.163 and domain
+amd-openims.test), and recently I added a Presence server listening on
+138.4.7.163:5080 by setting up OpenSER with Presence module in the same
+machine.
+
+I've configurated OpenSER Presence Module as it's told in the OpenSER doc
+wiki: <A HREF="http://www.openser.org/dokuwiki/doku.php/presence:configuration-file">http://www.openser.org/dokuwiki/doku.php/presence:configuration-file</A>
+
+Finally, I changed the IFC config in the HoSS webUI, by pointing
+sip:138.4.7.163:5080 as AS address (OpenSER address), and unasigning the
+default Trigger Point, so any message will be forwarded to the OpenSER AS
+(as the own OpenSER server handles Presence triggering only when SUBSCRIBE
+or PUBLISH method is found).
+
+The result is, that the client (X-lite) registers successfully, and then
+sends a serie of SIP Presence request that are forwarded to the OpenSER AS
+as expected. However, the AS re-forward the request back to the S-CSF and
+this back to the P-CSCF, which generates a 405 Invalid Method response to
+the AS via S-CSCF. I wonder what's going on and who's the cause of the
+issue. Seems that it's not CSCF's fault, but I dont know why AS could do
+this.
+
+Find attached a couple of Wireshark captures in the local network (i.e.,
+SIP messanges between PCSCF, ICSCF, SCSCF, and OpenSER Presence AS), the
+first one when the X-Lite client registers, and the second one when, once
+registered, the X-lite client changes his status from busy to on-line.
+Filter them with sip protocol to be more clearer to read.
+
+P-CSCF got port 4060, SCSCF got 6060 and OpenSER Presence AS got 5080.
+
+Any help or idea would be very useful! Thanks!
+
+Cheers,
+
+-- 
+&#193;lvaro Mar&#237;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: presence_init.cap
+Type: application/octet-stream
+Size: 222425 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071019/527ea943/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071019/527ea943/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: presence_statechange.cap
+Type: application/octet-stream
+Size: 34844 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071019/527ea943/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071019/527ea943/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002840.html">[OpenIMSCore-Users] Problem with Aplication Service
+</A></li>
+	<LI>Next message: <A HREF="002786.html">[OpenIMSCore-Users] OpenIMSCore + OpenSER as Presence AS: got 405	&quot;Invalid Method&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2785">[ date ]</a>
+              <a href="thread.html#2785">[ thread ]</a>
+              <a href="subject.html#2785">[ subject ]</a>
+              <a href="author.html#2785">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

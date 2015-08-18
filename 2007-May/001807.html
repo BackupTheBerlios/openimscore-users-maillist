@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] REGISTER nonce value
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20REGISTER%20nonce%20value&In-Reply-To=%3C464CC79E.1060009%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001804.html">
+   <LINK REL="Next"  HREF="001848.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] REGISTER nonce value</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20REGISTER%20nonce%20value&In-Reply-To=%3C464CC79E.1060009%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] REGISTER nonce value">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu May 17 23:22:38 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001804.html">[OpenIMSCore-Users] REGISTER nonce value
+</A></li>
+        <LI>Next message: <A HREF="001848.html">[OpenIMSCore-Users] REGISTER nonce value
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1807">[ date ]</a>
+              <a href="thread.html#1807">[ thread ]</a>
+              <a href="subject.html#1807">[ subject ]</a>
+              <a href="author.html#1807">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I looked at the SIP RFC and the space is legal there because the
+challenge is defined as:
+
+challenge           =  (&quot;Digest&quot; LWS digest-cln *(COMMA digest-cln))
+                       / other-challenge
+other-challenge     =  auth-scheme LWS auth-param
+                       *(COMMA auth-param)
+digest-cln          =  realm / domain / nonce
+                        / opaque / stale / algorithm
+                        / qop-options / auth-param
+
+
+So there is that COMMA between different auth-param.
+
+and COMMA is not actually just &quot;,&quot; as it might seem at the first look, but it is defined as:
+
+COMMA   =  SWS &quot;,&quot; SWS ; comma
+
+And SWS (separator white space?) is:
+
+LWS  =  [*WSP CRLF] 1*WSP ; linear whitespace
+SWS  =  [LWS] ; sep whitespace
+
+
+
+... so maybe the Huawei guys would be interested in fixing their stack then as a LOT of other implementations do not have an issue with this.
+
+-Dragos
+
+
+Tran Minh Phuong Anh wrote:
+&gt;<i> Hello Dragos,
+</I>&gt;<i>
+</I>&gt;<i> I found the cause of the problem (why E61 didn't send 2nd REGISTER).
+</I>&gt;<i>
+</I>&gt;<i> It is nothing to do with base16 or base64, both are accepted by E61.
+</I>&gt;<i>
+</I>&gt;<i> In modules/scscf/registration.c, I removed the space before nonce and
+</I>&gt;<i> algorithm and it works. I haven't searched whether which one is the
+</I>&gt;<i> standard, though.
+</I>&gt;<i>
+</I>&gt;<i> By the way, thank you for your help, I suspected the encoding problem
+</I>&gt;<i> and didn't move on.
+</I>&gt;<i>
+</I>&gt;<i> Phuong Anh
+</I>&gt;<i>
+</I>&gt;<i> On 5/17/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+</I>&gt;&gt;<i> Then the MD5 should be encrypted in base16 by specs. If you can't really
+</I>&gt;&gt;<i> convince the authors of that client to change it, you could modify the
+</I>&gt;&gt;<i> code to use base64. You have base64 code in
+</I>&gt;&gt;<i> ser_ims/modules/scscf/conversion.c.
+</I>&gt;<i>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001804.html">[OpenIMSCore-Users] REGISTER nonce value
+</A></li>
+	<LI>Next message: <A HREF="001848.html">[OpenIMSCore-Users] REGISTER nonce value
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1807">[ date ]</a>
+              <a href="thread.html#1807">[ thread ]</a>
+              <a href="subject.html#1807">[ subject ]</a>
+              <a href="author.html#1807">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

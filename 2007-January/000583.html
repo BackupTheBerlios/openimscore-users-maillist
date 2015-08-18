@@ -1,0 +1,1227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ICSCF - HSS - UAR - log4j logs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ICSCF%20-%20HSS%20-%20UAR%20-%20log4j%20logs&In-Reply-To=%3C45BE5FCF.50003%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000578.html">
+   <LINK REL="Next"  HREF="000602.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ICSCF - HSS - UAR - log4j logs</H1>
+    <B>Adrian-Daniel Popescu</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ICSCF%20-%20HSS%20-%20UAR%20-%20log4j%20logs&In-Reply-To=%3C45BE5FCF.50003%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] ICSCF - HSS - UAR - log4j logs">adrian-daniel.popescu at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Jan 29 21:57:51 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000578.html">[OpenIMSCore-Users] ICSCF - HSS - UAR - log4j logs
+</A></li>
+        <LI>Next message: <A HREF="000602.html">[OpenIMSCore-Users] ICSCF - HSS - UAR - log4j logs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#583">[ date ]</a>
+              <a href="thread.html#583">[ thread ]</a>
+              <a href="subject.html#583">[ subject ]</a>
+              <a href="author.html#583">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+
+Hi Patil,
+
+&gt;<i> Hi Peter,
+</I>&gt;<i> Since HSS and I/SCSCF are running on the same solaris
+</I>&gt;<i> server I am not able to capture Diameter messages
+</I>&gt;<i> using ethereal. The following is the output on icscf
+</I>&gt;<i> window. As you can see from second line Diameter
+</I>&gt;<i> connection is up between icscf and HSS. I have
+</I>&gt;<i> attached cdp/diameter_api.c and cdp/receiver.c to help
+</I>&gt;<i> you with my INFO messages.
+</I>
+Can't you somehow capture the traffic for your scenario? It will really
+help us to figure out your problem. I do not understand the reason why
+you cannot trace it :( Can you explain more, maybe I can help. The logs
+from the screen are not enough for me to figure out exactly your problem :(
+
+
+&gt;<i> Unfortunately there is no output on HSS window after the normal Type
+</I>'exit' to
+&gt;<i> exit message. Also, I could not find hss.server.log
+</I>&gt;<i> file. I found the following warnings when HSS starts.
+</I>&gt;<i> log4j:WARN No appenders could be found for logger
+</I>&gt;<i> (org.apache.catalina.loader.WebappClassLoader).
+</I>&gt;<i> log4j:WARN Please initialize the log4j system
+</I>&gt;<i> properly.
+</I>&gt;<i> Is there any way to change the debug level for HSS?
+</I>
+This problem was solved in the last revision of FHoSS, the
+&quot;log4j.properties&quot; file wasn't in the classpath, so an implicit
+configuration was used and not all of the debug information was shown.
+This was fixed, and if you update your HSS, you'll find
+&quot;hss.activities.log&quot; and &quot;hss.server.log&quot; in the root of your deployment
+directory. (after starting FHoSS) The level of logging is implicitly
+DEBUG and can be changed from log4.properties which is also situated in
+the root of the deployment directory.
+
+Cheers,
+Adrian
+
+Sudhakar Patil wrote:
+&gt;<i> Hi Peter,
+</I>&gt;<i> Since HSS and I/SCSCF are running on the same solaris
+</I>&gt;<i> server I am not able to capture Diameter messages
+</I>&gt;<i> using ethereal. The following is the output on icscf
+</I>&gt;<i> window. As you can see from second line Diameter
+</I>&gt;<i> connection is up between icscf and HSS. I have
+</I>&gt;<i> attached cdp/diameter_api.c and cdp/receiver.c to help
+</I>&gt;<i> you with my INFO messages. Unfortunately there is no
+</I>&gt;<i> output on HSS window after the normal Type 'exit' to
+</I>&gt;<i> exit message. Also, I could not find hss.server.log
+</I>&gt;<i> file. I found the following warnings when HSS starts.
+</I>&gt;<i> log4j:WARN No appenders could be found for logger
+</I>&gt;<i> (org.apache.catalina.loader.WebappClassLoader).
+</I>&gt;<i> log4j:WARN Please initialize the log4j system
+</I>&gt;<i> properly.
+</I>&gt;<i> Is there any way to change the debug level for HSS?
+</I>&gt;<i> 
+</I>&gt;<i> ICSCF output
+</I>&gt;<i> ----------
+</I>&gt;<i> 
+</I>&gt;<i> 17(8672) ------------------
+</I>&gt;<i> 17(8672) --- Peer List: ---
+</I>&gt;<i> 17(8672)  S[R_Open] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i> 17(8672) ------------------
+</I>&gt;<i>  1(8649) After parse_msg...
+</I>&gt;<i>  1(8649) After sanity checks...
+</I>&gt;<i>  1(8649) INFO: In CxUAR ...
+</I>&gt;<i>  1(8649) INFO: In CxUAR before send...
+</I>&gt;<i>  1(8649) Diameter_api before calling peer_send_msg
+</I>&gt;<i>  1(8649) INFO:peer_send_msg(): Pipe push
+</I>&gt;<i> [ffffffff78b0fae8]
+</I>&gt;<i> 18(8720) INFO:select_recv(): There is something on the
+</I>&gt;<i> pipe
+</I>&gt;<i> 18(8720) INFO:select_recv(): Pipe says
+</I>&gt;<i> [ffffffff78b0fae8] 8
+</I>&gt;<i>  3(8652) After parse_msg...
+</I>&gt;<i>  3(8652) After sanity checks...
+</I>&gt;<i>  3(8652) INFO: In CxUAR ...
+</I>&gt;<i>  3(8652) INFO: In CxUAR before send...
+</I>&gt;<i>  3(8652) Diameter_api before calling peer_send_msg
+</I>&gt;<i>  3(8652) INFO:peer_send_msg(): Pipe push
+</I>&gt;<i> [ffffffff78b0fae8]
+</I>&gt;<i> 18(8720) INFO:select_recv(): There is something on the
+</I>&gt;<i> pipe
+</I>&gt;<i> 18(8720) INFO:select_recv(): Pipe says
+</I>&gt;<i> [ffffffff78b0fae8] 8
+</I>&gt;<i> 17(8672) --- Peer List: ---
+</I>&gt;<i> 17(8672)  S[R_Open] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i> 17(8672) ------------------
+</I>&gt;<i>  4(8653) After parse_msg...
+</I>&gt;<i>  4(8653) After sanity checks...
+</I>&gt;<i>  4(8653) INFO: In CxUAR ...
+</I>&gt;<i>  4(8653) INFO: In CxUAR before send...
+</I>&gt;<i>  4(8653) Diameter_api before calling peer_send_msg
+</I>&gt;<i>  4(8653) INFO:peer_send_msg(): Pipe push
+</I>&gt;<i> [ffffffff78b0fae8]
+</I>&gt;<i> 18(8720) INFO:select_recv(): There is something on the
+</I>&gt;<i> pipe
+</I>&gt;<i> 18(8720) INFO:select_recv(): Pipe says
+</I>&gt;<i> [ffffffff78b0fae8] 8
+</I>&gt;<i>  2(8650) After parse_msg...
+</I>&gt;<i>  2(8650) After sanity checks...
+</I>&gt;<i>  2(8650) INFO: In CxUAR ...
+</I>&gt;<i>  2(8650) INFO: In CxUAR before send...
+</I>&gt;<i>  2(8650) Diameter_api before calling peer_send_msg
+</I>&gt;<i>  2(8650) INFO:peer_send_msg(): Pipe push
+</I>&gt;<i> [ffffffff78b0fae8]
+</I>&gt;<i> 18(8720) INFO:select_recv(): There is something on the
+</I>&gt;<i> pipe
+</I>&gt;<i> 18(8720) INFO:select_recv(): Pipe says
+</I>&gt;<i> [ffffffff78b0fae8] 8
+</I>&gt;<i> 17(8672) --- Peer List: ---
+</I>&gt;<i> 17(8672)  S[R_Open] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i> 17(8672) ------------------
+</I>&gt;<i> 18(8720) INFO:select_recv(): receive cnt 1
+</I>&gt;<i> 18(8720) INFO:select_recv(): receive cnt 19
+</I>&gt;<i> 18(8720) INFO:select_recv(): receive cnt 204
+</I>&gt;<i> 18(8720) INFO:receive_loop():[22] Recv message
+</I>&gt;<i> complete
+</I>&gt;<i> 18(8720) DBG:sm_process(): Peer hss.open-ims.test   
+</I>&gt;<i> State R_Open    Event R_Rcv_Message
+</I>&gt;<i> 18(8720) INFO:select_recv(): receive cnt 1
+</I>&gt;<i> 18(8720) INFO:select_recv(): receive cnt 19
+</I>&gt;<i> 18(8720) INFO:select_recv(): receive cnt 204
+</I>&gt;<i> 18(8720) INFO:receive_loop():[22] Recv message
+</I>&gt;<i> complete
+</I>&gt;<i> 18(8720) DBG:sm_process(): Peer hss.open-ims.test   
+</I>&gt;<i> State R_Open    Event R_Rcv_Message
+</I>&gt;<i> 18(8720) INFO:select_recv(): receive cnt 1
+</I>&gt;<i> 18(8720) INFO:select_recv(): receive cnt 19
+</I>&gt;<i> 18(8720) INFO:select_recv(): receive cnt 204
+</I>&gt;<i> 18(8720) INFO:receive_loop():[22] Recv message
+</I>&gt;<i> complete
+</I>&gt;<i> 18(8720) DBG:sm_process(): Peer hss.open-ims.test   
+</I>&gt;<i> State R_Open    Event R_Rcv_Message
+</I>&gt;<i> 18(8720) INFO:select_recv(): receive cnt 1
+</I>&gt;<i> 18(8720) INFO:select_recv(): receive cnt 19
+</I>&gt;<i> 18(8720) INFO:select_recv(): receive cnt 204
+</I>&gt;<i> 18(8720) INFO:receive_loop():[22] Recv message
+</I>&gt;<i> complete
+</I>&gt;<i> 18(8720) DBG:sm_process(): Peer hss.open-ims.test   
+</I>&gt;<i> State R_Open    Event R_Rcv_Message
+</I>&gt;<i>  3(8652) Diameter_api received null pointer 1
+</I>&gt;<i>  3(8652) Diameter_api returning answer
+</I>&gt;<i>  3(8652) Diameter_api received null pointer
+</I>&gt;<i>  3(8652) INFO: In CxUAR got uaa...
+</I>&gt;<i>  3(8652) ERR:I-CSCF:I_UAR: Error creating/sending UAR
+</I>&gt;<i> or UAR time-out
+</I>&gt;<i>  1(8649) Diameter_api received null pointer 1
+</I>&gt;<i>  1(8649) Diameter_api returning answer
+</I>&gt;<i>  1(8649) Diameter_api received null pointer
+</I>&gt;<i>  1(8649) INFO: In CxUAR got uaa...
+</I>&gt;<i>  1(8649) ERR:I-CSCF:I_UAR: Error creating/sending UAR
+</I>&gt;<i> or UAR time-out
+</I>&gt;<i>  1(8649) ERROR: _reply_light: can't generate 480 reply
+</I>&gt;<i> when a final 480 was sent out
+</I>&gt;<i> 17(8672) --- Peer List: ---
+</I>&gt;<i> 17(8672)  S[R_Open] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i> 17(8672) ------------------
+</I>&gt;<i>  4(8653) Diameter_api received null pointer 1
+</I>&gt;<i>  4(8653) Diameter_api returning answer
+</I>&gt;<i>  4(8653) Diameter_api received null pointer
+</I>&gt;<i>  4(8653) INFO: In CxUAR got uaa...
+</I>&gt;<i>  4(8653) ERR:I-CSCF:I_UAR: Error creating/sending UAR
+</I>&gt;<i> or UAR time-out
+</I>&gt;<i>  4(8653) ERROR: _reply_light: can't generate 480 reply
+</I>&gt;<i> when a final 480 was sent out
+</I>&gt;<i>  2(8650) Diameter_api received null pointer 1
+</I>&gt;<i>  2(8650) Diameter_api returning answer
+</I>&gt;<i>  2(8650) Diameter_api received null pointer
+</I>&gt;<i>  2(8650) INFO: In CxUAR got uaa...
+</I>&gt;<i>  2(8650) ERR:I-CSCF:I_UAR: Error creating/sending UAR
+</I>&gt;<i> or UAR time-out
+</I>&gt;<i>  2(8650) ERROR: _reply_light: can't generate 480 reply
+</I>&gt;<i> when a final 480 was sent out
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Regards,
+</I>&gt;<i> Sudhakar.
+</I>&gt;<i> 
+</I>&gt;<i> --- Peter Weik &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">weik at fokus.fraunhofer.de</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;&gt;<i> Hi Sudhakar,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> either there are the debugging messages on the
+</I>&gt;&gt;<i> screen directly after the
+</I>&gt;&gt;<i> startup of the FHoSS or there is a hss.server.log
+</I>&gt;&gt;<i> file that you can look
+</I>&gt;&gt;<i> into. 
+</I>&gt;&gt;<i> &gt;From that small post, I am guessing that the two
+</I>&gt;&gt;<i> Diameter peers are not
+</I>&gt;&gt;<i> connected, please post the trace of the Diameter
+</I>&gt;&gt;<i> messages to dig deeper
+</I>&gt;&gt;<i> here.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Peter
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Fri, 2007-01-26 at 09:49 -0800, Sudhakar Patil
+</I>&gt;&gt;<i> wrote:
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i> I am using the default FHoSS configuration files.
+</I>&gt;&gt;<i> Can
+</I>&gt;&gt;&gt;<i> any one please let me know where FHoSS creates
+</I>&gt;&gt;<i> logs? I
+</I>&gt;&gt;&gt;<i> guess it is using log4j but not sure where the log
+</I>&gt;&gt;&gt;<i> files are stored. 
+</I>&gt;&gt;&gt;<i> ICSCF is sending UAR to HSS and AAASendRecvMessage
+</I>&gt;&gt;&gt;<i> function in /module/cdp/diameter_api.c is getting
+</I>&gt;&gt;<i> a
+</I>&gt;&gt;&gt;<i> NULL message in response. Eventually I get  
+</I>&gt;&gt;&gt;<i> &quot;4(20274) ERR:I-CSCF:I_UAR: Error creating/sending
+</I>&gt;&gt;<i> UAR
+</I>&gt;&gt;&gt;<i> or UAR time-out&quot;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Not sure how to debug this. Any ponters please?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;<i> Sudhakar.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>
+</I>&gt;<i> ____________________________________________________________________________________
+</I>&gt;&gt;&gt;<i> Need a quick answer? Get one in minutes from
+</I>&gt;&gt;<i> people who know.
+</I>&gt;&gt;&gt;<i> Ask your question on www.Answers.yahoo.com
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> ____________________________________________________________________________________
+</I>&gt;<i> Bored stiff? Loosen up... 
+</I>&gt;<i> Download and play hundreds of games for free on Yahoo! Games.
+</I>&gt;<i> <A HREF="http://games.yahoo.com/games/front">http://games.yahoo.com/games/front</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * $Id: diameter_api.c 80 2007-01-02 15:09:41Z vingarzan $
+</I>&gt;<i>  *  
+</I>&gt;<i>  * Copyright (C) 2004-2006 FhG Fokus
+</I>&gt;<i>  *
+</I>&gt;<i>  * This file is part of Open IMS Core - an open source IMS CSCFs &amp; HSS
+</I>&gt;<i>  * implementation
+</I>&gt;<i>  *
+</I>&gt;<i>  * Open IMS Core is free software; you can redistribute it and/or modify
+</I>&gt;<i>  * it under the terms of the GNU General Public License as published by
+</I>&gt;<i>  * the Free Software Foundation; either version 2 of the License, or
+</I>&gt;<i>  * (at your option) any later version.
+</I>&gt;<i>  *
+</I>&gt;<i>  * For a license to use the Open IMS Core software under conditions
+</I>&gt;<i>  * other than those described here, or to purchase support for this
+</I>&gt;<i>  * software, please contact Fraunhofer FOKUS by e-mail at the following
+</I>&gt;<i>  * addresses:
+</I>&gt;<i>  *     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">info at open-ims.org</A>
+</I>&gt;<i>  *
+</I>&gt;<i>  * Open IMS Core is distributed in the hope that it will be useful,
+</I>&gt;<i>  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+</I>&gt;<i>  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+</I>&gt;<i>  * GNU General Public License for more details.
+</I>&gt;<i>  * 
+</I>&gt;<i>  * It has to be noted that this Open Source IMS Core System is not 
+</I>&gt;<i>  * intended to become or act as a product in a commercial context! Its 
+</I>&gt;<i>  * sole purpose is to provide an IMS core reference implementation for 
+</I>&gt;<i>  * IMS technology testing and IMS application prototyping for research 
+</I>&gt;<i>  * purposes, typically performed in IMS test-beds.
+</I>&gt;<i>  * 
+</I>&gt;<i>  * Users of the Open Source IMS Core System have to be aware that IMS
+</I>&gt;<i>  * technology may be subject of patents and licence terms, as being 
+</I>&gt;<i>  * specified within the various IMS-related IETF, ITU-T, ETSI, and 3GPP
+</I>&gt;<i>  * standards. Thus all Open IMS Core users have to take notice of this 
+</I>&gt;<i>  * fact and have to agree to check out carefully before installing, 
+</I>&gt;<i>  * using and extending the Open Source IMS Core System, if related 
+</I>&gt;<i>  * patents and licences may become applicable to the intended usage 
+</I>&gt;<i>  * context.  
+</I>&gt;<i>  *
+</I>&gt;<i>  * You should have received a copy of the GNU General Public License
+</I>&gt;<i>  * along with this program; if not, write to the Free Software
+</I>&gt;<i>  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+</I>&gt;<i>  * 
+</I>&gt;<i>  */
+</I>&gt;<i>  
+</I>&gt;<i> /**
+</I>&gt;<i>  * \file
+</I>&gt;<i>  * 
+</I>&gt;<i>  * CDiameterPeer - Diameter API interface
+</I>&gt;<i>  * 
+</I>&gt;<i>  *  \author Dragos Vingarzan vingarzan -at- fokus dot fraunhofer dot de
+</I>&gt;<i>  * 
+</I>&gt;<i>  */
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> #include &quot;diameter_api.h&quot;
+</I>&gt;<i> #include &quot;peer.h&quot;
+</I>&gt;<i> #include &quot;peermanager.h&quot;
+</I>&gt;<i> #include &quot;receiver.h&quot;
+</I>&gt;<i> #include &quot;transaction.h&quot;
+</I>&gt;<i> #include &quot;api_process.h&quot;
+</I>&gt;<i> 
+</I>&gt;<i> 				/* TRANSACTIONS */
+</I>&gt;<i> 				
+</I>&gt;<i> /**
+</I>&gt;<i>  * Create a AAATransaction for the given request.
+</I>&gt;<i>  * @param app_id - id of the request's application
+</I>&gt;<i>  * @param cmd_code - request's code
+</I>&gt;<i>  * @returns the AAATransaction*
+</I>&gt;<i>  */				
+</I>&gt;<i> AAATransaction *AAACreateTransaction(AAAApplicationId app_id,AAACommandCode cmd_code)
+</I>&gt;<i> {
+</I>&gt;<i> 	AAATransaction *t;
+</I>&gt;<i> 	t = shm_malloc(sizeof(AAATransaction));
+</I>&gt;<i> 	if (!t) return 0;
+</I>&gt;<i> 	memset(t,0,sizeof(AAATransaction));	
+</I>&gt;<i> 	t-&gt;application_id=app_id;
+</I>&gt;<i> 	t-&gt;command_code=cmd_code;			
+</I>&gt;<i> 	return t;
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * Free the memory allocated for the AAATransaction.
+</I>&gt;<i>  * @param trans - the AAATransaction to be deallocated
+</I>&gt;<i>  * @returns 1 on success, 0 on failure
+</I>&gt;<i>  */
+</I>&gt;<i> int AAADropTransaction(AAATransaction *trans)
+</I>&gt;<i> {
+</I>&gt;<i> 	if (!trans) return 0;
+</I>&gt;<i> //	LOG(L_ERR,&quot;\nCALLED HERE %d %d\n&quot;,trans-&gt;done,trans-&gt;with_callback);
+</I>&gt;<i> 	shm_free(trans);
+</I>&gt;<i> 	return 1;
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 				/* CALLBACKS */
+</I>&gt;<i> 
+</I>&gt;<i> extern handler_list *handlers; 		/**&lt; list of handlers */
+</I>&gt;<i> extern gen_lock_t *handlers_lock;	/**&lt; lock for list of handlers */
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * Add a handler function for incoming requests.
+</I>&gt;<i>  * @param f - the callback function
+</I>&gt;<i>  * @param param - generic parameter to be used when calling the callback functions
+</I>&gt;<i>  * @returns 1 on success, 0 on failure
+</I>&gt;<i>  */
+</I>&gt;<i> int AAAAddRequestHandler(AAARequestHandler_f *f,void *param)
+</I>&gt;<i> {
+</I>&gt;<i> 	handler *h = shm_malloc(sizeof(handler));
+</I>&gt;<i> 	if (!h) {
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERR:AAAAddRequestHandler: error allocating %d bytes in shm\n&quot;,
+</I>&gt;<i> 			sizeof(handler));
+</I>&gt;<i> 		return 0;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	h-&gt;type = REQUEST_HANDLER;
+</I>&gt;<i> 	h-&gt;handler.requestHandler = f;
+</I>&gt;<i> 	h-&gt;param = param;
+</I>&gt;<i> 	h-&gt;next = 0;
+</I>&gt;<i> 	lock_get(handlers_lock);
+</I>&gt;<i> 	h-&gt;prev = handlers-&gt;tail;
+</I>&gt;<i> 	if (handlers-&gt;tail) handlers-&gt;tail-&gt;next = h;
+</I>&gt;<i> 	handlers-&gt;tail = h;
+</I>&gt;<i> 	if (!handlers-&gt;head) handlers-&gt;head = h;
+</I>&gt;<i> 	lock_release(handlers_lock);
+</I>&gt;<i> 	return 1;
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * Add a handler function for incoming responses.
+</I>&gt;<i>  * @param f - the callback function
+</I>&gt;<i>  * @param param - generic parameter to be used when calling the callback functions
+</I>&gt;<i>  * @returns 1 on success, 0 on failure
+</I>&gt;<i>  */
+</I>&gt;<i> int AAAAddResponseHandler(AAAResponseHandler_f *f,void *param)
+</I>&gt;<i> {
+</I>&gt;<i> 	handler *h = shm_malloc(sizeof(handler));
+</I>&gt;<i> 	if (!h) {
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERR:AAAAddResponseHandler: error allocating %d bytes in shm\n&quot;,
+</I>&gt;<i> 			sizeof(handler));
+</I>&gt;<i> 		return 0;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	h-&gt;type = RESPONSE_HANDLER;
+</I>&gt;<i> 	h-&gt;handler.responseHandler = f;
+</I>&gt;<i> 	h-&gt;param = param;
+</I>&gt;<i> 	h-&gt;next = 0;
+</I>&gt;<i> 	lock_get(handlers_lock);
+</I>&gt;<i> 	h-&gt;prev = handlers-&gt;tail;
+</I>&gt;<i> 	if (handlers-&gt;tail) handlers-&gt;tail-&gt;next = h;
+</I>&gt;<i> 	handlers-&gt;tail = h;
+</I>&gt;<i> 	if (!handlers-&gt;head) handlers-&gt;head = h;
+</I>&gt;<i> 	lock_release(handlers_lock);
+</I>&gt;<i> 	return 1;
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 				/* MESSAGE SENDING */
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * Send a AAAMessage asynchronously.
+</I>&gt;<i>  * When the response is received, the callback_f(callback_param,...) is called.
+</I>&gt;<i>  * @param message - the request to be sent
+</I>&gt;<i>  * @param peer_id - FQDN of the peer to send
+</I>&gt;<i>  * @param callback_f - callback to be called on transactional response or transaction timeout
+</I>&gt;<i>  * @param callback_param - generic parameter to call the transactional callback function with
+</I>&gt;<i>  * @returns 1 on success, 0 on failure 
+</I>&gt;<i>  * \todo remove peer_id and add Realm routing
+</I>&gt;<i>  */
+</I>&gt;<i> AAAReturnCode AAASendMessage(	
+</I>&gt;<i> 		AAAMessage *message,
+</I>&gt;<i> 		str *peer_id, 
+</I>&gt;<i> 		AAATransactionCallback_f *callback_f,
+</I>&gt;<i> 		void *callback_param)
+</I>&gt;<i> {
+</I>&gt;<i> 	peer *p;
+</I>&gt;<i> 	p = get_peer_by_fqdn(peer_id);
+</I>&gt;<i> 	if (!p) {
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:AAASendMessage(): Peer unknown %.*s\n&quot;,peer_id-&gt;len,peer_id-&gt;s);
+</I>&gt;<i> 		goto error;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	if (p-&gt;state!=I_Open &amp;&amp; p-&gt;state!=R_Open){
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:AAASendMessage(): Peer not connected to %.*s\n&quot;,peer_id-&gt;len,peer_id-&gt;s);
+</I>&gt;<i> 		goto error;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	/* only add transaction following when required */
+</I>&gt;<i> 	if (callback_f){
+</I>&gt;<i> 		if (is_req(message))
+</I>&gt;<i> 			add_trans(message,callback_f,callback_param,DP_TRANS_TIMEOUT,1);
+</I>&gt;<i> 		else
+</I>&gt;<i> 			LOG(L_ERR,&quot;ERROR:AAASendMessage(): can't add transaction callback for answer.\n&quot;);
+</I>&gt;<i> 	}
+</I>&gt;<i> 		
+</I>&gt;<i> 	if (!peer_send_msg(p,message))
+</I>&gt;<i> 		goto error;
+</I>&gt;<i>         
+</I>&gt;<i> 	LOG(L_INFO, &quot;INFO: in diameter AAASendMessage. Everything seems ok so far \n&quot;);		
+</I>&gt;<i> 	return 1;
+</I>&gt;<i> error:	
+</I>&gt;<i> 	AAAFreeMessage(&amp;message);
+</I>&gt;<i> 	return 0;
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * Generic callback used by AAASendRecvMessage() to block until a transactional response
+</I>&gt;<i>  * is received.
+</I>&gt;<i>  * The AAASendRecvMessage() is basically a AAASendMessage() that has a callback 
+</I>&gt;<i>  * (this function) that blocks until a transactional response or timeout is received and 
+</I>&gt;<i>  * then it returns that.
+</I>&gt;<i>  *  
+</I>&gt;<i>  * @param is_timeout - if this is a time-out or response event
+</I>&gt;<i>  * @param param - generic parameter to call the transactional callback function with
+</I>&gt;<i>  * @param ans - the answer for the callback
+</I>&gt;<i>  */
+</I>&gt;<i> void sendrecv_cb(int is_timeout,void *param,AAAMessage *ans)
+</I>&gt;<i> {
+</I>&gt;<i> 	lock_release((gen_lock_t*)param);
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * Send a AAAMessage synchronously.
+</I>&gt;<i>  * This blocks until a response is received or a transactional time-out happens. 
+</I>&gt;<i>  * @param message - the request to be sent
+</I>&gt;<i>  * @param peer_id - FQDN of the peer to send
+</I>&gt;<i>  * @returns 1 on success, 0 on failure 
+</I>&gt;<i>  * \todo remove peer_id and add Realm routing
+</I>&gt;<i>  * \todo replace the busy-waiting lock in here with one that does not consume CPU
+</I>&gt;<i>  */
+</I>&gt;<i> AAAMessage* AAASendRecvMessage(AAAMessage *message, str *peer_id)
+</I>&gt;<i> {
+</I>&gt;<i> 	peer *p;
+</I>&gt;<i> 	gen_lock_t *lock;
+</I>&gt;<i> 	cdp_trans_t *t;
+</I>&gt;<i> 	AAAMessage *ans;
+</I>&gt;<i> 	
+</I>&gt;<i> 	p = get_peer_by_fqdn(peer_id);
+</I>&gt;<i> 	if (!p) {
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:AAASendMessage(): Peer unknown %.*s\n&quot;,peer_id-&gt;len,peer_id-&gt;s);
+</I>&gt;<i> 		goto error;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	if (p-&gt;state!=I_Open &amp;&amp; p-&gt;state!=R_Open){
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:AAASendMessage(): Peer not connected to %.*s\n&quot;,peer_id-&gt;len,peer_id-&gt;s);
+</I>&gt;<i> 		goto error;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	
+</I>&gt;<i> 	
+</I>&gt;<i> 	if (is_req(message)){
+</I>&gt;<i> 		lock = lock_alloc();
+</I>&gt;<i> 		lock = lock_init(lock);
+</I>&gt;<i> 		lock_get(lock);
+</I>&gt;<i> 		t = add_trans(message,sendrecv_cb,(void*)lock,DP_TRANS_TIMEOUT,0);
+</I>&gt;<i> 
+</I>&gt;<i> 		LOG(L_INFO, &quot;Diameter_api before calling peer_send_msg \n&quot;);
+</I>&gt;<i> 
+</I>&gt;<i> 		if (!peer_send_msg(p,message)) {
+</I>&gt;<i> 			lock_destroy(lock);
+</I>&gt;<i> 			lock_dealloc((void*)lock);	
+</I>&gt;<i> 			LOG(L_INFO, &quot;Diameter_api unable to send the message \n&quot;);
+</I>&gt;<i> 			goto error;
+</I>&gt;<i> 		}
+</I>&gt;<i> 
+</I>&gt;<i> 		/* block until callback is executed */
+</I>&gt;<i> 		lock_get(lock);		
+</I>&gt;<i> 		lock_destroy(lock);
+</I>&gt;<i> 		lock_dealloc((void*)lock);
+</I>&gt;<i> 		ans = t-&gt;ans;
+</I>&gt;<i> 		if ( ans == NULL) {
+</I>&gt;<i> 			LOG(L_INFO, &quot;Diameter_api received null pointer 1\n&quot;);
+</I>&gt;<i> 		}
+</I>&gt;<i> 		free_trans(t);
+</I>&gt;<i> 		LOG(L_INFO, &quot;Diameter_api returning answer \n&quot;);
+</I>&gt;<i> 		if ( ans == NULL) {
+</I>&gt;<i> 			LOG(L_INFO, &quot;Diameter_api received null pointer \n&quot;);
+</I>&gt;<i> 		}
+</I>&gt;<i> 		return ans;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	else
+</I>&gt;<i> 	{
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:AAASendRecvMessage(): can't add wait for answer to answer.\n&quot;);
+</I>&gt;<i> 		goto error;
+</I>&gt;<i> 	}
+</I>&gt;<i> 
+</I>&gt;<i> 		
+</I>&gt;<i> error:	
+</I>&gt;<i> 	AAAFreeMessage(&amp;message);
+</I>&gt;<i> 	return 0;
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * $Id: receiver.c 2 2006-11-14 22:37:20Z vingarzan $
+</I>&gt;<i>  *  
+</I>&gt;<i>  * Copyright (C) 2004-2006 FhG Fokus
+</I>&gt;<i>  *
+</I>&gt;<i>  * This file is part of Open IMS Core - an open source IMS CSCFs &amp; HSS
+</I>&gt;<i>  * implementation
+</I>&gt;<i>  *
+</I>&gt;<i>  * Open IMS Core is free software; you can redistribute it and/or modify
+</I>&gt;<i>  * it under the terms of the GNU General Public License as published by
+</I>&gt;<i>  * the Free Software Foundation; either version 2 of the License, or
+</I>&gt;<i>  * (at your option) any later version.
+</I>&gt;<i>  *
+</I>&gt;<i>  * For a license to use the Open IMS Core software under conditions
+</I>&gt;<i>  * other than those described here, or to purchase support for this
+</I>&gt;<i>  * software, please contact Fraunhofer FOKUS by e-mail at the following
+</I>&gt;<i>  * addresses:
+</I>&gt;<i>  *     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">info at open-ims.org</A>
+</I>&gt;<i>  *
+</I>&gt;<i>  * Open IMS Core is distributed in the hope that it will be useful,
+</I>&gt;<i>  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+</I>&gt;<i>  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+</I>&gt;<i>  * GNU General Public License for more details.
+</I>&gt;<i>  * 
+</I>&gt;<i>  * It has to be noted that this Open Source IMS Core System is not 
+</I>&gt;<i>  * intended to become or act as a product in a commercial context! Its 
+</I>&gt;<i>  * sole purpose is to provide an IMS core reference implementation for 
+</I>&gt;<i>  * IMS technology testing and IMS application prototyping for research 
+</I>&gt;<i>  * purposes, typically performed in IMS test-beds.
+</I>&gt;<i>  * 
+</I>&gt;<i>  * Users of the Open Source IMS Core System have to be aware that IMS
+</I>&gt;<i>  * technology may be subject of patents and licence terms, as being 
+</I>&gt;<i>  * specified within the various IMS-related IETF, ITU-T, ETSI, and 3GPP
+</I>&gt;<i>  * standards. Thus all Open IMS Core users have to take notice of this 
+</I>&gt;<i>  * fact and have to agree to check out carefully before installing, 
+</I>&gt;<i>  * using and extending the Open Source IMS Core System, if related 
+</I>&gt;<i>  * patents and licences may become applicable to the intended usage 
+</I>&gt;<i>  * context.  
+</I>&gt;<i>  *
+</I>&gt;<i>  * You should have received a copy of the GNU General Public License
+</I>&gt;<i>  * along with this program; if not, write to the Free Software
+</I>&gt;<i>  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+</I>&gt;<i>  * 
+</I>&gt;<i>  */
+</I>&gt;<i>  
+</I>&gt;<i> /**
+</I>&gt;<i>  * \file
+</I>&gt;<i>  * 
+</I>&gt;<i>  * CDiameterPeer Receiver process procedures 
+</I>&gt;<i>  * 
+</I>&gt;<i>  *  \author Dragos Vingarzan vingarzan -at- fokus dot fraunhofer dot de
+</I>&gt;<i>  * 
+</I>&gt;<i>  */
+</I>&gt;<i> 
+</I>&gt;<i> #include &lt;unistd.h&gt;
+</I>&gt;<i> #include &lt;errno.h&gt;
+</I>&gt;<i> #include &lt;string.h&gt;
+</I>&gt;<i> #include &lt;assert.h&gt;
+</I>&gt;<i> #include &lt;sys/time.h&gt;
+</I>&gt;<i> #include &lt;sys/types.h&gt;
+</I>&gt;<i> #include &lt;sys/socket.h&gt;
+</I>&gt;<i> #include &lt;sys/ioctl.h&gt;
+</I>&gt;<i> #include &lt;signal.h&gt;
+</I>&gt;<i> #include &lt;netinet/in.h&gt;
+</I>&gt;<i> #include &lt;netdb.h&gt;
+</I>&gt;<i> #include &lt;stdlib.h&gt;
+</I>&gt;<i> #include &lt;stdio.h&gt;
+</I>&gt;<i> #include &lt;time.h&gt;
+</I>&gt;<i> #include &lt;sys/stat.h&gt;
+</I>&gt;<i> #include &lt;fcntl.h&gt;
+</I>&gt;<i> 
+</I>&gt;<i> #include &quot;utils.h&quot;
+</I>&gt;<i> #include &quot;globals.h&quot;
+</I>&gt;<i> #include &quot;diameter_api.h&quot;
+</I>&gt;<i> #include &quot;peerstatemachine.h&quot;
+</I>&gt;<i> #include &quot;peermanager.h&quot;
+</I>&gt;<i> #include &quot;config.h&quot;
+</I>&gt;<i> 
+</I>&gt;<i> #include &quot;receiver.h&quot;
+</I>&gt;<i> 
+</I>&gt;<i> extern dp_config *config;		/**&lt; Configuration for this diameter peer 	*/
+</I>&gt;<i> 
+</I>&gt;<i> int dp_add_pid(pid_t pid);
+</I>&gt;<i> void dp_del_pid(pid_t pid);
+</I>&gt;<i> 
+</I>&gt;<i> void receive_loop(int sock);
+</I>&gt;<i> 
+</I>&gt;<i> void receive_message(AAAMessage *msg,int sock);
+</I>&gt;<i> 
+</I>&gt;<i> peer *this_peer=0;			/**&lt; pointer to the peer serviced by this process */
+</I>&gt;<i> 
+</I>&gt;<i> /** prefix for the send FIFO pipes */
+</I>&gt;<i> #define PIPE_PREFIX &quot;/tmp/cdp_send_&quot;
+</I>&gt;<i> int pipe_fd;		/**&lt; file descriptor for reading from the send pipe */
+</I>&gt;<i> int pipe_fd_out;	/**&lt; file descriptor for writting to the send pipe */
+</I>&gt;<i> str pipe_name;		/**&lt; full path to the pipe	*/
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * Sets the send pipe name for the peer serviced by this process.
+</I>&gt;<i>  */
+</I>&gt;<i> static inline void set_peer_pipe()
+</I>&gt;<i> {
+</I>&gt;<i> 	if (!this_peer) return;
+</I>&gt;<i> //	lock_get(this_peer-&gt;lock);
+</I>&gt;<i> 	this_peer-&gt;send_pipe = pipe_name;
+</I>&gt;<i> //	lock_release(this_peer-&gt;lock);
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * Initializes the receiver.
+</I>&gt;<i>  * @param sock - the socket to initialize with
+</I>&gt;<i>  * @param p - the peer to initialize with
+</I>&gt;<i>  */
+</I>&gt;<i> void receiver_init(int sock,peer *p)
+</I>&gt;<i> {
+</I>&gt;<i> 	this_peer = p;
+</I>&gt;<i> 	
+</I>&gt;<i> 	pipe_name.s = shm_malloc(sizeof(PIPE_PREFIX)+64);
+</I>&gt;<i> 	sprintf(pipe_name.s,&quot;%s%d_%d_%d&quot;,PIPE_PREFIX,(unsigned int) time(0),sock,getpid());
+</I>&gt;<i> 	pipe_name.len = strlen(pipe_name.s);
+</I>&gt;<i> 		
+</I>&gt;<i> 	set_peer_pipe();	
+</I>&gt;<i> 
+</I>&gt;<i> 	mkfifo(pipe_name.s, 0666);	
+</I>&gt;<i> 	pipe_fd = open(pipe_name.s, O_RDONLY | O_NDELAY);
+</I>&gt;<i> 	if (pipe_fd&lt;0){
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:receiver_process(): FIFO open failed &gt; %s\n&quot;,strerror(errno));
+</I>&gt;<i> 	}
+</I>&gt;<i> 	// we open it for writting just to keep it alive - won't close when all other writers close it
+</I>&gt;<i> 	pipe_fd_out = open(pipe_name.s, O_WRONLY);
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * The Receiver Process - calls the receiv_loop and it never returns.
+</I>&gt;<i>  * @param sock - socket to receive data from
+</I>&gt;<i>  * @returns never, when disconnected it will exit
+</I>&gt;<i>  */
+</I>&gt;<i> void receiver_process(int sock)
+</I>&gt;<i> {
+</I>&gt;<i> 	LOG(L_INFO,&quot;INFO:receiver_process(): [%d] Receiver process starting up...\n&quot;,sock);
+</I>&gt;<i> 
+</I>&gt;<i> 		
+</I>&gt;<i> 	receive_loop(sock);
+</I>&gt;<i> 	LOG(L_INFO,&quot;INFO:receiver_process(): [%d]... Receiver process cleaning-up.\n&quot;,sock);
+</I>&gt;<i> 	close(sock);
+</I>&gt;<i> 	close(pipe_fd);
+</I>&gt;<i> 	close(pipe_fd_out);
+</I>&gt;<i> 	remove(pipe_name.s);
+</I>&gt;<i> 	if (this_peer){
+</I>&gt;<i> 		lock_get(this_peer-&gt;lock);
+</I>&gt;<i> 		this_peer-&gt;send_pipe.s=0;
+</I>&gt;<i> 		this_peer-&gt;send_pipe.len=0;
+</I>&gt;<i> 		lock_release(this_peer-&gt;lock);
+</I>&gt;<i> 	}
+</I>&gt;<i> 	shm_free(pipe_name.s);
+</I>&gt;<i> //done:		
+</I>&gt;<i> 	/* remove pid from list of running processes */
+</I>&gt;<i> 	dp_del_pid(getpid());
+</I>&gt;<i> 	
+</I>&gt;<i> 	#ifdef CDP_FOR_SER
+</I>&gt;<i> 		drop_my_process();	
+</I>&gt;<i> 	#endif
+</I>&gt;<i> 		
+</I>&gt;<i> 	LOG(L_INFO,&quot;INFO:receiver_process(): [%d]... Receiver process finished.\n&quot;,sock);
+</I>&gt;<i> 	exit(0);
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * Select on sockets for receiving.
+</I>&gt;<i>  * Selects on both the socket and on the send pipe.
+</I>&gt;<i>  * @param s - the receive socket
+</I>&gt;<i>  * @param buf - buffer to read into
+</I>&gt;<i>  * @param len - max length of the read buffer
+</I>&gt;<i>  * @param opt - recv() flags
+</I>&gt;<i>  * @returns number of bytes read or -1 on error 
+</I>&gt;<i>  */ 
+</I>&gt;<i> static inline int select_recv(int s,void * buf,int len,int opt)
+</I>&gt;<i> {
+</I>&gt;<i> 	fd_set rfds,efds;
+</I>&gt;<i> 	struct timeval tv;
+</I>&gt;<i> 	int n,max;
+</I>&gt;<i> 	AAAMessage *msg=0;
+</I>&gt;<i> 	int r=0,cnt=0;
+</I>&gt;<i> 	
+</I>&gt;<i> //	if (shutdownx) return -1;
+</I>&gt;<i> 	max = s;
+</I>&gt;<i> 	if (pipe_fd&gt;max) max = pipe_fd;
+</I>&gt;<i> 	n = 0;
+</I>&gt;<i> 	
+</I>&gt;<i> 	while(!n){
+</I>&gt;<i>    		if (shutdownx&amp;&amp;*shutdownx) break;	
+</I>&gt;<i> 
+</I>&gt;<i> 		FD_ZERO(&amp;rfds);
+</I>&gt;<i> 		FD_SET(s,&amp;rfds);
+</I>&gt;<i> 		FD_SET(pipe_fd,&amp;rfds);
+</I>&gt;<i> 		FD_ZERO(&amp;efds);
+</I>&gt;<i> 		FD_SET(s,&amp;efds);
+</I>&gt;<i> 		tv.tv_sec=1;
+</I>&gt;<i> 		tv.tv_usec=0;
+</I>&gt;<i> 
+</I>&gt;<i> //		LOG(L_INFO,&quot;INFO:select_recv(): HERE\n&quot;);
+</I>&gt;<i> 		
+</I>&gt;<i> 		n = select(max+1,&amp;rfds,0,&amp;efds,&amp;tv);
+</I>&gt;<i> 		if (n==-1){
+</I>&gt;<i> 			if (shutdownx&amp;&amp;*shutdownx) return -1;
+</I>&gt;<i> 			LOG(L_ERR,&quot;ERROR:select_recv(): %s\n&quot;,strerror(errno));
+</I>&gt;<i> 			return -1;
+</I>&gt;<i> 		}else
+</I>&gt;<i> 			if (n){
+</I>&gt;<i> 				if (FD_ISSET(s,&amp;efds)) return -1;				
+</I>&gt;<i> 				if (FD_ISSET(pipe_fd,&amp;rfds)) {					
+</I>&gt;<i> 					LOG(L_INFO,&quot;INFO:select_recv(): There is something on the pipe\n&quot;);
+</I>&gt;<i> 					cnt = read(pipe_fd,&amp;msg,sizeof(AAAMessage *));
+</I>&gt;<i> 					LOG(L_INFO,&quot;INFO:select_recv(): Pipe says [%p] %d\n&quot;,msg,cnt);
+</I>&gt;<i> 					if (cnt==0){
+</I>&gt;<i> 						//This is very stupid and might not work well - droped messages... to be fixed
+</I>&gt;<i> 						LOG(L_INFO,&quot;INFO:select_recv(): ReOpening pipe for read. This should not happen...\n&quot;);
+</I>&gt;<i> 						close(pipe_fd);
+</I>&gt;<i> 						pipe_fd = open(pipe_name.s, O_RDONLY | O_NDELAY);
+</I>&gt;<i> 						goto receive;
+</I>&gt;<i> 					}
+</I>&gt;<i> 					if (cnt&lt;sizeof(AAAMessage *)){
+</I>&gt;<i> 						if (cnt&lt;0) LOG(L_ERR,&quot;ERROR:select_recv(): Error reading from pipe\n&quot;);
+</I>&gt;<i> 						r = -1;
+</I>&gt;<i> 						goto receive;
+</I>&gt;<i> 					}	
+</I>&gt;<i> 					
+</I>&gt;<i> 					while( (cnt=write(s,msg-&gt;buf.s,msg-&gt;buf.len))==-1 ) {
+</I>&gt;<i> 						if (errno==EINTR)
+</I>&gt;<i> 							continue;
+</I>&gt;<i> 						LOG(L_ERR,&quot;ERROR:select_recv(): write returned error&gt; %s\n&quot;,
+</I>&gt;<i> 							strerror(errno));
+</I>&gt;<i> 						close(s);
+</I>&gt;<i> 						AAAFreeMessage(&amp;msg);		
+</I>&gt;<i> 						r = -1;
+</I>&gt;<i> 						return r;
+</I>&gt;<i> 					}
+</I>&gt;<i> 											
+</I>&gt;<i> 					if (cnt!=msg-&gt;buf.len){
+</I>&gt;<i> 						LOG(L_ERR,&quot;ERROR:select_recv(): only wrote %d/%d bytes\n&quot;,cnt,msg-&gt;buf.len);
+</I>&gt;<i> 						close(s);
+</I>&gt;<i> 						AAAFreeMessage(&amp;msg);		
+</I>&gt;<i> 						r = -1;
+</I>&gt;<i> 						return r;
+</I>&gt;<i> 					}
+</I>&gt;<i> 					AAAFreeMessage(&amp;msg);
+</I>&gt;<i> 					//don't return, maybe there is something to read
+</I>&gt;<i> 				}
+</I>&gt;<i> receive:
+</I>&gt;<i> 				if (FD_ISSET(s,&amp;rfds)) {
+</I>&gt;<i> 					cnt = recv(s,buf,len,opt);
+</I>&gt;<i> 					LOG(L_INFO,&quot;INFO:select_recv(): receive cnt %d\n&quot;, cnt);
+</I>&gt;<i> 					if (cnt==0) return -1;
+</I>&gt;<i> 					else return cnt;
+</I>&gt;<i> 				}
+</I>&gt;<i> 			}
+</I>&gt;<i> 		//LOG(L_ERR,&quot;.&quot;);
+</I>&gt;<i> 	}
+</I>&gt;<i> 	return r;
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> /** length of the Diameter message header */
+</I>&gt;<i> #define hdr_len 20
+</I>&gt;<i> 
+</I>&gt;<i> /** 
+</I>&gt;<i>  * Receive Loop for Diameter messages.
+</I>&gt;<i>  * Decodes the message and calls receive_message().
+</I>&gt;<i>  * @param sock - the socket to receive from
+</I>&gt;<i>  * @returns when the socket is closed
+</I>&gt;<i>  */
+</I>&gt;<i> void receive_loop(int sock)
+</I>&gt;<i> {
+</I>&gt;<i> 	char buf[hdr_len],*msg;
+</I>&gt;<i> 	int buf_len,length,version,cnt,msg_len;
+</I>&gt;<i> 	AAAMessage *dmsg;
+</I>&gt;<i> 	
+</I>&gt;<i>     while(!*shutdownx){
+</I>&gt;<i>    		buf_len=0;
+</I>&gt;<i>     	while(buf_len&lt;1){	
+</I>&gt;<i>     		cnt = select_recv(sock,buf+buf_len,1,0);
+</I>&gt;<i> 	    	if (cnt&lt;0) goto error;
+</I>&gt;<i> 	    	buf_len+=cnt;
+</I>&gt;<i>     	}
+</I>&gt;<i>     	version = (unsigned char)buf[0];
+</I>&gt;<i>     	if (version!=1) {
+</I>&gt;<i>     		LOG(L_ERR,&quot;ERROR:receive_loop():[%d] Recv Unknown version [%d]\n&quot;,sock,(unsigned char)buf[0]);
+</I>&gt;<i> 			continue;    		
+</I>&gt;<i>     	}    	
+</I>&gt;<i>     	while(buf_len&lt;hdr_len){
+</I>&gt;<i> 	    	cnt = select_recv(sock,buf+buf_len,hdr_len-buf_len,0);
+</I>&gt;<i> 	    	if (cnt&lt;0) goto error;
+</I>&gt;<i> 	    	buf_len+=cnt;
+</I>&gt;<i>     	}
+</I>&gt;<i>     	length = get_3bytes(buf+1);
+</I>&gt;<i>     	if (length&gt;DP_MAX_MSG_LENGTH){
+</I>&gt;<i> 			LOG(L_ERR,&quot;ERROR:receive_loop():[%d] Msg too big [%d] bytes\n&quot;,sock,length);
+</I>&gt;<i> 			goto error;
+</I>&gt;<i>     	}
+</I>&gt;<i>     	LOG(L_DBG,&quot;DBG:receive_loop():[%d] Recv Version %d Length %d\n&quot;,sock,version,length);
+</I>&gt;<i>     	msg = shm_malloc(length);
+</I>&gt;<i>     	if (!msg) {
+</I>&gt;<i>     		LOG_NO_MEM(&quot;shm&quot;,length);
+</I>&gt;<i> 			goto error;
+</I>&gt;<i>     	}
+</I>&gt;<i>     		
+</I>&gt;<i>     	memcpy(msg,buf,hdr_len);
+</I>&gt;<i>     	msg_len=hdr_len;
+</I>&gt;<i>     	while(msg_len&lt;length){
+</I>&gt;<i>     		cnt = select_recv(sock,msg+msg_len,length-msg_len,0);
+</I>&gt;<i> 	    	if (cnt&lt;0) {
+</I>&gt;<i> 	    		shm_free(msg);
+</I>&gt;<i> 		    	goto error;
+</I>&gt;<i> 	    	}
+</I>&gt;<i>     		msg_len+=cnt;
+</I>&gt;<i>     	}
+</I>&gt;<i>     	LOG(L_INFO,&quot;INFO:receive_loop():[%d] Recv message complete\n&quot;,sock);
+</I>&gt;<i>     	
+</I>&gt;<i>     	dmsg = AAATranslateMessage(msg,msg_len,1);
+</I>&gt;<i>     	
+</I>&gt;<i>     	/*shm_free(msg);*/
+</I>&gt;<i> 
+</I>&gt;<i> 		if (dmsg) receive_message(dmsg,sock);
+</I>&gt;<i> 		else{
+</I>&gt;<i> 			shm_free(msg);
+</I>&gt;<i> 		}
+</I>&gt;<i> 		
+</I>&gt;<i>     }
+</I>&gt;<i> error:
+</I>&gt;<i> 	if (this_peer) {
+</I>&gt;<i> 		if (this_peer-&gt;I_sock == sock) sm_process(this_peer,I_Peer_Disc,0,0,sock);
+</I>&gt;<i> 		if (this_peer-&gt;R_sock == sock) sm_process(this_peer,R_Peer_Disc,0,0,sock);
+</I>&gt;<i> 	}
+</I>&gt;<i>     LOG(L_ERR,&quot;INFO:receive_loop():[%d] Client closed connection or error... BYE\n&quot;,sock);
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * Initiate a connection to a peer.
+</I>&gt;<i>  * @param p - peer to connect to
+</I>&gt;<i>  * @returns socket if OK, -1 on error
+</I>&gt;<i>  */
+</I>&gt;<i> int peer_connect(peer *p)
+</I>&gt;<i> {
+</I>&gt;<i> 	int sock;
+</I>&gt;<i> 	int pid;
+</I>&gt;<i> 	unsigned char servip[4];
+</I>&gt;<i> 	struct sockaddr_in servaddr;
+</I>&gt;<i> 	unsigned int option;
+</I>&gt;<i> 	struct hostent *host=0;
+</I>&gt;<i> 
+</I>&gt;<i> 	host = gethostbyname(p-&gt;fqdn.s);
+</I>&gt;<i> 	if (!host){
+</I>&gt;<i> 		LOG(L_WARN,&quot;WARNING:peer_connect(): Error opening connection to %.*s:%d &gt;%s\n&quot;,
+</I>&gt;<i> 			p-&gt;fqdn.len,p-&gt;fqdn.s,p-&gt;port,strerror(h_errno));
+</I>&gt;<i> 		goto error;
+</I>&gt;<i> 	}
+</I>&gt;<i> 		
+</I>&gt;<i> 	sock = socket(AF_INET, SOCK_STREAM, 0);
+</I>&gt;<i> 	if ( sock==-1) {
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:peer_connect(): cannot connect, failed to create &quot;
+</I>&gt;<i> 				&quot;new socket\n&quot;);
+</I>&gt;<i> 		goto error;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	memset( &amp;servip, 0, sizeof(servip) );
+</I>&gt;<i> 	memcpy( &amp;servip, host-&gt;h_addr_list[0], 4);
+</I>&gt;<i> 	servaddr.sin_family = AF_INET;
+</I>&gt;<i> 	servaddr.sin_port = htons(p-&gt;port);
+</I>&gt;<i> 	servaddr.sin_addr.s_addr = *(unsigned int*)servip;
+</I>&gt;<i> 
+</I>&gt;<i> 	if (connect(sock,(struct sockaddr*)&amp;servaddr, sizeof(struct sockaddr_in))!=0) {
+</I>&gt;<i> 		LOG(L_WARN,&quot;WARNING:peer_connect(): Error opening connection to %.*s:%d &gt;%s\n&quot;,
+</I>&gt;<i> 			p-&gt;fqdn.len,p-&gt;fqdn.s,p-&gt;port,strerror(errno));		
+</I>&gt;<i> 		goto error;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	
+</I>&gt;<i> 	setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&amp;option,sizeof(option));
+</I>&gt;<i> 	
+</I>&gt;<i> 	LOG(L_INFO,&quot;INFO:peer_connect(): Peer %.*s:%d connected\n&quot;,p-&gt;fqdn.len,p-&gt;fqdn.s,p-&gt;port);
+</I>&gt;<i> 
+</I>&gt;<i> 	
+</I>&gt;<i> 	receiver_init(sock,p);
+</I>&gt;<i> 	
+</I>&gt;<i> 	#ifdef CDP_FOR_SER
+</I>&gt;<i> 		pid = fork_process(p-&gt;port,&quot;receiver I&quot;,0);
+</I>&gt;<i> 	#else
+</I>&gt;<i> 		pid = fork();
+</I>&gt;<i> 	#endif
+</I>&gt;<i> 	if (pid&lt;0){
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:peer_connect(): fork() failed &gt; %s\n&quot;,strerror(errno));
+</I>&gt;<i> 		goto error;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	if (pid==0){
+</I>&gt;<i> 		/* child */
+</I>&gt;<i> 		receiver_process(sock);
+</I>&gt;<i> 		LOG(L_CRIT,&quot;ERROR:peer_connect(): receiver_process finished without exit!\n&quot;);
+</I>&gt;<i> 		exit(-1);
+</I>&gt;<i> 	}else{
+</I>&gt;<i> 		/* parent */
+</I>&gt;<i> 		LOG(L_INFO,&quot;INFO:peer_connect(): Receiver process forked [%d]\n&quot;,pid);
+</I>&gt;<i> 		
+</I>&gt;<i> 		dp_add_pid(pid);
+</I>&gt;<i> 	}
+</I>&gt;<i> 		
+</I>&gt;<i> 	return sock;
+</I>&gt;<i> error:
+</I>&gt;<i> 	return -1;	
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * Sends a message to a peer (to be called from other processes).
+</I>&gt;<i>  * This just writes the pointer to the message in the send pipe. The specific
+</I>&gt;<i>  * peer process will pick that up and send the message, as only that specific
+</I>&gt;<i>  * process has the id of socket (we are forking the peers dynamically and as such,
+</I>&gt;<i>  * the sockets are not visible between processes).
+</I>&gt;<i>  * @param p - the peer to send to
+</I>&gt;<i>  * @param msg - the message to send
+</I>&gt;<i>  * @returns 1 on success, 0 on failure
+</I>&gt;<i>  */
+</I>&gt;<i> int peer_send_msg(peer *p,AAAMessage *msg)
+</I>&gt;<i> {
+</I>&gt;<i> 	int fd,n;
+</I>&gt;<i> 	if (!AAABuildMsgBuffer(msg)) return 0;
+</I>&gt;<i> 	if (!p-&gt;send_pipe.s) {
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:peer_send_msg(): Peer %.*s has no attached send pipe\n&quot;,p-&gt;fqdn.len,p-&gt;fqdn.s);
+</I>&gt;<i> 		return 0;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	fd = open(p-&gt;send_pipe.s,O_WRONLY);
+</I>&gt;<i> 	if (fd&lt;0){
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:peer_send_msg(): Peer %.*s error on pipe open &gt; %s\n&quot;,p-&gt;fqdn.len,p-&gt;fqdn.s,strerror(errno));		
+</I>&gt;<i> 		return 0;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	LOG(L_DBG,&quot;DBG:peer_send_msg(): Pipe push [%p]\n&quot;,msg);
+</I>&gt;<i> 	LOG(L_INFO,&quot;INFO:peer_send_msg(): Pipe push [%p]\n&quot;,msg);
+</I>&gt;<i> 	n = write(fd,&amp;msg,sizeof(AAAMessage *));
+</I>&gt;<i> 	if (n&lt;0) {
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:peer_send_msg(): Peer %.*s error on pipe write &gt; %s\n&quot;,p-&gt;fqdn.len,p-&gt;fqdn.s,strerror(errno));		
+</I>&gt;<i> 		close(fd);
+</I>&gt;<i> 		return 0;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	if (n!=sizeof(AAAMessage *)) {
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:peer_send_msg(): Peer %.*s error on pipe write &gt; only %d bytes written\n&quot;,p-&gt;fqdn.len,p-&gt;fqdn.s,n);		
+</I>&gt;<i> 		close(fd);
+</I>&gt;<i> 		return 0;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	close(fd);
+</I>&gt;<i> 	return 1;
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * Send a message to a peer (only to be called from the receiver process).
+</I>&gt;<i>  * This directly writes the message on the socket. It is used for transmission during
+</I>&gt;<i>  * the Capability Exchange procedure, when the send pipes are not opened yet.
+</I>&gt;<i>  * @param p - the peer to send to
+</I>&gt;<i>  * @param sock - the socket to send through
+</I>&gt;<i>  * @param msg - the message to send
+</I>&gt;<i>  * @param locked - whether the caller locked the peer already
+</I>&gt;<i>  * @returns 1 on success, 0 on error
+</I>&gt;<i>  */
+</I>&gt;<i> int peer_send(peer *p,int sock,AAAMessage *msg,int locked)
+</I>&gt;<i> {
+</I>&gt;<i> 	int n;
+</I>&gt;<i> //	LOG(L_CRIT,&quot;[%d]\n&quot;,sock);
+</I>&gt;<i> 	
+</I>&gt;<i> 	if (!p||!msg||sock&lt;0) return 0;
+</I>&gt;<i> 	
+</I>&gt;<i> 	if (!AAABuildMsgBuffer(msg)) return 0;
+</I>&gt;<i> 	
+</I>&gt;<i> 	LOG(L_INFO,&quot;INFOR:peer_send(): before locking \n&quot;);
+</I>&gt;<i> 
+</I>&gt;<i> 	if (!locked) lock_get(p-&gt;lock);
+</I>&gt;<i> 
+</I>&gt;<i> 	LOG(L_INFO,&quot;INFOR:peer_send(): after locking \n&quot;);
+</I>&gt;<i> 
+</I>&gt;<i> 	while( (n=write(sock,msg-&gt;buf.s,msg-&gt;buf.len))==-1 ) {
+</I>&gt;<i> 		if (errno==EINTR)
+</I>&gt;<i> 			continue;
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:peer_send(): write returned error: %s\n&quot;,
+</I>&gt;<i> 			strerror(errno));
+</I>&gt;<i> 		if (p-&gt;I_sock==sock) sm_process(p,I_Peer_Disc,0,1,p-&gt;I_sock);
+</I>&gt;<i> 		if (p-&gt;R_sock==sock) sm_process(p,R_Peer_Disc,0,1,p-&gt;R_sock);
+</I>&gt;<i> 		if (!locked) lock_release(p-&gt;lock);
+</I>&gt;<i> 		AAAFreeMessage(&amp;msg);		
+</I>&gt;<i> 		return 0;
+</I>&gt;<i> 	}
+</I>&gt;<i> 
+</I>&gt;<i> 	if (n!=msg-&gt;buf.len){
+</I>&gt;<i> 		LOG(L_ERR,&quot;ERROR:peer_send(): only wrote %d/%d bytes\n&quot;,n,msg-&gt;buf.len);
+</I>&gt;<i> 		if (!locked) lock_release(p-&gt;lock);
+</I>&gt;<i> 		AAAFreeMessage(&amp;msg);		
+</I>&gt;<i> 		return 0;
+</I>&gt;<i> 	}
+</I>&gt;<i> 	LOG(L_INFO,&quot;INFOR:peer_send(): after send \n&quot;);
+</I>&gt;<i> 	if (!locked) lock_release(p-&gt;lock);
+</I>&gt;<i> 	AAAFreeMessage(&amp;msg);			
+</I>&gt;<i> 	return 1;	
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> /**
+</I>&gt;<i>  * Receives a mesasge and does basic processing or call the sm_process().
+</I>&gt;<i>  * This gets called from the receive_loop for every message that is received.
+</I>&gt;<i>  * @param msg - the message received
+</I>&gt;<i>  * @param sock - socket received on
+</I>&gt;<i>  */
+</I>&gt;<i> void receive_message(AAAMessage *msg,int sock)
+</I>&gt;<i> {
+</I>&gt;<i> 	AAA_AVP *avp1,*avp2;
+</I>&gt;<i> 	LOG(L_DBG,&quot;DBG:receive_message(): [%d] Recv msg %d\n&quot;,sock,msg-&gt;commandCode);
+</I>&gt;<i> 
+</I>&gt;<i> 	if (!this_peer) {
+</I>&gt;<i> 		this_peer = get_peer_from_sock(sock);
+</I>&gt;<i> 		set_peer_pipe();
+</I>&gt;<i> 	}
+</I>&gt;<i> 	
+</I>&gt;<i> 	if (!this_peer){
+</I>&gt;<i> 		switch (msg-&gt;commandCode){
+</I>&gt;<i> 			case Code_CE:
+</I>&gt;<i> 				if (is_req(msg)){
+</I>&gt;<i> 					avp1 = AAAFindMatchingAVP(msg,msg-&gt;avpList.head,AVP_Origin_Host,0,0);
+</I>&gt;<i> 					avp2 = AAAFindMatchingAVP(msg,msg-&gt;avpList.head,AVP_Origin_Realm,0,0);
+</I>&gt;<i> 					if (avp1&amp;&amp;avp2){
+</I>&gt;<i> 						this_peer = get_peer_from_fqdn(avp1-&gt;data,avp2-&gt;data);
+</I>&gt;<i> 					}
+</I>&gt;<i> 					if (!this_peer) {
+</I>&gt;<i> 						LOG(L_ERR,&quot;ERROR:receive_msg(): Received CER from unknown peer (accept unknown=%d) -ignored\n&quot;,
+</I>&gt;<i> 							config-&gt;accept_unknown_peers);
+</I>&gt;<i> 						AAAFreeMessage(&amp;msg);
+</I>&gt;<i> 					}else{
+</I>&gt;<i> 						set_peer_pipe();						
+</I>&gt;<i> 						sm_process(this_peer,R_Conn_CER,msg,0,sock);
+</I>&gt;<i> 					}
+</I>&gt;<i> 				}
+</I>&gt;<i> 				else{
+</I>&gt;<i> 					LOG(L_ERR,&quot;ERROR:receive_msg(): Received CEA from an unknown peer -ignored\n&quot;);
+</I>&gt;<i> 					AAAFreeMessage(&amp;msg);
+</I>&gt;<i> 				}
+</I>&gt;<i> 				break;
+</I>&gt;<i> 			default:
+</I>&gt;<i> 				LOG(L_ERR,&quot;ERROR:receive_msg(): Received non-CE from an unknown peer -ignored\n&quot;);
+</I>&gt;<i> 				AAAFreeMessage(&amp;msg);				
+</I>&gt;<i> 		}
+</I>&gt;<i> 	}else{
+</I>&gt;<i> 		touch_peer(this_peer);
+</I>&gt;<i> 		switch (this_peer-&gt;state){
+</I>&gt;<i> 			case Wait_I_CEA:
+</I>&gt;<i> 				if (msg-&gt;commandCode!=Code_CE||is_req(msg)){
+</I>&gt;<i> 					sm_process(this_peer,I_Rcv_Non_CEA,msg,0,sock);
+</I>&gt;<i> 				}else
+</I>&gt;<i> 					sm_process(this_peer,I_Rcv_CEA,msg,0,sock);
+</I>&gt;<i> 				break;
+</I>&gt;<i> 			case I_Open:			
+</I>&gt;<i> 				switch (msg-&gt;commandCode){
+</I>&gt;<i> 					case Code_CE:
+</I>&gt;<i> 						if (is_req(msg)) sm_process(this_peer,I_Rcv_CER,msg,0,sock);	
+</I>&gt;<i> 									else sm_process(this_peer,I_Rcv_CEA,msg,0,sock);
+</I>&gt;<i> 						break;
+</I>&gt;<i> 					case Code_DW:
+</I>&gt;<i> 						if (is_req(msg)) sm_process(this_peer,I_Rcv_DWR,msg,0,sock);	
+</I>&gt;<i> 									else sm_process(this_peer,I_Rcv_DWA,msg,0,sock);
+</I>&gt;<i> 						break;
+</I>&gt;<i> 					case Code_DP:
+</I>&gt;<i> 						if (is_req(msg)) sm_process(this_peer,I_Rcv_DPR,msg,0,sock);	
+</I>&gt;<i> 									else sm_process(this_peer,I_Rcv_DPA,msg,0,sock);
+</I>&gt;<i> 						break;
+</I>&gt;<i> 					default:
+</I>&gt;<i> 						sm_process(this_peer,I_Rcv_Message,msg,0,sock);
+</I>&gt;<i> 				}				
+</I>&gt;<i> 				break;				
+</I>&gt;<i> 			case R_Open:			
+</I>&gt;<i> 				switch (msg-&gt;commandCode){
+</I>&gt;<i> 					case Code_CE:
+</I>&gt;<i> 						if (is_req(msg)) sm_process(this_peer,R_Rcv_CER,msg,0,sock);	
+</I>&gt;<i> 									else sm_process(this_peer,R_Rcv_CEA,msg,0,sock);
+</I>&gt;<i> 						break;
+</I>&gt;<i> 					case Code_DW:
+</I>&gt;<i> 						if (is_req(msg)) sm_process(this_peer,R_Rcv_DWR,msg,0,sock);	
+</I>&gt;<i> 									else sm_process(this_peer,R_Rcv_DWA,msg,0,sock);
+</I>&gt;<i> 						break;
+</I>&gt;<i> 					case Code_DP:
+</I>&gt;<i> 						if (is_req(msg)) sm_process(this_peer,R_Rcv_DPR,msg,0,sock);	
+</I>&gt;<i> 									else sm_process(this_peer,R_Rcv_DPA,msg,0,sock);
+</I>&gt;<i> 						break;
+</I>&gt;<i> 					default:
+</I>&gt;<i> 						sm_process(this_peer,R_Rcv_Message,msg,0,sock);
+</I>&gt;<i> 				}				
+</I>&gt;<i> 				break;				
+</I>&gt;<i> 			default:
+</I>&gt;<i> 				LOG(L_ERR,&quot;ERROR:receive_msg(): Received msg while peer in state %d -ignored\n&quot;,this_peer-&gt;state);
+</I>&gt;<i> 				AAAFreeMessage(&amp;msg);								
+</I>&gt;<i> 		}
+</I>&gt;<i> 	}
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+- --
+- --------------------------------------------
+Diploma Engineer Adrian Popescu
+FOKUS Fraunhofer Institute
+Next Generation Network Infrastructures
+Kaiserin-Augusta-Allee 31, 10589, Berlin
+Work Phone: +49 303 463 7364
+Mobile: +49 178 153 7466
+E-Mail: adp at fokus.fraunhofer.de
+Web: www.fokus.fraunhofer.de
+- --------------------------------------------
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - <A HREF="http://enigmail.mozdev.org">http://enigmail.mozdev.org</A>
+
+iD8DBQFFvl/O6Yml36HNIwcRAjj4AKCZXWimWj8CCuMxjCpQdFCVnVF9ggCgiYKz
+XW0fqRy8hfYZR3Ot+TtZsx4=
+=ME2R
+-----END PGP SIGNATURE-----
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000578.html">[OpenIMSCore-Users] ICSCF - HSS - UAR - log4j logs
+</A></li>
+	<LI>Next message: <A HREF="000602.html">[OpenIMSCore-Users] ICSCF - HSS - UAR - log4j logs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#583">[ date ]</a>
+              <a href="thread.html#583">[ thread ]</a>
+              <a href="subject.html#583">[ subject ]</a>
+              <a href="author.html#583">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] DNS issue in OpenIMSCore
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20DNS%20issue%20in%20OpenIMSCore&In-Reply-To=%3C4CC19539.6030703%40acision.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006662.html">
+   <LINK REL="Next"  HREF="006665.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] DNS issue in OpenIMSCore</H1>
+    <B>Daniel Ciprus</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20DNS%20issue%20in%20OpenIMSCore&In-Reply-To=%3C4CC19539.6030703%40acision.com%3E"
+       TITLE="[OpenIMSCore-Users] DNS issue in OpenIMSCore">daniel.ciprus at acision.com
+       </A><BR>
+    <I>Fri Oct 22 15:44:25 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006662.html">[OpenIMSCore-Users] DNS issue in OpenIMSCore
+</A></li>
+        <LI>Next message: <A HREF="006665.html">[OpenIMSCore-Users] DNS issue in OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6663">[ date ]</a>
+              <a href="thread.html#6663">[ thread ]</a>
+              <a href="subject.html#6663">[ subject ]</a>
+              <a href="author.html#6663">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The line :
+
+// Our domain zone
+*zone &quot;open-ims.sougata&quot; IN {*
+    type master;
+    file &quot;/etc/bind/open-ims.dnszone&quot;;
+    notify no;
+};
+
+doesn't look good to me. Can you try to remove &quot;IN&quot; ? Sample below your 
+lines :
+
+//# For reverse DNS
+//*zone &quot;0.0.127.in-addr.arpa&quot; {*
+// type master;
+//file &quot;/etc/bind/zones/rev.0.0.127.in-addr.arpa&quot;;
+//};
+
+
+On 10/22/2010 06:41 AM, sougata pal wrote:
+&gt;<i> Hi Franz ,
+</I>&gt;<i>
+</I>&gt;<i> Still not working.. I am keeping the OpenIMSCore DNS in the 
+</I>&gt;<i> resolv.conf and keeping the University DNS in the named.conf.options 
+</I>&gt;<i> as a forwarder but still not working. The moment i do that , my 
+</I>&gt;<i> internet connection is getting stopped with in some minutes... :((
+</I>&gt;<i>
+</I>&gt;<i> Secondly , What's bothering me is that , is it necessary to include 
+</I>&gt;<i> the name of the dns zone file &quot;/etc/bind/open-ims.dnszone&quot; in the 
+</I>&gt;<i> configuration file &quot;/etc/bind/named.conf&quot;. Because as i understand 
+</I>&gt;<i> this etc/bind/name.conf should include all the files name as mentioned 
+</I>&gt;<i> below -
+</I>&gt;<i>
+</I>&gt;<i> include &quot;/etc/bind/named.conf.options&quot;;
+</I>&gt;<i> include &quot;/etc/bind/named.conf.local&quot;;
+</I>&gt;<i> include &quot;/etc/bind/named.conf.default-zones&quot;;
+</I>&gt;<i> //include &quot;/etc/bind/open-ims.dnszone&quot;;
+</I>&gt;<i>
+</I>&gt;<i> Now here comes the funny part , when i am keeping the last file name 
+</I>&gt;<i> which is &quot;/etc/bind/open-ims.dnszone&quot; as commented , my bind is 
+</I>&gt;<i> working but when i am commenting it out , the bind is not working.
+</I>&gt;<i>
+</I>&gt;<i> I am attaching all the 4 files , just to have a consultation if they 
+</I>&gt;<i> are OK.
+</I>&gt;<i> Just can't figure it out why this typical errors are coming up 
+</I>&gt;<i> regarding this DNS issue....
+</I>&gt;<i>
+</I>&gt;<i> If anyone else has any suggestion , will be very helpful...
+</I>&gt;<i>
+</I>&gt;<i> Regards ,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+-- 
+*Daniel Ciprus*
+Integration engineer
+------------------------------------------------------
+*<A HREF="http://www.acision.com*">http://www.acision.com*</A>
+4870 Sadler Rd
+Suite 200
+Glen Allen, VA 23060
+USA
+T: +1 804 762 5601
+E: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">daniel.ciprus at acision.com</A>
+
+
+This e-mail and any attachment is for authorised use by the intended recipient(s) only. It may contain proprietary material, confidential information and/or be subject to legal privilege. It should not be copied, disclosed to, retained or used by, any other party. If you are not an intended recipient then please promptly delete this e-mail and any attachment and all copies and inform the sender. Thank you.
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20101022/e82f6de7/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20101022/e82f6de7/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006662.html">[OpenIMSCore-Users] DNS issue in OpenIMSCore
+</A></li>
+	<LI>Next message: <A HREF="006665.html">[OpenIMSCore-Users] DNS issue in OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6663">[ date ]</a>
+              <a href="thread.html#6663">[ thread ]</a>
+              <a href="subject.html#6663">[ subject ]</a>
+              <a href="author.html#6663">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

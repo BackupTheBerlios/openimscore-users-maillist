@@ -1,0 +1,584 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Trouble%20loading%20with%20IMS%20Bench%20SIPp&In-Reply-To=%3C6E5F8828-F877-4B12-98B4-8D3B59130C27%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006956.html">
+   <LINK REL="Next"  HREF="006950.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp</H1>
+    <B>Vingarzan, Dragos</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Trouble%20loading%20with%20IMS%20Bench%20SIPp&In-Reply-To=%3C6E5F8828-F877-4B12-98B4-8D3B59130C27%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp">dragos.vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Sun Apr 17 18:07:52 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006956.html">[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+</A></li>
+        <LI>Next message: <A HREF="006950.html">[OpenIMSCore-Users] retrieve information of terminal type	and	multiple registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6957">[ date ]</a>
+              <a href="thread.html#6957">[ thread ]</a>
+              <a href="subject.html#6957">[ subject ]</a>
+              <a href="author.html#6957">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>1GB seems plenty ;). Also SER won't allocate more than what you configure, so your system won't use more than that, although because of the mem dup on dirty only, it will seem that the amount used increases. Keep in mind that the pkg size is per each SER process and the shm is common.
+
+Try to stop the pcscf in the middle. On exit it will list and summarized the alloced blocks. Then you can identify what is not freed.
+
+Sent from my iPhone
+
+On 17.04.2011, at 10:40, &quot;wondra&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wondra at volny.cz</A>&gt; wrote:
+
+&gt;<i> Yes, I took the -m setting down to 1GB again.
+</I>&gt;<i> 
+</I>&gt;<i> I don't think that the calls aren't torn down. I'm using the standard
+</I>&gt;<i> IMS_Bench scenarios. First, 20000 users are registered with timeout
+</I>&gt;<i> 3600, then a mix of calls (BYE terminated), MESSAGE and REGISTER is
+</I>&gt;<i> sent. I set the benchmark stages to run for 10mins starting from 200cps
+</I>&gt;<i> and last 2 times P-CSCF crashed exactly when increasing from 200 cps to
+</I>&gt;<i> 250, irrespective of the ring time and call time delays (once set to 15s
+</I>&gt;<i> avg, second time to 0), meaning it's not and issue of standing call
+</I>&gt;<i> number. It seems more of a total call number problem. It always crashes
+</I>&gt;<i> around 250000 total calls, even if they come slowly. And I observed the
+</I>&gt;<i> S-CSCF after the 3600s registration timeout elapsed and the memory usage
+</I>&gt;<i> never dropped.
+</I>&gt;<i> 
+</I>&gt;<i> Just to be sure - the P-CSCF crashes long before the server runs out of
+</I>&gt;<i> physical memory.
+</I>&gt;<i> 
+</I>&gt;<i> IMS_Bench report attached if the list doesn't remove it.
+</I>&gt;<i> 
+</I>&gt;<i> Tomas Vondra
+</I>&gt;<i> 
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Vingarzan, Dragos [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">dragos.vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;<i> Sent: Saturday, April 16, 2011 9:29 PM
+</I>&gt;<i> To: wondra
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+</I>&gt;<i> 
+</I>&gt;<i> You should not configure more memory than you actually have. Total used
+</I>&gt;<i> memory should be shm_size + pkg_size * proc_count (childs, timers, tcp,
+</I>&gt;<i> diameter workers, etc).
+</I>&gt;<i> 
+</I>&gt;<i> Then for the out of memory errors either there's a memory leak bug or
+</I>&gt;<i> the calls are just initiated and not teared-down... In either case,
+</I>&gt;<i> eventually you woukd run out memory.
+</I>&gt;<i> 
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> On 16.04.2011, at 15:55, &quot;wondra&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wondra at volny.cz</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;&gt;<i> Yes, that was indeed caused by NAT. Now I am stuck at about 33 regs/s,
+</I>&gt;&gt;<i> will measure exactly later, and 300 cps with IMS_Bench's default
+</I>&gt;&gt;<i> scenario mix. 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> However, the test doesn't stop with the tested or testing machine
+</I>&gt;&gt;<i> overloading or running out of memory, but by P-CSCF crashing to the
+</I>&gt;&gt;<i> ground. 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> This time increasing memory limit only leads to heavy swapping while
+</I>&gt;<i> the
+</I>&gt;&gt;<i> thing's crashing. (It fills the 4GB really quickly from the 100-200MB
+</I>&gt;<i> it
+</I>&gt;&gt;<i> uses normally.)
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Is this normal? Or should I try something else? I _will_ try
+</I>&gt;<i> increasing
+</I>&gt;&gt;<i> the number of childs to more than I have CPUs.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Symptoms are a mix of:
+</I>&gt;&gt;<i> 4(30961) ERROR: build_req_buf_from_sip_req: out of memory
+</I>&gt;&gt;<i> 4(30961) ERROR: print_uac_request: no pkg_mem
+</I>&gt;&gt;<i> 4(30961) ERROR: t_forward_nonack: failure to add branches
+</I>&gt;&gt;<i> 4(30961) ERR:P-CSCF:P_follows_record_routes(): More RR headers in
+</I>&gt;<i> reply
+</I>&gt;&gt;<i> than in request
+</I>&gt;&gt;<i> 4(30961) ERROR: build_res_buf_from_sip_res: out of mem
+</I>&gt;&gt;<i> 4(30961) ERROR: relay_reply: no mem for outbound reply buffer
+</I>&gt;&gt;<i> 4(30961) ERROR: build_res_buf_from_sip_req: out of memory  ; needs 843
+</I>&gt;&gt;<i> .
+</I>&gt;&gt;<i> .
+</I>&gt;&gt;<i> .
+</I>&gt;&gt;<i> 4(30961) ERR:P-CSCF:cscf_get_next_record_routes: Error parsing as
+</I>&gt;<i> Route
+</I>&gt;&gt;<i> header
+</I>&gt;&gt;<i> 4(30961) parse_contact(): No memory left
+</I>&gt;&gt;<i> 4(30961) get_contact_uri(): Error while parsing Contact body
+</I>&gt;&gt;<i> 4(30961) ERROR: del_lump: out of memory
+</I>&gt;&gt;<i> 4(30961) build_res_buf_from_sip_res: error trying to remove firstvia
+</I>&gt;&gt;<i> 4(30961) ERROR: relay_reply: no mem for outbound reply buffer
+</I>&gt;&gt;<i> 4(30961) ERROR: rport_builder: out of memory
+</I>&gt;&gt;<i> 4(30961) ERROR: build_res_buf_from_sip_req: rport_builder failed
+</I>&gt;&gt;<i> 4(30961) ERROR: via_builder: out of memory
+</I>&gt;&gt;<i> 4(30961) ERROR: build_local: no via header got from builder
+</I>&gt;&gt;<i> 4(30961) ERROR: attempt to build a CANCEL failed
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>] 
+</I>&gt;&gt;<i> Sent: Friday, April 15, 2011 7:17 PM
+</I>&gt;&gt;<i> To: 'wondra'; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: RE: [OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Hi Thomas,
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;&gt;<i> I-CSCF console:
+</I>&gt;&gt;&gt;<i> 4(22269) ERROR: uri2dst: failed to resolve &quot;scscf.open-ims.test&quot;
+</I>&gt;&gt;&gt;<i> 4(22269) ERROR: t_forward_nonack: failure to add branches
+</I>&gt;&gt;&gt;<i> 4(22269) ERROR: w_t_relay (failure mode): forwarding failed
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;&gt;<i> I am pretty sure, that there is no &quot;.open-ims.test&quot; left in the
+</I>&gt;<i> config
+</I>&gt;&gt;&gt;<i> files or database. Only in the source code.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Did you already try to trace the core messages (SIP, diameter)?
+</I>&gt;&gt;<i> This should show the mysterious domainname.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> BR
+</I>&gt;&gt;<i> Franz
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> 
+</I>&gt;<i> 	
+</I>&gt;<i> Test Report (minolta)
+</I>&gt;<i> 
+</I>&gt;<i> Summary
+</I>&gt;<i> 
+</I>&gt;<i> This report shows the result of a benchmark run performed by &quot;IMS Bench SIPp&quot;, an implementation of the IMS/NGN Performance Benchmark suite, ETSI TS 186.008.
+</I>&gt;<i> 
+</I>&gt;<i> The test was started on 16-Apr-2011 17:42, and the total time for the test execution was 0h 28m 20s. The Design Objective Capacity (DOC) is 201 scenarios per second.
+</I>&gt;<i> 
+</I>&gt;<i> The following systems and parameters were used for the test.
+</I>&gt;<i> 
+</I>&gt;<i> Role	Server	IP	Nb Users
+</I>&gt;<i> SUT 1	minolta	147.32.201.30	 
+</I>&gt;<i> Manager	UbuntuI	 72.137.4.8	 
+</I>&gt;<i> TS1	UbuntuI	147.32.84.119	24000
+</I>&gt;<i> Parameter Name	Parameter Value	Parameter Info
+</I>&gt;<i> RingTime	5000	Ringing Time (ms)
+</I>&gt;<i> HoldTime	10000	Conversation Time (ms)
+</I>&gt;<i> RegistrationExpire	3600	Registration Timeout (ms)
+</I>&gt;<i> TransientTime	30	Time after the start of a step for which data is ignored (in seconds)
+</I>&gt;<i> The following table shows the average of the key measurements for each step of the test. Each steps is characterized by the requested load, the effective load, the global IHS (total of all Inadequately handled scenarios for this step divided by number of Session Attempts for this step) the scenario IHS (number of inadequately handled scenarios for this step divided by the number of scenario attempts for this step), the CPU utilization and the available Memory on the SUT. The available Memory is expressed in MegaBytes, and the requested and effective loads in Scenarios Attempts Per Seconds (SAPS).
+</I>&gt;<i> 
+</I>&gt;<i> Note that the IHS percentages represented in this table are the number of failures for a step divided by the number of scenario attempts for this step, and so is not the average of (IHS per seconds)
+</I>&gt;<i> 
+</I>&gt;<i>  	Pre-registration	Step 1	Step 2
+</I>&gt;<i> Requested load	33	200	250
+</I>&gt;<i> Effective Load	32.84	199.90	249.55
+</I>&gt;<i> Ratio ims_rereg %	0.00	15.07	15.02
+</I>&gt;<i> Ratio ims_reg %	100.00	2.49	2.08
+</I>&gt;<i> Ratio ims_uac %	0.00	49.88	50.21
+</I>&gt;<i> Ratio ims_dereg %	0.00	2.49	2.59
+</I>&gt;<i> Ratio ims_msgc %	0.00	30.07	30.11
+</I>&gt;<i> CPU minolta	20.20	29.80	12.72
+</I>&gt;<i> Memory minolta	1675.08	994.03	945.66
+</I>&gt;<i> SIPP CPU UbuntuI	1.32	11.24	0.62
+</I>&gt;<i> SIPP MEM UbuntuI	95.58	71.86	42.28
+</I>&gt;<i> IHS ims_rereg %	0.00	2.28	100.00
+</I>&gt;<i> IHS ims_reg %	0.85	2.75	100.00
+</I>&gt;<i> IHS ims_uac %	0.00	3.62	100.00
+</I>&gt;<i> IHS ims_dereg %	0.00	2.40	100.00
+</I>&gt;<i> IHS ims_msgc %	0.00	1.02	100.00
+</I>&gt;<i> global IHS %	0.85	2.58	100.00
+</I>&gt;<i> 
+</I>&gt;<i> The following chapters show details on different measurement, like delay between two messages, response time or number of messages per seconds. 
+</I>&gt;<i> Each measurement can be represented in one of the four following forms.
+</I>&gt;<i> 
+</I>&gt;<i> Evolution in function of the time. On such graphs, the raw information is plotted, like number of messages per seconds, or response time of each scenario. This graph is useful in giving for instance a good idea on the distribution of response times, and it's evolution over the time.
+</I>&gt;<i> Evolution (mean) in function of the time. While previous graph gives a good indication, it may sometimes be easier to see the evolution of the mean of the measurement over a second in function of the time.
+</I>&gt;<i> Histogram. This graph shows the histogram of the measurement, so how many times each value of the measurement occured.
+</I>&gt;<i> Probability. This graph gives the probability of the measurement to be higher than a certain value. This graph can be used to determine percentile for instances.
+</I>&gt;<i> For some graphs, a cubic Bezier curve is plotted as well.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 1 Scenario Attempts Per Second
+</I>&gt;<i> 1.1 Scenario Attempts Per Second (Mean per second)
+</I>&gt;<i> 1.2 Scenario Attempts Per Second Histogram
+</I>&gt;<i> 1.3 Scenario Attempts Per Second Probability
+</I>&gt;<i> 2 SUT CPU %
+</I>&gt;<i> 2.1 SUT CPU % over time
+</I>&gt;<i> 3 SUT Available Memory [MB]
+</I>&gt;<i> 3.1 SUT Available Memory [MB] over time
+</I>&gt;<i> 4 ALL SIPP CPU %
+</I>&gt;<i> 4.1 ALL SIPP CPU % over time
+</I>&gt;<i> 5 ALL SIPP Free Memory [MB]
+</I>&gt;<i> 5.1 ALL SIPP Free Memory [MB] over time
+</I>&gt;<i> 6 Inadequately handled scenario Percentage
+</I>&gt;<i> 6.1 Inadequately handled scenario Percentage over time
+</I>&gt;<i> 7 Scenario retransmissions - all scenarios
+</I>&gt;<i> 7.1 Scenario retransmissions - all scenarios over time
+</I>&gt;<i> 7 Calling
+</I>&gt;<i> 7.1 PX_TRT-SES1: Session Setup Time
+</I>&gt;<i> 7.1.1 PX_TRT-SES1: Session Setup Time(Calling use case) (Mean per second)
+</I>&gt;<i> 7.1.2 PX_TRT-SES1: Session Setup Time(Calling use case) Histogram
+</I>&gt;<i> 7.2 PX_TRT-SES2: Session Initiation transversal time
+</I>&gt;<i> 7.2.1 PX_TRT-SES2: Session Initiation transversal time(Calling use case) (Mean per second)
+</I>&gt;<i> 7.2.2 PX_TRT-SES2: Session Initiation transversal time(Calling use case) Histogram
+</I>&gt;<i> 7.3 PX_TRT-REL1: Delay Between BYE and 200 OK
+</I>&gt;<i> 7.3.1 PX_TRT-REL1: Delay Between BYE and 200 OK (Calling use case) (Mean per second)
+</I>&gt;<i> 7.3.2 PX_TRT-REL1: Delay Between BYE and 200 OK (Calling use case) Histogram
+</I>&gt;<i> 7.4 PX_TRT-SES3: INVITE and re-INVITE cost
+</I>&gt;<i> 7.5 ims_uac : Scenario retransmissions
+</I>&gt;<i> 7.5.1 Scenario retransmissions(ims_uac scenario) over time
+</I>&gt;<i> 7.6 ims_uac : Inadequately handled scenario Percentage
+</I>&gt;<i> 7.6.1 Inadequately handled scenario Percentage(ims_uac scenario) over time
+</I>&gt;<i> 8 Messaging
+</I>&gt;<i> 8.1 PX_TRT-PMM1: Message Transmission time
+</I>&gt;<i> 8.1.1 PX_TRT-PMM1: Message Transmission time(Messaging use case) over time
+</I>&gt;<i> 8.1.2 PX_TRT-PMM1: Message Transmission time(Messaging use case) (Mean per second)
+</I>&gt;<i> 8.1.3 PX_TRT-PMM1: Message Transmission time(Messaging use case) Histogram
+</I>&gt;<i> 8.2 PX_TRT-PMM2: Message Transmission time (error case)
+</I>&gt;<i> 9 Registration
+</I>&gt;<i> 9.1 PX_TRT-REG1: Time of the first register transaction
+</I>&gt;<i> 9.1.1 PX_TRT-REG1: Time of the first register transaction(Registration use case) (Mean per second)
+</I>&gt;<i> 9.1.2 PX_TRT-REG1: Time of the first register transaction(Registration use case) Histogram
+</I>&gt;<i> 9.2 PX_TRT-REG2: Time of the second register transaction
+</I>&gt;<i> 9.2.1 PX_TRT-REG2: Time of the second register transaction(Registration use case) (Mean per second)
+</I>&gt;<i> 9.2.2 PX_TRT-REG2: Time of the second register transaction(Registration use case) Histogram
+</I>&gt;<i> 9.3 ims_rereg : Time of the re-register transaction
+</I>&gt;<i> 9.3.1 Time of the re-register transaction(ims_rereg scenario) (Mean per second)
+</I>&gt;<i> 9.3.2 Time of the re-register transaction(ims_rereg scenario) Histogram
+</I>&gt;<i> 9.4 ims_reg : Scenario retransmissions
+</I>&gt;<i> 9.4.1 Scenario retransmissions(ims_reg scenario) over time
+</I>&gt;<i> 9.5 ims_reg : PX_TRT-REG1: Time of the first register transaction
+</I>&gt;<i> 9.5.1 PX_TRT-REG1: Time of the first register transaction(ims_reg scenario) (Mean per second)
+</I>&gt;<i> 9.5.2 PX_TRT-REG1: Time of the first register transaction(ims_reg scenario) Histogram
+</I>&gt;<i> 9.6 ims_dereg : PX_TRT-REG1: Time of the first register transaction
+</I>&gt;<i> 9.6.1 PX_TRT-REG1: Time of the first register transaction(ims_dereg scenario) (Mean per second)
+</I>&gt;<i> 9.6.2 PX_TRT-REG1: Time of the first register transaction(ims_dereg scenario) Histogram
+</I>&gt;<i> Appendix
+</I>&gt;<i> 1 Scenario Attempts Per Second 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the number of scenario per seconds generated by the test system. For each step, the generation was based on a Poisson.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	Effective Load
+</I>&gt;<i> Step	Requested Load	Mean	Variance	Standard Deviation	Minimum	Maximum	Percentile 50	Percentile 90	Percentile 95	Percentile 99
+</I>&gt;<i> Pre-reg	33	32.84	5.24	2.29	0.00	34.00	33.0	33.0	33.0	33.0
+</I>&gt;<i> 1	200	199.90	248.46	15.76	91.00	241.00	200.0	220.0	224.0	235.0
+</I>&gt;<i> 2	250	249.55	622.86	24.96	98.00	471.00	249.0	273.0	277.0	297.0
+</I>&gt;<i> 1.1 Scenario Attempts Per Second (Mean per second) 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 1.2 Scenario Attempts Per Second Histogram 
+</I>&gt;<i> 
+</I>&gt;<i> This graph shows the Histogram of the SAPS for each step. It should follow Poisson distributions.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 1.3 Scenario Attempts Per Second Probability 
+</I>&gt;<i> 
+</I>&gt;<i> This graph shows the probability distribution of the SAPS for each step. It shows the probability that the effective load is higher than x.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 2 SUT CPU % 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the CPU of the system under test (SUT).
+</I>&gt;<i> 
+</I>&gt;<i>  	 	CPU minolta
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum
+</I>&gt;<i> Pre-reg	33	20.20	7.32	0.24	75.12
+</I>&gt;<i> 1	200	29.80	8.44	11.22	82.59
+</I>&gt;<i> 2	250	12.72	25.01	0.00	100.00
+</I>&gt;<i> 2.1 SUT CPU % over time 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 3 SUT Available Memory [MB] 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the Available memory on the system under test, in MBytes (SUT).
+</I>&gt;<i> 
+</I>&gt;<i>  	 	Memory minolta
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum
+</I>&gt;<i> Pre-reg	33	1675.08	368.83	1252.30	2509.21
+</I>&gt;<i> 1	200	994.03	83.48	675.22	1968.16
+</I>&gt;<i> 2	250	945.66	435.90	49.27	1234.83
+</I>&gt;<i> 3.1 SUT Available Memory [MB] over time 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 4 ALL SIPP CPU % 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the CPU of SIPP on ALL Test Machines
+</I>&gt;<i> 
+</I>&gt;<i>  	 	SIPP CPU UbuntuI
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum
+</I>&gt;<i> Pre-reg	33	1.32	0.68	0.00	4.48
+</I>&gt;<i> 1	200	11.24	2.19	0.50	28.00
+</I>&gt;<i> 2	250	0.62	1.40	0.00	12.50
+</I>&gt;<i> 4.1 ALL SIPP CPU % over time 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 5 ALL SIPP Free Memory [MB]  
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the free memory of SIPP on ALL Test Machines, in MBytes
+</I>&gt;<i> 
+</I>&gt;<i>  	 	SIPP MEM UbuntuI
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum
+</I>&gt;<i> Pre-reg	33	95.58	1.49	92.87	97.81
+</I>&gt;<i> 1	200	71.86	2.31	68.02	76.36
+</I>&gt;<i> 2	250	42.28	9.73	27.84	68.02
+</I>&gt;<i> 5.1 ALL SIPP Free Memory [MB] over time 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 6 Inadequately handled scenario Percentage 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the percentage of inadequately handled scenarios.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	IHS per use_case %
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum
+</I>&gt;<i> Pre-reg	33	0.83	5.95	0.00	75.76
+</I>&gt;<i> 1	200	2.51	9.60	0.00	99.51
+</I>&gt;<i> 2	250	99.60	5.74	1.50	100.00
+</I>&gt;<i> 6.1 Inadequately handled scenario Percentage over time 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 7 Scenario retransmissions - all scenarios 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the number of retransmissions per seconds for all scenarios.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	RETRANSMIT
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum	Percentile 50	Percentile 90	Percentile 95	Percentile 99
+</I>&gt;<i> Pre-reg	33	1.79	7.52	0.00	67.00	0.0	2.0	4.0	44.0
+</I>&gt;<i> 1	200	11.43	68.77	0.00	631.00	0.0	0.0	19.0	518.0
+</I>&gt;<i> 2	250	262.38	524.85	1.00	2178.00	54.0	1241.0	1779.0	2084.0
+</I>&gt;<i> 7.1 Scenario retransmissions - all scenarios over time 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 7 Calling 
+</I>&gt;<i> 
+</I>&gt;<i> 7.1 PX_TRT-SES1: Session Setup Time 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the delay between the Caller sending INVITE and callee receiving ACK.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	PX_TRT-SES1 (msec)
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum	Percentile 50	Percentile 90	Percentile 95	Percentile 99
+</I>&gt;<i> 1	200	86.33	478.03	0.00	7541.31	5.0	7.1	30.1	3489.0
+</I>&gt;<i> 7.1.1 PX_TRT-SES1: Session Setup Time(Calling use case) (Mean per second) 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 7.1.2 PX_TRT-SES1: Session Setup Time(Calling use case) Histogram 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 7.2 PX_TRT-SES2: Session Initiation transversal time 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the delay between the caller sending INVITE and the callee receiving INVITE.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	PX_TRT-SES2 (msec)
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum	Percentile 50	Percentile 90	Percentile 95	Percentile 99
+</I>&gt;<i> 1	200	40.11	329.11	1.27	7456.18	1.7	2.5	3.2	1556.0
+</I>&gt;<i> 7.2.1 PX_TRT-SES2: Session Initiation transversal time(Calling use case) (Mean per second) 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 7.2.2 PX_TRT-SES2: Session Initiation transversal time(Calling use case) Histogram 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 7.3 PX_TRT-REL1: Delay Between BYE and 200 OK  
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the delay between the first BYE and the corresponding 200 OK.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	PX_TRT-REL1 (msec)
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum	Percentile 50	Percentile 90	Percentile 95	Percentile 99
+</I>&gt;<i> 1	200	38.62	318.79	1.96	4004.15	2.8	4.3	5.2	1554.0
+</I>&gt;<i> 7.3.1 PX_TRT-REL1: Delay Between BYE and 200 OK (Calling use case) (Mean per second) 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 7.3.2 PX_TRT-REL1: Delay Between BYE and 200 OK (Calling use case) Histogram 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 7.4 PX_TRT-SES3: INVITE and re-INVITE cost 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the caller sending first INVITE and callee receiving second ACK.
+</I>&gt;<i> 
+</I>&gt;<i> 7.5 ims_uac : Scenario retransmissions 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the number of retransmissions per seconds for this scenario.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	RETRANSMIT
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum	Percentile 50	Percentile 90	Percentile 95	Percentile 99
+</I>&gt;<i> Pre-reg	33	0.00	0.00	0.00	0.00	0.0	0.0	0.0	0.0
+</I>&gt;<i> 1	200	6.40	43.03	0.00	417.00	0.0	0.0	0.0	321.0
+</I>&gt;<i> 2	250	102.88	275.85	0.00	1135.00	0.0	616.0	915.0	1065.0
+</I>&gt;<i> 7.5.1 Scenario retransmissions(ims_uac scenario) over time 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 7.6 ims_uac : Inadequately handled scenario Percentage 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the percentage of Inadequately handled scenarios for the uac.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	IHS per scenario %
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum
+</I>&gt;<i> Pre-reg	33	0.00	0.00	0.00	0.00
+</I>&gt;<i> 1	200	3.67	13.04	0.00	100.00
+</I>&gt;<i> 2	250	100.00	0.00	100.00	100.00
+</I>&gt;<i> 7.6.1 Inadequately handled scenario Percentage(ims_uac scenario) over time 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 8 Messaging 
+</I>&gt;<i> 
+</I>&gt;<i> 8.1 PX_TRT-PMM1: Message Transmission time 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the delay between the message and the 200 OK.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	PX_TRT-PMM1 (msec)
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum	Percentile 50	Percentile 90	Percentile 95	Percentile 99
+</I>&gt;<i> 1	200	45.64	351.65	2.05	4564.89	2.6	4.0	5.2	1770.0
+</I>&gt;<i> 2	250	14.78	40.18	2.15	234.09	2.8	12.8	126.9	189.5
+</I>&gt;<i> 8.1.1 PX_TRT-PMM1: Message Transmission time(Messaging use case) over time 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 8.1.2 PX_TRT-PMM1: Message Transmission time(Messaging use case) (Mean per second) 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 8.1.3 PX_TRT-PMM1: Message Transmission time(Messaging use case) Histogram 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 8.2 PX_TRT-PMM2: Message Transmission time (error case) 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the delay between the message and the 404 Not Found.
+</I>&gt;<i> 
+</I>&gt;<i> 9 Registration 
+</I>&gt;<i> 
+</I>&gt;<i> 9.1 PX_TRT-REG1: Time of the first register transaction 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the time of the first register transaction in the registration use_cases i.e. the time between the REGISTER and the 401 Unautorized for all scenarios in the Registration use_case.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	PX_TRT-REG1 (msec)
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum	Percentile 50	Percentile 90	Percentile 95	Percentile 99
+</I>&gt;<i> Pre-reg	33	76.63	470.22	5.23	10094.14	7.1	12.0	288.4	1802.0
+</I>&gt;<i> 1	200	87.62	409.18	5.56	10092.73	9.6	24.7	135.0	2447.0
+</I>&gt;<i> 2	250	32.65	53.18	7.20	229.99	13.1	110.0	173.1	229.9
+</I>&gt;<i> 9.1.1 PX_TRT-REG1: Time of the first register transaction(Registration use case) (Mean per second) 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 9.1.2 PX_TRT-REG1: Time of the first register transaction(Registration use case) Histogram 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 9.2 PX_TRT-REG2: Time of the second register transaction 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the time of the second register transaction in the registration use_cases, i.e. the delay between the second REGISTER and the 200 OK.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	PX_TRT-REG2 (msec)
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum	Percentile 50	Percentile 90	Percentile 95	Percentile 99
+</I>&gt;<i> Pre-reg	33	18.84	52.68	8.58	2898.12	11.6	14.6	24.0	225.4
+</I>&gt;<i> 1	200	49.26	288.22	8.27	3795.99	13.3	21.4	70.3	625.2
+</I>&gt;<i> 2	250	25.76	30.04	10.06	170.38	17.3	35.8	41.5	170.3
+</I>&gt;<i> 9.2.1 PX_TRT-REG2: Time of the second register transaction(Registration use case) (Mean per second) 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 9.2.2 PX_TRT-REG2: Time of the second register transaction(Registration use case) Histogram 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 9.3 ims_rereg : Time of the re-register transaction 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the time of re-register transaction i.e. the time between the REGISTER and the 200 OK.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	PX_TRT-REG4 (msec)
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum	Percentile 50	Percentile 90	Percentile 95	Percentile 99
+</I>&gt;<i> 1	200	123.35	531.37	14.59	10116.12	21.8	49.0	142.3	3163.0
+</I>&gt;<i> 2	250	74.88	98.63	16.00	395.60	31.5	259.6	318.7	395.6
+</I>&gt;<i> 9.3.1 Time of the re-register transaction(ims_rereg scenario) (Mean per second) 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 9.3.2 Time of the re-register transaction(ims_rereg scenario) Histogram 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 9.4 ims_reg : Scenario retransmissions 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the number of retransmissions per seconds for this scenario.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	RETRANSMIT
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum	Percentile 50	Percentile 90	Percentile 95	Percentile 99
+</I>&gt;<i> Pre-reg	33	1.79	7.52	0.00	67.00	0.0	2.0	4.0	44.0
+</I>&gt;<i> 1	200	0.46	2.40	0.00	25.00	0.0	0.0	1.0	12.0
+</I>&gt;<i> 2	250	49.76	10.54	0.00	79.00	50.0	61.0	63.0	70.0
+</I>&gt;<i> 9.4.1 Scenario retransmissions(ims_reg scenario) over time 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 9.5 ims_reg : PX_TRT-REG1: Time of the first register transaction 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the time of the first register transaction i.e. the time between the REGISTER and the 401 Unautorized.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	PX_TRT-REG1 (msec)
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum	Percentile 50	Percentile 90	Percentile 95	Percentile 99
+</I>&gt;<i> Pre-reg	33	76.63	470.22	5.23	10094.14	7.1	12.0	288.4	1802.0
+</I>&gt;<i> 1	200	95.66	434.98	5.77	10092.73	10.9	33.5	175.3	2419.0
+</I>&gt;<i> 2	250	25.60	28.47	7.61	110.02	12.7	31.7	39.6	39.6
+</I>&gt;<i> 9.5.1 PX_TRT-REG1: Time of the first register transaction(ims_reg scenario) (Mean per second) 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 9.5.2 PX_TRT-REG1: Time of the first register transaction(ims_reg scenario) Histogram 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 9.6 ims_dereg : PX_TRT-REG1: Time of the first register transaction 
+</I>&gt;<i> 
+</I>&gt;<i> This graph represents the time of the first register transaction i.e. the time between the REGISTER and the 401 Unautorized.
+</I>&gt;<i> 
+</I>&gt;<i>  	 	PX_TRT-REG1 (msec)
+</I>&gt;<i> Step	Requested Load	Mean	Standard Deviation	Minimum	Maximum	Percentile 50	Percentile 90	Percentile 95	Percentile 99
+</I>&gt;<i> 1	200	79.62	381.58	5.56	3739.89	8.5	17.7	112.9	2550.0
+</I>&gt;<i> 2	250	24.09	41.49	7.20	173.11	13.1	20.8	173.1	173.1
+</I>&gt;<i> 9.6.1 PX_TRT-REG1: Time of the first register transaction(ims_dereg scenario) (Mean per second) 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 9.6.2 PX_TRT-REG1: Time of the first register transaction(ims_dereg scenario) Histogram 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Appendix 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> The following information is also available for the test
+</I>&gt;<i> 
+</I>&gt;<i> Parameter Name	Parameter Value	Parameter Info
+</I>&gt;<i> rand_seed	1302968548	Value used to initialize the random number generators
+</I>&gt;<i> prep_offset	2000	Time (ms) for scenario preparation (user reservation, etc.) prior to actual execution
+</I>&gt;<i> highest_measured_time_offset	15	Highest time offset observed at startup between any test system and the manager (microseconds)
+</I>&gt;<i> 
+</I>&gt;<i> System	Command Line
+</I>&gt;<i> TS1	./sipp -id 1 -i 147.32.84.119 -user_inf ./ims_users_1.inf -rmctrl 147.32.84.119:5000 147.32.201.30:4060 -trace_err -trace_cpumem -trace_scen -trace_retrans
+</I>&gt;<i> Manager	../manager -f manager.xml
+</I>&gt;<i> SUT 1	./cpum 147.32.84.119
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20110417/d340feb0/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20110417/d340feb0/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006956.html">[OpenIMSCore-Users] Trouble loading with IMS Bench SIPp
+</A></li>
+	<LI>Next message: <A HREF="006950.html">[OpenIMSCore-Users] retrieve information of terminal type	and	multiple registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6957">[ date ]</a>
+              <a href="thread.html#6957">[ thread ]</a>
+              <a href="subject.html#6957">[ subject ]</a>
+              <a href="author.html#6957">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

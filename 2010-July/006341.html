@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] openimscore port problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20openimscore%20port%20problems&In-Reply-To=%3C116950.83424.qm%40web37003.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006339.html">
+   <LINK REL="Next"  HREF="006342.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] openimscore port problems</H1>
+    <B>Ionescu Antonio</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20openimscore%20port%20problems&In-Reply-To=%3C116950.83424.qm%40web37003.mail.mud.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] openimscore port problems">ionescu_antonio at yahoo.com
+       </A><BR>
+    <I>Mon Jul 12 14:25:32 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006339.html">[OpenIMSCore-Users] openimscore port problems
+</A></li>
+        <LI>Next message: <A HREF="006342.html">[OpenIMSCore-Users] openimscore port problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6341">[ date ]</a>
+              <a href="thread.html#6341">[ thread ]</a>
+              <a href="subject.html#6341">[ subject ]</a>
+              <a href="author.html#6341">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+--- On Mon, 7/12/10, Ionescu Antonio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ionescu_antonio at yahoo.com</A>&gt; wrote:
+
+
+From: Ionescu Antonio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ionescu_antonio at yahoo.com</A>&gt;
+Subject: Re: AW: openimscore port problems
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>
+Date: Monday, July 12, 2010, 12:48 PM
+
+
+
+
+
+
+
+Hi,
+&#160;
+Knowing that &quot;any&quot; interface is not supported for&#160;packet size of 3000 bytes, in tcpdump,&#160;and that&#160;&quot;eth0&quot; would not provide enough information I tried the following thing: 
+&#160;
+# tcpdump -i eth0 -i lo -s 3000...
+&#160;
+The tracefile that resulted was attached in the mail. I'm still not sure if what I did was correct, but I think it will provide more info.
+In&#160;the previous mail, you told me that there was a problem with the user registration in the HSS. So, I tried to add bob in the mysql database, though I think it was added when I first installed openimscore, but I had a problem with the &quot;fhoss-add-openims-user.sh&quot; file. I think it has a bug, because when I tried the following command, it didn't recognize my root password:
+&#160;
+debian:~/openimscore-fhoss/scripts# ./fhoss-add-imscore-user.sh -u bob -p bob -a
+Successfully wrote add-user-bob.sql
+Successfully wrote delete-user-bob.sql
+Apply add-user-bob.sql as user root...
+Enter password: 
+ERROR 1242 (21000) at line 6: Subquery returns more than 1 row
+ERROR: Failed to apply add-user-bob.sql
+
+The same thing happened when I tried to add &quot;bob&quot; without a password (when I substituted -p with -n). I still wasn't able to add bob, giving the&#160;following error:
+&#160;
+debian:~/openimscore-fhoss/scripts# ./fhoss-add-imscore-user.sh -u bob -n -a
+Successfully wrote add-user-bob.sql
+Successfully wrote delete-user-bob.sql
+Apply add-user-bob.sql as user root...
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+ERROR: Failed to apply add-user-bob.sql
+
+&#160;
+I think this is the problem which prevents me to have a succesful registration. Though, you mentioned the register-bob.xml file, I'll attach it also, but I think it's ok, because I tested it with xmllint and it seemed ok.
+Any suggestions?
+&#160;
+Thank you for your support,
+Antonio
+
+--- On Mon, 7/12/10, Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt; wrote:
+
+
+From: Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+Subject: AW: openimscore port problems
+To: &quot;'Ionescu Antonio'&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ionescu_antonio at yahoo.com</A>&gt;
+Date: Monday, July 12, 2010, 5:48 AM
+
+
+
+
+
+
+
+
+Yes, or anything to see the content of the REGISTER request, also the content of &#8220;register-bob.xml&#8221; should show the issue.
+There must be something wring with the identity.
+&#160; 
+But the whole trace would be best, because it shows the reaction of the HSS. 
+&#160; 
+Franz 
+&#160; 
+
+
+
+
+
+Von: Ionescu Antonio [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ionescu_antonio at yahoo.com</A>] 
+Gesendet: Sonntag, 11. Juli 2010 20:18
+An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>
+Betreff: Re: openimscore port problems
+&#160; 
+
+
+
+
+
+Hi, 
+
+&#160;
+
+I tried as you said, but the promiscuous mode is not available for &quot;any&quot; interface. Should I try &quot;eth0&quot; than &quot;any&quot;?
+
+&#160;
+
+Thanks,
+
+Antonio
+
+--- On Sun, 7/11/10, Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt; wrote:
+
+
+From: Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+Subject: AW: openimscore port problems
+To: &quot;'Ionescu Antonio'&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ionescu_antonio at yahoo.com</A>&gt;, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Date: Sunday, July 11, 2010, 4:57 PM 
+
+
+Did you really use the &#8211;s 3000 parameter at tcpdump?
+It seems that all packets are truncated (packet size limited during capture). 
+&#160;
+But I can see that the REGISTER request is forwarded to the I-CSCF (p 292) and the diameter UAR message gets an error reponse (user unkown in HSS). 
+More details cannot be recognized because of the truncated packets. 
+&#160; 
+BR 
+Franz 
+&#160; 
+
+
+
+
+
+Von: Ionescu Antonio [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ionescu_antonio at yahoo.com</A>] 
+Gesendet: Sonntag, 11. Juli 2010 15:07
+An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at kabsi.at</A> ; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Betreff: Re: openimscore port problems
+&#160; 
+
+
+
+
+
+Hi,
+
+&#160;
+
+I have attached the tracefile.pcap and because it was very big I did't list it here.
+
+&#160;
+
+Regards,
+
+Antonio
+
+--- On Sun, 7/11/10, Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt; wrote:
+
+
+From: Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>&gt;
+Subject: AW: [OpenIMSCore-Users] openimscore port problems
+To: &quot; 'Ionescu Antonio' &quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ionescu_antonio at yahoo.com</A>&gt;, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Date: Sunday, July 11, 2010, 3:32 PM
+
+Hi,
+
+&gt;<i> I've attached the tcpdump file, but I've only captured the udp traffic. If
+</I>&gt;<i> you need the whole traffic without any restrictions please let me know. At
+</I>&gt;<i> the first look, the IPv4 address 192.168.182.1 is not correct. I would
+</I>&gt;<i> like 192.168.182.131. It's strange.
+</I>
+Yes, I prefer the whole traffic generated with 
+&#160;&#160;&#160; &quot;tcpdump -i any -s 3000 -w /var/tmp/tracefile.pcap&quot;
+and written to the file tracefile.pcap.
+
+Maybe after a restart so that I see the DNS queries of all addresses which
+are not in DNS-cache.
+
+BR
+Franz
+&#160;
+&#160;
+
+
+
+      
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100712/b7107ba7/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100712/b7107ba7/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: tracefile.pcap
+Type: application/octet-stream
+Size: 91532 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100712/b7107ba7/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100712/b7107ba7/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: register-bob.xml
+Type: text/xml
+Size: 1516 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100712/b7107ba7/attachment.xml">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100712/b7107ba7/attachment.xml</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006339.html">[OpenIMSCore-Users] openimscore port problems
+</A></li>
+	<LI>Next message: <A HREF="006342.html">[OpenIMSCore-Users] openimscore port problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6341">[ date ]</a>
+              <a href="thread.html#6341">[ thread ]</a>
+              <a href="subject.html#6341">[ subject ]</a>
+              <a href="author.html#6341">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to get notifications upon particular user	registration?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20get%20notifications%20upon%20particular%0A%20user%09registration%3F&In-Reply-To=%3C47E2A27E.605%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003582.html">
+   <LINK REL="Next"  HREF="003576.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to get notifications upon particular user	registration?</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20get%20notifications%20upon%20particular%0A%20user%09registration%3F&In-Reply-To=%3C47E2A27E.605%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] How to get notifications upon particular user	registration?">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Mar 20 18:44:30 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003582.html">[OpenIMSCore-Users] How to get notifications upon particular	userregistration?
+</A></li>
+        <LI>Next message: <A HREF="003576.html">[OpenIMSCore-Users] How to get notifications upon particular user	registration?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3638">[ date ]</a>
+              <a href="thread.html#3638">[ thread ]</a>
+              <a href="subject.html#3638">[ subject ]</a>
+              <a href="author.html#3638">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Roman,
+
+Overall I agree with everybody, but I just wanted to answer exhaustively 
+to this thread. So to your questions:
+1) yes - you get the 403 because the reg event is considered &quot;private&quot;. 
+Look in the scscf.cfg file for where this is generated. It is not set to 
+accept subscriptions only from the user itself and the P-CSCF that it 
+registered through. Add your detection condition for your trusted AS.
+
+However!! - this will be more intensive than the 3rd party registration 
+- you can not register to users in bulk, but you have to do it 
+individually. So actually 3rd party reg is lighter as subscriptions to 
+reg as you don't need to subscribe to each user; but unlike the 
+subscription, it does not cover the administrative deregistration case
+
+2) not at the moment (and I am not sure that it ever makes sense). You 
+need to couple this with 3rd party registration or Sh subscriptions.
+
+Overall, I would recommend that you use the Sh features for this... For 
+performance, you'll have to fix the AS... I see no easy way out...
+
+-Dragos
+
+Sluchevskiy Roman wrote:
+&gt;<i> Hi all!
+</I>&gt;<i> I'm developing an application server(based on javax sipservlet) that
+</I>&gt;<i> interacts with OpenIMS. I need to get notifications when a particular
+</I>&gt;<i> user registeres in the network.  I see two solutions now: 
+</I>&gt;<i>  -- Handle doRegister events from every user (such functionality is
+</I>&gt;<i> provided by sipservlet). But such approach produces a high traffic and
+</I>&gt;<i> application server is high loaded.
+</I>&gt;<i> -- Second way is to subscribe to the reg event for particular user. But
+</I>&gt;<i> here I have a problem. For example I send SUBSCRIBE request on reg event
+</I>&gt;<i> for user sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at example.com.</A> If bob is not registered yet then I
+</I>&gt;<i> receive &quot;SIP/2.0 404 Not Found - User not registered on this S-CSCF&quot;. If
+</I>&gt;<i> bob is already registered I receive &quot;SIP/2.0 403 Forbidden to
+</I>&gt;<i> SUBSCRIBE&quot;. So the question is -- 1) is it possible to configure OpenIMS
+</I>&gt;<i> that way that third-party application server will be able to subscribe
+</I>&gt;<i> on reg event of particular user (users) and 2) is it possible to
+</I>&gt;<i> subscribe on, for example, sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at example.com</A> reg event if bob isn't
+</I>&gt;<i> registered at the moment of SUBSCRIBE request?
+</I>&gt;<i>
+</I>&gt;<i> Bellow I attached my SUBSCRIBE request:
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> ------------
+</I>&gt;<i> SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1000002 at testik.com</A> SIP/2.0
+</I>&gt;<i> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1000002 at testik.com</A>
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i> Contact:
+</I>&gt;<i> &lt;sip:10.2.40.181:5060;transport=udp;wlsscid=377841489eeaf6f;appsessionid
+</I>&gt;<i> =app-6y7rz0olqth7&gt;
+</I>&gt;<i> P-Preferred-Identity: sip:10.2.40.181:5060
+</I>&gt;<i> CSeq: 1 SUBSCRIBE
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wlss-3b4e9938-1-6068 at 10.2.40.181</A>
+</I>&gt;<i> Event: reg
+</I>&gt;<i> Via: SIP/2.0/UDP
+</I>&gt;<i> 10.2.40.181:5060;wlsscid=377841489eeaf6f;branch=z9hG4bK87a7383ce439d3ee2
+</I>&gt;<i> 5d73471d165739d
+</I>&gt;<i> From: &lt;sip:10.2.40.181&gt;;tag=5e36b8cc
+</I>&gt;<i> Accept: application/reginfo+xml
+</I>&gt;<i> P-Asserted-Identity: sip:10.2.40.181:5060
+</I>&gt;<i> Max-Forwards: 70
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> ------------
+</I>&gt;<i>
+</I>&gt;<i> Error requests are following:
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> ------------
+</I>&gt;<i> SIP/2.0 404 Not Found - User not registered on this S-CSCF
+</I>&gt;<i> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1000002 at testik.com</A>;tag=224d74fec7ab23821b6cbddd1e93a00d-6b75
+</I>&gt;<i> CSeq: 1 SUBSCRIBE
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wlss-3b4e9938-1-6068 at 10.2.40.181</A>
+</I>&gt;<i> Via: SIP/2.0/UDP
+</I>&gt;<i> 10.2.40.181:5060;wlsscid=377841489eeaf6f;branch=z9hG4bK87a7383ce439d3ee2
+</I>&gt;<i> 5d73471d165739d
+</I>&gt;<i> From: &lt;sip:10.2.40.181&gt;;tag=5e36b8cc
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i> Warning: 392 192.168.101.213:6060 &quot;Noisy feedback tells:  pid=6277
+</I>&gt;<i> req_src_ip=192.168.101.213 req_src_port=5060
+</I>&gt;<i> in_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1000002 at testik.com</A> out_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1000002 at testik.com</A> via_cnt==2&quot;
+</I>&gt;<i>
+</I>&gt;<i> OR
+</I>&gt;<i>
+</I>&gt;<i> SIP/2.0 403 Forbidden to SUBSCRIBE
+</I>&gt;<i> To: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1000002 at testik.com</A>;tag=224d74fec7ab23821b6cbddd1e93a00d-a3c1
+</I>&gt;<i> CSeq: 1 SUBSCRIBE
+</I>&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">wlss-2007a346-1-5768 at 10.2.40.181</A>
+</I>&gt;<i> Via: SIP/2.0/UDP
+</I>&gt;<i> 10.2.40.181:5060;wlsscid=377841489eeaf6f;branch=z9hG4bK071912a19afaa27aa
+</I>&gt;<i> 4aa864102e6ddeb
+</I>&gt;<i> From: &lt;sip:10.2.40.181&gt;;tag=ece15d7f
+</I>&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+</I>&gt;<i> Content-Length: 0
+</I>&gt;<i> Warning: 392 192.168.101.213:6060 &quot;Noisy feedback tells:  pid=6276
+</I>&gt;<i> req_src_ip=192.168.101.213 req_src_port=5060
+</I>&gt;<i> in_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1000002 at testik.com</A> out_uri=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1000002 at testik.com</A> via_cnt==2&quot;
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> ------------
+</I>&gt;<i>
+</I>&gt;<i> sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1000002 at testik.com</A> -- user, for which reg event I want to subscribe
+</I>&gt;<i> sip:10.2.40.181:5060 -- address of my application server
+</I>&gt;<i> 192.168.101.213 -- OpenIMS address
+</I>&gt;<i>
+</I>&gt;<i> Any help will be appreciated! :)
+</I>&gt;<i>
+</I>&gt;<i> Roman Sluchevskiy
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003582.html">[OpenIMSCore-Users] How to get notifications upon particular	userregistration?
+</A></li>
+	<LI>Next message: <A HREF="003576.html">[OpenIMSCore-Users] How to get notifications upon particular user	registration?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3638">[ date ]</a>
+              <a href="thread.html#3638">[ thread ]</a>
+              <a href="subject.html#3638">[ subject ]</a>
+              <a href="author.html#3638">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

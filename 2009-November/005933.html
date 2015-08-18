@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Query related to configuration of Open-IMS S-CSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Query%20related%20to%20configuration%20of%20Open-IMS%0A%20S-CSCF&In-Reply-To=%3C4B0AB6F5.2000207%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005920.html">
+   <LINK REL="Next"  HREF="005943.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Query related to configuration of Open-IMS S-CSCF</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Query%20related%20to%20configuration%20of%20Open-IMS%0A%20S-CSCF&In-Reply-To=%3C4B0AB6F5.2000207%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Query related to configuration of Open-IMS S-CSCF">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Nov 23 17:23:17 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005920.html">[OpenIMSCore-Users] Query related to configuration of Open-IMS S-CSCF
+</A></li>
+        <LI>Next message: <A HREF="005943.html">[OpenIMSCore-Users] Query related to configuration of Open-IMS S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5933">[ date ]</a>
+              <a href="thread.html#5933">[ thread ]</a>
+              <a href="subject.html#5933">[ subject ]</a>
+              <a href="author.html#5933">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well, mainly you need to increase the amount of shared memory if you 
+want to do stress tests where many parallel dialogs would be in 
+progress. You can do this without compilation by using the -m parameter 
+for ser. Also, as there are some previous threads some long time ago, 
+you should try optimizing a bit the number of maximum dialog, the hash 
+sizes, reduce logs, increase number of children processes and so on.
+
+ From my experience, I would allocate about 4Kbytes/subscriber and about 
+the same for each dialog that would be active in parallel.
+
+Cheers,
+-Dragos
+
+Dushyant Dhalia wrote:
+&gt;<i> After looking for the problem/solution on google, i found that the 
+</I>&gt;<i> print &quot;ERROR: sip_msg_cloner: cannot allocate memory&quot; is related to 
+</I>&gt;<i> OpenSER which has now become OpenSIPS. A lot of people who use 
+</I>&gt;<i> OpenSIPS as underlying platform face this problem.
+</I>&gt;<i>
+</I>&gt;<i> The solution is to increase shared memory and PKG memory (for malloc). 
+</I>&gt;<i> The same can be done through changes in the following parameters -
+</I>&gt;<i> #define PKG_MEM_POOL_SIZE 16*1024*1024
+</I>&gt;<i> #define SHM_MEM_SIZE 64
+</I>&gt;<i>
+</I>&gt;<i> These parameters are defined in ser_ims/trunk/config.h file. Change 
+</I>&gt;<i> these parameters and recompile / install ser and it will work.
+</I>&gt;<i>
+</I>&gt;<i> Dushyant P S Dhalia,
+</I>&gt;<i> Rancore Technologies, Gurgaon, INDIA
+</I>&gt;<i>
+</I>&gt;<i> Dushyant Dhalia wrote:
+</I>&gt;&gt;<i> Putting the same question again. If anybody can suggest some thing.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Dushyant Dhalia wrote:
+</I>&gt;&gt;&gt;<i> I am using IMS_Bench as IMS UE and I-CSCF, S-CSCF and HSS of 
+</I>&gt;&gt;&gt;<i> OpenIMS/FOKUS.
+</I>&gt;&gt;&gt;<i> i-cscf, s-cscf and hss running on the same machine. Configuration of 
+</I>&gt;&gt;&gt;<i> machine are -
+</I>&gt;&gt;&gt;<i> #uname -a
+</I>&gt;&gt;&gt;<i> Linux TestLab-6 2.6.18-8.el5 #1 SMP Fri Jan 26 14:15:21 EST 2007 
+</I>&gt;&gt;&gt;<i> i686 athlon i386 GNU/Linux
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The configuration for my load test are -
+</I>&gt;&gt;&gt;<i> Total number of subscribers = 2500, registration rate 10 reg/sec
+</I>&gt;&gt;&gt;<i> After registration -
+</I>&gt;&gt;&gt;<i> calls per second = 50; since originating and terminating s-cscf are 
+</I>&gt;&gt;&gt;<i> same it would be 100 calls/sec for s-cscf.
+</I>&gt;&gt;&gt;<i> cal hold time is 10 seconds i.e at any point of time ideally there 
+</I>&gt;&gt;&gt;<i> should be a maximum of 500 calls and with orig/term it would be 1000 
+</I>&gt;&gt;&gt;<i> dialog contexts.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> After few minutes the calls start failing (with 514 Originating 
+</I>&gt;&gt;&gt;<i> dialog save failure - S-CSCF maximum dialog count reached! and 514 
+</I>&gt;&gt;&gt;<i> Terminating dialog save failure - S-CSCF maximum dialog count 
+</I>&gt;&gt;&gt;<i> reached! as response code). In s-cscf we are getting the following 
+</I>&gt;&gt;&gt;<i> prints (multiple times)-
+</I>&gt;&gt;&gt;<i> 3(28049) ERR:S-CSCF:S_save_dialog: dialog already exists!
+</I>&gt;&gt;&gt;<i> 2(28048) ERROR: sip_msg_cloner: cannot allocate memory
+</I>&gt;&gt;&gt;<i> 2(28048) ERROR: new_t: out of mem:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The above load runs absolutely if call rate is 30 calls/sec  i.e. 60 
+</I>&gt;&gt;&gt;<i> calls with orig/term.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> My question is how to configure scscf.cfg and icscf.cfg. I have 
+</I>&gt;&gt;&gt;<i> already disabled logging in icscf, scscf and hss. i have modified 
+</I>&gt;&gt;&gt;<i> the following parameters -
+</I>&gt;&gt;&gt;<i> (&quot;scscf&quot;,&quot;registrar_hash_size&quot;,10240)
+</I>&gt;&gt;&gt;<i> (&quot;scscf&quot;,&quot;dialogs_hash_size&quot;,10240)
+</I>&gt;&gt;&gt;<i> (&quot;scscf&quot;,&quot;max_dialog_count&quot;,5000)
+</I>&gt;&gt;&gt;<i> (&quot;icscf&quot;,&quot;hash_size&quot;,10240)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> What else do i need to do? icscf.cfg and scscf.cfg are attached.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Dushyant P S Dhalia
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> &quot;When work is a pleasure, life is a joy! When work is duty, life is slavery.&quot; 
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -- 
+</I>&gt;&gt;<i> &quot;When work is a pleasure, life is a joy! When work is duty, life is slavery.&quot; 
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>   
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> &quot;When work is a pleasure, life is a joy! When work is duty, life is slavery.&quot; 
+</I>&gt;<i>   
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005920.html">[OpenIMSCore-Users] Query related to configuration of Open-IMS S-CSCF
+</A></li>
+	<LI>Next message: <A HREF="005943.html">[OpenIMSCore-Users] Query related to configuration of Open-IMS S-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5933">[ date ]</a>
+              <a href="thread.html#5933">[ thread ]</a>
+              <a href="subject.html#5933">[ subject ]</a>
+              <a href="author.html#5933">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

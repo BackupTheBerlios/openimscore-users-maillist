@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Crash of P-CSCF over MIPv6
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Crash%20of%20P-CSCF%20over%20MIPv6&In-Reply-To=%3C004b01c75f0c%24ac16cc50%24044464f0%24%40upm.es%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001007.html">
+   <LINK REL="Next"  HREF="001003.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Crash of P-CSCF over MIPv6</H1>
+    <B>Emilio Garc&#237;a</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Crash%20of%20P-CSCF%20over%20MIPv6&In-Reply-To=%3C004b01c75f0c%24ac16cc50%24044464f0%24%40upm.es%3E"
+       TITLE="[OpenIMSCore-Users] Crash of P-CSCF over MIPv6">egarcia at dit.upm.es
+       </A><BR>
+    <I>Mon Mar  5 10:57:18 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001007.html">[OpenIMSCore-Users] Crash of P-CSCF over MIPv6
+</A></li>
+        <LI>Next message: <A HREF="001003.html">[OpenIMSCore-Users] [Feature #3003] Dialog support for &quot;reg&quot; subs.	on P-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1042">[ date ]</a>
+              <a href="thread.html#1042">[ thread ]</a>
+              <a href="subject.html#1042">[ subject ]</a>
+              <a href="author.html#1042">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+
+Thanks for your quick answer. Unfortunately, even though we set ulimit to -unlimited, no core was generated. In the same syslog trace that I sent before, you can find this sentence:
+
+Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5047]: core was not generated
+
+However, the trace itself is a large dump of more than 7.000 lines. I don't know if that could be of help.
+
+Thank you very much,
+
+Kind regards,
+
+Emilio
+
+-----Mensaje original-----
+De: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+Enviado el: viernes, 02 de marzo de 2007 18:16
+Para: Emilio Garc&#237;a
+CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Asunto: Re: [OpenIMSCore-Users] Crash of P-CSCF over MIPv6
+
+Hi Emilio,
+
+This looks like a bug in SER in check_via_address. Could you do please a
+gdb /opt/OpenIMSCore/ser_ims/ser &lt;core_file&gt; and then do a bt to see the
+backtrace?
+
+
+-Dragos
+
+Emilio Garc&#237;a wrote:
+&gt;<i>
+</I>&gt;<i> Hello all,
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> We have found a problem while operating OpenIMS. We downloaded it from
+</I>&gt;<i> SVN and installed it in a testbed where only part of the functionality
+</I>&gt;<i> is required (i.e. P-CSCF, I-CSCF and S-CSCF, with no need for HSS,
+</I>&gt;<i> Diameter...), and only 2 UAs operate: they register in the IMS
+</I>&gt;<i> network, and one of them makes a call to the other one. Everything
+</I>&gt;<i> works perfectly well to this point.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> The particularity of this network is that we are using Mobile IPv6.
+</I>&gt;<i> P-CSCF acts as a Correspondent Node (CN), while the UAs are Mobile
+</I>&gt;<i> Nodes (MN). Once we start MIPv6 in the appropriate nodes, UAs still
+</I>&gt;<i> register without problem, but when the first INVITE reaches the
+</I>&gt;<i> P-CSCF, SER crashes abruptly. The trace left in /var/log/syslog is the
+</I>&gt;<i> following one:
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> [...]
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5052]: SER: new
+</I>&gt;<i> INVITE
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5052]:
+</I>&gt;<i> parse_headers: flags=ffffffffffffffff
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5052]:
+</I>&gt;<i> check_via_address(2001:720:1500:1B:FCFD:FF:FE0C:103,
+</I>&gt;<i> [2001:720:1500:1B:FCFD:FF:FE0C:103], 3)
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5052]: ERROR:
+</I>&gt;<i> warning_builder: buffer size exceeded
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5052]: WARNING:
+</I>&gt;<i> warning skipped -- too big
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5052]:
+</I>&gt;<i> WARNING:vqm_resize: resize(0) called
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5052]: DEBUG:
+</I>&gt;<i> reply sent out. buf=0x8173814: SIP/2.0 1..., shmem=0xb5f29a24: SIP/2.0 1
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5052]: DEBUG:
+</I>&gt;<i> _reply_light: finished
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5052]:
+</I>&gt;<i> dns_hash_find([2001:720:1500:1b:20c:76ff:fe6c:4658](37), 1), h=652
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5052]: get_record:
+</I>&gt;<i> lookup([2001:720:1500:1b:20c:76ff:fe6c:4658], 1) failed
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5052]:
+</I>&gt;<i> dns_cache_mk_bad_entry([2001:720:1500:1b:20c:76ff:fe6c:4658], 1, 60, 1)
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5052]:
+</I>&gt;<i> dns_cache_add: adding [2001:720:1500:1b:20c:76ff:fe6c:4658](37) 1
+</I>&gt;<i> (flags=1) at 652
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5052]:
+</I>&gt;<i> check_via_address(2001:720:1500:1B:FCFD:FF:FE0C:103,
+</I>&gt;<i> [2001:720:1500:1B:FCFD:FF:FE0C:103], 3)
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5066]: ERROR:
+</I>&gt;<i> receive_fd: EOF on 11
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5066]: DBG:
+</I>&gt;<i> handle_ser_child: dead child 5, pid 5052 (shutting down?)
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5066]: DBG:
+</I>&gt;<i> io_watch_del (0x8128a80, 11, -1, 0x0) fd_no=27 called
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5047]: child
+</I>&gt;<i> process 5052 exited by a signal 11
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5047]: core was
+</I>&gt;<i> not generated
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5047]: INFO:
+</I>&gt;<i> terminating due to SIGCHLD
+</I>&gt;<i>
+</I>&gt;<i> Feb 23 14:47:34 pcscfD /opt/OpenIMSCore/ser_ims/ser[5057]: INFO:
+</I>&gt;<i> signal 15 received
+</I>&gt;<i>
+</I>&gt;<i> [...]
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Note that there is some error indicating that buffer size is exceeded.
+</I>&gt;<i> This warning is probably caused by our INVITE being very big, but when
+</I>&gt;<i> MIPv6 is NOT running, this error doesn&#8217;t affect SER, and everything
+</I>&gt;<i> works. We have tried to send smaller INVITE packets (artificially
+</I>&gt;<i> small, eliminating the SDP or some optional headers), and the problem
+</I>&gt;<i> does not appear. This fact, and also that after the crash, the P-CSCF
+</I>&gt;<i> machine is still running, and MIPv6 works, makes us think that
+</I>&gt;<i> something weird is happening with SER.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> We are using Ubuntu 6.10 (kernel 2.6.16), ser_ims is recent (it was
+</I>&gt;<i> obtained last week, don&#8217;t know the exact version), and MIPv6 2.0.2
+</I>&gt;<i> from <A HREF="http://www.mobile-ipv6.org/.">http://www.mobile-ipv6.org/.</A>
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Do you have any hint about what might be happening? Do you have
+</I>&gt;<i> similar experiences testing SER along with Mobile-IPv6?
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Thank you very much for your help,
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Emilio Garcia
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001007.html">[OpenIMSCore-Users] Crash of P-CSCF over MIPv6
+</A></li>
+	<LI>Next message: <A HREF="001003.html">[OpenIMSCore-Users] [Feature #3003] Dialog support for &quot;reg&quot; subs.	on P-CSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1042">[ date ]</a>
+              <a href="thread.html#1042">[ thread ]</a>
+              <a href="subject.html#1042">[ subject ]</a>
+              <a href="author.html#1042">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

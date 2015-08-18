@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] ReInvite causes 403 forbidden-not registered!youmust register first with a s-cscf
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ReInvite%20causes%20403%20forbidden-not%0A%20registered%21youmust%20register%20first%20with%20a%20s-cscf&In-Reply-To=%3COF18B8B9CE.6B3EB7AF-ONC1257383.0046FFFA-C1257383.00471E1B%40philips.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002837.html">
+   <LINK REL="Next"  HREF="002833.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] ReInvite causes 403 forbidden-not registered!youmust register first with a s-cscf</H1>
+    <B>Daniel Goergen</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20ReInvite%20causes%20403%20forbidden-not%0A%20registered%21youmust%20register%20first%20with%20a%20s-cscf&In-Reply-To=%3COF18B8B9CE.6B3EB7AF-ONC1257383.0046FFFA-C1257383.00471E1B%40philips.com%3E"
+       TITLE="[OpenIMSCore-Users] ReInvite causes 403 forbidden-not registered!youmust register first with a s-cscf">daniel.goergen at philips.com
+       </A><BR>
+    <I>Mon Oct 29 14:00:52 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002837.html">[OpenIMSCore-Users] ReInvite causes 403 forbidden-not registered!you must register first with a s-cscf
+</A></li>
+        <LI>Next message: <A HREF="002833.html">[OpenIMSCore-Users] failure of Openser-presnece-module
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2839">[ date ]</a>
+              <a href="thread.html#2839">[ thread ]</a>
+              <a href="subject.html#2839">[ subject ]</a>
+              <a href="author.html#2839">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+
+thanks for the fast reply. Fixing the Request-URI indeed solved the
+problem.
+
+The second 200OK came from an earlier non-expired reservation during my
+tests. I haven't checked the trace properly - sorry for that.
+
+Daniel
+
+
+Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote on 26-10-2007
+15:21:58:
+
+&gt;<i> Hi Daniel,
+</I>&gt;<i>
+</I>&gt;<i> man, this made me scratch my head so hard that now it hurts :-p. Please,
+</I>&gt;<i> next time, send a full trace that also shows the messaging inside the
+</I>&gt;<i> core - capture on all interfaces on the core machine.
+</I>&gt;<i>
+</I>&gt;<i> So, your re-INVITE is not correct. According to my SIP knowledge, your
+</I>&gt;<i> Request-URI should be the dialog target, as in the Contact address that
+</I>&gt;<i> you got in the 200 OK. I couldn't figure out the strange scenario that
+</I>&gt;<i> you are doing such that you get 2x200OK for the first INVITE, but choose
+</I>&gt;<i> one contact from there ;-). It seems that the P-CSCF gets the INVITE on
+</I>&gt;<i> the terminating side and although it should identify it right as
+</I>&gt;<i> terminating subsequent and then make a nasty loop, it checks first if
+</I>&gt;<i> the S-CSCF sending it was registered, which is dumb, so a 403 saves the
+</I>day.
+&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Daniel Goergen wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hi list,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I'm trying to send a reinvite for an existing session (after an
+</I>&gt;<i> &gt; initial invite). After sending the reinvite, I recieve a &quot;403
+</I>&gt;<i> &gt; forbidden-not registered!you must register first with a s-cscf&quot;
+</I>&gt;<i> &gt; I've attached the ethereal trace containig the SIP messages exchanged
+</I>&gt;<i> &gt; between the server and both clients, maybe someone is able to help me
+</I>&gt;<i> &gt; with this issue.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thank you very much!
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Daniel
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; /(See attached file: reinvite_test.cap)/
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>------------------------------------------------------------------------
+&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071029/ac4211f0/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071029/ac4211f0/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002837.html">[OpenIMSCore-Users] ReInvite causes 403 forbidden-not registered!you must register first with a s-cscf
+</A></li>
+	<LI>Next message: <A HREF="002833.html">[OpenIMSCore-Users] failure of Openser-presnece-module
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2839">[ date ]</a>
+              <a href="thread.html#2839">[ thread ]</a>
+              <a href="subject.html#2839">[ subject ]</a>
+              <a href="author.html#2839">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

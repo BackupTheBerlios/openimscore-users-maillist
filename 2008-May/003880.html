@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P-CSCF with QoS on Term-side
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20with%20QoS%20on%20Term-side&In-Reply-To=%3COF1196D3B4.6CB90261-ONC1257440.00338D09-C1257440.0034B242%40amper.es%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003891.html">
+   <LINK REL="Next"  HREF="003881.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P-CSCF with QoS on Term-side</H1>
+    <B>Pedro Antonio Vico Solano</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20with%20QoS%20on%20Term-side&In-Reply-To=%3COF1196D3B4.6CB90261-ONC1257440.00338D09-C1257440.0034B242%40amper.es%3E"
+       TITLE="[OpenIMSCore-Users] P-CSCF with QoS on Term-side">pvsolano at amper.es
+       </A><BR>
+    <I>Mon May  5 11:32:28 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003891.html">[OpenIMSCore-Users] Loop detected
+</A></li>
+        <LI>Next message: <A HREF="003881.html">[OpenIMSCore-Users] P-CSCF with QoS on Term-side
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3880">[ date ]</a>
+              <a href="thread.html#3880">[ thread ]</a>
+              <a href="subject.html#3880">[ subject ]</a>
+              <a href="author.html#3880">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Alberto &amp; all,
+
+Thanks a lot for the new version. Just some questions:
+
+- If I enable the 
+
+        modparam(&quot;pcscf&quot;,&quot;qos_side&quot;,2)
+
+Do I have still to change anything on the routing functions?
+
+- Where can I find descriptions for the following functions?:
+
+end_media_session();
+P_NAT_relay();
+use_media_proxy(); 
+P_SDP_manipulate();
+P_security_relay();
+
+
+Best Regards.
+Pedro
+
+
+
+
+
+Alberto Diez &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>&gt; 
+Enviado por: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+30/04/2008 11:28
+
+Para
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+cc
+
+Asunto
+[OpenIMSCore-Users] P-CSCF with QoS on Term-side
+
+
+
+
+
+
+Hi pedro antonio,
+
+There is a new version of the 08_cdp_sessions branch that includes a 
+P-CSCF that deals better with the originating and terminating issues. 
+With the one before you could generate AAR in the originating and 
+terminating side but depending on which sent the BYE there would be an 
+issue (it was possible that the session for the terminating side was 
+dropped by the originating and the other way around)
+
+Nevertheless, it is already solved, only have to consider that the 
+P_generates_AAR function now takes a parameter 0 or 1 depending if 
+originating or terminating , and there is a new config variable to state 
+where do you want reservation of resources to happen  if you set it to 2 
+than its in both sides.
+
+just re-read the README.PCC
+
+the other question
+
+Initial means that this requests starts a dialog
+initial_reply is a reply for such a request...
+subsequent it means that its a subsequent request within an already 
+known dialog
+standalone is the route part for standalone SIP transactions (like 
+OPTIONS or MESSAGE that dont need a dialog)
+failure is when a failure reply is received...
+
+with the mediaproxy thing i cant help you because i dont use it
+
+
+
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080505/f268a242/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080505/f268a242/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003891.html">[OpenIMSCore-Users] Loop detected
+</A></li>
+	<LI>Next message: <A HREF="003881.html">[OpenIMSCore-Users] P-CSCF with QoS on Term-side
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3880">[ date ]</a>
+              <a href="thread.html#3880">[ thread ]</a>
+              <a href="subject.html#3880">[ subject ]</a>
+              <a href="author.html#3880">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

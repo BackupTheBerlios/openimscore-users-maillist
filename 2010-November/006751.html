@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] monster registration problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20monster%20registration%20problem&In-Reply-To=%3CAANLkTi%3DscAAL7X3TZZ%3Dd3-XKugJ7OwFsP6E54fX9Ep-H%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006750.html">
+   <LINK REL="Next"  HREF="006758.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] monster registration problem</H1>
+    <B>Gerg&#337; Somogyi</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20monster%20registration%20problem&In-Reply-To=%3CAANLkTi%3DscAAL7X3TZZ%3Dd3-XKugJ7OwFsP6E54fX9Ep-H%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] monster registration problem">balamber.kovacs at gmail.com
+       </A><BR>
+    <I>Thu Nov 25 17:08:17 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006750.html">[OpenIMSCore-Users] Registration of the SIP URI converted from TEL	URI
+</A></li>
+        <LI>Next message: <A HREF="006758.html">[OpenIMSCore-Users] monster registration problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6751">[ date ]</a>
+              <a href="thread.html#6751">[ thread ]</a>
+              <a href="subject.html#6751">[ subject ]</a>
+              <a href="author.html#6751">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello!
+
+I use Ubuntu 9.04, OpenIMSCore rev 1007 (tried with rev 1012 too), Monster
+0.9.13 and IPv6. When I try to register Monster to OpenIMSCore, I succeed,
+but not completely. The OpenIMSCore stores the IP address of the user in a
+wrong form, because it adds the port number to the end of the IPv6 address
+too. (See the pcscf log down, please.)
+So when I send an INVITE, SUBSCRIBE etc. SIP message, I always get the 403
+Forbidden - You must register first with a S-CSCF error message, because the
+IMS can't find the correct registered IP address in the database.
+
+What should I do to solve this annoying problem?
+
+Thanks for the answers.
+Gerg&#337;
+
+P-CSCF log: (You can see port number 5060 at the end of the IPv6 address in
+the square brackets.)
+
+ 1(29775) DBG:P-CSCF:P_emergency_flag: Check if the user made an Emergency
+Registration
+ 1(29775) DBG:P-CSCF:P_verify_security: Looking for
+&lt;1://[2001:738:2001:20a0:2e0:ff:fe9b:32b0]:5060&gt;
+ 4(29778) DBG:P-CSCF:cscf_get_pref_security_header: No known Security header
+found.
+ 4(29778) INFO:P-CSCF:P_NAT_relay:
+&lt;sip:[2001:0738:2001:20a0:02e0:00ff:fe9b:32b0]:5060&gt;
+ 1(29775) DBG:P-CSCF:P_emergency_flag: Check if the user made an Emergency
+Registration
+ 1(29775) DBG:P-CSCF:P_verify_security: Looking for
+&lt;1://[2001:738:2001:20a0:2e0:ff:fe9b:32b0]:5060&gt;
+ 4(29778) DBG:P-CSCF:cscf_get_pref_security_header: No known Security header
+found.
+ 4(29778) DBG:P-CSCF:P_is_deregistration: max expires is 3600
+ 4(29778) INFO:P-CSCF:P_NAT_relay:
+&lt;sip:[2001:0738:2001:20a0:02e0:00ff:fe9b:32b0]:5060&gt;
+ 5(29779) INF:P-CSCF:----------  Registrar Contents begin --------
+ 5(29779) INF:P-CSCF:[ 109] C:
+&lt;0://[2001:738:2001:20a0:2e0:ff:fe9b:32b0:5060]:5060&gt; Exp:[3598] R:[ 1]
+SOS:[ ] &lt;sip:test3@[2001:738:2001:20a0:2e0:ff:fe9b:32b0:5060]&gt;
+ 5(29779) INF:P-CSCF:         SR:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.openims.bme.ist-anemone.eu</A>:5060;lr&gt;
+ 5(29779) INF:P-CSCF:          P: D[X]
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">test3 at openims.bme.ist-anemone.eu</A>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Atest3 at openims.bme.ist-anemone.eu</A>&gt;&gt;
+
+ 5(29779) INF:P-CSCF:----------  Registrar Contents end ----------
+ 5(29779) INF:P-CSCF:----------  Subscription list begin ---------
+ 5(29779) INF:P-CSCF:[ 249]    P:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">test3 at openims.bme.ist-anemone.eu</A>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Atest3 at openims.bme.ist-anemone.eu</A>&gt;&gt;
+D:[ 3630] E:[-1290700991] Att:[ 0]
+ 5(29779) INF:P-CSCF:----------  Subscription list end -----------
+ 5(29779) INF:P-CSCF:----------  Registrar Contents begin --------
+ 5(29779) INF:P-CSCF:[ 109] C:
+&lt;0://[2001:738:2001:20a0:2e0:ff:fe9b:32b0:5060]:5060&gt; Exp:[3588] R:[ 1]
+SOS:[ ] &lt;sip:test3@[2001:738:2001:20a0:2e0:ff:fe9b:32b0:5060]&gt;
+ 5(29779) INF:P-CSCF:         SR:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.openims.bme.ist-anemone.eu</A>:5060;lr&gt;
+ 5(29779) INF:P-CSCF:          P: D[X]
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">test3 at openims.bme.ist-anemone.eu</A>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Atest3 at openims.bme.ist-anemone.eu</A>&gt;&gt;
+
+ 5(29779) INF:P-CSCF:----------  Registrar Contents end ----------
+ 5(29779) INF:P-CSCF:----------  Subscription list begin ---------
+ 5(29779) INF:P-CSCF:[ 249]    P:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">test3 at openims.bme.ist-anemone.eu</A>&lt;sip%<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">3Atest3 at openims.bme.ist-anemone.eu</A>&gt;&gt;
+D:[ 3630] E:[ 3621] Att:[-1]
+ 5(29779) INF:P-CSCF:----------  Subscription list end -----------
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20101125/15634a2b/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20101125/15634a2b/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006750.html">[OpenIMSCore-Users] Registration of the SIP URI converted from TEL	URI
+</A></li>
+	<LI>Next message: <A HREF="006758.html">[OpenIMSCore-Users] monster registration problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6751">[ date ]</a>
+              <a href="thread.html#6751">[ thread ]</a>
+              <a href="subject.html#6751">[ subject ]</a>
+              <a href="author.html#6751">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

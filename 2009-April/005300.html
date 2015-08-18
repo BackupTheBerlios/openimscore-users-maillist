@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Question about &quot;ACK not following dialog routes	discarded silently!!!&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Question%20about%20%22ACK%20not%20following%20dialog%0A%20routes%09discarded%20silently%21%21%21%22&In-Reply-To=%3C49F5E674.9000907%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005274.html">
+   <LINK REL="Next"  HREF="005311.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Question about &quot;ACK not following dialog routes	discarded silently!!!&quot;</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Question%20about%20%22ACK%20not%20following%20dialog%0A%20routes%09discarded%20silently%21%21%21%22&In-Reply-To=%3C49F5E674.9000907%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Question about &quot;ACK not following dialog routes	discarded silently!!!&quot;">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Apr 27 19:08:04 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005274.html">[OpenIMSCore-Users] Question about &quot;ACK not following dialog routes	discarded silently!!!&quot;
+</A></li>
+        <LI>Next message: <A HREF="005311.html">[OpenIMSCore-Users] Question about &quot;ACK not following dialog	routes discarded silently!!!&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5300">[ date ]</a>
+              <a href="thread.html#5300">[ thread ]</a>
+              <a href="subject.html#5300">[ subject ]</a>
+              <a href="author.html#5300">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Not really. There is also the call-id to differentiate.
+
+The problem is that the ACK does not contain the proper Dialog Routes
+set by the Record-Route headers in the 200 OK. You should fix the
+client. Alternatively, until you have a solution there, you can check
+the pcscf.cfg and enable the other variant on dialog routes checks,
+which uses the P_enforce_dialog_routes() to replace the wrong routes
+with the right ones.
+
+Cheers,
+-Dragos
+
+
+sssere as wrote:
+&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i> My device has 2 FXS lines. When line 1 calls line 2 and line 2
+</I>&gt;<i> off-hook, the ACK to 200 OK sent by line 1 is dropped by pcscf. I
+</I>&gt;<i> think maybe this is because the 2 lines are with the same IP and port.
+</I>&gt;<i> So I modify the ser_ims/modules/pcscf/dlg_state.c: P_is_in_dialog():
+</I>&gt;<i> if (is_p_dialog(call_id,host,port,transport,0)) to
+</I>&gt;<i> if (is_p_dialog(call_id,host,port,transport,&amp;dir))
+</I>&gt;<i> and it works. Am I right?
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> CW Chung
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &#20184;&#36027;&#25165;&#23481;&#37327;&#28961;&#19978;&#38480;&#65311;Yahoo!&#22855;&#25705;&#38651;&#23376;&#20449;&#31665;2.0&#20813;&#36027;&#32102;&#20320;&#65292;&#20449;&#20214;&#27704;&#36960;&#19981;&#24517;&#21034;&#65281; - *
+</I>&gt;<i> &#39340;&#19978;&#39636;&#39511;*
+</I>&gt;<i> &lt;<A HREF="http://tw.rd.yahoo.com/referurl/mail/mail20/tag_hot0103/*http://tw.mg0.mail.yahoo.com/dc/landing">http://tw.rd.yahoo.com/referurl/mail/mail20/tag_hot0103/*http://tw.mg0.mail.yahoo.com/dc/landing</A>&gt;
+</I>&gt;<i> *&#65281;*
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005274.html">[OpenIMSCore-Users] Question about &quot;ACK not following dialog routes	discarded silently!!!&quot;
+</A></li>
+	<LI>Next message: <A HREF="005311.html">[OpenIMSCore-Users] Question about &quot;ACK not following dialog	routes discarded silently!!!&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5300">[ date ]</a>
+              <a href="thread.html#5300">[ thread ]</a>
+              <a href="subject.html#5300">[ subject ]</a>
+              <a href="author.html#5300">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

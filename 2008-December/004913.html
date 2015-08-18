@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to configure S-CSCF ISC interface	listen port
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20configure%20S-CSCF%20ISC%20interface%0A%09listen%20port&In-Reply-To=%3C91d266200812030705r5b9811cfv37feae00f9dac0d7%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004896.html">
+   <LINK REL="Next"  HREF="004923.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to configure S-CSCF ISC interface	listen port</H1>
+    <B>NC Reddy</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20configure%20S-CSCF%20ISC%20interface%0A%09listen%20port&In-Reply-To=%3C91d266200812030705r5b9811cfv37feae00f9dac0d7%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] How to configure S-CSCF ISC interface	listen port">ncreddy75 at gmail.com
+       </A><BR>
+    <I>Wed Dec  3 16:05:03 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004896.html">[OpenIMSCore-Users] How to configure S-CSCF ISC interface listen port
+</A></li>
+        <LI>Next message: <A HREF="004923.html">[OpenIMSCore-Users] How to configure S-CSCF ISC interface listen port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4913">[ date ]</a>
+              <a href="thread.html#4913">[ thread ]</a>
+              <a href="subject.html#4913">[ subject ]</a>
+              <a href="author.html#4913">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, Dec 2, 2008 at 10:55 PM, Dragos Vingarzan &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+
+&gt;<i> To add more listening ports:
+</I>&gt;<i>
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at stan</A>:/opt/OpenIMSCore/ser_ims] # ./ser --help
+</I>&gt;<i> version: ser 2.1.0-dev1 OpenIMSCore (i386/linux)
+</I>&gt;<i> Usage: ser -l address [-p port] [-l address [-p port]...] [options]
+</I>&gt;<i> Options:
+</I>&gt;<i> ...
+</I>&gt;<i>  -l address   Listen on the specified address/interface (multiple -l
+</I>&gt;<i>                mean listening on more addresses).  The address format is
+</I>&gt;<i>                [proto:]addr[:port], where proto=udp|tcp and
+</I>&gt;<i>                addr= host|ip_address|interface_name. E.g: -l locahost,
+</I>&gt;<i>                -l udp:127.0.0.1:5080, -l eth0:5062 The default behavior
+</I>&gt;<i>                is to listen on all the interfaces.
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> But... with the current underlying version of SER you can not select the
+</I>&gt;<i> outbound interface for sending messages, but it is chosen automatically.
+</I>&gt;<i> Sometime we will have to do an upgrade, but I would rather wait until the
+</I>&gt;<i> new SIP Router comes out and move then.
+</I>&gt;<i>
+</I>&gt;<i> Then... why would you want to do this? It seems like a lot of effort
+</I>&gt;<i> required without a big benefit...
+</I>
+channa&gt;&gt;For S-CSCF to discreminate the request is coming from AS or UE. If
+the request coming from  AS do different processing than the request coming
+from UE.
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> NC Reddy wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i>  Hi,
+</I>&gt;&gt;<i>    I am wondering how to to configure more than one SIP Listen server port
+</I>&gt;&gt;<i> on Open IMS S-CSCF?.
+</I>&gt;&gt;<i> One port towards Client side  and  other on ISC interface.
+</I>&gt;&gt;<i>  In Open IMS, i could find S-CSCF used 6060 port as server listen port
+</I>&gt;&gt;<i>  for both  ISC-AS and UE Interfaces.
+</I>&gt;&gt;<i>  Thanks in advance.
+</I>&gt;&gt;<i>  Regards
+</I>&gt;&gt;<i> Channa
+</I>&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20081203/acd59cd0/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20081203/acd59cd0/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004896.html">[OpenIMSCore-Users] How to configure S-CSCF ISC interface listen port
+</A></li>
+	<LI>Next message: <A HREF="004923.html">[OpenIMSCore-Users] How to configure S-CSCF ISC interface listen port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4913">[ date ]</a>
+              <a href="thread.html#4913">[ thread ]</a>
+              <a href="subject.html#4913">[ subject ]</a>
+              <a href="author.html#4913">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users]  Users Not Registering
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%20Users%20Not%20Registering&In-Reply-To=%3CAANLkTinTWMhKCCYrmwjO8o5pFr-ioRDM%3DSd9R4xFRdgd%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006571.html">
+   <LINK REL="Next"  HREF="006575.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users]  Users Not Registering</H1>
+    <B>sougata pal</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%20Users%20Not%20Registering&In-Reply-To=%3CAANLkTinTWMhKCCYrmwjO8o5pFr-ioRDM%3DSd9R4xFRdgd%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users]  Users Not Registering">sougata.pal at gmail.com
+       </A><BR>
+    <I>Fri Sep 17 12:03:28 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006571.html">[OpenIMSCore-Users] Users Not Registering
+</A></li>
+        <LI>Next message: <A HREF="006575.html">[OpenIMSCore-Users] Users Not Registering
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6573">[ date ]</a>
+              <a href="thread.html#6573">[ thread ]</a>
+              <a href="subject.html#6573">[ subject ]</a>
+              <a href="author.html#6573">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dear All ,
+
+With reference to my yesterday query mail i would like to also clear my one
+doubt which i am facing till now regarding the file settings
+/etc/bind/named.conf
+
+I am receiving some error regarding to my DNS setting, which i suspect is
+leading to error 478 &lt;Unresolvable Destination&gt; and error 500 &lt;Error
+forwarding to home domain&gt; when i am going to register my users.
+
+I want to clear some doubts regarding this DNS issue.
+
+Now according to the installation procedure which i am following in the
+website , i see that the file &quot;/etc/bind/named.conf&quot; will contain 4
+individual file names who are as follows -
+
+include &quot;/etc/bind/named.conf.options&quot;;
+include &quot;/etc/bind/named.conf.local&quot;;
+include &quot;/etc/bind/named.conf.default-zones&quot;;
+include &quot;/etc/bind/open-ims.dnszone&quot;;
+
+** Now the funny thing is happening, when i am commenting the last include
+which is &quot; etc/bind/open-ims.dnszone&quot; file the bind is working perfectly but
+when i am commenting it out, the bind9 server fails to start. But according
+to the installation rules this file must be UNCOMMENTED and should be placed
+at this bind location after being copied from opt/OpenIMSCore/ser_ims/cfg.
+
+*** Just to mention one thing in this context , till 2 days ago my
+openimscore was running perfectly OK with the following line &quot;include
+&quot;/etc/bind/open-ims.dnszone&quot; being commented in the /etc/bind/named.conf but
+since yesterday my users are not getting registered again.
+
+At this point when i apply to see the error log trace with &quot;tail
+/var/log/daemon.log&quot; the error trace that comes up is as follows -
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sougata-desktop</A>:/# tail /var/log/daemon.log
+Sep 17 11:58:51 sougata-desktop named[4069]: /etc/bind/open-ims.dnszone:1:
+unknown option '$ORIGIN'
+Sep 17 11:58:51 sougata-desktop named[4069]: /etc/bind/open-ims.dnszone:4:
+unknown option 'serial'
+Sep 17 11:58:51 sougata-desktop named[4069]: /etc/bind/open-ims.dnszone:5:
+unknown option 'refresh'
+Sep 17 11:58:51 sougata-desktop named[4069]: /etc/bind/open-ims.dnszone:6:
+unknown option 'retry'
+Sep 17 11:58:51 sougata-desktop named[4069]: /etc/bind/open-ims.dnszone:7:
+unknown option 'expiry'
+Sep 17 11:58:51 sougata-desktop named[4069]: /etc/bind/open-ims.dnszone:8:
+unknown option 'minimum'
+Sep 17 11:58:51 sougata-desktop named[4069]: /etc/bind/named.conf:13:
+unexpected token near end of file
+Sep 17 11:58:51 sougata-desktop named[4069]: loading configuration:
+unexpected token
+Sep 17 11:58:51 sougata-desktop named[4069]: exiting (due to fatal error)
+Sep 17 11:58:52 sougata-desktop avahi-daemon[876]: Received response from
+host 10.80.6.140 with invalid source port 59419 on interface 'eth1.0'
+
+
+According to the error trace, errors are in open-ims.dnszone file. Now i
+can't figure it out from where does this error traces coming.
+I am attaching the open-ims.dnszone with this mail for your comments. Now
+when i am trying to get my users registered at my open-ims.sougata i am
+getting Error 478&lt;Unresolvable Destination&gt; and Error 500&lt;Error forwarding
+to home domain&gt;. Is these 2 errors are due to this DNS error which i am
+receiving. I mean to say are they getting generated due to no resolvable dns
+address?
+
+Regards ,
+
+Sougata
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100917/a9031689/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100917/a9031689/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006571.html">[OpenIMSCore-Users] Users Not Registering
+</A></li>
+	<LI>Next message: <A HREF="006575.html">[OpenIMSCore-Users] Users Not Registering
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6573">[ date ]</a>
+              <a href="thread.html#6573">[ thread ]</a>
+              <a href="subject.html#6573">[ subject ]</a>
+              <a href="author.html#6573">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

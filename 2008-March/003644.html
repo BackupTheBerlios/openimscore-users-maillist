@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] PSTN and IMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSTN%20and%20IMS&In-Reply-To=%3C47E2ACC3.3010909%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003591.html">
+   <LINK REL="Next"  HREF="003696.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] PSTN and IMS</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSTN%20and%20IMS&In-Reply-To=%3C47E2ACC3.3010909%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] PSTN and IMS">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Mar 20 19:28:19 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003591.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+        <LI>Next message: <A HREF="003696.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3644">[ date ]</a>
+              <a href="thread.html#3644">[ thread ]</a>
+              <a href="subject.html#3644">[ subject ]</a>
+              <a href="author.html#3644">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+You've got it wrong. You should send it to the I-CSCF. So just have a 
+proper SIP URI like sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">user at open-ims.test</A> or tel:+123 and send it to 
+where the DNS resolves the domain in the SIP URI or the number from 
+ENUM, the I-CSCF. Then the I-CSCF will find the right S-CSCF, where the 
+terminating user is registered.
+
+In general, for terminating any request, you need to route it through 
+the I-CSCF, by simply using DNS routing.
+
+Routing to the S-CSCF in the basic configuration might work, because you 
+only have 1xS-CSCF. But in the general case, your MGCF won't be able to 
+locate the proper S-CSCF, where the terminating user is registered, 
+without the help from the I-CSCF.
+
+The S-CSCF routing script should remain the same.... The hack that you 
+did won't help much, as you could see...
+
+In the more complicated case, if you want to also have some services 
+triggered for the originating side (the MGW or the PSTN users that it 
+routes for), then you need to route it first through an originating 
+S-CSCF, that would do the service triggering and then fwd to the I-CSCF 
+for locating the terminating user. But in this case you need to provide 
+the proper Route header indicating origination, which is usually 
+discovered upon registration, through the Service-Route header (but your 
+MGW does not REGISTER...). For the particular case of the Open IMS Core, 
+this is sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf_fqdn</A>, but don't take it for granted for other 
+implementations...Also the multiple S-CSCF case applies here too, and 
+for that, in the latest 3GPP releases it is also possible to locate the 
+originating S-CSCF through the I-CSCF by doing an originating-LIR, but I 
+am not sure that this works properly now - tell me if it doesn't.
+
+... if you did not understood exactly the last paragraph, then just skip 
+it for now ;-).
+
+BTW: I usually use a SER between the Open IMS Core and the MGW, that 
+smooths things and makes your life easier than going through hard to fix 
+stuff with closed source commercial MGW, because you probably need to do 
+some conversion between what the MGW sends or is able to receive and 
+what is acceptable in your IMS Core...
+
+Cheers,
+-Dragos
+
+
+JYU IMS Group wrote:
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> Thank you for your clarification, Franz!
+</I>&gt;<i>
+</I>&gt;<i> It seems that we can't register Cisco as user. So, we should use Cisco 
+</I>&gt;<i> as gateway.
+</I>&gt;<i>
+</I>&gt;<i> Cisco sends INVITE in format 
+</I>&gt;<i> &quot;[somenumber_bind_to_user]@[scscf_IPaddr]:6060&quot; . Is it problem that 
+</I>&gt;<i> we can't send INVITE in format &quot;[somenumber_bind_to_user]@open-ims.test&quot; ?
+</I>&gt;<i>
+</I>&gt;<i> So, We got error &quot;403&quot;, &quot;Forbidden - Dialog not found on S-CSCF or 
+</I>&gt;<i> Terminating.... &quot; before modifying scscf.cfg as following:
+</I>&gt;<i>
+</I>&gt;<i> # Terminating
+</I>&gt;<i> if (uri=~&quot;sip:(.*)@open-ims\.test(.*)&quot; || uri=~&quot;tel:.*&quot; || uri=~&quot;sip:.*@[scscf_IPaddr]:6060&quot;){
+</I>&gt;<i>
+</I>&gt;<i>    if (S_term_not_registered &lt;<A HREF="http://www.openimscore.org/docs/ser_ims/scscf_2registrar_8c.html#b1bdea78d80369b9022a0761f181f968">http://www.openimscore.org/docs/ser_ims/scscf_2registrar_8c.html#b1bdea78d80369b9022a0761f181f968</A>&gt;())
+</I>&gt;<i>
+</I>&gt;<i>           S_assign_server_unreg &lt;<A HREF="http://www.openimscore.org/docs/ser_ims/scscf_2registrar_8c.html#973f563df7779ed199f6ca3399d82102">http://www.openimscore.org/docs/ser_ims/scscf_2registrar_8c.html#973f563df7779ed199f6ca3399d82102</A>&gt;(&quot;open-ims.test&quot;, &quot;term&quot;);
+</I>&gt;<i>
+</I>&gt;<i>    }else{
+</I>&gt;<i>        sl_send_reply(&quot;403&quot;,&quot;Forbidden - Dialog not found on S-CSCF or Terminating user not suitable for unregistered services&quot;);
+</I>&gt;<i>
+</I>&gt;<i>        exit();
+</I>&gt;<i>    } 
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;<i> After that, it seems that HSS and xCSCFs start to communicate, but 
+</I>&gt;<i> eventually nothing happens, no timeout, no nothing.
+</I>&gt;<i> What is needed to be done to MGCF so it could work without registering?
+</I>&gt;<i>
+</I>&gt;<i> Is there something we are missing?
+</I>&gt;<i>
+</I>&gt;<i> Thanks for any help in advance!
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i>
+</I>&gt;<i> JYU IMS group
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 2008/3/7, Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A> 
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&gt;&gt;:
+</I>&gt;<i>
+</I>&gt;<i>     Hi,
+</I>&gt;<i>
+</I>&gt;<i>     &gt; We can call outside to PSTN network. We have problem with
+</I>&gt;<i>     incoming calls.
+</I>&gt;<i>
+</I>&gt;<i>     Fine.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     &gt; We don't understand how to configure Cisco router and its
+</I>&gt;<i>     FXO-port (or
+</I>&gt;<i>     &gt; IMS-system to handle Cisco's messages). Should it register to
+</I>&gt;<i>     IMS-system
+</I>&gt;<i>     &gt; (and to some CSCF there) or not (like in FXO &lt;-&gt; Asterisk system)?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     I am no expert in configuring Cisco equipment, but I can answer
+</I>&gt;<i>     the IMS part
+</I>&gt;<i>     of the question.
+</I>&gt;<i>     Look to TS 23.228 &#167;5.6.3 (PSTN-O) PSTN origination. You can see
+</I>&gt;<i>     that in case
+</I>&gt;<i>     of PSTN origination the MGCF (your gateway) takes the tasks of the
+</I>&gt;<i>     P-CSCF in
+</I>&gt;<i>     case of mobile origination. You do not need to register your
+</I>&gt;<i>     gateway, but if
+</I>&gt;<i>     the Cisco gateway does all a MGCF should do is another question.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     &gt; We have configured to Cisco 3600:
+</I>&gt;<i>     &gt; - &quot;connection plar 'spesific user in openims database'&quot; (for
+</I>&gt;<i>     voice port)
+</I>&gt;<i>     &gt; (INVITE sip:'spesific user'@sip-server)
+</I>&gt;<i>     &gt; - &quot;session target sip-server&quot; (to dial-peer voice x voip) and
+</I>&gt;<i>     &gt; - &quot;registrar&quot; and &quot;sip-server&quot; as a P-CSCF or S-CSCF and
+</I>&gt;<i>     authentication
+</I>&gt;<i>     &gt; for &quot;router user&quot; (to sip-ua)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     In case you register your Cisco Box as a user than you have to
+</I>&gt;<i>     connect to a
+</I>&gt;<i>     P-CSCF instead of the S-CSCF. You have to decide if your box
+</I>&gt;<i>     should act as a
+</I>&gt;<i>     user or as a gateway.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     &gt; Doesn't work and we have no idea why. Is it possible to send
+</I>&gt;<i>     INVITE from
+</I>&gt;<i>     &gt; router to some spesific user (who use this pstn phone number) to
+</I>&gt;<i>     system
+</I>&gt;<i>     &gt; without registering router to system as user?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     Yes, if it is added as a gateway (MGCF) into the architecture.
+</I>&gt;<i>
+</I>&gt;<i>     So you have to decide: user or gateway. Don't use a mixed mode
+</I>&gt;<i>     (originating
+</I>&gt;<i>     as a MGCF, terminating as a user).
+</I>&gt;<i>
+</I>&gt;<i>     In case it does not work a trace would help to find the problem.
+</I>&gt;<i>
+</I>&gt;<i>     regards
+</I>&gt;<i>
+</I>&gt;<i>     Franz
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003591.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+	<LI>Next message: <A HREF="003696.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3644">[ date ]</a>
+              <a href="thread.html#3644">[ thread ]</a>
+              <a href="subject.html#3644">[ subject ]</a>
+              <a href="author.html#3644">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

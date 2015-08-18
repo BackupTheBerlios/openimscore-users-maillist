@@ -1,0 +1,407 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Regarding%20Trigger%20point%20for%20ACR%20in%20.cfg%20file&In-Reply-To=%3C002001c91352%24060b7530%249c0212ac%40LIONKING.COM%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004633.html">
+   <LINK REL="Next"  HREF="004678.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file</H1>
+    <B>sureshkumar.jaiswal</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Regarding%20Trigger%20point%20for%20ACR%20in%20.cfg%20file&In-Reply-To=%3C002001c91352%24060b7530%249c0212ac%40LIONKING.COM%3E"
+       TITLE="[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file">suresh.jaiswal at info-spectrum.com
+       </A><BR>
+    <I>Wed Sep 10 16:08:13 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004633.html">[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+</A></li>
+        <LI>Next message: <A HREF="004678.html">[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4642">[ date ]</a>
+              <a href="thread.html#4642">[ thread ]</a>
+              <a href="subject.html#4642">[ subject ]</a>
+              <a href="author.html#4642">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos Vingarzan
+
+Thanks for your answers!
+i have one more daunt regarding  RE-INVITE method, in sip there is no such 
+kind of RE-INVITE method is m right ?
+
+this should be identify using same Call-ID, To tag, From tag and different 
+CSeq no.
+
+then how we know 200 OK for RE-INVITE..
+
+Actually i a'm facing problem ACR [Interim] for RE-INVITE  [e.g. change in 
+media components]
+
+So we are not able to rout or call our exported function like ACR_Interim
+
+For example, the OK will be routed in the pcscf for RE-INVITE
+what will we check point for this in .cfg file something like:
+
+ if (method==&quot;OK&quot;) { //for RE-INVITE    this is not correct because we do't 
+know this OK for what ?
+
+Rf_ACR(&quot;Interim &quot;);
+}
+
+
+
+Thanks
+
+~Suresh
+
+
+
+
+----- Original Message ----- 
+From: &quot;Dragos Vingarzan&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+To: &quot;sureshkumar.jaiswal&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">suresh.jaiswal at info-spectrum.com</A>&gt;
+Cc: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+Sent: Tuesday, September 09, 2008 8:11 PM
+Subject: Re: [OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg 
+file
+
+
+&gt;<i> Well, it's quite simple, but it's too much to explain - look into
+</I>&gt;<i> ser_ims/route.c and other route related structure to understand how the
+</I>&gt;<i> configuration scripts gets parsed. Then remember that each time a
+</I>&gt;<i> message is received, a route (list of commands) is sequentially
+</I>&gt;<i> executed. Then your function will be called with the received message
+</I>&gt;<i> and the (up to) 2 parameters that you had in the script. And then there
+</I>&gt;<i> are request routes, reply routes and failure routes.
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> sureshkumar.jaiswal wrote:
+</I>&gt;&gt;<i> thanks for quick response yes i already knew thease thing regarding
+</I>&gt;&gt;<i> default exported_funtion prototype
+</I>&gt;&gt;<i> but i want to know how SER routing script adds the message
+</I>&gt;&gt;<i> (sip_msg.....) always internally ....
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks
+</I>&gt;&gt;<i> ~Suresh
+</I>&gt;&gt;<i> ----- Original Message ----- From: &quot;Dragos Vingarzan&quot;
+</I>&gt;&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;<i> To: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">suresh.jaiswal at info-spectrum.com</A>&gt;
+</I>&gt;&gt;<i> Cc: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;&gt;<i> Sent: Tuesday, September 09, 2008 7:43 PM
+</I>&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Regarding Trigger point for ACR in
+</I>&gt;&gt;<i> .cfg file
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hi Suresh,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> the SER routing script adds the message always, as a the first parameter
+</I>&gt;&gt;&gt;<i> to any function that you export. The message is the one that is being
+</I>&gt;&gt;&gt;<i> routed at the moment through the configuration routing script.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The prototype of all exported functions are the same
+</I>&gt;&gt;&gt;<i> exported_function(struct sip_msg *msg, char *str, char *str2). When you
+</I>&gt;&gt;&gt;<i> export the list of available functions, you indicate with how many
+</I>&gt;&gt;&gt;<i> parameters it can be called (0, 1 or 2) and from which of the routing
+</I>&gt;&gt;&gt;<i> scripts - see the structures exported in mod.c of any of the cscf
+</I>&gt;&gt;&gt;<i> modules; also module parameters are exported as well as functions to be
+</I>&gt;&gt;&gt;<i> used from other modules - see the cdp module for example.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The functions called from the scripts will always get the parameters as
+</I>&gt;&gt;&gt;<i> char*, even if you call them with an integer. Because the script does
+</I>&gt;&gt;&gt;<i> not change, you could optimize the processing of these strings with
+</I>&gt;&gt;&gt;<i> &quot;fixup&quot; functions that are executed just at initialization and
+</I>&gt;&gt;&gt;<i> potentially could change the char* pointer to another pointer to any
+</I>&gt;&gt;&gt;<i> custom pre-parsed parameter structure.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Cheers,
+</I>&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">suresh.jaiswal at info-spectrum.com</A> wrote:
+</I>&gt;&gt;&gt;&gt;<i> Hi Dragos thanks for giving me time.
+</I>&gt;&gt;&gt;&gt;<i> i have little bit dout regading some exported funtion..
+</I>&gt;&gt;&gt;&gt;<i> like in pcscf.cfg file we are calling some exported funtion like
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> P_add_require() (for example ) but protype and definiton of this
+</I>&gt;&gt;&gt;&gt;<i> funtion is
+</I>&gt;&gt;&gt;&gt;<i> like this int P_add_require(struct sip_msg *msg, char *str, char
+</I>&gt;&gt;&gt;&gt;<i> *str2) and
+</I>&gt;&gt;&gt;&gt;<i> and definition of this we are geting sip_msg data whithought sending or
+</I>&gt;&gt;&gt;&gt;<i> passing
+</I>&gt;&gt;&gt;&gt;<i> sip_msg from P_add_require() calling from pcscf.cfg  i want to know
+</I>&gt;&gt;&gt;&gt;<i> where we are getting or filling the sip_msg value basically as for
+</I>&gt;&gt;&gt;&gt;<i> knowdge
+</I>&gt;&gt;&gt;&gt;<i> we using c not not C++ so here is not any sean for default perameter
+</I>&gt;&gt;&gt;&gt;<i> ..is 'm
+</I>&gt;&gt;&gt;&gt;<i> right?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Thanks
+</I>&gt;&gt;&gt;&gt;<i> ~Suresh
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> ;
+</I>&gt;&gt;&gt;&gt;<i> ----- Original Message -----
+</I>&gt;&gt;&gt;&gt;<i> From: &quot;Dragos Vingarzan&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i> To: &quot;sureshkumar.jaiswal&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">suresh.jaiswal at info-spectrum.com</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i> Cc: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i> Sent: Friday, September 05, 2008 11:20 PM
+</I>&gt;&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Regarding Trigger point for ACR in
+</I>&gt;&gt;&gt;&gt;<i> .cfg
+</I>&gt;&gt;&gt;&gt;<i> file
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Forgot to mention, you might also need to deeper integrate this with
+</I>&gt;&gt;&gt;&gt;&gt;<i> certain parts of the pcscf and scscf modules, as B2B BYEs can be sent
+</I>&gt;&gt;&gt;&gt;&gt;<i> and those won't be catched in the routing script.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> The routing script is executed when requests and responses are
+</I>&gt;&gt;&gt;&gt;&gt;<i> received.
+</I>&gt;&gt;&gt;&gt;&gt;<i> The msg parameter is filled with the respective message that was
+</I>&gt;&gt;&gt;&gt;&gt;<i> received.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Cheers,
+</I>&gt;&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Dragos Vingarzan wrote:
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi Suresh,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> first of all, let's not call it &quot;triggering point&quot; because this would
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> get confused with the ones in the HSS.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Then I think that you should start a new module and define and export
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> new functions for use from the SER routing script (the cfg files). I
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> suggest a new module so that you would just load it when you want Rf
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> functionality, on any type of CSCF or other SER proxy. For this,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> look at
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> the examples in the modules, like pcscf.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Next it is a question of calling these functions from the right
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> points.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> For example, the BYEs will be routed in the pcscf through the
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> route[Orig_Subsequent] and route[Term_Subsequent]. There insert
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> something like:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> if (method==&quot;BYE&quot;) {
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     Rf_ACR(&quot;stop&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> the responses are usually through the routes with _reply at end
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> and it
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> would probably look like
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> if (t_check_status(200)){
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>     Rf_ACR(&quot;start&quot;);
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Then you will need to integrate your module with the cdp module, in
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> order to use Diameter, like the pcscf/icscf/scscf modules do. I
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> have to
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> warn you that the Accounting state machine is not finished yet. You
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> should use the 08_cdp_sessions branch of ser_ims as that is much much
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> more advanced in defining the authorization and accounting state
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> machine. The trunk is mostly frozen until development completes
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> there.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Cheers,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> sureshkumar.jaiswal wrote:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi All i'm working with one charging module for developing
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> constructing
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> CDR
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> (charging data records)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> for Offline/online.(basically charging Trigger function CTC i.e
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> send the
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ACR[start],...to charging Data function
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> for start creating CDR using Rf interface)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> I want to know different or single trigger point entery in
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> IMScore cfg
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> file
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> i.e (P-CSCF.cfg ,S-CSCF.cfg,I-CSCF.cfg file)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> for start following
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ACR [Start]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP 200 OK acknowledging an initial SIP INVITE
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP 200 OK acknowledging a SIP
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> RE-INVITE or SIP UPDATE [e.g. change in media components] (see
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> note 2)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ACR [Interim]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Expiration of AVP [Acct-Interim-Interval]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP BYE message (both normal and abnormal session termination cases)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ACR [Stop]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP BYE message
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ACR [Event]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP 200 OK acknowledging non-session related SIP messages, which
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> are:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP NOTIFY
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP MESSAGE
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP REGISTER (see note 1)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP SUBSCRIBE (see note 3)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP PUBLISH
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP 200 OK acknowledging an initial SIP INVITE
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP 202 Accepted acknowledging a SIP REFER or any other method
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP Final Response 2xx (except SIP 200 OK)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP Final/Redirection Response 3xx
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP Final Response (4xx, 5xx or 6xx), indicating an unsuccessful SIP
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> session
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> set-up
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP Final Response (4xx, 5xx or 6xx), indicating an unsuccessful
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> session-unrelated procedure
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> SIP CANCEL, indicating abortion of a SIP session set-up
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> When  P-CSCF/S-CSCF/I-CSCF get this sip method then I will call
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> one my
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> exported function like PSI_ACR my ctf moulde
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Can any one help me regarding this.. Triggering point.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ~Suresh
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> -- 
+</I>&gt;&gt;&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;&gt;&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;&gt;&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;&gt;&gt;&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -- 
+</I>&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> 
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004633.html">[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+</A></li>
+	<LI>Next message: <A HREF="004678.html">[OpenIMSCore-Users] Regarding Trigger point for ACR in .cfg file
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4642">[ date ]</a>
+              <a href="thread.html#4642">[ thread ]</a>
+              <a href="subject.html#4642">[ subject ]</a>
+              <a href="author.html#4642">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] INVITE rejected by pcscf
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20INVITE%20rejected%20by%20pcscf&In-Reply-To=%3Cdf9c67450901051244s14e40f0er62b3d219c6be734%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004961.html">
+   <LINK REL="Next"  HREF="004966.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] INVITE rejected by pcscf</H1>
+    <B>Soshant Bali</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20INVITE%20rejected%20by%20pcscf&In-Reply-To=%3Cdf9c67450901051244s14e40f0er62b3d219c6be734%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] INVITE rejected by pcscf">soshant.bali at gmail.com
+       </A><BR>
+    <I>Mon Jan  5 21:44:10 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004961.html">[OpenIMSCore-Users] INVITE rejected by pcscf
+</A></li>
+        <LI>Next message: <A HREF="004966.html">[OpenIMSCore-Users] INVITE rejected by pcscf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4962">[ date ]</a>
+              <a href="thread.html#4962">[ thread ]</a>
+              <a href="subject.html#4962">[ subject ]</a>
+              <a href="author.html#4962">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>More on this: The same configuration works fine (i.e., INVITEs are
+forwarded and call completes) when we use rev 508 for ser_ims. The
+problem occurs with rev 611.
+
+On Mon, Jan 5, 2009 at 11:32 AM, Soshant Bali &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">soshant.bali at gmail.com</A>&gt; wrote:
+&gt;<i> Hello everyone,
+</I>&gt;<i>
+</I>&gt;<i> We are trying to establish a call between two SIP modems (16503751111
+</I>&gt;<i> and 16503751112). The request URI is of the user=phone format. Both
+</I>&gt;<i> UEs register first and then 1112 calls 1111. However, when the INVITE
+</I>&gt;<i> from 1112 arrives at the pcscf, the pcscf just dumps the INVITE and
+</I>&gt;<i> does not forward it to the SCSCF. We noticed that the UE does not
+</I>&gt;<i> insert a ROUTE header with scscf address in the INVITE. To overcome
+</I>&gt;<i> this, we have configured the pcscf to enforce service route (Variant
+</I>&gt;<i> 2: P_enforce_service_route). On receiving the INVITE from 1112, the
+</I>&gt;<i> PCSCF logs are as follows: -
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i>       Orig_Initial
+</I>&gt;<i>  1(1599) DBG:P-CSCF:P_is_registered: Looking if registered
+</I>&gt;<i>  1(1599) DBG:P-CSCF:P_is_registered: Looking for &lt;1://208.30.175.87:15002&gt;
+</I>&gt;<i>  1(1599) INF:P-CSCF:P_assert_identity: Asserting Identity
+</I>&gt;<i>  1(1599) DBG:P-CSCF:P_assert_identity: Looking for
+</I>&gt;<i> &lt;1://208.30.175.87:15002&gt; Pref: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">16503751112 at openims.wireless</A>
+</I>&gt;<i>  4(1602) DBG:P-CSCF:cscf_get_originating_contact: 1://208.30.175.87:15002
+</I>&gt;<i>  4(1602) DBG:P-CSCF:cscf_get_terminating_contact: 0://openims.wireless:0
+</I>&gt;<i>  4(1602) &gt;&gt;       Orig_Initial
+</I>&gt;<i>  4(1602) DBG:P-CSCF:P_is_registered: Looking if registered
+</I>&gt;<i>  4(1602) DBG:P-CSCF:P_is_registered: Looking for &lt;1://208.30.175.87:15002&gt;
+</I>&gt;<i>  4(1602) INF:P-CSCF:P_assert_identity: Asserting Identity
+</I>&gt;<i>  4(1602) DBG:P-CSCF:P_assert_identity: Looking for
+</I>&gt;<i> &lt;1://208.30.175.87:15002&gt; Pref: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">16503751112 at openims.wireless</A>
+</I>&gt;<i>  3(1601) DBG:P-CSCF:cscf_get_originating_contact: 1://208.30.175.87:15002
+</I>&gt;<i>  3(1601) DBG:P-CSCF:cscf_get_terminating_contact: 0://openims.wireless:0
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I am also attaching a pcap file with the trace captured on the openims
+</I>&gt;<i> machine. The cscfs are listening on the following: -
+</I>&gt;<i> pcscf: 208.30.175.210:5060
+</I>&gt;<i> icscf: 127.0.0.1: 5060
+</I>&gt;<i> scscf: 127.0.0.1:6060
+</I>&gt;<i> hss: 208.30.175.210
+</I>&gt;<i>
+</I>&gt;<i> named and configuration files are configured accordingly.
+</I>&gt;<i>
+</I>&gt;<i> Please have a look.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Soshant Bali
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004961.html">[OpenIMSCore-Users] INVITE rejected by pcscf
+</A></li>
+	<LI>Next message: <A HREF="004966.html">[OpenIMSCore-Users] INVITE rejected by pcscf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4962">[ date ]</a>
+              <a href="thread.html#4962">[ thread ]</a>
+              <a href="subject.html#4962">[ subject ]</a>
+              <a href="author.html#4962">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

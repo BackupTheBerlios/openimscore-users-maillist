@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Creating a PSI that Doesnt Register
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Creating%20a%20PSI%20that%20Doesnt%20Register&In-Reply-To=%3C487E360F.7020504%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004281.html">
+   <LINK REL="Next"  HREF="004283.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Creating a PSI that Doesnt Register</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Creating%20a%20PSI%20that%20Doesnt%20Register&In-Reply-To=%3C487E360F.7020504%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Creating a PSI that Doesnt Register">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Jul 16 19:55:27 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004281.html">[OpenIMSCore-Users] Creating a PSI that Doesnt Register
+</A></li>
+        <LI>Next message: <A HREF="004283.html">[OpenIMSCore-Users] R&#233;f. : Re:  presence service
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4303">[ date ]</a>
+              <a href="thread.html#4303">[ thread ]</a>
+              <a href="subject.html#4303">[ subject ]</a>
+              <a href="author.html#4303">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yes, so you are not doing originating side triggering, but terminating 
+side, which makes more sense for your service. Think about users from 
+other domain calling in to your voicemail - you have no control on the 
+service profile there.
+
+btw: the empty profile means &quot;match everything&quot;. I think this is what 
+you want, but otherwise, write a TP that filters just what is required.
+
+Cheers,
+-Dragos
+
+Louis Alexander wrote:
+&gt;<i> (dang gmail shortcuts!... i meant to say:)
+</I>&gt;<i>
+</I>&gt;<i> Ahh, that makes a lot of sense.  I think where i went wrong the first time
+</I>&gt;<i> was setting the TP and IFC for each subscriber addressing the PSI in the
+</I>&gt;<i> service profile.
+</I>&gt;<i>
+</I>&gt;<i> I followed along with the SCSCF instructions and it totally made sense,
+</I>&gt;<i> except it seemed one step was kinda missing. once you create the service
+</I>&gt;<i> profile with the IFC that has no TPs, make sure to assign that new service
+</I>&gt;<i> profile to the IMSU for the PSI you are creating... i know its an obvious
+</I>&gt;<i> step, but it wasnt explicitly spelled out in the SCSCF routing &quot;how to&quot;.
+</I>&gt;<i>
+</I>&gt;<i> Thanks again for your help!
+</I>&gt;<i>
+</I>&gt;<i> On Tue, Jul 15, 2008 at 4:25 PM, Louis Alexander &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">panicked.kernel at gmail.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> On Tue, Jul 15, 2008 at 2:40 PM, Louis Alexander &lt;
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">panicked.kernel at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Thanks franz, ill give it a go later today and cross my fingers :)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On Tue, Jul 15, 2008 at 2:33 PM, Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&gt;
+</I>&gt;&gt;&gt;<i> wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Hi Louis,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> ... but of course this doesn't work, and the
+</I>&gt;&gt;&gt;&gt;&gt;<i> ims core complains that the user <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">voicemail at foo.com</A> &quot;is not registered
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> on
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;<i> this SCSCF&quot;.  So am i trying to accomplish this incorrectly? or what
+</I>&gt;&gt;&gt;&gt;&gt;<i> exactly?
+</I>&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;<i> A few months ago Alberto has published a &quot;how-to&quot; for creating PSIs, see
+</I>&gt;&gt;&gt;&gt;<i> below. Maybe this should be added to the FAQs (Provisioning Services).
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> ---------------- How to provision distinct and wildcarded PSIs
+</I>&gt;&gt;&gt;&gt;<i> -------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> PSIs are implemented and work. There are several issues.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Provisioning a PSI in the HSS is not easy, so you'll need to play around
+</I>&gt;&gt;&gt;&gt;<i> a
+</I>&gt;&gt;&gt;&gt;<i> bit.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> If you want I-CSCF routing is a bit easier and there wont be any S-CSCF
+</I>&gt;&gt;&gt;&gt;<i> involved, this procedure is defined by 3GPP for trusted AS that don't
+</I>&gt;&gt;&gt;&gt;<i> need
+</I>&gt;&gt;&gt;&gt;<i> to go through the S-CSCF.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I-CSCF routing
+</I>&gt;&gt;&gt;&gt;<i> --------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> - Put the address of your AS as a preferred-SCSCF (and set priority to 1
+</I>&gt;&gt;&gt;&gt;<i> at
+</I>&gt;&gt;&gt;&gt;<i> least)
+</I>&gt;&gt;&gt;&gt;<i> - Create an IMSU for your AS and assign the preferred-SCSCF to it
+</I>&gt;&gt;&gt;&gt;<i> - Create IMPI and IMPU  and attach the whole thing  IMSU-IMPI-IMPU
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> UE--{SIP INVITE}----&gt;I-CSCF----{Diameter LIR}---&gt;HSS--{-Diameter
+</I>&gt;&gt;&gt;&gt;<i> LIA}---&gt;I-CSCF----{SIP INVITE}--&gt;AS
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> S-CSCF routing
+</I>&gt;&gt;&gt;&gt;<i> --------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> - Create Application Server with your settings for the AS that hosts the
+</I>&gt;&gt;&gt;&gt;<i> PSI
+</I>&gt;&gt;&gt;&gt;<i> - Create iFC with no Trigger point (that means it matches everything) and
+</I>&gt;&gt;&gt;&gt;<i> profile part indicator Any or Unregistered
+</I>&gt;&gt;&gt;&gt;<i> - Attach iFC to AS
+</I>&gt;&gt;&gt;&gt;<i> - Create a service profile and attach iFC created
+</I>&gt;&gt;&gt;&gt;<i> - Create an IMSU and assign a normal preferred-SCSCF to it (but assign
+</I>&gt;&gt;&gt;&gt;<i> one!
+</I>&gt;&gt;&gt;&gt;<i> if not it wont work)
+</I>&gt;&gt;&gt;&gt;<i> - Create an IMPI
+</I>&gt;&gt;&gt;&gt;<i> - Create an IMPU choosing Distinct or Wildcard and write the wildcard in
+</I>&gt;&gt;&gt;&gt;<i> the
+</I>&gt;&gt;&gt;&gt;<i> appropriate format
+</I>&gt;&gt;&gt;&gt;<i>    (sip:your*wildcarded?expre??<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ion at open-ims.test</A>),
+</I>&gt;&gt;&gt;&gt;<i>    It would be logical to click in the can Register thing and don't let
+</I>&gt;&gt;&gt;&gt;<i> this IMPU to register and of course you have to click the
+</I>&gt;&gt;&gt;&gt;<i>    PSI Activation to activate it and select the created service profile
+</I>&gt;&gt;&gt;&gt;<i> for
+</I>&gt;&gt;&gt;&gt;<i> that PSI
+</I>&gt;&gt;&gt;&gt;<i> - Attach IMPU to IMPI and IMPI to IMSU
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> UE--{SIP INVITE}----&gt;I-CSCF----{Diameter LIR}---&gt;HSS---{Diameter
+</I>&gt;&gt;&gt;&gt;<i> LIA}---&gt;I-CSCF----{SIP INVITE}--&gt;S-CSCF---{Diameter
+</I>&gt;&gt;&gt;&gt;<i> SAR}--&gt;HSS---&gt;{Diameter
+</I>&gt;&gt;&gt;&gt;<i> SAA}--&gt;S-CSCF---{SIP INVITE}--&gt;AS
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> --------------------------- End of How-To
+</I>&gt;&gt;&gt;&gt;<i> ----------------------------------
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I hope that helps.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Franz
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;<i> Thanks,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Louis
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> Thanks,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Louis
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004281.html">[OpenIMSCore-Users] Creating a PSI that Doesnt Register
+</A></li>
+	<LI>Next message: <A HREF="004283.html">[OpenIMSCore-Users] R&#233;f. : Re:  presence service
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4303">[ date ]</a>
+              <a href="thread.html#4303">[ thread ]</a>
+              <a href="subject.html#4303">[ subject ]</a>
+              <a href="author.html#4303">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

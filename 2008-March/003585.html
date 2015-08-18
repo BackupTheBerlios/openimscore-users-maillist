@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How to connect from another computers
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20connect%20from%20another%20computers&In-Reply-To=%3C1204875633.5938.18.camel%40walqa347%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003696.html">
+   <LINK REL="Next"  HREF="003589.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How to connect from another computers</H1>
+    <B>Eduardo Moreno</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20to%20connect%20from%20another%20computers&In-Reply-To=%3C1204875633.5938.18.camel%40walqa347%3E"
+       TITLE="[OpenIMSCore-Users] How to connect from another computers">eduardo.moreno at inycom.es
+       </A><BR>
+    <I>Fri Mar  7 08:40:33 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003696.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+        <LI>Next message: <A HREF="003589.html">[OpenIMSCore-Users] How to connect from another computers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3585">[ date ]</a>
+              <a href="thread.html#3585">[ thread ]</a>
+              <a href="subject.html#3585">[ subject ]</a>
+              <a href="author.html#3585">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Majdi.
+
+About the first question, this are the notes that I took when I studied
+this:
+
+
+        First tests with X-Lite after changing authentication scheme,
+        showed that REGISTER works, but when INVITE was tried it didn't
+        work, throwing the error &quot;400: Bad Request - Not following
+        indicated Service-Routes&quot;. After investigation in OpenIMSCore
+        mailing list, the problem seems to be related with deficient
+        routing that can be fixed modifying pcscf.cfg file. The
+        documents where this ideas come from were
+        <A HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/003353.html">http://lists.berlios.de/pipermail/openimscore-users/2007-May/003353.html</A> and <A HREF="http://openimscore.org/docs/ser_ims/PCSCF.html#pcscf_example.">http://openimscore.org/docs/ser_ims/PCSCF.html#pcscf_example.</A>
+        The conclusion was to change this lines from pcscf.cfg:
+        
+        
+        
+                if (!P_follows_service_routes()){
+                        #Variant 1 - deny access to the network
+                        sl_send_reply(&quot;400&quot;,&quot;Bad Request - Not following indicated Service-Routes&quot;);               
+                        break;
+                        #Variant 2 - enforce routes and let the dialog continue
+                        #P_enforce_service_routes();
+                }
+        
+        
+        to this others: 
+        
+        
+                if (!P_follows_service_routes()){
+                        #Variant 1 - deny access to the network
+                        #sl_send_reply(&quot;400&quot;,&quot;Bad Request - Not following indicated Service-Routes&quot;);               
+                        #break;
+                        #Variant 2 - enforce routes and let the dialog continue
+                        P_enforce_service_routes();
+                }
+        
+        
+        After this is necessary to restart P-CSCF, of course.
+
+
+About second question, I send you a snapshot of configuration for X-Lite
+for Linux and another for Windows.
+
+Regards...
+
+
+El jue, 06-03-2008 a las 19:26 -0500, Majdi Rawashdeh escribi&#243;:
+
+&gt;<i> Eduardo Moreno wrote: 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Hi Majdi.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Yes, the scenario is correct, but if you want to use a SIP client
+</I>&gt;<i> &gt; (like X-Lite), you have to take care with authentification model.
+</I>&gt;<i> &gt; Configure your users to use Digest-MD5. This is to let you doing
+</I>&gt;<i> &gt; REGISTER. Then if you want to INVITE between users, you have to
+</I>&gt;<i> &gt; enforce the service routes in p-cscf (look into pcscf.cfg and use
+</I>&gt;<i> &gt; &quot;variant 2&quot; inside route[Orig_Initial] function).
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; In the next thread of mailing list you can found tips to configure
+</I>&gt;<i> &gt; X-Lite:
+</I>&gt;<i> &gt; <A HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/004137.html">http://lists.berlios.de/pipermail/openimscore-users/2007-September/004137.html</A>
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Regards...
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; El mi&#233;, 05-03-2008 a las 12:37 -0500, Majdi Rawashdeh escribi&#243;: 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &gt; /Hi all;
+</I>&gt;<i> &gt; &gt; /
+</I>&gt;<i> &gt; &gt;  I have successfully installed OpenIMSCore and held a connection between *Alice* and *Bob *at the same computer using uctimsclient 1.0.8,  
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt;  now I want to extend my test by having Alice and Bob at two different computers communicating via X-Lite.
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt;  I have three computer *A, B , C *
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt;  Computer *A* (running Linux)  should have OpenIMSCore installed and configured with my real IP address
+</I>&gt;<i> &gt; &gt;  Computer B, C(running windows) should have only X-Lite installed (OpenIMSCore itself is not required to be installed on computer *B *and *C*)
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; is this is the right scenario?
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; Thanks
+</I>&gt;<i> &gt; &gt; Majdi
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt;  /
+</I>&gt;<i> &gt; &gt; /
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> &gt; &gt; _______________________________________________
+</I>&gt;<i> &gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt; &gt;     
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; AVISO LEGAL 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Este mensaje y los archivos que en su caso lleve adjuntos son
+</I>&gt;<i> &gt; privados y confidenciales y se dirigen exclusivamente a su
+</I>&gt;<i> &gt; destinatario. Por ello, se informa a quien lo reciba por error que
+</I>&gt;<i> &gt; la informaci&#243;n contenida en el mismo es reservada y su utilizaci&#243;n,
+</I>&gt;<i> &gt; copia o distribuci&#243;n est&#225; prohibida, por lo que en tal caso le
+</I>&gt;<i> &gt; rogamos que nos lo comunique por esta misma v&#237;a o por tel&#233;fono
+</I>&gt;<i> &gt; (+34976013300) y proceda a borrarlo de inmediato. 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; En cumplimiento del Art. 5 de la Ley Org&#225;nica 15/1999, de 13 de
+</I>&gt;<i> &gt; diciembre, de Protecci&#243;n de Datos de Car&#225;cter Personal, se le
+</I>&gt;<i> &gt; informa que sus datos personales forman parte de un fichero
+</I>&gt;<i> &gt; propiedad de INSTRUMENTACI&#211;N Y COMPONENTES, S.A.  En cualquier
+</I>&gt;<i> &gt; momento podr&#225; ejercitar sus derechos de acceso, cancelaci&#243;n,
+</I>&gt;<i> &gt; rectificaci&#243;n y oposici&#243;n RESPONDIENDO a este correo.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt; 
+</I>&gt;<i> 
+</I>&gt;<i> Hi 
+</I>&gt;<i> 
+</I>&gt;<i> Thanks for your reply, I do not understand this  &quot; you have to enforce
+</I>&gt;<i> the service routes in p-cscf (look into pcscf.cfg and use &quot;variant 2&quot;
+</I>&gt;<i> inside route[Orig_Initial] function)&quot; or how to do it
+</I>&gt;<i> 
+</I>&gt;<i> by the way I am trying to test the call between alice and bob first on
+</I>&gt;<i> the same machine (using  loopback 127.0.0.1) before I use 2 separate
+</I>&gt;<i> computers,   could you please double check the attached image for my
+</I>&gt;<i> X-lite setting? are they correct.?
+</I>&gt;<i> 
+</I>&gt;<i> Regards,
+</I>&gt;<i> Majdi
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080307/e7a5cb67/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080307/e7a5cb67/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: xlitelinux.png
+Type: image/png
+Size: 122252 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080307/e7a5cb67/attachment.png">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080307/e7a5cb67/attachment.png</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: x-litewin.png
+Type: image/png
+Size: 28207 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080307/e7a5cb67/attachment-0001.png">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080307/e7a5cb67/attachment-0001.png</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003696.html">[OpenIMSCore-Users] PSTN and IMS
+</A></li>
+	<LI>Next message: <A HREF="003589.html">[OpenIMSCore-Users] How to connect from another computers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3585">[ date ]</a>
+              <a href="thread.html#3585">[ thread ]</a>
+              <a href="subject.html#3585">[ subject ]</a>
+              <a href="author.html#3585">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

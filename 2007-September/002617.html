@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] call flow: AS INVITE with Request-URI !=	URI for our domain
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20call%20flow%3A%20AS%20INVITE%20with%20Request-URI%20%21%3D%0A%09URI%20for%20our%20domain&In-Reply-To=%3Cb33002040709100451y51e7bb2bife5a25484f0c9da0%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002588.html">
+   <LINK REL="Next"  HREF="002622.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] call flow: AS INVITE with Request-URI !=	URI for our domain</H1>
+    <B>JF</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20call%20flow%3A%20AS%20INVITE%20with%20Request-URI%20%21%3D%0A%09URI%20for%20our%20domain&In-Reply-To=%3Cb33002040709100451y51e7bb2bife5a25484f0c9da0%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] call flow: AS INVITE with Request-URI !=	URI for our domain">jfkavaka at gmail.com
+       </A><BR>
+    <I>Mon Sep 10 13:51:38 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002588.html">[OpenIMSCore-Users] call flow: AS INVITE with Request-URI != URI	for our domain
+</A></li>
+        <LI>Next message: <A HREF="002622.html">[OpenIMSCore-Users] call flow: AS INVITE with Request-URI != URI for our domain
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2617">[ date ]</a>
+              <a href="thread.html#2617">[ thread ]</a>
+              <a href="subject.html#2617">[ subject ]</a>
+              <a href="author.html#2617">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>This was already in SVN: route[lir_term_user_unknown] in icscf.cfg.
+The I-CSCF is performing an ENUM query for HSS-unknown tel URIs.
+
+Also, it seems that a related fix in SER's loose.c wrt tel URIs that
+we had done in OpenIMSCore may now be replaced by today's fix in SER:
+<A HREF="http://lists.iptel.org/pipermail/serdev/2007-September/010806.html">http://lists.iptel.org/pipermail/serdev/2007-September/010806.html</A>
+
+JF
+
+On 9/10/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i> I would be, too, more in favor of changing the I-CSCF. This would be a
+</I>&gt;<i> good fix for any future troubles like this. The simplest way is to route
+</I>&gt;<i> the call directly to a PSTN gateway found through an enum query... or is
+</I>&gt;<i> it that the enum query resolves in the I-CSCF?
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> JF wrote:
+</I>&gt;<i> &gt; Hi all,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If an AS acting as UA wants to start a call to a tel URI or to another
+</I>&gt;<i> &gt; IMS domain, what should be the call flow?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; We were testing by having the AS send the INVITE to the I-CSCF,
+</I>&gt;<i> &gt; exactly the same as when the AS calls a SIP URI for an IMS user in our
+</I>&gt;<i> &gt; network (and this latter case works). But when the AS calls a tel URI
+</I>&gt;<i> &gt; which is NOT (implicitly) registered in the IMS core (e.g. a PSTN
+</I>&gt;<i> &gt; number) or when the AS calls a SIP URI for another domain, the I-CSCF
+</I>&gt;<i> &gt; currently runs route[Initial_Request] (no loose route), performs the
+</I>&gt;<i> &gt; LIR and returns 600 &quot;Does not exist anywhere - HSS User Unknown&quot;.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; We could make the AS send the request to any S-CSCF in the network,
+</I>&gt;<i> &gt; but this would not work when the AS calls our IMS users if the wrong
+</I>&gt;<i> &gt; S-CSCF is contacted. If the AS wants to call a user in our domain it
+</I>&gt;<i> &gt; should send through the I-CSCF or use the Sh interface to determine
+</I>&gt;<i> &gt; which S-CSCF to contact.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The question is: should the AS be responsible (using the Sh interface)
+</I>&gt;<i> &gt; to check whether the destionation tel or sip URI is a user in this IMS
+</I>&gt;<i> &gt; domain? Or should the I-CSCF be changed in order to forward the INVITE
+</I>&gt;<i> &gt; after receiving DIAMETER_ERROR_USER_UNKNOWN from the HSS
+</I>&gt;<i> &gt; - to any S-CSCF when the Req-URI is a tel URI, so that the S-CSCF can
+</I>&gt;<i> &gt; decide to send it to PSTN, according to specs;
+</I>&gt;<i> &gt; - to the destination domain, if the Req-URI has a SIP URI for another domain.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I would prefer changing the I-CSCF.
+</I>&gt;<i> &gt; What do you think? I can't find instructions in the specs for this case.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; JF
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002588.html">[OpenIMSCore-Users] call flow: AS INVITE with Request-URI != URI	for our domain
+</A></li>
+	<LI>Next message: <A HREF="002622.html">[OpenIMSCore-Users] call flow: AS INVITE with Request-URI != URI for our domain
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2617">[ date ]</a>
+              <a href="thread.html#2617">[ thread ]</a>
+              <a href="subject.html#2617">[ subject ]</a>
+              <a href="author.html#2617">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

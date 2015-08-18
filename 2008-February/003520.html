@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] List of Bindings
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20List%20of%20Bindings&In-Reply-To=%3C26900dc30802281155k76096c88laf3cd6d1d6004eb5%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003511.html">
+   <LINK REL="Next"  HREF="003521.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] List of Bindings</H1>
+    <B>Jose Silva</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20List%20of%20Bindings&In-Reply-To=%3C26900dc30802281155k76096c88laf3cd6d1d6004eb5%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] List of Bindings">joesilvas at gmail.com
+       </A><BR>
+    <I>Thu Feb 28 20:55:04 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003511.html">[OpenIMSCore-Users] List of Bindings
+</A></li>
+        <LI>Next message: <A HREF="003521.html">[OpenIMSCore-Users] List of Bindings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3520">[ date ]</a>
+              <a href="thread.html#3520">[ thread ]</a>
+              <a href="subject.html#3520">[ subject ]</a>
+              <a href="author.html#3520">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+The 3GPP  spec 24.229 also mentions that a list of bindings should be sent
+out on the 200 OK reply (5.4.1.2.2 Protected REGISTER 11(f )). We added a
+function S_fetch_bindings() which we export to the script and call it before
+sending a 200 OK to the REGISTER, but unfortunately if we use this the
+P-CSCF crashes when it receives the 200 OK response with multiple contacts.
+We haven't had time to look into this yet so we never posted this function
+on the list before, but if you want to try it out and correct the behavior
+on the P-CSCF please send us all the patch after.
+
+Best Regards,
+Jos&#233; Carlos Silva
+
+str contacthdr1={&quot;Contact: &lt;&quot;,10};
+str contacthdr2={&quot;\r\n&quot;,2};
+str contactparam={&quot;&gt;;expires=&quot;,10};
+
+
+int S_fetch_bindings(struct sip_msg *msg,char *str1,char *str2 )
+{
+        str hdr={0,0};
+        struct hdr_field *h;
+        str t={0,0};
+        str msg_c={0,0};
+        str public_identity;
+        r_public *p;
+        r_contact *c=0;
+        contact_t *contact;
+        int expires;
+        str expire_ascii={0,0};
+
+        public_identity = cscf_get_public_identity(msg);
+        p= get_r_public(public_identity);
+        msg_c = cscf_get_contact(msg);
+        if(msg_c.len==0) goto error;
+
+        if (!p) goto error;
+
+        r_act_time();
+        c = p-&gt;head;
+        while(c){
+                if (c-&gt;uri.len == msg_c.len &amp;&amp;
+strncasecmp(c-&gt;uri.s,msg_c.s,msg_c.len)==0)
+{
+                        c = c-&gt;next;
+                        continue;
+                }
+                expires=c-&gt;expires-time_now;
+                expire_ascii.s = int2str(expires,&amp;(expire_ascii.len));
+                hdr.len = contacthdr1.len+c-&gt;
+uri.len+contacthdr2.len+contactparam.len+expire_ascii.len;
+                hdr.s = pkg_malloc(hdr.len);
+                if (!hdr.s){
+                        LOG(L_ERR,&quot;ERR:&quot;M_NAME&quot;:S_fetch_bindings: Error
+allocating %d bytes.\n&quot;,
+                                hdr.len);
+                        goto error;
+                }else{
+                        hdr.len=0;
+                        STR_APPEND(hdr,contacthdr1);
+                        STR_APPEND(hdr,c-&gt;uri);
+                        STR_APPEND(hdr,contactparam);
+                        STR_APPEND(hdr,expire_ascii);
+                        STR_APPEND(hdr,contacthdr2);
+                        if(!cscf_add_header_rpl(msg,&amp;hdr)) goto error;
+                        pkg_free(hdr.s);
+                }
+                c = c-&gt;next;
+        }
+
+        r_unlock(p-&gt;hash);
+        return CSCF_RETURN_TRUE;
+error:
+        if(p) r_unlock(p-&gt;hash);
+        return CSCF_RETURN_FALSE;
+}
+
+2008/2/28 Nacho Conde &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iconde at axpeconsulting.com</A>&gt;:
+
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> We're testing the Franhofer FOKUS core, and we have seen the next
+</I>&gt;<i> behaviour:
+</I>&gt;<i>
+</I>&gt;<i>   When a user is registered in the core, the success response contains
+</I>&gt;<i> the Contact Header with the binding's infomation user.  But in a second
+</I>&gt;<i> register of the same user in the core with another IP:PORT, the core
+</I>&gt;<i> stores the two contact bindings but the core doesn't send the list of
+</I>&gt;<i> bindings in the success response.
+</I>&gt;<i> The RFC 3261 said:
+</I>&gt;<i>
+</I>&gt;<i> 10.2.3 Fetching Bindings
+</I>&gt;<i> &quot;A success response to any REGISTER request contains the complete list
+</I>&gt;<i> of existing bindings, regardless of whether the request contained a
+</I>&gt;<i> Contact header field. If no Contact header field is present in a
+</I>&gt;<i> REGISTER request, the list of bindings is left unchanged.&quot;
+</I>&gt;<i>
+</I>&gt;<i> Are there any posibility to force the core for send the list of binding
+</I>&gt;<i> in the success response?
+</I>&gt;<i>
+</I>&gt;<i> Any help would be welcome.
+</I>&gt;<i>
+</I>&gt;<i> Best regargs,
+</I>&gt;<i>
+</I>&gt;<i> David &amp; Nacho
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080228/7f00346c/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080228/7f00346c/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003511.html">[OpenIMSCore-Users] List of Bindings
+</A></li>
+	<LI>Next message: <A HREF="003521.html">[OpenIMSCore-Users] List of Bindings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3520">[ date ]</a>
+              <a href="thread.html#3520">[ thread ]</a>
+              <a href="subject.html#3520">[ subject ]</a>
+              <a href="author.html#3520">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

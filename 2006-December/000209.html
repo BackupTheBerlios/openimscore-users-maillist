@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Third party REGISTER
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Third%20party%20REGISTER&In-Reply-To=%3C26900dc30612071043n1a1e3cd6t52d64df6d3d4c231%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000197.html">
+   <LINK REL="Next"  HREF="000210.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Third party REGISTER</H1>
+    <B>Jose Silva</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Third%20party%20REGISTER&In-Reply-To=%3C26900dc30612071043n1a1e3cd6t52d64df6d3d4c231%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Third party REGISTER">joesilvas at gmail.com
+       </A><BR>
+    <I>Thu Dec  7 19:43:09 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000197.html">[OpenIMSCore-Users] Third party REGISTER
+</A></li>
+        <LI>Next message: <A HREF="000210.html">[OpenIMSCore-Users] Third party REGISTER
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#209">[ date ]</a>
+              <a href="thread.html#209">[ thread ]</a>
+              <a href="subject.html#209">[ subject ]</a>
+              <a href="author.html#209">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm trying to implement third party registers in openimscore but I'm
+having a problem understanding how I can get Expires Header of 200 OK
+response. This is needed on
+TS 24.229:
+If the registration procedure described in subclauses 5.4.1.2, 5.4.1.4
+or 5.4.1.5 (as appropriate) was successful, the S-CSCF shall send a
+third-party REGISTER request to each AS with the following
+information:
+
+e)for initial registration and user-initiated reregistration
+(subclause 5.4.1.2), the Expires header, which shall contain the same
+value that the S-CSCF returned in the 200 (OK) response for the
+REGISTER request received form the UE;
+
+Can you point me out a way of doing this?
+
+Thanks,
+Jose Carlos Silva
+
+
+2006/12/6, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;:
+&gt;<i> Hi Erling,
+</I>&gt;<i>
+</I>&gt;<i> Yes, the Sh introduces some overhead. You are right, both methods should
+</I>&gt;<i> be implemented.
+</I>&gt;<i>
+</I>&gt;<i> I think that the best place would be to add a hook in the scscf.cfg
+</I>&gt;<i> after the lines with t_reply(&quot;200&quot;,&quot;OK - SAR succesful and registrar
+</I>&gt;<i> saved&quot;);. At that point the Service Profile is downloaded and available.
+</I>&gt;<i> If one wants to disable this in certain cases, would just have to
+</I>&gt;<i> comment/modify the new lines.
+</I>&gt;<i>
+</I>&gt;<i> However, I would add the functionality in the isc module, because you
+</I>&gt;<i> need to match some filters, I guess... Then a new matching function is
+</I>&gt;<i> required, which would return a list of Application Servers and not just
+</I>&gt;<i> the first matching one. Then I would not use t_replicate(), but as we do
+</I>&gt;<i> with NOTIFY to reg, I would create new REGISTER requests and copy there
+</I>&gt;<i> the relevant headers and then send them out in parallel. This would
+</I>&gt;<i> de-couple the functionality and user registrations would not be affected
+</I>&gt;<i> by App. Servers not responding or being too slow.
+</I>&gt;<i>
+</I>&gt;<i> Well, at least this is how I understand 3rd party REGISTER :)... feel
+</I>&gt;<i> free to correct me if I am wrong.
+</I>&gt;<i>
+</I>&gt;<i> I hope this sheds some light. Tell me where specifically you need help
+</I>&gt;<i> or if you get stuck somewhere and we will try to support your efforts.
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Erling Kl&#230;boe wrote:
+</I>&gt;<i> &gt; Hi
+</I>&gt;<i> &gt; I just wanted to mention that both Relase 6 and 7 of 24.229 says how
+</I>&gt;<i> &gt; third party REGISTER should be supported.
+</I>&gt;<i> &gt; See 5.4.1.2.2 &quot;Protected REGISTER&quot;, bullet 13) and 5.4.1.7
+</I>&gt;<i> &gt; &lt;<A HREF="http://5.4.1.7">http://5.4.1.7</A>&gt;.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The problem of using the Sh interface in order to receive service
+</I>&gt;<i> &gt; profile updates, is that you have to make a subscription
+</I>&gt;<i> &gt; for each possible user in advance, which is not very nice if you have
+</I>&gt;<i> &gt; a lot of them.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Could you give any indication of what part of the code that has to be
+</I>&gt;<i> &gt; modified in order to implement third party REGISTER,
+</I>&gt;<i> &gt; and the complexity of it (besides t_replicate()).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; By the way I think that the Open IMS is a brilliant idea and the core
+</I>&gt;<i> &gt; seems very promising so far.
+</I>&gt;<i> &gt; We are using it in order to test our Application Servers (IM and
+</I>&gt;<i> &gt; Presence).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Erling
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On 12/6/06, *Dragos Vingarzan* &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     Yes. It is just a question of time for me, so if you could help
+</I>&gt;<i> &gt;     with a
+</I>&gt;<i> &gt;     patch for it, I will include it and also I will double-check for
+</I>&gt;<i> &gt;     24.229
+</I>&gt;<i> &gt;     conformance.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     -Dragos
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     JF wrote:
+</I>&gt;<i> &gt;     &gt; Hi Dragos,
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; Have you considered t_replicate() or an adaptation of it to support
+</I>&gt;<i> &gt;     &gt; 3rd party REGISTER?
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; JF
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; On 12/6/06, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt; wrote:
+</I>&gt;<i> &gt;     &gt;&gt; Hi Erling,
+</I>&gt;<i> &gt;     &gt;&gt;
+</I>&gt;<i> &gt;     &gt;&gt; Erling Kl&#230;boe wrote:
+</I>&gt;<i> &gt;     &gt;&gt; &gt; Hi,
+</I>&gt;<i> &gt;     &gt;&gt; &gt;
+</I>&gt;<i> &gt;     &gt;&gt; &gt; Two questions:
+</I>&gt;<i> &gt;     &gt;&gt; &gt; 1)
+</I>&gt;<i> &gt;     &gt;&gt; &gt; Does the S-CSCF support third party REGISTER towards an AS ?
+</I>&gt;<i> &gt;     &gt;&gt; &gt; I've set the REGISTER filter criteria in order to route it to
+</I>&gt;<i> &gt;     my AS,
+</I>&gt;<i> &gt;     &gt;&gt; &gt; but when a client (kphone) REGISTER,
+</I>&gt;<i> &gt;     &gt;&gt; &gt; the S-CSCF doesn't seem to forward it to my AS ?
+</I>&gt;<i> &gt;     &gt;&gt; &gt;
+</I>&gt;<i> &gt;     &gt;&gt; No, this is not yet supported. Actually, it is not as simple as
+</I>&gt;<i> &gt;     you put
+</I>&gt;<i> &gt;     &gt;&gt; it. The S-CSCF should create new REGISTER transactions after it
+</I>&gt;<i> &gt;     finished
+</I>&gt;<i> &gt;     &gt;&gt; the initial one, towards the App Servers, so it's not a trivial
+</I>&gt;<i> &gt;     case of
+</I>&gt;<i> &gt;     &gt;&gt; matching/forwarding a SIP request.
+</I>&gt;<i> &gt;     &gt;&gt;
+</I>&gt;<i> &gt;     &gt;&gt; You do have, through Sh, notification on the user registration
+</I>&gt;<i> &gt;     state
+</I>&gt;<i> &gt;     &gt;&gt; changes from the HSS. So far we have been satisfied with this
+</I>&gt;<i> &gt;     method of
+</I>&gt;<i> &gt;     &gt;&gt; letting the AS know about user registration statuses and I see
+</I>&gt;<i> &gt;     the 3rd
+</I>&gt;<i> &gt;     &gt;&gt; party REGISTER redundant.
+</I>&gt;<i> &gt;     &gt;&gt; &gt; 2)
+</I>&gt;<i> &gt;     &gt;&gt; &gt; When I do the same with a sip MESSAGE, it is routed correctly
+</I>&gt;<i> &gt;     to my AS
+</I>&gt;<i> &gt;     &gt;&gt; &gt; so that works (I've added MESSAGE to my filter criteria)
+</I>&gt;<i> &gt;     &gt;&gt; &gt; When the MESSAGE is sent from P-CSCF towards S-CSCF, the
+</I>&gt;<i> &gt;     route header
+</I>&gt;<i> &gt;     &gt;&gt; &gt; contains typically
+</I>&gt;<i> &gt;     &gt;&gt; &gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr
+</I>&gt;<i> &gt;     &gt;&gt; &gt;
+</I>&gt;<i> &gt;     &gt;&gt; &gt; However when it is forwarded to the AS, the route header
+</I>&gt;<i> &gt;     contains:
+</I>&gt;<i> &gt;     &gt;&gt; &gt; &lt;sip:AS IP ADDR:5064;lr&gt;,
+</I>&gt;<i> &gt;     &gt;&gt; &gt; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=0;d=0;lr&gt;
+</I>&gt;<i> &gt;     &gt;&gt; &gt;
+</I>&gt;<i> &gt;     &gt;&gt; &gt; Shouldn't it contain the orig parameter also, in order for
+</I>&gt;<i> &gt;     the AS to
+</I>&gt;<i> &gt;     &gt;&gt; &gt; detect that this is an originating message ?
+</I>&gt;<i> &gt;     &gt;&gt; &gt; (I guess the iscmark is there so that the S-CSCF may detect
+</I>&gt;<i> &gt;     that it
+</I>&gt;<i> &gt;     &gt;&gt; &gt; has received this earlier and avoid loops)
+</I>&gt;<i> &gt;     &gt;&gt; &gt;
+</I>&gt;<i> &gt;     &gt;&gt; If you would like that, then modify the App Server URI in the
+</I>&gt;<i> &gt;     Service
+</I>&gt;<i> &gt;     &gt;&gt; Profile. The Route header contains exactly what you put in there.
+</I>&gt;<i> &gt;     &gt;&gt; &gt; I run everything on one PC including client, IMS and AS.
+</I>&gt;<i> &gt;     &gt;&gt; &gt;
+</I>&gt;<i> &gt;     &gt;&gt; &gt; Regards
+</I>&gt;<i> &gt;     &gt;&gt; &gt; Erling
+</I>&gt;<i> &gt;     &gt;&gt; &gt;
+</I>&gt;<i> &gt;     &gt;&gt; &gt;
+</I>&gt;<i> &gt;     &gt;&gt;
+</I>&gt;<i> &gt;     ------------------------------------------------------------------------
+</I>&gt;<i> &gt;     &gt;&gt; &gt;
+</I>&gt;<i> &gt;     &gt;&gt; &gt; _______________________________________________
+</I>&gt;<i> &gt;     &gt;&gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;     &gt;&gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i> &gt;     &gt;&gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;     &gt;&gt; &gt;
+</I>&gt;<i> &gt;     &gt;&gt;
+</I>&gt;<i> &gt;     &gt;&gt;
+</I>&gt;<i> &gt;     &gt;&gt; --
+</I>&gt;<i> &gt;     &gt;&gt; -----------------------------------------
+</I>&gt;<i> &gt;     &gt;&gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt;     &gt;&gt; FOKUS/NGNI
+</I>&gt;<i> &gt;     &gt;&gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt;     &gt;&gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt;     &gt;&gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt;     &gt;&gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt;     &gt;&gt; eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt;     &gt;&gt; Web www.fokus.fraunhofer.de &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt;     &gt;&gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt;     &gt;&gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt;     &gt;&gt;
+</I>&gt;<i> &gt;     &gt;&gt; _______________________________________________
+</I>&gt;<i> &gt;     &gt;&gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;     &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i> &gt;     &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;     &gt;&gt;
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     --
+</I>&gt;<i> &gt;     -----------------------------------------
+</I>&gt;<i> &gt;     Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt;     FOKUS/NGNI
+</I>&gt;<i> &gt;     Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt;     10589 Berlin,Germany
+</I>&gt;<i> &gt;     Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt;     Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt;     eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt;     Web www.fokus.fraunhofer.de &lt;<A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt;     We could change the world if God would give us the source code...
+</I>&gt;<i> &gt;     -----------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000197.html">[OpenIMSCore-Users] Third party REGISTER
+</A></li>
+	<LI>Next message: <A HREF="000210.html">[OpenIMSCore-Users] Third party REGISTER
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#209">[ date ]</a>
+              <a href="thread.html#209">[ thread ]</a>
+              <a href="subject.html#209">[ subject ]</a>
+              <a href="author.html#209">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

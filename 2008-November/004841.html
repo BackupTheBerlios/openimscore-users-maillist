@@ -1,0 +1,548 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Disappearing IPsec security associations
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Disappearing%20IPsec%20security%20associations&In-Reply-To=%3C200811141607.30038%40dors.rombobeorn.se%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004840.html">
+   <LINK REL="Next"  HREF="004845.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Disappearing IPsec security associations</H1>
+    <B>Bj&#246;rn Persson</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Disappearing%20IPsec%20security%20associations&In-Reply-To=%3C200811141607.30038%40dors.rombobeorn.se%3E"
+       TITLE="[OpenIMSCore-Users] Disappearing IPsec security associations">bjorn.persson at softwell.se
+       </A><BR>
+    <I>Fri Nov 14 16:07:21 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004840.html">[OpenIMSCore-Users] Disappearing IPsec security associations
+</A></li>
+        <LI>Next message: <A HREF="004845.html">[OpenIMSCore-Users] Disappearing IPsec security associations
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4841">[ date ]</a>
+              <a href="thread.html#4841">[ thread ]</a>
+              <a href="subject.html#4841">[ subject ]</a>
+              <a href="author.html#4841">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Klemens Schragel wrote:
+&gt;<i> 1) why does your client mention port 5060 in the contact header but
+</I>&gt;<i> establishes IPSec SA for port 16386 (client) and 16387 (server)?
+</I>
+It chooses new ports for each new IPsec channel because the 3GPP 
+specifications say it should. And since the Open IMS P-CSCF uses port 4060 
+for all the connections, different ports on the user agent's end is the only 
+way to tell two connections apart.
+
+Do you think I should put port 16387 in the contact header?
+
+&gt;<i> 2) pleas use setkey -DP and send the output
+</I>
+OK. It's a bit long so I made it an attachment.
+
+&gt;<i> 3) as far as I remember p-cscf logs also the creation of the ip-sec SAs,
+</I>&gt;<i> this output might be interesting..
+</I>
+That'd be these messages: (I missed two invocations of ipsec_P_Inc_Req.sh but 
+I suppose they're just more of the same.)
+
+ 2(19260) INF:P-CSCF:execute_cmd: 
+[/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Inc_Req.sh 172.16.200.11 
+16386 172.16.5.70 4060 5069 rijndael-cbc 0xf6aa148db11ebd34fd92f6d9ebb80bb4 
+hmac-sha1 0x7b0c2ce3570df9311c7780d722c9619500000000]
+
+[...]
+
+ 3(19261) INF:P-CSCF:execute_cmd: 
+[/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Inc_Req.sh 172.16.200.12 
+16386 172.16.5.70 4060 5077 rijndael-cbc 0x35b4ae7cc78777b4cd7c800d0f184983 
+hmac-sha1 0x39de749f96e54d5798ed985733fd8c5d00000000]
+
+[...]
+
+ 2(19260) INF:P-CSCF:execute_cmd: 
+[/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Inc_Req.sh 172.16.200.13 
+16386 172.16.5.70 4060 5071 rijndael-cbc 0xe5638d789621be474b832c874d9edc8a 
+hmac-sha1 0x1c8d09e2abb372d9f28c7a049f3e9ec200000000]
+
+[...]
+
+ 5(19263) INF:P-CSCF:execute_cmd: 
+[/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Drop.sh 172.16.200.12 16386 
+16387 172.16.5.70 4060 4060 6000 6001 5076 5077]
+ 5(19263) INF:P-CSCF:execute_cmd: 
+[/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Drop.sh 172.16.200.11 16386 
+16387 172.16.5.70 4060 4060 6000 6001 5068 5069]
+
+[...]
+
+ 5(19263) INF:P-CSCF:execute_cmd: 
+[/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Drop.sh 172.16.200.13 16386 
+16387 172.16.5.70 4060 4060 6000 6001 5070 5071]
+
+[...]
+
+ 5(19263) INF:P-CSCF:execute_cmd: 
+[/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Drop.sh 172.16.200.14 16386 
+16387 172.16.5.70 4060 4060 6000 6001 5078 5079]
+ 5(19263) INF:P-CSCF:execute_cmd: 
+[/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Drop.sh 172.16.200.15 16386 
+16387 172.16.5.70 4060 4060 6000 6001 5072 5073]
+
+&gt;<i> and if I remember correctly p-cscf first 
+</I>&gt;<i> establishes only the ip-sec SA for UA(Client) =&gt; P-CSCF(Server). after the
+</I>&gt;<i> next register the other 3 SAs are created, so maybe the 2nd register is
+</I>&gt;<i> wrong.. unfortunately it is ESP encrypted, thus I can't have a look at
+</I>&gt;<i> it... and I'm pretty sure if there is a problem with the second register,
+</I>&gt;<i> the complete SAD will be dropped, so this could be also the reason for the
+</I>&gt;<i> disappearing SAs..
+</I>
+I think you're on the right track here, because obviously only 
+ipsec_P_Inc_Req.sh and ipsec_P_Drop.sh are executed. The 
+command &quot;ls -l --time=access /opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_*&quot; 
+shows that the other scripts haven't been accessed lately.
+
+I assumed of course that since I got a 200 reply the second REGISTER was OK. 
+The registration also works well enough that I can send MESSAGE and get a 200 
+reply to that too. Until the SA is dropped that is. Fortunately I have logs 
+of all the SIP messages. I've attached an excerpt.
+
+&gt;<i> do you know, why there are 3 ESP messages (Registers?) toward P-CSCF before
+</I>&gt;<i> the 200 ok is responded?
+</I>
+The first two are TCP syn and ack packets. Between them you can see the 
+unencrypted syn+ack from the server. First a TCP connection is opened, then 
+the REGISTER is sent.
+
+Bj&#246;rn Persson
+-------------- next part --------------
+When the communication works:
+
+# setkey -DP
+172.16.200.11[16386] 172.16.5.70[4060] tcp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:41 2008  lastused: Nov 14 14:52:11 2008
+        lifetime: 0(s) validtime: 0(s)
+        spid=6256 seq=33 pid=31699
+        refcnt=2
+172.16.200.11[16386] 172.16.5.70[4060] udp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6272 seq=32 pid=31699
+        refcnt=1
+172.16.200.12[16386] 172.16.5.70[4060] tcp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:47 2008  lastused: Nov 14 14:51:48 2008
+        lifetime: 0(s) validtime: 0(s)
+        spid=6288 seq=31 pid=31699
+        refcnt=2
+172.16.200.12[16386] 172.16.5.70[4060] udp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:47 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6304 seq=30 pid=31699
+        refcnt=1
+172.16.200.13[16386] 172.16.5.70[4060] tcp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:53 2008  lastused: Nov 14 14:51:54 2008
+        lifetime: 0(s) validtime: 0(s)
+        spid=6320 seq=29 pid=31699
+        refcnt=2
+172.16.200.13[16386] 172.16.5.70[4060] udp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:53 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6336 seq=28 pid=31699
+        refcnt=1
+172.16.200.14[16386] 172.16.5.70[4060] tcp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:59 2008  lastused: Nov 14 14:52:00 2008
+        lifetime: 0(s) validtime: 0(s)
+        spid=6352 seq=27 pid=31699
+        refcnt=2
+172.16.200.14[16386] 172.16.5.70[4060] udp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:59 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6368 seq=26 pid=31699
+        refcnt=1
+172.16.200.15[16386] 172.16.5.70[4060] tcp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:52:05 2008  lastused: Nov 14 14:52:06 2008
+        lifetime: 0(s) validtime: 0(s)
+        spid=6384 seq=25 pid=31699
+        refcnt=2
+172.16.200.15[16386] 172.16.5.70[4060] udp
+        in prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:52:05 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6400 seq=24 pid=31699
+        refcnt=1
+172.16.200.11[16386] 172.16.5.70[4060] tcp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6266 seq=23 pid=31699
+        refcnt=1
+172.16.200.11[16386] 172.16.5.70[4060] udp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6282 seq=22 pid=31699
+        refcnt=1
+172.16.200.12[16386] 172.16.5.70[4060] tcp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:47 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6298 seq=21 pid=31699
+        refcnt=1
+172.16.200.12[16386] 172.16.5.70[4060] udp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:47 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6314 seq=20 pid=31699
+        refcnt=1
+172.16.200.13[16386] 172.16.5.70[4060] tcp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:53 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6330 seq=19 pid=31699
+        refcnt=1
+172.16.200.13[16386] 172.16.5.70[4060] udp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:53 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6346 seq=18 pid=31699
+        refcnt=1
+172.16.200.14[16386] 172.16.5.70[4060] tcp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:59 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6362 seq=17 pid=31699
+        refcnt=1
+172.16.200.14[16386] 172.16.5.70[4060] udp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:51:59 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6378 seq=16 pid=31699
+        refcnt=1
+172.16.200.15[16386] 172.16.5.70[4060] tcp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:52:05 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6394 seq=15 pid=31699
+        refcnt=1
+172.16.200.15[16386] 172.16.5.70[4060] udp
+        fwd prio def ipsec
+        esp/transport//require
+        created: Nov 14 14:52:05 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=6410 seq=14 pid=31699
+        refcnt=1
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=99 seq=13 pid=31699
+        refcnt=1
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=83 seq=12 pid=31699
+        refcnt=1
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=67 seq=11 pid=31699
+        refcnt=1
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=51 seq=10 pid=31699
+        refcnt=1
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:38 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=35 seq=9 pid=31699
+        refcnt=1
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:37 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=19 seq=8 pid=31699
+        refcnt=1
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:37 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=3 seq=7 pid=31699
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=108 seq=6 pid=31699
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=92 seq=5 pid=31699
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=76 seq=4 pid=31699
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=60 seq=3 pid=31699
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:38 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=44 seq=2 pid=31699
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:37 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=28 seq=1 pid=31699
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:37 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=12 seq=0 pid=31699
+        refcnt=1
+
+When the communication has stopped working:
+
+# setkey -DP
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=99 seq=13 pid=31752
+        refcnt=1
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=83 seq=12 pid=31752
+        refcnt=1
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=67 seq=11 pid=31752
+        refcnt=1
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=51 seq=10 pid=31752
+        refcnt=1
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:38 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=35 seq=9 pid=31752
+        refcnt=1
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:37 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=19 seq=8 pid=31752
+        refcnt=1
+(per-socket policy)
+        in none
+        created: Nov 10 16:37:37 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=3 seq=7 pid=31752
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=108 seq=6 pid=31752
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=92 seq=5 pid=31752
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=76 seq=4 pid=31752
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:41 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=60 seq=3 pid=31752
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:38 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=44 seq=2 pid=31752
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:37 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=28 seq=1 pid=31752
+        refcnt=1
+(per-socket policy)
+        out none
+        created: Nov 10 16:37:37 2008  lastused:
+        lifetime: 0(s) validtime: 0(s)
+        spid=12 seq=0 pid=31752
+        refcnt=1
+-------------- next part --------------
+2008-11-14 15:11:22.080891 &gt;&gt;&gt;
+REGISTER sip:open-ims.softwell.se SIP/2.0
+Via: SIP/2.0/tcp 172.16.200.11:5060;branch=z9hG4bK-1d60e208-b256-11dd-8cf1-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1226671882080317
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at 172.16.200.11</A>:5060;transport=tcp&gt;;methods=&quot;INVITE,NOTIFY,INFO,OPTIONS,MESSAGE,ACK,BYE,CANCEL&quot;
+Expires: 3600
+Call-ID: 1d60dd94-b256-11dd-8cf1-0017a43fc587
+CSeq: 1 REGISTER
+Max-Forwards: 30
+User-Agent: SoftWell MBC: uac_adapter trunk: 3408, locally modified
+Allow-Events: presence
+Require: sec-agree
+Proxy-Require: sec-agree
+Supported: path
+Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot;, realm=&quot;open-ims.softwell.se&quot;, nonce=&quot;&quot;, uri=&quot;sip:open-ims.softwell.se&quot;, response=&quot;&quot;
+Security-Client: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=6000; spi-s=6001; port-c=16386; port-s=16387
+Content-Length: 0
+
+
+2008-11-14 15:11:22.311916 &lt;&lt;&lt;
+SIP/2.0 401 Unauthorized - Challenging the UE
+Via: SIP/2.0/tcp 172.16.200.11:5060;rport=16385;branch=z9hG4bK-1d60e208-b256-11dd-8cf1-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1226671882080317
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=19dc8d24bb14b7030dd77409820df168-4af4
+Call-ID: 1d60dd94-b256-11dd-8cf1-0017a43fc587
+CSeq: 1 REGISTER
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.softwell.se</A>:4060;lr&gt;
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.softwell.se</A>:6060;lr&gt;
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, PUBLISH, MESSAGE, INFO
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (x86_64/linux))
+Content-Length: 0
+Warning: 392 172.16.5.70:6060 &quot;Noisy feedback tells:  pid=19302 req_src_ip=172.16.5.70 req_src_port=5060 in_uri=sip:scscf.open-ims.softwell.se:6060 out_uri=sip:scscf.open-ims.softwell.se:6060 via_cnt==3&quot;
+WWW-Authenticate: Digest realm=&quot;open-ims.softwell.se&quot;, nonce=&quot;JN5TQFj0wrYNItW9lLCiq22iNfx7hgAAedcg5v7s3hE=&quot;, algorithm=AKAv1-MD5, qop=&quot;auth,auth-int&quot;
+Security-Server: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=5068; spi-s=5069; port-c=4060; port-s=4060; q=0.1
+
+
+2008-11-14 15:11:23.316230 &gt;&gt;&gt;
+REGISTER sip:open-ims.softwell.se SIP/2.0
+Via: SIP/2.0/tcp 172.16.200.11:5060;branch=z9hG4bK-1e1d5adc-b256-11dd-8cf1-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1226671882080317
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at 172.16.200.11</A>:5060;transport=tcp&gt;;methods=&quot;INVITE,NOTIFY,INFO,OPTIONS,MESSAGE,ACK,BYE,CANCEL&quot;;methods=&quot;INVITE,NOTIFY,INFO,OPTIONS,MESSAGE,ACK,BYE,CANCEL&quot;
+Expires: 3600
+Call-ID: 1d60dd94-b256-11dd-8cf1-0017a43fc587
+CSeq: 2 REGISTER
+Max-Forwards: 30
+User-Agent: SoftWell MBC: uac_adapter trunk: 3408, locally modified
+Allow-Events: presence
+Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot;,realm=&quot;open-ims.softwell.se&quot;,nonce=&quot;JN5TQFj0wrYNItW9lLCiq22iNfx7hgAAedcg5v7s3hE=&quot;,uri=&quot;sip:open-ims.softwell.se&quot;,qop=auth,nc=00000001,cnonce=&quot;1d845a76&quot;,response=&quot;caaeba1e66feb0b0b6236899a1e538f0&quot;,algorithm=akav1-md5
+Security-Client: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=6000; spi-s=6001; port-c=16386; port-s=16387
+Security-Verify: ipsec-3gpp; ealg=aes-cbc; alg=hmac-sha-1-96; spi-c=5068; spi-s=5069; port-c=4060; port-s=4060; q=0.1
+Require: sec-agree
+Proxy-Require: sec-agree
+Supported: path
+Content-Length: 0
+
+
+2008-11-14 15:11:23.347495 &lt;&lt;&lt;
+SIP/2.0 200 OK - SAR succesful and registrar saved
+Via: SIP/2.0/tcp 172.16.200.11:5060;rport=16386;branch=z9hG4bK-1e1d5adc-b256-11dd-8cf1-0017a43fc587
+From: &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=tomat-0-1226671882080317
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;;tag=19dc8d24bb14b7030dd77409820df168-dd2a
+Call-ID: 1d60dd94-b256-11dd-8cf1-0017a43fc587
+CSeq: 2 REGISTER
+P-Associated-URI: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at open-ims.softwell.se</A>&gt;
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">usera1 at 172.16.200.11</A>:5060;transport=tcp&gt;;expires=3600
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.softwell.se</A>:4060;lr&gt;
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.softwell.se</A>:6060;lr&gt;
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, PUBLISH, MESSAGE, INFO
+P-Charging-Function-Addresses: ccf=pri_ccf_address
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (x86_64/linux))
+Content-Length: 0
+Warning: 392 172.16.5.70:6060 &quot;Noisy feedback tells:  pid=19305 req_src_ip=172.16.5.70 req_src_port=5060 in_uri=sip:scscf.open-ims.softwell.se:6060 out_uri=sip:scscf.open-ims.softwell.se:6060 via_cnt==3&quot;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part.
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20081114/fe9f31cb/attachment.pgp">https://lists.berlios.de/pipermail/openimscore-users/attachments/20081114/fe9f31cb/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004840.html">[OpenIMSCore-Users] Disappearing IPsec security associations
+</A></li>
+	<LI>Next message: <A HREF="004845.html">[OpenIMSCore-Users] Disappearing IPsec security associations
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4841">[ date ]</a>
+              <a href="thread.html#4841">[ thread ]</a>
+              <a href="subject.html#4841">[ subject ]</a>
+              <a href="author.html#4841">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

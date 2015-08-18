@@ -1,0 +1,776 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registration failing - again
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20failing%20-%20again&In-Reply-To=%3CBLU0-SMTP315B0ECF5F67C62318398194320%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005540.html">
+   <LINK REL="Next"  HREF="005546.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registration failing - again</H1>
+    <B>Kimmo</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20failing%20-%20again&In-Reply-To=%3CBLU0-SMTP315B0ECF5F67C62318398194320%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] Registration failing - again">kk02630 at live.com
+       </A><BR>
+    <I>Sat Jun 27 16:57:47 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005540.html">[OpenIMSCore-Users] Registration failing - again
+</A></li>
+        <LI>Next message: <A HREF="005546.html">[OpenIMSCore-Users] Registration failing - again
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5545">[ date ]</a>
+              <a href="thread.html#5545">[ thread ]</a>
+              <a href="subject.html#5545">[ subject ]</a>
+              <a href="author.html#5545">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+In HSS database the Public-Identity and User-Name were different as in
+Diameter message - in HSS DB the subscriber was provisioned as
+1000_at_myims12.com and in XLite it was configured as 1000 with domain
+192.168.1.98. So in Diameter trace (please see attached) the identification
+was 1000_at_192.168.1.98 which I guess is incorrect?
+
+Though if I use name as the domain name I get following in P-CSCF output
+log:
+
+ 1(13425) DEBUG: dns_entry2he: no good records found (0) from myims12.com
+(1)
+ 1(13425) ERROR: sip_hostport2su: could not resolve hostname: &quot;myims12.com&quot;
+ 1(13425) ERROR: uri2dst: failed to resolve &quot;myims12.com&quot;
+ 1(13425) ERROR: t_forward_nonack: failure to add branches
+
+
+SIP message back to client is 478 - Unresolvable destination (478/TM).
+
+If I change the user information in impi and impu tables to IP address
+instead of name I also get an error on address not found and with same SIP
+error message. 
+
+So do you think this is possibly still DNS problem? Though I can ping all
+addresses as well as with dig it looks like following get a correct answer: 
+
+- myims12.com
+- scscf.myims12.com
+- pcscf.myims12.com
+- icscf.myims12.com
+
+
+
+
+Diameter trace:
+
+
+No.     Time        Source                Destination           Protocol
+Info
+      1 0.000000    192.168.1.98          192.168.1.98          DIAMETER
+cmd=User-AuthorizationRequest(300) flags=RP-- appl=3GPP Cx(16777216)
+h2h=2111718d e2e=a530b25d
+
+Frame 1 (326 bytes on wire, 326 bytes captured)
+    Arrival Time: Jun 27, 2009 20:29:53.599326000
+    [Time delta from previous captured frame: 0.000000000 seconds]
+    [Time delta from previous displayed frame: 0.000000000 seconds]
+    [Time since reference or first frame: 0.000000000 seconds]
+    Frame Number: 1
+    Frame Length: 326 bytes
+    Capture Length: 326 bytes
+    [Frame is marked: False]
+    [Protocols in frame: eth:ip:tcp:diameter:diameter]
+    [Coloring Rule Name: Checksum Errors]
+    [Coloring Rule String: cdp.checksum_bad==1 || edp.checksum_bad==1 ||
+ip.checksum_bad==1 || tcp.checksum_bad==1 || udp.checksum_bad==1]
+Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst:
+00:00:00_00:00:00 (00:00:00:00:00:00)
+    Destination: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        Address: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address
+(factory default)
+    Source: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        Address: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address
+(factory default)
+    Type: IP (0x0800)
+Internet Protocol, Src: 192.168.1.98 (192.168.1.98), Dst: 192.168.1.98
+(192.168.1.98)
+    Version: 4
+    Header length: 20 bytes
+    Differentiated Services Field: 0x00 (DSCP 0x00: Default; ECN: 0x00)
+        0000 00.. = Differentiated Services Codepoint: Default (0x00)
+        .... ..0. = ECN-Capable Transport (ECT): 0
+        .... ...0 = ECN-CE: 0
+    Total Length: 312
+    Identification: 0x2ff9 (12281)
+    Flags: 0x04 (Don't Fragment)
+        0... = Reserved bit: Not set
+        .1.. = Don't fragment: Set
+        ..0. = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (0x06)
+    Header checksum: 0x85b2 [correct]
+        [Good: True]
+        [Bad : False]
+    Source: 192.168.1.98 (192.168.1.98)
+    Destination: 192.168.1.98 (192.168.1.98)
+Transmission Control Protocol, Src Port: 40768 (40768), Dst Port: diameter
+(3868), Seq: 1, Ack: 1, Len: 260
+    Source port: 40768 (40768)
+    Destination port: diameter (3868)
+    Sequence number: 1    (relative sequence number)
+    [Next sequence number: 261    (relative sequence number)]
+    Acknowledgement number: 1    (relative ack number)
+    Header length: 32 bytes
+    Flags: 0x18 (PSH, ACK)
+        0... .... = Congestion Window Reduced (CWR): Not set
+        .0.. .... = ECN-Echo: Not set
+        ..0. .... = Urgent: Not set
+        ...1 .... = Acknowledgment: Set
+        .... 1... = Push: Set
+        .... .0.. = Reset: Not set
+        .... ..0. = Syn: Not set
+        .... ...0 = Fin: Not set
+    Window size: 2050
+    Checksum: 0x853f [incorrect, should be 0x87dc (maybe caused by &quot;TCP
+checksum offload&quot;?)]
+        [Good Checksum: False]
+        [Bad Checksum: True]
+    Options: (12 bytes)
+        NOP
+        NOP
+        Timestamps: TSval 14313827, TSecr 14304647
+    [PDU Size: 260]
+Diameter Protocol
+    Version: 0x01
+    Length: 260
+    Flags: 0xc0
+        1... .... = Request: Set
+        .1.. .... = Proxyable: Set
+        ..0. .... = Error: Not set
+        ...0 .... = T(Potentially re-transmitted message): Not set
+        .... 0... = Reserved: Unset
+        .... .0.. = Reserved: Unset
+        .... ..0. = Reserved: Unset
+        .... ...0 = Reserved: Unset
+    Command Code: 300 User-Authorization
+    ApplicationId: 3GPP Cx (16777216)
+    Hop-by-Hop Identifier: 0x2111718d
+    End-to-End Identifier: 0xa530b25d
+    AVP: Session-Id(263) l=38 f=-M- val=icscf.myims12.com;1903561299;5
+        AVP Code: 263 Session-Id
+        AVP Flags: 0x40
+            0... .... = Vendor-Specific: Not set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 38
+        Session-Id: icscf.myims12.com;1903561299;5
+    AVP: Origin-Host(264) l=25 f=-M- val=icscf.myims12.com
+        AVP Code: 264 Origin-Host
+        AVP Flags: 0x40
+            0... .... = Vendor-Specific: Not set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 25
+        Origin-Host: icscf.myims12.com
+    AVP: Origin-Realm(296) l=19 f=-M- val=myims12.com
+        AVP Code: 296 Origin-Realm
+        AVP Flags: 0x40
+            0... .... = Vendor-Specific: Not set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 19
+        Origin-Realm: myims12.com
+    AVP: Destination-Realm(283) l=20 f=-M- val=192.168.1.98
+        AVP Code: 283 Destination-Realm
+        AVP Flags: 0x40
+            0... .... = Vendor-Specific: Not set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 20
+        Destination-Realm: 192.168.1.98
+    AVP: Vendor-Specific-Application-Id(260) l=32 f=-M-
+        AVP Code: 260 Vendor-Specific-Application-Id
+        AVP Flags: 0x40
+            0... .... = Vendor-Specific: Not set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 32
+        Vendor-Specific-Application-Id:
+0000010A4000000C000028AF000001024000000C01000000
+            AVP: Vendor-Id(266) l=12 f=-M- val=10415
+                AVP Code: 266 Vendor-Id
+                AVP Flags: 0x40
+                    0... .... = Vendor-Specific: Not set
+                    .1.. .... = Mandatory: Set
+                    ..0. .... = Protected: Not set
+                    ...0 .... = Reserved: Unset
+                    .... 0... = Reserved: Unset
+                    .... .0.. = Reserved: Unset
+                    .... ..0. = Reserved: Unset
+                    .... ...0 = Reserved: Unset
+                AVP Length: 12
+                Vendor-Id: 10415
+                VendorId: 3GPP (10415)
+            AVP: Auth-Application-Id(258) l=12 f=-M- val=3GPP CX/DX
+(16777216)
+                AVP Code: 258 Auth-Application-Id
+                AVP Flags: 0x40
+                    0... .... = Vendor-Specific: Not set
+                    .1.. .... = Mandatory: Set
+                    ..0. .... = Protected: Not set
+                    ...0 .... = Reserved: Unset
+                    .... 0... = Reserved: Unset
+                    .... .0.. = Reserved: Unset
+                    .... ..0. = Reserved: Unset
+                    .... ...0 = Reserved: Unset
+                AVP Length: 12
+                Auth-Application-Id: 3GPP CX/DX (16777216)
+    AVP: Auth-Session-State(277) l=12 f=-M- val=NO_STATE_MAINTAINED (1)
+        AVP Code: 277 Auth-Session-State
+        AVP Flags: 0x40
+            0... .... = Vendor-Specific: Not set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 12
+        Auth-Session-State: NO_STATE_MAINTAINED (1)
+    AVP: User-Name(1) l=25 f=-M- val=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1000 at 192.168.1.98</A>
+        AVP Code: 1 User-Name
+        AVP Flags: 0x40
+            0... .... = Vendor-Specific: Not set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 25
+        User-Name: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1000 at 192.168.1.98</A>
+    AVP: Public-Identity(601) l=33 f=VM- vnd=TGPP val=sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1000 at 192.168.1.98</A>
+        AVP Code: 601 Public-Identity
+        AVP Flags: 0xc0
+            1... .... = Vendor-Specific: Set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 33
+        AVP Vendor Id: 3GPP (10415)
+        Public-Identity: sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1000 at 192.168.1.98</A>
+    AVP: Visited-Network-Identifier(600) l=23 f=VM- vnd=TGPP
+val=6D79696D7331322E636F6D
+        AVP Code: 600 Visited-Network-Identifier
+        AVP Flags: 0xc0
+            1... .... = Vendor-Specific: Set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 23
+        AVP Vendor Id: 3GPP (10415)
+        Visited-Network-Identifier: 6D79696D7331322E636F6D
+
+No.     Time        Source                Destination           Protocol
+Info
+      2 0.000017    192.168.1.98          192.168.1.98          TCP
+diameter &gt; 40768 [ACK] Seq=1 Ack=261 Win=2048 Len=0 TSV=14313827
+TSER=14313827
+
+Frame 2 (66 bytes on wire, 66 bytes captured)
+    Arrival Time: Jun 27, 2009 20:29:53.599343000
+    [Time delta from previous captured frame: 0.000017000 seconds]
+    [Time delta from previous displayed frame: 0.000017000 seconds]
+    [Time since reference or first frame: 0.000017000 seconds]
+    Frame Number: 2
+    Frame Length: 66 bytes
+    Capture Length: 66 bytes
+    [Frame is marked: False]
+    [Protocols in frame: eth:ip:tcp]
+    [Coloring Rule Name: TCP]
+    [Coloring Rule String: tcp]
+Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst:
+00:00:00_00:00:00 (00:00:00:00:00:00)
+    Destination: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        Address: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address
+(factory default)
+    Source: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        Address: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address
+(factory default)
+    Type: IP (0x0800)
+Internet Protocol, Src: 192.168.1.98 (192.168.1.98), Dst: 192.168.1.98
+(192.168.1.98)
+    Version: 4
+    Header length: 20 bytes
+    Differentiated Services Field: 0x00 (DSCP 0x00: Default; ECN: 0x00)
+        0000 00.. = Differentiated Services Codepoint: Default (0x00)
+        .... ..0. = ECN-Capable Transport (ECT): 0
+        .... ...0 = ECN-CE: 0
+    Total Length: 52
+    Identification: 0xb6a8 (46760)
+    Flags: 0x04 (Don't Fragment)
+        0... = Reserved bit: Not set
+        .1.. = Don't fragment: Set
+        ..0. = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (0x06)
+    Header checksum: 0x0007 [correct]
+        [Good: True]
+        [Bad : False]
+    Source: 192.168.1.98 (192.168.1.98)
+    Destination: 192.168.1.98 (192.168.1.98)
+Transmission Control Protocol, Src Port: diameter (3868), Dst Port: 40768
+(40768), Seq: 1, Ack: 261, Len: 0
+    Source port: diameter (3868)
+    Destination port: 40768 (40768)
+    Sequence number: 1    (relative sequence number)
+    Acknowledgement number: 261    (relative ack number)
+    Header length: 32 bytes
+    Flags: 0x10 (ACK)
+        0... .... = Congestion Window Reduced (CWR): Not set
+        .0.. .... = ECN-Echo: Not set
+        ..0. .... = Urgent: Not set
+        ...1 .... = Acknowledgment: Set
+        .... 0... = Push: Not set
+        .... .0.. = Reset: Not set
+        .... ..0. = Syn: Not set
+        .... ...0 = Fin: Not set
+    Window size: 2048
+    Checksum: 0x12e6 [correct]
+        [Good Checksum: True]
+        [Bad Checksum: False]
+    Options: (12 bytes)
+        NOP
+        NOP
+        Timestamps: TSval 14313827, TSecr 14313827
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 1]
+        [The RTT to ACK the segment was: 0.000017000 seconds]
+
+No.     Time        Source                Destination           Protocol
+Info
+      3 0.000026    192.168.1.98          192.168.1.98          DIAMETER
+cmd=User-AuthorizationAnswer(300) flags=-P-- appl=3GPP Cx(16777216)
+h2h=2111718d e2e=a530b25d
+
+Frame 3 (246 bytes on wire, 246 bytes captured)
+    Arrival Time: Jun 27, 2009 20:29:53.599352000
+    [Time delta from previous captured frame: 0.000009000 seconds]
+    [Time delta from previous displayed frame: 0.000009000 seconds]
+    [Time since reference or first frame: 0.000026000 seconds]
+    Frame Number: 3
+    Frame Length: 246 bytes
+    Capture Length: 246 bytes
+    [Frame is marked: False]
+    [Protocols in frame: eth:ip:tcp:diameter:diameter:diameter]
+    [Coloring Rule Name: Checksum Errors]
+    [Coloring Rule String: cdp.checksum_bad==1 || edp.checksum_bad==1 ||
+ip.checksum_bad==1 || tcp.checksum_bad==1 || udp.checksum_bad==1]
+Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst:
+00:00:00_00:00:00 (00:00:00:00:00:00)
+    Destination: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        Address: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address
+(factory default)
+    Source: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        Address: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address
+(factory default)
+    Type: IP (0x0800)
+Internet Protocol, Src: 192.168.1.98 (192.168.1.98), Dst: 192.168.1.98
+(192.168.1.98)
+    Version: 4
+    Header length: 20 bytes
+    Differentiated Services Field: 0x00 (DSCP 0x00: Default; ECN: 0x00)
+        0000 00.. = Differentiated Services Codepoint: Default (0x00)
+        .... ..0. = ECN-Capable Transport (ECT): 0
+        .... ...0 = ECN-CE: 0
+    Total Length: 232
+    Identification: 0xb6a9 (46761)
+    Flags: 0x04 (Don't Fragment)
+        0... = Reserved bit: Not set
+        .1.. = Don't fragment: Set
+        ..0. = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (0x06)
+    Header checksum: 0xff51 [correct]
+        [Good: True]
+        [Bad : False]
+    Source: 192.168.1.98 (192.168.1.98)
+    Destination: 192.168.1.98 (192.168.1.98)
+Transmission Control Protocol, Src Port: diameter (3868), Dst Port: 40768
+(40768), Seq: 1, Ack: 261, Len: 180
+    Source port: diameter (3868)
+    Destination port: 40768 (40768)
+    Sequence number: 1    (relative sequence number)
+    [Next sequence number: 181    (relative sequence number)]
+    Acknowledgement number: 261    (relative ack number)
+    Header length: 32 bytes
+    Flags: 0x18 (PSH, ACK)
+        0... .... = Congestion Window Reduced (CWR): Not set
+        .0.. .... = ECN-Echo: Not set
+        ..0. .... = Urgent: Not set
+        ...1 .... = Acknowledgment: Set
+        .... 1... = Push: Set
+        .... .0.. = Reset: Not set
+        .... ..0. = Syn: Not set
+        .... ...0 = Fin: Not set
+    Window size: 2048
+    Checksum: 0x84ef [incorrect, should be 0xb148 (maybe caused by &quot;TCP
+checksum offload&quot;?)]
+        [Good Checksum: False]
+        [Bad Checksum: True]
+    Options: (12 bytes)
+        NOP
+        NOP
+        Timestamps: TSval 14313871, TSecr 14313827
+    [PDU Size: 180]
+Diameter Protocol
+    Version: 0x01
+    Length: 180
+    Flags: 0x40
+        0... .... = Request: Not set
+        .1.. .... = Proxyable: Set
+        ..0. .... = Error: Not set
+        ...0 .... = T(Potentially re-transmitted message): Not set
+        .... 0... = Reserved: Unset
+        .... .0.. = Reserved: Unset
+        .... ..0. = Reserved: Unset
+        .... ...0 = Reserved: Unset
+    Command Code: 300 User-Authorization
+    ApplicationId: 3GPP Cx (16777216)
+    Hop-by-Hop Identifier: 0x2111718d
+    End-to-End Identifier: 0xa530b25d
+    AVP: Session-Id(263) l=38 f=-M- val=icscf.myims12.com;1903561299;5
+        AVP Code: 263 Session-Id
+        AVP Flags: 0x40
+            0... .... = Vendor-Specific: Not set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 38
+        Session-Id: icscf.myims12.com;1903561299;5
+    AVP: Origin-Host(264) l=23 f=-M- val=hss.myims12.com
+        AVP Code: 264 Origin-Host
+        AVP Flags: 0x40
+            0... .... = Vendor-Specific: Not set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 23
+        Origin-Host: hss.myims12.com
+    AVP: Origin-Realm(296) l=19 f=-M- val=myims12.com
+        AVP Code: 296 Origin-Realm
+        AVP Flags: 0x40
+            0... .... = Vendor-Specific: Not set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 19
+        Origin-Realm: myims12.com
+    AVP: Auth-Session-State(277) l=12 f=-M- val=NO_STATE_MAINTAINED (1)
+        AVP Code: 277 Auth-Session-State
+        AVP Flags: 0x40
+            0... .... = Vendor-Specific: Not set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 12
+        Auth-Session-State: NO_STATE_MAINTAINED (1)
+    AVP: Vendor-Specific-Application-Id(260) l=32 f=-M-
+        AVP Code: 260 Vendor-Specific-Application-Id
+        AVP Flags: 0x40
+            0... .... = Vendor-Specific: Not set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 32
+        Vendor-Specific-Application-Id:
+0000010A4000000C000028AF000001024000000C01000000
+            AVP: Vendor-Id(266) l=12 f=-M- val=10415
+                AVP Code: 266 Vendor-Id
+                AVP Flags: 0x40
+                    0... .... = Vendor-Specific: Not set
+                    .1.. .... = Mandatory: Set
+                    ..0. .... = Protected: Not set
+                    ...0 .... = Reserved: Unset
+                    .... 0... = Reserved: Unset
+                    .... .0.. = Reserved: Unset
+                    .... ..0. = Reserved: Unset
+                    .... ...0 = Reserved: Unset
+                AVP Length: 12
+                Vendor-Id: 10415
+                VendorId: 3GPP (10415)
+            AVP: Auth-Application-Id(258) l=12 f=-M- val=3GPP CX/DX
+(16777216)
+                AVP Code: 258 Auth-Application-Id
+                AVP Flags: 0x40
+                    0... .... = Vendor-Specific: Not set
+                    .1.. .... = Mandatory: Set
+                    ..0. .... = Protected: Not set
+                    ...0 .... = Reserved: Unset
+                    .... 0... = Reserved: Unset
+                    .... .0.. = Reserved: Unset
+                    .... ..0. = Reserved: Unset
+                    .... ...0 = Reserved: Unset
+                AVP Length: 12
+                Auth-Application-Id: 3GPP CX/DX (16777216)
+    AVP: Experimental-Result(297) l=32 f=-M-
+        AVP Code: 297 Experimental-Result
+        AVP Flags: 0x40
+            0... .... = Vendor-Specific: Not set
+            .1.. .... = Mandatory: Set
+            ..0. .... = Protected: Not set
+            ...0 .... = Reserved: Unset
+            .... 0... = Reserved: Unset
+            .... .0.. = Reserved: Unset
+            .... ..0. = Reserved: Unset
+            .... ...0 = Reserved: Unset
+        AVP Length: 32
+        Experimental-Result:
+0000010A4000000C000028AF0000012A4000000C00001389
+            AVP: Vendor-Id(266) l=12 f=-M- val=10415
+                AVP Code: 266 Vendor-Id
+                AVP Flags: 0x40
+                    0... .... = Vendor-Specific: Not set
+                    .1.. .... = Mandatory: Set
+                    ..0. .... = Protected: Not set
+                    ...0 .... = Reserved: Unset
+                    .... 0... = Reserved: Unset
+                    .... .0.. = Reserved: Unset
+                    .... ..0. = Reserved: Unset
+                    .... ...0 = Reserved: Unset
+                AVP Length: 12
+                Vendor-Id: 10415
+                VendorId: 3GPP (10415)
+            AVP: Experimental-Result-Code(298) l=12 f=-M-
+val=DIAMETER_ERROR_USER_UNKNOWN (5001)
+                AVP Code: 298 Experimental-Result-Code
+                AVP Flags: 0x40
+                    0... .... = Vendor-Specific: Not set
+                    .1.. .... = Mandatory: Set
+                    ..0. .... = Protected: Not set
+                    ...0 .... = Reserved: Unset
+                    .... 0... = Reserved: Unset
+                    .... .0.. = Reserved: Unset
+                    .... ..0. = Reserved: Unset
+                    .... ...0 = Reserved: Unset
+                AVP Length: 12
+                Experimental-Result-Code: DIAMETER_ERROR_USER_UNKNOWN (5001)
+
+No.     Time        Source                Destination           Protocol
+Info
+      4 0.038684    192.168.1.98          192.168.1.98          TCP
+40768 &gt; diameter [ACK] Seq=261 Ack=181 Win=2050 Len=0 TSV=14313911
+TSER=14313871
+
+Frame 4 (66 bytes on wire, 66 bytes captured)
+    Arrival Time: Jun 27, 2009 20:29:53.638010000
+    [Time delta from previous captured frame: 0.038658000 seconds]
+    [Time delta from previous displayed frame: 0.038658000 seconds]
+    [Time since reference or first frame: 0.038684000 seconds]
+    Frame Number: 4
+    Frame Length: 66 bytes
+    Capture Length: 66 bytes
+    [Frame is marked: False]
+    [Protocols in frame: eth:ip:tcp]
+    [Coloring Rule Name: TCP]
+    [Coloring Rule String: tcp]
+Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst:
+00:00:00_00:00:00 (00:00:00:00:00:00)
+    Destination: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        Address: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address
+(factory default)
+    Source: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        Address: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address
+(factory default)
+    Type: IP (0x0800)
+Internet Protocol, Src: 192.168.1.98 (192.168.1.98), Dst: 192.168.1.98
+(192.168.1.98)
+    Version: 4
+    Header length: 20 bytes
+    Differentiated Services Field: 0x00 (DSCP 0x00: Default; ECN: 0x00)
+        0000 00.. = Differentiated Services Codepoint: Default (0x00)
+        .... ..0. = ECN-Capable Transport (ECT): 0
+        .... ...0 = ECN-CE: 0
+    Total Length: 52
+    Identification: 0x2ffa (12282)
+    Flags: 0x04 (Don't Fragment)
+        0... = Reserved bit: Not set
+        .1.. = Don't fragment: Set
+        ..0. = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (0x06)
+    Header checksum: 0x86b5 [correct]
+        [Good: True]
+        [Bad : False]
+    Source: 192.168.1.98 (192.168.1.98)
+    Destination: 192.168.1.98 (192.168.1.98)
+Transmission Control Protocol, Src Port: 40768 (40768), Dst Port: diameter
+(3868), Seq: 261, Ack: 181, Len: 0
+    Source port: 40768 (40768)
+    Destination port: diameter (3868)
+    Sequence number: 261    (relative sequence number)
+    Acknowledgement number: 181    (relative ack number)
+    Header length: 32 bytes
+    Flags: 0x10 (ACK)
+        0... .... = Congestion Window Reduced (CWR): Not set
+        .0.. .... = ECN-Echo: Not set
+        ..0. .... = Urgent: Not set
+        ...1 .... = Acknowledgment: Set
+        .... 0... = Push: Not set
+        .... .0.. = Reset: Not set
+        .... ..0. = Syn: Not set
+        .... ...0 = Fin: Not set
+    Window size: 2050
+    Checksum: 0x11b0 [correct]
+        [Good Checksum: True]
+        [Bad Checksum: False]
+    Options: (12 bytes)
+        NOP
+        NOP
+        Timestamps: TSval 14313911, TSecr 14313871
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 3]
+        [The RTT to ACK the segment was: 0.038658000 seconds]
+
+
+
+
+
+
+
+    Kimmo
+
+
+
+-----Original Message-----
+From: Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz-edler at aon.at</A>] 
+Sent: 21. kes&#228;kuuta 2009 12:09
+To: 'Kimmo K'; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: RE: [OpenIMSCore-Users] Registration failing - again
+
+&gt;<i> There's no references to open-ims.test anymore in any configuration files
+</I>&gt;<i> - did this earlier already (just in case did run configuration.sh again).
+</I>&gt;<i> Only places where it's left is in impi and impu tables where alice and bob
+</I>&gt;<i> are left untouched. Also in visited_network - table.
+</I>&gt;<i> 
+</I>&gt;<i> Removed all references to open-ims.test but still it's same, cannot
+</I>&gt;<i> registed. The actual error message from HSS is
+</I>&gt;<i> &quot;IMS_Diameter_Error_User_Unknown&quot;.
+</I>
+Then look into Diameter User Authorization Request (UAR) for the User-Name
+and Public-Identity AVPs if theses are identical with the provisioned
+Private and Public User ID.
+In case you cannot solve this issue you should attach a trace-file including
+SIP and Diameter messages of the core.
+
+Franz
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005540.html">[OpenIMSCore-Users] Registration failing - again
+</A></li>
+	<LI>Next message: <A HREF="005546.html">[OpenIMSCore-Users] Registration failing - again
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5545">[ date ]</a>
+              <a href="thread.html#5545">[ thread ]</a>
+              <a href="subject.html#5545">[ subject ]</a>
+              <a href="author.html#5545">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] RV: Getting 400 Bad Request - Not	following	indicated Service-Routes in a call try between two	sip clients
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20RV%3A%20Getting%20400%20Bad%20Request%20-%20Not%0A%09following%09indicated%20Service-Routes%20in%20a%20call%20try%20between%20two%0A%09sip%20clients&In-Reply-To=%3C001201cbd9cf%24a025a370%24e070ea50%24%40technikum-wien.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006895.html">
+   <LINK REL="Next"  HREF="006899.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] RV: Getting 400 Bad Request - Not	following	indicated Service-Routes in a call try between two	sip clients</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20RV%3A%20Getting%20400%20Bad%20Request%20-%20Not%0A%09following%09indicated%20Service-Routes%20in%20a%20call%20try%20between%20two%0A%09sip%20clients&In-Reply-To=%3C001201cbd9cf%24a025a370%24e070ea50%24%40technikum-wien.at%3E"
+       TITLE="[OpenIMSCore-Users] RV: Getting 400 Bad Request - Not	following	indicated Service-Routes in a call try between two	sip clients">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Thu Mar  3 19:20:07 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006895.html">[OpenIMSCore-Users] RV: Getting 400 Bad Request - Not	following	indicated Service-Routes in a call try between two	sip clients
+</A></li>
+        <LI>Next message: <A HREF="006899.html">[OpenIMSCore-Users] RV: Getting 400 Bad Request - Not	following	indicated Service-Routes in a call try between two	sip clients
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6896">[ date ]</a>
+              <a href="thread.html#6896">[ thread ]</a>
+              <a href="subject.html#6896">[ subject ]</a>
+              <a href="author.html#6896">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> So I&#146;ve tried to remove the check on &#147;Service-
+</I>&gt;<i> Route&#148; in pcscf.cfg as you mentioned in previous mail. Doing this I&#146;ve no
+</I>&gt;<i> success, any answer to my INIVITE messages.
+</I>&gt;<i> 
+</I>&gt;<i> I post the change in my pcscf.cfg because I&#146;m not sure the change I&#146;ve
+</I>made
+&gt;<i> is the correct one:
+</I>&gt;<i> 
+</I>&gt;<i> # add IBCF/THIG route here if required
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; loose_route();
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; if (!P_follows_service_routes()){
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; #Variant 1 - deny access to the network
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; #sl_send_reply(&quot;400&quot;,&quot;Bad Request - Not
+</I>following indicated Service-Routes&quot;);
+&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; break;
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; #Variant 2 - enforce routes and let the
+</I>dialog continue
+&gt;<i> &#160;&#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; #P_enforce_service_routes();
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; }
+</I>
+You assumption is correct. The modification is not correct.
+Variant 1 was active per default, therefore the reponse &quot;400 Bad Request -
+Not following indicated Service-Routes&quot; was generated.
+Now you have to disable Variant 1 and enable Variant 2 as follows:
+
+                 if (!P_follows_service_routes()){
+                                #Variant 1 - deny access to the network
+                                #sl_send_reply(&quot;400&quot;,&quot;Bad Request - Not
+following indicated Service-Routes&quot;);
+                                #break;
+                                #Variant 2 - enforce routes and let the
+dialog continue
+                                P_enforce_service_routes();
+                 }
+
+- Franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006895.html">[OpenIMSCore-Users] RV: Getting 400 Bad Request - Not	following	indicated Service-Routes in a call try between two	sip clients
+</A></li>
+	<LI>Next message: <A HREF="006899.html">[OpenIMSCore-Users] RV: Getting 400 Bad Request - Not	following	indicated Service-Routes in a call try between two	sip clients
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6896">[ date ]</a>
+              <a href="thread.html#6896">[ thread ]</a>
+              <a href="subject.html#6896">[ subject ]</a>
+              <a href="author.html#6896">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

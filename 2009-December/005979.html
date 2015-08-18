@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] after changing IPs,	Error creating/sending UAR or UAR time-out
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20after%20changing%20IPs%2C%0A%09Error%20creating/sending%20UAR%20or%20UAR%20time-out&In-Reply-To=%3CAD7BB7AAC4A543AD89A13A6F3AA420D6%40FRANZNOTEBOOK%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005978.html">
+   <LINK REL="Next"  HREF="005980.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] after changing IPs,	Error creating/sending UAR or UAR time-out</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20after%20changing%20IPs%2C%0A%09Error%20creating/sending%20UAR%20or%20UAR%20time-out&In-Reply-To=%3CAD7BB7AAC4A543AD89A13A6F3AA420D6%40FRANZNOTEBOOK%3E"
+       TITLE="[OpenIMSCore-Users] after changing IPs,	Error creating/sending UAR or UAR time-out">franz-edler at aon.at
+       </A><BR>
+    <I>Thu Dec 24 06:00:36 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005978.html">[OpenIMSCore-Users] after changing IPs, Error creating/sending UAR or UAR time-out
+</A></li>
+        <LI>Next message: <A HREF="005980.html">[OpenIMSCore-Users] Troubles with AS initiated NOTIFY message
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5979">[ date ]</a>
+              <a href="thread.html#5979">[ thread ]</a>
+              <a href="subject.html#5979">[ subject ]</a>
+              <a href="author.html#5979">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Sudhir,
+
+&gt;<i> Now started UCT IMS Client to register as Bob:
+</I>&gt;<i> I got following log. Also attached the trace captured via wireshark.
+</I>&gt;<i> Registration is failed saying &quot;SIP/2.0 480 Temporarily Unavailable -
+</I>&gt;<i> Diameter Cx interface failed&quot;. Please help me in resolving this issue. My
+</I>&gt;<i> objective is to generate traffic for different scenarios. Please let me
+</I>&gt;<i> know incase different IMS client can help here. Thanks for your help.
+</I>
+It seems that you did not change all parameters for your environment.
+There seem to be more than one configuration problem.
+The first one might be in the setup of the parameters of the HSS.
+
+&gt;<i> Caused by: com.mchange.v2.resourcepool.CannotAcquireResourceException: A
+</I>&gt;<i> ResourcePool could not acquire a resource from its primary factory or
+</I>&gt;<i> source.
+</I>
+I guess there are some parameters in &quot;hibernate.properties&quot; file not
+correctly set.
+
+Another one seems to be in your &quot;icscf.cfg&quot; file:
+
+&gt;<i> 3(4236) ERR:I-CSCF:I_UAR: Error creating/sending UAR or UAR time-out
+</I>&gt;<i> 3(4236) ERROR: _reply_light: can't generate 480 reply when a final 480 was
+</I>&gt;<i> sent out
+</I>
+I propose that you generally check all configuration files which contain
+address parameters. I usually use the configuration.sh script for modifying
+all parameters. This script returns to following list of files which are
+modified when I apply the script in three directories:
+
+In directory: /opt/OpenIMSCore/ser_ims/cfg:
+changing: icscf.cfg icscf_pg.sql icscf.sql icscf.thig.cfg icscf.xml mgcf.cfg
+pcscf.cfg pcscf.pcrf.cfg pcscf.xml persist_my.sql persist_pg.sql scscf.cfg
+scscf.xml TGPPGq.xml TGPPRx.xml trcf.cfg
+    
+In directory: /opt/OpenIMSCore/FHoss/deploy:
+changing: c3p0.properties DiameterPeerHSS.xml hibernate.properties
+hss.properties log4j.properties
+
+In directory: /opt/OpenIMSCore/FHoss/scripts
+changing: hss_db_migrate_dsai.sql hss_db.sql userdata.sql
+
+In addition to get more information in your tracefile I propose to trace all
+packets (including diameter) not only SIP.
+
+regards
+Franz 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005978.html">[OpenIMSCore-Users] after changing IPs, Error creating/sending UAR or UAR time-out
+</A></li>
+	<LI>Next message: <A HREF="005980.html">[OpenIMSCore-Users] Troubles with AS initiated NOTIFY message
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5979">[ date ]</a>
+              <a href="thread.html#5979">[ thread ]</a>
+              <a href="subject.html#5979">[ subject ]</a>
+              <a href="author.html#5979">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

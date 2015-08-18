@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] registeration error with Sipp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20registeration%20error%20with%20Sipp&In-Reply-To=%3C49EDC2CD.6080706%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005258.html">
+   <LINK REL="Next"  HREF="005260.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] registeration error with Sipp</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20registeration%20error%20with%20Sipp&In-Reply-To=%3C49EDC2CD.6080706%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] registeration error with Sipp">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Apr 21 14:57:49 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005258.html">[OpenIMSCore-Users] PNR
+</A></li>
+        <LI>Next message: <A HREF="005260.html">[OpenIMSCore-Users] starting icscf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5259">[ date ]</a>
+              <a href="thread.html#5259">[ thread ]</a>
+              <a href="subject.html#5259">[ subject ]</a>
+              <a href="author.html#5259">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Zhu,
+
+The problem might be the qop which maybe is not supported by SIPp. So 
+try and set this in the scscf.cfg instead of the default value:
+
+modparam(&quot;scscf&quot;,&quot;registration_qop&quot;,&quot;&quot;)
+
+Cheers,
+-Dragos
+ZHU Johnson wrote:
+&gt;<i>
+</I>&gt;<i> Hi All
+</I>&gt;<i>
+</I>&gt;<i> I change icscf port to 5080, change hss diameter port to 3867. And I 
+</I>&gt;<i> use MD5, so I change scscf.cfg and change hss&#8217;s user info from WEB GUI.
+</I>&gt;<i>
+</I>&gt;<i> I use Sipp to register default user &#8211; alice. After register -&gt; 401 -&gt; 
+</I>&gt;<i> register, Sipp receive second 401 response.
+</I>&gt;<i>
+</I>&gt;<i> I past part of scscf log as the following:
+</I>&gt;<i>
+</I>&gt;<i> 4(13311) DBG:S-CSCF:S_is_authorized: uri= 
+</I>&gt;<i> nonce=017ac20fab051bb6e744cdc94e1ce27f 
+</I>&gt;<i> response=80e98c6994e1b7aecef212068cb77207 qop=auth nc=00000001 
+</I>&gt;<i> cnonce=6b8b4567 hbody=
+</I>&gt;<i>
+</I>&gt;<i> 4(13311) DBG:S-CSCF:S_is_authorized: UE said: 
+</I>&gt;<i> 80e98c6994e1b7aecef212068cb77207 and we expect 
+</I>&gt;<i> fa845de2b98a3c7da88464224d3a531d ha1 a3da98c9b36dde1f17e3f713225dc4d1
+</I>&gt;<i>
+</I>&gt;<i> 4(13311) DBG:S-CSCF:S_is_authorized: UE said: 
+</I>&gt;<i> 80e98c6994e1b7aecef212068cb77207, but we have alice and expect 
+</I>&gt;<i> fa845de2b98a3c7da88464224d3a531d
+</I>&gt;<i>
+</I>&gt;<i> From the scscf log, It suggest the response is wrong. Does Sipp MD5 
+</I>&gt;<i> have some problem?
+</I>&gt;<i>
+</I>&gt;<i> I also attach wireshark log and my Sipp xml file.
+</I>&gt;<i>
+</I>&gt;<i> Please help me, thank you in advance.
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005258.html">[OpenIMSCore-Users] PNR
+</A></li>
+	<LI>Next message: <A HREF="005260.html">[OpenIMSCore-Users] starting icscf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5259">[ date ]</a>
+              <a href="thread.html#5259">[ thread ]</a>
+              <a href="subject.html#5259">[ subject ]</a>
+              <a href="author.html#5259">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

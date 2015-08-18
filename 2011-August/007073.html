@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [OpenIMSCore-HSS] Query regarding xml	transparent data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BOpenIMSCore-HSS%5D%20Query%20regarding%20xml%0A%09transparent%20data&In-Reply-To=%3C4E3D20B9.9050409%40netscape.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007072.html">
+   <LINK REL="Next"  HREF="007074.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [OpenIMSCore-HSS] Query regarding xml	transparent data</H1>
+    <B>Arock</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BOpenIMSCore-HSS%5D%20Query%20regarding%20xml%0A%09transparent%20data&In-Reply-To=%3C4E3D20B9.9050409%40netscape.net%3E"
+       TITLE="[OpenIMSCore-Users] [OpenIMSCore-HSS] Query regarding xml	transparent data">arockbugs at netscape.net
+       </A><BR>
+    <I>Sat Aug  6 13:08:41 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007072.html">[OpenIMSCore-Users] Query regarding xml transparent data
+</A></li>
+        <LI>Next message: <A HREF="007074.html">[OpenIMSCore-Users] does anyone succeed registration with Boghe
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7073">[ date ]</a>
+              <a href="thread.html#7073">[ thread ]</a>
+              <a href="subject.html#7073">[ subject ]</a>
+              <a href="author.html#7073">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Kapila;
+
+as far i could find:
+  - 3GPP TS 29.328 Sh interface Signalling flows and message contents:
+
+    /3.1    Definitions
+    /
+
+        /Transparent data: Data that is understood syntactically but not
+        semantically by the HSS. It is data that an AS may store in the
+        HSS to support its service logic. One example is data that an AS
+        stores in the HSS, using it as a repository.
+        /
+
+        /Non-transparent data: Data that is understood both
+        syntactically and semantically by the HSS./
+
+The non-escaped part of the data to store in the HSS is not only 
+syntactically but also semantically undertood by the HSS.
+You may also need to replace :
+&quot; &amp;quot
+' &amp;apos
+&amp; &amp;amp
+
+BR,
+A
+
+Am 04.08.2011 10:14, schrieb Kapila Arora:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> While saving the transparent Data to the HSS for a Call diversion service, whether i should insert the service data as shown below or
+</I>&gt;<i> &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &lt;Sh-Data&gt;
+</I>&gt;<i>      &lt;RepositoryData&gt;
+</I>&gt;<i>           &lt;ServiceIndication&gt;CD&lt;/ServiceIndication&gt;
+</I>&gt;<i>           &lt;SequenceNumber&gt;0&lt;/SequenceNumber&gt;
+</I>&gt;<i>               &lt;ServiceData&gt;
+</I>&gt;<i>
+</I>&gt;<i>               &lt;simservs
+</I>&gt;<i>   xmlns=&quot;<A HREF="http://uri.etsi.org/ngn/params/xml/simservs/xcap">http://uri.etsi.org/ngn/params/xml/simservs/xcap</A>&quot;
+</I>&gt;<i>   xmlns:cp=&quot;urn:ietf:params:xml:ns:common-policy&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   xmlns:ocp=&quot;urn:oma:xml:xdm:common-policy&quot;&gt;
+</I>&gt;<i>                   &lt;communication-diversion active=&quot;false&quot;&gt;
+</I>&gt;<i>                       &lt;cp:ruleset&gt;
+</I>&gt;<i>                           &lt;cp:rule id=&quot;CD001&quot;&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>                               &lt;cp:conditions&gt;
+</I>&gt;<i>                                   &lt;cp:identity&gt;&lt;many/&gt;&lt;/cp:identity&gt;
+</I>&gt;<i>                               &lt;/cp:conditions&gt;
+</I>&gt;<i>                               &lt;cp:actions&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>                                   &lt;forward-to&gt;
+</I>&gt;<i>
+</I>&gt;<i>   &lt;target&gt;sip:announcement at oimsnet.net  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-hss">https://lists.berlios.de/mailman/listinfo/openimscore-hss</A>&gt;&lt;/target&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>                                       &lt;notify-caller&gt;true&lt;/notify-caller&gt;
+</I>&gt;<i>
+</I>&gt;<i>   &lt;notify-served-user&gt;true&lt;/notify-served-user&gt;
+</I>&gt;<i>                                   &lt;/forward-to&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>                               &lt;/cp:actions&gt;
+</I>&gt;<i>                           &lt;/cp:rule&gt;
+</I>&gt;<i>                       &lt;/cp:ruleset&gt;
+</I>&gt;<i>                   &lt;/communication-diversion&gt;
+</I>&gt;<i>               &lt;/simservs&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>           &lt;/ServiceData&gt;
+</I>&gt;<i>       &lt;/RepositoryData&gt;
+</I>&gt;<i>   &lt;/Sh-Data&gt;
+</I>&gt;<i>
+</I>&gt;<i> or&lt;  replaced with&amp;lt and&gt;  replaced with&amp;gt. The 3gpp specs does not specify anything for this.
+</I>&gt;<i>
+</I>&gt;<i> Can u please let me know what should be the correct format and the correspong standard or specification which specifies this format
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i> Kapila
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-HSS mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-HSS at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-hss">https://lists.berlios.de/mailman/listinfo/openimscore-hss</A>
+</I>
+
+-- 
+Laafi is moor&#233; for health and for peace Support LAAFI; Shop Amazon 
+through */<A HREF="http://laafi.at/amazon/*">http://laafi.at/amazon/*</A> ---
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20110806/9dae215a/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20110806/9dae215a/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007072.html">[OpenIMSCore-Users] Query regarding xml transparent data
+</A></li>
+	<LI>Next message: <A HREF="007074.html">[OpenIMSCore-Users] does anyone succeed registration with Boghe
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7073">[ date ]</a>
+              <a href="thread.html#7073">[ thread ]</a>
+              <a href="subject.html#7073">[ subject ]</a>
+              <a href="author.html#7073">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

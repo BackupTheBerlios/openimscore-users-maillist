@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Loop detected
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Loop%20detected&In-Reply-To=%3C002d01c8ace6%24f97b44c0%240200a8c0%40notebook%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003875.html">
+   <LINK REL="Next"  HREF="003879.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Loop detected</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Loop%20detected&In-Reply-To=%3C002d01c8ace6%24f97b44c0%240200a8c0%40notebook%3E"
+       TITLE="[OpenIMSCore-Users] Loop detected">franz.edler at inode.at
+       </A><BR>
+    <I>Sat May  3 08:29:00 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003875.html">[OpenIMSCore-Users] Loop detected
+</A></li>
+        <LI>Next message: <A HREF="003879.html">[OpenIMSCore-Users] Loop detected
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3877">[ date ]</a>
+              <a href="thread.html#3877">[ thread ]</a>
+              <a href="subject.html#3877">[ subject ]</a>
+              <a href="author.html#3877">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Trowa,
+
+&gt;<i> I have Asterisk as TAS.
+</I>&gt;<i> When i call to john from jane there is a Status 482 Loop Detected, and
+</I>&gt;<i> john receives infinite calls.
+</I>&gt;<i> I don't know how to solve this.
+</I>
+I have drawn the scenario, which always helps to better see what is
+happening (attached). There you can see the following (I only analyzed the
+beginning ...):
+
+- the originating INVITE request is routed to the Asterisk server due to a
+matching originating iFC (F8)
+- the Asterisk acts as a B2BUA and creates a new leg towards another server
+(192.168.0.90:5060). What does this server?
+- This new server routes the request back to the S-CSCF but uses a new Route
+header where the &quot;iscmark&quot; username and parameter of F8 is missing.
+- The S-CSCF now handles the request as a terminating request and routes the
+request again to the Asterisk server due to a terminating matching iFC (F16)
+- The Asterisk now detects a loop (F17) and terminates the session 
+- On the first leg the Asterisk terminates with 503 Service Unavailable
+(F23) 
+- S-CSCF retransmits the INVITE towards the Asterisk ... this I don't know
+why ...
+
+That should be enough ...  The problem obviously is at the Asterisk server.
+I don't think this is the behaviour of your Asterisk server you expected.
+
+Regards
+Franz
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: loopcall.zip
+Type: application/x-zip-compressed
+Size: 40689 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080503/5a825848/attachment.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080503/5a825848/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003875.html">[OpenIMSCore-Users] Loop detected
+</A></li>
+	<LI>Next message: <A HREF="003879.html">[OpenIMSCore-Users] Loop detected
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3877">[ date ]</a>
+              <a href="thread.html#3877">[ thread ]</a>
+              <a href="subject.html#3877">[ subject ]</a>
+              <a href="author.html#3877">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

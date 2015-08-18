@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Service-Route not followed, unable to send any message
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Service-Route%20not%20followed%2C%0A%20unable%20to%20send%20any%20message&In-Reply-To=%3C483C0D0D.9050406%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004002.html">
+   <LINK REL="Next"  HREF="004003.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Service-Route not followed, unable to send any message</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Service-Route%20not%20followed%2C%0A%20unable%20to%20send%20any%20message&In-Reply-To=%3C483C0D0D.9050406%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Service-Route not followed, unable to send any message">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue May 27 15:30:53 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004002.html">[OpenIMSCore-Users] Service-Route not followed, unable to send any message
+</A></li>
+        <LI>Next message: <A HREF="004003.html">[OpenIMSCore-Users] Set SIP communication between two Application	Servers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4017">[ date ]</a>
+              <a href="thread.html#4017">[ thread ]</a>
+              <a href="subject.html#4017">[ subject ]</a>
+              <a href="author.html#4017">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>whoa :) ... stop a moment!
+
+I either don't understand what you are doing or you are doing it very 
+wrongly... That hack is horrible, to start with, and will not work if 
+you have multiple domains or multiple S-CSCFs.
+
+Each client can have it's own Service-Route. you should use 
+P_enforce_service_route().
+
+
+then.... the B2B word in there makes me think that you are an AS and not 
+a client... or? what do you mean by B2B UA? For application servers, 
+there are other clear rules for the Routes and they do not use 
+Service-Routes or P-CSCFs as outbound proxies.
+
+Cheers,
+-Dragos
+
+
+
+Persa Zaloshnja wrote:
+&gt;<i> Hi all,
+</I>&gt;<i>  
+</I>&gt;<i> I solved the problem with the client sending any SIP message that do 
+</I>&gt;<i> not follow the service route; Simply add the 
+</I>&gt;<i> t_relay_to_udp(&quot;scscf.domain.org&quot;, &quot;port number&quot;) in the main routing 
+</I>&gt;<i> logic in the pcscf.cfg where the condition for checking the 
+</I>&gt;<i> service_route_not followed.
+</I>&gt;<i>  
+</I>&gt;<i> Thank you,
+</I>&gt;<i>  
+</I>&gt;<i> Persa
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>
+</I>&gt;<i>     &gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">arushi58 at hotmail.com</A>
+</I>&gt;<i>     &gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>     &gt; Subject: RE: [OpenIMSCore-Users] Service-Route not
+</I>&gt;<i>     followed,unable to send any message
+</I>&gt;<i>     &gt; Date: Tue, 6 May 2008 07:55:21 +0200
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Hi Persa,
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; &gt; I am forwarding once again the traces and the messages the
+</I>&gt;<i>     P-CSCF prints
+</I>&gt;<i>     &gt; &gt; when an INVITE does not have a service route in the message
+</I>&gt;<i>     header. The
+</I>&gt;<i>     &gt; &gt; problem I am having in a nutshell is basically, how can I sent
+</I>&gt;<i>     a SIP
+</I>&gt;<i>     &gt; &gt; INVITE from a B2B user agent that is not using the service
+</I>&gt;<i>     route it has
+</I>&gt;<i>     &gt; &gt; received in the 200OK of the REGISTER. Is there any quick fix
+</I>&gt;<i>     in any of
+</I>&gt;<i>     &gt; &gt; the configs in the Open IMS Core?
+</I>&gt;<i>     &gt; &gt; If this is not possible I'll change my b2b user agent and make
+</I>&gt;<i>     it use the
+</I>&gt;<i>     &gt; &gt; service route - but it would have been great to have such an
+</I>&gt;<i>     option.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Can you please attach the wireshark trace, so that I can draw a more
+</I>&gt;<i>     &gt; convenient scenario?
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Regards
+</I>&gt;<i>     &gt; Franz
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; ... and please keep the mailing list on the loop. Maybe any one
+</I>&gt;<i>     other is
+</I>&gt;<i>     &gt; quicker to answer.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;<i>     Get news, entertainment and everything you care about at Live.com.
+</I>&gt;<i>     Check it out! &lt;<A HREF="http://www.live.com/getstarted.aspx">http://www.live.com/getstarted.aspx</A>&gt; 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Explore the seven wonders of the world Learn more! 
+</I>&gt;<i> &lt;<A HREF="http://search.msn.com/results.aspx?q=7+wonders+world&amp;mkt=en-US&amp;form=QBRE">http://search.msn.com/results.aspx?q=7+wonders+world&amp;mkt=en-US&amp;form=QBRE</A>&gt;
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004002.html">[OpenIMSCore-Users] Service-Route not followed, unable to send any message
+</A></li>
+	<LI>Next message: <A HREF="004003.html">[OpenIMSCore-Users] Set SIP communication between two Application	Servers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4017">[ date ]</a>
+              <a href="thread.html#4017">[ thread ]</a>
+              <a href="subject.html#4017">[ subject ]</a>
+              <a href="author.html#4017">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

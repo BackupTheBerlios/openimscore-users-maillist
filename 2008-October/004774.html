@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] [OpenIMSCore-HSS] IPSec key length for
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BOpenIMSCore-HSS%5D%20IPSec%20key%20length%20for&In-Reply-To=%3Cb33002040810150337u56b5731dgc76e5e759f47e504%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004773.html">
+   <LINK REL="Next"  HREF="004775.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] [OpenIMSCore-HSS] IPSec key length for</H1>
+    <B>JF</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20%5BOpenIMSCore-HSS%5D%20IPSec%20key%20length%20for&In-Reply-To=%3Cb33002040810150337u56b5731dgc76e5e759f47e504%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] [OpenIMSCore-HSS] IPSec key length for">jfkavaka at gmail.com
+       </A><BR>
+    <I>Wed Oct 15 12:37:30 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004773.html">[OpenIMSCore-Users] [OpenIMSCore-HSS] IPSec key length for
+</A></li>
+        <LI>Next message: <A HREF="004775.html">[OpenIMSCore-Users] IMS diameter error user unknown....
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4774">[ date ]</a>
+              <a href="thread.html#4774">[ thread ]</a>
+              <a href="subject.html#4774">[ subject ]</a>
+              <a href="author.html#4774">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+
+Thanks for the quick reply.
+You are right. The same 3GPP TS 33.203 spec says:
+
+Annex I (normative):
+Key expansion functions for IPsec ESP
+Integrity Keys:
+If the selected authentication algorithm is HMAC-MD5-96 then IKESP = IKIM.
+If the selected authentication algorithm is HMAC-SHA-1-96 then IKESP
+is obtained from IKIM by appending 32 zero bits to the end of IKIM to
+create a 160 bit string.
+
+JF
+
+On Wed, Oct 15, 2008 at 12:27 PM, Dragos Vingarzan
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+&gt;<i> Hi JF,
+</I>&gt;<i>
+</I>&gt;<i> AFAIR, the AKA key generation in the HSS is independent of the actual
+</I>&gt;<i> IPSec algorithm that will be used. The HSS does not receive or take into
+</I>&gt;<i> account the Security Headers negotiation that a P-CSCF would do. So the
+</I>&gt;<i> CK and IK will always have the same length.
+</I>&gt;<i>
+</I>&gt;<i> I see that you are not using our P-CSCF. If you would look inside our
+</I>&gt;<i> source-code, you will see that there is a key expansion for SHA-1-96 to
+</I>&gt;<i> 20 bytes. This is according to a 3GPP standard, unfortunately I can't
+</I>&gt;<i> remember exactly which one (the code is quite old).
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> JF wrote:
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've been testing a P-CSCF with IPSec / IMS-AKA using the other
+</I>&gt;&gt;<i> OpenIMSCore components and I found that the HSS/S-CSCF are sending a
+</I>&gt;&gt;<i> 16 byte key when HMAC-SHA-1-96 is requested.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> According to 3GPP TS 33.203:
+</I>&gt;&gt;<i> &quot;Key length: the length of the integrity key IKESP depends on the
+</I>&gt;&gt;<i> integrity algorithm. It is 128 bits for HMAC MD5 96 and 160 bits for
+</I>&gt;&gt;<i> HMAC SHA 1 96.&quot;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is there any configuration required to support HMAC-SHA-1-96 with 20-byte key?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Here is an trace:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP 90.84.252.163;branch=z9hG4bKa4e0
+</I>&gt;&gt;<i> Proxy-Require: sec-agree
+</I>&gt;&gt;<i> Max-Forwards: 70
+</I>&gt;&gt;<i> Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;,
+</I>&gt;&gt;<i> realm=&quot;open-ims.test&quot;, nonce=&quot;&quot;, uri=&quot;sip:open-ims.test&quot;, response=&quot;&quot;
+</I>&gt;&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1dac4b29a7
+</I>&gt;&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+</I>&gt;&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bd754570 at open-ims.test</A>
+</I>&gt;&gt;<i> CSeq: 1 REGISTER
+</I>&gt;&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at h1.nttat.sipit.net</A>&gt;;expires=600000
+</I>&gt;&gt;<i> Require: sec-agree
+</I>&gt;&gt;<i> Supported: path
+</I>&gt;&gt;<i> Security-Client: ipsec-3gpp; alg=hmac-sha-1-96; ealg=des-ede3-cbc;
+</I>&gt;&gt;<i> spi-c=258; spi-s=259; port-c=2468; port-s=1357
+</I>&gt;&gt;<i> Content-Length: 0
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ----------------------------------------
+</I>&gt;&gt;<i> REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP 90.84.252.65:5060;branch=z9hG4bKjonpsd205on00e0oo081.1
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP 90.84.252.163;branch=z9hG4bKa4e0
+</I>&gt;&gt;<i> Max-Forwards: 69
+</I>&gt;&gt;<i> Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot;,
+</I>&gt;&gt;<i> realm=&quot;open-ims.test&quot;, nonce=&quot;&quot;, uri=&quot;sip:open-ims.test&quot;, response=&quot;&quot;,
+</I>&gt;&gt;<i> integrity-protected=no
+</I>&gt;&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1dac4b29a7
+</I>&gt;&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+</I>&gt;&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bd754570 at open-ims.test</A>
+</I>&gt;&gt;<i> CSeq: 1 REGISTER
+</I>&gt;&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 90.84.252.65</A>:5060;transport=udp&gt;;expires=600000
+</I>&gt;&gt;<i> Supported: path
+</I>&gt;&gt;<i> Content-Length: 0
+</I>&gt;&gt;<i> Route: &lt;sip:icscf.open-ims.test:5060;lr&gt;
+</I>&gt;&gt;<i> P-Visited-Network-ID: open-ims.test
+</I>&gt;&gt;<i> P-Charging-Vector:
+</I>&gt;&gt;<i> icid-value=fqo87g46k180js87gpdkjq063rr4ni57ghbg3qo5i9d43no6lpc43057ghbg3qo5i9d43no6l1;icid-generated-at=90.84.252.65;orig-ioi=open-ims.test
+</I>&gt;&gt;<i> Require: path
+</I>&gt;&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">SDvb1d4-vv9pmjj9mfonivh0atvrgvahbqgfboros84u9s3000020 at 90.84.252.65</A>:5060;transport=udp;lr&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ----------------------------------------
+</I>&gt;&gt;<i> SIP/2.0 401 Unauthorized - Challenging the UE
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP 90.84.252.65:5060;branch=z9hG4bKjonpsd205on00e0oo081.1
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP 90.84.252.163;branch=z9hG4bKa4e0
+</I>&gt;&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1dac4b29a7
+</I>&gt;&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=984a8d007a21986c505434aa8bd3f91c-3ce2
+</I>&gt;&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bd754570 at open-ims.test</A>
+</I>&gt;&gt;<i> CSeq: 1 REGISTER
+</I>&gt;&gt;<i> WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,
+</I>&gt;&gt;<i> nonce=&quot;GVBO+vsP4rlWcSUvwm0/4Pl0AycfJgAA4LJBF5Mgv9Q=&quot;,
+</I>&gt;&gt;<i> algorithm=AKAv1-MD5, ck=&quot;94071e30d98f0f692dae7e2c4614c789&quot;,
+</I>&gt;&gt;<i> ik=&quot;870280aa4ef597d8c469f6171aac6a69&quot;, qop=&quot;auth,auth-int&quot;
+</I>&gt;&gt;<i> Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">SDvb1d4-vv9pmjj9mfonivh0atvrgvahbqgfboros84u9s3000020 at 90.84.252.65</A>:5060;transport=udp;lr&gt;
+</I>&gt;&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY,
+</I>&gt;&gt;<i> PUBLISH, MESSAGE, INFO
+</I>&gt;&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+</I>&gt;&gt;<i> Content-Length: 0
+</I>&gt;&gt;<i> Warning: 392 90.84.252.248:6060 &quot;Noisy feedback tells:  pid=32372
+</I>&gt;&gt;<i> req_src_ip=90.84.252.248 req_src_port=5060
+</I>&gt;&gt;<i> in_uri=sip:scscf.open-ims.test:6060
+</I>&gt;&gt;<i> out_uri=sip:scscf.open-ims.test:6060 via_cnt==3&quot;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ----------------------------------------
+</I>&gt;&gt;<i> SIP/2.0 401 Unauthorized - Challenging the UE
+</I>&gt;&gt;<i> Via: SIP/2.0/UDP 90.84.252.163;branch=z9hG4bKa4e0
+</I>&gt;&gt;<i> From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1dac4b29a7
+</I>&gt;&gt;<i> To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=984a8d007a21986c505434aa8bd3f91c-3ce2
+</I>&gt;&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bd754570 at open-ims.test</A>
+</I>&gt;&gt;<i> CSeq: 1 REGISTER
+</I>&gt;&gt;<i> WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,
+</I>&gt;&gt;<i> nonce=&quot;GVBO+vsP4rlWcSUvwm0/4Pl0AycfJgAA4LJBF5Mgv9Q=&quot;,
+</I>&gt;&gt;<i> algorithm=AKAv1-MD5, qop=&quot;auth,auth-int&quot;
+</I>&gt;&gt;<i> Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+</I>&gt;&gt;<i> Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY,
+</I>&gt;&gt;<i> PUBLISH, MESSAGE, INFO
+</I>&gt;&gt;<i> Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+</I>&gt;&gt;<i> Content-Length: 0
+</I>&gt;&gt;<i> Warning: 392 90.84.252.248:6060 &quot;Noisy feedback tells:  pid=32372
+</I>&gt;&gt;<i> req_src_ip=90.84.252.248 req_src_port=5060
+</I>&gt;&gt;<i> in_uri=sip:scscf.open-ims.test:6060
+</I>&gt;&gt;<i> out_uri=sip:scscf.open-ims.test:6060 via_cnt==3&quot;
+</I>&gt;&gt;<i> Security-Server:
+</I>&gt;&gt;<i> ipsec-3gpp;alg=hmac-sha-1-96;ealg=des-ede3-cbc;prot=esp;mod=trans;spi-c=2083;spi-s=2084;port-c=8000;port-s=7000
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks in advance!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> JF
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-HSS mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-HSS at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-hss">https://lists.berlios.de/mailman/listinfo/openimscore-hss</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004773.html">[OpenIMSCore-Users] [OpenIMSCore-HSS] IPSec key length for
+</A></li>
+	<LI>Next message: <A HREF="004775.html">[OpenIMSCore-Users] IMS diameter error user unknown....
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4774">[ date ]</a>
+              <a href="thread.html#4774">[ thread ]</a>
+              <a href="subject.html#4774">[ subject ]</a>
+              <a href="author.html#4774">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

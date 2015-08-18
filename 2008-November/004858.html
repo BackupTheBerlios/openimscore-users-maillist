@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] S-CSCF crashed after 14975 registrations
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20crashed%20after%2014975%20registrations&In-Reply-To=%3CB7B40D44871EC84496E2BACA7CADE77B749D28%40spqcexc04.exfo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004857.html">
+   <LINK REL="Next"  HREF="004859.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] S-CSCF crashed after 14975 registrations</H1>
+    <B>Bin Zhou</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20crashed%20after%2014975%20registrations&In-Reply-To=%3CB7B40D44871EC84496E2BACA7CADE77B749D28%40spqcexc04.exfo.com%3E"
+       TITLE="[OpenIMSCore-Users] S-CSCF crashed after 14975 registrations">bin.zhou at exfo.com
+       </A><BR>
+    <I>Mon Nov 17 14:36:51 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004857.html">[OpenIMSCore-Users] Call for papers for the Open NGN and IMS	Testbeds Workshop 2009
+</A></li>
+        <LI>Next message: <A HREF="004859.html">[OpenIMSCore-Users] Opensource Media Resource Function ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4858">[ date ]</a>
+              <a href="thread.html#4858">[ thread ]</a>
+              <a href="subject.html#4858">[ subject ]</a>
+              <a href="author.html#4858">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello
+
+ 
+
+I ran at a test with 1 registration per second at debug mode with stderr
+turned on. There were 14975 successful registrations. HSS received 15439
+MARs and 14976 SARs until S-CSCF was crashed. So, I tried again with
+stderr off. There were 15012 successful registrations. It seems that
+there is a limit of the number of successful registration at debug mode.
+Right?
+
+ 
+
+According to the log, scscf is killed by signall 11.
+
+ 
+
+Nov 16 17:31:00 : INFO:S-CSCF:mod_child_init: Initialization of module
+in child [0]  
+
+Nov 16 17:31:00 : DEBUG: init_mod_child (0): isc 
+
+Nov 16 17:31:00 : INFO:ISC: - child init [0] 
+
+Nov 16 17:31:00 : DEBUG: init_mod_child (0): cdp 
+
+Nov 16 17:31:00 : INFO:cdp:cdp_child_init(): CDiameterPeer starting ... 
+
+Nov 16 17:31:00 : INFO:cdp:cdp_child_init(): ... CDiameterPeer started 
+
+Nov 16 21:42:34 : child process 25559 exited by a signal 11 
+
+Nov 16 21:42:34 : core was generated 
+
+Nov 16 21:42:34 : INFO: terminating due to SIGCHLD 
+
+Nov 16 21:42:34 : Process Table: 
+
+Nov 16 21:42:34 :  0. (25554) &gt; attendant  
+
+Nov 16 21:42:34 :  1. (25556) &gt; receiver child=0 sock=100.250.0.11:6060
+
+
+Nov 16 21:42:34 :  2. (25557) &gt; receiver child=1 sock=100.250.0.11:6060
+
+
+Nov 16 21:42:34 :  3. (25558) &gt; receiver child=2 sock=100.250.0.11:6060
+
+
+Nov 16 21:42:34 :  4. (25559) &gt; receiver child=3 sock=100.250.0.11:6060
+
+
+Nov 16 21:42:34 :  5. (25560) &gt; slow timer  
+
+Nov 16 21:42:34 :  6. (25561) &gt; timer  
+
+Nov 16 21:42:34 :  7. (25562) &gt; cdp_acceptor  
+
+Nov 16 21:42:34 :  8. (25563) &gt; cdp worker child=0  
+
+Nov 16 21:42:34 :  9. (25564) &gt; cdp worker child=1  
+
+Nov 16 21:42:34 : 10. (25565) &gt; cdp worker child=2  
+
+Nov 16 21:42:34 : 11. (25566) &gt; cdp worker child=3  
+
+Nov 16 21:42:34 : 12. (25567) &gt; cdp_timer  
+
+Nov 16 21:42:34 : 13. (25568) &gt; tcp receiver child=0  
+
+Nov 16 21:42:34 : 14. (25569) &gt; tcp receiver child=1  
+
+Nov 16 21:42:34 : 15. (25570) &gt; tcp receiver child=2  
+
+Nov 16 21:42:34 : 16. (25571) &gt; tcp receiver child=3  
+
+Nov 16 21:42:34 : 17. (25572) &gt; tcp main process  
+
+Nov 16 21:42:34 : 18. (25573) &gt; receiver I  
+
+Nov 16 21:42:34 : INFO:cdp:cdp_exit(): CDiameterPeer stoping ... 
+
+Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Terminating all
+childs... 
+
+Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child
+[25573] to terminate... 
+
+Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child
+[25567] to terminate... 
+
+Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child
+[25566] to terminate... 
+
+Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child
+[25565] to terminate... 
+
+Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child
+[25564] to terminate... 
+
+Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child
+[25563] to terminate... 
+
+Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Waiting for child
+[25562] to terminate... 
+
+Nov 16 21:42:34 : INFO:destroy_diameter_peer(): All processes
+terminated. Cleaning up. 
+
+Nov 16 21:42:34 : DBG:peer_manager_init(): ...Peer Manager destroyed 
+
+Nov 16 21:42:34 : INFO:destroy_diameter_peer(): Bye Bye from C Diameter
+Peer test 
+
+Nov 16 21:42:34 : INFO:cdp:cdp_exit(): ... CDiameterPeer stoped 
+
+Nov 16 21:42:34 : INFO:ISC: - child exit 
+
+Nov 16 21:42:34 : INFO:S-CSCF:mod_destroy: child exit 
+
+Nov 16 21:43:34 : BUG: shutdown timeout triggered, dying...
+
+ 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20081117/26da4c61/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20081117/26da4c61/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004857.html">[OpenIMSCore-Users] Call for papers for the Open NGN and IMS	Testbeds Workshop 2009
+</A></li>
+	<LI>Next message: <A HREF="004859.html">[OpenIMSCore-Users] Opensource Media Resource Function ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4858">[ date ]</a>
+              <a href="thread.html#4858">[ thread ]</a>
+              <a href="subject.html#4858">[ subject ]</a>
+              <a href="author.html#4858">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

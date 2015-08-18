@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] PROBLEM WITH ICSCF AND SCSCF STARTING
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2011-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PROBLEM%20WITH%20ICSCF%20AND%20SCSCF%20STARTING&In-Reply-To=%3C4EFCD97B.4040300%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007218.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] PROBLEM WITH ICSCF AND SCSCF STARTING</H1>
+    <B>Tomasz Gebarowski</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PROBLEM%20WITH%20ICSCF%20AND%20SCSCF%20STARTING&In-Reply-To=%3C4EFCD97B.4040300%40gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] PROBLEM WITH ICSCF AND SCSCF STARTING">gebarowski at gmail.com
+       </A><BR>
+    <I>Thu Dec 29 22:19:55 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007218.html">[OpenIMSCore-Users] Fwd: How are you...
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7219">[ date ]</a>
+              <a href="thread.html#7219">[ thread ]</a>
+              <a href="subject.html#7219">[ subject ]</a>
+              <a href="author.html#7219">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've just googled some old post from October 2011, describing an issue 
+with crashing I-CSCF and S-CSCF. The log message was something like:
+
+ &gt;  0(2142) ERROR: load_module: could not open module
+ &gt; &lt;/opt/OpenIMSCore/ser_ims/
+ &gt; modules/cdp/cdp.so&gt;: /opt/OpenIMSCore/ser_ims/modules/cdp/cdp.so:
+ &gt; undefined symbol: sem_post
+
+
+I managed to fix this issue on Ubuntu 11.10. It seems that Ubuntu, 
+required linking cdp.so against pthread.
+
+Below you can find a simple patch:
+
+Index: modules/cdp/Makefile
+===================================================================
+--- Makefile    (revision 1175)
++++ Makefile    (working copy)
+@@ -20,7 +20,7 @@
+  endif
+
+  DEFS += -I/usr/include/libxml2
+-LIBS += -L$(LOCALBASE)/lib -lxml2 -lrt
++LIBS += -L$(LOCALBASE)/lib -lxml2 -lrt -lpthread
+
+  include ../../Makefile.modules
+
+
+I hope that it helped.
+
+Regards,
+--
+Tomasz Gebarowski
+<A HREF="http://www.myitcorner.com">http://www.myitcorner.com</A>
+
+
+
+
+ &gt; Hi Sabina,
+ &gt;
+ &gt;
+ &gt;
+ &gt; Yes, for me it seem that this is an issue with Ubuntu.
+ &gt;
+ &gt; Maybe anyone else has more experience with this problem or an idea.
+ &gt;
+ &gt;
+ &gt;
+ &gt; BR
+ &gt;
+ &gt; Franz
+ &gt;
+ &gt;
+ &gt;
+ &gt;
+ &gt;
+ &gt;
+ &gt;
+ &gt; From: Sabina Barakovic [mailto:barakovic.sabina at gmail.com]
+ &gt; Sent: Tuesday, October 25, 2011 8:08 PM
+ &gt; To: franz.edler at technikum-wien.at
+ &gt; Subject: Re: [OpenIMSCore-Users] PROBLEM WITH ICSCF AND SCSCF STARTING
+ &gt;
+ &gt;
+ &gt;
+ &gt; Hello Franz,
+ &gt;
+ &gt; I've deleted ser_ims directory and re-installed it, but I got the 
+same error
+ &gt; in the end.
+ &gt;
+ &gt; Log file is in the attachment.
+ &gt;
+ &gt; I am experiencing this problem on Ubuntu 11.10, but not on Ubuntu 8.04,
+ &gt; where  I went through the same installation procedure and had no 
+problems.
+ &gt;
+ &gt; Is it possible that the problem is caused by the Ubuntu version?!
+ &gt;
+ &gt; Thank you for help!
+ &gt;
+ &gt; Best regards,
+ &gt;
+ &gt; Sabina
+ &gt;
+ &gt; 2011/10/24 Franz Edler &lt;franz.edler at technikum-wien.at&gt;
+ &gt;
+ &gt; Hello Sabina,
+ &gt;
+ &gt;
+ &gt;
+ &gt; I have compiled a fresh version of OpenIMScore, and I did not 
+encounter any
+ &gt; problem.
+ &gt;
+ &gt;
+ &gt;
+ &gt; Your logfile of recompiling does not show anything.
+ &gt;
+ &gt; The reason is: the re-compile run did not compile anything because 
+there was
+ &gt; no change in any source modul.
+ &gt;
+ &gt; You should delete ser_ims directory and re-install it to get a valid
+ &gt; log-file of the compilation.
+ &gt;
+ &gt;
+ &gt;
+ &gt; BR
+ &gt;
+ &gt; Franz
+ &gt;
+ &gt;
+ &gt;
+ &gt; From: Sabina Barakovic [mailto:barakovic.sabina at gmail.com]
+ &gt; Sent: Saturday, October 22, 2011 9:20 PM
+ &gt; To: franz.edler at kabsi.at
+ &gt; Subject: Re: [OpenIMSCore-Users] PROBLEM WITH ICSCF AND SCSCF STARTING
+ &gt;
+ &gt;
+ &gt;
+ &gt; Hello Franz,
+ &gt;
+ &gt;
+ &gt;
+ &gt; Thank you for a quick response.
+ &gt;
+ &gt; I've attached re-compile result of ser_ims.
+ &gt;
+ &gt; Maybe the error exists in ser_ims compile process, but I am not 
+capable of
+ &gt; recognizing it.
+ &gt;
+ &gt; I would appreciate any kind of help.
+ &gt;
+ &gt; Best regards,
+ &gt;
+ &gt; Sabina
+ &gt;
+ &gt; 2011/10/22 Franz Edler &lt;franz.edler at kabsi.at&gt;
+ &gt;
+ &gt; Hello Sabina,
+ &gt;
+ &gt;
+ &gt;&gt; I get the following error when starting ICSCF
+ &gt;&gt;
+ &gt;&gt;  0(2142) ERROR: load_module: could not open module
+ &gt;&gt; &lt;/opt/OpenIMSCore/ser_ims/
+ &gt;&gt; modules/cdp/cdp.so&gt;: /opt/OpenIMSCore/ser_ims/modules/cdp/cdp.so:
+ &gt;&gt; undefined symbol: sem_post
+ &gt;
+ &gt; Are you sure that you did not get any error message during compilation
+ &gt; regarding &quot;sem_pos&quot;t?
+ &gt;
+ &gt; BR
+ &gt; Franz
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007218.html">[OpenIMSCore-Users] Fwd: How are you...
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7219">[ date ]</a>
+              <a href="thread.html#7219">[ thread ]</a>
+              <a href="subject.html#7219">[ subject ]</a>
+              <a href="author.html#7219">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

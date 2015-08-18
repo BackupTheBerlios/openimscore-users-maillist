@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Ro/Rf interface
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Ro/Rf%20interface&In-Reply-To=%3C473887C2.1020008%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002929.html">
+   <LINK REL="Next"  HREF="002933.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Ro/Rf interface</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Ro/Rf%20interface&In-Reply-To=%3C473887C2.1020008%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Ro/Rf interface">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Mon Nov 12 18:05:06 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002929.html">[OpenIMSCore-Users] Ro/Rf interface
+</A></li>
+        <LI>Next message: <A HREF="002933.html">[OpenIMSCore-Users] Ro/Rf interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2930">[ date ]</a>
+              <a href="thread.html#2930">[ thread ]</a>
+              <a href="subject.html#2930">[ subject ]</a>
+              <a href="author.html#2930">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi David,
+
+So, the current work is in the 08_cdp_sessions. Docs could be generated
+by doing:
+
+cd &lt;ser_ims_branch&gt;/doxygen
+doxygen doxygen.config
+
+But... I think that it is easier to take a look at
+modules/cdp/session.c,h and authstatemachine.c,h . acctstatemachine has
+to be written. Then there is an acc_rf module in 05_cdp_sessions that
+would need to be adapted.
+
+BTW: This week on Thursday we have a kind of developer meeting during
+the 3rd FOKUS Workshop. Most of the people working on this would meet
+then (Joao who did the acc_rf and acctstatemachine in the 05 branch,
+Alberto who is working on the 08, me, a.s.o). If you'll be joining we'll
+have a great opportunity to talk.
+
+Cheers,
+-Dragos
+
+BLAISONNEAU David RD-CORE-LAN wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> Ok, thanks for you answer. I will try to do something  during my
+</I>&gt;<i> available time.
+</I>&gt;<i> Is there some docs about this new API ?
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i>
+</I>&gt;<i> David
+</I>&gt;<i>
+</I>&gt;<i> Dragos Vingarzan a &#233;crit :
+</I>&gt;&gt;<i> Hi David,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Unfortunately that branch is pretty much abandoned. The developer left
+</I>&gt;&gt;<i> before he could finish it so it is incomplete and very buggy. Plus that
+</I>&gt;&gt;<i> the code there is kind of deprecated. You see, initially when I started
+</I>&gt;&gt;<i> CDiameterPeer stack I have just put there a stub for basic session
+</I>&gt;&gt;<i> support. Then 2 people started in parallel development on the Auth and
+</I>&gt;&gt;<i> Acct session support, but unfortunately they did not work together, nor
+</I>&gt;&gt;<i> did they use the basic session stub, so there were 3 parallel session
+</I>&gt;&gt;<i> implementations.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Recently, Alberto picked-up the Gq/Rx work and we revamped the session
+</I>&gt;&gt;<i> support - in the 08 branch. So far we did the basic data structures, the
+</I>&gt;&gt;<i> stateless auth state machines and the statefull client auth state
+</I>&gt;&gt;<i> machine. Similarly the accounting state machines need to be developed
+</I>&gt;&gt;<i> and then the old Rf code converted to the new API.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Unfortunately me and Alberto do not have any resources to spend on the
+</I>&gt;&gt;<i> Rf support for now. But, in case you feel like writing some code, we
+</I>&gt;&gt;<i> will gladly help you.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> BLAISONNEAU David RD-CORE-LAN wrote:
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i> Hi all,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> It seems that a part of the Rf interface is available in the svn branch 
+</I>&gt;&gt;&gt;<i> 05, but is there a documentation of this module? How to configure the 
+</I>&gt;&gt;&gt;<i> S-CSCF to send charging messages?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Best Regards,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> David
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002929.html">[OpenIMSCore-Users] Ro/Rf interface
+</A></li>
+	<LI>Next message: <A HREF="002933.html">[OpenIMSCore-Users] Ro/Rf interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2930">[ date ]</a>
+              <a href="thread.html#2930">[ thread ]</a>
+              <a href="subject.html#2930">[ subject ]</a>
+              <a href="author.html#2930">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

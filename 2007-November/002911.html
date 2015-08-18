@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] I need feedback on the new ISC functionality
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20I%20need%20feedback%20on%20the%20new%20ISC%20functionality&In-Reply-To=%3C4735BC3A.80009%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002905.html">
+   <LINK REL="Next"  HREF="002906.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] I need feedback on the new ISC functionality</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20I%20need%20feedback%20on%20the%20new%20ISC%20functionality&In-Reply-To=%3C4735BC3A.80009%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] I need feedback on the new ISC functionality">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Sat Nov 10 15:12:10 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002905.html">[OpenIMSCore-Users] I need feedback on the new ISC functionality
+</A></li>
+        <LI>Next message: <A HREF="002906.html">[OpenIMSCore-Users] Response 480 - Diameter Cx interface failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2911">[ date ]</a>
+              <a href="thread.html#2911">[ thread ]</a>
+              <a href="subject.html#2911">[ subject ]</a>
+              <a href="author.html#2911">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well... at least this fixes some of the issues, so it has to be a step
+forward.
+
+What are the troubles with the ODI? What about opening a branch so that
+we would prevent effort duplication?
+
+-Dragos
+
+Jo&#227;o Filipe Pl&#225;cido wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I thought the detection of changed Request-URI was related to usage of
+</I>&gt;<i> B2BUA ASs and the need to include an &quot;original dialog identifier&quot;
+</I>&gt;<i> (ODI) in the ISC mark in the Route header in order to detect this
+</I>&gt;<i> Req-URI change and apply different routing logic, as in 24.229 r7 and
+</I>&gt;<i> 8.
+</I>&gt;<i>
+</I>&gt;<i> Just including the public identity in the mark is not enough for this
+</I>&gt;<i> use case. We need to compare the Call-ID, from and to tags (dialog id)
+</I>&gt;<i> in a message coming from an AS with the ODI in its Route header and
+</I>&gt;<i> check if this ODI is stored in the S-CSCF.
+</I>&gt;<i> Furthermore, in the general case ODI may be an actual SIP dialog id,
+</I>&gt;<i> or a SIP transaction id (think of triggers for MESSAGE going through a
+</I>&gt;<i> B2BUA AS).
+</I>&gt;<i>
+</I>&gt;<i> We've been working on support for ODI but it's not yet complete.
+</I>&gt;<i>
+</I>&gt;<i> Jo&#227;o Filipe Pl&#225;cido
+</I>&gt;<i> PT Inova&#231;&#227;o
+</I>&gt;<i>
+</I>&gt;<i> On Nov 9, 2007 12:55 AM, Dragos Vingarzan
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi all,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have just upgraded the ISC modules in r490.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - the public identity is saved in the ISC mark =&gt; now we don't care
+</I>&gt;&gt;<i> anymore about the S-CSCF changing the R-URI or dropping the
+</I>&gt;&gt;<i> P-Asserted-Identity header
+</I>&gt;&gt;<i> - introduced new timers just for fwding on the ISC interface
+</I>&gt;&gt;<i>    - isc_fr_timeout/isc_fr_inv_timeout
+</I>&gt;&gt;<i>    - before the overall fr timers were set for the S-CSCF
+</I>&gt;&gt;<i>    - now non-ISC transactions won't timeout prematurely as before
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> About the timers... I have the feeling that once the AS responded, the
+</I>&gt;&gt;<i> transaction timers should be re-extended to their normal SIP values.
+</I>&gt;&gt;<i> However, nobody complained about it before, when it was even worse, so I
+</I>&gt;&gt;<i> have doubts. Also, it is a little difficult as I can not distinguish
+</I>&gt;&gt;<i> between the first and next replies, so I have some trouble extending it
+</I>&gt;&gt;<i> just once.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have tested it a little, but it needs much more testing. So pls pls
+</I>&gt;&gt;<i> pls, if you have time to spare send me feedback if I broke or not your
+</I>&gt;&gt;<i> use of the ISC interface. Please provide also traces if you report bugs.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanx,
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002905.html">[OpenIMSCore-Users] I need feedback on the new ISC functionality
+</A></li>
+	<LI>Next message: <A HREF="002906.html">[OpenIMSCore-Users] Response 480 - Diameter Cx interface failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2911">[ date ]</a>
+              <a href="thread.html#2911">[ thread ]</a>
+              <a href="subject.html#2911">[ subject ]</a>
+              <a href="author.html#2911">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

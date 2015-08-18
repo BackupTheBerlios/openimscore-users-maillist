@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] openIMS and PSTN termination.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20openIMS%20and%20PSTN%20termination.&In-Reply-To=%3C001c01cd8297%24dcacd800%2496068800%24%40technikum-wien.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007484.html">
+   <LINK REL="Next"  HREF="007486.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] openIMS and PSTN termination.</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20openIMS%20and%20PSTN%20termination.&In-Reply-To=%3C001c01cd8297%24dcacd800%2496068800%24%40technikum-wien.at%3E"
+       TITLE="[OpenIMSCore-Users] openIMS and PSTN termination.">franz.edler at technikum-wien.at
+       </A><BR>
+    <I>Sat Aug 25 10:01:41 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007484.html">[OpenIMSCore-Users] openIMS and PSTN termination.
+</A></li>
+        <LI>Next message: <A HREF="007486.html">[OpenIMSCore-Users] IMS, 408 Request Timed out
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7485">[ date ]</a>
+              <a href="thread.html#7485">[ thread ]</a>
+              <a href="subject.html#7485">[ subject ]</a>
+              <a href="author.html#7485">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Thomas,
+
+&gt;<i> I see the pcscf at port 4060 issue a 100 trying and then an immediate dns
+</I>&gt;<i> query for _sip._udp when it receives a tel uri. &#160;This fails as I have
+</I>pointed out
+&gt;<i> earlier on this list becasue the tel uri provides no domain in the
+</I>request-uri.
+
+&gt;<i> I think the PCSCF should not care about destination request-uri for
+</I>registered
+&gt;<i> users and just follow the service-route it stored after the successful
+</I>&gt;<i> registration for my UAC making the call.
+</I>
+Yes, I fully agree. The Service-Route was also the first point I looked at.
+But that is totally correct in your trace.
+Then you provided a detailed pcscf-log where I recognized the area where the
+problem may be located. 
+First of all the &quot;Orig_Initial&quot; branch in pcscf.cfg is handled correctly up
+the final &quot;t_relay&quot; function call.
+Then mysterious things happen: 
+A function &quot;str2ip&quot; is called which produces 2 errors:
+	str2ip: ERROR: too few dots in []
+	str2ip6: ERROR: too few colons in []
+Which string should be converted to an IP address? I do not know.
+I could not find time to reproduce the error on my platform using SIPp. 
+SIPp is required for me because legacy IMS and SIP clients usually do not
+generate tel-URIs. The problem is definitely  linked to tel-URIs. 
+
+For Carsten I have added again your trace-file including the debug-log of
+pcscf which you have posted at the&quot;OpenIMSCore-HSS&quot; mailing-list. Maybe he
+can help.
+
+&gt;<i> I would like to know if one would need the trcf/mgcf processes started in
+</I>&gt;<i> order to terminate calls to non subscribers resident in the PSTN?
+</I>&gt;<i> 
+</I>&gt;<i> I have an asterisk pbx which I would like to use to terminate calls into
+</I>the
+&gt;<i> pstn.
+</I>
+This should be possible. In principle (according to IMS architecture) you
+need a BGCF and a MGCF when you terminate an IMS session in PSTN (ISUP).
+But you can omit this function if you do not need enhanced routing-logic of
+a BGCF and if you do not terminate via ISUP.
+Therefore a termination via an IP-PBX is of course possible, but not
+compliant to the IMS architecture.
+
+BR
+Franz
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: attachment.zip
+Type: application/x-zip-compressed
+Size: 69306 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120825/fba43637/attachment-0001.bin">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120825/fba43637/attachment-0001.bin</A>&gt;
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007484.html">[OpenIMSCore-Users] openIMS and PSTN termination.
+</A></li>
+	<LI>Next message: <A HREF="007486.html">[OpenIMSCore-Users] IMS, 408 Request Timed out
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7485">[ date ]</a>
+              <a href="thread.html#7485">[ thread ]</a>
+              <a href="subject.html#7485">[ subject ]</a>
+              <a href="author.html#7485">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

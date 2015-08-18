@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] PacketCable support - Bug in	ser_ims/modules/cx_avp.c
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PacketCable%20support%20-%20Bug%20in%0A%09ser_ims/modules/cx_avp.c&In-Reply-To=%3C622479.78257.qm%40web56108.mail.re3.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002756.html">
+   <LINK REL="Next"  HREF="002759.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] PacketCable support - Bug in	ser_ims/modules/cx_avp.c</H1>
+    <B>Sudhakar Patil</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PacketCable%20support%20-%20Bug%20in%0A%09ser_ims/modules/cx_avp.c&In-Reply-To=%3C622479.78257.qm%40web56108.mail.re3.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] PacketCable support - Bug in	ser_ims/modules/cx_avp.c">spatil4572 at yahoo.com
+       </A><BR>
+    <I>Wed Oct 17 20:28:30 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002756.html">[OpenIMSCore-Users] Application server
+</A></li>
+        <LI>Next message: <A HREF="002759.html">[OpenIMSCore-Users] PacketCable support - Bug in	ser_ims/modules/cx_avp.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2758">[ date ]</a>
+              <a href="thread.html#2758">[ thread ]</a>
+              <a href="subject.html#2758">[ subject ]</a>
+              <a href="author.html#2758">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+There seems to be a bug in &quot;Cx_get_auth_data_item_answer&quot; function while processing CableLabs Digest HA1. Currently the code is as follows:
+
+avp = cdpb.AAAFindMatchingAVPList(list,0,AVP_CableLabs_Digest_HA1,IMS_vendor_id_CableLabs,0);
+if (!avp||!avp-&gt;data.s)
+    ha1-&gt;s=0;ha1-&gt;len=0;
+else
+    *ha1 = avp-&gt;data;
+
+This does not work because Digest-HA1AVP an AVP grouped inside of SIP-Digest-Authenticate and is present directly under SIP-Auth-Data-Item. Hence the code should be similar to what is done for ETSI Digest-HA1. The following code should work for retrieving CableLabs Digest-HA1.
+
+        avp = cdpb.AAAFindMatchingAVPList(list,0,AVP_CableLabs_SIP_Digest_Authenticate,IMS_vendor_id_CableLabs,0);
+        if (avp  &amp;&amp; avp-&gt;data.s)
+        {
+                list2 = cdpb.AAAUngroupAVPS(avp-&gt;data);
+                avp2 = cdpb.AAAFindMatchingAVPList(list2,0,AVP_CableLabs_Digest_HA1,IMS_vendor_id_CableLabs,0);
+                if (!avp2||!avp2-&gt;data.s) {
+                        ha1-&gt;s = 0; ha1-&gt;len = 0;
+                        cdpb.AAAFreeAVPList(&amp;list2);
+                        return 0;
+                }
+                *ha1 = avp2-&gt;data;
+                cdpb.AAAFreeAVPList(&amp;list2);
+        }
+
+
+BTW, PacketCable requires S-CSCF to generate the nonce. I do not see any code for this. If it needs to be added can you please suggest if there is any easy way to add code for generation of nonce? 
+
+Regards,
+Sudhakar.
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002756.html">[OpenIMSCore-Users] Application server
+</A></li>
+	<LI>Next message: <A HREF="002759.html">[OpenIMSCore-Users] PacketCable support - Bug in	ser_ims/modules/cx_avp.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2758">[ date ]</a>
+              <a href="thread.html#2758">[ thread ]</a>
+              <a href="subject.html#2758">[ subject ]</a>
+              <a href="author.html#2758">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

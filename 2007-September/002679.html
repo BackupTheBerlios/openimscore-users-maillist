@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] RTR message sends S-CSCF into unexpected behavior
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20RTR%20message%20sends%20S-CSCF%20into%20unexpected%0A%20behavior&In-Reply-To=%3C46FA852E.8020003%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002671.html">
+   <LINK REL="Next"  HREF="002672.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] RTR message sends S-CSCF into unexpected behavior</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20RTR%20message%20sends%20S-CSCF%20into%20unexpected%0A%20behavior&In-Reply-To=%3C46FA852E.8020003%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] RTR message sends S-CSCF into unexpected behavior">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Sep 26 18:13:34 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002671.html">[OpenIMSCore-Users] RTR message sends S-CSCF into unexpected	behavior
+</A></li>
+        <LI>Next message: <A HREF="002672.html">[OpenIMSCore-Users] TLS problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2679">[ date ]</a>
+              <a href="thread.html#2679">[ thread ]</a>
+              <a href="subject.html#2679">[ subject ]</a>
+              <a href="author.html#2679">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Sudhakar,
+
+Thanx for the report. Should be fixed since r451.
+
+-Dragos
+
+Sudhakar Patil wrote:
+&gt;<i> Hi,
+</I>&gt;<i> I think there is a bug in cx.c, in Cx_RTA function, in
+</I>&gt;<i> the following command, if the Public-Identity is the
+</I>&gt;<i> last AVP in the RTR message,  cdpb.AAAGetNextAVP(avp)
+</I>&gt;<i> returns null. Since null is not checked,
+</I>&gt;<i> Cx_get_next_public_identity keeps returning the same
+</I>&gt;<i> Public-Identity. The easiest fix would be to pull
+</I>&gt;<i> cdpb.AAAGetNextAVP out and check for null. 
+</I>&gt;<i>
+</I>&gt;<i> while((avp=Cx_get_next_public_identity(rtr,cdpb.AAAGetNextAVP(avp),AVP_IMS_Public_Identity,IMS_vendor_id_3GPP,__FUNCTION__))!=0){
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Sudhakar.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --- Sudhakar Patil &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">spatil4572 at yahoo.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi, 
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I am using OSIMS rev 436. When we send an RTR
+</I>&gt;&gt;<i> (please
+</I>&gt;&gt;<i> see attached packet capture) from a HSS (not FHoSS)
+</I>&gt;&gt;<i> S-CSCF goes into a long loop of quick prints of
+</I>&gt;&gt;<i> Register Begin and Register Ends. It does not send
+</I>&gt;&gt;<i> back RTA. 
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> At debug level 6, S-CSCF prints the following
+</I>&gt;&gt;<i> messages
+</I>&gt;&gt;<i> and then starts printing a long list of the
+</I>&gt;&gt;<i> registration begin and ends with the information of
+</I>&gt;&gt;<i> the registered user. It does not look like it
+</I>&gt;&gt;<i> deregisteres the user.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Can you please let me know what the issue could be?
+</I>&gt;&gt;<i> Appreciate your help.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> [[00m10(14164)
+</I>&gt;&gt;<i> ^[[01;32mINFO:S-CSCF:CxRequestHandler():- Received
+</I>&gt;&gt;<i> an
+</I>&gt;&gt;<i> IMS_RTR
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 128) called
+</I>&gt;&gt;<i> from diameter_msg.c: AAANewMessage(201)
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 128) returns
+</I>&gt;&gt;<i> address 0x2a96fd52a8 frag. 0x2a96fd5278 (size=128)
+</I>&gt;&gt;<i> on
+</I>&gt;&gt;<i> 1 -th hit
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 56) called
+</I>&gt;&gt;<i> from diameter_avp.c: AAACreateAVP(156)
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 56) returns
+</I>&gt;&gt;<i> address 0x2a96fd5388 frag. 0x2a96fd5358 (size=56) on
+</I>&gt;&gt;<i> 1
+</I>&gt;&gt;<i> -th hit
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 36) called
+</I>&gt;&gt;<i> from diameter_avp.c: AAACreateAVP(171)
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 40) returns
+</I>&gt;&gt;<i> address 0x2a96fd5420 frag. 0x2a96fd53f0 (size=40) on
+</I>&gt;&gt;<i> 1
+</I>&gt;&gt;<i> -th hit
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 56) called
+</I>&gt;&gt;<i> from diameter_avp.c: AAACreateAVP(156)
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 56) returns
+</I>&gt;&gt;<i> address 0x2a96fd8900 frag. 0x2a96fd88d0 (size=56) on
+</I>&gt;&gt;<i> 1
+</I>&gt;&gt;<i> -th hit
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 19) called
+</I>&gt;&gt;<i> from diameter_avp.c: AAACreateAVP(171)
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 24) returns
+</I>&gt;&gt;<i> address 0x2a96fce080 frag. 0x2a96fce050 (size=32) on
+</I>&gt;&gt;<i> 1
+</I>&gt;&gt;<i> -th hit
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 56) called
+</I>&gt;&gt;<i> from diameter_avp.c: AAACreateAVP(156)
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 56) returns
+</I>&gt;&gt;<i> address 0x2a96fd8998 frag. 0x2a96fd8968 (size=56) on
+</I>&gt;&gt;<i> 1
+</I>&gt;&gt;<i> -th hit
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 13) called
+</I>&gt;&gt;<i> from diameter_avp.c: AAACreateAVP(171)
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 16) returns
+</I>&gt;&gt;<i> address 0x2a96fc73d8 frag. 0x2a96fc73a8 (size=32) on
+</I>&gt;&gt;<i> 1
+</I>&gt;&gt;<i> -th hit
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 56) called
+</I>&gt;&gt;<i> from diameter_avp.c: AAACreateAVP(156)
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 56) returns
+</I>&gt;&gt;<i> address 0x2a96fd8a30 frag. 0x2a96fd8a00 (size=56) on
+</I>&gt;&gt;<i> 1
+</I>&gt;&gt;<i> -th hit
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 17) called
+</I>&gt;&gt;<i> from diameter_avp.c: AAACreateAVP(171)
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 24) returns
+</I>&gt;&gt;<i> address 0x2a96fd54a8 frag. 0x2a96fd5478 (size=48) on
+</I>&gt;&gt;<i> 1
+</I>&gt;&gt;<i> -th hit
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 56) called
+</I>&gt;&gt;<i> from diameter_avp.c: AAACreateAVP(156)
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 56) returns
+</I>&gt;&gt;<i> address 0x2a96fd8ac8 frag. 0x2a96fd8a98 (size=56) on
+</I>&gt;&gt;<i> 1
+</I>&gt;&gt;<i> -th hit
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 11) called
+</I>&gt;&gt;<i> from diameter_avp.c: AAACreateAVP(171)
+</I>&gt;&gt;<i> ^[[00m10(14164) qm_malloc(0x2a96ca6000, 16) returns
+</I>&gt;&gt;<i> address 0x2a96fd8b60 frag. 0x2a96fd8b30 (size=16) 
+</I>&gt;&gt;<i> [[00m10(14164)
+</I>&gt;&gt;<i> ^[[00;31m^[[01;32mINF:S-CSCF:----------
+</I>&gt;&gt;<i>  Registrar Contents begin --------
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31m^[[01;32mINF:S-CSCF:[  52]
+</I>&gt;&gt;<i> P:
+</I>&gt;&gt;<i> &lt;^[[01;34msip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at apertio.co.uk</A>^[[01;32m&gt;
+</I>&gt;&gt;<i> R[^[[01;35m 1^[[01;32m] Early-IMS:
+</I>&gt;&gt;<i> &lt;^[[01;33m^[[01;32m&gt;
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31m^[[01;32mINF:S-CSCF:       
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> CCF1: &lt;^[[01;35<A HREF="maaa://cf2p^[[01;32m">maaa://cf2p^[[01;32m</A>&gt; CCF2:
+</I>&gt;&gt;<i> &lt;^[[01;35<A HREF="maaa://cf2s^[[01;32m">maaa://cf2s^[[01;32m</A>&gt;
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31m^[[01;32mINF:S-CSCF:       
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ECF1: &lt;^[[01;35<A HREF="maaa://cf1p^[[01;32m">maaa://cf1p^[[01;32m</A>&gt; ECF2:
+</I>&gt;&gt;<i> &lt;^[[01;35<A HREF="maaa://cf1s^[[01;32m">maaa://cf1s^[[01;32m</A>&gt;
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31m^[[01;32mINF:S-CSCF:       
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> C:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> &lt;^[[01;31msip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.120.10</A>:5060;rinstance=9fea0829e3a3af28^[[01;32m&gt;
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Exp:[^[[01;35m   0^[[01;32m]
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31m^[[01;32mINF:S-CSCF:       
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> Path:^[[01;33m&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.apertio.co.uk</A>:4060;lr&gt;^[[01;32m
+</I>&gt;<i>   
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31m^[[01;32mINF:S-CSCF:       
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>  UA: &lt;X-Lite release 1011s stamp 41150&gt;
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31mINF:S-CSCF:---------- 
+</I>&gt;&gt;<i> Registrar Contents end ----------
+</I>&gt;&gt;<i> ^[[00m10(14164)
+</I>&gt;&gt;<i> ^[[00;31m^[[01;32mINF:S-CSCF:----------  Registrar
+</I>&gt;&gt;<i> Contents begin --------
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31m^[[01;32mINF:S-CSCF:[  52]
+</I>&gt;&gt;<i> P:
+</I>&gt;&gt;<i> &lt;^[[01;34msip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at apertio.co.uk</A>^[[01;32m&gt;
+</I>&gt;&gt;<i> R[^[[01;35m 1^[[01;32m] Early-IMS:
+</I>&gt;&gt;<i> &lt;^[[01;33m^[[01;32m&gt;
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31m^[[01;32mINF:S-CSCF:       
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> CCF1: &lt;^[[01;35<A HREF="maaa://cf2p^[[01;32m">maaa://cf2p^[[01;32m</A>&gt; CCF2:
+</I>&gt;&gt;<i> &lt;^[[01;35<A HREF="maaa://cf2s^[[01;32m">maaa://cf2s^[[01;32m</A>&gt;
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31m^[[01;32mINF:S-CSCF:       
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ECF1: &lt;^[[01;35<A HREF="maaa://cf1p^[[01;32m">maaa://cf1p^[[01;32m</A>&gt; ECF2:
+</I>&gt;&gt;<i> &lt;^[[01;35<A HREF="maaa://cf1s^[[01;32m">maaa://cf1s^[[01;32m</A>&gt;
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31m^[[01;32mINF:S-CSCF:       
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> C:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> &lt;^[[01;31msip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.120.10</A>:5060;rinstance=9fea0829e3a3af28^[[01;32m&gt;
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Exp:[^[[01;35m   0^[[01;32m]
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31m^[[01;32mINF:S-CSCF:       
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> Path:^[[01;33m&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.apertio.co.uk</A>:4060;lr&gt;^[[01;32m
+</I>&gt;<i>   
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31m^[[01;32mINF:S-CSCF:       
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i>  UA: &lt;X-Lite release 1011s stamp 41150&gt;
+</I>&gt;&gt;<i> ^[[00m10(14164) ^[[00;31mINF:S-CSCF:---------- 
+</I>&gt;&gt;<i> Registrar Contents end ----------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i> Sudhakar.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>        
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> ____________________________________________________________________________________
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Building a website is a piece of cake. Yahoo! Small
+</I>&gt;&gt;<i> Business gives you all the tools to get online.
+</I>&gt;&gt;<i> <A HREF="http://smallbusiness.yahoo.com/webhosting">http://smallbusiness.yahoo.com/webhosting</A> &gt;
+</I>&gt;&gt;<i>     
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i>   
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>        
+</I>&gt;<i> ____________________________________________________________________________________
+</I>&gt;<i> Pinpoint customers who are looking for what you sell. 
+</I>&gt;<i> <A HREF="http://searchmarketing.yahoo.com/">http://searchmarketing.yahoo.com/</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002671.html">[OpenIMSCore-Users] RTR message sends S-CSCF into unexpected	behavior
+</A></li>
+	<LI>Next message: <A HREF="002672.html">[OpenIMSCore-Users] TLS problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2679">[ date ]</a>
+              <a href="thread.html#2679">[ thread ]</a>
+              <a href="subject.html#2679">[ subject ]</a>
+              <a href="author.html#2679">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

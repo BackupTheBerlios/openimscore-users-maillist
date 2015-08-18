@@ -1,0 +1,470 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Tel URI support
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Tel%20URI%20support&In-Reply-To=%3CH000008e0009db8f.1171878150.dakghar.aylus.com%40MHS%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000793.html">
+   <LINK REL="Next"  HREF="000853.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Tel URI support</H1>
+    <B>Babu George</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Tel%20URI%20support&In-Reply-To=%3CH000008e0009db8f.1171878150.dakghar.aylus.com%40MHS%3E"
+       TITLE="[OpenIMSCore-Users] Tel URI support">bgeorge at aylus.com
+       </A><BR>
+    <I>Mon Feb 19 10:42:31 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000793.html">[OpenIMSCore-Users] Tel URI support
+</A></li>
+        <LI>Next message: <A HREF="000853.html">[OpenIMSCore-Users] Tel URI support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#848">[ date ]</a>
+              <a href="thread.html#848">[ thread ]</a>
+              <a href="subject.html#848">[ subject ]</a>
+              <a href="author.html#848">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dragos,
+
+  I tried the test to verify the teluri to sipuri conversion.
+
+  Assigned the tel no&#146;s +919980122717&amp;+919980122718 to alice&amp;bob
+respectively.
+
+  After making a circuit call an OPTION message is send out from alice
+to bob with teluri.
+
+  The message is directed to my application sever(192.168.41.57) and
+subsequently send back 
+
+  to SCSCF(192.168.20.13:6060).I expect scscf to convert the teluri
+&#145;+919980122718&#146; to sipuri(<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>) and send towards the
+termination leg.But scscf is trying for a dns query and it
+fails.Logs/trace are attached
+
+Thanks
+
+Babu
+
+11(8388) ------------------
+
+ 1(8378) Trans already in processing... skip
+
+ 1(8378) INFO:ISC:isc_mark_get_from_msg: Trying to get the mark from the
+message
+
+ 1(8378) INFO:ISC:isc_mark_get_from_msg: Found
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=0;d=0&gt;
+
+ 1(8378) INFO:ISC:ISC_from_AS(orig): Message returned s=1;h=0;d=0
+
+ 1(8378) &gt;&gt;       Orig
+
+ 1(8378) INFO:ISC:ISC_match_filter(orig): Checking triggers
+
+ 1(8378) INFO:ISC:isc_mark_get_from_msg: Trying to get the mark from the
+message
+
+ 1(8378) INFO:ISC:isc_mark_get_from_msg: Found
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">iscmark at scscf.open-ims.test</A>:6060;lr;s=1;h=0;d=0&gt;
+
+ 1(8378) INFO:ISC:ISC_match_filter(orig): Message returned s=1;h=0;d=0
+
+ 1(8378) INFO:ISC:ISC_match_filter(orig): Orig User
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt; [1]
+
+ 1(8378) INFO:ISC:isc_checker_find: resuming search from 1
+
+ 1(8378) DBG:S-CSCF:cscf_get_terminating_identity: &lt;tel:+919980122718&gt;
+
+ 1(8378) ERROR: sip_hostport2su: could not resolve hostname: &quot;&quot;
+
+ 1(8378) ERROR: uri2dst: failed to resolve &quot;&quot;
+
+ 1(8378) ERROR: t_forward_nonack: failure to add branches
+
+ 1(8378) INFO:ISC:isc_failure: reached with s=1;h=0;d=0
+
+ 1(8378) INFO:ISC:isc_failure: reached with reply 478. Aborting as AS
+responded.
+
+ 1(8378) INFO:ISC:ifc:isc_failure reached but already treated... so
+skipped.
+
+ 2(8379) INF:S-CSCF:----------  Registrar Contents begin --------
+
+ 2(8379) INF:S-CSCF:[   3] P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt; R[ 1]
+
+ 2(8379) INF:S-CSCF:         C:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.15.88</A>:5061;+g.3gpp.cs-voice&gt; Exp:[599983]
+
+ 2(8379) INF:S-CSCF:
+Path:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:5060;lr&gt;
+
+ 2(8379) INF:S-CSCF:           UA: &lt;PMI-0001&gt;
+
+ 2(8379) INF:S-CSCF:         S: Event[0] Exp:[599985]
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.15.88</A>:5061;+g.3gpp.cs-voice&gt;
+
+ 2(8379) INF:S-CSCF:         S: Event[0] Exp:[600016]
+&lt;sip:pcscf.open-ims.test:5060&gt;
+
+ 2(8379) INF:S-CSCF:[  52] P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&gt; R[ 1]
+
+ 
+
+ 
+
+ 
+
+
+
+-----Original Message-----
+From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+Sent: Wednesday, February 14, 2007 12:32 AM
+To: Babu George
+Cc: openimscore-users
+Subject: Re: [OpenIMSCore-Users] Tel URI support
+
+ 
+
+Hi Babu,
+
+ 
+
+I did some more patches and since r138 you can also make a call to a tel
+
+uri if that uri is registered. This solves your scenario. Anything else?
+
+ 
+
+would be interesting to automatically route to the route[PSTN] when not
+
+able to resolve such a tel URI to a sip contact... What do you think?
+
+ 
+
+Also, there is an enum module that could be used to translate a tel uri
+
+into the e164 address.
+
+ 
+
+-Dragos
+
+ 
+
+Babu George wrote:
+
+&gt;<i> Dragos,
+</I>
+&gt;<i>  Tel-URI support is needed when a multimedia session has to be
+</I>established between 2 mobiles after establishing a Circuit call.Here
+originating mobile knows only the telephone number of the second mobile
+not sip URI.So The messages coming in Tel-Uri format should be converted
+to SIP URI by SCSCF(In the terminating leg)
+
+&gt;<i> Thanks
+</I>
+&gt;<i> Babu
+</I>
+&gt;<i> 
+</I>
+&gt;<i> -----Original Message-----
+</I>
+&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>
+&gt;<i> Sent: Saturday, February 10, 2007 1:07 AM
+</I>
+&gt;<i> To: openimscore-users
+</I>
+&gt;<i> Cc: Babu George
+</I>
+&gt;<i> Subject: Re: [OpenIMSCore-Users] Tel URI support
+</I>
+&gt;<i> 
+</I>
+&gt;<i> Hi all,
+</I>
+&gt;<i> 
+</I>
+&gt;<i> I have started looking at tel uris for the CSCFs. So far, after r131,
+</I>it
+
+&gt;<i> is possible to register with a tel uri. I am attaching the SIPp
+</I>
+&gt;<i> scenarios that I used for testing.
+</I>
+&gt;<i> 
+</I>
+&gt;<i> It seems though, that the tm module lacks support for sending requests
+</I>
+&gt;<i> to a tel uri. As such, subscriptions to reg fail now.
+</I>
+&gt;<i> 
+</I>
+&gt;<i> I would be interested in what scenario would you like to have with tel
+</I>
+&gt;<i> uris... Calls to a tel uri?
+</I>
+&gt;<i> 
+</I>
+&gt;<i> -Dragos
+</I>
+&gt;<i> 
+</I>
+&gt;<i> 
+</I>
+&gt;<i> 
+</I>
+&gt;<i> Babu George wrote:
+</I>
+&gt;<i>   
+</I>
+&gt;&gt;<i> Thanks Dragos
+</I>
+&gt;&gt;<i> 
+</I>
+&gt;&gt;<i> -----Original Message-----
+</I>
+&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>
+&gt;&gt;<i> Sent: Friday, December 22, 2006 6:42 PM
+</I>
+&gt;&gt;<i> To: Babu George
+</I>
+&gt;&gt;<i> Cc: openimscore-users
+</I>
+&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] Tel URI support
+</I>
+&gt;&gt;<i> 
+</I>
+&gt;&gt;<i> Hi George,
+</I>
+&gt;&gt;<i> 
+</I>
+&gt;&gt;<i> I for one have never tested tel URIs. It seems that some changes are
+</I>
+&gt;&gt;<i> required. I will try and fix this as soon as I will find some free
+</I>hours.
+
+&gt;&gt;<i> 
+</I>
+&gt;&gt;<i> -Dragos
+</I>
+&gt;&gt;<i> 
+</I>
+&gt;&gt;<i> 
+</I>
+&gt;&gt;<i> Babu George wrote:
+</I>
+&gt;&gt;<i>   
+</I>
+&gt;&gt;<i>     
+</I>
+&gt;&gt;&gt;<i> All,
+</I>
+&gt;&gt;&gt;<i>   I would like to know whether the 'Tel URI' support is there in the
+</I>release.I send the following option message and got an error
+
+&gt;&gt;&gt;<i> 'SIP/2.0 403 Forbidden - Not Registered! You must register first
+</I>with a S-CSCF
+
+&gt;&gt;&gt;<i> Alice&amp;Bob were assigned the Tel No. +11234567890&amp;+10987654321.
+</I>
+&gt;&gt;&gt;<i> 
+</I>
+&gt;&gt;&gt;<i>   OPTIONS tel:+10987654321;transport=UDP;app=swis.aylus.com
+</I>SIP/2.0^M
+
+&gt;&gt;&gt;<i> Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">1-10220 at 192.168.20.13</A>^M
+</I>
+&gt;&gt;&gt;<i> CSeq: 1 OPTIONS^M
+</I>
+&gt;&gt;&gt;<i> From: &quot;alice&quot;&lt;tel:+11234567890&gt;;tag=abcd1^M
+</I>
+&gt;&gt;&gt;<i> To: &quot;bob&quot; &lt;tel:+10987654321&gt;^M
+</I>
+&gt;&gt;&gt;<i> Via: SIP/2.0/UDP
+</I>192.168.20.13:5021;branch=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">z9hG4bK-1-01-10220 at 192.168.20.13</A>^M
+
+&gt;&gt;&gt;<i> Max-Forwards: 70^M
+</I>
+&gt;&gt;&gt;<i> Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 192.168.20.13</A>:5021;transport=udp&gt;^M
+</I>
+&gt;&gt;&gt;<i> Route: &lt;sip:192.168.20.13:5060;orig&gt;^M
+</I>
+&gt;&gt;&gt;<i> Route: &lt;sip:192.168.20.13:6060&gt;^M
+</I>
+&gt;&gt;&gt;<i> Expires: 120^M
+</I>
+&gt;&gt;&gt;<i> P-Access-Network-Info: 3GPP-CDMA2000;
+</I>utran-cell-id-3gpp=234151D0FCE11^M
+
+&gt;&gt;&gt;<i> P-Charging-Vector: icid-value=&quot;12345&quot;^M
+</I>
+&gt;&gt;&gt;<i> P-Charging-FunctionAddresses: ccf=1.0.0.1^M
+</I>
+&gt;&gt;&gt;<i> Content-Length: 0^M
+</I>
+&gt;&gt;&gt;<i> 
+</I>
+&gt;&gt;&gt;<i> Here is the error message I get at PCSCF
+</I>
+&gt;&gt;&gt;<i> 1(9750) DBG:P-CSCF:cscf_get_terminating_contact:
+</I>0://192.168.20.13:5060
+
+&gt;&gt;&gt;<i>  1(9750) DBG:P-CSCF:cscf_get_originating_contact:
+</I>1://192.168.20.13:0
+
+&gt;&gt;&gt;<i>  1(9750) DBG:P-CSCF:cscf_get_terminating_contact:
+</I>0://192.168.20.13:5060
+
+&gt;&gt;&gt;<i>  1(9750) DBG:P-CSCF:cscf_get_originating_contact:
+</I>1://192.168.20.13:0
+
+&gt;&gt;&gt;<i>  1(9750) DBG:P-CSCF:cscf_get_terminating_contact:
+</I>0://192.168.20.13:5060
+
+&gt;&gt;&gt;<i>  1(9750) DBG:P-CSCF:cscf_get_originating_contact:
+</I>1://192.168.20.13:0
+
+&gt;&gt;&gt;<i>  1(9750) DBG:P-CSCF:cscf_get_terminating_contact:
+</I>0://192.168.20.13:5060
+
+&gt;&gt;&gt;<i>  1(9750) DBG:P-CSCF:cscf_get_originating_contact:
+</I>1://192.168.20.13:0
+
+&gt;&gt;&gt;<i>  1(9750) DBG:P-CSCF:cscf_get_terminating_contact:
+</I>0://192.168.20.13:5060
+
+&gt;&gt;&gt;<i>  1(9750) ERROR: sip_msg_cloner: cannot allocate memory
+</I>
+&gt;&gt;&gt;<i>  1(9750) ERROR: new_t: out of mem:
+</I>
+&gt;&gt;&gt;<i>  1(9750) ERROR: t_newtran: new_t failed
+</I>
+&gt;&gt;&gt;<i>  5(9754) INF:P-CSCF:----------  Registrar Contents begin --------
+</I>
+&gt;&gt;&gt;<i>  5(9754) INF:P-CSCF:[ 163] C: &lt;1://192.168.20.13:5055&gt; Exp:[999112]
+</I>R:[ 1] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 192.168.20.13</A>:5055;transport=UDP&gt;
+
+&gt;&gt;&gt;<i>  5(9754) INF:P-CSCF:         SR:
+</I>&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+
+&gt;&gt;&gt;<i>  Can someone help me to resolve this issue
+</I>
+&gt;&gt;&gt;<i> Thanks
+</I>
+&gt;&gt;&gt;<i> Babu
+</I>
+&gt;&gt;&gt;<i> _______________________________________________
+</I>
+&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>
+&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>
+&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+&gt;&gt;&gt;<i> 
+</I>
+&gt;&gt;&gt;<i>   
+</I>
+&gt;&gt;&gt;<i>     
+</I>
+&gt;&gt;&gt;<i>       
+</I>
+&gt;&gt;<i>   
+</I>
+&gt;&gt;<i>     
+</I>
+&gt;<i> 
+</I>
+&gt;<i> 
+</I>
+&gt;<i>   
+</I>
+ 
+
+ 
+
+-- 
+
+-----------------------------------------
+
+Dipl. Eng. Dragos Vingarzan
+
+FOKUS/NGNI
+
+Kaiserin-Augusta-Allee 31
+
+10589 Berlin,Germany
+
+Phone +49 (0)30 - 3463 - 7385
+
+Mobile +49 (0)163 - 159 - 5221
+
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+
+Web www.fokus.fraunhofer.de
+
+We could change the world if God would give us the source code...
+
+-----------------------------------------------------------------
+
+ 
+
+ 
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070219/552ef6d5/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070219/552ef6d5/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: teluri1.pcap
+Type: application/octet-stream
+Size: 3396 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070219/552ef6d5/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070219/552ef6d5/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: image001.jpg
+Type: image/jpeg
+Size: 94539 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070219/552ef6d5/attachment.jpg">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070219/552ef6d5/attachment.jpg</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000793.html">[OpenIMSCore-Users] Tel URI support
+</A></li>
+	<LI>Next message: <A HREF="000853.html">[OpenIMSCore-Users] Tel URI support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#848">[ date ]</a>
+              <a href="thread.html#848">[ thread ]</a>
+              <a href="subject.html#848">[ subject ]</a>
+              <a href="author.html#848">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

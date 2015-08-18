@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Diameter connection is not comming up
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Diameter%20connection%20is%20not%20comming%20up&In-Reply-To=%3C46A080A1.1020607%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002183.html">
+   <LINK REL="Next"  HREF="002184.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Diameter connection is not comming up</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Diameter%20connection%20is%20not%20comming%20up&In-Reply-To=%3C46A080A1.1020607%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Diameter connection is not comming up">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Jul 20 11:30:09 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002183.html">[OpenIMSCore-Users] Diameter connection is not comming up
+</A></li>
+        <LI>Next message: <A HREF="002184.html">[OpenIMSCore-Users] IPV6 query &amp; Diameter connection problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2211">[ date ]</a>
+              <a href="thread.html#2211">[ thread ]</a>
+              <a href="subject.html#2211">[ subject ]</a>
+              <a href="author.html#2211">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Vimal,
+
+The HSS log does not say anything bad... For some reason, it seems that
+the CSCFs have spawned too many processes and can't spawn more for the
+connection. Try to restart the CSCFs and see what happens on start-up.
+Also a network trace would be very helpful in identifying why the
+diameter connection do not happen - failed DNS, firewall, capability
+exchange failure, etc...
+
+-Dragos
+
+vimal noel wrote:
+&gt;<i>
+</I>&gt;<i>         Hi All,
+</I>&gt;<i>
+</I>&gt;<i>         I having some problem configuring ims server.....if anyone
+</I>&gt;<i>         knows the solution plz help me out...
+</I>&gt;<i>
+</I>&gt;<i>         eventhough the server came up without any issues ..the
+</I>&gt;<i>         diameter connection between HSS &amp; I/S -CSCF is failing...
+</I>&gt;<i>
+</I>&gt;<i>         below are the messages and log files.
+</I>&gt;<i>         ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>          HSS console messages :
+</I>&gt;<i>
+</I>&gt;<i>         [<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at localhost</A> deploy]# Building Classpath
+</I>&gt;<i>         Classpath is
+</I>&gt;<i>         lib/xml-apis.jar:lib/xercesImpl.jar:lib/xerces-2.4.0.jar:lib/xalan-2.4.0.jar:lib/tomcat-util.jar:lib/tomcat-http.jar:lib/tomcat-coyote.jar:lib/struts.jar:lib/servlets-default.jar:lib/servlet-api.jar:lib/naming-resources.jar:lib/naming-factory.jar:lib/mysql-connector-java-3.1.12-bin.jar:lib/mx4j-3.0.1.jar:lib/log4j.jar:lib/junit.jar:lib/junitee.jar:lib/jta.jar:lib/jsp-api.jar:lib/jmx.jar:lib/jdp.jar:lib/jasper-runtime.jar:lib/jasper-compiler-jdt.jar:lib/jasper-compiler.jar:lib/hibernate3.jar:lib/FHoSS.jar:lib/ehcache-1.1.jar:lib/dom4j-1.6.1.jar:lib/commons-validator.jar:lib/commons-modeler.jar:lib/commons-logging.jar:lib/commons-logging-1.0.4.jar:lib/commons-lang.jar:lib/commons-fileupload.jar:lib/commons-el.jar:lib/commons-digester.jar:lib/commons-collections-3.1.jar:lib/commons-beanutils.jar:lib/cglib-2.1.3.jar:lib/catalina-optional.jar:lib/catalina.jar:lib/c3p0-0.9.1.jar:lib/base64.jar:lib/asm.jar:lib/asm-attrs.jar:lib/antlr-2.7.6.jar::log4j.properties:
+</I>&gt;<i>         . .
+</I>&gt;<i>         2007-07-17 20:48:47,966 INFO 
+</I>&gt;<i>         de.fhg.fokus.hss.main.TomcatServer - startTomcat Tomcat-Server
+</I>&gt;<i>         is started.
+</I>&gt;<i>         2007-07-17 20:48:48,899 WARN 
+</I>&gt;<i>         org.apache.catalina.connector.MapperListener - registerEngine
+</I>&gt;<i>         Unknown default host: 127.0.0.1 &lt;<A HREF="http://127.0.0.1/">http://127.0.0.1/</A>&gt;
+</I>&gt;<i>         2007-07-17 20:48:50,021 INFO 
+</I>&gt;<i>         de.fhg.fokus.hss.web.servlet.ResponseFilter - init Response
+</I>&gt;<i>         Filter Initialisation!
+</I>&gt;<i>         2007-07-17 20:48:50,957 INFO 
+</I>&gt;<i>         de.fhg.fokus.hss.main.TomcatServer - startTomcat WebConsole of
+</I>&gt;<i>         FHoSS was started !
+</I>&gt;<i>         2007-07-17 20:48:53,836 WARN 
+</I>&gt;<i>         org.hibernate.impl.SessionFactoryObjectFactory - addInstance
+</I>&gt;<i>         InitialContext did not implement EventContext
+</I>&gt;<i>         2007-07-17 20:48:53,937 INFO 
+</I>&gt;<i>         de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt; FQDN:
+</I>&gt;<i>         hss.open-ims.test
+</I>&gt;<i>         2007-07-17 20:48:53,938 INFO 
+</I>&gt;<i>         de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+</I>&gt;<i>         Realm: open-ims.test
+</I>&gt;<i>         2007-07-17 20:48:53,938 INFO 
+</I>&gt;<i>         de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+</I>&gt;<i>         Vendor_ID : 10415
+</I>&gt;<i>         2007-07-17 20:48:53,939 INFO 
+</I>&gt;<i>         de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+</I>&gt;<i>         Product Name: JavaDiameterPeer
+</I>&gt;<i>         2007-07-17 20:48:53,939 INFO 
+</I>&gt;<i>         de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+</I>&gt;<i>         AcceptUnknwonPeers: true
+</I>&gt;<i>         2007-07-17 20:48:53,939 INFO 
+</I>&gt;<i>         de.fhg.fokus.diameter.DiameterPeer.DiameterPeer - &lt;init&gt;
+</I>&gt;<i>         DropUnknownOnDisconnect: true
+</I>&gt;<i>         2007-07-17 20:48:53,997 INFO 
+</I>&gt;<i>         de.fhg.fokus.hss.main.HSSContainer - waitForExit
+</I>&gt;<i>         Type &quot;exit&quot; to stop FHoSS!
+</I>&gt;<i>         ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>         ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</I>&gt;<i>         icscf messages:
+</I>&gt;<i>         ----------------------
+</I>&gt;<i>
+</I>&gt;<i>          S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i>         12(13954) ------------------
+</I>&gt;<i>         12(13954) DBG:peer_timer(): Peer hss.open-ims.test      State 0
+</I>&gt;<i>         12(13954) DBG:sm_process(): Peer hss.open-ims.test      State
+</I>&gt;<i>         Closed    Event Start
+</I>&gt;<i>         12(13954) DBG:I_Snd_Conn_Req(): Peer hss.open-ims.test
+</I>&gt;<i>         12(13954) INFO:peer_connect(): Peer hss.open-ims.test:3868
+</I>&gt;<i>         connected
+</I>&gt;<i>         12(13954) ERROR: fork_process(): Process limit of 20 exceeded.
+</I>&gt;<i>         Will simulate fork fail.
+</I>&gt;<i>         12(13954) ERROR:peer_connect(): fork() failed &gt; Success
+</I>&gt;<i>         12(13954) DBG:sm_process(): Peer hss.open-ims.test      State
+</I>&gt;<i>         Wait_Conn_Ack     Event I_Rcv_Conn_NAck
+</I>&gt;<i>         12(13954) --- Peer List: ---
+</I>&gt;<i>         12(13954)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i>         12(13954) ------------------
+</I>&gt;<i>         12(13954) --- Peer List: ---
+</I>&gt;<i>         12(13954)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i>         12(13954) ------------------
+</I>&gt;<i>
+</I>&gt;<i>         ============================================================================================
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>         scscf messages:
+</I>&gt;<i>          INF:S-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i>          5(13967) INF:S-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i>         12(13974) --- Peer List: ---
+</I>&gt;<i>         12(13974)  S[Closed] hss.open-ims.test :3868 D[ ]
+</I>&gt;<i>         12(13974) ------------------
+</I>&gt;<i>         12(13974) DBG:peer_timer(): Peer hss.open-ims.test      State 0
+</I>&gt;<i>         12(13974) DBG:sm_process(): Peer hss.open-ims.test      State
+</I>&gt;<i>         Closed    Event Start
+</I>&gt;<i>         12(13974) DBG:I_Snd_Conn_Req(): Peer hss.open-ims.test
+</I>&gt;<i>         12(13974) INFO:peer_connect(): Peer hss.open-ims.test:3868
+</I>&gt;<i>         connected
+</I>&gt;<i>         12(13974) ERROR: fork_process(): Process limit of 20 exceeded.
+</I>&gt;<i>         Will simulate fork fail.
+</I>&gt;<i>         12(13974) ERROR:peer_connect(): fork() failed &gt; Success
+</I>&gt;<i>         12(13974) DBG:sm_process(): Peer hss.open-ims.test      State
+</I>&gt;<i>         Wait_Conn_Ack     Event I_Rcv_Conn_NAck
+</I>&gt;<i>         12(13974) --- Peer List: ---
+</I>&gt;<i>         12(13974)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i>         12(13974) ------------------
+</I>&gt;<i>         12(13974) --- Peer List: ---
+</I>&gt;<i>         12(13974)  S[Closed] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i>         12(13974) ------------------
+</I>&gt;<i>         ============================================================================================
+</I>&gt;<i>
+</I>&gt;<i>         Additionally this is the log messages from FHoSS/Deploy/logs:
+</I>&gt;<i>         ==============================================
+</I>&gt;<i>
+</I>&gt;<i>         ==&gt; hss.server.log &lt;==
+</I>&gt;<i>         2007-07-17 20:30:55,633 [main] WARN 
+</I>&gt;<i>         org.apache.catalina.connector.MapperListener  - Unknown
+</I>&gt;<i>         default host: 127.0.0.1 &lt;<A HREF="http://127.0.0.1/">http://127.0.0.1/</A>&gt;
+</I>&gt;<i>         2007-07-17 20:31:01,285 [main] WARN 
+</I>&gt;<i>         org.hibernate.impl.SessionFactoryObjectFactory  -
+</I>&gt;<i>         InitialContext did not implement EventContext
+</I>&gt;<i>         2007-07-17 20:44:36,244 [main] WARN 
+</I>&gt;<i>         org.apache.catalina.connector.MapperListener   - Unknown
+</I>&gt;<i>         default host: 127.0.0.1 &lt;<A HREF="http://127.0.0.1/">http://127.0.0.1/</A>&gt;
+</I>&gt;<i>         2007-07-17 20:44:41,672 [main] WARN 
+</I>&gt;<i>         org.hibernate.impl.SessionFactoryObjectFactory   -
+</I>&gt;<i>         InitialContext did not implement EventContext
+</I>&gt;<i>         2007-07-17 20:48:48,899 [main] WARN 
+</I>&gt;<i>         org.apache.catalina.connector.MapperListener  - Unknown
+</I>&gt;<i>         default host: 127.0.0.1 &lt;<A HREF="http://127.0.0.1/">http://127.0.0.1/</A>&gt;
+</I>&gt;<i>         2007-07-17 20:48:53,836 [main] WARN 
+</I>&gt;<i>         org.hibernate.impl.SessionFactoryObjectFactory  -
+</I>&gt;<i>         InitialContext did not implement EventContext
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>         ===============================================================================================
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>         i have configured dns properly......iam able to
+</I>&gt;<i>         ping.....dig...etc.
+</I>&gt;<i>
+</I>&gt;<i>         sql is running fine with database tables...........
+</I>&gt;<i>
+</I>&gt;<i>         iam stucked up in this issue...for long.....plz help me out.
+</I>&gt;<i>
+</I>&gt;<i>         Regards,
+</I>&gt;<i>         vimal noel.s
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002183.html">[OpenIMSCore-Users] Diameter connection is not comming up
+</A></li>
+	<LI>Next message: <A HREF="002184.html">[OpenIMSCore-Users] IPV6 query &amp; Diameter connection problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2211">[ date ]</a>
+              <a href="thread.html#2211">[ thread ]</a>
+              <a href="subject.html#2211">[ subject ]</a>
+              <a href="author.html#2211">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

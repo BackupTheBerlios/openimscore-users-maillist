@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] query about pcscf
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20query%20about%20pcscf&In-Reply-To=%3C412688.64364.qm%40web50901.mail.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001006.html">
+   <LINK REL="Next"  HREF="001019.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] query about pcscf</H1>
+    <B>Katty Xiong</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20query%20about%20pcscf&In-Reply-To=%3C412688.64364.qm%40web50901.mail.yahoo.com%3E"
+       TITLE="[OpenIMSCore-Users] query about pcscf">cyyxiong at yahoo.com
+       </A><BR>
+    <I>Sat Mar  3 00:01:22 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001006.html">[OpenIMSCore-Users] query about pcscf
+</A></li>
+        <LI>Next message: <A HREF="001019.html">[OpenIMSCore-Users] query about pcscf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1016">[ date ]</a>
+              <a href="thread.html#1016">[ thread ]</a>
+              <a href="subject.html#1016">[ subject ]</a>
+              <a href="author.html#1016">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+Could you clarify under which situations we see Route:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf...</A>&gt;?
+
+I remember in session establishment/tear down, we see
+Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf...</A>&gt;, but no sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf...</A>,
+right?
+
+thanks,
+Joy
+
+--- Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+wrote:
+
+&gt;<i> No P_mobile_terminating should only be true when you
+</I>&gt;<i> have a Route:
+</I>&gt;<i> &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf....</A>&gt;
+</I>&gt;<i> 
+</I>&gt;<i> -Dragos
+</I>&gt;<i> 
+</I>&gt;<i> Katty Xiong wrote:
+</I>&gt;<i> &gt; Could you clarify which P_is_in_dialog(&quot;orig&quot;) you
+</I>&gt;<i> are
+</I>&gt;<i> &gt; referring to?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I think if caller receives a request,
+</I>&gt;<i> &gt; P_mobile_terminating is true. In the else {}, I
+</I>&gt;<i> &gt; couldn't find P_is_in_dialog(&quot;orig&quot;) and
+</I>&gt;<i> &gt; Orig_subsequent
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; thanks,
+</I>&gt;<i> &gt; Joy
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ===============================================
+</I>&gt;<i> &gt;  if (!P_mobile_terminating()){
+</I>&gt;<i> &gt;            ...
+</I>&gt;<i> &gt;             snip
+</I>&gt;<i> &gt;             ...
+</I>&gt;<i> &gt;  }else{
+</I>&gt;<i> &gt;    # TODO - check if this does come from an UE and
+</I>&gt;<i> &gt; that UE is unregistered
+</I>&gt;<i> &gt;    # Request Terminated by the UE
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;      if (!P_is_in_dialog(&quot;term&quot;) &amp;&amp;
+</I>&gt;<i> &gt;         (method==&quot;INVITE&quot; ||
+</I>&gt;<i> method==&quot;SUBSCRIBE&quot;)){
+</I>&gt;<i> &gt;         route(Term_Initial);
+</I>&gt;<i> &gt;         break;
+</I>&gt;<i> &gt;      } else {
+</I>&gt;<i> &gt;         if (P_is_in_dialog(&quot;term&quot;)){
+</I>&gt;<i> &gt;         route(Term_Subsequent);
+</I>&gt;<i> &gt;         break;
+</I>&gt;<i> &gt;         }else{
+</I>&gt;<i> &gt;            if (method==UPDATE){
+</I>&gt;<i> &gt;                                   
+</I>&gt;<i> &gt; sl_send_reply(&quot;403&quot;,&quot;Forbidden - Target refresh
+</I>&gt;<i> &gt; outside dialog not allowed&quot;);
+</I>&gt;<i> &gt;             break;
+</I>&gt;<i> &gt;            }
+</I>&gt;<i> &gt;            if (method==&quot;BYE&quot; || method==&quot;ACK&quot; ||
+</I>&gt;<i> &gt; method==&quot;PRACK&quot;){
+</I>&gt;<i> &gt;                                        
+</I>&gt;<i> &gt; sl_send_reply(&quot;403&quot;,&quot;Forbidden - Terminating
+</I>&gt;<i> &gt; subsequent requests outside dialog not allowed&quot;);
+</I>&gt;<i> &gt;           break;
+</I>&gt;<i> &gt;           }
+</I>&gt;<i> &gt;           route(Term_Standalone);
+</I>&gt;<i> &gt;              break;
+</I>&gt;<i> &gt;                         }
+</I>&gt;<i> &gt;                 }
+</I>&gt;<i> &gt;                 break;
+</I>&gt;<i> &gt;         }
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; --- Dragos Vingarzan
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt; Hmmm... good question :-)
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; The P_is_in_dialog(&quot;orig&quot;) would be true because
+</I>&gt;<i> the
+</I>&gt;<i> &gt;&gt; first route is
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mo at pcscf.</A> So that would be Orig_subsequent...
+</I>&gt;<i> &gt;&gt; although this is a little
+</I>&gt;<i> &gt;&gt; wrong... I will have to revisit the code to
+</I>&gt;<i> refresh
+</I>&gt;<i> &gt;&gt; my memory.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Did you had any issues with it?
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; -Dragos
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Katty Xiong wrote:
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; In the main routing logic, after a diaglog is
+</I>&gt;<i> &gt;&gt;&gt; established, 
+</I>&gt;<i> &gt;&gt;&gt; 1) If Caller generates a request within the
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; dialog,
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; caller's PCSCF calls route[Orig_Subsequent]
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; 2) If Callee generetea a request within the
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; dialog,
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; callee's PCSCF calls route[Term_Subsequent]
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; 3) If Callee receives a request within the
+</I>&gt;<i> dialog,
+</I>&gt;<i> &gt;&gt;&gt; callee's PCSCF calls route[Term_Subsequent]
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; But what if the caller receives a request within
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; the
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;&gt;&gt; dialog? I couldn't find the answer in the
+</I>&gt;<i> &gt;&gt;&gt; configuration file.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Do I misunderstand something here?
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; thanks,
+</I>&gt;<i> &gt;&gt;&gt; Joy
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;  
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>____________________________________________________________________________________
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt;&gt; Need Mail bonding?
+</I>&gt;<i> &gt;&gt;&gt; Go to the Yahoo! Mail Q&amp;A for great tips from
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; Yahoo! Answers users.
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I><A HREF="http://answers.yahoo.com/dir/?link=list&amp;sid=396546091">http://answers.yahoo.com/dir/?link=list&amp;sid=396546091</A>
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt;&gt; _______________________________________________
+</I>&gt;<i> &gt;&gt;&gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;&gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I><A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt;&gt;   
+</I>&gt;<i> &gt;&gt;&gt;       
+</I>&gt;<i> &gt;&gt; -- 
+</I>&gt;<i> &gt;&gt; -----------------------------------------
+</I>&gt;<i> &gt;&gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt;&gt; FOKUS/NGNI
+</I>&gt;<i> &gt;&gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt;&gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt;&gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt;&gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt;&gt; eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt;&gt; Web www.fokus.fraunhofer.de
+</I>&gt;<i> &gt;&gt; We could change the world if God would give us
+</I>&gt;<i> the
+</I>&gt;<i> &gt;&gt; source code...
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>-----------------------------------------------------------------
+&gt;<i> &gt;   
+</I>&gt;<i> &gt;&gt;     
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>____________________________________________________________________________________
+&gt;<i> &gt; Finding fabulous fares is fun.  
+</I>&gt;<i> &gt; Let Yahoo! FareChase search your favorite travel
+</I>&gt;<i> sites to find flight and hotel bargains.
+</I>&gt;<i> &gt; <A HREF="http://farechase.yahoo.com/promo-generic-14795097">http://farechase.yahoo.com/promo-generic-14795097</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> -- 
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the
+</I>&gt;<i> source code...
+</I>&gt;<i>
+</I>-----------------------------------------------------------------
+&gt;<i> 
+</I>&gt;<i> 
+</I>
+
+
+ 
+____________________________________________________________________________________
+Yahoo! Music Unlimited
+Access over 1 million songs.
+<A HREF="http://music.yahoo.com/unlimited">http://music.yahoo.com/unlimited</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001006.html">[OpenIMSCore-Users] query about pcscf
+</A></li>
+	<LI>Next message: <A HREF="001019.html">[OpenIMSCore-Users] query about pcscf
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1016">[ date ]</a>
+              <a href="thread.html#1016">[ thread ]</a>
+              <a href="subject.html#1016">[ subject ]</a>
+              <a href="author.html#1016">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

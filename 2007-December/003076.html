@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Could I register a user without any authentication scheme?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Could%20I%20register%20a%20user%20without%20any%0A%20authentication%20scheme%3F&In-Reply-To=%3C20071206072034.309770%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003074.html">
+   <LINK REL="Next"  HREF="003056.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Could I register a user without any authentication scheme?</H1>
+    <B>Klemens Schragel</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Could%20I%20register%20a%20user%20without%20any%0A%20authentication%20scheme%3F&In-Reply-To=%3C20071206072034.309770%40gmx.net%3E"
+       TITLE="[OpenIMSCore-Users] Could I register a user without any authentication scheme?">klemens.schragel at gmx.at
+       </A><BR>
+    <I>Thu Dec  6 08:20:34 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003074.html">[OpenIMSCore-Users] Could I register a user without any authentication scheme?
+</A></li>
+        <LI>Next message: <A HREF="003056.html">[OpenIMSCore-Users] How the fileds &quot;S-CSCF Name&quot; and &quot;Diameter Name&quot; set in IMS Subscription use
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3076">[ date ]</a>
+              <a href="thread.html#3076">[ thread ]</a>
+              <a href="subject.html#3076">[ subject ]</a>
+              <a href="author.html#3076">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+You can use Early-IMS and most probably NBA (I haven't tested the latter yet...).
+Therefore you need to enable EarlyIMS and disable the prefered authentication method (or select HSS-selected) in scscf.cfg
+
+#modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;AKAv1-MD5&quot;)
+#modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;AKAv2-MD5&quot;)
+#modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;MD5&quot;)
+#modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;CableLabs-Digest&quot;)
+#modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;TISPAN-HTTP_DIGEST_MD5&quot;)
+# Let the HSS decide
+modparam(&quot;scscf&quot;,&quot;registration_default_algorithm&quot;,&quot;HSS-Selected&quot;)
+
+modparam(&quot;scscf&quot;,&quot;registration_disable_early_ims&quot;,0)
+
+Then provision the IP-address of your client to the EarlyIMS field on IMPI (Public User ID) level...for my tests I've also enabled only Early-IMS as authentication scheme and Early-IMS-Security as default authentication method, but actually this should not be necessary...
+
+br, Klemens
+
+-------- Original-Nachricht --------
+&gt;<i> Datum: Wed, 5 Dec 2007 22:47:02 -0500
+</I>&gt;<i> Von: Jingyi Hu &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">jhu2000 at hotmail.com</A>&gt;
+</I>&gt;<i> An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-hss at lists.berlios.de</A>, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-cscf at lists.berlios.de</A>
+</I>&gt;<i> Betreff: [OpenIMSCore-Users] Could I register a user without any authentication scheme?
+</I>
+&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> Hi All,
+</I>&gt;<i>  
+</I>&gt;<i> I can use OpenIMSCore to register users to make call between X-Lite and
+</I>&gt;<i> other soft clients. 
+</I>&gt;<i>  
+</I>&gt;<i> Currently I have test with one soft client from Hello Soft. It did not use
+</I>&gt;<i> any Authentication Scheme. Could I setup OpenIMSCore so it will not use
+</I>&gt;<i> any authenication scheme, like direct Authentication?
+</I>&gt;<i>  
+</I>&gt;<i> Thanks.
+</I>&gt;<i>  
+</I>&gt;<i> Best regards,
+</I>&gt;<i>  
+</I>&gt;<i> Jingyi Hu
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i>  
+</I>&gt;<i> _________________________________________________________________
+</I>&gt;<i> You keep typing, we keep giving. Download Messenger and join the i&#8217;m
+</I>&gt;<i> Initiative now.
+</I>&gt;<i> <A HREF="http://im.live.com/messenger/im/home/?source=TAGLM">http://im.live.com/messenger/im/home/?source=TAGLM</A>
+</I>
+-- 
+Psssst! Schon vom neuen GMX MultiMessenger geh&#246;rt?
+Der kann`s mit allen: <A HREF="http://www.gmx.net/de/go/multimessenger">http://www.gmx.net/de/go/multimessenger</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003074.html">[OpenIMSCore-Users] Could I register a user without any authentication scheme?
+</A></li>
+	<LI>Next message: <A HREF="003056.html">[OpenIMSCore-Users] How the fileds &quot;S-CSCF Name&quot; and &quot;Diameter Name&quot; set in IMS Subscription use
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3076">[ date ]</a>
+              <a href="thread.html#3076">[ thread ]</a>
+              <a href="subject.html#3076">[ subject ]</a>
+              <a href="author.html#3076">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

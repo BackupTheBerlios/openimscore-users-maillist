@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20%2B%20PCRF%20rejecting%20the%20Term-side&In-Reply-To=%3C48353031.1010402%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003985.html">
+   <LINK REL="Next"  HREF="003882.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side</H1>
+    <B>Alberto Diez</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-CSCF%20%2B%20PCRF%20rejecting%20the%20Term-side&In-Reply-To=%3C48353031.1010402%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side">Alberto.Diez at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu May 22 10:34:57 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003985.html">[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+</A></li>
+        <LI>Next message: <A HREF="003882.html">[OpenIMSCore-Users] IMS QoS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3986">[ date ]</a>
+              <a href="thread.html#3986">[ thread ]</a>
+              <a href="subject.html#3986">[ subject ]</a>
+              <a href="author.html#3986">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>well
+the &quot;normal&quot; situation would be a 488 towards the originator of the 
+INVITE, and ACK followed of BYE towards the one that has generated the 
+200 OK for the INVITE
+
+it seems that there is some confussion because the ACK and BYE are sent 
+to the orig side. I think you have to call the function P_generates_AAR 
+before you call P_AAR
+
+Because there is an issue with this terminating and originating, not 
+only in the branch, not only in the OpenIMSCore but in SER.
+
+I dont have the time or the resources to deal with this now, so just 
+look for this yourself and provide a patch
+
+thanks!
+
+
+
+Pedro Antonio Vico Solano wrote:
+&gt;<i> 
+</I>&gt;<i> Hello Alberto,
+</I>&gt;<i> 
+</I>&gt;<i> I attach you the capture file for the term side. The problem is:
+</I>&gt;<i> 
+</I>&gt;<i> - If the release function is &quot;P_release_call_onreply(&quot;orig&quot;);&quot; the term 
+</I>&gt;<i> side does nothing (normal)
+</I>&gt;<i> - It the release function is &quot;P_release_call_onreply(&quot;term&quot;);&quot; the term 
+</I>&gt;<i> side does strange things:
+</I>&gt;<i> 
+</I>&gt;<i>      * Strange messages towards orig side, but, in the end, the call is 
+</I>&gt;<i> released on orig.
+</I>&gt;<i>      * ACK towards the term side so the called user begins to talk (with 
+</I>&gt;<i> noone!)
+</I>&gt;<i> 
+</I>&gt;<i> BR
+</I>&gt;<i> Pedro
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> *&quot;Diez, Alberto&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>&gt;*
+</I>&gt;<i> 
+</I>&gt;<i> 21/05/2008 22:34
+</I>&gt;<i> 
+</I>&gt;<i> 	
+</I>&gt;<i> Para
+</I>&gt;<i> 	&quot;Pedro Antonio Vico Solano&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pvsolano at amper.es</A>&gt;
+</I>&gt;<i> cc
+</I>&gt;<i> 	&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>&gt;
+</I>&gt;<i> Asunto
+</I>&gt;<i> 	RE: P-CSCF + PCRF rejecting the Term-side
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 	
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> just do, the same you do in the originating route block but in the 
+</I>&gt;<i> terminating, it should work
+</I>&gt;<i> if it does not, send a complete trace and define what is are the strange 
+</I>&gt;<i> things done
+</I>&gt;<i> 
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Pedro Antonio Vico Solano [_mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pvsolano at amper.es_</A>]
+</I>&gt;<i> Sent: Wed 5/21/2008 5:57 PM
+</I>&gt;<i> To: Diez, Alberto
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: P-CSCF + PCRF rejecting the Term-side
+</I>&gt;<i> 
+</I>&gt;<i> Hello Alberto &amp; everyone,
+</I>&gt;<i> 
+</I>&gt;<i> I'm testing a third-party PCRF with two independent IMS domains. So I need
+</I>&gt;<i> to reserve resources on both the orig &amp; term side.
+</I>&gt;<i> 
+</I>&gt;<i> If the term side rejects the AAR, the P-CSCF does strange things if the
+</I>&gt;<i> following sentences are put on Term_Initial_reply.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> if (t_check_status(&quot;183&quot;)||t_check_status(&quot;200&quot;)){
+</I>&gt;<i>                P_SDP_manipulate();
+</I>&gt;<i>                # 183 can be cancelled by proxy, however 200?
+</I>&gt;<i> 
+</I>&gt;<i>                # check if QoS is ok, 0 - originating, 1 - terminating
+</I>&gt;<i>                if (!P_AAR(&quot;1&quot;)) {
+</I>&gt;<i>                        P_release_call_onreply(&quot;term&quot;);
+</I>&gt;<i>                #   end_media_session();
+</I>&gt;<i>                }
+</I>&gt;<i>                # else {
+</I>&gt;<i>                #       use_media_proxy();
+</I>&gt;<i>                #}
+</I>&gt;<i>        }
+</I>&gt;<i> 
+</I>&gt;<i> If I leave the original  &quot;P_release_call_onreply(&quot;orig&quot;);&quot;  sentence, the
+</I>&gt;<i> term side does not do nothing with SIP signalling.
+</I>&gt;<i> 
+</I>&gt;<i> I attach you the signalling MSCs.
+</I>&gt;<i> 
+</I>&gt;<i> Am I doing it OK?
+</I>&gt;<i> 
+</I>&gt;<i> BR
+</I>&gt;<i> Pedro
+</I>&gt;<i> 
+</I>
+-- 
+Alberto Diez Albaladejo
+Fraunhofer FOKUS
+Kaiserin-Augusta-Allee 31
+10589 Berlin
+Tel 00493034637307
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003985.html">[OpenIMSCore-Users] P-CSCF + PCRF rejecting the Term-side
+</A></li>
+	<LI>Next message: <A HREF="003882.html">[OpenIMSCore-Users] IMS QoS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3986">[ date ]</a>
+              <a href="thread.html#3986">[ thread ]</a>
+              <a href="subject.html#3986">[ subject ]</a>
+              <a href="author.html#3986">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] setkey: command not found
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20setkey%3A%20command%20not%20found&In-Reply-To=%3C4565733F.3030603%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000030.html">
+   <LINK REL="Next"  HREF="000039.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] setkey: command not found</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20setkey%3A%20command%20not%20found&In-Reply-To=%3C4565733F.3030603%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] setkey: command not found">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Nov 23 11:09:03 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000030.html">[OpenIMSCore-Users] setkey: command not found
+</A></li>
+        <LI>Next message: <A HREF="000039.html">[OpenIMSCore-Users] setkey: command not found
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#36">[ date ]</a>
+              <a href="thread.html#36">[ thread ]</a>
+              <a href="subject.html#36">[ subject ]</a>
+              <a href="author.html#36">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+1. Lebing, I have no idea why you needed any C++ stuff when all our code 
+is pure C. I am not using either ubuntu or debian, but I doubt that you 
+would need libmysql++-dev as SER uses the C API for MySQL, usually 
+called libmysql-dev (on Gentoo it is included in dev-db/mysql).... maybe 
+you could enlighten us here...
+
+2. uuid-dev - again no clue. I know all the code in the CSCF extensions 
+and most of the SER's routines, but never encountered this. What is it 
+and where did we use it??
+
+3. MySQL - if you would use the provided database scripts, all the 
+rights are set by default, so that you will not have issues with it. So 
+far nobody complained. Maybe you are talking about an old internal 
+version that you might have seen. Please update.
+
+4. Domain and DNS related - again, almost all pre-configured, plus that 
+this problems are off-topic here. A google search will solve them.
+
+-Dragos
+
+
+Lebing Xie wrote:
+&gt;<i> The trace of make all is quite lang. At first I have had similar
+</I>&gt;<i> problems, after install following libs (Ubuntu-debian), seems 
+</I>&gt;<i> fine now. Actually all these infos can be found in INSTALL.txt file.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> C++:
+</I>&gt;<i> apt-get install build-essential
+</I>&gt;<i>
+</I>&gt;<i> Mysql libs:
+</I>&gt;<i> libxml2-dev
+</I>&gt;<i> libmysql++-dev
+</I>&gt;<i>
+</I>&gt;<i> Other libs:
+</I>&gt;<i> ipsec-tools
+</I>&gt;<i> uuid-dev
+</I>&gt;<i>
+</I>&gt;<i> Other errors are mostly:
+</I>&gt;<i> 1. Mysql user name, password and rights
+</I>&gt;<i> 2. Domain and DNS related
+</I>&gt;<i>
+</I>&gt;<i> hope it helps
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> urs Lebing
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Wed, 2006-11-22 at 17:59 +0100, Outi Koski (AC/EDD) wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Since the solution was so simple, I think I'm entitled to ask another
+</I>&gt;&gt;<i> question. ;)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> When starting the I-CSCF, the following happens:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> /opt/OpenIMSCore&gt; ./icscf.sh
+</I>&gt;&gt;<i>  0(25894) ERROR: load_module: could not open module
+</I>&gt;&gt;<i> &lt;/opt/OpenIMSCore/ser_ims/modules/mysql/mysql.so&gt;: 
+</I>&gt;&gt;<i> /opt/OpenIMSCore/ser_ims/modules/mysql/mysql.so: cannot open shared
+</I>&gt;&gt;<i> object
+</I>&gt;&gt;<i> file: No such file or directory
+</I>&gt;&gt;<i>  0(25894) parse error (30,13-14): failed to load module
+</I>&gt;&gt;<i> ERROR: bad config file (1 errors)
+</I>&gt;&gt;<i>  0(25894) INFO:cdp:cdp_exit(): CDiameterPeer stoping ...
+</I>&gt;&gt;<i> ./icscf.sh: line 5: 25894 Segmentation fault      
+</I>&gt;&gt;<i> /opt/OpenIMSCore/ser_ims/ser -f /opt/OpenIMSCore/icscf.cfg -D -D
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> And the program is right, the module does not exist at
+</I>&gt;&gt;<i> &quot;/opt/OpenIMSCore/ser_ims/modules/mysql/mysql.so&quot;. So my question is, in
+</I>&gt;&gt;<i> which step that kind of file should appear to the folder? Or is the file
+</I>&gt;&gt;<i> name wrong? Or what's my problem? (I do not have that much
+</I>&gt;&gt;<i> mysql-experience yet, so if the question is again as simple, I
+</I>&gt;&gt;<i> apologize)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Outi
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;&gt;&gt;<i> Sent: Wednesday, November 22, 2006 5:34 PM
+</I>&gt;&gt;&gt;<i> To: Outi Koski (AC/EDD)
+</I>&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] setkey: command not found
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hi Outi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Don't despair, I am compiling a FAQ and I will upload it 
+</I>&gt;&gt;&gt;<i> soon. This is one of those and at the workshop this was a 
+</I>&gt;&gt;&gt;<i> point on a slide.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> You need the ipsec-tools package installed (at least this is 
+</I>&gt;&gt;&gt;<i> how it is called in Gentoo Linux). The setkey is a utility 
+</I>&gt;&gt;&gt;<i> that manipulates the Linux kernel 2.6 IPSec implementation. 
+</I>&gt;&gt;&gt;<i> You probably also need your kernel compiled with AH and ESP 
+</I>&gt;&gt;&gt;<i> for IPSec if you plan to actually use the IPSec tunnels (if 
+</I>&gt;&gt;&gt;<i> not, just comment the 2 lines in the pcscf.sh and forget about it).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The solution was simple, you are right, but once you do it on 
+</I>&gt;&gt;&gt;<i> one machine you forget about it.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Outi Koski (AC/EDD) wrote:
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Hi all!
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I have been trying today to install the IMS Core. The HSS is now 
+</I>&gt;&gt;&gt;&gt;<i> running, but when I try to start the CSCFs I get the 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> following message:
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> #/opt/OpenIMSCore&gt; ./pcscf.sh
+</I>&gt;&gt;&gt;&gt;<i> #./pcscf.sh: line 6: setkey: command not found
+</I>&gt;&gt;&gt;&gt;<i> #./pcscf.sh: line 7: setkey: command not found
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Where should the command setkey point to in the .sh -file? 
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> Or how can 
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> I fix the problem? Or is it a problem?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Probably there exists a simple solution, which after one day of 
+</I>&gt;&gt;&gt;&gt;<i> installing and configuring doesn't seem that simple anymore...
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Outi
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> ----------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000030.html">[OpenIMSCore-Users] setkey: command not found
+</A></li>
+	<LI>Next message: <A HREF="000039.html">[OpenIMSCore-Users] setkey: command not found
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#36">[ date ]</a>
+              <a href="thread.html#36">[ thread ]</a>
+              <a href="subject.html#36">[ subject ]</a>
+              <a href="author.html#36">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

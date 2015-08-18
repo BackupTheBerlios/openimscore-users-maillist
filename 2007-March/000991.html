@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] PCSCF not forwarding ACK to SCSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PCSCF%20not%20forwarding%20ACK%20to%20SCSCF&In-Reply-To=%3C45E806FD.4040401%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000985.html">
+   <LINK REL="Next"  HREF="000997.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] PCSCF not forwarding ACK to SCSCF</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PCSCF%20not%20forwarding%20ACK%20to%20SCSCF&In-Reply-To=%3C45E806FD.4040401%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] PCSCF not forwarding ACK to SCSCF">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Mar  2 12:14:05 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000985.html">[OpenIMSCore-Users] PCSCF not forwarding ACK to SCSCF
+</A></li>
+        <LI>Next message: <A HREF="000997.html">[OpenIMSCore-Users] PCSCF not forwarding ACK to SCSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#991">[ date ]</a>
+              <a href="thread.html#991">[ thread ]</a>
+              <a href="subject.html#991">[ subject ]</a>
+              <a href="author.html#991">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Actually, the initial request should contain only the Service-Route as
+Routes. The P-CSCF should be used as strict outbound proxy and as such
+there should be no Route header to it.
+
+-Dragos
+
+
+Shadangi Prateek-a24134 wrote:
+&gt;<i> Hello Dragos,
+</I>&gt;<i> No, I have not modified pcscf.cfg, I have only changed ip address from
+</I>&gt;<i> 127.0.0.1 to the LAN ip address.
+</I>&gt;<i> Attaching pcscf.cfg for you reference.
+</I>&gt;<i>
+</I>&gt;<i> I have captured the traces in &quot;any&quot; Interface of ethereal and my Linux
+</I>&gt;<i> box is having ipv6, ipv4 etc configured to same network card. This may
+</I>&gt;<i> be the reason ethereal has captured 3 packets, But my client is sending
+</I>&gt;<i> only one.
+</I>&gt;<i>
+</I>&gt;<i> And about the Route headers, I think client has to add the Route headers
+</I>&gt;<i> equal to the service-route received in 200 OK of Register, So First It
+</I>&gt;<i> is adding IP address of PCSCF then whatever value received in
+</I>&gt;<i> Service-Route, Here something is wrong in my client because along with
+</I>&gt;<i> service-route it is adding the &quot;Path&quot; header also to the Route, I am
+</I>&gt;<i> checking this.
+</I>&gt;<i> Is this the reason of not forwarding of ack by PCSCF ??
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Prateek 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>] 
+</I>&gt;<i> Sent: Thursday, March 01, 2007 9:43 PM
+</I>&gt;<i> To: Shadangi Prateek-a24134
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] PCSCF not forwarding ACK to SCSCF
+</I>&gt;<i>
+</I>&gt;<i> Hello Shadangi,
+</I>&gt;<i>
+</I>&gt;<i> Have you modified the pcscf.cfg? Because in packet 54 the P-CSCF should
+</I>&gt;<i> have record-routed with <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at pcscf.open-ims.test</A>:4060 and it is not doing
+</I>&gt;<i> that.
+</I>&gt;<i>
+</I>&gt;<i> Also, although not related, why is your client sending the request 3
+</I>&gt;<i> times and why the strange Route headers in the first INVITE?
+</I>&gt;<i>
+</I>&gt;<i> -Dragos
+</I>&gt;<i>
+</I>&gt;<i> Shadangi Prateek-a24134 wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i> I am trying to test INVITE in loopback mode, I am able to register 
+</I>&gt;&gt;<i> successfully and able to receive INVITE, but when I send ACK, it is 
+</I>&gt;&gt;<i> received Properly in PCSCF but PCSCF is not forwarding it to SCSCF.
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i> I am not using sip2ims but directly sending all the requests to PCSCF.
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i> I have already verified that the Route header in ACK is equal to 
+</I>&gt;&gt;<i> Record-Route received in 200 OK of INVITE but in reverse order.
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i> Can someone point out what is wrong ??
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i> I am attaching a trace.
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i> Prateek
+</I>&gt;&gt;<i> ----------------------------------------------------------------------
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000985.html">[OpenIMSCore-Users] PCSCF not forwarding ACK to SCSCF
+</A></li>
+	<LI>Next message: <A HREF="000997.html">[OpenIMSCore-Users] PCSCF not forwarding ACK to SCSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#991">[ date ]</a>
+              <a href="thread.html#991">[ thread ]</a>
+              <a href="subject.html#991">[ subject ]</a>
+              <a href="author.html#991">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

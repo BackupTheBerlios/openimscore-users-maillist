@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] All non REGISTER messages seem to get stuck in	SCSCF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20All%20non%20REGISTER%20messages%20seem%20to%20get%20stuck%20in%0A%09SCSCF&In-Reply-To=%3Cdaca1e090806091245r205421a7ne6d34b58e9e73589%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004077.html">
+   <LINK REL="Next"  HREF="004086.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] All non REGISTER messages seem to get stuck in	SCSCF</H1>
+    <B>Louis Alexander</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20All%20non%20REGISTER%20messages%20seem%20to%20get%20stuck%20in%0A%09SCSCF&In-Reply-To=%3Cdaca1e090806091245r205421a7ne6d34b58e9e73589%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] All non REGISTER messages seem to get stuck in	SCSCF">panicked.kernel at gmail.com
+       </A><BR>
+    <I>Mon Jun  9 21:45:05 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004077.html">[OpenIMSCore-Users] ready-run VM image
+</A></li>
+        <LI>Next message: <A HREF="004086.html">[OpenIMSCore-Users] All non REGISTER messages seem to get stuck	inSCSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4078">[ date ]</a>
+              <a href="thread.html#4078">[ thread ]</a>
+              <a href="subject.html#4078">[ subject ]</a>
+              <a href="author.html#4078">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>All,
+Ive got both alice and bob registered using MD5 with Early-IMS enabled.
+Whenever Bob or Alice try to do anything (INVITE, PUBLISH, SUBSCRIBE),
+everything they send (through the PCSCF 4060 as i was told to do :)) seems
+to just dead end at the SCSCF  When i look in the logs i see the message
+&quot;Orig, msg was fwded to AS&quot;.  This may make sense for the PUBLISH and
+SUBSCRIBE as they are presence events and i see that the SPT and IFC has
+some stuff set up for a presence server example... but the INVITE doesn't
+make any sense.  I haven't added any new services that would filter on an
+INVITE.
+
+Please forgive me if i seem to be asking a silly question, i promise i have
+spent all morning searching through the archive.  Ive attached a snoop
+(since after reading through the archive, i know you will ask for one :) ).
+(log snippet follows)
+
+
+ 1(22581) ERR:S-CSCF:cscf_get_integrity_protected: Message does not contain
+Authorization header.
+ 1(22581) ERR:S-CSCF:cscf_get_private_identity: Message does not contain
+Authorization header.
+ 1(22581) INF:S-CSCF:cscf_get_private_identity: Falling back to
+private_id=stripped(public_id)
+-&gt; Message did not contain a valid Authorization Header!!! This fallback is
+deprecated outside Early-IMS or NASS-Bundled!
+ 1(22581) DBG:S-CSCF:S_is_authorized: Possible Early-IMS identified
+22(22604) DBG:sm_process(): Peer hss.open-ims.test      State R_Open
+Event R_Rcv_Message
+ 1(22581) DBG:S-CSCF:S_is_authorized: IP address in MAA was &lt;0.0.0.0&gt;
+ 1(22581) ERR:S-CSCF:cscf_get_private_identity: Message does not contain
+Authorization header.
+ 1(22581) INF:S-CSCF:cscf_get_private_identity: Falling back to
+private_id=stripped(public_id)
+-&gt; Message did not contain a valid Authorization Header!!! This fallback is
+deprecated outside Early-IMS or NASS-Bundled!
+ 1(22581) ERR:S-CSCF:cscf_get_auts: Message does not contain Authorization
+header.
+22(22604) DBG:sm_process(): Peer hss.open-ims.test      State R_Open
+Event R_Rcv_Message
+ 3(22583) ERR:S-CSCF:S_is_authorized: no matching auth vector found - maybe
+timer expired
+22(22604) DBG:sm_process(): Peer hss.open-ims.test      State R_Open
+Event R_Rcv_Message
+ 1(22581) DBG:S-CSCF:S_is_authorized: UE said:
+5ef7227b7cfa86d9f8fddbe44e2f8971 and we  expect
+5ef7227b7cfa86d9f8fddbe44e2f8971 ha1 a3da98c9b36dde1f17e3f713225dc4d1
+22(22604) DBG:sm_process(): Peer hss.open-ims.test      State R_Open
+Event R_Rcv_Message
+ 1(22581) DBG:S-CSCF:S_add_p_charging_function_addresses: Looking for
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at open-ims.test</A>&gt;
+ 1(22581) DBG:S-CSCF:S_add_p_charging_function_addresses: No entry in
+registrar for &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at open-ims.test</A>&gt;
+ 1(22581) INFO:ISC:ISC_match_filter_reg(): Checking triggers
+ 1(22581) INFO:ISC:ISC_match_filter_reg(): Starting triggering
+ 1(22581) INFO:ISC:ISC_match_filter_reg(): Orig User
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at open-ims.test</A>&gt; [0]
+ 1(22581) INFO:ISC:isc_checker_find: starting search
+ 1(22581) INFO:ISC:ISC_match_filter_reg(): No REGISTER match found in filter
+criteria
+16(22596) --- Peer List: ---
+16(22596)  S[R_Open] hss.open-ims.test:3868 D[ ]
+16(22596)        [16777216,10415]
+16(22596)        [16777216,4491]
+16(22596)        [16777216,13019]
+16(22596)        [16777217,10415]
+16(22596)        [16777221,10415]
+16(22596) ------------------
+16(22596) --- Peer List: ---
+16(22596)  S[R_Open] hss.open-ims.test:3868 D[ ]
+16(22596)        [16777216,10415]
+16(22596)        [16777216,4491]
+16(22596)        [16777216,13019]
+16(22596)        [16777217,10415]
+16(22596)        [16777221,10415]
+16(22596) ------------------
+ 9(22589) INF:S-CSCF:----------  Registrar Contents begin --------
+ 9(22589) INF:S-CSCF:[   3] P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt; R[ 1] Early-IMS: &lt;&gt;
+ 9(22589) INF:S-CSCF:         CCF1: &lt;pri_ccf_address&gt; CCF2: &lt;&gt;
+ 9(22589) INF:S-CSCF:         C:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at 10.239.69.149</A>:49742;rinstance=d300414beb73d0e0&gt;
+Exp:[3593]
+ 9(22589) INF:S-CSCF:           Path:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+ 9(22589) INF:S-CSCF:           UA: &lt;eyeBeam release 1013t stamp 43069&gt;
+ 9(22589) INF:S-CSCF:----------  Registrar Contents end ----------
+ 3(22583) DBG:S-CSCF:cscf_get_terminating_identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at open-ims.test</A>
+&gt;<i>
+</I>16(22596) --- Peer List: ---
+16(22596)  S[R_Open] hss.open-ims.test:3868 D[ ]
+16(22596)        [16777216,10415]
+16(22596)        [16777216,4491]
+16(22596)        [16777216,13019]
+16(22596)        [16777217,10415]
+16(22596)        [16777221,10415]
+16(22596) ------------------
+16(22596) --- Peer List: ---
+16(22596)  S[R_Open] hss.open-ims.test:3868 D[ ]
+16(22596)        [16777216,10415]
+16(22596)        [16777216,4491]
+16(22596)        [16777216,13019]
+16(22596)        [16777217,10415]
+16(22596)        [16777221,10415]
+16(22596) ------------------
+ 1(22581) About to check for mobile_originating or ISC_from_AS
+22(22604) DBG:sm_process(): Peer hss.open-ims.test      State R_Open
+Event R_Rcv_Message
+ 1(22581) &gt;&gt;       Orig
+ 1(22581) DBG:S-CSCF:S_save_dialog(orig): Call-ID
+&lt;NjI3ZmQ1ODc3ZWRjMGZlZjgyNWQ1NmI5ZGJhMTUxNGU.&gt;
+ 1(22581) INF:S-CSCF:----------  S-CSCF Dialog List begin --------------
+ 1(22581) INF:S-CSCF:[ 116] Dir[0]
+Call-ID:&lt;NjI3ZmQ1ODc3ZWRjMGZlZjgyNWQ1NmI5ZGJhMTUxNGU.&gt;
+AOR:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at open-ims.test</A>&gt; 1(22581) INF:S-CSCF:           Method:[1]
+State:[1] Exp:[  60] Ref:[] Event:[]
+ 1(22581) INF:S-CSCF:----------  S-CSCF Dialog List end   --------------
+* 1(22581) INFO:ISC:ISC_match_filter(orig): Checking triggers
+ 1(22581) INFO:ISC:isc_mark_get_from_msg: Trying to get the mark from the
+message
+ 1(22581) INFO:ISC:ISC_match_filter(orig): Starting triggering
+ 1(22581) &gt;&gt;       Orig - msg (INVITE) was fwded to AS*
+ 2(22582) Trans already in processing... skip
+ 3(22583) Trans already in processing... skip
+16(22596) --- Peer List: ---
+16(22596)  S[R_Open] hss.open-ims.test:3868 D[ ]
+16(22596)        [16777216,10415]
+16(22596)        [16777216,4491]
+16(22596)        [16777216,13019]
+16(22596)        [16777217,10415]
+16(22596)        [16777221,10415]
+16(22596) ------------------
+ 4(22584) Trans already in processing... skip
+ 9(22589) INF:S-CSCF:----------  Registrar Contents begin --------
+ 9(22589) INF:S-CSCF:[   3] P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt; R[-1] Early-IMS: &lt;&gt;
+ 9(22589) INF:S-CSCF:         CCF1: &lt;pri_ccf_address&gt; CCF2: &lt;&gt;
+ 9(22589) INF:S-CSCF:         C:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alice at 10.239.69.149</A>:49742;rinstance=d300414beb73d0e0&gt;
+Exp:[3583]
+ 9(22589) INF:S-CSCF:           Path:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+ 9(22589) INF:S-CSCF:           UA: &lt;eyeBeam release 1013t stamp 43069&gt;
+ 9(22589) INF:S-CSCF:----------  Registrar Contents end ----------
+16(22596) --- Peer List: ---
+16(22596)  S[R_Open] hss.open-ims.test:3868 D[ ]
+16(22596)        [16777216,10415]
+16(22596)        [16777216,4491]
+16(22596)        [16777216,13019]
+16(22596)        [16777217,10415]
+16(22596)        [16777221,10415]
+16(22596) ------------------
+16(22596) --- Peer List: ---
+16(22596)  S[R_Open] hss.open-ims.test:3868 D[ ]
+16(22596)        [16777216,10415]
+16(22596)        [16777216,4491]
+16(22596)        [16777216,13019]
+16(22596)        [16777217,10415]
+16(22596)        [16777221,10415]
+16(22596) ------------------
+16(22596) --- Peer List: ---
+16(22596)  S[R_Open] hss.open-ims.test:3868 D[ ]
+16(22596)        [16777216,10415]
+16(22596)        [16777216,4491]
+16(22596)        [16777216,13019]
+16(22596)        [16777217,10415]
+16(22596)        [16777221,10415]
+16(22596) ------------------
+
+
+
+
+-- 
+Thanks,
+
+Louis
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080609/3a52cdda/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080609/3a52cdda/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: scscf-problem.cap
+Type: application/octet-stream
+Size: 47494 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080609/3a52cdda/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080609/3a52cdda/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004077.html">[OpenIMSCore-Users] ready-run VM image
+</A></li>
+	<LI>Next message: <A HREF="004086.html">[OpenIMSCore-Users] All non REGISTER messages seem to get stuck	inSCSCF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4078">[ date ]</a>
+              <a href="thread.html#4078">[ thread ]</a>
+              <a href="subject.html#4078">[ subject ]</a>
+              <a href="author.html#4078">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

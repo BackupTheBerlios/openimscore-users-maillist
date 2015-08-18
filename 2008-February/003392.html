@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] PSI on terminating side - will it work in	the OpenIMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSI%20on%20terminating%20side%20-%20will%20it%20work%20in%0A%09the%20OpenIMS&In-Reply-To=%3C5fd52d7a0802150445q272f13dcobc97e1938ff9d29a%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003391.html">
+   <LINK REL="Next"  HREF="003393.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] PSI on terminating side - will it work in	the OpenIMS</H1>
+    <B>Tomasz Zieleniewski</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20PSI%20on%20terminating%20side%20-%20will%20it%20work%20in%0A%09the%20OpenIMS&In-Reply-To=%3C5fd52d7a0802150445q272f13dcobc97e1938ff9d29a%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] PSI on terminating side - will it work in	the OpenIMS">tzieleniewski at gmail.com
+       </A><BR>
+    <I>Fri Feb 15 13:45:36 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003391.html">[OpenIMSCore-Users] PSI on terminating side - will it work in	the OpenIMS
+</A></li>
+        <LI>Next message: <A HREF="003393.html">[OpenIMSCore-Users] PSI on terminating side - will it work in	the OpenIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3392">[ date ]</a>
+              <a href="thread.html#3392">[ thread ]</a>
+              <a href="subject.html#3392">[ subject ]</a>
+              <a href="author.html#3392">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok this one solved, now I see that this field are used when user is
+registered.
+Now the situation looks like this
+When originating scscf sends request to the terminating PSI, because it is
+in the same network the request is sent to the icscf
+and iscsf sends this message to it self and nothing happens then
+
+this is request sent from originating scscf to icscf:
+
+MESSAGE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vots at ims.rd.touk.pl</A> SIP/2.0
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">8d32e9afaee92f2597cec8e43bc63aae at 192.168.0.165</A>
+CSeq: 1 MESSAGE
+From: &quot;tzl&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tzl at ims.rd.touk.pl</A>&gt;;tag=1032
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vots at ims.rd.touk.pl</A>&gt;
+Via: SIP/2.0/UDP 192.168.129.38:6060;branch=z9hG4bK9191.02f8e4b6.0
+Via: SIP/2.0/UDP 192.168.129.38:4060;branch=z9hG4bK9191.452d0673.0
+Via: SIP/2.0/UDP 192.168.0.165:5060
+;rport=5060;branch=z9hG4bK7ce877d7bb7a9ca403f4b44080742c17
+Max-Forwards: 15
+Content-Type: text/plain
+Contact: &quot;tzl&quot; &lt;sip:192.168.0.165:5060&gt;
+Privacy: none
+User-Agent: Fraunhofer FOKUS/NGNI Java IMS UserEndpoint FoJIE 0.1 (jdk1.3)
+P-Access-Network-Info: 3GPP-UTRAN-TDD; utran-cell-id-3gpp=00000000
+Allow: INVITE,ACK,CANCEL,BYE,MESSAGE,NOTIFY
+Content-Length: 4
+P-Asserted-Identity: &quot;tzl&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tzl at ims.rd.touk.pl</A>&gt;
+P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd0000000047b586910000001a&quot;;icid-generated-at=
+192.168.129.38;orig-ioi=&quot;ims.rd.touk.pl&quot;
+
+this is request sent from originating icscf to itself:
+
+MESSAGE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vots at ims.rd.touk.pl</A> SIP/2.0
+Route: &lt;sip:scscf.ims.rd.touk.pl&gt;
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">8d32e9afaee92f2597cec8e43bc63aae at 192.168.0.165</A>
+CSeq: 1 MESSAGE
+From: &quot;tzl&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tzl at ims.rd.touk.pl</A>&gt;;tag=1032
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vots at ims.rd.touk.pl</A>&gt;
+Via: SIP/2.0/UDP 192.168.129.38;branch=z9hG4bK9191.8c5fba93.0
+Via: SIP/2.0/UDP 192.168.129.38:6060;branch=z9hG4bK9191.02f8e4b6.0
+Via: SIP/2.0/UDP 192.168.129.38:4060;branch=z9hG4bK9191.452d0673.0
+Via: SIP/2.0/UDP 192.168.0.165:5060
+;rport=5060;branch=z9hG4bK7ce877d7bb7a9ca403f4b44080742c17
+Max-Forwards: 14
+Content-Type: text/plain
+Contact: &quot;tzl&quot; &lt;sip:192.168.0.165:5060&gt;
+Privacy: none
+User-Agent: Fraunhofer FOKUS/NGNI Java IMS UserEndpoint FoJIE 0.1 (jdk1.3)
+P-Access-Network-Info: 3GPP-UTRAN-TDD; utran-cell-id-3gpp=00000000
+Allow: INVITE,ACK,CANCEL,BYE,MESSAGE,NOTIFY
+Content-Length: 4
+P-Asserted-Identity: &quot;tzl&quot; &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tzl at ims.rd.touk.pl</A>&gt;
+P-Charging-Vector:
+icid-value=&quot;P-CSCFabcd0000000047b586910000001a&quot;;icid-generated-at=
+192.168.129.38;orig-ioi=&quot;ims.rd.touk.pl&quot;
+
+
+On Fri, Feb 15, 2008 at 1:28 PM, Tomasz Zieleniewski &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">tzieleniewski at gmail.com</A>&gt; wrote
+
+&gt;<i> In the IMSU page in hss I can only edit the Preferred S-CSCF and
+</I>&gt;<i> Capabilities Set
+</I>&gt;<i> I cann't edit the S-CSCF Name field and Diameter Name
+</I>&gt;<i>
+</I>&gt;<i> On Fri, Feb 15, 2008 at 1:11 PM, Alberto Diez &lt;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; ok , the IMSU you have to select an scscf for it, cant leave it without
+</I>&gt;<i> &gt; deciding.. this is because we use that for routing in I-CSCF mode
+</I>&gt;<i> &gt; then the LIR will reply fine and everything should work... but the bug
+</I>&gt;<i> &gt; in the s-cscf before keeps me wondering what could it be
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Tomasz Zieleniewski wrote:
+</I>&gt;<i> &gt; &gt; I caught something like this in the HSS
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 2008-02-15 13:08:22,879 DEBUG de.fhg.fokus.hss.main.Task - execute
+</I>&gt;<i> &gt; &gt; Processing LIR!
+</I>&gt;<i> &gt; &gt; 2008-02-15 13:08:22,893 INFO  de.fhg.fokus.hss.cx.op.LIR -
+</I>&gt;<i> &gt; &gt; processRequest Alberto : PSI : getting SCSCF name!
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; de.fhg.fokus.hss.cx.CxFinalResultException: Diameter_Unable_To_Comply
+</I>&gt;<i> &gt; &gt;     at de.fhg.fokus.hss.cx.op.LIR.processRequest(LIR.java:161)
+</I>&gt;<i> &gt; &gt;     at de.fhg.fokus.hss.main.Task.execute(Task.java:121)
+</I>&gt;<i> &gt; &gt;     at de.fhg.fokus.hss.main.Worker.run(Worker.java:66)
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; I've created IMSU and IMPI for my PSI IMPU but now I receive the
+</I>&gt;<i> &gt; &gt; following response from icscf
+</I>&gt;<i> &gt; &gt; 403 Forbiddent - Hss Unable to comply
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; On Fri, Feb 15, 2008 at 12:52 PM, Alberto Diez
+</I>&gt;<i> &gt; &gt; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt; &gt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>&gt;&gt; wrote:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;     well i updated something today about a parameter to allow
+</I>&gt;<i> &gt; &gt;     wildcards psi
+</I>&gt;<i> &gt; &gt;     in scscf , but 3-4 days i guess is ok...
+</I>&gt;<i> &gt; &gt;     you have to create an IMSU and IMPI for a IMPU , and you have to
+</I>&gt;<i> &gt; &gt;     assign
+</I>&gt;<i> &gt; &gt;     the preferred scscf for such an IMSU , and there is also some
+</I>&gt;<i> &gt; trick in
+</I>&gt;<i> &gt; &gt;     how you have to create the Service Profile
+</I>&gt;<i> &gt; &gt;     but again without traces i cant say you exactly where the problem
+</I>&gt;<i> &gt; is
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;     if its not urgent, next week i plan to upload some examples and
+</I>&gt;<i> &gt; &gt;     maybe do
+</I>&gt;<i> &gt; &gt;     a wiki page
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;     Tomasz Zieleniewski wrote:
+</I>&gt;<i> &gt; &gt;     &gt; Do I have to create subscription and IMPI for PSI or IMPU is
+</I>&gt;<i> &gt; enough?
+</I>&gt;<i> &gt; &gt;     &gt; I used ser_ims from svn about 3-4 days ago updated
+</I>&gt;<i> &gt; &gt;     &gt;
+</I>&gt;<i> &gt; &gt;     &gt; On Fri, Feb 15, 2008 at 12:08 PM, Alberto Diez
+</I>&gt;<i> &gt; &gt;     &gt; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt; &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt; &gt;     &gt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt; &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Alberto.Diez at fokus.fraunhofer.de</A>&gt;&gt;&gt; wrote:
+</I>&gt;<i> &gt; &gt;     &gt;
+</I>&gt;<i> &gt; &gt;     &gt;     Hi tomasz!
+</I>&gt;<i> &gt; &gt;     &gt;
+</I>&gt;<i> &gt; &gt;     &gt;     the configuration is possible, it works great in my computer
+</I>&gt;<i> &gt; &gt;     but some
+</I>&gt;<i> &gt; &gt;     &gt;     other people have reported problems thats why I am very
+</I>&gt;<i> &gt; &gt;     interested in
+</I>&gt;<i> &gt; &gt;     &gt;     your problem
+</I>&gt;<i> &gt; &gt;     &gt;
+</I>&gt;<i> &gt; &gt;     &gt;     have you got the latest (i mean from yesterday) scscf ?
+</I>&gt;<i> &gt; &gt;     &gt;     are you using wildcarded psi or distinct psi?
+</I>&gt;<i> &gt; &gt;     &gt;
+</I>&gt;<i> &gt; &gt;     &gt;     could you put debug level to 4 or 5 and send me more
+</I>&gt;<i> &gt; &gt;     detailed output?
+</I>&gt;<i> &gt; &gt;     &gt;     also more details in your configuration of HSS or a trace
+</I>&gt;<i> &gt; &gt;     with the
+</I>&gt;<i> &gt; &gt;     &gt;     diameter messages exchanged
+</I>&gt;<i> &gt; &gt;     &gt;
+</I>&gt;<i> &gt; &gt;     &gt;
+</I>&gt;<i> &gt; &gt;     &gt;     Alberto
+</I>&gt;<i> &gt; &gt;     &gt;
+</I>&gt;<i> &gt; &gt;     &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080215/8476916e/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080215/8476916e/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003391.html">[OpenIMSCore-Users] PSI on terminating side - will it work in	the OpenIMS
+</A></li>
+	<LI>Next message: <A HREF="003393.html">[OpenIMSCore-Users] PSI on terminating side - will it work in	the OpenIMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3392">[ date ]</a>
+              <a href="thread.html#3392">[ thread ]</a>
+              <a href="subject.html#3392">[ subject ]</a>
+              <a href="author.html#3392">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

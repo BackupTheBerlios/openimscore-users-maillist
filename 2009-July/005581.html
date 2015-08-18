@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Max number of calls supported by	openIMSCore ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2009-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Max%20number%20of%20calls%20supported%20by%0A%09openIMSCore%20%3F&In-Reply-To=%3C4A4C80D1.1080205%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005579.html">
+   <LINK REL="Next"  HREF="005573.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Max number of calls supported by	openIMSCore ?</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Max%20number%20of%20calls%20supported%20by%0A%09openIMSCore%20%3F&In-Reply-To=%3C4A4C80D1.1080205%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Max number of calls supported by	openIMSCore ?">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Jul  2 11:41:37 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005579.html">[OpenIMSCore-Users] Max number of calls supported by	openIMSCore ?
+</A></li>
+        <LI>Next message: <A HREF="005573.html">[OpenIMSCore-Users] Diameter Load Balancer -Looking for Test and	Solution partners
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5581">[ date ]</a>
+              <a href="thread.html#5581">[ thread ]</a>
+              <a href="subject.html#5581">[ subject ]</a>
+              <a href="author.html#5581">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>it's the start-up parameter -m. See below:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at timmy</A>:/opt/OpenIMSCore/ser_ims# ./ser --help
+version: ser 2.1.0-dev1 OpenIMSCore (i386/linux)
+Usage: ser -l address [-p port] [-l address [-p port]...] [options]
+Options:
+    -f file      Configuration file (default /usr/local/etc/ser/ser.cfg)
+    -c           Check configuration file for errors
+    -l address   Listen on the specified address/interface (multiple -l
+                  mean listening on more addresses).  The address format is
+                  [proto:]addr[:port], where proto=udp|tcp and
+                  addr= host|ip_address|interface_name. E.g: -l locahost,
+                  -l udp:127.0.0.1:5080, -l eth0:5062 The default behavior
+                  is to listen on all the interfaces.
+    -n processes Number of child processes to fork per interface
+                  (default: 8)
+    -r           Use dns to check if is necessary to add a &quot;received=&quot;
+                  field to a via
+    -R           Same as `-r` but use reverse dns;
+                  (to use both use `-rR`)
+    -v           Turn on &quot;via:&quot; host checking when forwarding replies
+    -d           Debugging mode (multiple -d increase the level)
+    -D           1..do not fork (almost) anyway, 2..do not daemonize 
+creator, 3..daemonize(default)
+    -E           Log to stderr
+    -T           Disable tcp
+    -N           Number of tcp child processes (default: equal to `-n`)
+    -W           poll method
+    -V           Version number
+    -h           This help message
+    -b nr        Maximum receive buffer size which will not be exceeded by
+                  auto-probing procedure even if  OS allows
+    -m nr        Size of shared memory allocated in Megabytes
+    -w dir       Change the working directory to &quot;dir&quot; (default &quot;/&quot;)
+    -t dir       Chroot to &quot;dir&quot;
+    -u uid       Change uid
+    -g gid       Change gid
+    -P file      Create a pid file
+    -G file      Create a pgid file
+
+
+
+kavitha N K wrote:
+&gt;<i> Could you please let me know which configuration file contains this 
+</I>&gt;<i> limitation?
+</I>&gt;<i>  
+</I>&gt;<i> &gt; Date: Wed, 1 Jul 2009 15:24:03 +0200
+</I>&gt;<i> &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kavitha_nk at hotmail.com</A>
+</I>&gt;<i> &gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kavitha.n at motorola.com</A>
+</I>&gt;<i> &gt; Subject: Re: Max number of calls supported by openIMSCore ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If you remove the limitation from the configuration file, the question
+</I>&gt;<i> &gt; is: how much RAM do you have :-p? You will have to reconfigure the
+</I>&gt;<i> &gt; SHM_MEM size that the P and S-CSCF start with, of course, as this is
+</I>&gt;<i> &gt; pre-allocated at the start to a maximum value.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Cheers,
+</I>&gt;<i> &gt; -Dragos
+</I>&gt;<i> &gt; kavitha N K wrote:
+</I>&gt;<i> &gt; &gt; correcting the subject
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kavitha_nk at hotmail.com</A>
+</I>&gt;<i> &gt; &gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">dragos.vingarzan at fokus.fraunhofer.de</A>;
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">kavitha.n at motorola.com</A>
+</I>&gt;<i> &gt; &gt; Subject: RE: Unable to connect to hss web console using web browser
+</I>&gt;<i> &gt; &gt; Date: Thu, 18 Jun 2009 12:53:06 +0530
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Hi All,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Can anyone please let me know what is the max number of simultaneous
+</I>&gt;<i> &gt; &gt; calls supported by openIMSCore ?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Regards
+</I>&gt;<i> &gt; &gt; kavitha
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Get easy photo sharing with Windows LiveT Photos. Drag n' drop
+</I>&gt;<i> &gt; &gt; &lt;<A HREF="http://www.microsoft.com/india/windows/windowslive/photos.aspx">http://www.microsoft.com/india/windows/windowslive/photos.aspx</A>&gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt; Videos Get the latest video streams on movies, Try it!
+</I>&gt;<i> &gt; &gt; &lt;<A HREF="http://video.msn.com/?mkt=en-in">http://video.msn.com/?mkt=en-in</A>&gt;
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt; &gt; Videos Get the latest video streams on movies, Try it!
+</I>&gt;<i> &gt; &gt; &lt;<A HREF="http://video.msn.com/?mkt=en-in">http://video.msn.com/?mkt=en-in</A>&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt; -----------------------------------------
+</I>&gt;<i> &gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt; Fraunhofer FOKUS/NGNI
+</I>&gt;<i> &gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt; 10589 Berlin,Germany
+</I>&gt;<i> &gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt; Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;<i> &gt; Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i> &gt; We could change the world if God would give us the source code...
+</I>&gt;<i> &gt; -----------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> Get easy photo sharing with Windows LiveT Photos. Drag n' drop 
+</I>&gt;<i> &lt;<A HREF="http://www.microsoft.com/india/windows/windowslive/photos.aspx">http://www.microsoft.com/india/windows/windowslive/photos.aspx</A>&gt;
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005579.html">[OpenIMSCore-Users] Max number of calls supported by	openIMSCore ?
+</A></li>
+	<LI>Next message: <A HREF="005573.html">[OpenIMSCore-Users] Diameter Load Balancer -Looking for Test and	Solution partners
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5581">[ date ]</a>
+              <a href="thread.html#5581">[ thread ]</a>
+              <a href="subject.html#5581">[ subject ]</a>
+              <a href="author.html#5581">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] P-cscf trouble launch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-cscf%20trouble%20launch&In-Reply-To=%3C2392e3f30710090920s1f6248a1if5bb6913da55a0cd%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002719.html">
+   <LINK REL="Next"  HREF="002720.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] P-cscf trouble launch</H1>
+    <B>Joseph Johnson</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20P-cscf%20trouble%20launch&In-Reply-To=%3C2392e3f30710090920s1f6248a1if5bb6913da55a0cd%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] P-cscf trouble launch">joseph.johnson.ie at gmail.com
+       </A><BR>
+    <I>Tue Oct  9 18:20:44 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002719.html">[OpenIMSCore-Users] P-cscf trouble launch
+</A></li>
+        <LI>Next message: <A HREF="002720.html">[OpenIMSCore-Users] R&#233;f. :  P-cscf trouble launch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2721">[ date ]</a>
+              <a href="thread.html#2721">[ thread ]</a>
+              <a href="subject.html#2721">[ subject ]</a>
+              <a href="author.html#2721">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>To solve &quot;./pcscf.sh: line 3: killser: command not found&quot;, try editing
+pcscf.sh so that the full path to the killser script is there. For
+example
+
+&quot;killser pcscf&quot; would become &quot;/opt/OpenIMSCore/ser_ims/cfg/killser pcscf&quot;
+--------------------------
+&quot;./pcscf.sh: line 4: setkey: command not found&quot; could be one of a few problems.
+Ipsec-tools might not have been installed.
+Or, you may need to run the pcscf.sh script as root
+Or, you may need to change the pcscf.sh file so that it calls setkey
+from the directory where setkey actually is e.g.
+&quot;setkey -F&quot; might become &quot;/sbin/setkey -F&quot;
+(and you may still need to run it as root)
+
+If you run the scripts as root, you must also run killall ser as root of course.
+
+Let us know if this helps at all
+
+
+On 10/9/07, Nicolas &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alscion at gmail.com</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I've problems when I start the p-cscf. It appears the following message :
+</I>&gt;<i>
+</I>&gt;<i> 0(2464) ERROR: tcp_init: bind(5, 0x8191a6c, 16) on 192.168.202.2:4060 :
+</I>&gt;<i> Address already in use
+</I>&gt;<i>
+</I>&gt;<i> That when i reboot or i start for the first time the machine. Here is the
+</I>&gt;<i> complete log  :
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> nid:/opt/OpenIMSCore# ./pcscf.sh
+</I>&gt;<i> ./pcscf.sh: line 3: killser: command not found
+</I>&gt;<i> ./pcscf.sh: line 4: setkey: command not found
+</I>&gt;<i> ./pcscf.sh: line 5: setkey: command not found
+</I>&gt;<i> Listening on
+</I>&gt;<i>              udp: 192.168.202.2 [192.168.202.2]:4060
+</I>&gt;<i>              tcp: 192.168.202.2 [192.168.202.2 ]:4060
+</I>&gt;<i> Aliases:
+</I>&gt;<i>              tcp: open-ims.test:4060
+</I>&gt;<i>              udp: open-ims.test:4060
+</I>&gt;<i>              *: pcscf.open-ims.test:4060
+</I>&gt;<i>
+</I>&gt;<i>  0(2464) ERROR: tcp_init: bind(5, 0x8191a6c, 16) on 192.168.202.2:4060 :
+</I>&gt;<i> Address already in use
+</I>&gt;<i>  0(2464) Process Table:
+</I>&gt;<i>  0(2464)  0. (2464) &gt; main
+</I>&gt;<i> nid:/opt/OpenIMSCore#
+</I>&gt;<i>
+</I>&gt;<i> Nohting else listen on this port :
+</I>&gt;<i>
+</I>&gt;<i> nid:/opt/OpenIMSCore# netstat -aux | grep 4060
+</I>&gt;<i> udp        0      0 open-ims.test:4060      *:*
+</I>&gt;<i> nid:/opt/OpenIMSCore#
+</I>&gt;<i>
+</I>&gt;<i> I've stop pcscf with the command killall ser. And when i retry tu launch the
+</I>&gt;<i> script, it freeze after that :
+</I>&gt;<i>
+</I>&gt;<i> nid:/opt/OpenIMSCore# ./pcscf.sh
+</I>&gt;<i> ./pcscf.sh: line 3: killser: command not found
+</I>&gt;<i> ./pcscf.sh: line 4: setkey: command not found
+</I>&gt;<i> ./pcscf.sh: line 5: setkey: command not found
+</I>&gt;<i> Listening on
+</I>&gt;<i>              udp: 192.168.202.2 [192.168.202.2]:4060
+</I>&gt;<i>              tcp: 192.168.202.2 [192.168.202.2 ]:4060
+</I>&gt;<i> Aliases:
+</I>&gt;<i>              tcp: open-ims.test:4060
+</I>&gt;<i>              udp: open-ims.test:4060
+</I>&gt;<i>              *: pcscf.open-ims.test:4060
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I don't understand why, it works few weeks ago. Can it be due to the dns
+</I>&gt;<i> bind server?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002719.html">[OpenIMSCore-Users] P-cscf trouble launch
+</A></li>
+	<LI>Next message: <A HREF="002720.html">[OpenIMSCore-Users] R&#233;f. :  P-cscf trouble launch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2721">[ date ]</a>
+              <a href="thread.html#2721">[ thread ]</a>
+              <a href="subject.html#2721">[ subject ]</a>
+              <a href="author.html#2721">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Trying to connect with ims communicator
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Trying%20to%20connect%20with%20ims%20communicator&In-Reply-To=%3C0AE2132CE51D1943A20F450AA7258E5C024CC088%40INOAVREX05.ptin.corpPT.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001699.html">
+   <LINK REL="Next"  HREF="001700.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Trying to connect with ims communicator</H1>
+    <B>Jos&#233; Miguel Freitas (IT)</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Trying%20to%20connect%20with%20ims%20communicator&In-Reply-To=%3C0AE2132CE51D1943A20F450AA7258E5C024CC088%40INOAVREX05.ptin.corpPT.com%3E"
+       TITLE="[OpenIMSCore-Users] Trying to connect with ims communicator">it-j-freitas at ptinovacao.pt
+       </A><BR>
+    <I>Tue May  8 17:03:37 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001699.html">[OpenIMSCore-Users] Trying to connect with ims communicator
+</A></li>
+        <LI>Next message: <A HREF="001700.html">[OpenIMSCore-Users] how to generate 1000 subscribers in database
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1702">[ date ]</a>
+              <a href="thread.html#1702">[ thread ]</a>
+              <a href="subject.html#1702">[ subject ]</a>
+              <a href="author.html#1702">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE> 
+Hi Franz, Pablo,
+ 
+The changes in the revision 070427 issued a problem that we were facing when trying to register against newer revisions of the OpenIMSCore.
+In fact, we noticed that if the port-c parameter in the header Authorization (SECURITY_PORT_C property) was different from the UA SIP port (present in the Contact header, or Via port) the user would be consecutively asked for authentication with 401 Unauthorized.
+ 
+We are using r259, and since we last checked there were no changes made in this two functions:
+- file: modules/pcscf/registrar.c
+   function: int r_is_integrity_protected(str host,int port,int transport)
+- file: modules/pcscf/registration.c
+   function: int P_is_integrity_protected(struct sip_msg *msg,char *str1,char *str2)
+If you check the code below, you will see that the Via port is matched against the port-c.
+ 
+We will update our OpenCoreIMS and check if we came up with the same problem.
+Best regards,
+Jos&#233; Miguel Freitas
+_______________________________________
+SRM Department
+Portugal Telecom Inova&#231;&#227;o, SA
+<A HREF="http://www.ptinovacao.pt">http://www.ptinovacao.pt</A> &lt;<A HREF="http://www.ptinovacao.pt/">http://www.ptinovacao.pt/</A>&gt; 
+ 
+ 
+ 
+modules/pcscf/registrar.c :
+ 
+/**
+* Finds if the message is integrity protected
+* @param host - host of the UE
+* @param port - port of the UE
+* @param transport - transport of the UE
+* @returns 1 if registered, 0 if not or error
+*/
+int r_is_integrity_protected(str host,int port,int transport)
+{
+       int ret=0;
+       r_contact *c;
+
+       if (port==0) port=5060;
+//      LOG(L_ERR,&quot;DBG:&quot;M_NAME&quot;:r_is_registered: Looking if registered &lt;%<A HREF="d://%.*s:%d">d://%.*s:%d</A>&gt;\n&quot;,
+//              transport,host.len,host.s,port);
+
+//      print_r(L_INFO);
+       c = get_r_contact(host,port,transport);
+
+       if (!c) return 0;
+
+       if (!c-&gt;ipsec){
+               r_unlock(c-&gt;hash);
+               return 0;
+       }
+
+       if (c-&gt;ipsec-&gt;port_uc == port || c-&gt;ipsec-&gt;port_us == port){
+               ret = 1;
+       }
+       r_unlock(c-&gt;hash);
+       return ret;
+}
+ 
+ 
+modules/pcscf/registration.c :
+ 
+/**
+* Finds out if the message was received over a protected IPSec channel.
+* @param msg - the SIP to check
+* @param str1 - the realm to look into
+* @param str2 - not used
+* @returns #CSCF_RETURN_TRUE if ok, #CSCF_RETURN_FALSE if no auth header found or #CSCF_RETURN_FALSE on error
+*/
+int P_is_integrity_protected(struct sip_msg *msg,char *str1,char *str2)
+{
+       int ret=CSCF_RETURN_FALSE;
+       struct via_body *vb;
+
+
+       LOG(L_DBG,&quot;DBG:&quot;M_NAME&quot;:p_is_integrity_protected: Looking if registered\n&quot;);
+//      print_r(L_INFO);
+
+       vb = cscf_get_ue_via(msg);
+
+       LOG(L_DBG,&quot;DBG:&quot;M_NAME&quot;:p_is_integrity_protected: Looking for &lt;%<A HREF="d://%.*s:%d">d://%.*s:%d</A>&gt;\n&quot;,
+               vb-&gt;proto,vb-&gt;host.len,vb-&gt;host.s,vb-&gt;port);
+
+       if (r_is_integrity_protected(vb-&gt;host,vb-&gt;port,vb-&gt;proto))
+               ret = CSCF_RETURN_TRUE;
+       else
+               ret = CSCF_RETURN_FALSE;
+
+       return ret;
+}
+ 
+&lt;<A HREF="http://www.ptinovacao.pt/">http://www.ptinovacao.pt/</A>&gt; 
+
+________________________________
+
+De: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> em nome de <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>
+Enviada: ter 08-05-2007 13:31
+Para: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">pjr at tid.es</A>
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Assunto: Re: [OpenIMSCore-Users] Trying to connect with ims communicator
+
+
+
+Hello Pablo,
+
+it is the sam problem I already have posted two days ago.
+The problem is, that the latest version changes the the SECURITY_PORT_C
+from the configured value to the value of the already used signalling
+port.
+
+You see: your Contact header field (port 5073)
+
+&gt;<i> 23928 [main] DEBUG sip.SipManager  - generated ContactHeader:Contact:
+</I>&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at 10.95.30.22</A>:5073&gt;
+
+is identical to port-c. Obviously you did not configure that value, but
+the application overwrites it.
+
+&gt;<i> alg=AKAv1-MD5;ealg=null;spi-c=10002;spi-s=10004;port-c=5073;port-s=5062
+</I>
+Maybe one of the developers can comment about it.
+
+cheers
+Franz
+
+
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001699.html">[OpenIMSCore-Users] Trying to connect with ims communicator
+</A></li>
+	<LI>Next message: <A HREF="001700.html">[OpenIMSCore-Users] how to generate 1000 subscribers in database
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1702">[ date ]</a>
+              <a href="thread.html#1702">[ thread ]</a>
+              <a href="subject.html#1702">[ subject ]</a>
+              <a href="author.html#1702">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

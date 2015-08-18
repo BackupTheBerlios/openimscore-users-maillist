@@ -1,0 +1,1163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] 3(26585) ERR:P-CSCF:P_security_relay: we cannot	find the contact or its IPSec/TLS SAs for &lt;1://100.250.1.1:5060&gt;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%203%2826585%29%20ERR%3AP-CSCF%3AP_security_relay%3A%20we%20cannot%0A%09find%20the%20contact%20or%20its%20IPSec/TLS%20SAs%20for%20%3C1%3A//100.250.1.1%3A5060%3E&In-Reply-To=%3CBA0F16E522C0264FB6842D674209530B01362383%40toexh1w2.navtelcom.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004254.html">
+   <LINK REL="Next"  HREF="004292.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] 3(26585) ERR:P-CSCF:P_security_relay: we cannot	find the contact or its IPSec/TLS SAs for &lt;1://100.250.1.1:5060&gt;</H1>
+    <B>Bin Zhou</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%203%2826585%29%20ERR%3AP-CSCF%3AP_security_relay%3A%20we%20cannot%0A%09find%20the%20contact%20or%20its%20IPSec/TLS%20SAs%20for%20%3C1%3A//100.250.1.1%3A5060%3E&In-Reply-To=%3CBA0F16E522C0264FB6842D674209530B01362383%40toexh1w2.navtelcom.com%3E"
+       TITLE="[OpenIMSCore-Users] 3(26585) ERR:P-CSCF:P_security_relay: we cannot	find the contact or its IPSec/TLS SAs for &lt;1://100.250.1.1:5060&gt;">bin.zhou at navtelcom.com
+       </A><BR>
+    <I>Tue Jul  8 16:14:36 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004254.html">[OpenIMSCore-Users] ISSUES while establishia call(revision 570)
+</A></li>
+        <LI>Next message: <A HREF="004292.html">[OpenIMSCore-Users] 3(26585) ERR:P-CSCF:P_security_relay: we cannot	find the contact or its IPSec/TLS SAs for &lt;1://100.250.1.1:5060&gt;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4240">[ date ]</a>
+              <a href="thread.html#4240">[ thread ]</a>
+              <a href="subject.html#4240">[ subject ]</a>
+              <a href="author.html#4240">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos
+
+ 
+
+Please let me know id you need further info that could help to fix this
+issue.
+
+ 
+
+Thanks.
+
+ 
+
+Bin ZHou
+
+ 
+
+ 
+
+  _____  
+
+From: Bin Zhou 
+Sent: Thursday, July 03, 2008 4:42 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: 200OK for Register is not encrypted
+
+ 
+
+Hello
+
+ 
+
+Non-encrypted 200OK was sent to UE although IPSEC Register (with ESP
+header) was processed and user was registered. As a result, this 200OK
+is dropped at UE.
+
+The cause of problem could be NO IPSec SA according to log info from
+P-CSCF:
+
+3(26585) ERR:P-CSCF:P_security_relay: we cannot find the contact or its
+IPSec/TLS SAs for &lt;1://100.250.1.1:5060&gt;.
+
+Please help me find out why openIMScore doesn't have SA at this moment
+and how to make it work. Thanks.
+
+ 
+
+ 
+
+For more info, please check log below: 
+
+    Notes: 100.250.1.1 is the UE, 100.250.0.13 is CSCFs, and
+100.250.0.11 is HSS.
+
+1) brief log info from p-cscf:
+
+1(24877) DBG:P-CSCF:P_verify_security: Looking for
+&lt;1://100.250.1.1:5060&gt; 
+
+ 3(24879) DBG:P-CSCF:P_security_401: Security-Client header found :
+&lt;ipsec-3gpp;alg=hmac-md5-96;ealg=aes-cbc;prot=esp;mod=trans;spi-c=1024;p
+ort-c=12345;spi-s=2048;port-s=3062&gt;.
+
+ 3(24879) INF:P-CSCF:execute_cmd:
+[/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Inc_Req.sh 100.250.1.1
+12345 100.250.0.13 4060 5001 rijndael-cbc
+0xd17edaca5ba975d71e61e101fcf4bb20 hmac-md5
+0x484a78f4fcadab73e27cd9c3f31cbc85]
+
+ 3(24879) INFO:P-CSCF:P_NAT_relay: &lt;sip:100.250.1.1:5060&gt;
+
+ 2(24878) DBG:P-CSCF:P_verify_security: Looking for
+&lt;1://100.250.1.1:5060&gt; 
+
+ 3(24879) INFO:P-CSCF:P_NAT_relay: &lt;sip:100.250.1.1:12345&gt;
+
+ 5(24881) INF:P-CSCF:----------  Registrar Contents begin --------
+
+ 5(24881) INF:P-CSCF:[   4] C: &lt;1://100.250.1.1:5060&gt; Exp:[3597] R:[ 1]
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 100.250.1.1</A>:5060;transport=udp&gt;
+
+ 5(24881) INF:P-CSCF:         SR: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+
+ 5(24881) INF:P-CSCF:        NAT:&lt;100.250.1.1:12345&gt;
+
+ 5(24881) INF:P-CSCF:          P: D[X] &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt; 
+
+ 5(24881) INF:P-CSCF:[ 207] C: &lt;1://100.250.1.1:3062&gt; Exp:[  54] R:[-1]
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 100.250.1.1</A>:5060;transport=udp&gt;
+
+ 5(24881) INF:P-CSCF:        Temp.IPSec: UAS: 1024:12345-&gt;5001  UAC:
+2048:3062&lt;-5000 E[rijndael-cbc] I[hmac-md5]
+
+ 5(24881) INF:P-CSCF:----------  Registrar Contents end ----------
+
+ 5(24881) INF:P-CSCF:----------  Subscription list begin ---------
+
+ 5(24881) INF:P-CSCF:[   3]     P: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt; D:[ 3630]
+E:[ 3627] Att:[-1]
+
+ 5(24881) INF:P-CSCF:----------  Subscription list end -----------
+
+ 1(24877) DBG:P-CSCF:P_verify_security: Looking for
+&lt;1://100.250.1.1:5060&gt; 
+
+ 4(24880) DBG:P-CSCF:P_security_401: Security-Client header found :
+&lt;ipsec-3gpp;alg=hmac-md5-96;ealg=aes-cbc;prot=esp;mod=trans;spi-c=1024;p
+ort-c=12345;spi-s=2048;port-s=3062&gt;.
+
+ 4(24880) INF:P-CSCF:execute_cmd:
+[/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Drop.sh 100.250.1.1
+12345 3062 100.250.0.13 4060 4060 1024 2048 5000 5001]
+
+ 4(24880) INF:P-CSCF:execute_cmd:
+[/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Inc_Req.sh 100.250.1.1
+12345 100.250.0.13 4060 5001 rijndael-cbc
+0x31a76e64b3469f4b9d72b6724355e7be hmac-md5
+0x885733a0a48caf6a0a5e790c06119e67]
+
+ 4(24880) INFO:P-CSCF:P_NAT_relay: &lt;sip:100.250.1.1:12345&gt;
+
+ 
+
+2) more detail debug from P-CSCF:
+
+ 1(26583) DEBUG: t_newtran: msg id=1 , global msg id=0 , T on
+entrance=0xffffffff
+
+ 1(26583) parse_headers: flags=ffffffffffffffff
+
+ 1(26583) parse_headers: flags=78
+
+ 1(26583) t_lookup_request: start searching: hash=32151, isACK=0
+
+ 1(26583) DEBUG: RFC3261 transaction matching failed
+
+ 1(26583) DEBUG: t_lookup_request: no transaction found
+
+ 1(26583) DBG:P-CSCF:P_verify_security: Looking for
+&lt;1://100.250.1.1:5060&gt; 
+
+ 1(26583) DBG:P-CSCF:P_verify_security: No Contact found ! 
+
+ 1(26583) DBG:P-CSCF:P_is_integrity_protected: Looking if registered
+
+ 1(26583) DBG:P-CSCF:P_is_integrity_protected: Looking for
+&lt;1://100.250.1.1:5060,5060&gt;
+
+ 1(26583) parse_headers: flags=ffffffffffffffff
+
+ 1(26583) parse_headers: flags=ffffffffffffffff
+
+ 1(26583) parse_headers: flags=2000
+
+ 1(26583) parse_headers: flags=ffffffffffffffff
+
+ 1(26583) parse_headers: flags=ffffffffffffffff
+
+ 1(26583) parse_headers: flags=ffffffffffffffff
+
+ 1(26583) DBG:P-CSCF:cscf_add_p_charging_vector: time is 1215093753d
+
+ 1(26583) DBG:P-CSCF:cscf_add_p_charging_vector: count is 0d
+
+ 1(26583) parse_headers: flags=ffffffffffffffff
+
+ 1(26583) DBG:P-CSCF:cscf_get_visited_network_id: P-Visited-Network-ID
+header not found 
+
+ 1(26583) DBG:P-CSCF:cscf_get_visited_network_id: &lt;&gt; 
+
+ 1(26583) DBG:P-CSCF:cscf_del_header: no header specified.
+
+ 1(26583) DEBUG: t_newtran: msg id=1 , global msg id=1 , T on
+entrance=0xb5dbd9a8
+
+ 1(26583) DEBUG: t_newtran: transaction already in process 0xb5dbd9a8
+
+ 1(26583) dns_hash_find(_sip._udp.open-ims.test(23), 33), h=723
+
+ 1(26583) get_record: skipping 1 NS (p=0x814d150, end=0x814d181)
+
+ 1(26583) get_record: parsing 2 ARs (p=0x814d161, end=0x814d181)
+
+ 1(26583) dns_get_related(0xb5dbed3c (_sip._udp.open-ims.test, 33), 33,
+*0x81ba14c) (0)
+
+ 1(26583) dns_cache_add: adding _sip._udp.open-ims.test(23) 33 (flags=0)
+at 723
+
+ 1(26583) dns_cache_add: adding icscf.open-ims.test(19) 1 (flags=0) at
+353
+
+ 1(26583) dns_hash_find(icscf.open-ims.test(19), 1), h=353
+
+ 1(26583) check_via_address(100.250.1.1, 100.250.1.1, 0)
+
+ 1(26583) SER: new transaction fwd'ed
+
+ 1(26583) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 1(26583) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 1(26583) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 1(26583) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 1(26583) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 1(26583) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 1(26583) receive_msg: cleaning up
+
+ 3(26585) SIP Reply  (status):
+
+ 3(26585)  version: &lt;SIP/2.0&gt;
+
+ 3(26585)  status:  &lt;401&gt;
+
+ 3(26585)  reason:  &lt;Unauthorized - Challenging the UE&gt;
+
+ 3(26585) parse_headers: flags=2
+
+ 3(26585) Found param type 232, &lt;branch&gt; = &lt;z9hG4bK79d7.39538837.0&gt;;
+state=16
+
+ 3(26585) end of header reached, state=5
+
+ 3(26585) parse_headers: Via found, flags=2
+
+ 3(26585) parse_headers: this is the first via
+
+ 3(26585) After parse_msg...
+
+ 3(26585) forward_reply: found module tm, passing reply to it
+
+ 3(26585) DEBUG: t_check: msg id=1 global id=0 T start=0xffffffff
+
+ 3(26585) parse_headers: flags=ffffffffffffffff
+
+ 3(26585) Found param type 235, &lt;rport&gt; = &lt;5060&gt;; state=6
+
+ 3(26585) Found param type 232, &lt;branch&gt; =
+&lt;z9hG4bK0-64fa0101-0000-357001&gt;; state=16
+
+ 3(26585) end of header reached, state=5
+
+ 3(26585) parse_headers: Via found, flags=ffffffffffffffff
+
+ 3(26585) parse_headers: this is the second via
+
+ 3(26585) get_hdr_field: cseq &lt;CSeq&gt;: &lt;1080575488&gt; &lt;REGISTER&gt;
+
+ 3(26585) DEBUG: add_param: tag=66c3cb6f5887abe99991f229da1bf3d5-4d9d
+
+ 3(26585) end of header reached, state=29
+
+ 3(26585) DEBUG: get_hdr_field: &lt;To&gt; [69]; uri=[sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>]
+
+
+ 3(26585) DEBUG: to body [&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;]
+
+ 3(26585) DEBUG: get_hdr_body : content_length=0
+
+ 3(26585) found end of header
+
+ 3(26585) DEBUG: t_reply_matching: hash 32151 label 1938306451 branch 0
+
+ 3(26585) DEBUG: t_reply_matching: reply matched (T=0xb5dbd9a8)!
+
+ 3(26585) DEBUG: t_check: msg id=1 global id=1 T end=0xb5dbd9a8
+
+ 3(26585) DEBUG: reply_received: org. status uas=0, uac[0]=0 local=0
+is_invite=0)
+
+ 3(26585) DEBUG: t_check: msg id=1 global id=1 T start=0xb5dbd9a8
+
+ 3(26585) DEBUG: t_check: T already found!
+
+ 3(26585) DEBUG:t_check_status: checked status is &lt;401&gt;
+
+ 3(26585) parse_headers: flags=ffffffffffffffff
+
+ 3(26585) DBG::P-CSCF:P_remove_ck_ik: Original: &lt;Digest
+realm=&quot;open-ims.test&quot;,
+nonce=&quot;o+Ms6XcGEBBuo3a95L2Lbu29AeIrrQAA2DoU0P2Jrm0=&quot;,
+algorithm=AKAv1-MD5, ck=&quot;993365d01fabccdb59ea146723493347&quot;,
+ik=&quot;631260d64e01b73dfe4ad980356aee3e&quot;&gt;
+
+ 3(26585) DBG:P-CSCF:P_remove_ck_ik: Changed: &lt;WWW-Authenticate: Digest
+realm=&quot;open-ims.test&quot;,
+nonce=&quot;o+Ms6XcGEBBuo3a95L2Lbu29AeIrrQAA2DoU0P2Jrm0=&quot;,
+algorithm=AKAv1-MD5
+
+&gt;<i> 
+</I>
+ 3(26585) DBG::P-CSCF:P_remove_ck_ik: Final   : &lt;WWW-Authenticate:
+Digest realm=&quot;open-ims.test&quot;,
+nonce=&quot;o+Ms6XcGEBBuo3a95L2Lbu29AeIrrQAA2DoU0P2Jrm0=&quot;,
+algorithm=AKAv1-MD5
+
+&gt;<i> 
+</I>
+ 3(26585) parse_headers: flags=ffffffffffffffff
+
+ 3(26585) parse_headers: flags=ffffffffffffffff
+
+ 3(26585) parse_headers: flags=ffffffffffffffff
+
+ 3(26585) DBG:P-CSCF:P_security_401: Security-Client header found :
+&lt;ipsec-3gpp;alg=hmac-md5-96;ealg=aes-cbc;prot=esp;mod=trans;spi-c=1024;p
+ort-c=12345;spi-s=2048;port-s=3062&gt;.
+
+ 3(26585) parse_headers: flags=ffffffffffffffff
+
+ 3(26585) DBG:P-CSCF:save_contact_security:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 100.250.1.1</A>:5060;transport=udp&gt;
+
+ 3(26585) DBG:P-CSCF:save_contact_security: 1 100.250.1.1 : 5060
+
+ 3(26585) DBG:P-CSCF:save_contact_security: CK:
+&lt;993365d01fabccdb59ea146723493347&gt;
+
+ 3(26585) DBG:P-CSCF:save_contact_security: IK:
+&lt;631260d64e01b73dfe4ad980356aee3e&gt;
+
+ 3(26585) DBG:P-CSCF:save_contact_security: Enc Algorithm: &lt;aes-cbc&gt;
+
+ 3(26585) DBG:P-CSCF:save_contact_security: Int Algorithm: &lt;hmac-md5-96&gt;
+
+ 3(26585) DBG:P-CSCF:save_contact_security: SPI-C: 1024
+
+ 3(26585) DBG:P-CSCF:save_contact_security: SPI-S: 2048
+
+ 3(26585) DBG:P-CSCF:save_contact_security: Port-C: 12345
+
+ 3(26585) DBG:P-CSCF:save_contact_security: Port-S: 3062
+
+ 3(26585) INF:P-CSCF:execute_cmd:
+[/opt/OpenIMSCore/ser_ims/modules/pcscf/ipsec_P_Inc_Req.sh 100.250.1.1
+12345 100.250.0.13 4060 5001 rijndael-cbc
+0x993365d01fabccdb59ea146723493347 hmac-md5
+0x631260d64e01b73dfe4ad980356aee3e]
+
+ 3(26585) DEBUG: t_check: msg id=1 global id=1 T start=0xb5dbd9a8
+
+ 3(26585) DEBUG: t_check: T already found!
+
+ 3(26585) DEBUG:t_check_status: checked status is &lt;401&gt;
+
+ 3(26585) ERR:P-CSCF:P_security_relay: we cannot find the contact or its
+IPSec/TLS SAs for &lt;1://100.250.1.1:5060&gt;.
+
+ 3(26585) INFO:P-CSCF:P_NAT_relay: &lt;sip:100.250.1.1:5060&gt;
+
+ 3(26585) -&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; T_code=0, new_code=401
+
+ 3(26585) DEBUG: t_check: msg id=0 global id=0 T start=0xb5dbd9a8
+
+ 3(26585) DEBUG: t_check: T already found!
+
+ 3(26585) DEBUG:t_check_status: checked status is &lt;401&gt;
+
+ 3(26585) DBG:free_faked_req: removing hdr-&gt;parsed 7
+
+ 3(26585) DEBUG: relay_reply: branch=0, save=0, relay=0
+
+ 3(26585)  old size: 1077, new size: 1050
+
+ 3(26585) build_res_from_sip_res: copied size: orig:1075, new: 1048,
+rest: 2 msg=
+
+SIP/2.0 401 Unauthorized - Challenging the UE
+
+Via: SIP/2.0/UDP
+100.250.1.1:5060;rport=5060;branch=z9hG4bK0-64fa0101-0000-357001
+
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">0-080703183902-1280540757 at 64fa0101</A>
+
+CSeq: 1080575488 REGISTER
+
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=0-64fa0101-080703183902-256894707
+
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=66c3cb6f5887abe99991f229da1bf3d5-4d9d
+
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY,
+MESSAGE, INFO
+
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+
+Content-Length: 0
+
+Warning: 392 100.250.0.13:6060 &quot;Noisy feedback tells:  pid=23739
+req_src_ip=100.250.0.13 req_src_port=5060
+in_uri=sip:scscf.open-ims.test:6060 out_uri=sip:scscf.open-ims.test:6060
+via_cnt==3&quot;
+
+WWW-Authenticate: Digest realm=&quot;open-ims.test&quot;,
+nonce=&quot;o+Ms6XcGEBBuo3a95L2Lbu29AeIrrQAA2DoU0P2Jrm0=&quot;,
+algorithm=AKAv1-MD5
+
+Security-Server: ipsec-3gpp; ealg=aes-cbc; alg=hmac-md5-96; spi-c=5000;
+spi-s=5001; port-c=4060; port-s=4060; q=0.1
+
+ 
+
+ 
+
+ 3(26585) WARNING:vqm_resize: resize(0) called
+
+ 3(26585) DEBUG: reply relayed. buf=0x81ba08c: SIP/2.0 401 Una...,
+shmem=0xb5dbf5e4: SIP/2.0 4 totag_retr=0
+
+ 3(26585) DEBUG: cleanup_uac_timers: RETR/FR timers reset
+
+ 3(26585) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 3(26585) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 3(26585) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 3(26585) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 3(26585) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 3(26585) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 3(26585) receive_msg: cleaning up
+
+ 2(26584) SIP Request:
+
+ 2(26584)  method:  &lt;REGISTER&gt;
+
+ 2(26584)  uri:     &lt;sip:open-ims.test&gt;
+
+ 2(26584)  version: &lt;SIP/2.0&gt;
+
+ 2(26584) parse_headers: flags=2
+
+ 2(26584) Found param type 232, &lt;branch&gt; =
+&lt;z9hG4bK1-64fa0101-0000-262212060&gt;; state=16
+
+ 2(26584) end of header reached, state=5
+
+ 2(26584) parse_headers: Via found, flags=2
+
+ 2(26584) parse_headers: this is the first via
+
+ 2(26584) After parse_msg...
+
+ 2(26584) preparing to run routing scripts...
+
+ 2(26584) DEBUG:maxfwd:is_maxfwd_present: value = 70 
+
+ 2(26584) DBG:maxfwd:process_maxfwd_header: value 70 decreased to 16
+
+ 2(26584) Calling SELECT 0x819e920 
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) get_hdr_field: cseq &lt;CSeq&gt;: &lt;1080575489&gt; &lt;REGISTER&gt;
+
+ 2(26584) end of header reached, state=9
+
+ 2(26584) DEBUG: get_hdr_field: &lt;To&gt; [27]; uri=[sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>]
+
+
+ 2(26584) DEBUG: to body [&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+
+]
+
+ 2(26584) DEBUG: get_hdr_body : content_length=0
+
+ 2(26584) found end of header
+
+ 2(26584) DBG:P-CSCF:P_check_sent_by(): Received from &lt;100.250.1.1&gt;
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;100.250.1.1&gt;
+
+ 2(26584) DBG:P-CSCF:P_check_sent_by(): sent-by matches the actual IP
+received from
+
+ 2(26584) DEBUG: t_newtran: msg id=1 , global msg id=0 , T on
+entrance=0xffffffff
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) parse_headers: flags=78
+
+ 2(26584) t_lookup_request: start searching: hash=32150, isACK=0
+
+ 2(26584) DEBUG: RFC3261 transaction matching failed
+
+ 2(26584) DEBUG: t_lookup_request: no transaction found
+
+ 2(26584) DBG:P-CSCF:P_verify_security: Looking for
+&lt;1://100.250.1.1:5060&gt; 
+
+ 2(26584) DBG:P-CSCF:P_verify_security: No Contact found ! 
+
+ 2(26584) DBG:P-CSCF:P_is_integrity_protected: Looking if registered
+
+ 2(26584) DBG:P-CSCF:P_is_integrity_protected: Looking for
+&lt;1://100.250.1.1:5060,12345&gt;
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) parse_headers: flags=2000
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) DBG:P-CSCF:cscf_add_p_charging_vector: time is 1215093753d
+
+ 2(26584) DBG:P-CSCF:cscf_add_p_charging_vector: count is 1d
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) DBG:P-CSCF:cscf_get_visited_network_id: P-Visited-Network-ID
+header not found 
+
+ 2(26584) DBG:P-CSCF:cscf_get_visited_network_id: &lt;&gt; 
+
+ 2(26584) DBG:P-CSCF:cscf_del_header: no header specified.
+
+ 2(26584) DEBUG: t_newtran: msg id=1 , global msg id=1 , T on
+entrance=0xb5dbfa30
+
+ 2(26584) DEBUG: t_newtran: transaction already in process 0xb5dbfa30
+
+ 2(26584) dns_hash_find(_sip._udp.open-ims.test(23), 33), h=723
+
+ 2(26584) dns_hash_find(icscf.open-ims.test(19), 1), h=353
+
+ 2(26584) check_via_address(100.250.1.1, 100.250.1.1, 0)
+
+ 2(26584) SER: new transaction fwd'ed
+
+ 2(26584) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 2(26584) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 2(26584) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 2(26584) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 2(26584) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 2(26584) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 2(26584) receive_msg: cleaning up
+
+ 4(26586) SIP Reply  (status):
+
+ 4(26586)  version: &lt;SIP/2.0&gt;
+
+ 4(26586)  status:  &lt;200&gt;
+
+ 4(26586)  reason:  &lt;OK - SAR succesful and registrar saved&gt;
+
+ 4(26586) parse_headers: flags=2
+
+ 4(26586) Found param type 232, &lt;branch&gt; = &lt;z9hG4bK69d7.fc04631.0&gt;;
+state=16
+
+ 4(26586) end of header reached, state=5
+
+ 4(26586) parse_headers: Via found, flags=2
+
+ 4(26586) parse_headers: this is the first via
+
+ 4(26586) After parse_msg...
+
+ 4(26586) forward_reply: found module tm, passing reply to it
+
+ 4(26586) DEBUG: t_check: msg id=1 global id=0 T start=0xffffffff
+
+ 4(26586) parse_headers: flags=22
+
+ 4(26586) Found param type 235, &lt;rport&gt; = &lt;12345&gt;; state=6
+
+ 4(26586) Found param type 232, &lt;branch&gt; =
+&lt;z9hG4bK1-64fa0101-0000-262212060&gt;; state=16
+
+ 4(26586) end of header reached, state=5
+
+ 4(26586) parse_headers: Via found, flags=22
+
+ 4(26586) parse_headers: this is the second via
+
+ 4(26586) get_hdr_field: cseq &lt;CSeq&gt;: &lt;1080575489&gt; &lt;REGISTER&gt;
+
+ 4(26586) DEBUG: t_reply_matching: hash 32150 label 20332751 branch 0
+
+ 4(26586) DEBUG: t_reply_matching: reply matched (T=0xb5dbfa30)!
+
+ 4(26586) DEBUG: t_check: msg id=1 global id=1 T end=0xb5dbfa30
+
+ 4(26586) DEBUG: reply_received: org. status uas=0, uac[0]=0 local=0
+is_invite=0)
+
+ 4(26586) DEBUG: t_check: msg id=1 global id=1 T start=0xb5dbfa30
+
+ 4(26586) DEBUG: t_check: T already found!
+
+ 4(26586) DEBUG:t_check_status: checked status is &lt;200&gt;
+
+ 4(26586) DEBUG: t_check: msg id=1 global id=1 T start=0xb5dbfa30
+
+ 4(26586) DEBUG: t_check: T already found!
+
+ 4(26586) DEBUG:t_check_status: checked status is &lt;200&gt;
+
+ 4(26586) parse_headers: flags=4000
+
+ 4(26586) DEBUG: add_param: tag=66c3cb6f5887abe99991f229da1bf3d5-8e87
+
+ 4(26586) end of header reached, state=29
+
+ 4(26586) DEBUG: get_hdr_field: &lt;To&gt; [69]; uri=[sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>]
+
+
+ 4(26586) DEBUG: to body [&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;]
+
+ 4(26586) DEBUG: get_hdr_body : content_length=0
+
+ 4(26586) found end of header
+
+ 4(26586) parse_headers: flags=ffffffffffffffff
+
+ 4(26586) parse_headers: flags=ffffffffffffffff
+
+ 4(26586) parse_headers: flags=2000
+
+ 4(26586) DBG:P-CSCF:cscf_get_realm: realm &lt;open-ims.test&gt;.
+
+ 4(26586) parse_headers: flags=ffffffffffffffff
+
+ 4(26586) parse_headers: flags=ffffffffffffffff
+
+ 4(26586) DBG:P-CSCF:update_contact:
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 100.250.1.1</A>:5060;transport=udp&gt;
+
+ 4(26586) DBG:P-CSCF:update_contact: 1 100.250.1.1 : 5060
+
+ 4(26586) parse_headers: flags=ffffffffffffffff
+
+ 4(26586) parse_headers: flags=ffffffffffffffff
+
+ 4(26586) parse_headers: flags=4000
+
+ 4(26586) DBG:P-CSCF:cscf_get_expires_hdr: &lt;3600&gt; 
+
+ 4(26586) parse_headers: flags=ffffffffffffffff
+
+ 4(26586) DBG:P-CSCF:cscf_get_max_expires: &lt;3600&gt; 
+
+ 4(26586) DBG:P-CSCF:P_security_200: Looking for &lt;1://100.250.1.1:5060&gt; 
+
+ 4(26586) DBG:P-CSCF:P_security_200: Contact expired or no IPSec info
+
+ 4(26586) parse_headers: flags=ffffffffffffffff
+
+ 4(26586) parse_headers: flags=4000
+
+ 4(26586) parse_headers: flags=ffffffffffffffff
+
+ 4(26586) parse_headers: flags=ffffffffffffffff
+
+ 4(26586) ERR:P-CSCF:P_security_relay: we cannot find the contact or its
+IPSec/TLS SAs for &lt;1://100.250.1.1:5060&gt;.
+
+ 4(26586) INFO:P-CSCF:P_NAT_relay: &lt;sip:100.250.1.1:12345&gt;
+
+ 4(26586) -&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; T_code=0, new_code=200
+
+ 4(26586) DEBUG: relay_reply: branch=0, save=0, relay=0
+
+ 4(26586)  old size: 1048, new size: 983
+
+ 4(26586) build_res_from_sip_res: copied size: orig:117, new: 52, rest:
+931 msg=
+
+SIP/2.0 200 OK - SAR succesful and registrar saved
+
+Via: SIP/2.0/UDP
+100.250.1.1:5060;rport=12345;branch=z9hG4bK1-64fa0101-0000-262212060
+
+Call-ID: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">0-080703183902-1280540757 at 64fa0101</A>
+
+CSeq: 1080575489 REGISTER
+
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1-64fa0101-080703183902-1758038574
+
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=66c3cb6f5887abe99991f229da1bf3d5-8e87
+
+P-Associated-URI: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 100.250.1.1</A>:5060;transport=udp&gt;;expires=3600
+
+Path: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">term at pcscf.open-ims.test</A>:4060;lr&gt;
+
+Service-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">orig at scscf.open-ims.test</A>:6060;lr&gt;
+
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY,
+MESSAGE, INFO
+
+P-Charging-Function-Addresses: ccf=pri_ccf_address
+
+Server: Sip EXpress router (2.1.0-dev1 OpenIMSCore (i386/linux))
+
+Content-Length: 0
+
+Warning: 392 100.250.0.13:6060 &quot;Noisy feedback tells:  pid=23740
+req_src_ip=100.250.0.13 req_src_port=5060
+in_uri=sip:scscf.open-ims.test:6060 out_uri=sip:scscf.open-ims.test:6060
+via_cnt==3&quot;
+
+ 
+
+ 
+
+ 4(26586) WARNING:vqm_resize: resize(0) called
+
+ 4(26586) DEBUG: reply relayed. buf=0x81ba064: SIP/2.0 200 OK ...,
+shmem=0xb5dc15cc: SIP/2.0 2 totag_retr=0
+
+ 4(26586) DEBUG: cleanup_uac_timers: RETR/FR timers reset
+
+ 4(26586) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 4(26586) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 4(26586) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 4(26586) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 4(26586) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 4(26586) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 4(26586) receive_msg: cleaning up
+
+ 2(26584) SIP Request:
+
+ 2(26584)  method:  &lt;NOTIFY&gt;
+
+ 2(26584)  uri:     &lt;sip:pcscf.open-ims.test:4060&gt;
+
+ 2(26584)  version: &lt;SIP/2.0&gt;
+
+ 2(26584) parse_headers: flags=2
+
+ 2(26584) Found param type 232, &lt;branch&gt; = &lt;z9hG4bKdf3.5f9a5eb3.0&gt;;
+state=16
+
+ 2(26584) end of header reached, state=5
+
+ 2(26584) parse_headers: Via found, flags=2
+
+ 2(26584) parse_headers: this is the first via
+
+ 2(26584) After parse_msg...
+
+ 2(26584) preparing to run routing scripts...
+
+ 2(26584) parse_headers: flags=100
+
+ 2(26584) DEBUG: add_param: tag=d066c0cb33fdd0bd92c9ebf56fec90e5-aa44
+
+ 2(26584) end of header reached, state=29
+
+ 2(26584) DEBUG: get_hdr_field: &lt;To&gt; [72];
+uri=[sip:pcscf.open-ims.test:4060] 
+
+ 2(26584) DEBUG: to body [sip:pcscf.open-ims.test:4060]
+
+ 2(26584) get_hdr_field: cseq &lt;CSeq&gt;: &lt;11&gt; &lt;NOTIFY&gt;
+
+ 2(26584) DEBUG: get_hdr_body : content_length=348
+
+ 2(26584) DEBUG:maxfwd:is_maxfwd_present: value = 70 
+
+ 2(26584) DBG:maxfwd:process_maxfwd_header: value 70 decreased to 16
+
+ 2(26584) Calling SELECT 0x819e920 
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) found end of header
+
+ 2(26584) DBG:P-CSCF:P_check_sent_by(): Received from &lt;100.250.0.13&gt;
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;100.250.0.13&gt;
+
+ 2(26584) DBG:P-CSCF:P_check_sent_by(): sent-by matches the actual IP
+received from
+
+ 2(26584) grep_sock_info - checking if host==us: 19==12 &amp;&amp;
+[pcscf.open-ims.test] == [100.250.0.13]
+
+ 2(26584) grep_sock_info - checking if port 4060 matches port 4060
+
+ 2(26584) grep_sock_info - checking if host==us: 19==12 &amp;&amp;
+[pcscf.open-ims.test] == [100.250.0.13]
+
+ 2(26584) grep_sock_info - checking if port 4060 matches port 4060
+
+ 2(26584) DEBUG: t_newtran: msg id=2 , global msg id=1 , T on
+entrance=0xffffffff
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) parse_headers: flags=78
+
+ 2(26584) t_lookup_request: start searching: hash=1021, isACK=0
+
+ 2(26584) DEBUG: RFC3261 transaction matching failed
+
+ 2(26584) DEBUG: t_lookup_request: no transaction found
+
+ 2(26584) DBG:P-CSCF:P_NOTIFY: Checking NOTIFY
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) parse_headers: flags=800
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) parse_headers: flags=1000
+
+ 2(26584) DBG:P-CSCF:P_NOTIFY: Found body: &lt;?xml version=&quot;1.0&quot;?&gt;
+
+&lt;reginfo xmlns=&quot;urn:ietf:params:xml:ns:reginfo&quot; version=&quot;1&quot;
+state=&quot;partial&quot;&gt;
+
+        &lt;registration aor=&quot;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&quot; id=&quot;0xb5d81458&quot;
+state=&quot;active&quot;&gt;
+
+                &lt;contact id=&quot;0xb5d7f3e8&quot; state=&quot;active&quot;
+event=&quot;refreshed&quot; expires=&quot;3600&quot;&gt;
+
+ 
+&lt;uri&gt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 100.250.1.1</A>:5060;transport=udp&lt;/uri&gt;
+
+                &lt;/contact&gt;
+
+        &lt;/registration&gt;
+
+&lt;/reginfo&gt;
+
+ 
+
+ 2(26584) DBG:P-CSCF:r_notification_parse: reginfo_state &lt;partial&gt;
+
+ 2(26584) DBG:P-CSCF:r_notification_print: State 1
+
+ 2(26584) DBG:P-CSCF:r_notification_print:      R [2] ID&lt;0xb5d81458&gt;
+AOR&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+
+ 2(26584) DBG:P-CSCF:r_notification_print:              C [2]&gt;[5]
+ID&lt;0xb5d7f3e8&gt; URI&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 100.250.1.1</A>:5060;transport=udp&gt;
+
+ 2(26584) DBG:P-CSCF:r_notification_process: refreshing contact
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 100.250.1.1</A>:5060;transport=udp&gt; [3600]
+
+ 2(26584) DBG:P-CSCF:update_r_subscription: refreshing subscription for
+&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt; [3630]
+
+ 2(26584) DEBUG: t_check: msg id=2 global id=2 T start=0xb5dc19d4
+
+ 2(26584) DEBUG: t_check: T already found!
+
+ 2(26584) parse_headers: flags=ffffffffffffffff
+
+ 2(26584) check_via_address(100.250.0.13, 100.250.0.13, 0)
+
+ 2(26584) WARNING:vqm_resize: resize(0) called
+
+ 2(26584) DEBUG: cleanup_uac_timers: RETR/FR timers reset
+
+ 2(26584) DEBUG: reply sent out. buf=0x81ba7ac: SIP/2.0 2...,
+shmem=0xb5dc2e60: SIP/2.0 2
+
+ 2(26584) DEBUG: _reply_light: finished
+
+ 2(26584) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 2(26584) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 2(26584) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 2(26584) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 2(26584) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 2(26584) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 2(26584) receive_msg: cleaning up
+
+ 4(26586) SIP Request:
+
+ 4(26586)  method:  &lt;REGISTER&gt;
+
+ 4(26586)  uri:     &lt;sip:open-ims.test&gt;
+
+ 4(26586)  version: &lt;SIP/2.0&gt;
+
+ 4(26586) parse_headers: flags=2
+
+ 4(26586) Found param type 232, &lt;branch&gt; =
+&lt;z9hG4bK1-64fa0101-0000-262212060&gt;; state=16
+
+ 4(26586) end of header reached, state=5
+
+ 4(26586) parse_headers: Via found, flags=2
+
+ 4(26586) parse_headers: this is the first via
+
+ 4(26586) After parse_msg...
+
+ 4(26586) preparing to run routing scripts...
+
+ 4(26586) DEBUG:maxfwd:is_maxfwd_present: value = 70 
+
+ 4(26586) DBG:maxfwd:process_maxfwd_header: value 70 decreased to 16
+
+ 4(26586) Calling SELECT 0x819e920 
+
+ 4(26586) parse_headers: flags=ffffffffffffffff
+
+ 4(26586) get_hdr_field: cseq &lt;CSeq&gt;: &lt;1080575489&gt; &lt;REGISTER&gt;
+
+ 4(26586) end of header reached, state=9
+
+ 4(26586) DEBUG: get_hdr_field: &lt;To&gt; [27]; uri=[sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>]
+
+
+ 4(26586) DEBUG: to body [&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+
+]
+
+ 4(26586) DEBUG: get_hdr_body : content_length=0
+
+ 4(26586) found end of header
+
+ 4(26586) DBG:P-CSCF:P_check_sent_by(): Received from &lt;100.250.1.1&gt;
+
+ 4(26586) parse_headers: flags=ffffffffffffffff
+
+ 4(26586) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;100.250.1.1&gt;
+
+ 4(26586) DBG:P-CSCF:P_check_sent_by(): sent-by matches the actual IP
+received from
+
+ 4(26586) DEBUG: t_newtran: msg id=2 , global msg id=1 , T on
+entrance=0xffffffff
+
+ 4(26586) parse_headers: flags=ffffffffffffffff
+
+ 4(26586) parse_headers: flags=78
+
+ 4(26586) t_lookup_request: start searching: hash=32150, isACK=0
+
+ 4(26586) DEBUG: RFC3261 transaction matched,
+tid=1-64fa0101-0000-262212060
+
+ 4(26586) DEBUG: t_lookup_request: transaction found (T=0xb5dbfa30)
+
+ 4(26586) DEBUG: reply retransmitted. buf=0xb7e33760: SIP/2.0 2...,
+shmem=0xb5dc15cc: SIP/2.0 2
+
+ 4(26586) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 4(26586) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 4(26586) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 4(26586) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 4(26586) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 4(26586) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 4(26586) receive_msg: cleaning up
+
+ 1(26583) SIP Request:
+
+ 1(26583)  method:  &lt;REGISTER&gt;
+
+ 1(26583)  uri:     &lt;sip:open-ims.test&gt;
+
+ 1(26583)  version: &lt;SIP/2.0&gt;
+
+ 1(26583) parse_headers: flags=2
+
+ 1(26583) Found param type 232, &lt;branch&gt; =
+&lt;z9hG4bK1-64fa0101-0000-262212060&gt;; state=16
+
+ 1(26583) end of header reached, state=5
+
+ 1(26583) parse_headers: Via found, flags=2
+
+ 1(26583) parse_headers: this is the first via
+
+ 1(26583) After parse_msg...
+
+ 1(26583) preparing to run routing scripts...
+
+ 1(26583) DEBUG:maxfwd:is_maxfwd_present: value = 70 
+
+ 1(26583) DBG:maxfwd:process_maxfwd_header: value 70 decreased to 16
+
+ 1(26583) Calling SELECT 0x819e920 
+
+ 1(26583) parse_headers: flags=ffffffffffffffff
+
+ 1(26583) get_hdr_field: cseq &lt;CSeq&gt;: &lt;1080575489&gt; &lt;REGISTER&gt;
+
+ 1(26583) end of header reached, state=9
+
+ 1(26583) DEBUG: get_hdr_field: &lt;To&gt; [27]; uri=[sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>]
+
+
+ 1(26583) DEBUG: to body [&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+
+]
+
+ 1(26583) DEBUG: get_hdr_body : content_length=0
+
+ 1(26583) found end of header
+
+ 1(26583) DBG:P-CSCF:P_check_sent_by(): Received from &lt;100.250.1.1&gt;
+
+ 1(26583) parse_headers: flags=ffffffffffffffff
+
+ 1(26583) DBG:P-CSCF:P_check_sent_by(): Via sent-by=&lt;100.250.1.1&gt;
+
+ 1(26583) DBG:P-CSCF:P_check_sent_by(): sent-by matches the actual IP
+received from
+
+ 1(26583) DEBUG: t_newtran: msg id=2 , global msg id=1 , T on
+entrance=0xffffffff
+
+ 1(26583) parse_headers: flags=ffffffffffffffff
+
+ 1(26583) parse_headers: flags=78
+
+ 1(26583) t_lookup_request: start searching: hash=32150, isACK=0
+
+ 1(26583) DEBUG: RFC3261 transaction matched,
+tid=1-64fa0101-0000-262212060
+
+ 1(26583) DEBUG: t_lookup_request: transaction found (T=0xb5dbfa30)
+
+ 1(26583) DEBUG: reply retransmitted. buf=0xb7e33760: SIP/2.0 2...,
+shmem=0xb5dc15cc: SIP/2.0 2
+
+ 1(26583) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 1(26583) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 1(26583) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 1(26583) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 1(26583) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 1(26583) DEBUG:destroy_avp_list: destroying list (nil)
+
+ 1(26583) receive_msg: cleaning up
+
+ 
+
+Again, thanks for your help in advance.
+
+Bin
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080708/7339de2b/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080708/7339de2b/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: openIMS_AKA_200OKnotEncrypt.pcap
+Type: application/octet-stream
+Size: 29536 bytes
+Desc: openIMS_AKA_200OKnotEncrypt.pcap
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080708/7339de2b/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080708/7339de2b/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004254.html">[OpenIMSCore-Users] ISSUES while establishia call(revision 570)
+</A></li>
+	<LI>Next message: <A HREF="004292.html">[OpenIMSCore-Users] 3(26585) ERR:P-CSCF:P_security_relay: we cannot	find the contact or its IPSec/TLS SAs for &lt;1://100.250.1.1:5060&gt;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4240">[ date ]</a>
+              <a href="thread.html#4240">[ thread ]</a>
+              <a href="subject.html#4240">[ subject ]</a>
+              <a href="author.html#4240">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

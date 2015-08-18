@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] question about sending a cancel from B2BUA
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2013-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20question%20about%20sending%20a%20cancel%20from%20B2BUA&In-Reply-To=%3CCAPFor4hGN_GdBwOh%2BB3QLx_Wtc6Az6PEpyYObFR7qfbQsVYdYQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007761.html">
+   <LINK REL="Next"  HREF="007766.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] question about sending a cancel from B2BUA</H1>
+    <B>Albert Petit</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20question%20about%20sending%20a%20cancel%20from%20B2BUA&In-Reply-To=%3CCAPFor4hGN_GdBwOh%2BB3QLx_Wtc6Az6PEpyYObFR7qfbQsVYdYQ%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] question about sending a cancel from B2BUA">albertpetit at gmail.com
+       </A><BR>
+    <I>Fri Sep 27 18:07:58 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007761.html">[OpenIMSCore-Users] Fwd: question about sending a cancel from B2BUA
+</A></li>
+        <LI>Next message: <A HREF="007766.html">[OpenIMSCore-Users] Questions regarding DNS settings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7764">[ date ]</a>
+              <a href="thread.html#7764">[ thread ]</a>
+              <a href="subject.html#7764">[ subject ]</a>
+              <a href="author.html#7764">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Finally could fix the issue
+
+The problem was that  my application server was receiving two record-routes
+in the ringing response but not using them properly
+When originating the CANCEL Message it was inserting the routes in the same
+order they were received n the RINGING message instead of using the reverse
+order so the first route of the CANCEL from Application server to B  was
+PCSCF instead of SCSCF.despite the message was going first to SCSCF which I
+guess is wrong.
+
+
+2013/9/26 Albert Petit &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">albertpetit at gmail.com</A>&gt;
+
+&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I am integrating SIP Application server and a SIP Client with OpenIMS in a
+</I>&gt;<i> sandbox server. The application server is acting as a B2BUA
+</I>&gt;<i>
+</I>&gt;<i> I configured succesfully filter criterias for the Application server and
+</I>&gt;<i> the mesasges seems to route succesfully
+</I>&gt;<i>
+</I>&gt;<i> If A calls B through the Application server and A cancels the call before
+</I>&gt;<i> B accepts  the application server will generate a CANCEL that will be
+</I>&gt;<i> rejected by PCSCF with following message:
+</I>&gt;<i>         sl_send_reply(&quot;403&quot;,&quot;Forbidden - You must register first with a
+</I>&gt;<i> S-CSCF&quot;);
+</I>&gt;<i>
+</I>&gt;<i> The issue is not happening when the session is stablished and then A sends
+</I>&gt;<i> a BYE to the call. The BYE from Application server to B is correctly routed
+</I>&gt;<i> and received in B.
+</I>&gt;<i>
+</I>&gt;<i> I saw my application server was not adding received record-route in
+</I>&gt;<i> RINGING message.  But even when I add manually that recourd-routes as
+</I>&gt;<i> routes of the CANCEL it keeps failing with the same 403. Which could be
+</I>&gt;<i> origin of the issue? Is something special for provisional response I could
+</I>&gt;<i> be missing?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Albert
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+Albert
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20130927/e8d6e8eb/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20130927/e8d6e8eb/attachment.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007761.html">[OpenIMSCore-Users] Fwd: question about sending a cancel from B2BUA
+</A></li>
+	<LI>Next message: <A HREF="007766.html">[OpenIMSCore-Users] Questions regarding DNS settings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7764">[ date ]</a>
+              <a href="thread.html#7764">[ thread ]</a>
+              <a href="subject.html#7764">[ subject ]</a>
+              <a href="author.html#7764">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

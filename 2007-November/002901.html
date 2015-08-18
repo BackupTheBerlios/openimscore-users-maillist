@@ -1,0 +1,346 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Client for IPSec AKA remotely from	OpenIMSCore
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Client%20for%20IPSec%20AKA%20remotely%20from%0A%09OpenIMSCore&In-Reply-To=%3C46125bd0711081316o73846eaev881722150e24d120%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002899.html">
+   <LINK REL="Next"  HREF="002902.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Client for IPSec AKA remotely from	OpenIMSCore</H1>
+    <B>Marc Archer</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Client%20for%20IPSec%20AKA%20remotely%20from%0A%09OpenIMSCore&In-Reply-To=%3C46125bd0711081316o73846eaev881722150e24d120%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Client for IPSec AKA remotely from	OpenIMSCore">marc.archer at gmail.com
+       </A><BR>
+    <I>Thu Nov  8 22:16:09 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002899.html">[OpenIMSCore-Users] Client for IPSec AKA remotely from	OpenIMSCore
+</A></li>
+        <LI>Next message: <A HREF="002902.html">[OpenIMSCore-Users] Client for IPSec AKA remotely from	OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2901">[ date ]</a>
+              <a href="thread.html#2901">[ thread ]</a>
+              <a href="subject.html#2901">[ subject ]</a>
+              <a href="author.html#2901">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Klemens,
+
+Registration would be a start, but the goal is bob calls alice, after both
+are registered.
+
+The behaviour I'm seeing is that spis.csv is populated correctly, but setkey
+-D shows no SAs being created by the external calls to ipsec/ipsec-E*
+scripts.
+
+However, if I take the inputs from spis.csv and ck_key and ik_key (which I
+dump to another file), then run the ipsec/ipsec-E* scripts at the command
+line the SAs are established (see at the end of this email)
+
+Does setting timers, removing files (that you mention below) help with that
+particular issue?
+
+Out of interest, why is it necessary to pass ck_key and ik_key to the
+ipsec/ipsec-E* scripts if they are not used within the scripts to call
+setkey?
+
+Cheers,
+
+Marc
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]# ipsec/ipsec_E_Out_Req.sh
+192.168.0.10 12345 192.168.0.100 3458 2036 aes-cbc
+0x0808ed0e8b5f8546205084704538fa72 hmac-md5-96
+0x6e0be85f60e175aeade147ed2bc74d87
+The result of line 1: File exists.
+The result of line 2: File exists.
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]# setkey -D
+192.168.0.10 192.168.0.100
+        esp mode=transport spi=2036(0x000007f4) reqid=1(0x00000001)
+        E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+        A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+        seq=0x00000000 replay=0 flags=0x00000000 state=mature
+        created: Nov  8 16:06:21 2007   current: Nov  8 16:06:26 2007
+        diff: 5(s)      hard: 0(s)      soft: 0(s)
+        last:                           hard: 0(s)      soft: 0(s)
+        current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+        allocated: 0    hard: 0 soft: 0
+        sadb_seq=0 pid=716 refcnt=0
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]# ipsec/ipsec_E_Out_Rpl.sh
+192.168.0.10 3062 192.168.0.100 3457 2035 aes-cbc
+0x0808ed0e8b5f8546205084704538fa72 hmac-md5-96
+0x6e0be85f60e175aeade147ed2bc74d87
+The result of line 1: File exists.
+The result of line 2: File exists.
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]# setkey -D
+192.168.0.10 192.168.0.100
+        esp mode=transport spi=2035(0x000007f3) reqid=2(0x00000002)
+        E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+        A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+        seq=0x00000000 replay=0 flags=0x00000000 state=mature
+        created: Nov  8 16:09:20 2007   current: Nov  8 16:09:23 2007
+        diff: 3(s)      hard: 0(s)      soft: 0(s)
+        last:                           hard: 0(s)      soft: 0(s)
+        current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+        allocated: 0    hard: 0 soft: 0
+        sadb_seq=1 pid=736 refcnt=0
+192.168.0.10 192.168.0.100
+        esp mode=transport spi=2036(0x000007f4) reqid=1(0x00000001)
+        E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+        A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+        seq=0x00000000 replay=0 flags=0x00000000 state=mature
+        created: Nov  8 16:06:21 2007   current: Nov  8 16:09:23 2007
+        diff: 182(s)    hard: 0(s)      soft: 0(s)
+        last:                           hard: 0(s)      soft: 0(s)
+        current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+        allocated: 0    hard: 0 soft: 0
+        sadb_seq=0 pid=736 refcnt=0
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]# ipsec/ipsec_E_Inc_Req.sh
+192.168.0.10 3062 192.168.0.100 2048 2035 aes-cbc
+0x0808ed0e8b5f8546205084704538fa72 hmac-md5-96
+0x6e0be85f60e175aeade147ed2bc74d87
+The result of line 1: File exists.
+The result of line 1: File exists.
+The result of line 2: File exists.
+The result of line 2: File exists.
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]# setkey -D
+192.168.0.100 192.168.0.10
+        esp mode=transport spi=2035(0x000007f3) reqid=0(0x00000000)
+        E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+        A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+        seq=0x00000000 replay=0 flags=0x00000000 state=mature
+        created: Nov  8 16:10:17 2007   current: Nov  8 16:10:21 2007
+        diff: 4(s)      hard: 0(s)      soft: 0(s)
+        last:                           hard: 0(s)      soft: 0(s)
+        current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+        allocated: 0    hard: 0 soft: 0
+        sadb_seq=2 pid=761 refcnt=0
+192.168.0.10 192.168.0.100
+        esp mode=transport spi=2035(0x000007f3) reqid=2(0x00000002)
+        E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+        A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+        seq=0x00000000 replay=0 flags=0x00000000 state=mature
+        created: Nov  8 16:09:20 2007   current: Nov  8 16:10:21 2007
+        diff: 61(s)     hard: 0(s)      soft: 0(s)
+        last:                           hard: 0(s)      soft: 0(s)
+        current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+        allocated: 0    hard: 0 soft: 0
+        sadb_seq=1 pid=761 refcnt=0
+192.168.0.10 192.168.0.100
+        esp mode=transport spi=2036(0x000007f4) reqid=1(0x00000001)
+        E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+        A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+        seq=0x00000000 replay=0 flags=0x00000000 state=mature
+        created: Nov  8 16:06:21 2007   current: Nov  8 16:10:21 2007
+        diff: 240(s)    hard: 0(s)      soft: 0(s)
+        last:                           hard: 0(s)      soft: 0(s)
+        current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+        allocated: 0    hard: 0 soft: 0
+        sadb_seq=0 pid=761 refcnt=0
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]# ipsec/ipsec_E_Inc_Rpl.sh
+192.168.0.10 12345 192.168.0.100 1024 3458 aes-cbc
+0x0808ed0e8b5f8546205084704538fa72 hmac-md5-96
+0x6e0be85f60e175aeade147ed2bc74d87
+The result of line 1: File exists.
+The result of line 1: File exists.
+The result of line 2: File exists.
+The result of line 2: File exists.
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]# setkey -D
+192.168.0.100 192.168.0.10
+        esp mode=transport spi=3458(0x00000d82) reqid=0(0x00000000)
+        E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+        A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+        seq=0x00000000 replay=0 flags=0x00000000 state=mature
+        created: Nov  8 16:11:15 2007   current: Nov  8 16:11:16 2007
+        diff: 1(s)      hard: 0(s)      soft: 0(s)
+        last:                           hard: 0(s)      soft: 0(s)
+        current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+        allocated: 0    hard: 0 soft: 0
+        sadb_seq=3 pid=798 refcnt=0
+192.168.0.100 192.168.0.10
+        esp mode=transport spi=2035(0x000007f3) reqid=0(0x00000000)
+        E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+        A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+        seq=0x00000000 replay=0 flags=0x00000000 state=mature
+        created: Nov  8 16:10:17 2007   current: Nov  8 16:11:16 2007
+        diff: 59(s)     hard: 0(s)      soft: 0(s)
+        last:                           hard: 0(s)      soft: 0(s)
+        current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+        allocated: 0    hard: 0 soft: 0
+        sadb_seq=2 pid=798 refcnt=0
+192.168.0.10 192.168.0.100
+        esp mode=transport spi=2035(0x000007f3) reqid=2(0x00000002)
+        E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+        A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+        seq=0x00000000 replay=0 flags=0x00000000 state=mature
+        created: Nov  8 16:09:20 2007   current: Nov  8 16:11:16 2007
+        diff: 116(s)    hard: 0(s)      soft: 0(s)
+        last:                           hard: 0(s)      soft: 0(s)
+        current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+        allocated: 0    hard: 0 soft: 0
+        sadb_seq=1 pid=798 refcnt=0
+192.168.0.10 192.168.0.100
+        esp mode=transport spi=2036(0x000007f4) reqid=1(0x00000001)
+        E: aes-cbc  0808ed0e 8b5f8546 20508470 4538fa72
+        A: hmac-md5  6e0be85f 60e175ae ade147ed 2bc74d87
+        seq=0x00000000 replay=0 flags=0x00000000 state=mature
+        created: Nov  8 16:06:21 2007   current: Nov  8 16:11:16 2007
+        diff: 295(s)    hard: 0(s)      soft: 0(s)
+        last:                           hard: 0(s)      soft: 0(s)
+        current: 0(bytes)       hard: 0(bytes)  soft: 0(bytes)
+        allocated: 0    hard: 0 soft: 0
+        sadb_seq=0 pid=798 refcnt=0
+[<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sipp-server</A> SIPp_TLS_IPSEC_patched]#
+
+
+On Nov 8, 2007 1:06 PM, Klemens Schragel &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt; wrote:
+
+&gt;<i>  Hi Marc,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I had the same problem with clients you mentioned, that's why I'm using
+</I>&gt;<i> SIPp...
+</I>&gt;<i>
+</I>&gt;<i> The first error is easily solved when the single SPI set to 2028 is
+</I>&gt;<i> changed to 2048. At this point you might be able to register to open-ims (I
+</I>&gt;<i> needed some minor changes, by setting timers and removing files), just the
+</I>&gt;<i> regIPSEC3.xml is closed with an error-message (I didn't care much about
+</I>&gt;<i> that yet because I just wanted to register over IPSec).
+</I>&gt;<i>
+</I>&gt;<i> What do you plan to test with your client?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Br, Klemens
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   ------------------------------
+</I>&gt;<i>
+</I>&gt;<i> *From:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] *On Behalf Of *Marc Archer
+</I>&gt;<i> *Sent:* Donnerstag, 08. November 2007 18:31
+</I>&gt;<i> *To:* <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> *Subject:* [OpenIMSCore-Users] Client for IPSec AKA remotely from
+</I>&gt;<i> OpenIMSCore
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Does anyone have a recommendation for a client for IPSec AKA and
+</I>&gt;<i> OpenIMSCore?
+</I>&gt;<i>
+</I>&gt;<i> I need the client to be on a linux server remote from the OpenIMS
+</I>&gt;<i> installation.
+</I>&gt;<i>
+</I>&gt;<i> First, I tried the patched version of SIPP available on openimscore.org,
+</I>&gt;<i> but ran into the same problems as described on this list by Jamal back on Thu
+</I>&gt;<i> Sep 13 17:04:31 CEST 2007 :
+</I>&gt;<i>
+</I>&gt;<i> Dragos,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> This doesnt seem to be the right venue - but using the excuse of being a
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> newbie:
+</I>&gt;<i>
+</I>&gt;<i> Who should i be sending this to?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 1) regIPSEC1.xml has an error on incoming reply advertises SPI as 2048
+</I>&gt;<i>
+</I>&gt;<i> and passing to the ipsec scripts 2028; so the last (encrypted) 200 OK is
+</I>&gt;<i>
+</I>&gt;<i> never seen.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 2) regIPSEC3.xml fails to process the last 200 OK because some previous
+</I>&gt;<i>
+</I>&gt;<i> state is expected to be saved prior to validating the regexp.
+</I>&gt;<i>
+</I>&gt;<i> In the case of this script the Cseq: header is expected to have already
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> been known before the 200 Ok is received. I have a small patch that sort
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> of says to sipp &quot;assume cseq = blah&quot;.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> None of these issues will be seen if you run sipp, and the rest of
+</I>&gt;<i>
+</I>&gt;<i> openims on the same node.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> cheers,
+</I>&gt;<i>
+</I>&gt;<i> jamal
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Then I tried IMS Communicator, but it doesn't yet support IPSec, just the
+</I>&gt;<i> AKA headers in SIP.
+</I>&gt;<i>
+</I>&gt;<i> I tried OpenIC Lite, but it was adding multiple P-Access-Network-Info
+</I>&gt;<i> headers, which my P-CSCF (not the OpenIMS P-CSCF) correctly rejects.
+</I>&gt;<i>
+</I>&gt;<i> I was unable to install UCT IMS Client - perhaps if someone has been
+</I>&gt;<i> successful with this client, then I can revisit the installation.
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i>
+</I>&gt;<i> Marc
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20071108/16550b44/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20071108/16550b44/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002899.html">[OpenIMSCore-Users] Client for IPSec AKA remotely from	OpenIMSCore
+</A></li>
+	<LI>Next message: <A HREF="002902.html">[OpenIMSCore-Users] Client for IPSec AKA remotely from	OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2901">[ date ]</a>
+              <a href="thread.html#2901">[ thread ]</a>
+              <a href="subject.html#2901">[ subject ]</a>
+              <a href="author.html#2901">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] why the OpenSER presence server works only	in localhost?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20why%20the%20OpenSER%20presence%20server%20works%20only%0A%09in%20localhost%3F&In-Reply-To=%3CBAY133-F27B469B1A1D916F87E8F23C2040%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002111.html">
+   <LINK REL="Next"  HREF="002130.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] why the OpenSER presence server works only	in localhost?</H1>
+    <B>li wang</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20why%20the%20OpenSER%20presence%20server%20works%20only%0A%09in%20localhost%3F&In-Reply-To=%3CBAY133-F27B469B1A1D916F87E8F23C2040%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] why the OpenSER presence server works only	in localhost?">li.wang119 at hotmail.com
+       </A><BR>
+    <I>Wed Jul 11 16:43:36 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002111.html">[OpenIMSCore-Users] ERROR: receive message: parse_msg failed
+</A></li>
+        <LI>Next message: <A HREF="002130.html">[OpenIMSCore-Users] client : Couldn't set any of the tracks to	valid RTP format
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2126">[ date ]</a>
+              <a href="thread.html#2126">[ thread ]</a>
+              <a href="subject.html#2126">[ subject ]</a>
+              <a href="author.html#2126">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos,
+
+Thanks, i have checked but always the same problem
+
+I attached you the trace wireshark from the post where openIMS is running, 
+and the trace of my AS where my application is running.
+
+Best Regards,
+
+li
+
+
+&gt;<i>From: Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i>To: li wang &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">li.wang119 at hotmail.com</A>&gt;
+</I>&gt;<i>CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>Subject: Re: [OpenIMSCore-Users] why the OpenSER presence server works only 
+</I>&gt;<i>in	localhost?
+</I>&gt;<i>Date: Wed, 11 Jul 2007 12:29:56 +0200
+</I>&gt;<i>
+</I>&gt;<i>Hello Li,
+</I>&gt;<i>
+</I>&gt;<i>Please keep in mind that in order for the Open IMS Core to work outside
+</I>&gt;<i>localhost, you need to change ALL the CSCFs out of localhost IP addresses.
+</I>&gt;<i>
+</I>&gt;<i>Most probably you forgot the P or I-CSCF. In any case, if still in
+</I>&gt;<i>trouble, please send a trace.
+</I>&gt;<i>
+</I>&gt;<i>-Dragos
+</I>&gt;<i>
+</I>&gt;<i>li wang wrote:
+</I>&gt;<i> &gt; Dear all,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I have a question, i want to know why the OpenSER presence server works 
+</I>&gt;<i>only
+</I>&gt;<i> &gt; in localhost?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I have developped some application like a presence server in an other 
+</I>&gt;<i>poste,
+</I>&gt;<i> &gt; but i can't send 200ok successfully while receiving PUBLISH.  It says 
+</I>&gt;<i>that:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; an I/O error occurred while trying to send a sip message using UDP to
+</I>&gt;<i> &gt; 192.168.1.22:6060 (where the S-CSCF of coreIMS is running).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I don't know it's a problem of contrainte IMS or pb of my code. Or i 
+</I>&gt;<i>should
+</I>&gt;<i> &gt; modify some heading while sending 200 ok to S-CSCF?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Here is my simple code sipServlet, it seems to works in a environnement 
+</I>&gt;<i>SIP:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; public void doRequest(SipServletRequest request)
+</I>&gt;<i> &gt; throws javax.servlet.ServletException,java.io.IOException {
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; if(request.getMethod().equals(&quot;PUBLISH&quot;)) {
+</I>&gt;<i> &gt; doPublish(request);
+</I>&gt;<i> &gt; }
+</I>&gt;<i> &gt; else{
+</I>&gt;<i> &gt; super.doRequest(request);
+</I>&gt;<i> &gt; }
+</I>&gt;<i> &gt; }
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; public void doPublish(SipServletRequest request){
+</I>&gt;<i> &gt; try{
+</I>&gt;<i> &gt;       ..........................
+</I>&gt;<i> &gt;       sendOk(request);}
+</I>&gt;<i> &gt;       catch (IOException ex){}
+</I>&gt;<i> &gt; }
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; public void sendOk(SipServletRequest request) throws IOException{
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; SipServletResponse response =
+</I>&gt;<i> &gt; request.createResponse(SipServletResponse.SC_OK);
+</I>&gt;<i> &gt; response.send();
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; }
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks and Best Regard,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; li
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _________________________________________________________________
+</I>&gt;<i> &gt; Personnalisez votre Messenger avec Live.com
+</I>&gt;<i> &gt; <A HREF="http://www.windowslive.fr/livecom/">http://www.windowslive.fr/livecom/</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>--
+</I>&gt;<i>-----------------------------------------
+</I>&gt;<i>Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>Fraunhofer FOKUS/NGNI
+</I>&gt;<i>Kaiserin-Augusta-Allee 31
+</I>&gt;<i>10589 Berlin,Germany
+</I>&gt;<i>Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;<i>We could change the world if God would give us the source code...
+</I>&gt;<i>-----------------------------------------------------------------
+</I>&gt;<i>
+</I>
+_________________________________________________________________
+Windows Live Messenger sur i-mode&#153; : dialoguez avec vos amis depuis votre 
+mobile comme sur PC ! <A HREF="http://mobile.live.fr/messenger/bouygues/">http://mobile.live.fr/messenger/bouygues/</A>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: trace presence server bea (192.168.1.56)
+Type: application/octet-stream
+Size: 7485 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070711/1b8b73b0/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070711/1b8b73b0/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: trace presence poste coreIMS(192.168.1.22)
+Type: application/octet-stream
+Size: 160539 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20070711/1b8b73b0/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20070711/1b8b73b0/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002111.html">[OpenIMSCore-Users] ERROR: receive message: parse_msg failed
+</A></li>
+	<LI>Next message: <A HREF="002130.html">[OpenIMSCore-Users] client : Couldn't set any of the tracks to	valid RTP format
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2126">[ date ]</a>
+              <a href="thread.html#2126">[ thread ]</a>
+              <a href="subject.html#2126">[ subject ]</a>
+              <a href="author.html#2126">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

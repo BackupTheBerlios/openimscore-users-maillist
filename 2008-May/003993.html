@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] How modify SIP Header in the SCSCF ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20modify%20SIP%20Header%20in%20the%20SCSCF%20%3F&In-Reply-To=%3C483592A7.7040908%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003970.html">
+   <LINK REL="Next"  HREF="003964.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] How modify SIP Header in the SCSCF ?</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20How%20modify%20SIP%20Header%20in%20the%20SCSCF%20%3F&In-Reply-To=%3C483592A7.7040908%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] How modify SIP Header in the SCSCF ?">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu May 22 17:35:03 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003970.html">[OpenIMSCore-Users] How modify SIP Header in the SCSCF ?
+</A></li>
+        <LI>Next message: <A HREF="003964.html">[OpenIMSCore-Users] SCTP and IPv6 in Open IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3993">[ date ]</a>
+              <a href="thread.html#3993">[ thread ]</a>
+              <a href="subject.html#3993">[ subject ]</a>
+              <a href="author.html#3993">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I thought so too, that you would just want to use the triggering 
+capabilities in the S-CSCF, so the PSI is something else and won't help. 
+But if you think about it, you are just moving the triggering 
+functionality from triggering from some arbitrary iFC condition to 
+triggering on the Route header...
+
+-Dragos
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">remi.druilhe at orange-ftgroup.com</A> wrote:
+&gt;<i> Hi Enrique,
+</I>&gt;<i>
+</I>&gt;<i> I didn't know the PSI, and it is very interesting but in my case 
+</I>&gt;<i> informations must be on the Route field because the application have 
+</I>&gt;<i> be done like that.
+</I>&gt;<i>
+</I>&gt;<i> But I have others AS to develop and try so this method will be very 
+</I>&gt;<i> useful and less difficult to use.
+</I>&gt;<i>
+</I>&gt;<i> Thanks
+</I>&gt;<i>
+</I>&gt;<i> Regard,
+</I>&gt;<i>
+</I>&gt;<i> R&#233;mi
+</I>&gt;<i>
+</I>&gt;<i> Enrique de Meer a &#233;crit :
+</I>&gt;&gt;<i> Hi R&#195;&#169;mi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> To solve your problem you can use PSI or Wildcarded PSI, as i do. I need
+</I>&gt;&gt;<i> my AS to recieved four different SIP INVITE requests depending on some
+</I>&gt;&gt;<i> conditions.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have a PSI and four IMPU's and IMPI's whose IFC's are pointing to my
+</I>&gt;&gt;<i> PSI (with no trigger point, cause i want all the requests to be
+</I>&gt;&gt;<i> redirected to my PSI).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This way you can redirect the requests to your AS with different
+</I>&gt;&gt;<i> Request_URI's, and them your AS will act different ways depending on the
+</I>&gt;&gt;<i> request URI.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> you can also use Wilcarded PSI instead of four different users, like:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> remi.?@open-ims.test
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> where ? is = my_information
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I hope it's useful...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards, Enrique.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> El vie, 16-05-2008 a las 16:39 +0200, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">remi.druilhe at orange-ftgroup.com</A>
+</I>&gt;&gt;<i> escribi&#195;&#179;:
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i> Yes, it's a good idea. I will try this.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thank you Dragos.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> R&#195;&#169;mi
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Dragos Vingarzan a &#195;&#169;crit : 
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> Then write 3 different iFC, each with it's own AS SIP URI..... 
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Changing the AS SIP URI in the S-CSCF is not part of the ISC
+</I>&gt;&gt;&gt;&gt;<i> interface concept and I don't think that you need it... 
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Same discussion actually as on whether the S-CSCF should add
+</I>&gt;&gt;&gt;&gt;<i> parameters to the AS SIP URI indicating if it triggered on the
+</I>&gt;&gt;&gt;&gt;<i> originating or terminating side... 
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> -Dragos 
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">remi.druilhe at orange-ftgroup.com</A> wrote: 
+</I>&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;&gt;<i> Hi Dragos, 
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Yes it's a possibility but my parameter could not be the same
+</I>&gt;&gt;&gt;&gt;&gt;<i> every time (my call parameter can take 3 state depends on the UE).
+</I>&gt;&gt;&gt;&gt;&gt;<i> If I add my parameter directly in the AS URI, I will not able to
+</I>&gt;&gt;&gt;&gt;&gt;<i> change it dynamically, like in the scscf.cfg script. 
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> So I think finally, I have two choice : changing the code or
+</I>&gt;&gt;&gt;&gt;&gt;<i> creating an AS which modify the Route field. 
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> There is no other way ? 
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Regards 
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> R&#195;&#169;mi 
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Dragos Vingarzan a &#195;&#169;crit : 
+</I>&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi Remi, 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> You can only do that by changing the code... But I wonder why
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> you do not set the parameter that you want directly in the HSS,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> in the AS URI? 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Cheers, 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> -Dragos 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">remi.druilhe at orange-ftgroup.com</A> wrote: 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Hello, 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> I am working with Sailfin as AS for OpenIMS and I have a
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> service which need to modify information in the Route field.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> So I would like to know if it is possible to modify the s-cscf
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> (the scscf.cfg maybe) to do this before it was sending to the
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> AS. 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> The Route field, in the SIP Header of an INVITE before
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> triggering to the AS, should be like this : 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Route: &lt;my_route&gt;;call=my_information 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Thanks in advance 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> R&#195;&#169;mi 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ------------------------------------------------------------------------ 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________ 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A> 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A> 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>             
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>           
+</I>&gt;&gt;&gt;&gt;&gt;<i> ------------------------------------------------------------------------ 
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________ 
+</I>&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list 
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A> 
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A> 
+</I>&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> -- 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> zze-DRUILHE Remi RD-CORE-LAN
+</I>&gt;&gt;&gt;<i> LAN/CORE/M2V
+</I>&gt;&gt;&gt;<i> Tel : 
+</I>&gt;&gt;&gt;<i> Email: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">remi.druilhe at orange-ftgroup.com</A>
+</I>&gt;&gt;&gt;<i> R&amp;D Lannion 2, avenue Pierre Marzin 22307 LANNION Cedex - France 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Mailer ThunderBird sous Mandriva
+</I>&gt;&gt;&gt;<i> Installez simplement votre poste de travail Linux avec
+</I>&gt;&gt;&gt;<i> <A HREF="http://web2000.rd.francetelecom.fr">http://web2000.rd.francetelecom.fr</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> AVISO LEGAL 
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Este mensaje y los archivos que en su caso lleve adjuntos son privados y confidenciales y se dirigen exclusivamente a su destinatario. Por ello, se informa a quien lo reciba por error que la informaci&#195;&#179;n contenida en el mismo es reservada y su utilizaci&#195;&#179;n, copia o distribuci&#195;&#179;n est&#195;&#161; prohibida, por lo que en tal caso le rogamos que nos lo comunique por esta misma v&#195;&#173;a o por tel&#195;&#169;fono (+34976013300) y proceda a borrarlo de inmediato. 
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i>
+</I>&gt;<i> * zze-DRUILHE Remi RD-CORE-LAN*
+</I>&gt;<i> * LAN/CORE/M2V*
+</I>&gt;<i> Tel :
+</I>&gt;<i> Email: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">remi.druilhe at orange-ftgroup.com</A> 
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">remi.druilhe at orange-ftgroup.com</A>&gt;
+</I>&gt;<i> R&amp;D Lannion 2, avenue Pierre Marzin 22307 LANNION Cedex - France
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Mailer ThunderBird sous Mandriva
+</I>&gt;<i> Installez simplement votre poste de travail Linux avec 
+</I>&gt;<i> <A HREF="http://web2000.rd.francetelecom.fr">http://web2000.rd.francetelecom.fr</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003970.html">[OpenIMSCore-Users] How modify SIP Header in the SCSCF ?
+</A></li>
+	<LI>Next message: <A HREF="003964.html">[OpenIMSCore-Users] SCTP and IPv6 in Open IMS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3993">[ date ]</a>
+              <a href="thread.html#3993">[ thread ]</a>
+              <a href="subject.html#3993">[ subject ]</a>
+              <a href="author.html#3993">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

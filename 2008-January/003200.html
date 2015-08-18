@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Received 0A0D from OpenIMS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Received%200A0D%20from%20OpenIMS&In-Reply-To=%3C002a01c8599b%2412ff66f0%240200a8c0%40fenotebook%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003199.html">
+   <LINK REL="Next"  HREF="003201.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Received 0A0D from OpenIMS</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Received%200A0D%20from%20OpenIMS&In-Reply-To=%3C002a01c8599b%2412ff66f0%240200a8c0%40fenotebook%3E"
+       TITLE="[OpenIMSCore-Users] Received 0A0D from OpenIMS">franz.edler at inode.at
+       </A><BR>
+    <I>Fri Jan 18 07:26:34 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003199.html">[OpenIMSCore-Users] Routing PSI
+</A></li>
+        <LI>Next message: <A HREF="003201.html">[OpenIMSCore-Users] problems on installing openic_lite on HTC TyTN	II
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3200">[ date ]</a>
+              <a href="thread.html#3200">[ thread ]</a>
+              <a href="subject.html#3200">[ subject ]</a>
+              <a href="author.html#3200">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Sabyasachi;
+ 
+&gt;<i> In this e mail i have attached fresh trace as an attachment. When no
+</I>&gt;<i> reliability is required or supported, both Open IMS and clients are
+</I>&gt;<i> running fine. But when reliability option is enabled, PRACK message is
+</I>&gt;<i> forwarded by the Open IMS to the terminating side (check frame 2413 to
+</I>&gt;<i> 2617). As soon as the terminating side receives the PRACK it responds
+</I>&gt;<i> with 200 OK response (check frames 2618 to 2629). But after that the
+</I>&gt;<i> PRACK message is retransmitted in the Open IMS Entities and also to
+</I>&gt;<i> the terminating side (check frames 2646). As the terminating side
+</I>&gt;<i> sends the 200 OK response against PRACK , it send the 180 Ringing
+</I>&gt;<i> message . This message is received in the originating side via Open
+</I>&gt;<i> IMS. But when the originating side sends PRACK (For 180 Ringing having
+</I>&gt;<i> Cseq= 4 Prack) , it is not received by the terminating side . Because
+</I>&gt;<i> the terminating side receives the retransmitted PRACK (Cseq= 3 PRACK)
+</I>&gt;<i> again and sends response against that.
+</I>
+It is an interesting issue, and it took me some time to find a possible
+cause of this behaviour. The retransmissions of the PRACK request are in
+fact done by the P-CSCF.
+
+The problem I suppose has its root in a faulty sec-agree mechanism used by
+your client. During registration your client only includes protected server
+port parameters in the Security-Client header field. This faulty
+Security-Client header field is ignored by the P-CSCF in the response (no
+SAs are installed). But the next fault is that your client adds a
+Security-Verify header field in INVITE and PRACK despite it had not received
+a Security-Server header field in the REGISTER response.
+
+Therefore I suggest to solve the sec-agree mechanism problems of your client
+first. Maybe the strange behaviour of the P-CSCF is a result of this faults
+in your client.
+
+Regards
+Franz
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003199.html">[OpenIMSCore-Users] Routing PSI
+</A></li>
+	<LI>Next message: <A HREF="003201.html">[OpenIMSCore-Users] problems on installing openic_lite on HTC TyTN	II
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3200">[ date ]</a>
+              <a href="thread.html#3200">[ thread ]</a>
+              <a href="subject.html#3200">[ subject ]</a>
+              <a href="author.html#3200">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

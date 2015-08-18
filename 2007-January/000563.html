@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] HSS Identities dont match
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20HSS%20Identities%20dont%20match&In-Reply-To=%3C45B8CD82.6010905%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000560.html">
+   <LINK REL="Next"  HREF="000568.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] HSS Identities dont match</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20HSS%20Identities%20dont%20match&In-Reply-To=%3C45B8CD82.6010905%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] HSS Identities dont match">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Jan 25 16:32:18 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000560.html">[OpenIMSCore-Users] HSS Identities dont match
+</A></li>
+        <LI>Next message: <A HREF="000568.html">[OpenIMSCore-Users] HSS Identities dont match
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#563">[ date ]</a>
+              <a href="thread.html#563">[ thread ]</a>
+              <a href="subject.html#563">[ subject ]</a>
+              <a href="author.html#563">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The problem might be that you included [local_port] in the From/To
+headers. These contain the public indentity, and this is without ports.
+Only the Contact header needs this information. There might also be an
+issue on our side, as when comparing SIPURIs the port should be ignored,
+but I am not 100% sure.
+
+-Dragos
+
+
+ankush patni wrote:
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ---------- Forwarded message ----------
+</I>&gt;<i> From: *ankush patni* &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ankushpatni at gmail.com</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">ankushpatni at gmail.com</A>&gt;&gt;
+</I>&gt;<i> Date: Jan 25, 2007 5:15 PM
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] HSS Identities dont match
+</I>&gt;<i> To: Adrian-Daniel Popescu &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">adrian-daniel.popescu at fokus.fraunhofer.de</A>
+</I>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">adrian-daniel.popescu at fokus.fraunhofer.de</A>&gt;&gt;
+&gt;<i>
+</I>&gt;<i> Hi Adrian,
+</I>&gt;<i>                Please tell me what type of trace you need.Means
+</I>diameters packets captured from ethereal.
+&gt;<i> Here i am attaching the registere request.
+</I>&gt;<i>
+</I>&gt;<i>  &lt;send retrans=&quot;500&quot;&gt;
+</I>&gt;<i>     &lt;![CDATA[
+</I>&gt;<i>       REGISTER sip:open-ims.test SIP/2.0
+</I>&gt;<i>       Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+</I>&gt;<i>       From:&quot;alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>:[local_port]&gt;;tag=[call_number]
+</I>&gt;<i>       To: &quot;alice&quot;&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>:[local_port]&gt;
+</I>&gt;<i>       Call-ID: [call_id]
+</I>&gt;<i>       CSeq: 1 REGISTER
+</I>&gt;<i>       Contact:&lt;sip:alice@[local_ip]:[local_port]&gt;
+</I>&gt;<i>       Content-Length: 0
+</I>&gt;<i>       Expires: 7200
+</I>&gt;<i>       Authorization: Digest username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+</I>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;&quot;,response=&quot;&quot;,uri=&quot;sip:
+open-ims.test&quot;
+&gt;<i>  ]]&gt;
+</I>&gt;<i>   &lt;/send&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> and packets captured by ethereal is also i am attaching.
+</I>&gt;<i> Please tell me where to change.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Ankush Patni
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On 1/25/07, *Adrian-Daniel Popescu* &lt;
+</I><A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">adrian-daniel.popescu at fokus.fraunhofer.de</A>
+&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">adrian-daniel.popescu at fokus.fraunhofer.de</A>&gt;&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Hi Ankush,
+</I>&gt;<i>
+</I>&gt;<i> This error usually occurs when the HSS determines that the public
+</I>&gt;<i> identity does not correspond to the private identity. Please include a
+</I>&gt;<i> trace capture to figure out better your problem.
+</I>&gt;<i>
+</I>&gt;<i> -Adrian
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ankush patni wrote:
+</I>&gt;<i> &gt; Hi all,
+</I>&gt;<i> &gt;              I am getting problem HSS Identities don't match.
+</I>&gt;<i> &gt; Can any body help me what is the problem.Please specify me what should
+</I>&gt;<i> &gt; be the changes required and where.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &gt; Regards,
+</I>&gt;<i> &gt; Ankush Patni
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+&gt;<i> -------------------------
+</I>
+&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000560.html">[OpenIMSCore-Users] HSS Identities dont match
+</A></li>
+	<LI>Next message: <A HREF="000568.html">[OpenIMSCore-Users] HSS Identities dont match
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#563">[ date ]</a>
+              <a href="thread.html#563">[ thread ]</a>
+              <a href="subject.html#563">[ subject ]</a>
+              <a href="author.html#563">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem with registration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20registration&In-Reply-To=%3Cd80b0d830611240314p51ba6586u63b00f2d5ae19c74%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000068.html">
+   <LINK REL="Next"  HREF="000070.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem with registration</H1>
+    <B>Oto Pobiecky</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20registration&In-Reply-To=%3Cd80b0d830611240314p51ba6586u63b00f2d5ae19c74%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Problem with registration">pobiecky at gmail.com
+       </A><BR>
+    <I>Fri Nov 24 12:14:50 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000068.html">[OpenIMSCore-Users] Problem with registration
+</A></li>
+        <LI>Next message: <A HREF="000070.html">[OpenIMSCore-Users] HSS Unable to comply error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#74">[ date ]</a>
+              <a href="thread.html#74">[ thread ]</a>
+              <a href="subject.html#74">[ subject ]</a>
+              <a href="author.html#74">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yes, it's working now.
+
+2006/11/24, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;:
+&gt;<i>
+</I>&gt;<i> Hi Oto,
+</I>&gt;<i>
+</I>&gt;<i> Aha, you might not have internet access. No worries - just edit
+</I>&gt;<i> scscf.cfg and switch from XSD checking to DTD checking:
+</I>&gt;<i>
+</I>&gt;<i> You should look for the following lines:
+</I>&gt;<i>
+</I>&gt;<i> # only one of user_data validation file should normaly be declared here
+</I>&gt;<i> # because if both are specified the data will be checked twice
+</I>&gt;<i>
+</I>&gt;<i> #modparam(&quot;scscf&quot;,&quot;user_data_dtd&quot;,&quot;/opt/OpenIMSCore/ser_ims/modules/scscf/CxDataType.dtd&quot;)
+</I>&gt;<i>
+</I>&gt;<i> modparam(&quot;scscf&quot;,&quot;user_data_xsd&quot;,&quot;/opt/OpenIMSCore/ser_ims/modules/scscf/CxDataType_Rel6.xsd&quot;)
+</I>&gt;<i>
+</I>&gt;<i> Then replace them with:
+</I>&gt;<i> # only one of user_data validation file should normaly be declared here
+</I>&gt;<i> # because if both are specified the data will be checked twice
+</I>&gt;<i>
+</I>&gt;<i> modparam(&quot;scscf&quot;,&quot;user_data_dtd&quot;,&quot;/opt/OpenIMSCore/ser_ims/modules/scscf/CxDataType.dtd&quot;)
+</I>&gt;<i>
+</I>&gt;<i> #modparam(&quot;scscf&quot;,&quot;user_data_xsd&quot;,&quot;/opt/OpenIMSCore/ser_ims/modules/scscf/CxDataType_Rel6.xsd&quot;)
+</I>&gt;<i>
+</I>&gt;<i> This should do the trick.
+</I>&gt;<i>
+</I>&gt;<i> The reason why we don't use DTD files by default is that the DTDs are
+</I>&gt;<i> written by myself, manually, from the XSD. The XSDs are the reference
+</I>&gt;<i> ones and are provided in the 3GPP's TS. But I would favor the DTD.
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> Dragos
+</I>&gt;<i>
+</I>&gt;<i> Oto Pobiecky wrote:
+</I>&gt;<i> &gt; OK, i think that i find it:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 17(18057) --- Peer List: ---
+</I>&gt;<i> &gt; 17(18057)  S[I_Open] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i> &gt; 17(18057) ------------------
+</I>&gt;<i> &gt;  4(18044) DBG:S-CSCF:S_is_authorized: UE said:
+</I>&gt;<i> &gt; 7dc42381778d459605c19edc0b2951cb, but we have 000b3e7914fd6d1b and
+</I>&gt;<i> &gt; expect 7dc42381778d459605c19edc0b2951cb ha1
+</I>&gt;<i> &gt; 6d30af37ef2cfa5849ccf4e158ede923
+</I>&gt;<i> &gt; 18(18058) DBG:sm_process(): Peer hss.open-ims.test      State
+</I>&gt;<i> &gt; I_Open    Event I_Rcv_Message
+</I>&gt;<i> &gt; element IMSSubscription: Schemas validity error : Element
+</I>&gt;<i> &gt; 'IMSSubscription', attribute
+</I>&gt;<i> &gt; '{<A HREF="http://www.w3.org/2001/XMLSchema-instance">http://www.w3.org/2001/XMLSchema-instance</A>}type
+</I>&gt;<i> &gt; &lt;<A HREF="http://www.w3.org/2001/XMLSchema-instance%7Dtype">http://www.w3.org/2001/XMLSchema-instance%7Dtype</A>&gt;': The QName value
+</I>&gt;<i> &gt; 'IMSSubscription' of the xsi:type attribute does not resolve to a type
+</I>&gt;<i> &gt; definition.
+</I>&gt;<i> &gt;  4(18044) ERR:S-CSCF:parse_user_data:  Verification of XML against XSD
+</I>&gt;<i> &gt; failed &lt;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+</I>&gt;<i> &gt; &lt;IMSSubscription xmlns:xsi=&quot;<A HREF="http://www.w3.org/2001/XMLSchema-instance">http://www.w3.org/2001/XMLSchema-instance</A>&quot;
+</I>&gt;<i> &gt; xsi:type=&quot;IMSSubscription&quot;&gt;&lt;PrivateID&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> &gt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> &gt;&lt;/PrivateID&gt;&lt;ServiceProfile&gt;&lt;PublicIdentity&gt;&lt;BarringIndication&gt;false&lt;/BarringIndication&gt;&lt;Identity&gt;
+</I>&gt;<i> &gt; sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> &gt; &lt;mailto:sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>
+</I>&gt;<i> &gt;&lt;/Identity&gt;&lt;/PublicIdentity&gt;&lt;InitialFilterCriteria&gt;&lt;Priority&gt;0&lt;/Priority&gt;&lt;TriggerPoint&gt;&lt;ConditionTypeCNF&gt;true&lt;/ConditionTypeCNF&gt;&lt;SPT&gt;&lt;ConditionNegated&gt;false&lt;/ConditionNegated&gt;&lt;Group&gt;0&lt;/Group&gt;&lt;Method&gt;SUBSCRIBE&lt;/Method&gt;&lt;/SPT&gt;&lt;SPT&gt;&lt;ConditionNegated&gt;false&lt;/ConditionNegated&gt;&lt;Group&gt;0&lt;/Group&gt;&lt;Method&gt;PUBLISH&lt;/Method&gt;&lt;/SPT&gt;&lt;SPT&gt;&lt;ConditionNegated&gt;false&lt;/ConditionNegated&gt;&lt;Group&gt;1&lt;/Group&gt;&lt;SIPHeader&gt;&lt;Header&gt;Event&lt;/Header&gt;&lt;Content&gt;.*presence.*&lt;/Content&gt;&lt;/SIPHeader&gt;&lt;/SPT&gt;&lt;/TriggerPoint&gt;&lt;ApplicationServer&gt;&lt;ServerName&gt;sip:localhost:5065&lt;/ServerName&gt;&lt;DefaultHandling&gt;0&lt;/DefaultHandling&gt;&lt;/ApplicationServer&gt;&lt;/InitialFilterCriteria&gt;&lt;/ServiceProfile&gt;&lt;/IMSSubscription&amp;
+</I>&gt;<i> &gt; gt;&gt;
+</I>&gt;<i> &gt;  4(18044) ERR:S-CSCF:save_location: error parsing user data
+</I>&gt;<i> &gt;  5(18045) INF:S-CSCF:----------  S-CSCF Dialog List begin --------------
+</I>&gt;<i> &gt;  5(18045) INF:S-CSCF:----------  S-CSCF Dialog List end   --------------
+</I>&gt;<i> &gt;  5(18045) INF:S-CSCF:----------  Registrar Contents begin --------
+</I>&gt;<i> &gt;  5(18045) INF:S-CSCF:----------  Registrar Contents end ----------
+</I>&gt;<i> &gt; 17(18057) --- Peer List: ---
+</I>&gt;<i> &gt; 17(18057)  S[I_Open] hss.open-ims.test:3868 D[ ]
+</I>&gt;<i> &gt; 17(18057)
+</I>&gt;<i> &gt; ------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 2006/11/24, Lebing Xie &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">xie at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt; &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">xie at fokus.fraunhofer.de</A>&gt;&gt;:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     Should be the error trace from S-CSCF terminal.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     urs Lebing
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     On Fri, 2006-11-24 at 09:22 +0100, Oto Pobiecky wrote:
+</I>&gt;<i> &gt;     &gt; I don't know what messages you exactly mean, where can I find
+</I>&gt;<i> them?
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; 2006/11/24, Dragos Vingarzan &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;&gt;:
+</I>&gt;<i> &gt;     &gt;         Hi Oto,
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt;         Could you also paste the last messages on the S-CSCF? I
+</I>&gt;<i> &gt;     &gt;         supposed that
+</I>&gt;<i> &gt;     &gt;         the XML with the Service Profile received from the HSS
+</I>&gt;<i> &gt;     failed
+</I>&gt;<i> &gt;     &gt;         on the DTD
+</I>&gt;<i> &gt;     &gt;         check. Usually the error message should be very helpful in
+</I>&gt;<i> &gt;     &gt;         identifying
+</I>&gt;<i> &gt;     &gt;         what is wrong - it should say what it was expected and
+</I>&gt;<i> &gt;     what it
+</I>&gt;<i> &gt;     &gt;         was found.
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt;         Please send that part, if this is the case, back so that
+</I>&gt;<i> we
+</I>&gt;<i> &gt;     &gt;         could fix
+</I>&gt;<i> &gt;     &gt;         either the DTD/XSD files or the HSS that generates that
+</I>&gt;<i> XML.
+</I>&gt;<i> &gt;     &gt;         Unfortunately, because of the IMS Releases being quite
+</I>&gt;<i> &gt;     many,
+</I>&gt;<i> &gt;     &gt;         this kind
+</I>&gt;<i> &gt;     &gt;         of de-synchronizations happen quite often as the guys
+</I>&gt;<i> &gt;     &gt;         implementing it on
+</I>&gt;<i> &gt;     &gt;         the two sides are different. From my experience with other
+</I>&gt;<i> &gt;     &gt;         HSSs, often
+</I>&gt;<i> &gt;     &gt;         this schema definitions are completely ignored.
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt;         -Dragos
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt;         Oto Pobiecky wrote:
+</I>&gt;<i> &gt;     &gt;         &gt; Hi,
+</I>&gt;<i> &gt;     &gt;         &gt; I have all compiled and running (HSS, P-CSCF,
+</I>&gt;<i> &gt;     &gt;         &gt; S-CSCF,I-CSCF,SIP2IMS)-all run on localhost (default
+</I>&gt;<i> &gt;     &gt;         configuration) .
+</I>&gt;<i> &gt;     &gt;         &gt; When I tried to register with kphone (same PC), the
+</I>&gt;<i> &gt;     &gt;         tregistration
+</I>&gt;<i> &gt;     &gt;         &gt; proces wasn't successful and I get response 500 Server
+</I>&gt;<i> &gt;     &gt;         Internal Error
+</I>&gt;<i> &gt;     &gt;         &gt; - Server Assignment failed. I enclose wireshark trace.
+</I>&gt;<i> &gt;     &gt;         &gt;
+</I>&gt;<i> &gt;     &gt;         &gt; In kphone settings I set:
+</I>&gt;<i> &gt;     &gt;         &gt; Full name: alice
+</I>&gt;<i> &gt;     &gt;         &gt; User part of SIP URL: alice
+</I>&gt;<i> &gt;     &gt;         &gt; Host part of SIP URL: open-ims.test
+</I>&gt;<i> &gt;     &gt;         &gt; Outbound proxy: 127.0.0.1:3060 &lt;<A HREF="http://127.0.0.1:3060">http://127.0.0.1:3060</A>&gt;
+</I>&gt;<i> &gt;     &lt;<A HREF="http://127.0.0.1:3060">http://127.0.0.1:3060</A>&gt;
+</I>&gt;<i> &gt;     &gt;         &gt; Authentification username: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+</I>&gt;<i> &gt;     &gt;         &gt; &lt;mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;     &gt;         &gt;
+</I>&gt;<i> &gt;     &gt;         &gt; Can somebody help?
+</I>&gt;<i> &gt;     &gt;         &gt; Thank you very much.
+</I>&gt;<i> &gt;     &gt;         &gt;
+</I>&gt;<i> &gt;     &gt;         &gt; Oto
+</I>&gt;<i> &gt;     &gt;         &gt;
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> &gt;     &gt;         &gt;
+</I>&gt;<i> &gt;     &gt;         &gt; _______________________________________________
+</I>&gt;<i> &gt;     &gt;         &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;     &gt;         &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i> &gt;     &gt;         &gt;
+</I>&gt;<i> &gt;     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;     &gt;         &gt;
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt;         --
+</I>&gt;<i> &gt;     &gt;         -----------------------------------------
+</I>&gt;<i> &gt;     &gt;         Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> &gt;     &gt;         FOKUS/NGNI
+</I>&gt;<i> &gt;     &gt;         Kaiserin-Augusta-Allee 31
+</I>&gt;<i> &gt;     &gt;         10589 Berlin,Germany
+</I>&gt;<i> &gt;     &gt;         Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> &gt;     &gt;         Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> &gt;     &gt;         eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt;     &gt;         Web www.fokus.fraunhofer.de &lt;
+</I>&gt;<i> <A HREF="http://www.fokus.fraunhofer.de">http://www.fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> &gt;     &gt;         We could change the world if God would give us the source
+</I>&gt;<i> &gt;     &gt;         code...
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     -----------------------------------------------------------------
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt;
+</I>&gt;<i> &gt;     &gt; _______________________________________________
+</I>&gt;<i> &gt;     &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt;     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt;     &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>&gt;
+</I>&gt;<i> &gt;     &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;     &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ------------------------------------------------------------------------
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> -----------------------------------------
+</I>&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i> FOKUS/NGNI
+</I>&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;<i> 10589 Berlin,Germany
+</I>&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20061124/d0b77d7a/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20061124/d0b77d7a/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000068.html">[OpenIMSCore-Users] Problem with registration
+</A></li>
+	<LI>Next message: <A HREF="000070.html">[OpenIMSCore-Users] HSS Unable to comply error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#74">[ date ]</a>
+              <a href="thread.html#74">[ thread ]</a>
+              <a href="subject.html#74">[ subject ]</a>
+              <a href="author.html#74">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

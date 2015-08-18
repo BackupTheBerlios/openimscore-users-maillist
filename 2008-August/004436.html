@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] FW:  service indication and data reference
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20FW%3A%20%20service%20indication%20and%20data%20reference&In-Reply-To=%3CBAY125-W22CBD70D66D565D0D4A139C27B0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004435.html">
+   <LINK REL="Next"  HREF="004438.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] FW:  service indication and data reference</H1>
+    <B>Izaak Muto</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20FW%3A%20%20service%20indication%20and%20data%20reference&In-Reply-To=%3CBAY125-W22CBD70D66D565D0D4A139C27B0%40phx.gbl%3E"
+       TITLE="[OpenIMSCore-Users] FW:  service indication and data reference">izaak at hotmail.fr
+       </A><BR>
+    <I>Tue Aug  5 11:58:00 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004435.html">[OpenIMSCore-Users] service indication and data reference
+</A></li>
+        <LI>Next message: <A HREF="004438.html">[OpenIMSCore-Users] FW:  service indication and data reference
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4436">[ date ]</a>
+              <a href="thread.html#4436">[ thread ]</a>
+              <a href="subject.html#4436">[ subject ]</a>
+              <a href="author.html#4436">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+Hi Enrique,
+
+Thanks a lot for your reply, it helps me a lot.
+I have an other question about  the server name . In my case i have created a diameter client (on a machine A) in order to send the UDR to the HSS (in the machine B) and get the information, so i don't have any AS. I must put in the setData() the ip adress of the machine A ??
+
+a = new AVP(602, false,10415);
+a.setData(??????);
+udr.addAVP(a);
+
+Best Regards 
+
+&gt;<i> Subject: Re: [OpenIMSCore-Users] service indication and data reference
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">enrique.demeer at inycom.es</A>
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">izaak at hotmail.fr</A>
+</I>&gt;<i> CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Date: Tue, 5 Aug 2008 11:24:46 +0200
+</I>&gt;<i> 
+</I>&gt;<i> Hi Izaak,
+</I>&gt;<i> 
+</I>&gt;<i> asnwered inlined
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> El mar, 05-08-2008 a las 10:25 +0200, Izaak Muto escribi&#243;:
+</I>&gt;<i> &gt; Hello, 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I have added into repository_data (with mysql request) some
+</I>&gt;<i> &gt; information. 
+</I>&gt;<i> &gt; I would like to get this information (an integer) with a PUR command.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> First of all, PUR command stores data in HSS, so if you want to get data
+</I>&gt;<i> from HSS you need UDR command
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; My problem is i don't know what to put in the setData() method in java
+</I>&gt;<i> &gt; diameter peer (i store the information in hss_db -&gt; repository_data -&gt;
+</I>&gt;<i> &gt; id = 3):
+</I>&gt;<i> &gt; a = new AVP(704,true,10415);
+</I>&gt;<i> &gt; a.setData(?????????);
+</I>&gt;<i> &gt; udr.addAVP(a)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> 
+</I>&gt;<i> 704 is IMS_SERVICE_INDICATION and you should set the &quot;service
+</I>&gt;<i> indiation&quot; (normally a string with the name of your service).
+</I>&gt;<i> 
+</I>&gt;<i> a.setData(&quot;myServiceName&quot;);
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; More over for the data reference it's the same problem, i only
+</I>&gt;<i> &gt; understand that the data_reference must be at the value 0 because of
+</I>&gt;<i> &gt; repository_data :
+</I>&gt;<i> &gt; a = new AVP(703,true,10415);
+</I>&gt;<i> &gt; a.setData(?????????);
+</I>&gt;<i> &gt; udr.addAVP(a)
+</I>&gt;<i> 
+</I>&gt;<i> 703 is IMS_DATA_REFERENCE and you simply should put it to 0:
+</I>&gt;<i> 
+</I>&gt;<i> a.setData(0);
+</I>&gt;<i> 
+</I>&gt;<i> There are several setData() methods, which arguments can be an integer,
+</I>&gt;<i> a string, a byte[], a char, ...
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Could somebody help me??
+</I>&gt;<i> 
+</I>&gt;<i> The information should come back to you in UDA command in the AVP
+</I>&gt;<i> IMS_USER_DATA_SH = 702 as a XML String like that:
+</I>&gt;<i> 
+</I>&gt;<i> &lt;Sh-Data&gt;&lt;RepositoryData&gt;&lt;ServiceIndication&gt;&quot;yourServicenName&quot;&lt;/ServiceIndication&gt;&lt;SequenceNumber&gt;&quot;anIntegerWithTheSequenceNumber&quot;&lt;/SequenceNumber&gt;&lt;ServiceData&gt;&quot;yourData&quot;&lt;/ServiceData&gt;&lt;/RepositoryData&gt;&lt;/Sh-Data&gt;
+</I>&gt;<i> 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Best regards
+</I>&gt;<i> &gt; 
+</I>&gt;<i> 
+</I>&gt;<i> I hope it helps,
+</I>&gt;<i> 
+</I>&gt;<i> Regards, 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Enrique
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; ______________________________________________________________________
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Discutez sur Messenger o&#249; que vous soyez ! Mettez Messenger sur votre
+</I>&gt;<i> &gt; mobile !
+</I>&gt;<i> 
+</I>
+_________________________________________________________________
+Plus besoin de cl&#233; usb ! Stockez votre musique en ligne gratuitement !
+<A HREF="http://www.windowslive.fr/skydrive/">http://www.windowslive.fr/skydrive/</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080805/db5c9316/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080805/db5c9316/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004435.html">[OpenIMSCore-Users] service indication and data reference
+</A></li>
+	<LI>Next message: <A HREF="004438.html">[OpenIMSCore-Users] FW:  service indication and data reference
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4436">[ date ]</a>
+              <a href="thread.html#4436">[ thread ]</a>
+              <a href="subject.html#4436">[ subject ]</a>
+              <a href="author.html#4436">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

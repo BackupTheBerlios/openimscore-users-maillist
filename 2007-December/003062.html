@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Problem with PRACK Request
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20PRACK%20Request&In-Reply-To=%3C4755599C.6060904%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003050.html">
+   <LINK REL="Next"  HREF="003051.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Problem with PRACK Request</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Problem%20with%20PRACK%20Request&In-Reply-To=%3C4755599C.6060904%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Problem with PRACK Request">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Dec  4 14:43:56 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003050.html">[OpenIMSCore-Users] Problem with PRACK Request
+</A></li>
+        <LI>Next message: <A HREF="003051.html">[OpenIMSCore-Users] IMS and DHCP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3062">[ date ]</a>
+              <a href="thread.html#3062">[ thread ]</a>
+              <a href="subject.html#3062">[ subject ]</a>
+              <a href="author.html#3062">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Frederic,
+
+Again, a trace would be helpful.
+
+The PRACK is a subsequent request. Does it contain the proper Route
+headers, as indicated in the Record-Route headers in the 183? If it
+does, then it should contain the whole path that the INVITE went through
+and routing should be OK.
+
+As a general security rule - if you don't want the simplest
+impersonating, spam, etc attacks, your client should ONLY speak with the
+P-CSCF. So it's a good practice to also put it as a strict outbound proxy.
+
+Cheers,
+-Dragos
+
+Babon Frederic wrote:
+&gt;<i>
+</I>&gt;<i> Hello all,
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I have a problem with the PRACK request, here is my scenario:
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> -          SIP UA with a &#8220;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&#8221; account configured,
+</I>&gt;<i> and an outbound proxy set to &#8220;sip:178.3.3.199;lr&#8221; (sip @ of the PCSCF
+</I>&gt;<i> entity of the open ims core)
+</I>&gt;<i>
+</I>&gt;<i> -          Open IMS Core
+</I>&gt;<i>
+</I>&gt;<i> -          SIP AS
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> SIP UA &gt; send an INVITE to &#8220;sip:as.open-ims.test&#8221;
+</I>&gt;<i>
+</I>&gt;<i> Open IMS Core &gt; relay this request to SIP AS
+</I>&gt;<i>
+</I>&gt;<i> SIP AS &gt; reply with 183 session in progress including a SIP header
+</I>&gt;<i> &#8220;Contact&#8221; equal to &#8220;sip:172.16.2.21:5060&#8221;
+</I>&gt;<i>
+</I>&gt;<i> Open IMS Core &gt; relay this response to Pjsip
+</I>&gt;<i>
+</I>&gt;<i> SIP UA &gt; send a PRACK request to SIP AS : request-uri =
+</I>&gt;<i> &#8220;sip:172.16.2.21&#8221; (Contact header)
+</I>&gt;<i>
+</I>&gt;<i> SIP AS &gt; refuse it because requests must be relayed by the ims core !
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Should I have to configure my SIP AS to reply with Contact header
+</I>&gt;<i> equal to &#8220;sip:as.open-ims.test&#8221; ?
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Should my sip stack send all requests to the outbound proxy  ?
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Thanks all for your support !
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Frederic.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003050.html">[OpenIMSCore-Users] Problem with PRACK Request
+</A></li>
+	<LI>Next message: <A HREF="003051.html">[OpenIMSCore-Users] IMS and DHCP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3062">[ date ]</a>
+              <a href="thread.html#3062">[ thread ]</a>
+              <a href="subject.html#3062">[ subject ]</a>
+              <a href="author.html#3062">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

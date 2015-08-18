@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] IMPORTANT Questions regarding DNS settings
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IMPORTANT%20Questions%20regarding%20DNS%20settings&In-Reply-To=%3CAANLkTinmcG3x%3Dp7FSWe2nwV8z8T5dKW0OM248c4nzrGS%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006496.html">
+   <LINK REL="Next"  HREF="006491.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] IMPORTANT Questions regarding DNS settings</H1>
+    <B>sougata pal</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20IMPORTANT%20Questions%20regarding%20DNS%20settings&In-Reply-To=%3CAANLkTinmcG3x%3Dp7FSWe2nwV8z8T5dKW0OM248c4nzrGS%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] IMPORTANT Questions regarding DNS settings">sougata.pal at gmail.com
+       </A><BR>
+    <I>Wed Aug 25 15:39:14 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006496.html">[OpenIMSCore-Users] Error : Not forward message REGISTER to AS
+</A></li>
+        <LI>Next message: <A HREF="006491.html">[OpenIMSCore-Users] IMPORTANT Questions regarding DNS settings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6486">[ date ]</a>
+              <a href="thread.html#6486">[ thread ]</a>
+              <a href="subject.html#6486">[ subject ]</a>
+              <a href="author.html#6486">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I am receiving some error regarding to my DNS setting, which i suspect is
+leading to error 478 &lt;Unresolvable Destination&gt; and error 500 &lt;Error
+forwarding to home domain&gt; when i am going to register my users.
+
+I want to clear some doubts regarding this DNS issue. Basically 2 issues i
+want to get cleared about -
+
+1. Now according to the installation procedure which i am following in the
+website , i see that the file &quot;/etc/bind/named.conf&quot; will contain 4
+individual file names who are as follows -
+
+include &quot;/etc/bind/named.conf.options&quot;;
+include &quot;/etc/bind/named.conf.local&quot;;
+include &quot;/etc/bind/named.conf.default-zones&quot;;
+include &quot;/etc/bind/open-ims.dnszone&quot;;
+
+** Now the funny thing is happening, when i am commenting the last include
+which is &quot; etc/bind/open-ims.dnszone&quot; file the bind is working perfectly but
+when i am commenting it out, the bind9 server fails to start. But according
+to the installation rules this file must be UNCOMMENTED and should be placed
+at this bind location after being copied from opt/OpenIMSCore/ser_ims/cfg.
+
+At this point when i apply to see the error log trace with &quot;tail
+/var/log/daemon.log&quot; the error trace that comes up is as follows -
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">root at sougata-desktop</A>:/# tail /var/log/daemon.log
+Aug 25 15:10:48 sougata-desktop named[4668]: loading configuration from
+'/etc/bind/named.conf'
+Aug 25 15:10:48 sougata-desktop named[4668]: /etc/bind/open-ims.dnszone:1:
+unknown option '$ORIGIN'
+Aug 25 15:10:48 sougata-desktop named[4668]: /etc/bind/open-ims.dnszone:4:
+unknown option 'serial'
+Aug 25 15:10:48 sougata-desktop named[4668]: /etc/bind/open-ims.dnszone:5:
+unknown option 'refresh'
+Aug 25 15:10:48 sougata-desktop named[4668]: /etc/bind/open-ims.dnszone:6:
+unknown option 'retry'
+Aug 25 15:10:48 sougata-desktop named[4668]: /etc/bind/open-ims.dnszone:7:
+unknown option 'expiry'
+Aug 25 15:10:48 sougata-desktop named[4668]: /etc/bind/open-ims.dnszone:8:
+unknown option 'minimum'
+Aug 25 15:10:48 sougata-desktop named[4668]: /etc/bind/named.conf:13:
+unexpected token near end of file
+Aug 25 15:10:48 sougata-desktop named[4668]: loading configuration:
+unexpected token
+Aug 25 15:10:48 sougata-desktop named[4668]: exiting (due to fatal error)
+
+According to the error trace, errors are in open-ims.dnszone file. Now i
+can't figure it out from where does this error traces coming.
+I am attaching the open-ims.dnszone with this mail for your comments. Now
+when i am trying to get my users registered at my open-ims.sougata i am
+getting Error 478&lt;Unresolvable Destination&gt; and Error 500&lt;Error forwarding
+to home domain&gt;. Is these 2 errors are due to this DNS error which i am
+receiving. I mean to say are they getting generated due to no resolvable dns
+address?
+
+2. Second issue is regarding resolv.conf file. Now as per my understanding
+this file will indicate the DNS which i want to work with and in this
+situation the installed DNS for openimscore is being installed on my own pc.
+
+My pc IP - 10.80.4.244
+My domain name - open-ims.sougata
+
+As my pc is behind university firewall so obviously this resolve.conf is
+already containing my university DNS ip address which is 193.145.56.11 for
+staying connected to outside internet.
+
+So i have updated my resolv.conf with having 2 nameservers one the
+university DNS and another my own DNS
+
+So my resolve.conf file is looking like -
+
+# Generated by NetworkManager
+nameserver 193.145.56.11
+nameserver 10.80.4.244
+search open-ims.sougata
+domain open-ims.sougata
+
+My question in this case, is this OK ? I mean to say that declaring 2 DNS
+servers in a single resolv.conf file one for the university dns which is
+helping me staying connected to the internet and another to my own personal
+DNS for open-ims.core.
+
+Is this file gets generated by the network manager whenever i am starting my
+network connections , because i am noticing that sometimes my own declared
+DNS IP (10.80.4.244) along with the search and domain options getting
+vanished from this file leaving just the nameserver 193.145.56.11. Why this
+change is taking place?
+
+CAN ANYONE KINDLY HELP ME IN CLEARING THESE 2 DOUBTS ?
+
+Regards,
+
+Sougata
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100825/259bc4d3/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100825/259bc4d3/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: open-ims.dnszone
+Type: application/octet-stream
+Size: 2086 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100825/259bc4d3/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100825/259bc4d3/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006496.html">[OpenIMSCore-Users] Error : Not forward message REGISTER to AS
+</A></li>
+	<LI>Next message: <A HREF="006491.html">[OpenIMSCore-Users] IMPORTANT Questions regarding DNS settings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6486">[ date ]</a>
+              <a href="thread.html#6486">[ thread ]</a>
+              <a href="subject.html#6486">[ subject ]</a>
+              <a href="author.html#6486">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Binary SMS with Boghe and OpenIMSCore
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2012-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Binary%20SMS%20with%20Boghe%20and%20OpenIMSCore&In-Reply-To=%3CCAGrTonTaOqvzdE_O2H9SU68sDH__OCFUiY%3DJzGoXR%2BTH2X9ayA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="007467.html">
+   <LINK REL="Next"  HREF="007460.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Binary SMS with Boghe and OpenIMSCore</H1>
+    <B>Oleksandr Shchirskyi</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Binary%20SMS%20with%20Boghe%20and%20OpenIMSCore&In-Reply-To=%3CCAGrTonTaOqvzdE_O2H9SU68sDH__OCFUiY%3DJzGoXR%2BTH2X9ayA%40mail.gmail.com%3E"
+       TITLE="[OpenIMSCore-Users] Binary SMS with Boghe and OpenIMSCore">oleksandr.shchirskyi at globallogic.com
+       </A><BR>
+    <I>Fri Aug 10 18:42:12 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="007467.html">[OpenIMSCore-Users] 3rd Party Registration
+</A></li>
+        <LI>Next message: <A HREF="007460.html">[OpenIMSCore-Users] Binary SMS with Boghe and OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7459">[ date ]</a>
+              <a href="thread.html#7459">[ thread ]</a>
+              <a href="subject.html#7459">[ subject ]</a>
+              <a href="author.html#7459">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Could anybody explain me what is the required server/client configuration
+for sending sms in binary format?
+At the moment I have OpenIMSCore server with enabled sms module and two IMS
+clients (Boghe) on the different PCs.
+
+First - when I want to use binary sms, I have to specify SMS Contact Center
+in the Boghe configuration. Then, Boghe sends SIP Mesaages with address of
+this contact center in the &quot;To&quot; field.
+In its turn, OpenIMSCore replies that &quot;HSS User Unknown&quot;. What is mean by
+&quot;Contact Center&quot;? SMS gateway (sms module)? And how it can be registered in
+the network?
+Second - Boghe sends sms in binary format only when destination sip address
+in telephone number format is used. e.g. contact address is
+sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">+3809876543 at open-ims.test</A>
+Is it common rule for IMS?
+
+Also, it's not very clear for me how MESSAGEs can be routed to the sms
+module.
+At the moment I have such configuration in the scscf.cfg:
+
+==============================
+modparam(&quot;sms&quot;,&quot;modems&quot;,&quot;Nokia [d=/dev/ttyACM0;b=9600]&quot;)
+modparam(&quot;sms&quot;,&quot;networks&quot;,&quot;D1[m=10]&quot;)
+modparam(&quot;sms&quot;,&quot;links&quot;,&quot;Nokia[D1]&quot;)
+modparam(&quot;sms&quot;,&quot;domain&quot;,&quot;open-ims.test&quot;)
+modparam(&quot;sms&quot;,&quot;max_sms_parts&quot;,3)
+modparam(&quot;sms&quot;,&quot;use_contact&quot;,1)
+
+# main routing logic
+
+route{
+        if(method==&quot;MESSAGE&quot;){
+                sms_send_msg_to_net(&quot;D1&quot;);
+        }
+...
+}
+
+==============================
+
+As a hardware GSM gateway my cell phone is using.
+But, as I see, nothing happens when s-cscf processes SIP MESSAGEs. I don't
+see that these messages are forwarded to the sms module, or smth like that.
+
+Maybe someone have already faced with OpenIMSCore configuration for
+processing binary sms, so could you share needed for it configuration,
+please?
+
+I would be very appreciated for any help.
+Thank you in advance.
+
+-- 
+**
+* Oleksandr Shchirskyi | Software Testing Engineer*
+GlobalLogic Inc. | Innovation by Design
+ARGENTINA | CHILE | CHINA | INDIA | ISRAEL | UKRAINE | UK | USA
+Office: +044.492.96.95, (ext. 4296)
+www.global logic.com &lt;<A HREF="http://www.globallogic.com">http://www.globallogic.com</A>&gt;
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/b87351a7/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20120810/b87351a7/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="007467.html">[OpenIMSCore-Users] 3rd Party Registration
+</A></li>
+	<LI>Next message: <A HREF="007460.html">[OpenIMSCore-Users] Binary SMS with Boghe and OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7459">[ date ]</a>
+              <a href="thread.html#7459">[ thread ]</a>
+              <a href="subject.html#7459">[ subject ]</a>
+              <a href="author.html#7459">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,358 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AKA%20authentication%20fails%20-%20Keep%20getting%20401&In-Reply-To=%3C45D1D941.3090006%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000775.html">
+   <LINK REL="Next"  HREF="000772.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] AKA authentication fails - Keep getting 401</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20AKA%20authentication%20fails%20-%20Keep%20getting%20401&In-Reply-To=%3C45D1D941.3090006%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] AKA authentication fails - Keep getting 401">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue Feb 13 16:29:05 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000775.html">[OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+</A></li>
+        <LI>Next message: <A HREF="000772.html">[OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#790">[ date ]</a>
+              <a href="thread.html#790">[ thread ]</a>
+              <a href="subject.html#790">[ subject ]</a>
+              <a href="author.html#790">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yes, that is what it means...
+
+-Dragos
+
+Sudhakar Patil wrote:
+&gt;<i> Dragos,
+</I>&gt;<i> Scenario MD5 registration, without SIP2IMS works for
+</I>&gt;<i> me. I cant test &quot;AKA registration, without SIP2IMS&quot; as
+</I>&gt;<i> I dont have the client that can do AKA. 
+</I>&gt;<i>
+</I>&gt;<i> Does &quot;MD5 registration, with SIP2IMS&quot; mean MD5 between
+</I>&gt;<i> client and sip2ims and AKA between sip2ims and SCSCF?
+</I>&gt;<i> If not, can you please verify this scenario? 
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Sudhakar.
+</I>&gt;<i>
+</I>&gt;<i> --- Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi Sudhakar,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have just tried 3 scenarios and all worked just
+</I>&gt;&gt;<i> fine with the lastest
+</I>&gt;&gt;<i> svn revision:
+</I>&gt;&gt;<i> 1. AKA registration, without SIP2IMS
+</I>&gt;&gt;<i> 2. MD5 registration, without SIP2IMS
+</I>&gt;&gt;<i> 3. MD5 registration, with SIP2IMS
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> the rest of my response inlined....
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Sudhakar Patil wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi Dragos,
+</I>&gt;&gt;&gt;<i> After updating to latest version I have few more
+</I>&gt;&gt;&gt;<i> problems. 
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Problem #1:
+</I>&gt;&gt;&gt;<i> ===========
+</I>&gt;&gt;&gt;<i> S-CSCF tries to use &quot;Digest-MD5&quot; when users are
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> then it means that you have configured it as such...
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> actually configured to use &quot;Digest-AKAv1-MD5&quot; in
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> no, that is the HSS, not the S-CSCF
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> hssdb. Similarly if users are configured to use
+</I>&gt;&gt;&gt;<i> &quot;Digest-MD5&quot;, S-CSCF requests authentication
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> vectors
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> for &quot;Digest-AKAv1-MD5&quot;. I have configured S-CSCF
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> to
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> use AKAv1-MD5 as the default algorithm. Does
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> S-CSCF
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> read hssdb, impi table? HSS output is shown below:
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> it doesn't read that database. The S-CSCF is not
+</I>&gt;&gt;<i> connected to any database.
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> 2007-02-12 13:11:04,869 DEBUG
+</I>&gt;&gt;&gt;<i> de.fhg.fokus.hss.server.cx.op.AuthCxOperation -
+</I>&gt;&gt;&gt;<i> generateAuthenticationVectors Auth-Scheme
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> Supported by
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> the HSS: Digest-AKAv1-MD5
+</I>&gt;&gt;&gt;<i> 2007-02-12 13:11:04,871 DEBUG
+</I>&gt;&gt;&gt;<i> de.fhg.fokus.hss.server.cx.op.AuthCxOperation -
+</I>&gt;&gt;&gt;<i> generateAuthenticationVectors Auth-Scheme asked by
+</I>&gt;&gt;&gt;<i> S-CSCF: Digest-MD5
+</I>&gt;&gt;&gt;<i> 2007-02-12 13:11:04,878 ERROR
+</I>&gt;&gt;&gt;<i> de.fhg.fokus.hss.server.cx.op.AuthCxOperation -
+</I>&gt;&gt;&gt;<i> generateAuthenticationVectors
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">de.fhg.fokus.hss.server.cx.op.AuthCxOperation at 192d604</A>[
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   scscfName=sip:scscf.open-ims.test:6060
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> authenticationVector=<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">de.fhg.fokus.cx.AuthenticationVector at 120b2da</A>
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   numberOfAuthVectors=1
+</I>&gt;&gt;&gt;<i> ]
+</I>&gt;&gt;&gt;<i> java.security.NoSuchAlgorithmException
+</I>&gt;&gt;&gt;<i>         at
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> de.fhg.fokus.hss.server.cx.op.AuthCxOperation.generateAuthenticationVectors(AuthCxOperation.java:195)
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>         at
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> de.fhg.fokus.hss.server.cx.op.AuthCxOperation.execute(AuthCxOperation.java:148)
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>         at
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> de.fhg.fokus.hss.server.cx.HSScxOperationsImpl.cxAuthData(HSScxOperationsImpl.java:153)
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>         at
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> de.fhg.fokus.hss.diam.cx.MARCommandListener.recvMessage(MARCommandListener.java:119)
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>         at
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> de.fhg.fokus.diameter.DiameterPeer.DiameterWorker.run(DiameterWorker.java:100)
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> 2007-02-12 13:11:04,891 DEBUG
+</I>&gt;&gt;&gt;<i> de.fhg.fokus.hss.server.cx.HSScxOperationsImpl -
+</I>&gt;&gt;&gt;<i> cxAuthData exiting
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> This is very strange... which svn revision are using
+</I>&gt;&gt;<i> for FHoSS? I hope
+</I>&gt;&gt;<i> that the last one...Did you recompiled it, etc? 
+</I>&gt;&gt;<i> Then have you actually
+</I>&gt;&gt;<i> configured the user to be allowed to use MD5?
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Problem #2:
+</I>&gt;&gt;&gt;<i> ===========
+</I>&gt;&gt;&gt;<i> sip2ims mentions &quot;MD5&quot; as the algorithm while
+</I>&gt;&gt;&gt;<i> generating AKA response as shown below, even when
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> it
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> is getting AKAv1-MD5 as the algorithm to be used:
+</I>&gt;&gt;&gt;<i> +++
+</I>&gt;&gt;&gt;<i> Digest realm=&quot;open-ims.test&quot;,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> nonce=&quot;CrH9CpJSzFKN6EoGWdPTx7TrgL8aawAAM4qjtk7zESg=&quot;,
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> algorithm=AKAv1-MD5
+</I>&gt;&gt;&gt;<i> ---
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> this is the AKA challenge from the S-CSCF
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> WWW-Authenticate: Digest
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> realm=&quot;open-ims.test&quot;,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> opaque=&quot;AKAv1-MD5CrH9CpJSzFKN6EoGWdPTx7TrgL8aawAAM4qjtk7zESg=&quot;,
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> nonce=&quot;45d0be2416837d07ed5cf972452d4d06964422ea&quot;,
+</I>&gt;&gt;&gt;<i> algorithm=MD5
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> and it is replaced by this, at the SIP2IMS, towards
+</I>&gt;&gt;<i> the client
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> +++
+</I>&gt;&gt;&gt;<i>  4(3101) INF:SIP2IMS:Gw_MD5_to_AKA:
+</I>&gt;&gt;&gt;<i> ===
+</I>&gt;&gt;&gt;<i> Digest
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;45d0be2416837d07ed5cf972452d4d06964422ea&quot;,uri=&quot;sip:open-ims.test&quot;,response=&quot;7109b9decb3d18fee450bc16ae3784d8&quot;,algorithm=&quot;MD5&quot;,opaque=&quot;AKAv1-MD5CrH9CpJSzFKN6EoGWdPTx7TrgL8aawAAM4qjtk7zESg=&quot;
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> this is the response of the user
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> ---
+</I>&gt;&gt;&gt;<i> Authorization: Digest
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> username=&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">bob at open-ims.test</A>&quot;,realm=&quot;open-ims.test&quot;,nonce=&quot;45d0be2416837d07ed5cf972452d4d06964422ea&quot;,uri=&quot;sip:open-ims.test&quot;,response=&quot;7109b9decb3d18fee450bc16ae3784d8&quot;,algorithm=&quot;MD5&quot;,opaque=&quot;AKAv1-MD5CrH9CpJSzFKN6EoGWdPTx7TrgL8aawAAM4qjtk7zESg=&quot;
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> ===
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> but as this is still MD5, it means that your client
+</I>&gt;&gt;<i> does not do MD5
+</I>&gt;&gt;<i> correctly, so it is not replacing it with a AKA
+</I>&gt;&gt;<i> response.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Overall, I am not able to register. Appreciate
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> your
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> help.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;<i> Sudhakar.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;&gt;<i> Hi all,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> it seems that the r98 commit was a rushed one.
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;<i> FHoSS
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i> was changed and
+</I>&gt;&gt;&gt;&gt;<i> Anonimity Key usage was enabled then. I have just
+</I>&gt;&gt;&gt;&gt;<i> enabled it also in the
+</I>&gt;&gt;&gt;&gt;<i> SIP2IMS in r132.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Please do a svn update and try again.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Again, sorry for the inconsistency.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;<i>         
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> ____________________________________________________________________________________
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> Don't get soaked.  Take a quick peak at the
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> forecast
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> with the Yahoo! Search weather shortcut.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> <A HREF="http://tools.search.yahoo.com/shortcuts/#loc_weather">http://tools.search.yahoo.com/shortcuts/#loc_weather</A>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> -- 
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;<i> We could change the world if God would give us the
+</I>&gt;&gt;<i> source code...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> -----------------------------------------------------------------
+</I>&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i> ____________________________________________________________________________________
+</I>&gt;<i> Food fight? Enjoy some healthy debate 
+</I>&gt;<i> in the Yahoo! Answers Food &amp; Drink Q&amp;A.
+</I>&gt;<i> <A HREF="http://answers.yahoo.com/dir/?link=list&amp;sid=396545367">http://answers.yahoo.com/dir/?link=list&amp;sid=396545367</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000775.html">[OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+</A></li>
+	<LI>Next message: <A HREF="000772.html">[OpenIMSCore-Users] AKA authentication fails - Keep getting 401
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#790">[ date ]</a>
+              <a href="thread.html#790">[ thread ]</a>
+              <a href="subject.html#790">[ subject ]</a>
+              <a href="author.html#790">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

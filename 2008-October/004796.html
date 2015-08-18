@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Having Problems Getting Early-IMS to work...
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Having%20Problems%20Getting%20Early-IMS%20to%20work...&In-Reply-To=%3C4909E65D.9020501%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004779.html">
+   <LINK REL="Next"  HREF="004780.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Having Problems Getting Early-IMS to work...</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Having%20Problems%20Getting%20Early-IMS%20to%20work...&In-Reply-To=%3C4909E65D.9020501%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Having Problems Getting Early-IMS to work...">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Oct 30 17:52:45 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004779.html">[OpenIMSCore-Users] Having Problems Getting Early-IMS to work...
+</A></li>
+        <LI>Next message: <A HREF="004780.html">[OpenIMSCore-Users] Sailfin integration with openimscore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4796">[ date ]</a>
+              <a href="thread.html#4796">[ thread ]</a>
+              <a href="subject.html#4796">[ subject ]</a>
+              <a href="author.html#4796">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Louis,
+
+there were some issue on encoding that nasty AVP Framed_IP_Address. Now
+it should be fixed, but try to grab both the latest HSS and S-CSCF. I
+suspect that the HSS is to blame, based on the output below. Make sure
+that it was compiled cleanly (not using actually the old version) and if
+the problem still persist, just ping me back.
+
+Cheers,
+-Dragos
+
+Louis Alexander wrote:
+&gt;<i> I know, it shouldn't be that hard, and i used to have it working some
+</I>&gt;<i> months ago on a different system... the authentication in our media
+</I>&gt;<i> server is a little broken (never looked into exactly why), and so in
+</I>&gt;<i> the past i used to use Early-IMS Authentication to allow the media
+</I>&gt;<i> server to register as &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">dialog at innoims.com</A>
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">dialog at innoims.com</A>&gt;&quot;.  Anyway, i grabbed the latest source
+</I>&gt;<i> this morning and built it and configured the system to 1) allow early
+</I>&gt;<i> ims 2) provisioned a user 'dialog' with early ims as the preferred
+</I>&gt;<i> scheme, but im still getting odd authentication errors.  Ive included
+</I>&gt;<i> a capture file, the 3 config files, and some copy from the scscf.log. 
+</I>&gt;<i> Maybe i forgot to do something to make it work just so... either way,
+</I>&gt;<i> any help would be appreciated.
+</I>&gt;<i>
+</I>&gt;<i> heres a snip of the log:
+</I>&gt;<i>
+</I>&gt;<i> 12(2778) --- Peer List: ---
+</I>&gt;<i> 12(2778)  S[R_Open] hss.innoims.com:3868 &lt;<A HREF="http://hss.innoims.com:3868">http://hss.innoims.com:3868</A>&gt;
+</I>&gt;<i> D[ ]
+</I>&gt;<i> 12(2778)      [16777216,10415]
+</I>&gt;<i> 12(2778)      [16777216,4491]
+</I>&gt;<i> 12(2778)      [16777216,13019]
+</I>&gt;<i> 12(2778)      [16777217,10415]
+</I>&gt;<i> 12(2778)      [16777221,10415]
+</I>&gt;<i> 12(2778) ------------------
+</I>&gt;<i>  3(2767) ERR:S-CSCF:cscf_get_integrity_protected: Message does not
+</I>&gt;<i> contain Authorization header.
+</I>&gt;<i>  3(2767) ERR:S-CSCF:cscf_get_private_identity: Message does not
+</I>&gt;<i> contain Authorization header.
+</I>&gt;<i>  3(2767) INF:S-CSCF:cscf_get_private_identity: Falling back to
+</I>&gt;<i> private_id=stripped(public_id)
+</I>&gt;<i> -&gt; Message did not contain a valid Authorization Header!!! This
+</I>&gt;<i> fallback is deprecated outside Early-IMS or NASS-Bundled!
+</I>&gt;<i>  3(2767) DBG:S-CSCF:S_is_authorized: Possible Early-IMS identified
+</I>&gt;<i> 18(2913) DBG:sm_process(): Peer hss.innoims.com
+</I>&gt;<i> &lt;<A HREF="http://hss.innoims.com">http://hss.innoims.com</A>&gt;     State R_Open     Event R_Rcv_Message
+</I>&gt;<i>  3(2767) ERROR:S-CSCF:Cx_get_capabilities(): Invalid length of AVP
+</I>&gt;<i> Framed IP Address (should be 4 for AVP_Framed_IP_Address) &gt;6.
+</I>&gt;<i>  3(2767) DBG:S-CSCF:S_is_authorized: IP address in MAA was &lt;0.1.172.24
+</I>&gt;<i> &lt;<A HREF="http://0.1.172.24">http://0.1.172.24</A>&gt;&gt;
+</I>&gt;<i>  3(2767) ERR:S-CSCF:cscf_get_private_identity: Message does not
+</I>&gt;<i> contain Authorization header.
+</I>&gt;<i>  3(2767) INF:S-CSCF:cscf_get_private_identity: Falling back to
+</I>&gt;<i> private_id=stripped(public_id)
+</I>&gt;<i> -&gt; Message did not contain a valid Authorization Header!!! This
+</I>&gt;<i> fallback is deprecated outside Early-IMS or NASS-Bundled!
+</I>&gt;<i>  3(2767) ERR:S-CSCF:cscf_get_auts: Message does not contain
+</I>&gt;<i> Authorization header.
+</I>&gt;<i> 18(2913) DBG:sm_process(): Peer hss.innoims.com
+</I>&gt;<i> &lt;<A HREF="http://hss.innoims.com">http://hss.innoims.com</A>&gt;     State R_Open     Event R_Rcv_Message
+</I>&gt;<i>  1(2765) DBG:S-CSCF:S_is_authorized: uri=sip:innoims.com
+</I>&gt;<i> &lt;<A HREF="http://innoims.com">http://innoims.com</A>&gt; nonce=3947dadb6127b01715aa72ffeb92e2e7
+</I>&gt;<i> response=6d2eaa67d79088239d2691bff6579f40 qop=auth nc=00000001
+</I>&gt;<i> cnonce=b632930 hbody=?M^
+</I>&gt;<i>  1(2765) DBG:S-CSCF:S_is_authorized: UE said:
+</I>&gt;<i> 6d2eaa67d79088239d2691bff6579f40 and we  expect
+</I>&gt;<i> 22db7b42324910bd6c6faa9fcacc83b3 ha1 46d1fab8624fad8dc325eb0663187c93
+</I>&gt;<i> 18(2913) DBG:sm_process(): Peer hss.innoims.com
+</I>&gt;<i> &lt;<A HREF="http://hss.innoims.com">http://hss.innoims.com</A>&gt;     State R_Open     Event R_Rcv_Message
+</I>&gt;<i> 12(2778) --- Peer List: ---
+</I>&gt;<i> 12(2778)  S[R_Open] hss.innoims.com:3868 &lt;<A HREF="http://hss.innoims.com:3868">http://hss.innoims.com:3868</A>&gt;
+</I>&gt;<i> D[ ]
+</I>&gt;<i> 12(2778)      [16777216,10415]
+</I>&gt;<i> 12(2778)      [16777216,4491]
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> Thanks,
+</I>&gt;<i>
+</I>&gt;<i> Louis
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004779.html">[OpenIMSCore-Users] Having Problems Getting Early-IMS to work...
+</A></li>
+	<LI>Next message: <A HREF="004780.html">[OpenIMSCore-Users] Sailfin integration with openimscore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4796">[ date ]</a>
+              <a href="thread.html#4796">[ thread ]</a>
+              <a href="subject.html#4796">[ subject ]</a>
+              <a href="author.html#4796">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

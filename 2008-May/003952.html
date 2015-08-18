@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Received no Notify when	unsubscribing	&quot;reg&quot;event
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Received%20no%20Notify%20when%0A%09unsubscribing%09%22reg%22event&In-Reply-To=%3C482AC51C.6000101%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003927.html">
+   <LINK REL="Next"  HREF="003892.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Received no Notify when	unsubscribing	&quot;reg&quot;event</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Received%20no%20Notify%20when%0A%09unsubscribing%09%22reg%22event&In-Reply-To=%3C482AC51C.6000101%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Received no Notify when	unsubscribing	&quot;reg&quot;event">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed May 14 12:55:24 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003927.html">[OpenIMSCore-Users] Received no Notify when unsubscribing	&quot;reg&quot;event
+</A></li>
+        <LI>Next message: <A HREF="003892.html">[OpenIMSCore-Users] Service-Route not followed,	unable to send any message
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3952">[ date ]</a>
+              <a href="thread.html#3952">[ thread ]</a>
+              <a href="subject.html#3952">[ subject ]</a>
+              <a href="author.html#3952">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here is the patch. But I don't think that we will fix in the trunk... 
+There are still some issues left open:
+- what should the final NOTIFY contain?
+- the dialog is deleted on the P-CSCF and also probably on the clients 
+on the 200 for the unSUBSCRIBE. Then the NOTIFY will probably be rejected.
+
+I think that we have discussed this before....
+
+Cheers,
+-Dragos
+Chen Ren Lei wrote:
+&gt;<i> Hi Franz,
+</I>&gt;<i>
+</I>&gt;<i> Will you fix this bug? Could you send me a patch to fix this bug?\
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Renlei
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>] 
+</I>&gt;<i> Sent: Wednesday, May 07, 2008 11:36 AM
+</I>&gt;<i> To: Chen Ren Lei
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: RE: [OpenIMSCore-Users] Received no Notify when unsubscribing
+</I>&gt;<i> &quot;reg&quot;event
+</I>&gt;<i>
+</I>&gt;<i> Hi Renlei,
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> In RFC 3265 (Session Initiation Protocol - Specific Event
+</I>&gt;&gt;<i>     
+</I>&gt;<i> Notification,
+</I>&gt;<i>   
+</I>&gt;&gt;<i> attached is it) I found the below:
+</I>&gt;&gt;<i>    Unsubscribing is handled in the same way as refreshing of a
+</I>&gt;&gt;<i>    subscription, with the &quot;Expires&quot; header set to &quot;0&quot;.  Note that a
+</I>&gt;&gt;<i>    successful unsubscription will also trigger a final NOTIFY message.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> So. You are right. It should be there.
+</I>&gt;<i>
+</I>&gt;<i> Franz
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: unsubscribe_notify.diff
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20080514/de25738d/attachment.ksh">https://lists.berlios.de/pipermail/openimscore-users/attachments/20080514/de25738d/attachment.ksh</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003927.html">[OpenIMSCore-Users] Received no Notify when unsubscribing	&quot;reg&quot;event
+</A></li>
+	<LI>Next message: <A HREF="003892.html">[OpenIMSCore-Users] Service-Route not followed,	unable to send any message
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3952">[ date ]</a>
+              <a href="thread.html#3952">[ thread ]</a>
+              <a href="subject.html#3952">[ subject ]</a>
+              <a href="author.html#3952">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

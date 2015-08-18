@@ -1,0 +1,596 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Segmentation fault bugfix for POWERPC
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Segmentation%20fault%20bugfix%20for%20POWERPC&In-Reply-To=%3C4835940E.5080205%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003977.html">
+   <LINK REL="Next"  HREF="003978.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Segmentation fault bugfix for POWERPC</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Segmentation%20fault%20bugfix%20for%20POWERPC&In-Reply-To=%3C4835940E.5080205%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Segmentation fault bugfix for POWERPC">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu May 22 17:41:02 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003977.html">[OpenIMSCore-Users] Segmentation fault bugfix for POWERPC
+</A></li>
+        <LI>Next message: <A HREF="003978.html">[OpenIMSCore-Users] IPTV service
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3996">[ date ]</a>
+              <a href="thread.html#3996">[ thread ]</a>
+              <a href="subject.html#3996">[ subject ]</a>
+              <a href="author.html#3996">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Great. Commit it in r561. Thanx for the help!
+
+Cheers,
+-Dragos
+
+Tom.Weber wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> I have tested your attached patch and it works without any errors on ppc.
+</I>&gt;<i> Nice coding ;)
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> Tom
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Dragos Vingarzan schrieb:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi Tom,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I think that we should fix it thoroughly, even if luckily on x86 works as it
+</I>&gt;&gt;<i>     
+</I>&gt;<i> is. What do you think about the attached patch? Could you please test it on
+</I>&gt;<i> ppc? On x86 it seems to be working.
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Tom.Weber wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi Dragos and all POWERPC friends,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I have fixed the segmentation fault, when starting I-CSCF or S-CSCF on
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> POWERPC
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> architecture. The error comes from the CDP (Diameter) module, that's why the
+</I>&gt;&gt;&gt;<i> P-CSCF starts without any error and the I-CSCF and the S-CSCF not.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Explanation:
+</I>&gt;&gt;&gt;<i> The fourth argument to semctl() is a &quot;union semun&quot; that you need to define in
+</I>&gt;&gt;&gt;<i> this way:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> union semun {
+</I>&gt;&gt;&gt;<i>     int val;
+</I>&gt;&gt;&gt;<i>     struct semid_ds *buf;
+</I>&gt;&gt;&gt;<i>     ushort *array;
+</I>&gt;&gt;&gt;<i> } arg;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> semctl(sem_fd, 0, SETVAL, arg);
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> In short, on POWERPC or SPARC, passing a union containing an integer and just
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> an
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> integer, both by value, is not the same thing. On other systems it sometimes
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> is.
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> (see <A HREF="http://www.science.uva.nl/pub/solaris/solaris2.html#q6.22">http://www.science.uva.nl/pub/solaris/solaris2.html#q6.22</A>)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Dragos, is it possible to bugfix the version of &quot;worker.c&quot; in the OpenIMSCore
+</I>&gt;&gt;&gt;<i> repository?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Cheers,
+</I>&gt;&gt;&gt;<i> Tom
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> My fixed version of &quot;worker.c&quot;:
+</I>&gt;&gt;&gt;<i> ==============================
+</I>&gt;&gt;&gt;<i> /**
+</I>&gt;&gt;&gt;<i>  * $Id: worker.c 431 2007-08-01 14:27:58Z vingarzan $
+</I>&gt;&gt;&gt;<i>  *
+</I>&gt;&gt;&gt;<i>  * Copyright (C) 2004-2006 FhG Fokus
+</I>&gt;&gt;&gt;<i>  *
+</I>&gt;&gt;&gt;<i>  * This file is part of Open IMS Core - an open source IMS CSCFs &amp; HSS
+</I>&gt;&gt;&gt;<i>  * implementation
+</I>&gt;&gt;&gt;<i>  *
+</I>&gt;&gt;&gt;<i>  * Open IMS Core is free software; you can redistribute it and/or modify
+</I>&gt;&gt;&gt;<i>  * it under the terms of the GNU General Public License as published by
+</I>&gt;&gt;&gt;<i>  * the Free Software Foundation; either version 2 of the License, or
+</I>&gt;&gt;&gt;<i>  * (at your option) any later version.
+</I>&gt;&gt;&gt;<i>  *
+</I>&gt;&gt;&gt;<i>  * For a license to use the Open IMS Core software under conditions
+</I>&gt;&gt;&gt;<i>  * other than those described here, or to purchase support for this
+</I>&gt;&gt;&gt;<i>  * software, please contact Fraunhofer FOKUS by e-mail at the following
+</I>&gt;&gt;&gt;<i>  * addresses:
+</I>&gt;&gt;&gt;<i>  *     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">info at open-ims.org</A>
+</I>&gt;&gt;&gt;<i>  *
+</I>&gt;&gt;&gt;<i>  * Open IMS Core is distributed in the hope that it will be useful,
+</I>&gt;&gt;&gt;<i>  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+</I>&gt;&gt;&gt;<i>  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+</I>&gt;&gt;&gt;<i>  * GNU General Public License for more details.
+</I>&gt;&gt;&gt;<i>  *
+</I>&gt;&gt;&gt;<i>  * It has to be noted that this Open Source IMS Core System is not
+</I>&gt;&gt;&gt;<i>  * intended to become or act as a product in a commercial context! Its
+</I>&gt;&gt;&gt;<i>  * sole purpose is to provide an IMS core reference implementation for
+</I>&gt;&gt;&gt;<i>  * IMS technology testing and IMS application prototyping for research
+</I>&gt;&gt;&gt;<i>  * purposes, typically performed in IMS test-beds.
+</I>&gt;&gt;&gt;<i>  *
+</I>&gt;&gt;&gt;<i>  * Users of the Open Source IMS Core System have to be aware that IMS
+</I>&gt;&gt;&gt;<i>  * technology may be subject of patents and licence terms, as being
+</I>&gt;&gt;&gt;<i>  * specified within the various IMS-related IETF, ITU-T, ETSI, and 3GPP
+</I>&gt;&gt;&gt;<i>  * standards. Thus all Open IMS Core users have to take notice of this
+</I>&gt;&gt;&gt;<i>  * fact and have to agree to check out carefully before installing,
+</I>&gt;&gt;&gt;<i>  * using and extending the Open Source IMS Core System, if related
+</I>&gt;&gt;&gt;<i>  * patents and licences may become applicable to the intended usage
+</I>&gt;&gt;&gt;<i>  * context.
+</I>&gt;&gt;&gt;<i>  *
+</I>&gt;&gt;&gt;<i>  * You should have received a copy of the GNU General Public License
+</I>&gt;&gt;&gt;<i>  * along with this program; if not, write to the Free Software
+</I>&gt;&gt;&gt;<i>  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+</I>&gt;&gt;&gt;<i>  *
+</I>&gt;&gt;&gt;<i>  */
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /**
+</I>&gt;&gt;&gt;<i>  * \file
+</I>&gt;&gt;&gt;<i>  *
+</I>&gt;&gt;&gt;<i>  * CDiameterPeer Worker Procedures
+</I>&gt;&gt;&gt;<i>  *
+</I>&gt;&gt;&gt;<i>  * This the process pool representation that is used for processing incoming
+</I>&gt;&gt;&gt;<i> messages.
+</I>&gt;&gt;&gt;<i>  *
+</I>&gt;&gt;&gt;<i>  *  \author Dragos Vingarzan vingarzan -at- fokus dot fraunhofer dot de
+</I>&gt;&gt;&gt;<i>  *
+</I>&gt;&gt;&gt;<i>  */
+</I>&gt;&gt;&gt;<i> #include &lt;time.h&gt;
+</I>&gt;&gt;&gt;<i> #include &lt;stdlib.h&gt;
+</I>&gt;&gt;&gt;<i> #include &lt;sys/types.h&gt;
+</I>&gt;&gt;&gt;<i> #include &lt;unistd.h&gt;
+</I>&gt;&gt;&gt;<i> #include &lt;sys/ipc.h&gt;
+</I>&gt;&gt;&gt;<i> #include &lt;sys/sem.h&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> #include &quot;utils.h&quot;
+</I>&gt;&gt;&gt;<i> #include &quot;globals.h&quot;
+</I>&gt;&gt;&gt;<i> #include &quot;config.h&quot;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> #include &quot;worker.h&quot;
+</I>&gt;&gt;&gt;<i> #include &quot;diameter_api.h&quot;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /* defined in ../diameter_peer.c */
+</I>&gt;&gt;&gt;<i> int dp_add_pid(pid_t pid);
+</I>&gt;&gt;&gt;<i> void dp_del_pid(pid_t pid);
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> extern dp_config *config;        /**&lt; Configuration for this diameter peer   
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i>  */
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> task_queue_t *tasks;            /**&lt; queue of tasks */
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> cdp_cb_list_t *callbacks;        /**&lt; list of callbacks for message
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> processing */
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> struct sembuf cdp_sem_lock=  { 0, -1, 0};    /**&lt; sembuf structure to lock a
+</I>&gt;&gt;&gt;<i> semaphore */
+</I>&gt;&gt;&gt;<i> struct sembuf cdp_sem_unlock={ 0, +1, 0};    /**&lt; sembuf structure to unlock
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> a
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> semaphore */
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /**
+</I>&gt;&gt;&gt;<i>  * Gets the lock on a semaphore and blocks until it is available.
+</I>&gt;&gt;&gt;<i>  * This procedures does not consume CPU cycles as a busy-waiting would and it
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> is
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> used for
+</I>&gt;&gt;&gt;<i>  * blocking on the task queue without a big impact on performance.
+</I>&gt;&gt;&gt;<i>  * @param sid - semaphore id
+</I>&gt;&gt;&gt;<i>  * @returns when the sempahore is aquired or shutdown
+</I>&gt;&gt;&gt;<i>  */
+</I>&gt;&gt;&gt;<i> static inline void cdp_lock_get(int sid)
+</I>&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;<i>     if((semop(sid, &amp;cdp_sem_lock, 1)) == -1)
+</I>&gt;&gt;&gt;<i>     {
+</I>&gt;&gt;&gt;<i>         if (shutdownx&amp;&amp;(*shutdownx)) return;
+</I>&gt;&gt;&gt;<i>         LOG(L_INFO,&quot;ERROR:cdp_lock_get(): Error on semop &gt;
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> %s\n&quot;,strerror(errno));
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /**
+</I>&gt;&gt;&gt;<i>  * Releases the lock on a sempahore.
+</I>&gt;&gt;&gt;<i>  * @param sid - the semaphore id
+</I>&gt;&gt;&gt;<i>  */
+</I>&gt;&gt;&gt;<i> static inline void cdp_lock_release(int sid)
+</I>&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;<i> // Tom Weber: Bugfix for powerpc architecture
+</I>&gt;&gt;&gt;<i> #ifdef __PPC__
+</I>&gt;&gt;&gt;<i>     union semun {
+</I>&gt;&gt;&gt;<i>         int val;
+</I>&gt;&gt;&gt;<i>         struct semid_ds *buf;
+</I>&gt;&gt;&gt;<i>         ushort *array;
+</I>&gt;&gt;&gt;<i>     } arg;
+</I>&gt;&gt;&gt;<i>     arg.val = 1;
+</I>&gt;&gt;&gt;<i>     if (semctl(sid, 0, SETVAL, arg) == -1
+</I>&gt;&gt;&gt;<i> #else
+</I>&gt;&gt;&gt;<i>     if( semctl(sid, 0, SETVAL, 1) == -1
+</I>&gt;&gt;&gt;<i> #endif
+</I>&gt;&gt;&gt;<i>     /*semop(sid, &amp;cdp_sem_unlock, 1) == -1*/)
+</I>&gt;&gt;&gt;<i>     {
+</I>&gt;&gt;&gt;<i>         if (shutdownx&amp;&amp;(*shutdownx)) return;
+</I>&gt;&gt;&gt;<i>         LOG(L_INFO,&quot;ERROR:cdp_lock_release(): Error on semop %s &gt; %d: %s
+</I>&gt;&gt;&gt;<i> Q[%2d/%2d]\n&quot;,
+</I>&gt;&gt;&gt;<i>             sid==tasks-&gt;full?&quot;full&quot;:&quot;empty&quot;,errno,strerror(errno),
+</I>&gt;&gt;&gt;<i>             tasks-&gt;start,tasks-&gt;end);
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /**
+</I>&gt;&gt;&gt;<i>  * Initializes the worker structures, like the task queue.
+</I>&gt;&gt;&gt;<i>  */
+</I>&gt;&gt;&gt;<i> void worker_init()
+</I>&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;<i>     tasks = shm_malloc(sizeof(task_queue_t));
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     tasks-&gt;lock = lock_alloc();
+</I>&gt;&gt;&gt;<i>     tasks-&gt;lock = lock_init(tasks-&gt;lock);
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> // Tom Weber: Bugfix for powerpc architecture
+</I>&gt;&gt;&gt;<i> #ifdef __PPC__
+</I>&gt;&gt;&gt;<i>     union semun {
+</I>&gt;&gt;&gt;<i>         int val;
+</I>&gt;&gt;&gt;<i>         struct semid_ds *buf;
+</I>&gt;&gt;&gt;<i>         ushort *array;
+</I>&gt;&gt;&gt;<i>     } arg;
+</I>&gt;&gt;&gt;<i>     arg.val = 0666 | IPC_CREAT;
+</I>&gt;&gt;&gt;<i> #endif
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     tasks-&gt;empty = semget(IPC_PRIVATE,1,0666 | IPC_CREAT );
+</I>&gt;&gt;&gt;<i>     if (tasks-&gt;empty==-1){
+</I>&gt;&gt;&gt;<i>         LOG(L_ERR,&quot;ERROR:worker_init(): Error creating semaphore for empty
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> queue &gt;
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> %s\n&quot;,strerror(errno));
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i>     else{
+</I>&gt;&gt;&gt;<i> // Tom Weber: Bugfix for powerpc architecture
+</I>&gt;&gt;&gt;<i> #ifdef __PPC__
+</I>&gt;&gt;&gt;<i>         semctl(tasks-&gt;empty, 0, SETVAL, arg);
+</I>&gt;&gt;&gt;<i> #else
+</I>&gt;&gt;&gt;<i>         semctl(tasks-&gt;empty, 0, SETVAL, 0666 | IPC_CREAT );
+</I>&gt;&gt;&gt;<i> #endif
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i>     tasks-&gt;full = semget(IPC_PRIVATE,1, 0666 | IPC_CREAT );
+</I>&gt;&gt;&gt;<i>     if (tasks-&gt;full==-1){
+</I>&gt;&gt;&gt;<i>         LOG(L_ERR,&quot;ERROR:worker_init(): Error creating semaphore for full
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i> queue &gt;
+</I>&gt;<i>   
+</I>&gt;&gt;&gt;<i> %s\n&quot;,strerror(errno));
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i>     else{
+</I>&gt;&gt;&gt;<i> // Tom Weber: Bugfix for powerpc architecture
+</I>&gt;&gt;&gt;<i> #ifdef __PPC__
+</I>&gt;&gt;&gt;<i>         semctl(tasks-&gt;full, 0, SETVAL, arg);
+</I>&gt;&gt;&gt;<i> #else
+</I>&gt;&gt;&gt;<i>         semctl(tasks-&gt;full, 0, SETVAL, 0666 | IPC_CREAT );
+</I>&gt;&gt;&gt;<i> #endif
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     tasks-&gt;start = 0;
+</I>&gt;&gt;&gt;<i>     tasks-&gt;end = 0;
+</I>&gt;&gt;&gt;<i>     tasks-&gt;max = config-&gt;queue_length;
+</I>&gt;&gt;&gt;<i>     tasks-&gt;queue = shm_malloc(tasks-&gt;max*sizeof(task_t));
+</I>&gt;&gt;&gt;<i>     if (!tasks-&gt;queue) LOG_NO_MEM(&quot;shm&quot;,tasks-&gt;max*sizeof(task_t));
+</I>&gt;&gt;&gt;<i>     memset(tasks-&gt;queue,0,tasks-&gt;max*sizeof(task_t));
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     callbacks = shm_malloc(sizeof(cdp_cb_list_t));
+</I>&gt;&gt;&gt;<i>     callbacks-&gt;head = 0;
+</I>&gt;&gt;&gt;<i>     callbacks-&gt;tail = 0;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     cdp_lock_get(tasks-&gt;empty);
+</I>&gt;&gt;&gt;<i> //    lock_release(tasks-&gt;full);
+</I>&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /**
+</I>&gt;&gt;&gt;<i>  * Destroys the worker structures.
+</I>&gt;&gt;&gt;<i>  */
+</I>&gt;&gt;&gt;<i> void worker_destroy()
+</I>&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;<i>     int i;
+</I>&gt;&gt;&gt;<i> //    LOG(L_CRIT,&quot;-1-\n&quot;);
+</I>&gt;&gt;&gt;<i> /*    lock_get(tasks-&gt;lock);*/
+</I>&gt;&gt;&gt;<i>     for(i=0;i&lt;tasks-&gt;max;i++){
+</I>&gt;&gt;&gt;<i>         if (tasks-&gt;queue[i].msg) AAAFreeMessage(&amp;(tasks-&gt;queue[i].msg));
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i> //    LOG(L_CRIT,&quot;-2-\n&quot;);
+</I>&gt;&gt;&gt;<i>     shm_free(tasks-&gt;queue);
+</I>&gt;&gt;&gt;<i>     lock_destroy(tasks-&gt;lock);
+</I>&gt;&gt;&gt;<i>     lock_dealloc((void*)tasks-&gt;lock);
+</I>&gt;&gt;&gt;<i> //    LOG(L_CRIT,&quot;-3-\n&quot;);
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     //lock_release(tasks-&gt;empty);
+</I>&gt;&gt;&gt;<i> // Tom Weber: Bugfix for powerpc architecture
+</I>&gt;&gt;&gt;<i> #ifdef __PPC__
+</I>&gt;&gt;&gt;<i>     union semun {
+</I>&gt;&gt;&gt;<i>         int val;
+</I>&gt;&gt;&gt;<i>         struct semid_ds *buf;
+</I>&gt;&gt;&gt;<i>         ushort *array;
+</I>&gt;&gt;&gt;<i>     } arg;
+</I>&gt;&gt;&gt;<i>     arg.val = 0;
+</I>&gt;&gt;&gt;<i>     semctl(tasks-&gt;empty, 0, IPC_RMID, arg);
+</I>&gt;&gt;&gt;<i>     semctl(tasks-&gt;full, 0, IPC_RMID, arg);
+</I>&gt;&gt;&gt;<i> #else
+</I>&gt;&gt;&gt;<i>     semctl(tasks-&gt;empty, 0, IPC_RMID, 0);
+</I>&gt;&gt;&gt;<i>     semctl(tasks-&gt;full, 0, IPC_RMID, 0);
+</I>&gt;&gt;&gt;<i> #endif
+</I>&gt;&gt;&gt;<i> //    LOG(L_CRIT,&quot;-4-\n&quot;);
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     //semctl(tasks-&gt;full, 0, IPC_RMID, 0);
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     shm_free(tasks);
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     while(callbacks-&gt;head)
+</I>&gt;&gt;&gt;<i>         cb_remove(callbacks-&gt;head);
+</I>&gt;&gt;&gt;<i>     shm_free(callbacks);
+</I>&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /*unsafe*/
+</I>&gt;&gt;&gt;<i> int cb_add(cdp_cb_f cb,void *ptr)
+</I>&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;<i>     cdp_cb_t *x;
+</I>&gt;&gt;&gt;<i>     x = shm_malloc(sizeof(cdp_cb_t));
+</I>&gt;&gt;&gt;<i>     if (!x){
+</I>&gt;&gt;&gt;<i>         LOG_NO_MEM(&quot;shm&quot;,sizeof(cdp_cb_t));
+</I>&gt;&gt;&gt;<i>         return 0;
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i>     x-&gt;cb = cb;
+</I>&gt;&gt;&gt;<i>     x-&gt;ptr = shm_malloc(sizeof(void*));
+</I>&gt;&gt;&gt;<i>     if (!x-&gt;ptr){
+</I>&gt;&gt;&gt;<i>         LOG_NO_MEM(&quot;shm&quot;,sizeof(void*));
+</I>&gt;&gt;&gt;<i>         return 0;
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i>     *(x-&gt;ptr) = ptr;
+</I>&gt;&gt;&gt;<i>     x-&gt;next = 0;
+</I>&gt;&gt;&gt;<i>     x-&gt;prev = callbacks-&gt;tail;
+</I>&gt;&gt;&gt;<i>     if (callbacks-&gt;tail) callbacks-&gt;tail-&gt;next = x;
+</I>&gt;&gt;&gt;<i>     callbacks-&gt;tail = x;
+</I>&gt;&gt;&gt;<i>     if (!callbacks-&gt;head) callbacks-&gt;head = x;
+</I>&gt;&gt;&gt;<i>     return 1;
+</I>&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /*unsafe*/
+</I>&gt;&gt;&gt;<i> void cb_remove(cdp_cb_t *cb)
+</I>&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;<i>     cdp_cb_t *x;
+</I>&gt;&gt;&gt;<i>     x = callbacks-&gt;head;
+</I>&gt;&gt;&gt;<i>     while(x &amp;&amp; x!=cb) x = x-&gt;next;
+</I>&gt;&gt;&gt;<i>     if (!x) return;
+</I>&gt;&gt;&gt;<i>     if (x-&gt;prev) x-&gt;prev-&gt;next = x-&gt;next;
+</I>&gt;&gt;&gt;<i>     else callbacks-&gt;head = x-&gt;next;
+</I>&gt;&gt;&gt;<i>     if (x-&gt;next) x-&gt;next-&gt;prev = x-&gt;prev;
+</I>&gt;&gt;&gt;<i>     else callbacks-&gt;tail = x-&gt;prev;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     if (x-&gt;ptr) shm_free(x-&gt;ptr);
+</I>&gt;&gt;&gt;<i>     shm_free(x);
+</I>&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /**
+</I>&gt;&gt;&gt;<i>  * Adds a message as a task to the task queue.
+</I>&gt;&gt;&gt;<i>  * This blocks if the task queue is full, untill there is space.
+</I>&gt;&gt;&gt;<i>  * @param p - the peer that the message was received from
+</I>&gt;&gt;&gt;<i>  * @param msg - the message
+</I>&gt;&gt;&gt;<i>  * @returns 1 on success, 0 on failure (eg. shutdown in progress)
+</I>&gt;&gt;&gt;<i>  */
+</I>&gt;&gt;&gt;<i> int put_task(peer *p,AAAMessage *msg)
+</I>&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;<i> //    LOG(L_CRIT,&quot;+1+\n&quot;);
+</I>&gt;&gt;&gt;<i>     lock_get(tasks-&gt;lock);
+</I>&gt;&gt;&gt;<i> //    LOG(L_CRIT,&quot;+2+\n&quot;);
+</I>&gt;&gt;&gt;<i>     while ((tasks-&gt;end+1)%tasks-&gt;max == tasks-&gt;start){
+</I>&gt;&gt;&gt;<i> //        LOG(L_CRIT,&quot;+3+\n&quot;);
+</I>&gt;&gt;&gt;<i>         lock_release(tasks-&gt;lock);
+</I>&gt;&gt;&gt;<i> //        LOG(L_CRIT,&quot;+4+\n&quot;);
+</I>&gt;&gt;&gt;<i>         if (*shutdownx) {
+</I>&gt;&gt;&gt;<i>             cdp_lock_release(tasks-&gt;full);
+</I>&gt;&gt;&gt;<i>             return 0;
+</I>&gt;&gt;&gt;<i>         }
+</I>&gt;&gt;&gt;<i> //        LOG(L_ERR,&quot;+&quot;);
+</I>&gt;&gt;&gt;<i>         cdp_lock_get(tasks-&gt;full);
+</I>&gt;&gt;&gt;<i> //        LOG(L_CRIT,&quot;+5+\n&quot;);
+</I>&gt;&gt;&gt;<i>         lock_get(tasks-&gt;lock);
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i>     tasks-&gt;queue[tasks-&gt;end].p = p;
+</I>&gt;&gt;&gt;<i>     tasks-&gt;queue[tasks-&gt;end].msg = msg;
+</I>&gt;&gt;&gt;<i>     tasks-&gt;end = (tasks-&gt;end+1) % tasks-&gt;max;
+</I>&gt;&gt;&gt;<i>     cdp_lock_release(tasks-&gt;empty);
+</I>&gt;&gt;&gt;<i>     lock_release(tasks-&gt;lock);
+</I>&gt;&gt;&gt;<i>     return 1;
+</I>&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /**
+</I>&gt;&gt;&gt;<i>  * Remove and return the first task from the queue (FIFO).
+</I>&gt;&gt;&gt;<i>  * This blocks until there is something in the queue.
+</I>&gt;&gt;&gt;<i>  * @returns the first task from the queue or an empty task on error (eg.
+</I>&gt;&gt;&gt;<i> shutdown in progress)
+</I>&gt;&gt;&gt;<i>  */
+</I>&gt;&gt;&gt;<i> task_t take_task()
+</I>&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;<i>     task_t t={0,0};
+</I>&gt;&gt;&gt;<i> //    LOG(L_CRIT,&quot;-1-\n&quot;);
+</I>&gt;&gt;&gt;<i>     lock_get(tasks-&gt;lock);
+</I>&gt;&gt;&gt;<i> //    LOG(L_CRIT,&quot;-2-\n&quot;);
+</I>&gt;&gt;&gt;<i>     while(tasks-&gt;start == tasks-&gt;end){
+</I>&gt;&gt;&gt;<i> //        LOG(L_CRIT,&quot;-3-\n&quot;);
+</I>&gt;&gt;&gt;<i>         lock_release(tasks-&gt;lock);
+</I>&gt;&gt;&gt;<i> //        LOG(L_CRIT,&quot;-4-\n&quot;);
+</I>&gt;&gt;&gt;<i>         if (*shutdownx) {
+</I>&gt;&gt;&gt;<i>             cdp_lock_release(tasks-&gt;empty);
+</I>&gt;&gt;&gt;<i>             return t;
+</I>&gt;&gt;&gt;<i>         }
+</I>&gt;&gt;&gt;<i> //        LOG(L_ERR,&quot;-&quot;);
+</I>&gt;&gt;&gt;<i>         cdp_lock_get(tasks-&gt;empty);
+</I>&gt;&gt;&gt;<i> //        LOG(L_CRIT,&quot;-5-\n&quot;);
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>         lock_get(tasks-&gt;lock);
+</I>&gt;&gt;&gt;<i> //        LOG(L_CRIT,&quot;-6-\n&quot;);
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i> //    LOG(L_CRIT,&quot;-7-\n&quot;);
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     t = tasks-&gt;queue[tasks-&gt;start];
+</I>&gt;&gt;&gt;<i>     tasks-&gt;queue[tasks-&gt;start].msg = 0;
+</I>&gt;&gt;&gt;<i>     tasks-&gt;start = (tasks-&gt;start+1) % tasks-&gt;max;
+</I>&gt;&gt;&gt;<i>     cdp_lock_release(tasks-&gt;full);
+</I>&gt;&gt;&gt;<i>     lock_release(tasks-&gt;lock);
+</I>&gt;&gt;&gt;<i>     return t;
+</I>&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /**
+</I>&gt;&gt;&gt;<i>  * Poisons the worker queue.
+</I>&gt;&gt;&gt;<i>  * Actually it just releases the task queue locks so that the workers get to
+</I>&gt;&gt;&gt;<i> evaluate
+</I>&gt;&gt;&gt;<i>  * if a shutdown is in process and exit.
+</I>&gt;&gt;&gt;<i>  */
+</I>&gt;&gt;&gt;<i> void worker_poison_queue()
+</I>&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;<i> //    int i;
+</I>&gt;&gt;&gt;<i> //    for(i=0;i&lt;config-&gt;workers;i++)
+</I>&gt;&gt;&gt;<i>     cdp_lock_release(tasks-&gt;empty);
+</I>&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /**
+</I>&gt;&gt;&gt;<i>  * This is the main worker process.
+</I>&gt;&gt;&gt;<i>  * Takes tasks from the queue in a loop and processes them by calling the
+</I>&gt;&gt;&gt;<i> registered callbacks.
+</I>&gt;&gt;&gt;<i>  * @param id - id of the worker
+</I>&gt;&gt;&gt;<i>  * @returns never, exits on shutdown.
+</I>&gt;&gt;&gt;<i>  */
+</I>&gt;&gt;&gt;<i> void worker_process(int id)
+</I>&gt;&gt;&gt;<i> {
+</I>&gt;&gt;&gt;<i>     task_t t;
+</I>&gt;&gt;&gt;<i>     cdp_cb_t *cb;
+</I>&gt;&gt;&gt;<i>     int r;
+</I>&gt;&gt;&gt;<i>     LOG(L_INFO,&quot;INFO:[%d] Worker process started...\n&quot;,id);
+</I>&gt;&gt;&gt;<i>     /* init the application level for this child */
+</I>&gt;&gt;&gt;<i>     while(1){
+</I>&gt;&gt;&gt;<i>         if (shutdownx&amp;&amp;(*shutdownx)) break;
+</I>&gt;&gt;&gt;<i>         t = take_task();
+</I>&gt;&gt;&gt;<i>         if (!t.msg) {
+</I>&gt;&gt;&gt;<i>             if (shutdownx&amp;&amp;(*shutdownx)) break;
+</I>&gt;&gt;&gt;<i>             LOG(L_INFO,&quot;INFO:worker_process(): [%d] got empty task
+</I>&gt;&gt;&gt;<i> Q(%d/%d)\n&quot;,id,tasks-&gt;start,tasks-&gt;end);
+</I>&gt;&gt;&gt;<i>             continue;
+</I>&gt;&gt;&gt;<i>         }
+</I>&gt;&gt;&gt;<i>         LOG(L_DBG,&quot;DBG:worker_process(): [%d] got task
+</I>&gt;&gt;&gt;<i> Q(%d/%d)\n&quot;,id,tasks-&gt;start,tasks-&gt;end);
+</I>&gt;&gt;&gt;<i>         r = is_req(t.msg);
+</I>&gt;&gt;&gt;<i>         for(cb = callbacks-&gt;head;cb;cb = cb-&gt;next)
+</I>&gt;&gt;&gt;<i>             (*(cb-&gt;cb))(t.p,t.msg,*(cb-&gt;ptr));
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>         if (r){
+</I>&gt;&gt;&gt;<i>             AAAFreeMessage(&amp;(t.msg));
+</I>&gt;&gt;&gt;<i>         }else{
+</I>&gt;&gt;&gt;<i>             /* will be freed by the user in upper api */
+</I>&gt;&gt;&gt;<i>             /*AAAFreeMessage(&amp;(t.msg));*/
+</I>&gt;&gt;&gt;<i>         }
+</I>&gt;&gt;&gt;<i>     }
+</I>&gt;&gt;&gt;<i>     worker_poison_queue();
+</I>&gt;&gt;&gt;<i>     LOG(L_INFO,&quot;INFO:[%d]... Worker process finished\n&quot;,id);
+</I>&gt;&gt;&gt;<i> #ifdef CDP_FOR_SER
+</I>&gt;&gt;&gt;<i> #else
+</I>&gt;&gt;&gt;<i>     #ifdef PKG_MALLOC
+</I>&gt;&gt;&gt;<i>         LOG(memlog, &quot;Worker[%d] Memory status (pkg):\n&quot;,id);
+</I>&gt;&gt;&gt;<i>         //pkg_status();
+</I>&gt;&gt;&gt;<i>         #ifdef pkg_sums
+</I>&gt;&gt;&gt;<i>             pkg_sums();
+</I>&gt;&gt;&gt;<i>         #endif
+</I>&gt;&gt;&gt;<i>     #endif
+</I>&gt;&gt;&gt;<i>     dp_del_pid(getpid());
+</I>&gt;&gt;&gt;<i> #endif
+</I>&gt;&gt;&gt;<i>     exit(0);
+</I>&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003977.html">[OpenIMSCore-Users] Segmentation fault bugfix for POWERPC
+</A></li>
+	<LI>Next message: <A HREF="003978.html">[OpenIMSCore-Users] IPTV service
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3996">[ date ]</a>
+              <a href="thread.html#3996">[ thread ]</a>
+              <a href="subject.html#3996">[ subject ]</a>
+              <a href="author.html#3996">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

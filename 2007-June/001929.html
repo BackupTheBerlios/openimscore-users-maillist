@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Dialog ID for orig/term legs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Dialog%20ID%20for%20orig/term%20legs&In-Reply-To=%3C4665E1D1.6080501%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001928.html">
+   <LINK REL="Next"  HREF="001931.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Dialog ID for orig/term legs</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Dialog%20ID%20for%20orig/term%20legs&In-Reply-To=%3C4665E1D1.6080501%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Dialog ID for orig/term legs">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Jun  6 00:21:05 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001928.html">[OpenIMSCore-Users] Dialog ID for orig/term legs
+</A></li>
+        <LI>Next message: <A HREF="001931.html">[OpenIMSCore-Users] INVITE ignored with IMS Communicator behind NAT
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1929">[ date ]</a>
+              <a href="thread.html#1929">[ thread ]</a>
+              <a href="subject.html#1929">[ subject ]</a>
+              <a href="author.html#1929">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Sergey,
+
+I knew about this issue. Simply put, if you try to call yourself, the
+P-CSCF will exhibit this bug.
+
+You are right, the dialog should also be identified by tags. We have
+already discussed a little this here. Unfortunately I for one did not
+found the time to fix this. I have created a bug report here:
+<A HREF="http://www.openimscore.org/node/65">http://www.openimscore.org/node/65</A>
+
+Any contributions would be appreciated!
+
+-Dragos
+
+Mikhanov Sergey wrote:
+&gt;<i>
+</I>&gt;<i>    Hello,
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> I found an issue related to orig/term dialogs handling in OIMS. It is
+</I>&gt;<i> a very possible situation that both of the parties involved in the
+</I>&gt;<i> call are located on the same node (same IP address), using same port
+</I>&gt;<i> and transport for communications. It is possible for SIP stack to
+</I>&gt;<i> unambiguously recognize which message belongs to which dialog (using
+</I>&gt;<i> combination of Call-ID, local and remote tag, as specified in RFC 3261).
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> IMS architecture assumes that initial INVITE from A to B should pass
+</I>&gt;<i> the following route (provided that no services are triggered, and both
+</I>&gt;<i> of the users are located in the same network, which is home network
+</I>&gt;<i> for them):
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> A -&gt; P-CSCF -&gt; S-CSCF -&gt;* P-CFCS -&gt; B
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> If A and B are on the same node and listening to the same port, i.e.
+</I>&gt;<i> sharing one stack instance, then when P-CFCS receiving INVITE marked
+</I>&gt;<i> with * it tries to fetch the saved dialog, using combination of
+</I>&gt;<i> Call-ID, host, port and transport. This dialog exists for this
+</I>&gt;<i> situation (while it shouldn&#8217;t be), see P_is_in_dialog function, and
+</I>&gt;<i> this INVITE is treated as Term_Subsequent response, while it should be
+</I>&gt;<i> Term_Initial.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> My question is: why dialogs in OIMS are identified by Call-ID, host,
+</I>&gt;<i> port and transport instead of Call-ID, and tags as stated in RFC?
+</I>&gt;<i> Could this be an error?
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Sergey.
+</I>&gt;<i>
+</I>&gt;<i> The information contained in this e-mail message is privileged and
+</I>&gt;<i> confidential and is for the exclusive use of the addressee. The person
+</I>&gt;<i> who receives this message and who is not the addressee, one of his
+</I>&gt;<i> employees or an agent entitled to hand it over to the addressee, is
+</I>&gt;<i> informed that he may not use, disclose or reproduce the contents thereof.
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001928.html">[OpenIMSCore-Users] Dialog ID for orig/term legs
+</A></li>
+	<LI>Next message: <A HREF="001931.html">[OpenIMSCore-Users] INVITE ignored with IMS Communicator behind NAT
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1929">[ date ]</a>
+              <a href="thread.html#1929">[ thread ]</a>
+              <a href="subject.html#1929">[ subject ]</a>
+              <a href="author.html#1929">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Service triggering of unregistered user doesn't seem to work
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Service%20triggering%20of%20unregistered%20user%0A%20doesn%27t%20seem%20to%20work&In-Reply-To=%3C4649B01C.70105%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001787.html">
+   <LINK REL="Next"  HREF="001788.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Service triggering of unregistered user doesn't seem to work</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Service%20triggering%20of%20unregistered%20user%0A%20doesn%27t%20seem%20to%20work&In-Reply-To=%3C4649B01C.70105%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Service triggering of unregistered user doesn't seem to work">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Tue May 15 15:05:32 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001787.html">[OpenIMSCore-Users] Service triggering of unregistered user doesn't	seem to work
+</A></li>
+        <LI>Next message: <A HREF="001788.html">[OpenIMSCore-Users] R&#233;f. : Re:  rtpproxy problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1797">[ date ]</a>
+              <a href="thread.html#1797">[ thread ]</a>
+              <a href="subject.html#1797">[ subject ]</a>
+              <a href="author.html#1797">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Erling,
+
+Unregistered state filters should work.
+
+1) If you indicated a de-registration, then the S-CSCF is deleted (there
+is an option that says to keep the name on deregister, but that's
+another thing). If you make a call to a user that is not registered then
+the I-CSCF would ask the HSS about the location of the user in a LIR. If
+the HSS finds at least an IFC that is for the unregistered state or
+&quot;any&quot; state, then it would let the call proceed. Then an S-CSCF would
+perform a SAR and move your user from the not registered state to the
+unregistered state and download the service profiles. But there is no
+transition whatsoever from the registered to the unregistered state as
+far as I see it...
+
+2) if you just redirect the requests to a S-CSCF it won't work, because
+the user is not registered there anymore, so there is no service profile
+attached anymore. Hence the null that you got.
+
+Hope this sheds some light on the issue...
+
+
+
+-Dragos
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klaboe at colibria.com</A> wrote:
+&gt;<i> Hi
+</I>&gt;<i>
+</I>&gt;<i> I'm sending SIP MESSAGE's (pager mode IM) between two REGISTER'ed
+</I>&gt;<i> (Eyebeam) clients which works perfectly ok.
+</I>&gt;<i> In case the terminating client un REGISTER, I would like to have the
+</I>&gt;<i> MESSAGE routed to an AS (e.g. for storage) by setting the proper IFC.
+</I>&gt;<i>
+</I>&gt;<i> This should have been possible by setting
+</I>&gt;<i> - SIP_METHOD=MESSAGE
+</I>&gt;<i> - SESSION_CASE=UNREGISTER
+</I>&gt;<i> - AS=&lt;my as sip address&gt;
+</I>&gt;<i>
+</I>&gt;<i> Anyone know if this is supposed to work or triggering of any other
+</I>&gt;<i> services for unregistered user (on terminating half call) ?
+</I>&gt;<i>
+</I>&gt;<i> By looking into the HSS code it doesn't seem to be supported at first glance:
+</I>&gt;<i> 1) PullCxOperation.java
+</I>&gt;<i> In handleUserProfile() if ServerAssignmentType = USER_DEREGISTRATION
+</I>&gt;<i> the ScscfName is set to blank and UserStatus is set to NOT_REGISTERED.
+</I>&gt;<i> Why blank and why not UNREGISTER instead of NOT_REGISTER ?
+</I>&gt;<i>
+</I>&gt;<i> 2)When patching this, I however get new errors in s-cscf code.
+</I>&gt;<i> In checker.c file in isc_checker_find() the
+</I>&gt;<i> p=isc_scscfb.get_r_public(uri) returns null (probably due to no address of
+</I>&gt;<i> record) and therefore no filter criteria matching will happen.
+</I>&gt;<i>
+</I>&gt;<i> Thanks for any hints if this is supposed to work without patching :-)
+</I>&gt;<i>
+</I>&gt;<i> Erling
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001787.html">[OpenIMSCore-Users] Service triggering of unregistered user doesn't	seem to work
+</A></li>
+	<LI>Next message: <A HREF="001788.html">[OpenIMSCore-Users] R&#233;f. : Re:  rtpproxy problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1797">[ date ]</a>
+              <a href="thread.html#1797">[ thread ]</a>
+              <a href="subject.html#1797">[ subject ]</a>
+              <a href="author.html#1797">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

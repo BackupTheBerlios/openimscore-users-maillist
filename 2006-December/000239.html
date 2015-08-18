@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Diameter avp-problems at Registration	De-Registration
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Diameter%20avp-problems%20at%20Registration%0A%09De-Registration&In-Reply-To=%3C000501c71c74%246f60d6f0%240200a8c0%40notebookFE%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000231.html">
+   <LINK REL="Next"  HREF="000241.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Diameter avp-problems at Registration	De-Registration</H1>
+    <B>Franz Edler</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Diameter%20avp-problems%20at%20Registration%0A%09De-Registration&In-Reply-To=%3C000501c71c74%246f60d6f0%240200a8c0%40notebookFE%3E"
+       TITLE="[OpenIMSCore-Users] Diameter avp-problems at Registration	De-Registration">franz.edler at inode.at
+       </A><BR>
+    <I>Sun Dec 10 17:01:17 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000231.html">[OpenIMSCore-Users] DNS How-To
+</A></li>
+        <LI>Next message: <A HREF="000241.html">[OpenIMSCore-Users] Diameter avp-problems at	Registration	De-Registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#239">[ date ]</a>
+              <a href="thread.html#239">[ thread ]</a>
+              <a href="subject.html#239">[ subject ]</a>
+              <a href="author.html#239">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I have now again looked into the previous problem of 
+&quot;P-CSCF subscribes to registration-event after de-registration&quot;
+<A HREF="http://lists.berlios.de/pipermail/openimscore-users/2006-December/000187.htm">http://lists.berlios.de/pipermail/openimscore-users/2006-December/000187.htm</A>
+l .
+
+I used also a simple SIPp-szenario for Registration and De-Registration of
+Bob. 
+
+At registration of bob the debug log of I-CSCF shows some issues like
+ 1(1249) INFO:I-CSCF:Cx_get_result_code: Failed finding avp
+ 1(1249) INFO:I-CSCF:Cx_get_server_name: Failed finding avp
+ 1(1249) INFO:I-CSCF:Cx_get_capabilities: Failed finding avp
+
+These are only infos, so I do not worry very much but at de-deregistration
+of bob the debug log of I-CSCF shows:
+
+1(1249) INFO:I-CSCF:Cx_get_capabilities: Failed finding avp
+1(1249) INFO:I-CSCF:Cx_get_capabilities: Failed finding avp
+
+and more seriously:
+
+18(1267) ERROR:AAACreateAVP: NULL value received for param data/length !!
+18(1267) ERROR:AAATranslateMessage: message conversion droped!!
+18(1267) ERROR:AAACreateAVP: NULL value received for param data/length !!
+18(1267) ERROR:AAATranslateMessage: message conversion droped!!
+18(1267) ERROR:AAACreateAVP: NULL value received for param data/length !!
+18(1267) ERROR:AAATranslateMessage: message conversion droped!!
+18(1267) ERROR:AAACreateAVP: NULL value received for param data/length !!
+18(1267) ERROR:AAATranslateMessage: message conversion droped!!
+ 1(1249) ERR:I-CSCF:I_LIR: Error creating/sending UAR
+ 4(1252) ERR:I-CSCF:I_LIR: Error creating/sending UAR
+ 4(1252) ERROR: _reply_light: can't generate 480 reply when a final 480 was
+sent out
+ 3(1251) ERR:I-CSCF:I_LIR: Error creating/sending UAR
+ 3(1251) ERROR: _reply_light: can't generate 480 reply when a final 480 was
+sent out
+2(1250) ERR:I-CSCF:I_LIR: Error creating/sending UAR
+ 2(1250) ERROR: _reply_light: can't generate 480 reply when a final 480 was
+sent out
+
+Obviously this is the root of the problem mentioned in the previous thread.
+
+What might be wrong?
+
+I have attached the I-CSCF log and the associated wireshark trace-file.
+
+Cheers
+-franz
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: avp-errors.pcap
+Type: application/octet-stream
+Size: 49843 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20061210/b7a0e434/attachment.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20061210/b7a0e434/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: I-CSCF.log
+Type: application/octet-stream
+Size: 13976 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20061210/b7a0e434/attachment-0001.obj">https://lists.berlios.de/pipermail/openimscore-users/attachments/20061210/b7a0e434/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000231.html">[OpenIMSCore-Users] DNS How-To
+</A></li>
+	<LI>Next message: <A HREF="000241.html">[OpenIMSCore-Users] Diameter avp-problems at	Registration	De-Registration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#239">[ date ]</a>
+              <a href="thread.html#239">[ thread ]</a>
+              <a href="subject.html#239">[ subject ]</a>
+              <a href="author.html#239">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

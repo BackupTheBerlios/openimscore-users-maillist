@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] S-CSCF crashes when dealing with an as-featuresubscription request
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20crashes%20when%20dealing%20with%20an%0A%20as-featuresubscription%20request&In-Reply-To=%3C44EE1E31095AE349AC6C3C0B69FFBF02958C88F573%40ENFIMBOX1.ad.datcon.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="006151.html">
+   <LINK REL="Next"  HREF="006157.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] S-CSCF crashes when dealing with an as-featuresubscription request</H1>
+    <B>Tim West</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20crashes%20when%20dealing%20with%20an%0A%20as-featuresubscription%20request&In-Reply-To=%3C44EE1E31095AE349AC6C3C0B69FFBF02958C88F573%40ENFIMBOX1.ad.datcon.co.uk%3E"
+       TITLE="[OpenIMSCore-Users] S-CSCF crashes when dealing with an as-featuresubscription request">Tim.West at metaswitch.com
+       </A><BR>
+    <I>Fri Mar 26 20:10:26 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="006151.html">[OpenIMSCore-Users] S-CSCF crashes when dealing with an	as-featuresubscription request
+</A></li>
+        <LI>Next message: <A HREF="006157.html">[OpenIMSCore-Users] S-CSCF crashes when dealing with an	as-featuresubscription request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6156">[ date ]</a>
+              <a href="thread.html#6156">[ thread ]</a>
+              <a href="subject.html#6156">[ subject ]</a>
+              <a href="author.html#6156">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Franz,
+
+It shouldn't cause the S-CSCF to crash though should it?  That's why I was wondering if I'd configured something wrongly.
+
+Cheers,
+
+Tim
+
+________________________________
+From: Franz Edler [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at technikum-wien.at</A>]
+Sent: 26 March 2010 05:58
+To: Tim West; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: AW: [OpenIMSCore-Users] S-CSCF crashes when dealing with an as-featuresubscription request
+
+Hello Tim
+
+The situation is as expected. Look at the iFC provisioned in the HSS. If you do not have a matching iFC the S-CSCF forwards the SUBSCRIBE request correctly according to the request URI.
+Thatobviously happens.
+
+Franz
+
+________________________________
+Von: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] Im Auftrag von Tim West
+Gesendet: Donnerstag, 25. M&#228;rz 2010 16:26
+An: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Betreff: [OpenIMSCore-Users] S-CSCF crashes when dealing with an as-featuresubscription request
+
+Hi,
+
+I'm trying to set up some inter-op testing for IMS and am hitting a problem with an Aastra 6757i phone.  If the phone is set up to subscribe to the AS-Feature-Event then the following happens and the S-CSCF crashes:
+- Phone registration dealt with successfully.
+- Phone sends a SUBSCRIBE for as-feature-event to S-CSCF.
+- S-CSCF sends the SUBSCRIBE back to the phone.
+- The phone sends a 403 Forbidden back to S-CSCF.
+- The phone then tries to subscribe to the as-feature-event again, but doesn't hear anything back.
+
+I was wondering if anyone else has encountered this and if anyone knew if it could be a configuration problem or a bug in S-CSCF.
+
+The output is below, along with the SIP messages from the phone subscription attempt.
+
+Many thanks for any help you can give,
+
+Tim
+
+
+Output from S-CSCF:
+
+---------------------------------------------------------------------------------------
+ 1(3711) ERR:S-CSCF:cscf_get_integrity_protected: Message does not contain Authorization header.
+ 1(3711) ERR:S-CSCF:cscf_get_private_identity: Message does not contain Authorization header.
+ 1(3711) INF:S-CSCF:cscf_get_private_identity: Falling back to private_id=stripped(public_id)
+-&gt; Message did not contain a valid Authorization Header!!! This fallback is deprecated outside Early-IMS or NASS-Bundled!
+ 1(3711) ERR:S-CSCF:cscf_get_nonce: Message does not contain Authorization header.
+ 1(3711) ERR:S-CSCF:cscf_get_private_identity: Message does not contain Authorization header.
+ 1(3711) INF:S-CSCF:cscf_get_private_identity: Falling back to private_id=stripped(public_id)
+-&gt; Message did not contain a valid Authorization Header!!! This fallback is deprecated outside Early-IMS or NASS-Bundled!
+ 1(3711) ERR:S-CSCF:cscf_get_auts: Message does not contain Authorization header.
+ 1(3711) DBG:S-CSCF:S_emergency_flag: Check if the user made an Emergency Registration
+ 2(3712)  body &lt;0&gt;
+]2(3712) ERROR:parse_content_length: parse error near char [13][
+ 2(3712) DBG:S-CSCF:S_is_authorized: uri=sip:pcscf.open-ims.test:4060 nonce=d0d3cdb68352440ccd2b3c2c7a174666 response=3f1d627fbfbda67a0514ac9709b5fd72 qop=auth-int nc=00000001 cnonce=05c988d6 hbody=d41d8cd98f00b204e9800998ecf8427e
+ 2(3712) DBG:S-CSCF:S_is_authorized: UE said: 3f1d627fbfbda67a0514ac9709b5fd72 and we  expect 3f1d627fbfbda67a0514ac9709b5fd72 ha1 a3da98c9b36dde1f17e3f713225dc4d1
+ 5(3715) INF:S-CSCF:----------  S-CSCF Dialog List begin --------------
+ 5(3715) INF:S-CSCF:----------  S-CSCF Dialog List end   --------------
+ 5(3715) INF:S-CSCF:----------  Registrar Contents begin --------
+ 5(3715) INF:S-CSCF:----------  Registrar Contents end ----------
+ 2(3712) DBG:S-CSCF:S_emergency_flag: Check if the user made an Emergency Registration
+ 2(3712) INFO:ISC:ISC_match_filter_reg(): Checking triggers
+ 2(3712) INFO:ISC:ISC_match_filter_reg(): Starting triggering
+ 2(3712) INFO:ISC:ISC_match_filter_reg(): Orig User &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt; [0]
+ 2(3712) INFO:ISC:isc_checker_find: starting search
+ 2(3712) INFO:ISC:ISC_match_filter_reg(): No REGISTER match found in filter criteria
+ 1(3711) INFO:ISC:isc_mark_get_from_msg: Trying to get the mark from the message
+ 1(3711) DBG:S-CSCF:cscf_get_terminating_identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+ 1(3711) &gt;&gt;       Term
+ 1(3711) DBG:S-CSCF:cscf_get_terminating_identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+ 1(3711) DBG:S-CSCF:S_save_dialog(term): Call-ID &lt;e5f98f3eb3505382&gt;
+ 1(3711) INF:S-CSCF:----------  S-CSCF Dialog List begin --------------
+ 1(3711) INF:S-CSCF:[ 224] Dir[1] Call-ID:&lt;e5f98f3eb3505382&gt; AOR:&lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+ 1(3711) INF:S-CSCF:            Method:[2] State:[1] Exp:[  60] Ref:[] Event:[as-feature-event]
+ 1(3711) INF:S-CSCF:----------  S-CSCF Dialog List end   --------------
+ 1(3711) INFO:ISC:ISC_match_filter(term): Checking triggers
+ 1(3711) INFO:ISC:isc_mark_get_from_msg: Trying to get the mark from the message
+ 1(3711) INFO:ISC:ISC_match_filter(term): Starting triggering
+ 1(3711) INFO:ISC:ISC_match_filter(term): Term User &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt; [1]
+ 1(3711) INFO:ISC:isc_checker_find: starting search
+ 1(3711) DBG:S-CSCF:cscf_get_terminating_identity: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+ 1(3711) DBG:S-CSCF:S_lookup: Looking for &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt; GRUU &lt;&gt;:
+ 2(3712) &gt;&gt;       Term_reply
+ 2(3712) DBG:S-CSCF:del_s_dialog(): Deleting dialog &lt;e5f98f3eb3505382&gt; DIR[1]
+ 2(3712) INF:S-CSCF:----------  S-CSCF Dialog List begin --------------
+ 2(3712) INF:S-CSCF:----------  S-CSCF Dialog List end   --------------
+ 2(3712) BUG: qm_*: fragm. 0x81b3944 (address 0x81b395c) beginning overwritten(a3e6f)!
+ 3(3713) Trans already in processing... skip
+ 1(3711) Trans already in processing... skip
+ 4(3714) Trans already in processing... skip
+ 0(3710) child process 3712 exited by a signal 6
+ 0(3710) core was generated
+ 0(3710) INFO: terminating due to SIGCHLD
+ 0(3710) Process Table:
+ 0(3710)  0. (3710) &gt; attendant
+ 0(3710)  1. (3711) &gt; receiver child=0 sock=10.250.1.13:6060
+ 0(3710)  2. (3712) &gt; receiver child=1 sock=10.250.1.13:6060
+ 0(3710)  3. (3713) &gt; receiver child=2 sock=10.250.1.13:6060
+ 0(3710)  4. (3714) &gt; receiver child=3 sock=10.250.1.13:6060
+ 0(3710)  5. (3715) &gt; slow timer
+ 0(3710)  6. (3716) &gt; timer
+ 0(3710)  7. (3717) &gt; cdp worker child=0
+ 0(3710)  8. (3718) &gt; cdp worker child=1
+ 0(3710)  9. (3719) &gt; cdp worker child=2
+ 0(3710) 10. (3720) &gt; cdp worker child=3
+ 0(3710) 11. (3721) &gt; cdp_receiver_peer=hss.open-ims.test
+ 0(3710) 12. (3722) &gt; cdp receiver peer unknown
+ 0(3710) 13. (3723) &gt; cdp_acceptor
+ 0(3710) 14. (3724) &gt; cdp_timer
+ 0(3710) 15. (3725) &gt; tcp receiver child=0
+ 0(3710) 16. (3726) &gt; tcp receiver child=1
+ 0(3710) 17. (3727) &gt; tcp receiver child=2
+ 0(3710) 18. (3728) &gt; tcp receiver child=3
+ 0(3710) 19. (3729) &gt; tcp main process
+---------------------------------------------------------------------------------------
+
+
+SIP messages:
+IP address 10.250.31.8 is the phone, 10.250.1.13 is the box running OpenIMS.
+
+-----
+Aastra-&gt;S-CSCF
+Time: 10:18:03.472478
+Source: 10.250.31.8
+Destination:10.250.1.13
+Info: SIP Request: SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+
+SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> SIP/2.0
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bK0f7bd522453c86e1a
+Route: &lt;sip:scscf.open-ims.test:6060;lr&gt;
+Max-Forwards: 70
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=cf005588b9
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Call-ID: f0242910e17a34cc
+CSeq: 1311 SUBSCRIBE
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp&gt;
+Event: as-feature-event
+Expires: 3600
+User-Agent: Aastra 57i/2.5.2.1010
+Content-Length: 0
+
+----
+S-CSCF-&gt;Aastra
+Time: 10:18:03.474843
+Source: 10.250.1.13
+Destionation: 10.250.31.8
+Info: SIP Request: SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp
+
+SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp SIP/2.0
+Record-Route: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">mt at scscf.open-ims.test</A>:6060;lr&gt;
+Via: SIP/2.0/UDP 10.250.1.13:6060;branch=z9hG4bK63ef.aca98ff7.0
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bK0f7bd522453c86e1a
+Max-Forwards: 16
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=cf005588b9
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Call-ID: f0242910e17a34cc
+CSeq: 1311 SUBSCRIBE
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp&gt;
+Event: as-feature-event
+Expires: 3600
+User-Agent: Aastra 57i/2.5.2.1010
+Content-Length: 0
+P-Called-Party-ID: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+
+-----
+Aastra-&gt;S-CSCF
+Time: 10:18:03.549586
+Source: 10.250.31.8
+Destination:10.250.1.13
+Info: SIP Status: 403 Forbidden
+
+PVA]<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vEh at B</A>
+
+RISIP/2.0 403 Forbidden
+Via: SIP/2.0/UDP 10.250.1.13:6060;branch=z9hG4bK63ef.aca98ff7.0
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bK0f7bd522453c86e1a
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=cf005588b9
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=1024384169
+Call-ID: f0242910e17a34cc
+CSeq: 1311 SUBSCRIBE
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>;gr=urn:uuid:00000000-0000-1000-8000-00085D1A1A76&gt;
+Server: Aastra 57i/2.5.2.1010
+Content-Length: 0
+
+-----
+Aastra-&gt;S-CSCF
+Time: 10:18:03.791703
+Source: 10.250.31.8
+Destination:10.250.1.13
+Info: SIP Request: SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+
+SUBSCRIBE sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A> SIP/2.0
+Via: SIP/2.0/UDP 10.250.31.8:5060;branch=z9hG4bK0f7bd522453c86e1a
+Route: &lt;sip:scscf.open-ims.test:6060;lr&gt;
+Max-Forwards: 70
+From: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;;tag=cf005588b9
+To: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>&gt;
+Call-ID: f0242910e17a34cc
+CSeq: 1311 SUBSCRIBE
+Contact: &lt;sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at 10.250.31.8</A>:5060;transport=udp&gt;
+Event: as-feature-event
+Expires: 3600
+User-Agent: Aastra 57i/2.5.2.1010
+Content-Length: 0
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openimscore-users/attachments/20100326/02c3bc71/attachment.html">https://lists.berlios.de/pipermail/openimscore-users/attachments/20100326/02c3bc71/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="006151.html">[OpenIMSCore-Users] S-CSCF crashes when dealing with an	as-featuresubscription request
+</A></li>
+	<LI>Next message: <A HREF="006157.html">[OpenIMSCore-Users] S-CSCF crashes when dealing with an	as-featuresubscription request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6156">[ date ]</a>
+              <a href="thread.html#6156">[ thread ]</a>
+              <a href="subject.html#6156">[ subject ]</a>
+              <a href="author.html#6156">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

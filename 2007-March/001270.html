@@ -1,0 +1,504 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] scscf_name becomes empty in hssdb
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20scscf_name%20becomes%20empty%20in%20hssdb&In-Reply-To=%3C46026832.4090604%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001268.html">
+   <LINK REL="Next"  HREF="001013.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] scscf_name becomes empty in hssdb</H1>
+    <B>Adrian-Daniel Popescu</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20scscf_name%20becomes%20empty%20in%20hssdb&In-Reply-To=%3C46026832.4090604%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] scscf_name becomes empty in hssdb">adrian-daniel.popescu at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Mar 22 12:27:46 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001268.html">[OpenIMSCore-Users] scscf_name becomes empty in hssdb
+</A></li>
+        <LI>Next message: <A HREF="001013.html">[OpenIMSCore-Users] SIP2IMS and instant messaging
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1270">[ date ]</a>
+              <a href="thread.html#1270">[ thread ]</a>
+              <a href="subject.html#1270">[ subject ]</a>
+              <a href="author.html#1270">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+
+Hi Eelco,
+
+Cramer, E.R. (Eelco) wrote:
+&gt;<i> Hi Adrian,
+</I>&gt;<i> 
+</I>&gt;<i> Thanks for your thorough response! I am looking forward to the coming
+</I>&gt;<i> releases ;-) My patch was not intended to provide a standards compliant
+</I>&gt;<i> solution I attached it to make it more clear what my problem was and
+</I>&gt;<i> what I did to fix it for the moment. I am sorry if I did not make this
+</I>&gt;<i> clear to you...
+</I>&gt;<i> 
+</I>&gt;<i> I have one question about your answer though: 
+</I>&gt;<i> 
+</I>&gt;&gt;<i> In the case that the IMSU hasn't any SCSCF_Name associated, then we do
+</I>&gt;<i> 
+</I>&gt;&gt;<i> not have any default SCSCF_Name. In this case we will not put this AVP
+</I>&gt;<i> 
+</I>&gt;&gt;<i> in the response; but we have the option to add Capabilities AVP to 
+</I>&gt;&gt;<i> help the I-CSCF in choosing the right S-CSCF.
+</I>&gt;<i> 
+</I>&gt;<i> Is this something that is already implemented in the current releases of
+</I>&gt;<i> the openimscore and FHoSS?
+</I>&gt;<i> 
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Eelco
+</I>
+As far as I know in the core is already implemented, but in FHoSS/trunk
+is not for sure. I am currently working on the FHoSS branch, so it will
+be available in the upcoming weeks.
+
+Cheers,
+Adrian
+
+
+&gt;<i> 
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Adrian-Daniel Popescu
+</I>&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">adrian-daniel.popescu at fokus.fraunhofer.de</A>] 
+</I>&gt;<i> Sent: woensdag 21 maart 2007 18:48
+</I>&gt;<i> To: Adrian-Daniel Popescu
+</I>&gt;<i> Cc: Cramer, E.R. (Eelco); <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [OpenIMSCore-Users] scscf_name becomes empty in hssdb
+</I>&gt;<i> 
+</I>&gt;<i> Sorry for one typo error here:
+</I>&gt;<i> 
+</I>&gt;<i> A default SCSCF_Name should be sent by the HSS ONLY, and ONLY if at
+</I>&gt;<i> least one public identity of an IMS Subscription (IMSU) is registered or
+</I>&gt;<i> ---&quot;UN-REGISTERED&quot;--- or the user received already the SCSCF_Name from
+</I>&gt;<i> a previous request.
+</I>&gt;<i> 
+</I>&gt;<i> I put by mistake not registered, and I should put UN-REGISTERED.
+</I>&gt;<i> 
+</I>&gt;<i> Adrian
+</I>&gt;<i> 
+</I>&gt;<i> Adrian-Daniel Popescu wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hi Eelco,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> First, thank you for your notice. You have right, the mechanism wasn't
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;<i> implemented as it should and that hard coded default_scscf_name 
+</I>&gt;&gt;&gt;<i> shouldn't be there; we will add a patch to fix the functionality as 
+</I>&gt;&gt;&gt;<i> soon as possible but also keep in mind that the FHoSS branch will come
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;<i> with many relase 7 improvements soon ;)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Second, even your patch is not standards compliant, regarding the 
+</I>&gt;&gt;&gt;<i> SCSCF_Name returned by the HSS in UAR.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> A default SCSCF_Name should be sent by the HSS ONLY, and ONLY if at 
+</I>&gt;&gt;&gt;<i> least one public identity of an IMS Subscription (IMSU) is registered 
+</I>&gt;&gt;&gt;<i> or not registered or the user received already the SCSCF_Name from a 
+</I>&gt;&gt;&gt;<i> previous request.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> In other words, all the public identities of an IMSU has to receive 
+</I>&gt;&gt;&gt;<i> the same associated S-CSCF, and if at least one user of IMSU received 
+</I>&gt;&gt;&gt;<i> already a SCSCF_Name, this should be used for all the rest of IMPUs of
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;<i> the same IMSU.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> In the case that the IMSU hasn't any SCSCF_Name associated, then we do
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;<i> not have any default SCSCF_Name. In this case we will not put this AVP
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;<i> in the response; but we have the option to add Capabilities AVP to 
+</I>&gt;&gt;&gt;<i> help the I-CSCF in choosing the right S-CSCF.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The I-CSCF is the one, will chose the assigned S-CSCF and this 
+</I>&gt;&gt;&gt;<i> choosing is based on capabilities required by the user, if are 
+</I>&gt;&gt;&gt;<i> provided; otherwise the I-CSCF will chose one S-CSCF that is available
+</I>&gt;<i> for use.
+</I>&gt;&gt;&gt;<i> Example:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> -if the HSS cannot give the SCSCF_Name in response to a UDR request 
+</I>&gt;&gt;&gt;<i> and the user needs a SCSCF which should support: service A, service B,
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;<i> and service C, then will provide an AVP with the required
+</I>&gt;<i> capabilities.
+</I>&gt;&gt;&gt;<i> Based on these capabilities, the I-CSCF will know what S-CSCF to
+</I>&gt;<i> choose.
+</I>&gt;&gt;&gt;<i> This S-CSCF will then be assigned for that IMPU.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> When all the IMPUs for an IMSU are in de-registered state, the 
+</I>&gt;&gt;&gt;<i> SCSCF_Name will be erased from the database!
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I hope is more clear now :)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Cheers,
+</I>&gt;&gt;&gt;<i> Adrian
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Cramer, E.R. (Eelco) wrote:
+</I>&gt;&gt;&gt;&gt;&gt;<i> Hi Dragos,
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Thanks for your answer. I have look into the S-CSCF selection built 
+</I>&gt;&gt;&gt;&gt;&gt;<i> into the I-CSCF and found the following:
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> - The I-CSCF sends a UAR command to the HSS
+</I>&gt;&gt;&gt;&gt;&gt;<i> - The HSS does not return a S-CSCF in the answer for the UAR
+</I>&gt;<i> command.
+</I>&gt;&gt;&gt;&gt;&gt;<i> I digged in a bit deeper, and noticed in the source code of the HSS
+</I>&gt;&gt;&gt;&gt;&gt;<i> (QueryCxOperation.java) that if the scscf_name in the user's impi 
+</I>&gt;&gt;&gt;&gt;&gt;<i> record is an empty string the HSS does not return a default S-CSCF 
+</I>&gt;&gt;&gt;&gt;&gt;<i> name. It only does this when the scscf_name has a NULL value. The 
+</I>&gt;&gt;&gt;&gt;&gt;<i> source code says something like this:
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> if (userProfil.getImpi().getScscfName() != null){
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> registrationStatusResponse.setAssignedSCSCFName(userProfil.getImpi()
+</I>&gt;&gt;&gt;&gt;&gt;<i> .get
+</I>&gt;&gt;&gt;&gt;&gt;<i> ScscfName());
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> } else{
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> registrationStatusResponse.setAssignedSCSCFName(DEFAULT_SCSCF_NAME)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> ;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> }
+</I>&gt;&gt;&gt;&gt;&gt;<i> On session timeout the scscf_name in the user's impi record is set 
+</I>&gt;&gt;&gt;&gt;&gt;<i> to an empty string in PullCxOperation.java rev 154 line 199. So 
+</I>&gt;&gt;&gt;&gt;&gt;<i> according to the above code fragment the HSS will return an empty 
+</I>&gt;&gt;&gt;&gt;&gt;<i> string as the assigned scscf name when a user is registering with no
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;&gt;&gt;<i> scscf assigned in the impi record.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> To test this I changed the scscf_name for my test user in the impi 
+</I>&gt;&gt;&gt;&gt;&gt;<i> table to NULL but this resulted in a null pointer exception in the 
+</I>&gt;&gt;&gt;&gt;&gt;<i> HSS. The reason for this is that the scscf_name from the database is
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;&gt;&gt;<i> compared with the scscf_name found in the AVP of the MAR command. 
+</I>&gt;&gt;&gt;&gt;&gt;<i> Since the database value was NULL is threw a null pointer exception.
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;&gt;&gt;<i> I changed the code to marValue.eq(databaseValue) to fix the null 
+</I>&gt;&gt;&gt;&gt;&gt;<i> pointer exception, and tested once again.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> This time I noticed that the default scscf name returned in the UAR 
+</I>&gt;&gt;&gt;&gt;&gt;<i> response was not the scscf that is configured in the database (in 
+</I>&gt;&gt;&gt;&gt;&gt;<i> the diam_servers table) what I sort of excepted. I am not sure I am 
+</I>&gt;&gt;&gt;&gt;&gt;<i> right about this though... In stead of using the database value the 
+</I>&gt;&gt;&gt;&gt;&gt;<i> default scscf was taken from a hard coded constant in
+</I>&gt;<i> QueryCxOperation:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> public static final String DEFAULT_SCSCF_NAME =
+</I>&gt;&gt;&gt;&gt;&gt;<i> &quot;lupine.umts-at-fokus.de&quot;;
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> I changed this value to reflect the scsf name of our own server:
+</I>&gt;&gt;&gt;&gt;&gt;<i> &quot;scscf.ims.telecom.tno.nl&quot; but this time the icscf returned a 
+</I>&gt;&gt;&gt;&gt;&gt;<i> parsing error on this string value, so I changed the constant to a 
+</I>&gt;&gt;&gt;&gt;&gt;<i> valid SIP URI for our scscf: &quot;sip:scscf.ims.telecom.tno.nl:6060&quot;. 
+</I>&gt;&gt;&gt;&gt;&gt;<i> After this change the registration worked fine.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> I made a final change in QueryCxOperation to see that the default 
+</I>&gt;&gt;&gt;&gt;&gt;<i> scscf is also returned when the scscf_name in the user's impi record
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;&gt;&gt;<i> is an empty string and this is the HSS what we are currently using 
+</I>&gt;&gt;&gt;&gt;&gt;<i> for our setup.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> I am wondering if I am using a wrong version of the HSS or made some
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;&gt;&gt;<i> configuration error somewhere because I do not believe that 
+</I>&gt;&gt;&gt;&gt;&gt;<i> returning the hard coded default scscf is really the correct 
+</I>&gt;&gt;&gt;&gt;&gt;<i> behaviour. Can you comment on this?
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> I have attached a SVN diff patch with the changes I made to the HSS 
+</I>&gt;&gt;&gt;&gt;&gt;<i> code base. Please note that this patch has our default scscf hard
+</I>&gt;<i> coded.
+</I>&gt;&gt;&gt;&gt;&gt;<i> Thanks,
+</I>&gt;&gt;&gt;&gt;&gt;<i> Eelco
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;&gt;&gt;&gt;&gt;<i> Sent: maandag 5 maart 2007 10:59
+</I>&gt;&gt;&gt;&gt;&gt;<i> To: Cramer, E.R. (Eelco)
+</I>&gt;&gt;&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] scscf_name becomes empty in hssdb
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> This is the normal behavior. For electing a S-CSCF name when there 
+</I>&gt;&gt;&gt;&gt;&gt;<i> is none assigned, there are other mechanisms, like capabilities 
+</I>&gt;&gt;&gt;&gt;&gt;<i> selection in the I-CSCF.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Cramer, E.R. (Eelco) wrote:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi Dragos,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> I was assuming that the scscf_name should always exists in the 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> hssdb.impi table? If it is removed how should the system know to 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> which scscf the user should be registering?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> I have used the add-imscore-user.sh script to create the users. The
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> scscf_name is only removed from the impi table for users that have 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> been registered to the IMS. So you are probably right: they are 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> removed from the table when the registration period expires. Any 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> hints on how this can be fixed?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Thanks,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Eelco
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> From: Dragos Vingarzan [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Sent: vrijdag 2 maart 2007 21:29
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> To: Cramer, E.R. (Eelco)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Subject: Re: [OpenIMSCore-Users] scscf_name becomes empty in hssdb
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Is it the case that the registration period expires? Then the 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> S-CSCF would send a SAR that would delete that value.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> -Dragos
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Cramer, E.R. (Eelco) wrote:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> I have a problem with the HSSDB. I have 2 users in the database 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> that I
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> use actively. Once in a while, after a period of testing, the 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 'scscf_name' attribute in the table 'impi' is made empty (empty
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> string).
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Is this a known problem? Any idea about a fix?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Thanks,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Eelco
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> This e-mail and its contents are subject to the DISCLAIMER at 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="http://www.tno.nl/disclaimer/email.html">http://www.tno.nl/disclaimer/email.html</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A> Web www.fokus.fraunhofer.de We 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> This e-mail and its contents are subject to the DISCLAIMER at 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="http://www.tno.nl/disclaimer/email.html">http://www.tno.nl/disclaimer/email.html</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;&gt;&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;&gt;&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;&gt;&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;&gt;&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;&gt;&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;&gt;&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;&gt;&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;&gt;&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> This e-mail and its contents are subject to the DISCLAIMER at 
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="http://www.tno.nl/disclaimer/email.html">http://www.tno.nl/disclaimer/email.html</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> --------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;<i> ----
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Index: 
+</I>&gt;&gt;&gt;&gt;&gt;<i> /Users/eelco/Projects/ims/FHoSS/src/de/fhg/fokus/hss/server/cx/op/Qu
+</I>&gt;&gt;&gt;&gt;&gt;<i> eryCxOperation.java 
+</I>&gt;&gt;&gt;&gt;&gt;<i> ===================================================================
+</I>&gt;&gt;&gt;&gt;&gt;<i> ---
+</I>&gt;<i> /Users/eelco/Projects/ims/FHoSS/src/de/fhg/fokus/hss/server/cx/op/QueryC
+</I>&gt;<i> xOperation.java	(revision 198)
+</I>&gt;&gt;&gt;&gt;&gt;<i> +++
+</I>&gt;<i> /Users/eelco/Projects/ims/FHoSS/src/de/fhg/fokus/hss/server/cx/op/QueryC
+</I>&gt;<i> xOperation.java	(working copy)
+</I>&gt;&gt;&gt;&gt;&gt;<i> @@ -69,7 +69,7 @@
+</I>&gt;&gt;&gt;&gt;&gt;<i>      /**
+</I>&gt;&gt;&gt;&gt;&gt;<i>       * The default scscf name
+</I>&gt;&gt;&gt;&gt;&gt;<i>       */
+</I>&gt;&gt;&gt;&gt;&gt;<i> -    public static final String DEFAULT_SCSCF_NAME =
+</I>&gt;<i> &quot;lupine.umts-at-fokus.de&quot;;
+</I>&gt;&gt;&gt;&gt;&gt;<i> +    public static final String DEFAULT_SCSCF_NAME = 
+</I>&gt;&gt;&gt;&gt;&gt;<i> + &quot;sip:scscf.ims.telecom.tno.nl:6060&quot;;
+</I>&gt;&gt;&gt;&gt;&gt;<i>      /** identifier for visited network */
+</I>&gt;&gt;&gt;&gt;&gt;<i>      private String visitedNetworkIdentifier;
+</I>&gt;&gt;&gt;&gt;&gt;<i>      /** integer value representing type of authorization */ @@ 
+</I>&gt;&gt;&gt;&gt;&gt;<i> -130,7 +130,7 @@
+</I>&gt;&gt;&gt;&gt;&gt;<i>                  registrationStatusResponse = new
+</I>&gt;<i> CxUserRegistrationStatusResponse(ResultCode._DIAMETER_SUCCESS, true);
+</I>&gt;&gt;&gt;&gt;&gt;<i>              }
+</I>&gt;&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;&gt;<i> -            if (userProfil.getImpi().getScscfName() != null){
+</I>&gt;&gt;&gt;&gt;&gt;<i> +            if (userProfil.getImpi().getScscfName() != null || 
+</I>&gt;&gt;&gt;&gt;&gt;<i> + !&quot;&quot;.equals(userProfil.getImpi().getScscfName())){
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;<i> registrationStatusResponse.setAssignedSCSCFName(userProfil.getImpi().get
+</I>&gt;<i> ScscfName());
+</I>&gt;&gt;&gt;&gt;&gt;<i>              }
+</I>&gt;&gt;&gt;&gt;&gt;<i>              else{
+</I>&gt;&gt;&gt;&gt;&gt;<i> Index: 
+</I>&gt;&gt;&gt;&gt;&gt;<i> /Users/eelco/Projects/ims/FHoSS/src/de/fhg/fokus/hss/server/cx/op/Au
+</I>&gt;&gt;&gt;&gt;&gt;<i> thCxOperation.java 
+</I>&gt;&gt;&gt;&gt;&gt;<i> ===================================================================
+</I>&gt;&gt;&gt;&gt;&gt;<i> ---
+</I>&gt;<i> /Users/eelco/Projects/ims/FHoSS/src/de/fhg/fokus/hss/server/cx/op/AuthCx
+</I>&gt;<i> Operation.java	(revision 198)
+</I>&gt;&gt;&gt;&gt;&gt;<i> +++
+</I>&gt;<i> /Users/eelco/Projects/ims/FHoSS/src/de/fhg/fokus/hss/server/cx/op/AuthCx
+</I>&gt;<i> Operation.java	(working copy)
+</I>&gt;&gt;&gt;&gt;&gt;<i> @@ -44,6 +44,7 @@
+</I>&gt;&gt;&gt;&gt;&gt;<i>   */
+</I>&gt;&gt;&gt;&gt;&gt;<i>  package de.fhg.fokus.hss.server.cx.op;
+</I>&gt;&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;&gt;<i> +import java.net.Inet4Address;
+</I>&gt;&gt;&gt;&gt;&gt;<i>  import java.net.URI;
+</I>&gt;&gt;&gt;&gt;&gt;<i>  import java.security.InvalidKeyException;
+</I>&gt;&gt;&gt;&gt;&gt;<i>  import java.security.NoSuchAlgorithmException;
+</I>&gt;&gt;&gt;&gt;&gt;<i> @@ -59,19 +60,9 @@
+</I>&gt;&gt;&gt;&gt;&gt;<i>  import de.fhg.fokus.cx.exceptions.base.UnableToComply;
+</I>&gt;&gt;&gt;&gt;&gt;<i>  import de.fhg.fokus.hss.diam.Constants;  import 
+</I>&gt;&gt;&gt;&gt;&gt;<i> de.fhg.fokus.hss.diam.ResultCode; -import 
+</I>&gt;&gt;&gt;&gt;&gt;<i> de.fhg.fokus.hss.form.ImpiForm;  import 
+</I>&gt;&gt;&gt;&gt;&gt;<i> de.fhg.fokus.hss.main.HSSProperties;
+</I>&gt;&gt;&gt;&gt;&gt;<i>  import de.fhg.fokus.hss.model.Impi;
+</I>&gt;&gt;&gt;&gt;&gt;<i> -
+</I>&gt;&gt;&gt;&gt;&gt;<i> -import java.net.Inet4Address;
+</I>&gt;&gt;&gt;&gt;&gt;<i> -import java.net.URI;
+</I>&gt;&gt;&gt;&gt;&gt;<i> -
+</I>&gt;&gt;&gt;&gt;&gt;<i> -import java.security.InvalidKeyException;
+</I>&gt;&gt;&gt;&gt;&gt;<i> -import java.security.NoSuchAlgorithmException;
+</I>&gt;&gt;&gt;&gt;&gt;<i> -import java.security.SecureRandom;
+</I>&gt;&gt;&gt;&gt;&gt;<i> -
+</I>&gt;&gt;&gt;&gt;&gt;<i> -import java.util.ArrayList;
+</I>&gt;&gt;&gt;&gt;&gt;<i> -import de.fhg.fokus.hss.util.*;
+</I>&gt;&gt;&gt;&gt;&gt;<i> +import de.fhg.fokus.hss.util.HibernateUtil;
+</I>&gt;&gt;&gt;&gt;&gt;<i>  import de.fhg.fokus.security.auth.DigestAKA;
+</I>&gt;&gt;&gt;&gt;&gt;<i>  import de.fhg.fokus.security.auth.HexCoDec;
+</I>&gt;&gt;&gt;&gt;&gt;<i>  import de.fhg.fokus.security.auth.Milenage;
+</I>&gt;&gt;&gt;&gt;&gt;<i> @@ -131,7 +122,7 @@
+</I>&gt;&gt;&gt;&gt;&gt;<i>          try{
+</I>&gt;&gt;&gt;&gt;&gt;<i>          	HibernateUtil.beginTransaction();
+</I>&gt;&gt;&gt;&gt;&gt;<i>              loadUserProfile();
+</I>&gt;&gt;&gt;&gt;&gt;<i> -            if
+</I>&gt;<i> (userProfil.getImpi().getScscfName().equals(scscfName) == false){
+</I>&gt;&gt;&gt;&gt;&gt;<i> +            if 
+</I>&gt;&gt;&gt;&gt;&gt;<i> + (scscfName.equals(userProfil.getImpi().getScscfName()) == false){
+</I>&gt;&gt;&gt;&gt;&gt;<i>                  userProfil.getImpi().setScscfName(scscfName);
+</I>&gt;&gt;&gt;&gt;&gt;<i>                  markUpdateUserProfile();
+</I>&gt;&gt;&gt;&gt;&gt;<i>              }
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> --------------------------------------------------------------------
+</I>&gt;&gt;&gt;&gt;&gt;<i> ----
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;<i> --------------------------------------------
+</I>&gt;&gt;&gt;<i> Diploma Engineer Adrian Popescu
+</I>&gt;&gt;&gt;<i> FOKUS Fraunhofer Institute
+</I>&gt;&gt;&gt;<i> Next Generation Network Infrastructures Kaiserin-Augusta-Allee 31, 
+</I>&gt;&gt;&gt;<i> 10589, Berlin Work Phone: +49 303 463 7364
+</I>&gt;&gt;&gt;<i> Mobile: +49 178 153 7466
+</I>&gt;&gt;&gt;<i> E-Mail: adp at fokus.fraunhofer.de
+</I>&gt;&gt;&gt;<i> Web: www.fokus.fraunhofer.de
+</I>&gt;&gt;&gt;<i> --------------------------------------------
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i> 
+</I>&gt;<i> --
+</I>&gt;<i> --------------------------------------------
+</I>&gt;<i> Diploma Engineer Adrian Popescu
+</I>&gt;<i> FOKUS Fraunhofer Institute
+</I>&gt;<i> Next Generation Network Infrastructures
+</I>&gt;<i> Kaiserin-Augusta-Allee 31, 10589, Berlin Work Phone: +49 303 463 7364
+</I>&gt;<i> Mobile: +49 178 153 7466
+</I>&gt;<i> E-Mail: adp at fokus.fraunhofer.de
+</I>&gt;<i> Web: www.fokus.fraunhofer.de
+</I>&gt;<i> --------------------------------------------
+</I>
+This e-mail and its contents are subject to the DISCLAIMER at
+<A HREF="http://www.tno.nl/disclaimer/email.html">http://www.tno.nl/disclaimer/email.html</A>
+
+
+
+- --
+- --------------------------------------------
+Diploma Engineer Adrian Popescu
+FOKUS Fraunhofer Institute
+Next Generation Network Infrastructures
+Kaiserin-Augusta-Allee 31, 10589, Berlin
+Work Phone: +49 303 463 7364
+Mobile: +49 178 153 7466
+E-Mail: adp at fokus.fraunhofer.de
+Web: www.fokus.fraunhofer.de
+- --------------------------------------------
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - <A HREF="http://enigmail.mozdev.org">http://enigmail.mozdev.org</A>
+
+iD8DBQFGAmgy6Yml36HNIwcRAq5GAJ9mxdPkYEiD12mkFz4EalN2X4QkygCfRYJf
+Sey3VJDhB10yHVexWj2mvoY=
+=P47g
+-----END PGP SIGNATURE-----
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001268.html">[OpenIMSCore-Users] scscf_name becomes empty in hssdb
+</A></li>
+	<LI>Next message: <A HREF="001013.html">[OpenIMSCore-Users] SIP2IMS and instant messaging
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1270">[ date ]</a>
+              <a href="thread.html#1270">[ thread ]</a>
+              <a href="subject.html#1270">[ subject ]</a>
+              <a href="author.html#1270">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

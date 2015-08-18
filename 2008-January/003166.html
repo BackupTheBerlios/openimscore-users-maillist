@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] S-CSCF not transmitting INVITE [solved]
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20not%20transmitting%20INVITE%20%5Bsolved%5D&In-Reply-To=%3C4784C313.8050405%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003150.html">
+   <LINK REL="Next"  HREF="003153.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] S-CSCF not transmitting INVITE [solved]</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20S-CSCF%20not%20transmitting%20INVITE%20%5Bsolved%5D&In-Reply-To=%3C4784C313.8050405%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] S-CSCF not transmitting INVITE [solved]">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Jan  9 13:50:27 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003150.html">[OpenIMSCore-Users] S-CSCF not transmitting INVITE [solved]
+</A></li>
+        <LI>Next message: <A HREF="003153.html">[OpenIMSCore-Users] TLS Problem (INVITE fails after registering	successful with the server through TLS)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3166">[ date ]</a>
+              <a href="thread.html#3166">[ thread ]</a>
+              <a href="subject.html#3166">[ subject ]</a>
+              <a href="author.html#3166">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>:<i>)
+</I>
+The idea is that when the S-CSCF for the originating user (in your case
+alice) finishes processing and detects that the terminating user
+(msrpecho) is registered/unregistered on the same S-CSCF (so the S-CSCF
+does both origination and termination), there is no need to send the
+message through an I-CSCF that would redirect it back to it. This is OK
+as there can't be 2 S-CSCFs servicing the same users (actually all users
+belonging to the same subscriptions would be serviced on the same S-CSCF).
+ 
+Then if you are asking why sending the message out on the network to
+yourself and why creating the extra &quot;drama&quot; related to one more SIP
+transaction: The big reason is that SER has an ugly way of changing
+messages, such that changes are not properly visible until the message
+hits the network again. For extreme performance, the original message is
+actually never changed, just the changes to be applied are kept in a
+&quot;lump&quot; list and only performed on message send. With this in mind, it is
+overkill to try and make sense of what to do next with the message in a
+strange change state as opposed to just loop it back and have the clean
+and nice new message. The minor reason is that also the routing is much
+simplified if you just try to deal with one case at a time and not both.
+
+Cheers,
+-Dragos
+
+Leonard Broman wrote:
+&gt;<i> Hi Franz!
+</I>&gt;<i>
+</I>&gt;<i> After weeks of search I just so happened to stumble upon the error. I
+</I>&gt;<i> will answer your questions anyway, detail the fix and ask a small
+</I>&gt;<i> followup.
+</I>&gt;<i> During the testing I didn't know if there were issues such as empty
+</I>&gt;<i> subscription profiles, empty ifc and such. So I set up a subscription
+</I>&gt;<i> with an AS and a trigger point which normally should never match to
+</I>&gt;<i> avoid that.
+</I>&gt;<i> The echo bot is a command line client registering with the network
+</I>&gt;<i> just as any normal client. It was running with the same ims and msrp
+</I>&gt;<i> component as the graphical one trying to connect to it.
+</I>&gt;<i> The issue was solved when I edited two lines in scscf.cfg:
+</I>&gt;<i>
+</I>&gt;<i> t_relay_to_udp(&quot;127.0.0.1&quot;,6060);
+</I>&gt;<i>
+</I>&gt;<i> Since my scscf does not listen to localhost I had to edit that line.
+</I>&gt;<i> Now my question is what the purpose of this construct actually is?
+</I>&gt;<i>
+</I>&gt;<i> Leo
+</I>&gt;<i>
+</I>&gt;<i> On 07/01/2008, Franz Edler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">franz.edler at inode.at</A>&gt; wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi Leonard,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> My problems arise when I try to establish an msrp session between
+</I>&gt;&gt;&gt;<i> sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at ims.ao</A> and sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">msrpecho at ims.ao</A> were msrpecho is an msrp echo
+</I>&gt;&gt;&gt;<i> bot running as a standalone application.
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;&gt;<i> The invite from the alice arrives at the S-CSCF which perfoms iFC
+</I>&gt;&gt;&gt;<i> processing without problems (no AS matched) and locates the
+</I>&gt;&gt;&gt;<i> destination sip:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">msrpecho at ims.ao</A> but the INVITE never leaves the
+</I>&gt;&gt;&gt;<i> S-CSCF. A 100 Trying is response is sent directly and a few seconds
+</I>&gt;&gt;&gt;<i> later a 408 Timeout, successfully delivered to alice.
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> You say: &quot;no AS matched&quot; and &quot;an msrp echo bot is running as a standalone
+</I>&gt;&gt;<i> application&quot;. How is your echo bot attached to the IMS?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> A trace (tcpdump or Wireshark) could also be helpful.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Franz
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003150.html">[OpenIMSCore-Users] S-CSCF not transmitting INVITE [solved]
+</A></li>
+	<LI>Next message: <A HREF="003153.html">[OpenIMSCore-Users] TLS Problem (INVITE fails after registering	successful with the server through TLS)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3166">[ date ]</a>
+              <a href="thread.html#3166">[ thread ]</a>
+              <a href="subject.html#3166">[ subject ]</a>
+              <a href="author.html#3166">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

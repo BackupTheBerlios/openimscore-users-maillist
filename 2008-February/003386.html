@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] VMWare image for OpenIMSCore
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20VMWare%20image%20for%20OpenIMSCore&In-Reply-To=%3C47B4A5C1.1020903%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003299.html">
+   <LINK REL="Next"  HREF="003389.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] VMWare image for OpenIMSCore</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20VMWare%20image%20for%20OpenIMSCore&In-Reply-To=%3C47B4A5C1.1020903%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] VMWare image for OpenIMSCore">Dragos.Vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Feb 14 21:34:09 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003299.html">[OpenIMSCore-Users] VMWare image for OpenIMSCore
+</A></li>
+        <LI>Next message: <A HREF="003389.html">[OpenIMSCore-Users] VMWare image for OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3386">[ date ]</a>
+              <a href="thread.html#3386">[ thread ]</a>
+              <a href="subject.html#3386">[ subject ]</a>
+              <a href="author.html#3386">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Vladimir,
+
+I finally found some time to start your image and it works :). I have
+started to do some changes:
+- I have changed all cfg to our default ones, with open-ims.test (sorry
+Vladimir, but I just wanted to have a standard one)
+- added DNS server
+- added IPv6, IPSec in the kernel
+- replaced start.sh/stop.sh with gentoo init.d services - openimscore
+for all and also separate pcscf, icscf, scscf, hss. If you use a
+separate one, please do before /etc/init.d/openimscore stop .
+- added a monitoring ngrep on tty11 for all interfaces for SIP traffic
+(Diameter is too hard to read, I would say)
+- added OpenIC_Lite and 2 profiles for Alice/Bob. Yes, you can use it
+without a GUI ;-).
+- renamed compile.sh to update.sh to better suit the function
+- there's no X, but there's a fb. I have recompiled links with fb
+support and now you get a graphical browser. Script to launch it in
+/opt/OpenIMSCore
+- secured it a little by binding mysql to lo only - after all, the
+passwords are public, so closing it a bit is not bad
+
+Things that I think would be cool to have:
+- different /opt/OpenIMSCore.&lt;purpose&gt; directories for special purposes
+IPv6, THIG, IPSec, persistency, etc
+- a script to reconfigure the domain/IP-Address but not only in the cfg
+- also in the DNS + /etc/init.d/named reload. This is very useful when
+you have DHCP or something...
+- then maybe we could have some sort of interactive &quot;select your
+interface&quot; thing that would make it trivial to have it run irregardless
+of where you start it up.
+
+But I also have some trouble with it:
+- for some reasons eth0 doesn't exist in my vmware... I have added other
+interfaces for all possible vmware interfaces and those work just fine.
+- prepare.sh doesn't contain anything to drop the portage (I think that
+you had it mounted as another fs). I had to bring it back because I
+needed ipsec-tools and also I wanted to do an emerge --newuse because I
+added ipv6 in the USE flags. I think that if I just rm -rf
+/usr/portage/* it would be enough, right?
+
+Unfortunately I have some trouble uploading the file now.... will do
+first thing tomorrow.
+
+Cheers,
+-Dragos
+
+Vladimir Romanov wrote:
+&gt;<i> 1) Optimized for Core2. But I can recompile (make -e world). Portage
+</I>&gt;<i> tree in this image deleted to preserve space.
+</I>&gt;<i> 2) root user password is password :)
+</I>&gt;<i> 3) to update OpenIMS core you can use /opt/OpenIMS/compile.sh. This
+</I>&gt;<i> script will download new version from SVN and compile
+</I>&gt;<i> 4) To shrink image you can use ~/prepare.sh inside VM and later pack.cmd.
+</I>&gt;<i> 5) OpenIMSCore started startup. You can use Alt-F6,Alt-F7... To switch
+</I>&gt;<i> bettween logs
+</I>&gt;<i> 6) This installation use testik.com as realm. This is normal domain,
+</I>&gt;<i> but some host in this domain points to internal IPs (192.168.101.*)
+</I>&gt;<i> 7) named only used as DNS cache
+</I>&gt;<i>
+</I>&gt;<i> Sorry for my bad English :(
+</I>&gt;<i> You can free redistribute this image or use is as base for own image.
+</I>&gt;<i>
+</I>&gt;<i> On Feb 1, 2008 8:15 PM, Dragos Vingarzan
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">Dragos.Vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Wow, gentoo :) super!... and quite small...  I am downloading now.
+</I>&gt;&gt;<i> Gentoo on Gentoo :-p
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> But if it's gentoo... what CPU was it compiled for? generic?
+</I>&gt;&gt;<i> Optimizations? (here we go... the linux-crazy-tuning-bunch....)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> BTW, we would be willing to host an automated updating service (to the
+</I>&gt;&gt;<i> last revision) and the vmware/live-cd file itself. How about it? Would
+</I>&gt;&gt;<i> it be possible?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanx a lot! You saved me and others a lot of time!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Vladimir Romanov wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> You can download it here
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> <A HREF="http://testik.com/OpenIMS/OpenIMS.rar">http://testik.com/OpenIMS/OpenIMS.rar</A> (~300 mb)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> This server use IP 192.168.101.213 and testik.com as realm name.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> To connect client to this server
+</I>&gt;&gt;&gt;<i> 1) Add some address from 192.168.101.* network to client PC
+</I>&gt;&gt;&gt;<i> 2) Setup IC_Lite and use attached config file.
+</I>&gt;&gt;&gt;<i> Please edit this file (profile.cfg)
+</I>&gt;&gt;&gt;<i> #replace USERNAME &amp; PASSWORD with username &amp; password
+</I>&gt;&gt;&gt;<i> #by default password==username
+</I>&gt;&gt;&gt;<i> #copy this file to &quot;C:\Program Files\OpenIC_Lite\&quot; directory
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> ------------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> Fraunhofer FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)176 - 48 32 16 00
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de www.openimscore.org
+</I>&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+Fraunhofer FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)176 - 48 32 16 00
+Web www.fokus.fraunhofer.de www.openimscore.org
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003299.html">[OpenIMSCore-Users] VMWare image for OpenIMSCore
+</A></li>
+	<LI>Next message: <A HREF="003389.html">[OpenIMSCore-Users] VMWare image for OpenIMSCore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3386">[ date ]</a>
+              <a href="thread.html#3386">[ thread ]</a>
+              <a href="subject.html#3386">[ subject ]</a>
+              <a href="author.html#3386">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

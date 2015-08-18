@@ -1,0 +1,679 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registration with IPSEC
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20with%20IPSEC&In-Reply-To=%3C461E06FE.7030707%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001466.html">
+   <LINK REL="Next"  HREF="001455.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registration with IPSEC</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registration%20with%20IPSEC&In-Reply-To=%3C461E06FE.7030707%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Registration with IPSEC">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Thu Apr 12 12:16:30 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001466.html">[OpenIMSCore-Users] Registration with IPSEC
+</A></li>
+        <LI>Next message: <A HREF="001455.html">[OpenIMSCore-Users] PCSCF generates  PRACK  and UPDATE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1467">[ date ]</a>
+              <a href="thread.html#1467">[ thread ]</a>
+              <a href="subject.html#1467">[ subject ]</a>
+              <a href="author.html#1467">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok, r223 - fixed the dst possible bug... but... it is strange because it
+means that there was not c-&gt;ipsec structure or something. The
+P_IPSec_relay() is supposed to override the force_rport() effect.
+
+I have also fixed the port_uc/port_us. Again, not tested. Please tell me
+if it works now. This is the same bug was reported by Kevin Chen.
+
+-Dragos
+
+Prateek Shadangi wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i> It is correct that the 2nd register will be sent from port_uc of the
+</I>&gt;<i> client, But It will contain port_us in the via header bcoz Client is
+</I>&gt;<i> expecting the response in port_us.
+</I>&gt;<i> So 200 OK will also contain port_us in via and P_IPSec_200() will
+</I>&gt;<i> search for port_us in the hash.
+</I>&gt;<i>
+</I>&gt;<i> So I think it should be port_us.
+</I>&gt;<i>
+</I>&gt;<i> regarding the crash, dest was not initialized in P_IPSec_relay()
+</I>&gt;<i> str dst;  --&gt; str dst={0,0};
+</I>&gt;<i>
+</I>&gt;<i> After these changes also the response was sent to port_uc of the
+</I>&gt;<i> client, I had to comment out force_rport() in pcsf.cfg to make it sent
+</I>&gt;<i> to port_us.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Prateek
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> */Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt;/* wrote:
+</I>&gt;<i>
+</I>&gt;<i>     Actually... I think that it should be port-uc... I mean, that is the
+</I>&gt;<i>     port that you are going to send messages from, right? Isn't the 2nd
+</I>&gt;<i>     REGISTER sent from this port?
+</I>&gt;<i>
+</I>&gt;<i>     -Dragos
+</I>&gt;<i>
+</I>&gt;<i>     Prateek Shadangi wrote:
+</I>&gt;<i>     &gt; Hi Dragos,
+</I>&gt;<i>     &gt; Finally I could get the problem,
+</I>&gt;<i>     &gt; The problem was in save_contact_ipsec(), It was saving port-uc
+</I>&gt;<i>     as the
+</I>&gt;<i>     &gt; port for this contact :
+</I>&gt;<i>     &gt; rc = update_r_contact_sec(puri.host,ipsec-&gt;port_uc,puri.proto,
+</I>&gt;<i>     &gt; &amp;(c-&gt;uri),&amp;reg_state,&amp;expires,
+</I>&gt;<i>     &gt; ipsec);
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; But it should be port-us
+</I>&gt;<i>     &gt; rc = update_r_contact_sec(puri.host,ipsec-&gt;port_us,puri.proto,
+</I>&gt;<i>     &gt; &amp;(c-&gt;uri),&amp;reg_state,&amp;expires,
+</I>&gt;<i>     &gt; ipsec);
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; After I changed this, PCSCF is able to fwd 200 ok to my client but
+</I>&gt;<i>     &gt; just after fwding 200 OK it is crashing with signal 11 received.
+</I>&gt;<i>     &gt; Any idea why it is crashing ??
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Regards,
+</I>&gt;<i>     &gt; Prateek
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; */Prateek Shadangi /* wrote:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Hi Dragos,
+</I>&gt;<i>     &gt; I put lot of logs here and there but I am not sure what is the
+</I>&gt;<i>     &gt; prob, Here are my findings:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; 1. In 401 PCSCF calls update_r_contact_sec() functions which
+</I>&gt;<i>     &gt; correctly sets up the ipsec structure.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; 2. In 200 OK PCSCF calls update_contact() which inturn calls
+</I>&gt;<i>     &gt; update_r_contact(), In this function it is unable to find the
+</I>&gt;<i>     &gt; earlier saved contact in 401 so it is adding the contact to the
+</I>&gt;<i>     &gt; hash so c-&gt;ipsec is becoming null.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; 3. In 2 above, It is unable to find the contact because when
+</I>&gt;<i>     &gt; update_r_contact() is executed registrar[hash].head is empty. I am
+</I>&gt;<i>     &gt; not sure who is deleting this hash ??
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Regards,
+</I>&gt;<i>     &gt; Prateek
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; */Dragos Vingarzan /* wrote:
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Can you find out what went wrong in the first step, on
+</I>&gt;<i>     &gt; P_IPSec_401()?
+</I>&gt;<i>     &gt; The c-&gt;ipsec structure should've been initialized then.
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; -Dragos
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; Prateek Shadangi wrote:
+</I>&gt;<i>     &gt; &gt; Hi Dragos,
+</I>&gt;<i>     &gt; &gt; Any solution or work-around for this problem ??
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Regards,
+</I>&gt;<i>     &gt; &gt; Prateek
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; */Prateek Shadangi /* wrote:
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Hi Dragos,
+</I>&gt;<i>     &gt; &gt; Yes you are correct, c-&gt;ipsec is null at P_IPSec_200().
+</I>&gt;<i>     &gt; &gt; I put some more logs to find this, Expiration period is
+</I>&gt;<i>     &gt; correctly
+</I>&gt;<i>     &gt; &gt; shown as 120 which is equal to my registration expiry value.
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Regards,
+</I>&gt;<i>     &gt; &gt; Prateek
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; */Dragos Vingarzan /* wrote:
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Protocols:
+</I>&gt;<i>     &gt; &gt; enum sip_protos { PROTO_NONE, PROTO_UDP, PROTO_TCP, PROTO_TLS,
+</I>&gt;<i>     &gt; &gt; PROTO_SCTP };
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; However, the protocol is ignored because there are a lot of
+</I>&gt;<i>     &gt; &gt; clients
+</I>&gt;<i>     &gt; &gt; which register a contact for UDP and then use any of UDP/TCP
+</I>&gt;<i>     &gt; &gt; from that
+</I>&gt;<i>     &gt; &gt; IP/port (which seems to be OK with RFC3261).
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; It looks like the previous exchange with the 401 failed to
+</I>&gt;<i>     &gt; &gt; create a
+</I>&gt;<i>     &gt; &gt; c-&gt;ipsec structure for the contact (or the expiration period
+</I>&gt;<i>     &gt; &gt; is wrong?).
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; -Dragos
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; Prateek Shadangi wrote:
+</I>&gt;<i>     &gt; &gt; &gt; Hi Dragos,
+</I>&gt;<i>     &gt; &gt; &gt; I have tried with revision 219 but the problem remains.
+</I>&gt;<i>     &gt; &gt; &gt; Attaching the eth trace and pcscf.log.
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; One observation from the log:
+</I>&gt;<i>     &gt; &gt; &gt; We save the contact when we receive 401:
+</I>&gt;<i>     &gt; &gt; &gt; DBG:P-CSCF:save_contact_ipsec: 0 192.168.1.2 : 1049
+</I>&gt;<i>     &gt; &gt; &gt; Here we are storing &quot;0&quot; as proto. (0 is UDP ??)
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; But when we want to send 200 OK we are searching for:
+</I>&gt;<i>     &gt; &gt; &gt; DBG:P-CSCF:P_ipsec_200: Looking for &lt;1://192.168.1.2:1049&gt;
+</I>&gt;<i>     &gt; &gt; &gt; Look at the proto, now it is &quot;1&quot; (what is 1 ???)
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; So again the same error as before:
+</I>&gt;<i>     &gt; &gt; &gt; DBG:P-CSCF:P_ipsec_200: Contact expired or no IPSec info
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; Let me know if I have missed anything.
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; Regards,
+</I>&gt;<i>     &gt; &gt; &gt; Prateek
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; */Dragos Vingarzan /* wrote:
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; Oh... and now I see in 24.228 that the clients should for
+</I>&gt;<i>     &gt; &gt; sure be
+</I>&gt;<i>     &gt; &gt; &gt; identified also by the SAs. I see 2 solutions:
+</I>&gt;<i>     &gt; &gt; &gt; - a new hash-map with the IPSec SAs to efficiently
+</I>&gt;<i>     &gt; identify the
+</I>&gt;<i>     &gt; &gt; &gt; contacts
+</I>&gt;<i>     &gt; &gt; &gt; from the SAs
+</I>&gt;<i>     &gt; &gt; &gt; - overwrite the port of the contact in the P-CSCF
+</I>&gt;<i>     &gt; registrar with
+</I>&gt;<i>     &gt; &gt; &gt; port_uc
+</I>&gt;<i>     &gt; &gt; &gt; if there is a SA... this might just work as P_IPSec relay
+</I>&gt;<i>     &gt; &gt; should take
+</I>&gt;<i>     &gt; &gt; &gt; care of all outgoing requests.
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; -Dragos
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; Dragos Vingarzan wrote:
+</I>&gt;<i>     &gt; &gt; &gt; &gt; sent-by should be used when you are trying to do an
+</I>&gt;<i>     &gt; Early-IMS
+</I>&gt;<i>     &gt; &gt; &gt; &gt; authentication and in this case it does not have anything
+</I>&gt;<i>     &gt; &gt; to do.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt; Now about the contact thing, when using an IPSec client.
+</I>&gt;<i>     &gt; &gt; &gt; &gt; - As it is now, all request to your registered Contact
+</I>&gt;<i>     &gt; &gt; will be fwded
+</I>&gt;<i>     &gt; &gt; &gt; &gt; through the IPSec SA, to to port_us.
+</I>&gt;<i>     &gt; &gt; &gt; &gt; - All responses will be also sent towards the port_us,
+</I>&gt;<i>     &gt; if the
+</I>&gt;<i>     &gt; &gt; &gt; &gt; originating request came from a contact with a respective
+</I>&gt;<i>     &gt; &gt; IPSec SA
+</I>&gt;<i>     &gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt; Then I think that it would be a good idea to actually
+</I>&gt;<i>     &gt; register
+</I>&gt;<i>     &gt; &gt; &gt; the exact
+</I>&gt;<i>     &gt; &gt; &gt; &gt; contacts that you are going to use over the IPSec SA.
+</I>&gt;<i>     &gt; Now the
+</I>&gt;<i>     &gt; &gt; &gt; &gt; originating UE is identified by ip:port in the first via
+</I>&gt;<i>     &gt; body
+</I>&gt;<i>     &gt; &gt; &gt; and this
+</I>&gt;<i>     &gt; &gt; &gt; &gt; must match a saved contact or else you will get a 403
+</I>&gt;<i>     &gt; &gt; Forbidden.
+</I>&gt;<i>     &gt; &gt; &gt; Yes, if
+</I>&gt;<i>     &gt; &gt; &gt; &gt; you send it over a SA, then the P-CSCF theoretically can
+</I>&gt;<i>     &gt; &gt; &gt; identify it,
+</I>&gt;<i>     &gt; &gt; &gt; &gt; but this will require an extra hack in the UE
+</I>&gt;<i>     &gt; &gt; identification. And
+</I>&gt;<i>     &gt; &gt; &gt; &gt; because now the vast majority of the clients are not
+</I>&gt;<i>     &gt; &gt; IPSec, this
+</I>&gt;<i>     &gt; &gt; &gt; &gt; identification is now optimized for getting the user
+</I>&gt;<i>     &gt; &gt; identities
+</I>&gt;<i>     &gt; &gt; &gt; from the
+</I>&gt;<i>     &gt; &gt; &gt; &gt; contacts and not for getting the user identities from
+</I>&gt;<i>     &gt; the SAs.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt; -Dragos
+</I>&gt;<i>     &gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt; Prateek Shadangi wrote:
+</I>&gt;<i>     &gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; Hi Dragos,
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; I will retry with revision 219 and let you know the result.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; but before that I have to fix the second issue what you
+</I>&gt;<i>     &gt; &gt; have told
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &quot;Then about your error, please register the same contacts
+</I>&gt;<i>     &gt; &gt; that
+</I>&gt;<i>     &gt; &gt; &gt; you are
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; going to use: you registered 192.168.1.2:5060 and then
+</I>&gt;<i>     &gt; &gt; you use
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; 192.168.1.2:1052 because of IPSec. So the error below was
+</I>&gt;<i>     &gt; &gt; normal.&quot;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; I have some questions regarding your comment:
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; 1. If I change the port in the first register to 1052,
+</I>&gt;<i>     &gt; &gt; will it
+</I>&gt;<i>     &gt; &gt; &gt; work ??
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; As the client is still listening on 5060, will pcscf
+</I>&gt;<i>     &gt; will fwd
+</I>&gt;<i>     &gt; &gt; &gt; the 401
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; to 5060 or 1052 ??
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; 2. If I include sent-by parameter in the via header of
+</I>&gt;<i>     &gt; &gt; both first
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; register and second register will this problem be
+</I>&gt;<i>     &gt; resolved ??
+</I>&gt;<i>     &gt; &gt; &gt; and what
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; should be the content of the sent-by parameter ??
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; Regards,
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; Prateek
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; */Dragos Vingarzan /* wrote:
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; OK, I see your point.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; However this required a new function, P_IPSec_relay()
+</I>&gt;<i>     &gt; &gt; that fwds
+</I>&gt;<i>     &gt; &gt; &gt; to the
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; port_us if there is one for that client. Could you please
+</I>&gt;<i>     &gt; &gt; retry
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; with at
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; least revision 219 and tell me if it is OK now? I
+</I>&gt;<i>     &gt; &gt; couldn't find
+</I>&gt;<i>     &gt; &gt; &gt; yet my
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; hack-of-a-client that I used to test this so this is still
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; experimental.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; -Dragos
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; Prateek Shadangi wrote:
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; Hi Dragos,
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; If you read the paragraph just above that Figure 9 it
+</I>&gt;<i>     &gt; tells
+</I>&gt;<i>     &gt; &gt; &gt; that the
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; below call flow is for TCP,
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; For TCP cases what ever you said is correct but If client
+</I>&gt;<i>     &gt; &gt; &gt; chooses to
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; use UDP then the behavior changes as mentioned in my
+</I>&gt;<i>     &gt; &gt; previous
+</I>&gt;<i>     &gt; &gt; &gt; mail.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; And there are 2 pairs of SA i;e total 4 SA , 2 for
+</I>&gt;<i>     &gt; &gt; incoming and
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; 2 for
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; outgoing.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; Regards,
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; Prateek
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; */Dragos Vingarzan /* wrote:
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; Then how do you explain Figure 9 in the same document?
+</I>&gt;<i>     &gt; &gt; An what
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; is the
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; use of 4 SAs when you only have 2 ways of
+</I>&gt;<i>     &gt; &gt; communication? Here I
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; would
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; rather go with the standard SIP way of returning
+</I>&gt;<i>     &gt; &gt; responses to
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; where the
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; request came from.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; -Dragos
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; Prateek Shadangi wrote:
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Hi Dragos,
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Whatever you have said is true for TCP,
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; But When Client is using UPD as transport protocol, It
+</I>&gt;<i>     &gt; &gt; &gt; should send
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Request from port-uc and expect responses at port-us.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Below is the excepts from 3GPP 33.203:
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; ....
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; These ports are used with both, UDP and TCP. The use
+</I>&gt;<i>     &gt; &gt; of these
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; ports
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; may differ for TCP and UDP, as follows:
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; UDP case: the UE receives requests and responses
+</I>&gt;<i>     &gt; &gt; protected
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; with ESP on the port port_us (the&quot;protected server
+</I>&gt;<i>     &gt; &gt; port&quot;).
+</I>&gt;<i>     &gt; &gt; &gt; The UE
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; sends requests and responses protected with ESP on
+</I>&gt;<i>     &gt; &gt; the port
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; port_uc
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; (the &quot;protected client port&quot;).
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; TCP case: the UE, if it does not have a TCP
+</I>&gt;<i>     &gt; &gt; connection towards
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; the P CSCF yet, shall set up a TCP connection to
+</I>&gt;<i>     &gt; the port
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; port_ps of
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; the P CSCF before sending a request to it.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; ....
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Regards,
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Prateek
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; -----Original Message-----
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On
+</I>&gt;<i>     &gt; &gt; &gt; Behalf Of
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Dragos Vingarzan
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Sent: Thursday, April 05, 2007 3:41 PM
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; To: Prateek Shadangi
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Subject: Re: [OpenIMSCore-Users] Registration with
+</I>&gt;<i>     &gt; IPSEC
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Hello Prateek,
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; The responses are sent to the port_uc - User Client.
+</I>&gt;<i>     &gt; &gt; When the
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; Endpoint
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; is doing UAC, then it sends requests from port_uc and
+</I>&gt;<i>     &gt; &gt; should be
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; ready
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; to receive answers for those requests on the same
+</I>&gt;<i>     &gt; &gt; port. Only
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; requests
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; are sent towards port_us.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Then about your error, please register the same
+</I>&gt;<i>     &gt; &gt; contacts that
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; you are
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; going to use: you registered 192.168.1.2:5060 and
+</I>&gt;<i>     &gt; &gt; then you use
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; 192.168.1.2:1052 because of IPSec. So the error
+</I>&gt;<i>     &gt; below was
+</I>&gt;<i>     &gt; &gt; &gt; normal.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; -Dragos
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Prateek Shadangi wrote:
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; Hi All,
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; I am testing REGISTRATION with IPSEC enabled.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; I am able to send the 1st register and get 401
+</I>&gt;<i>     &gt; response
+</I>&gt;<i>     &gt; &gt; &gt; for it.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; I am able to send the 2nd encrypted register and
+</I>&gt;<i>     &gt; &gt; pcscf is
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; able to
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; decrypt it.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; But I am not receiving a 200 OK for it.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; From the ethereal logs I can see that the 200 OK is
+</I>&gt;<i>     &gt; &gt; being
+</I>&gt;<i>     &gt; &gt; &gt; sent
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; as a
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; plain text.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; One more issue is 200 OK is being sent to port-uc
+</I>&gt;<i>     &gt; &gt; of the
+</I>&gt;<i>     &gt; &gt; &gt; client
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; instead of port-us.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; I can see the following msgs in pcscf log:
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; 1(19977) DBG:P-CSCF:P_ipsec_200: Looking for
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &lt;1://192.168.1.2:1052&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; 1(19977) DBG:P-CSCF:P_ipsec_200: Contact expired or
+</I>&gt;<i>     &gt; &gt; no IPSec
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; info
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; Attaching the ethereal trace and pcscf log.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; Can anyone tell me where is the problem ??
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; Regards,
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; Prateek
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     ----------------------------------------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; -- Don't be flakey. Get Yahoo! Mail for Mobile
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; and
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; always stay connected
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; to
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; friends.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     ----------------------------------------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; --
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; _______________________________________________
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; --
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; -----------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; FOKUS/NGNI
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; 10589 Berlin,Germany
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Web www.fokus.fraunhofer.de
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; We could change the world if God would give us the
+</I>&gt;<i>     &gt; source
+</I>&gt;<i>     &gt; &gt; &gt; code...
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; -----------------------------------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; _______________________________________________
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Finding fabulous fares is fun.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; Let Yahoo! FareChase search your favorite travel sites
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; to find flight and hotel bargains.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; _______________________________________________
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; OpenIMSCore-Users mailing list
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; --
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; -----------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; FOKUS/NGNI
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; 10589 Berlin,Germany
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; Web www.fokus.fraunhofer.de
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; We could change the world if God would give us the
+</I>&gt;<i>     &gt; &gt; source code...
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; -----------------------------------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; The fish are biting.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; Get more visitors
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt; on your site using Yahoo! Search Marketing.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; --
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; -----------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; FOKUS/NGNI
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; 10589 Berlin,Germany
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; Web www.fokus.fraunhofer.de
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; We could change the world if God would give us the source
+</I>&gt;<i>     &gt; &gt; code...
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; -----------------------------------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; Finding fabulous fares is fun.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; Let Yahoo! FareChase search your favorite travel sites
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt; to find flight and hotel bargains.
+</I>&gt;<i>     &gt; &gt; &gt; &gt;&gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; --
+</I>&gt;<i>     &gt; &gt; &gt; -----------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     &gt; &gt; &gt; FOKUS/NGNI
+</I>&gt;<i>     &gt; &gt; &gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     &gt; &gt; &gt; 10589 Berlin,Germany
+</I>&gt;<i>     &gt; &gt; &gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     &gt; &gt; &gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     &gt; &gt; &gt; eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &gt; &gt; &gt; Web www.fokus.fraunhofer.de
+</I>&gt;<i>     &gt; &gt; &gt; We could change the world if God would give us the source
+</I>&gt;<i>     &gt; &gt; code...
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; -----------------------------------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;<i>     &gt; &gt; &gt; Never miss an email again!
+</I>&gt;<i>     &gt; &gt; &gt; Yahoo! Toolbar
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt; &gt; alerts you the instant new Mail arrives. Check it out.
+</I>&gt;<i>     &gt; &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt; --
+</I>&gt;<i>     &gt; &gt; -----------------------------------------
+</I>&gt;<i>     &gt; &gt; Dipl. Eng. Dragos Vingarzan
+</I>&gt;<i>     &gt; &gt; FOKUS/NGNI
+</I>&gt;<i>     &gt; &gt; Kaiserin-Augusta-Allee 31
+</I>&gt;<i>     &gt; &gt; 10589 Berlin,Germany
+</I>&gt;<i>     &gt; &gt; Phone +49 (0)30 - 3463 - 7385
+</I>&gt;<i>     &gt; &gt; Mobile +49 (0)163 - 159 - 5221
+</I>&gt;<i>     &gt; &gt; eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;<i>     &gt; &gt; Web www.fokus.fraunhofer.de
+</I>&gt;<i>     &gt; &gt; We could change the world if God would give us the source
+</I>&gt;<i>     &gt; code...
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; -----------------------------------------------------------------
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt; &gt;
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     ------------------------------------------------------------------------
+</I>&gt;<i>     &gt; &gt; Finding fabulous fares is fun.
+</I>&gt;<i>     &gt; &gt; Let Yahoo! FareChase search your favorite travel sites
+</I>&gt;<i>
+</I>&gt;<i>     === message truncated ===
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------------------------------------------------
+</I>&gt;<i> We won't tell. Get more on shows you hate to love
+</I>&gt;<i> &lt;<A HREF="http://us.rd.yahoo.com/evt=49980/*http://tv.yahoo.com/collections/265">http://us.rd.yahoo.com/evt=49980/*http://tv.yahoo.com/collections/265</A>&gt;
+</I>&gt;<i> (and love to hate): Yahoo! TV's Guilty Pleasures list.
+</I>&gt;<i> &lt;<A HREF="http://us.rd.yahoo.com/evt=49980/*http://tv.yahoo.com/collections/265">http://us.rd.yahoo.com/evt=49980/*http://tv.yahoo.com/collections/265</A>&gt; 
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001466.html">[OpenIMSCore-Users] Registration with IPSEC
+</A></li>
+	<LI>Next message: <A HREF="001455.html">[OpenIMSCore-Users] PCSCF generates  PRACK  and UPDATE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1467">[ date ]</a>
+              <a href="thread.html#1467">[ thread ]</a>
+              <a href="subject.html#1467">[ subject ]</a>
+              <a href="author.html#1467">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Existing Application Servers?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Existing%20Application%20Servers%3F&In-Reply-To=%3C45D5CAF7.9080305%40fokus.fraunhofer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000835.html">
+   <LINK REL="Next"  HREF="000837.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Existing Application Servers?</H1>
+    <B>Dragos Vingarzan</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Existing%20Application%20Servers%3F&In-Reply-To=%3C45D5CAF7.9080305%40fokus.fraunhofer.de%3E"
+       TITLE="[OpenIMSCore-Users] Existing Application Servers?">vingarzan at fokus.fraunhofer.de
+       </A><BR>
+    <I>Fri Feb 16 16:17:11 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000835.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+        <LI>Next message: <A HREF="000837.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#836">[ date ]</a>
+              <a href="thread.html#836">[ thread ]</a>
+              <a href="subject.html#836">[ subject ]</a>
+              <a href="author.html#836">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Andrey,
+
+1. SER could be successfully used for many of your scenarios. Other than
+that I don't really know. If you find anything, please spread the word ;-)
+
+2. Depends... you could use SER as a starting platform, or take a SIP
+stack and write from there, or take a SIP Servlet environment and build
+on top. Every approach has advantages and disadvantages, I guess...
+
+3. The 3GPP's specs ... 29.228, 29.229, 29.328, 29.329, 23.218, 23.228,
+24.228, 24.229 to name some :-/...
+
+4. It should be pretty quick to write. Testing and fixing is the big
+part. There are 4 commands on this interface:
+    - Subscribe-Notification-Request - to subscribe from AS to HSS for
+events
+    - Push-Notification-Request - obvious
+    - Profile-Update-Request - to upload/update data from AS to HSS
+    - User-Data-Request - to read data from the HSS
+
+I have already drafted some months ago the module, but I stopped because
+of lack of interest in it. I could commit it, but it's in an incipient
+state... if you guys would like to contribute, I could start a branch
+and I could help you there.
+
+Querying the db directly is not a good idea for several reasons:
+    - you don't know the HSS's policy on cache/hibernate
+    - it will only work with this HSS
+    - once we change the db structure (we are actually in the process -
+see the FHoSS/branches/01_RevampDB branch) we'll break your stuff
+    - you won't get events pushed
+    - security issues?
+... to name some.
+
+-Dragos
+
+Andrey Kuprianov wrote:
+&gt;<i> Hi Dragos,
+</I>&gt;<i>
+</I>&gt;<i> I think I am quite clear. Anyway, i've got some questions, but let me
+</I>&gt;<i> explain our ultimate goal first :).
+</I>&gt;<i>
+</I>&gt;<i> We (my teammates and I) have taken on a project, in which we will
+</I>&gt;<i> implement a module that will be used to resolve unwanted interactions
+</I>&gt;<i> between different AS's, such as forwarding a call from party B to
+</I>&gt;<i> party C, where originator of this call is party A and A doesnt want to
+</I>&gt;<i> talk to C :)). So, technically, at first we need a couple or more AS's
+</I>&gt;<i> to get ourselves started. Trivial AS's like call barring, call
+</I>&gt;<i> forwarding on busy or unconditionally, caller ID hiding, 3pcc, black
+</I>&gt;<i> list, presence, instant messaging, conferencing and voicemail, etc
+</I>&gt;<i> would be most desirable at the moment (I guess that's quite the list,
+</I>&gt;<i> but we really need them!)
+</I>&gt;<i>
+</I>&gt;<i> So, there come the questions:
+</I>&gt;<i>
+</I>&gt;<i> 1. Any of these AS's exist at the moment (open-source) ?
+</I>&gt;<i> 2. Weird question, but here it goes: what would be the most efficient
+</I>&gt;<i> way to create these AS's? This question is a bit too vague. Maybe, we
+</I>&gt;<i> should leave it for further discussions in a separate thread?
+</I>&gt;<i> 3. Are there any good documents on OpenIMS website regarding ISC
+</I>&gt;<i> interface you've discussed (plz, dont answer, if yes; i'll just go get
+</I>&gt;<i> them)
+</I>&gt;<i> 4. Can you expand more on Sh interface? How long will it take to
+</I>&gt;<i> implement? Can we just query HSS db directly (as far as i know, it's
+</I>&gt;<i> still MySQL tables :))
+</I>&gt;<i>
+</I>&gt;<i> I'll be back with more questions and I also do hope to continue this
+</I>&gt;<i> thread discussion. :)
+</I>&gt;<i>
+</I>&gt;<i>   King regards,
+</I>&gt;<i>
+</I>&gt;<i>      Andrey.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On 2/16/07, Dragos Vingarzan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>&gt; wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Hi Andrey,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> First, let me make some things clear. The best way to integrate an AS
+</I>&gt;&gt;<i> into Open IMS Core (or any other IMS network) is to make use of the ISC
+</I>&gt;&gt;<i> interface and not by changing the scscf.cfg. You can define in the
+</I>&gt;&gt;<i> user's service profile on the HSS different filters and on match, the
+</I>&gt;&gt;<i> initial request will be forwarded to the indicated application servers.
+</I>&gt;&gt;<i> The scscf.cfg should not be changed except for operator specific
+</I>&gt;&gt;<i> settings (some things are optional, customizable, etc). We did modify it
+</I>&gt;&gt;<i> slightly for example to route to PSTN as this something usually common
+</I>&gt;&gt;<i> for all users, but Shared IFC is on the roadmap and will be there to do
+</I>&gt;&gt;<i> just that.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I am saying the things above, just to rule out misunderstandings. I
+</I>&gt;&gt;<i> guess that you did not mean that, but I just want to be sure
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Then, regarding the use of SER as an application server (or SER+cdp
+</I>&gt;&gt;<i> module, if you'd like to call it OpenIMS). Recently I have questioned
+</I>&gt;&gt;<i> the targeted usage of SER on the development list there. One relevant
+</I>&gt;&gt;<i> conclusion stands out: SER is a SIP proxy and should no be abused as an
+</I>&gt;&gt;<i> AS. Now I know that this is contradictory with what happens actually in
+</I>&gt;&gt;<i> SER, as there are application server modules in the main tree  (e.g.
+</I>&gt;&gt;<i> presence application server), but this is the position of the core
+</I>&gt;&gt;<i> developers there. So considered yourself warned ;-) and prepare yourself
+</I>&gt;&gt;<i> to be disappointed if you want to do barring with a B2BUA by using SER.
+</I>&gt;&gt;<i> If you have lots of programming resources, you can do it, no pb.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> However, SER does have great performance and flexibility, so a simple AS
+</I>&gt;&gt;<i> would be very easy to hack in. The CDP module offers you support for
+</I>&gt;&gt;<i> Diameter but you still need a module/functionality for the Sh interface
+</I>&gt;&gt;<i> with the HSS if you want that. I was thinking about it, but so far
+</I>&gt;&gt;<i> nobody was interested. If we get some more interest here, we could put
+</I>&gt;&gt;<i> it on the road-map.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I am not sure that I was clear enough, but I am very interested in
+</I>&gt;&gt;<i> continuing this thread.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -Dragos
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Andrey Kuprianov wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Has anyone tried to implement or implemented AS's of any kind on OpenIMS?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> For instance, Call Barring AS. As I understand (and, please, correct
+</I>&gt;&gt;&gt;<i> me if im wrong), many other AS's are already available on OpenIMS:
+</I>&gt;&gt;&gt;<i> like presence or IM. These servers can be implemented by playing with
+</I>&gt;&gt;&gt;<i> ser.cfg. However, some cannot be. Therefore, I am interested in the
+</I>&gt;&gt;&gt;<i> most *efficient* (quick) way to implement AS's on OpenIMS. Would it be
+</I>&gt;&gt;&gt;<i> trying accomplish this with my ser.cfg or would it be adding an extra
+</I>&gt;&gt;&gt;<i> module to SER or both?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> If im not clear (i am actually confused myself), please, let me know.
+</I>&gt;&gt;&gt;<i> I would be happy to clarify my problem.
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> -----------------------------------------
+</I>&gt;&gt;<i> Dipl. Eng. Dragos Vingarzan
+</I>&gt;&gt;<i> FOKUS/NGNI
+</I>&gt;&gt;<i> Kaiserin-Augusta-Allee 31
+</I>&gt;&gt;<i> 10589 Berlin,Germany
+</I>&gt;&gt;<i> Phone +49 (0)30 - 3463 - 7385
+</I>&gt;&gt;<i> Mobile +49 (0)163 - 159 - 5221
+</I>&gt;&gt;<i> eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+</I>&gt;&gt;<i> Web www.fokus.fraunhofer.de
+</I>&gt;&gt;<i> We could change the world if God would give us the source code...
+</I>&gt;&gt;<i> -----------------------------------------------------------------
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+-----------------------------------------
+Dipl. Eng. Dragos Vingarzan
+FOKUS/NGNI
+Kaiserin-Augusta-Allee 31
+10589 Berlin,Germany
+Phone +49 (0)30 - 3463 - 7385
+Mobile +49 (0)163 - 159 - 5221
+eMail <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">vingarzan at fokus.fraunhofer.de</A>
+Web www.fokus.fraunhofer.de
+We could change the world if God would give us the source code...
+-----------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000835.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+	<LI>Next message: <A HREF="000837.html">[OpenIMSCore-Users] Existing Application Servers?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#836">[ date ]</a>
+              <a href="thread.html#836">[ thread ]</a>
+              <a href="subject.html#836">[ subject ]</a>
+              <a href="author.html#836">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

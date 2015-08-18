@@ -1,0 +1,320 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] R&#233;f. : Re:  How to register UA without loopback ??
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%09%3D%3Fiso-8859-1%3Fq%3FR%3DE9f%3D2E_%3D3A_Re%3D3A__How_to_reg%3F%3D%0A%09%3D%3Fiso-8859-1%3Fq%3Fister_UA_without_loopback_%3D3F%3D3F%3F%3D&In-Reply-To=%3C2A6EB594D929D04E9E5E468225CD28C2896322%40swsmsx413.ger.corp.intel.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002657.html">
+   <LINK REL="Next"  HREF="002659.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] R&#233;f. : Re:  How to register UA without loopback ??</H1>
+    <B>Verbeiren, David</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%0A%09%3D%3Fiso-8859-1%3Fq%3FR%3DE9f%3D2E_%3D3A_Re%3D3A__How_to_reg%3F%3D%0A%09%3D%3Fiso-8859-1%3Fq%3Fister_UA_without_loopback_%3D3F%3D3F%3F%3D&In-Reply-To=%3C2A6EB594D929D04E9E5E468225CD28C2896322%40swsmsx413.ger.corp.intel.com%3E"
+       TITLE="[OpenIMSCore-Users] R&#233;f. : Re:  How to register UA without loopback ??">david.verbeiren at intel.com
+       </A><BR>
+    <I>Thu Sep 20 10:42:05 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002657.html">[OpenIMSCore-Users] R&#233;f. : Re:  How to register UA without loopback ??
+</A></li>
+        <LI>Next message: <A HREF="002659.html">[OpenIMSCore-Users] R&#233;f. : Re:  How to register UA without loopback ??
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2658">[ date ]</a>
+              <a href="thread.html#2658">[ thread ]</a>
+              <a href="subject.html#2658">[ subject ]</a>
+              <a href="author.html#2658">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Two other suggestions: 
+- Check with &quot;netstat -l&quot; on the OSIMS server that the P-CSCF (and the others) are listening on the addresse(s) you expect (i.e. not just the loopback)
+- Disable firewall (for example, /etc/init.d/iptables stop)
+
+-David
+
+-----Original Message-----
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Verbeiren, David
+Sent: 20 September 2007 10:16
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">amolpise at tataelxsi.co.in</A>
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+Subject: Re: [OpenIMSCore-Users]R&#233;f. : Re: How to register UA without loopback ??
+
+In my experience &quot;Awaiting Proxy login information&quot; means that X-Lite is not even trying to register; it's waiting for you to fully configure a SIP account. As I wrote in an earlier response, I haven't used the Linux version of X-Lite for a long time but on Windows, I use the following settings with the Open IMS. The system where you run your X-Lite must of course be able to resolve pcscf.open-ims.test (check with ping or host pcscf.open-ims.test).
+
+Enabled: Yes   {Don't forget this one, otherwise all other data is discarded!)
+Display Name: &lt;whatever you like&gt;
+Username: alice
+Authentication username: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">alice at open-ims.test</A>
+Password: ****
+Domain/Realm: open-ims.test
+SIP Proxy: &lt;empty&gt;
+Outbound Proxy: pcscf.open-ims.test:4060
+Use Outbound Proxy: Always
+
+Hope this helps,
+-David
+
+________________________________________
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>] On Behalf Of Daniel VIRASSAMY
+Sent: 20 September 2007 10:01
+To: Klemens Schragel
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+Subject: [OpenIMSCore-Users] R&#233;f. : Re: How to register UA without loopback ??
+
+
+
+Hi all,
+
+&quot;awaiting Proxy login information&quot; - which client are you using Amol?
+
+I've seen in a mailing list lately that UE config was not correct when the latter returns this error.
+
+Check that outbound proxy == pcscf.open-ims.test (4060)
+and registrar == open-ims.test
+
+In your DNS you should perhaps declare the hostnames and respective ip addrs for each server
+
+
+
+
+Regards
+
+Daniel
+
+
+
+
+
+&quot;Klemens Schragel&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt;
+
+Envoy&#233; par : <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+20/09/2007 07:52
+Remis le : 20/09/2007 07:52
+&#160; &#160; &#160; &#160; 
+&#160; &#160; &#160; &#160; Pour : &#160; &#160; &#160; &#160;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">amolpise at tataelxsi.co.in</A>, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+&#160; &#160; &#160; &#160; cc : &#160; &#160; &#160; &#160;(ccc : Daniel VIRASSAMY/DRD/SAGEM)
+&#160; &#160; &#160; &#160; Objet : &#160; &#160; &#160; &#160;Re: [OpenIMSCore-Users] How to register UA without loopback ??
+
+
+
+I can't see anything suspicious... but unfortunately I'm not a pro in DNS configurations...
+
+still, a network trace should reveal what's happening (&quot;awaiting Proxy login information&quot; is just a client-specific information and I have no idea in which situations it is displayed)...
+
+br, Klemens
+
+-------- Original-Nachricht --------
+&gt;<i> Datum: Thu, 20 Sep 2007 10:32:38 +0530
+</I>&gt;<i> Von: &quot;Amol D Pise&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">amolpise at tataelxsi.co.in</A>&gt;
+</I>&gt;<i> An: &quot;\'Klemens Schragel\'&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>&gt;, <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> CC: &quot;\'Daniel VIRASSAMY\'&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">daniel.virassamy at sagem.com</A>&gt;
+</I>&gt;<i> Betreff: RE: [OpenIMSCore-Users] How to register UA without loopback ??
+</I>
+&gt;<i> Thanks for your reply.....
+</I>&gt;<i> my UE is giving me &quot;awaiting Proxy login information&quot; message when I am
+</I>&gt;<i> trying to register.
+</I>&gt;<i> I tried with outbound proxy 10.50.41.171:4060 &#160;but no success.
+</I>&gt;<i> I am getting &quot;fix_socket_list:Could not rev. resolve 10.50.41.171&quot; warning
+</I>&gt;<i> on my server side too.
+</I>&gt;<i> I think its problem with my DNS, can you please check my dns setting and
+</I>&gt;<i> tell me whats wrong with it.
+</I>&gt;<i> &#160;
+</I>&gt;<i> 1) In /etc/resolve.conf
+</I>&gt;<i> &#160; &#160; &#160;
+</I>&gt;<i> search open-ims.test
+</I>&gt;<i> nameserver 10.50.41.171
+</I>&gt;<i> 
+</I>&gt;<i> 2) In /etc/named.conf
+</I>&gt;<i> &#160;
+</I>&gt;<i> zone &quot;open-ims.test&quot; IN {
+</I>&gt;<i> &#160; &#160; &#160; &#160; type master;
+</I>&gt;<i> &#160; &#160; &#160; &#160; file &quot;open-ims.dnszone&quot;;
+</I>&gt;<i> &#160; &#160; &#160; &#160; notify no;
+</I>&gt;<i> };
+</I>&gt;<i> &#160;
+</I>&gt;<i> zone &quot;41.50.10.in-addr.arpa.&quot; IN {
+</I>&gt;<i> &#160;
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160;type master;
+</I>&gt;<i> &#160;
+</I>&gt;<i> &#160; &#160; &#160; &#160; file &quot;10-50-41.dnszone&quot;;
+</I>&gt;<i> &#160;
+</I>&gt;<i> &#160; &#160; &#160; &#160; allow-update { none; };
+</I>&gt;<i> &#160;
+</I>&gt;<i> &#160; &#160; &#160;}
+</I>&gt;<i> &#160;
+</I>&gt;<i> Note : &quot;open-ims.dnszone&quot; for forward dns and &quot;10-50-41.dnszone&quot; for
+</I>&gt;<i> reverse
+</I>&gt;<i> dns is attached here
+</I>&gt;<i> &#160;
+</I>&gt;<i> Please guide me, how do I register UA running on machine (IP add.
+</I>&gt;<i> 10.50.41.196) to the open-ims-servers(CSCF's) running on
+</I>&gt;<i> machine ( IP add. 10.50.41.71)
+</I>&gt;<i> &#160;
+</I>&gt;<i> Thank You,
+</I>&gt;<i> Amol Pise
+</I>&gt;<i> &#160;
+</I>&gt;<i> &#160;
+</I>&gt;<i> 
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Klemens Schragel [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">klemens.schragel at gmx.at</A>]
+</I>&gt;<i> Sent: Wednesday, September 19, 2007 9:33 PM
+</I>&gt;<i> To: Amol D Pise; <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: RE: [OpenIMSCore-Users] How to register UA without loopback ??
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Hi Amol Pise,
+</I>&gt;<i> 
+</I>&gt;<i> I guess there is a problem with DNS... it would be interesting to get a
+</I>&gt;<i> trace (what does your UE do when you try to register?)
+</I>&gt;<i> 
+</I>&gt;<i> You can also try to register to outboundproxy 10.50.41.171:4060 instead of
+</I>&gt;<i> pcscf.open-ims.test:4060 (I think p-cscf modul should also listen to
+</I>&gt;<i> that)...
+</I>&gt;<i> 
+</I>&gt;<i> BR, Klemens
+</I>&gt;<i> 
+</I>&gt;<i> _____________________________________________
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A> [
+</I>&gt;<i> mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>
+</I>&gt;<i> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users-bounces at lists.berlios.de</A>&gt; ] On Behalf Of Amol D
+</I>&gt;<i> Pise
+</I>&gt;<i> Sent: Mittwoch, 19. September 2007 15:28
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">openimscore-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: [OpenIMSCore-Users] How to register UA without loopback ??
+</I>&gt;<i> 
+</I>&gt;<i> Hi all
+</I>&gt;<i> 
+</I>&gt;<i> we installed openimscore ser_ims,hss,icscf,pcscf,scscf on fedrocore5 and
+</I>&gt;<i> able to register using &#160;X-lite client on same PC
+</I>&gt;<i> 
+</I>&gt;<i> successfully. But now I want to change ip address from loopback 127.0.0.1
+</I>&gt;<i> to
+</I>&gt;<i> 10.50.41.171 on same domain &quot;open-ims.test&quot;
+</I>&gt;<i> 
+</I>&gt;<i> so,I used configurator.sh, keeping &#160; DSDOMAIN=&quot;open-ims\\\.test
+</I>&gt;<i> 
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; DDOMAIN=&quot;open-ims\.test&quot;
+</I>&gt;<i> 
+</I>&gt;<i> &#160;
+</I>&gt;<i> DEFAULTIP=&quot;127\.0\.0\.1&quot; 
+</I>&gt;<i> 
+</I>&gt;<i> &#160;and changes ip-address to 10.50.41.171
+</I>&gt;<i> 
+</I>&gt;<i> &#160;in scscf.cfg,icscf.cfg
+</I>&gt;<i> ,pcscf.cfg,scscf.xml,icscf.xml,DiameterPeerHSS.xml,open-ims-dnszone
+</I>&gt;<i> 
+</I>&gt;<i> hss_db.sql and hss.properties
+</I>&gt;<i> 
+</I>&gt;<i> Now my problem is I want to keep all CSCF and HSS on one machine and UA on
+</I>&gt;<i> another machine( 10.50.41.196) and , and UA should register to my
+</I>&gt;<i> servers(CSCF)which are running on 10.50.41.171. 
+</I>&gt;<i> 
+</I>&gt;<i> How should I make it possible, Only on same machine (loopback) its working
+</I>&gt;<i> but not on separate machine .
+</I>&gt;<i> 
+</I>&gt;<i> X-lite configuration is given below :
+</I>&gt;<i> 
+</I>&gt;<i> Display Name : alice
+</I>&gt;<i> 
+</I>&gt;<i> Domain : open-ims.test
+</I>&gt;<i> 
+</I>&gt;<i> sipproxy : open-ims.test
+</I>&gt;<i> 
+</I>&gt;<i> OutBoundProxy : pcscf.open-ims.test:4060
+</I>&gt;<i> 
+</I>&gt;<i> Is it require, that system running UA should also &#160;be in open-ims.test
+</I>&gt;<i> domain ???
+</I>&gt;<i> 
+</I>&gt;<i> Please help me in this matter ...........
+</I>&gt;<i> 
+</I>&gt;<i> Waiting for help .............................................
+</I>&gt;<i> 
+</I>&gt;<i> Thank You,
+</I>&gt;<i> 
+</I>&gt;<i> Amol Pise
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &#160; &lt;&lt; File: ATT00003.txt &gt;&gt; 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> The information contained in this electronic message and any attachments
+</I>&gt;<i> to this message are intended for the exclusive use of the addressee(s) and
+</I>&gt;<i> may contain proprietary, confidential or privileged information. If you are
+</I>&gt;<i> not the intended recipient, you should not disseminate, distribute or copy
+</I>&gt;<i> this e-mail. Please notify the sender immediately and destroy all copies of
+</I>&gt;<i> this message and any attachments contained in it.
+</I>&gt;<i> 
+</I>&gt;<i> Contact your Administrator for further information.
+</I>
+-- 
+Psssst! Schon vom neuen GMX MultiMessenger geh&#246;rt?
+Der kanns mit allen: <A HREF="http://www.gmx.net/de/go/multimessenger">http://www.gmx.net/de/go/multimessenger</A>
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+
+
+
+
+&quot; Ce courriel et les documents qui y sont attaches peuvent contenir des informations confidentielles. Si vous n'etes pas le destinataire escompte, merci d'en informer l'expediteur immediatement et de detruire ce courriel ainsi que tous les documents attaches de votre systeme informatique. Toute divulgation, distribution ou copie du present courriel et des documents attaches sans autorisation prealable de son emetteur est interdite.&quot; 
+
+&quot; This e-mail and any attached documents may contain confidential or proprietary information. If you are not the intended recipient, please advise the sender immediately and delete this e-mail and all attached documents from your computer system. Any unauthorised disclosure, distribution or copying hereof is prohibited.&quot;
+---------------------------------------------------------------------
+Intel Corporation NV/SA
+Rond point Schuman 6, B-1040 Brussels
+RPM (Bruxelles) 0415.497.718. 
+Citibank, Brussels, account 570/1031255/09
+
+This e-mail and any attachments may contain confidential material for
+the sole use of the intended recipient(s). Any review or distribution
+by others is strictly prohibited. If you are not the intended
+recipient, please contact the sender and delete all copies.
+_______________________________________________
+OpenIMSCore-Users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+---------------------------------------------------------------------
+Intel Corporation NV/SA
+Rond point Schuman 6, B-1040 Brussels
+RPM (Bruxelles) 0415.497.718. 
+Citibank, Brussels, account 570/1031255/09
+
+This e-mail and any attachments may contain confidential material for
+the sole use of the intended recipient(s). Any review or distribution
+by others is strictly prohibited. If you are not the intended
+recipient, please contact the sender and delete all copies.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002657.html">[OpenIMSCore-Users] R&#233;f. : Re:  How to register UA without loopback ??
+</A></li>
+	<LI>Next message: <A HREF="002659.html">[OpenIMSCore-Users] R&#233;f. : Re:  How to register UA without loopback ??
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2658">[ date ]</a>
+              <a href="thread.html#2658">[ thread ]</a>
+              <a href="subject.html#2658">[ subject ]</a>
+              <a href="author.html#2658">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

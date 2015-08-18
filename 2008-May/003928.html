@@ -1,0 +1,509 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Segmentation fault bugfix for POWERPC
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Segmentation%20fault%20bugfix%20for%20POWERPC&In-Reply-To=%3C20080507110036.3qzs5gzdeinuf44g%40webmail.FH-Telekom-Leipzig.DE%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003922.html">
+   <LINK REL="Next"  HREF="003953.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Segmentation fault bugfix for POWERPC</H1>
+    <B>Tom.Weber</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Segmentation%20fault%20bugfix%20for%20POWERPC&In-Reply-To=%3C20080507110036.3qzs5gzdeinuf44g%40webmail.FH-Telekom-Leipzig.DE%3E"
+       TITLE="[OpenIMSCore-Users] Segmentation fault bugfix for POWERPC">Tom.Weber at hft-leipzig.de
+       </A><BR>
+    <I>Wed May  7 11:00:36 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003922.html">[OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot;	whenunsubscribing the &quot;reg&quot; event
+</A></li>
+        <LI>Next message: <A HREF="003953.html">[OpenIMSCore-Users] Segmentation fault bugfix for POWERPC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3928">[ date ]</a>
+              <a href="thread.html#3928">[ thread ]</a>
+              <a href="subject.html#3928">[ subject ]</a>
+              <a href="author.html#3928">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dragos and all POWERPC friends,
+
+I have fixed the segmentation fault, when starting I-CSCF or S-CSCF on POWERPC
+architecture. The error comes from the CDP (Diameter) module, that's why the
+P-CSCF starts without any error and the I-CSCF and the S-CSCF not.
+
+Explanation:
+The fourth argument to semctl() is a &quot;union semun&quot; that you need to define in
+this way:
+
+union semun {
+	int val;
+	struct semid_ds *buf;
+	ushort *array;
+} arg;
+
+semctl(sem_fd, 0, SETVAL, arg);
+
+In short, on POWERPC or SPARC, passing a union containing an integer and just an
+integer, both by value, is not the same thing. On other systems it sometimes is.
+(see <A HREF="http://www.science.uva.nl/pub/solaris/solaris2.html#q6.22">http://www.science.uva.nl/pub/solaris/solaris2.html#q6.22</A>)
+
+
+Dragos, is it possible to bugfix the version of &quot;worker.c&quot; in the OpenIMSCore
+repository?
+
+Cheers,
+Tom
+
+
+
+
+
+My fixed version of &quot;worker.c&quot;:
+==============================
+/**
+ * $Id: worker.c 431 2007-08-01 14:27:58Z vingarzan $
+ *
+ * Copyright (C) 2004-2006 FhG Fokus
+ *
+ * This file is part of Open IMS Core - an open source IMS CSCFs &amp; HSS
+ * implementation
+ *
+ * Open IMS Core is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * For a license to use the Open IMS Core software under conditions
+ * other than those described here, or to purchase support for this
+ * software, please contact Fraunhofer FOKUS by e-mail at the following
+ * addresses:
+ *     <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">info at open-ims.org</A>
+ *
+ * Open IMS Core is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * It has to be noted that this Open Source IMS Core System is not
+ * intended to become or act as a product in a commercial context! Its
+ * sole purpose is to provide an IMS core reference implementation for
+ * IMS technology testing and IMS application prototyping for research
+ * purposes, typically performed in IMS test-beds.
+ *
+ * Users of the Open Source IMS Core System have to be aware that IMS
+ * technology may be subject of patents and licence terms, as being
+ * specified within the various IMS-related IETF, ITU-T, ETSI, and 3GPP
+ * standards. Thus all Open IMS Core users have to take notice of this
+ * fact and have to agree to check out carefully before installing,
+ * using and extending the Open Source IMS Core System, if related
+ * patents and licences may become applicable to the intended usage
+ * context.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+
+/**
+ * \file
+ *
+ * CDiameterPeer Worker Procedures
+ *
+ * This the process pool representation that is used for processing incoming
+messages.
+ *
+ *  \author Dragos Vingarzan vingarzan -at- fokus dot fraunhofer dot de
+ *
+ */
+#include &lt;time.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/sem.h&gt;
+
+#include &quot;utils.h&quot;
+#include &quot;globals.h&quot;
+#include &quot;config.h&quot;
+
+#include &quot;worker.h&quot;
+#include &quot;diameter_api.h&quot;
+
+/* defined in ../diameter_peer.c */
+int dp_add_pid(pid_t pid);
+void dp_del_pid(pid_t pid);
+
+extern dp_config *config;		/**&lt; Configuration for this diameter peer 	*/
+
+task_queue_t *tasks;			/**&lt; queue of tasks */
+
+cdp_cb_list_t *callbacks;		/**&lt; list of callbacks for message processing */
+
+struct sembuf cdp_sem_lock=  { 0, -1, 0};	/**&lt; sembuf structure to lock a
+semaphore */
+struct sembuf cdp_sem_unlock={ 0, +1, 0};	/**&lt; sembuf structure to unlock a
+semaphore */
+
+/**
+ * Gets the lock on a semaphore and blocks until it is available.
+ * This procedures does not consume CPU cycles as a busy-waiting would and it is
+used for
+ * blocking on the task queue without a big impact on performance.
+ * @param sid - semaphore id
+ * @returns when the sempahore is aquired or shutdown
+ */
+static inline void cdp_lock_get(int sid)
+{
+	if((semop(sid, &amp;cdp_sem_lock, 1)) == -1)
+	{
+		if (shutdownx&amp;&amp;(*shutdownx)) return;
+    	LOG(L_INFO,&quot;ERROR:cdp_lock_get(): Error on semop &gt; %s\n&quot;,strerror(errno));
+	}
+}
+
+/**
+ * Releases the lock on a sempahore.
+ * @param sid - the semaphore id
+ */
+static inline void cdp_lock_release(int sid)
+{
+// Tom Weber: Bugfix for powerpc architecture
+#ifdef __PPC__
+	union semun {
+		int val;
+		struct semid_ds *buf;
+		ushort *array;
+	} arg;
+	arg.val = 1;
+	if (semctl(sid, 0, SETVAL, arg) == -1
+#else
+	if( semctl(sid, 0, SETVAL, 1) == -1
+#endif
+	/*semop(sid, &amp;cdp_sem_unlock, 1) == -1*/)
+	{
+		if (shutdownx&amp;&amp;(*shutdownx)) return;
+    	LOG(L_INFO,&quot;ERROR:cdp_lock_release(): Error on semop %s &gt; %d: %s
+Q[%2d/%2d]\n&quot;,
+    		sid==tasks-&gt;full?&quot;full&quot;:&quot;empty&quot;,errno,strerror(errno),
+    		tasks-&gt;start,tasks-&gt;end);
+	}
+}
+
+/**
+ * Initializes the worker structures, like the task queue.
+ */
+void worker_init()
+{
+	tasks = shm_malloc(sizeof(task_queue_t));
+
+	tasks-&gt;lock = lock_alloc();
+	tasks-&gt;lock = lock_init(tasks-&gt;lock);
+
+// Tom Weber: Bugfix for powerpc architecture
+#ifdef __PPC__
+	union semun {
+		int val;
+		struct semid_ds *buf;
+		ushort *array;
+	} arg;
+	arg.val = 0666 | IPC_CREAT;
+#endif
+
+	tasks-&gt;empty = semget(IPC_PRIVATE,1,0666 | IPC_CREAT );
+	if (tasks-&gt;empty==-1){
+		LOG(L_ERR,&quot;ERROR:worker_init(): Error creating semaphore for empty queue &gt;
+%s\n&quot;,strerror(errno));
+	}
+	else{
+// Tom Weber: Bugfix for powerpc architecture
+#ifdef __PPC__
+		semctl(tasks-&gt;empty, 0, SETVAL, arg);
+#else
+		semctl(tasks-&gt;empty, 0, SETVAL, 0666 | IPC_CREAT );
+#endif
+	}
+	tasks-&gt;full = semget(IPC_PRIVATE,1, 0666 | IPC_CREAT );
+	if (tasks-&gt;full==-1){
+		LOG(L_ERR,&quot;ERROR:worker_init(): Error creating semaphore for full queue &gt;
+%s\n&quot;,strerror(errno));
+	}
+	else{
+// Tom Weber: Bugfix for powerpc architecture
+#ifdef __PPC__
+		semctl(tasks-&gt;full, 0, SETVAL, arg);
+#else
+		semctl(tasks-&gt;full, 0, SETVAL, 0666 | IPC_CREAT );
+#endif
+	}
+
+
+	tasks-&gt;start = 0;
+	tasks-&gt;end = 0;
+	tasks-&gt;max = config-&gt;queue_length;
+	tasks-&gt;queue = shm_malloc(tasks-&gt;max*sizeof(task_t));
+	if (!tasks-&gt;queue) LOG_NO_MEM(&quot;shm&quot;,tasks-&gt;max*sizeof(task_t));
+	memset(tasks-&gt;queue,0,tasks-&gt;max*sizeof(task_t));
+
+	callbacks = shm_malloc(sizeof(cdp_cb_list_t));
+	callbacks-&gt;head = 0;
+	callbacks-&gt;tail = 0;
+
+	cdp_lock_get(tasks-&gt;empty);
+//	lock_release(tasks-&gt;full);
+}
+
+/**
+ * Destroys the worker structures.
+ */
+void worker_destroy()
+{
+	int i;
+//	LOG(L_CRIT,&quot;-1-\n&quot;);
+/*	lock_get(tasks-&gt;lock);*/
+	for(i=0;i&lt;tasks-&gt;max;i++){
+		if (tasks-&gt;queue[i].msg) AAAFreeMessage(&amp;(tasks-&gt;queue[i].msg));
+	}
+//	LOG(L_CRIT,&quot;-2-\n&quot;);
+	shm_free(tasks-&gt;queue);
+	lock_destroy(tasks-&gt;lock);
+	lock_dealloc((void*)tasks-&gt;lock);
+//	LOG(L_CRIT,&quot;-3-\n&quot;);
+
+	//lock_release(tasks-&gt;empty);
+// Tom Weber: Bugfix for powerpc architecture
+#ifdef __PPC__
+	union semun {
+		int val;
+		struct semid_ds *buf;
+		ushort *array;
+	} arg;
+	arg.val = 0;
+	semctl(tasks-&gt;empty, 0, IPC_RMID, arg);
+	semctl(tasks-&gt;full, 0, IPC_RMID, arg);
+#else
+	semctl(tasks-&gt;empty, 0, IPC_RMID, 0);
+	semctl(tasks-&gt;full, 0, IPC_RMID, 0);
+#endif
+//	LOG(L_CRIT,&quot;-4-\n&quot;);
+
+	//semctl(tasks-&gt;full, 0, IPC_RMID, 0);
+
+	shm_free(tasks);
+
+	while(callbacks-&gt;head)
+		cb_remove(callbacks-&gt;head);
+	shm_free(callbacks);
+}
+
+/*unsafe*/
+int cb_add(cdp_cb_f cb,void *ptr)
+{
+	cdp_cb_t *x;
+	x = shm_malloc(sizeof(cdp_cb_t));
+	if (!x){
+		LOG_NO_MEM(&quot;shm&quot;,sizeof(cdp_cb_t));
+		return 0;
+	}
+	x-&gt;cb = cb;
+	x-&gt;ptr = shm_malloc(sizeof(void*));
+	if (!x-&gt;ptr){
+		LOG_NO_MEM(&quot;shm&quot;,sizeof(void*));
+		return 0;
+	}
+	*(x-&gt;ptr) = ptr;
+	x-&gt;next = 0;
+	x-&gt;prev = callbacks-&gt;tail;
+	if (callbacks-&gt;tail) callbacks-&gt;tail-&gt;next = x;
+	callbacks-&gt;tail = x;
+	if (!callbacks-&gt;head) callbacks-&gt;head = x;
+	return 1;
+}
+
+/*unsafe*/
+void cb_remove(cdp_cb_t *cb)
+{
+	cdp_cb_t *x;
+	x = callbacks-&gt;head;
+	while(x &amp;&amp; x!=cb) x = x-&gt;next;
+	if (!x) return;
+	if (x-&gt;prev) x-&gt;prev-&gt;next = x-&gt;next;
+	else callbacks-&gt;head = x-&gt;next;
+	if (x-&gt;next) x-&gt;next-&gt;prev = x-&gt;prev;
+	else callbacks-&gt;tail = x-&gt;prev;
+
+	if (x-&gt;ptr) shm_free(x-&gt;ptr);
+	shm_free(x);
+}
+
+/**
+ * Adds a message as a task to the task queue.
+ * This blocks if the task queue is full, untill there is space.
+ * @param p - the peer that the message was received from
+ * @param msg - the message
+ * @returns 1 on success, 0 on failure (eg. shutdown in progress)
+ */
+int put_task(peer *p,AAAMessage *msg)
+{
+//	LOG(L_CRIT,&quot;+1+\n&quot;);
+	lock_get(tasks-&gt;lock);
+//	LOG(L_CRIT,&quot;+2+\n&quot;);
+	while ((tasks-&gt;end+1)%tasks-&gt;max == tasks-&gt;start){
+//		LOG(L_CRIT,&quot;+3+\n&quot;);
+		lock_release(tasks-&gt;lock);
+//		LOG(L_CRIT,&quot;+4+\n&quot;);
+		if (*shutdownx) {
+			cdp_lock_release(tasks-&gt;full);
+			return 0;
+		}
+//		LOG(L_ERR,&quot;+&quot;);
+		cdp_lock_get(tasks-&gt;full);
+//		LOG(L_CRIT,&quot;+5+\n&quot;);
+		lock_get(tasks-&gt;lock);
+	}
+	tasks-&gt;queue[tasks-&gt;end].p = p;
+	tasks-&gt;queue[tasks-&gt;end].msg = msg;
+	tasks-&gt;end = (tasks-&gt;end+1) % tasks-&gt;max;
+	cdp_lock_release(tasks-&gt;empty);
+	lock_release(tasks-&gt;lock);
+	return 1;
+}
+
+/**
+ * Remove and return the first task from the queue (FIFO).
+ * This blocks until there is something in the queue.
+ * @returns the first task from the queue or an empty task on error (eg.
+shutdown in progress)
+ */
+task_t take_task()
+{
+	task_t t={0,0};
+//	LOG(L_CRIT,&quot;-1-\n&quot;);
+	lock_get(tasks-&gt;lock);
+//	LOG(L_CRIT,&quot;-2-\n&quot;);
+	while(tasks-&gt;start == tasks-&gt;end){
+//		LOG(L_CRIT,&quot;-3-\n&quot;);
+		lock_release(tasks-&gt;lock);
+//		LOG(L_CRIT,&quot;-4-\n&quot;);
+		if (*shutdownx) {
+			cdp_lock_release(tasks-&gt;empty);
+			return t;
+		}
+//		LOG(L_ERR,&quot;-&quot;);
+		cdp_lock_get(tasks-&gt;empty);
+//		LOG(L_CRIT,&quot;-5-\n&quot;);
+
+		lock_get(tasks-&gt;lock);
+//		LOG(L_CRIT,&quot;-6-\n&quot;);
+	}
+//	LOG(L_CRIT,&quot;-7-\n&quot;);
+
+	t = tasks-&gt;queue[tasks-&gt;start];
+	tasks-&gt;queue[tasks-&gt;start].msg = 0;
+	tasks-&gt;start = (tasks-&gt;start+1) % tasks-&gt;max;
+	cdp_lock_release(tasks-&gt;full);
+	lock_release(tasks-&gt;lock);
+	return t;
+}
+
+/**
+ * Poisons the worker queue.
+ * Actually it just releases the task queue locks so that the workers get to
+evaluate
+ * if a shutdown is in process and exit.
+ */
+void worker_poison_queue()
+{
+//	int i;
+//	for(i=0;i&lt;config-&gt;workers;i++)
+	cdp_lock_release(tasks-&gt;empty);
+}
+
+/**
+ * This is the main worker process.
+ * Takes tasks from the queue in a loop and processes them by calling the
+registered callbacks.
+ * @param id - id of the worker
+ * @returns never, exits on shutdown.
+ */
+void worker_process(int id)
+{
+	task_t t;
+	cdp_cb_t *cb;
+	int r;
+	LOG(L_INFO,&quot;INFO:[%d] Worker process started...\n&quot;,id);
+	/* init the application level for this child */
+	while(1){
+		if (shutdownx&amp;&amp;(*shutdownx)) break;
+		t = take_task();
+		if (!t.msg) {
+			if (shutdownx&amp;&amp;(*shutdownx)) break;
+			LOG(L_INFO,&quot;INFO:worker_process(): [%d] got empty task
+Q(%d/%d)\n&quot;,id,tasks-&gt;start,tasks-&gt;end);
+			continue;
+		}
+		LOG(L_DBG,&quot;DBG:worker_process(): [%d] got task
+Q(%d/%d)\n&quot;,id,tasks-&gt;start,tasks-&gt;end);
+		r = is_req(t.msg);
+		for(cb = callbacks-&gt;head;cb;cb = cb-&gt;next)
+			(*(cb-&gt;cb))(t.p,t.msg,*(cb-&gt;ptr));
+
+		if (r){
+			AAAFreeMessage(&amp;(t.msg));
+		}else{
+			/* will be freed by the user in upper api */
+			/*AAAFreeMessage(&amp;(t.msg));*/
+		}
+	}
+	worker_poison_queue();
+	LOG(L_INFO,&quot;INFO:[%d]... Worker process finished\n&quot;,id);
+#ifdef CDP_FOR_SER
+#else
+	#ifdef PKG_MALLOC
+		LOG(memlog, &quot;Worker[%d] Memory status (pkg):\n&quot;,id);
+		//pkg_status();
+		#ifdef pkg_sums
+			pkg_sums();
+		#endif
+	#endif
+	dp_del_pid(getpid());
+#endif
+	exit(0);
+}
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003922.html">[OpenIMSCore-Users] Get &quot;403 Forbidden to SUBSCRIBE&quot;	whenunsubscribing the &quot;reg&quot; event
+</A></li>
+	<LI>Next message: <A HREF="003953.html">[OpenIMSCore-Users] Segmentation fault bugfix for POWERPC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3928">[ date ]</a>
+              <a href="thread.html#3928">[ thread ]</a>
+              <a href="subject.html#3928">[ subject ]</a>
+              <a href="author.html#3928">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>

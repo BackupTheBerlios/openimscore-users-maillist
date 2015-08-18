@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [OpenIMSCore-Users] Registeration over IPSec fails
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openimscore-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registeration%20over%20IPSec%20fails&In-Reply-To=%3C1187799979.24471.17.camel%40sulu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002343.html">
+   <LINK REL="Next"  HREF="002342.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[OpenIMSCore-Users] Registeration over IPSec fails</H1>
+    <B>Florin Popescu</B> 
+    <A HREF="mailto:openimscore-users%40lists.berlios.de?Subject=Re%3A%20%5BOpenIMSCore-Users%5D%20Registeration%20over%20IPSec%20fails&In-Reply-To=%3C1187799979.24471.17.camel%40sulu%3E"
+       TITLE="[OpenIMSCore-Users] Registeration over IPSec fails">florin.popescu at fokus.fraunhofer.de
+       </A><BR>
+    <I>Wed Aug 22 18:26:19 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002343.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+        <LI>Next message: <A HREF="002342.html">[OpenIMSCore-Users] UNSUBSCRIBE: scscf route weird?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2458">[ date ]</a>
+              <a href="thread.html#2458">[ thread ]</a>
+              <a href="subject.html#2458">[ subject ]</a>
+              <a href="author.html#2458">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+You described a strange behavior here. First it seems that the
+security_temp is not properly saved on 401 message, but this is not
+possible because it is obvious from your trace, that the second Register
+came over an IPSEC tunnel, so in the 401 message, the P-CSCF set the
+IPSEC association for receiving.
+Please check the security_temp after saving it(here)
+
+		case SEC_IPSEC:
+			ipsec = c-&gt;security_temp-&gt;data.ipsec;
+			/* try to add the Security-Server header */
+
+
+- Florin
+
+On Thu, 2007-08-09 at 06:36 -0400, sanjeev mudholkar wrote:
+&gt;<i> Hi,
+</I>&gt;<i> Revisiting the issue to see if anybody else has the same issue.
+</I>&gt;<i> Im unable to do registration with openimscore with ipsec enabled. 
+</I>&gt;<i> Looked into p-cscf code and found the following. 
+</I>&gt;<i> 
+</I>&gt;<i> While sending a 401 challenge to UE, I think p-cscf is storing some
+</I>&gt;<i> Security
+</I>&gt;<i> information in security_temp data structure; When p-cscf receives the 
+</I>&gt;<i> second REGISTER packet (on ipsec), it receives the message and
+</I>&gt;<i> forwards to i-cscf, 
+</I>&gt;<i> but the 200 OK is being sent back to the client in plain text, rather
+</I>&gt;<i> than on ipsec.
+</I>&gt;<i> I would like to show you the results of some debugging in the pcscf
+</I>&gt;<i> code;
+</I>&gt;<i> In ser_ims/modules/pcscf/security
+</I>&gt;<i> .c file, in the function P_security_200, 
+</I>&gt;<i> the check on r_contact data structure was in following fashion:
+</I>&gt;<i> 
+</I>&gt;<i> if (!r_valid_contact(c)||!c-&gt;security||!c-&gt;security-&gt; data.ipsec ){
+</I>&gt;<i> LOG(L_ERR,&quot;DBG:&quot;M_NAME&quot;:P_security_200: Contact expired or no 
+</I>&gt;<i> IPSec info\n&quot;);
+</I>&gt;<i> r_unlock(c-&gt;hash);
+</I>&gt;<i> goto error;
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> I have just de-coupled the conditions into different 'if' blocks as 
+</I>&gt;<i> follows:
+</I>&gt;<i> 
+</I>&gt;<i> if (!r_valid_contact(c) ){
+</I>&gt;<i> LOG(L_ERR,&quot;DBG:&quot;M_NAME&quot;:failed while checing on contact\n&quot;);
+</I>&gt;<i> r_unlock(c-&gt;hash);
+</I>&gt;<i> goto error;
+</I>&gt;<i> }
+</I>&gt;<i> if (!c-&gt;security){
+</I>&gt;<i> LOG(L_ERR,&quot;DBG:&quot;M_NAME&quot;:failed while checking on c-&gt;security\n&quot;); 
+</I>&gt;<i> r_unlock(c-&gt;hash);
+</I>&gt;<i> goto error;
+</I>&gt;<i> }
+</I>&gt;<i> if (!c-&gt;security-&gt;data.ipsec){
+</I>&gt;<i> LOG(L_ERR,&quot;DBG:&quot;M_NAME&quot;:failed while checking on 
+</I>&gt;<i> c-&gt;security-&gt; data.ipsec\n &quot;);
+</I>&gt;<i> r_unlock(c-&gt;hash);
+</I>&gt;<i> goto error;
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> and found that it failed while checking on c-&gt;security.
+</I>&gt;<i> 
+</I>&gt;<i> Not sure if the security_temp is properly saved on receiving the first
+</I>&gt;<i> REGISTER ??? 
+</I>&gt;<i> Can you just let me know If anybody has a similar problem and had any 
+</I>&gt;<i> fix for the same.
+</I>&gt;<i> Attached is the ethereal capture for your reference
+</I>&gt;<i> 
+</I>&gt;<i> I am using r433
+</I>&gt;<i> 
+</I>&gt;<i> Thanks and regards,
+</I>&gt;<i> 
+</I>&gt;<i> -Sanjeev 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> OpenIMSCore-Users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">OpenIMSCore-Users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openimscore-users">https://lists.berlios.de/mailman/listinfo/openimscore-users</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002343.html">[OpenIMSCore-Users] Registeration over IPSec fails
+</A></li>
+	<LI>Next message: <A HREF="002342.html">[OpenIMSCore-Users] UNSUBSCRIBE: scscf route weird?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2458">[ date ]</a>
+              <a href="thread.html#2458">[ thread ]</a>
+              <a href="subject.html#2458">[ subject ]</a>
+              <a href="author.html#2458">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openimscore-users">More information about the OpenIMSCore-Users
+mailing list</a><br>
+</body></html>
